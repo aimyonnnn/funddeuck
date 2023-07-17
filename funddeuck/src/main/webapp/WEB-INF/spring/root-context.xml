@@ -30,9 +30,8 @@
 		
 		<!-- =================================================================================================== -->
 		<!-- 로컬용 -->
-		<!-- 데이터베이스명 test로 임시로 생성하고 작업해주세요 -->
 		<!-- 서버용은 아래 로컬용 주석처리후 주석 풀고 사용하시면 됩니다 -->
-		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://localhost:3306/test"></property>
+		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://localhost:3306/funddeuck"></property>
 		<property name="username" value="root"></property>
 		<property name="password" value="1234"></property>
 		<!-- =================================================================================================== -->
