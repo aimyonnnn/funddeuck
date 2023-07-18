@@ -4,10 +4,10 @@ header,
 aside,
 section,
 footer {
+/*   border: solid 1px black; */
   margin: 3px;
   text-align: center;
   font-size:30px;
-/*   border: solid 1px black; */
 }
 header,
 footer {
@@ -36,7 +36,6 @@ footer {
 }
 #article {
   flex-grow: 1;
-  height: 2000px;
   max-height: 2000px;
 }
 /* ==================== 기본 레이아웃 ==================== */
@@ -148,8 +147,8 @@ footer {
   border-color: #bce8f1;
   color: #31708f;
 }
-
-/* 차트 */
+/* ============================= 차트 =============================*/
+/* 차트*/
 .chart-title {
   font-size: 20px;
 /*   font-weight: bold; */
@@ -215,6 +214,30 @@ th, td {
 	box-shadow: none;
 	background-color: #e9ecef;
 }
+/* ============================= 차트 =============================*/
+
+/* 왼쪽 네비게이션바 스타일 설정 시작 */
+#navMenu li a {
+	display: block;
+	padding: 10px 15px;
+	text-decoration: none;
+	color: #333;
+}
+/* 마우스 올리면 hover 효과 */
+#navMenu li a:hover {
+	background-color: #f1f1f1;
+}
+/* 네비게이션탭 누른 효과 */
+#active-tab {
+   background-color: #f1f1f1;
+}
+/* 왼쪽 네비게이션바 스타일 설정 끝 */
+
+
+
+
+
+
 
 /* ==================== 미디어쿼리 ==================== */
 /* tablet */
@@ -237,3 +260,6 @@ th, td {
     max-width: 350px;
   }
 }
+/* ==================== 미디어쿼리 ==================== */
+
+

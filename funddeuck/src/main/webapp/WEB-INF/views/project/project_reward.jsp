@@ -15,8 +15,7 @@
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
-	<link href="${pageContext.request.contextPath }/resources/css/project_reward.css" rel="styleSheet" type="text/css">
-	<link href="${pageContext.request.contextPath }/resources/css/default.css" rel="stylesheet" type="text/css">
+	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
 	
     <!-- 관리자 피드백 구역 스크롤 내릴 때 고정시키기-->
 	<script>
@@ -83,8 +82,7 @@
 </head>
 <body>
 	<!-- include -->
-<%-- 	<jsp:include page="../inc/top.jsp"></jsp:include> --%>
- 	<header id="header">#header</header>
+ 	<jsp:include page="../common/project_top.jsp"></jsp:include>
  	
 	<!-- main -->
 	<main id="main">
@@ -94,11 +92,9 @@
 	<aside id="aisdeLeft">
 		<div id="projectManagement">XXX님의 프로젝트</div>
 	   	<ul id="navMenu">
-		    <li><a href="#"></a></li>
 		    <li><a href="#">프로젝트 관리</a></li>
-		    <li><a href="projectReward">리워드 관리</a></li>
+		    <li><a href="projectReward" id="active-tab">리워드 관리</a></li>
 		    <li><a href="projectStatus">프로젝트 현황</a></li>
-		    <li><a href="#">결제 현황</a></li>
 		    <li><a href="#">발송/환불 관리</a></li>
 		    <li><a href="#">수수료/정산 관리</a></li>
 	 	</ul> 
@@ -290,16 +286,12 @@
 		getNotifications();
 		
 		// 일정 시간마다 알림 갱신을 위해 타이머 설정
-		setInterval(getNotifications, 5000); // 5초마다 알림 조회
+// 		setInterval(getNotifications, 5000); // 5초마다 알림 조회
 		
 	})
-	
-
 	</script>
-
-	<!-- -->
-<!-- 	<footer id="footer">#footer</footer> -->
 	
+		
 	<!-- bootstrap -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
    
