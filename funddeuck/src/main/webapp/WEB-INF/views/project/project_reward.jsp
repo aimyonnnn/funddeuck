@@ -209,7 +209,7 @@
         
         <!-- 관리자 피드백 -->
         <div class="admin-feedback">
-        	<div class="admin-title">관리자 피드백</div>
+        	<div class="admin-title">리워드 피드백</div>
         	<div class="admin-content">관리자로부터 수정, 요청사항 피드백을 받으면 이곳에 피드백 메시지가 출력됩니다.</div>
           
 			<!-- 메시지 시작 -->
@@ -229,6 +229,11 @@
 	        <!-- 추가한 리워드 수 표시 -->
 	        <div class="alert alert-success" role="alert" id="numRewardsAdded">
 				<a><i class="fas fa-exclamation-circle"></i>&nbsp;추가된 리워드 수 : 0</a>
+			</div>
+			<!-- 임시저장, 삭제하기 버튼 -->
+			<div class="alert alert-warning" role="alert">
+			  <button onclick="saveTemporaryData()" class="btn btn-outline-secondary btn-sm mx-3">임시저장</button>
+			  <button onclick="deleteTemporaryData()" class="btn btn-outline-secondary btn-sm">삭제하기</button>
 			</div>
 	        
 	        
@@ -333,6 +338,71 @@
 	        var delivery_date = yearMonth + day;
 	        document.getElementById("delivery_date").value = delivery_date;
 	    }
+	    
+	    // 임시 저장하기
+	    function saveTemporaryData() {
+		    // 현재 입력된 리워드 정보를 가져옵니다.
+		    var reward_price = $("#reward_price").val();
+		    var reward_category = $("#reward_category").val();
+		    var reward_name = $("#reward_name").val();
+		    var reward_quantity = $("#reward_quantity").val();
+		    var reward_option = $("#reward_option").val();
+		    var reward_detail = $("#reward_detail").val();
+		    var delivery_status = $("input[name='delivery_status']:checked").val();
+		    var delivery_price = $("#delivery_price").val();
+		    var delivery_date = $("#delivery_date").val();
+		    var reward_info = $("#reward_info").val();
+		
+		    // 리워드 정보를 객체로 만듭니다.
+		    var newReward = {
+		        reward_price: reward_price,
+		        reward_category: reward_category,
+		        reward_name: reward_name,
+		        reward_quantity: reward_quantity,
+		        reward_option: reward_option,
+		        reward_detail: reward_detail,
+		        delivery_status: delivery_status,
+		        delivery_price: delivery_price,
+		        delivery_date: delivery_date,
+		        reward_info: reward_info
+		    };
+		
+		    // 로컬 스토리지에 리워드 정보를 저장합니다.
+		    localStorage.setItem('newReward', JSON.stringify(newReward));
+		
+		    alert("리워드 데이터가 임시저장되었습니다.");
+		}
+	    
+	    // 페이지 로드 시
+	    window.onload = function() {
+	        var storedNewReward = localStorage.getItem('newReward');
+
+	        if (storedNewReward) {
+	            var lastReward = JSON.parse(storedNewReward);
+	            restoreRewardInputs(lastReward);
+	        }
+	    };
+	    
+	    function restoreRewardInputs(lastReward) {
+	        $("#reward_price").val(lastReward.reward_price);
+	        $("#reward_category").val(lastReward.reward_category);
+	        $("#reward_name").val(lastReward.reward_name);
+	        $("#reward_quantity").val(lastReward.reward_quantity);
+	        $("#reward_option").val(lastReward.reward_option);
+	        $("#reward_detail").val(lastReward.reward_detail);
+	        $("input[name='delivery_status'][value='" + lastReward.delivery_status + "']").prop("checked", true);
+	        $("#delivery_price").val(lastReward.delivery_price);
+	        $("#yearMonth").val(lastReward.delivery_date.split("/")[0]);
+	        $("#day").val(lastReward.delivery_date.split("/")[1]);
+	        $("#reward_info").val(lastReward.reward_info);
+	    }
+	    
+	    // 임시저장 된 데이터 삭제하기
+	    function deleteTemporaryData() {
+			localStorage.removeItem('newReward');
+			alert("임시저장 데이터가 삭제되었습니다.");
+			location.reload();
+		}
 	</script>
 		
 	<!-- bootstrap -->

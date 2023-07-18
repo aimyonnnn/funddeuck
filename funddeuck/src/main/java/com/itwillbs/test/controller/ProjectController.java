@@ -18,7 +18,7 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 	
-	// 리워드 관리
+	// 리워드 등록
 	@GetMapping("projectReward")
 	public String projectReward() {
 		return "project/project_reward";

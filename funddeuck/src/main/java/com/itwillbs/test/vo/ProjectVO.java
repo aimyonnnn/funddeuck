@@ -5,32 +5,27 @@ import java.sql.Date;
 import lombok.Data;
 
 /*
-프로젝트 정보를 관리하는 project 테이블 정의
----------------------------------------
-프로젝트 번호(project_idx) - 정수, PK, AUTO_INCREMENT
-프로젝트 이름(project_title) - 문자(50자), NN
-프로젝트 카테고리(project_category) - 문자(10자), NN
-프로젝트 내용(project_content) - 문자(500자)
-프로젝트 이미지(project_image) - 문자(500자)
-프로젝트 시작일(project_start_date) - 날짜(DATE), NN
-프로젝트 종료일(project_end_date) - 날짜(DATE), NN
-프로젝트 즐겨찾기 수(project_like) - 정수
-프로젝트 등록일(project_create_date) - 날짜 및 시각, NN
-프로젝트 상태(project_status) - 정수, NN
-프로젝트 메이커(maker_idx) - 정수
----------------------------------------
+계속 수정될 예정입니다
 CREATE TABLE project (
-	project_idx INT PRIMARY KEY AUTO_INCREMENT,
-	project_title VARCHAR(50) NOT NULL,
-	project_category VARCHAR(10) NOT NULL,
-	project_content VARCHAR(500),
-	project_image VARCHAR(100),
-	project_start_date DATE NOT NULL,
-	project_end_date DATE NOT NULL,
-	project_like INT,
-	project_create_date DATETIME NOT NULL,
-	project_status INT NOT NULL,
-	FOREIGN KEY (maker_idx) REFERENCES maker_idx(maker_idx) ON DELETE CASCADE
+    project_idx INT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '프로젝트 번호',
+    member_idx INT NOT NULL COMMENT '회원번호',
+    project_category VARCHAR(255) NOT NULL COMMENT '카테고리',
+    project_subject VARCHAR(255) NOT NULL COMMENT '내용',
+    project_end_date DATE NOT NULL COMMENT '종료일자',
+    search_tag VARCHAR(255) NOT NULL COMMENT '태그',
+    maker_name VARCHAR(255) NOT NULL COMMENT '메이커 이름',
+    maker_email VARCHAR(255) NOT NULL COMMENT '메이커 이메일',
+    maker_tel VARCHAR(255) NOT NULL COMMENT '메이커 전화번호',
+    maker_url VARCHAR(255) NOT NULL COMMENT '메이커 홈페이지',
+    representative_name VARCHAR(255) NOT NULL COMMENT '대표자 이름',
+    representative_email VARCHAR(255) NOT NULL COMMENT '대표자 이메일',
+    representative_birth1 VARCHAR(6) NOT NULL COMMENT '대표자 주민번호 앞자리',
+    representative_birth2 VARCHAR(7) NOT NULL COMMENT '대표자 주민번호 뒷자리',
+    tax_email VARCHAR(255) NOT NULL COMMENT '세금계산서 발행 이메일',
+    bank_category VARCHAR(255) NOT NULL COMMENT '은행 종류',
+    bank_account VARCHAR(255) NOT NULL COMMENT '은행 계좌',
+    bank_name VARCHAR(255) NOT NULL COMMENT '은행명'
+    -- FOREIGN KEY (member_idx) REFERENCES member (member_idx)
 );
 */
 
