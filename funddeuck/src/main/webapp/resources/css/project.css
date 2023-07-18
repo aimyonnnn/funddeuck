@@ -233,8 +233,75 @@ th, td {
 }
 /* 왼쪽 네비게이션바 스타일 설정 끝 */
 
+/* ============================= project_top =============================*/
+#msgStack{
+	width: 280px;
+	right: 10px;
+	bottom: 10px;
+	position: fixed;
+	z-index: 9999;
+}
+.toast{
+	cursor: pointer;
+}
+.badge{
+	font-size: 10px;
+   	height: 15px;
+   	margin-left: -50px;
+   	margin-bottom: 20px;
+   	margin-left: -30px;	
+}
+/* 종 모양 아이콘 크기 설정 */
+.nav-link svg {
+	font-size: 1.7em; /* 원하는 크기로 조정하세요 */
+	fill: white; /* 아이콘의 색상을 흰색으로 설정 */
+}
+.nav-link {
+	color: white;
+}
+/* ============================= project_top =============================*/
 
+/* ============================= maker_detail =============================*/
+.follow-button {
+	text-align: center;
+}
+ .tab-buttons {
+	display: flex;
+	justify-content: space-around;
+	margin-top: 20px;
+ }
+ .tab-buttons button {
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 10px 20px;
+	font-size: 16px;
+	font-weight: bold;
+ }
+ .content-area {
+	display: none;
+	padding: 20px;
+	border: 1px solid #ddd;
+ }
+ .content-area.active {
+	display: block;
+ }
+/* ============================= maker_detail =============================*/
 
+/* CSS 코드 */
+a.star-rating,
+a.supporters {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  color: black; /* 글자 색상을 검정색으로 설정 */
+  text-decoration: none; /* 하이퍼링크 텍스트의 밑줄 제거 */
+}
+
+a.star-rating svg,
+a.supporters svg {
+  margin-right: 5px; /* 아이콘과 텍스트 사이 간격 설정 */
+}
 
 
 

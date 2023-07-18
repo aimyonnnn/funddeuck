@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- css -->
-<link href="${pageContext.request.contextPath }/resources/css/project_top.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="stylesheet" type="text/css">
 <!-- jQuery -->
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
 <!-- sockJS -->
