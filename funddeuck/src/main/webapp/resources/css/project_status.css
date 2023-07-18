@@ -1,0 +1,239 @@
+@charset "EUC-KR";
+/* ==================== 기본 레이아웃 ==================== */
+header,
+aside,
+section,
+footer {
+  margin: 3px;
+  text-align: center;
+  font-size:30px;
+/*   border: solid 1px black; */
+}
+header,
+footer {
+  background-color: black;
+  color: white;
+}
+.containerCSS {
+  display: flex;
+  margin: 0 auto;
+  max-width: 1360px;
+  /* border: solid 1px red; */
+}
+#aisdeLeft {
+  flex-grow: 0;
+  /* background-color: darkseagreen; */
+  width: 200px;
+}
+#section {
+  flex-grow: 1;
+  /* background-color: darkcyan; */
+}
+#aisdeRight {
+  flex-grow: 0;
+  /* background-color: bisque; */
+  width: 320px;
+}
+#article {
+  flex-grow: 1;
+  height: 2000px;
+  max-height: 2000px;
+}
+/* ==================== 기본 레이아웃 ==================== */
+
+/* ==================== 왼쪽 네비게이션바 ==================== */
+#asideLeft {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+#asideLeftHeader {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+#navMenu {
+  list-style: none;
+  padding: 0;
+}
+
+#navMenu li {
+  margin-bottom: 10px;
+}
+
+#navMenu li a {
+  color: #333;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+#navMenu li a:hover {
+  color: #000;
+  font-weight: bold;
+}
+
+/* XXX님의 프로젝트 */
+#projectManagement {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-top:60px;
+}
+/* ==================== 왼쪽 네비게이션바 ==================== */
+
+/* 리워드 설계 */
+.reward-area {
+  text-align: left;
+  margin-top: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+.reward-title {
+  font-size: 35px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+.reward-content {
+  font-size: 20px;
+}
+
+/* 폼 컨트롤 */
+.form-content {
+  font-size: 18px;
+  margin-top: 30px;
+}
+
+/* 리워드 정보 제공 고시 */
+.reward-info {
+  text-align: left;
+}
+
+/* 관리자 피드백 전체 */
+.admin-feedback {
+  color: #333;
+  font-size: 16px;
+  text-decoration: none;
+  position: relative; /* 관리자 피드백 스크롤 내릴 때 */
+}
+/* 관리자 피드백 스크롤 내릴 때 */
+.admin-feedback.sticky {
+  position: sticky;
+  top: 50px; /* 필요한 위치로 조정 */
+}
+/* 관리자 피드백 */
+.admin-title{
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-top:60px;
+}
+.admin-content {
+  font-size: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+/* 관리자 피드백 메시지 */
+.alert {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.alert-info {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f;
+}
+
+/* 차트 */
+.chart-title {
+  font-size: 20px;
+/*   font-weight: bold; */
+  margin-top: 50px;
+  color: black;
+  text-transform: uppercase;
+  text-align: left;
+/*   font-style: italic; */
+/*   background-color: #f2f2f2; */
+/*   padding: 10px; */
+  border-radius: 5px;
+/*   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+
+/* 차트 테이블 타이틀 */
+.chart-table-title {
+  font-size: 15px;
+  text-align: center;
+}
+th, td {
+  width: 10%; /* 각 셀의 너비를 20%로 설정 */
+}
+/* 차트 테이블 데이터 부분 */
+.chart-table-content {
+  font-size: 40px;
+  /* font-weight: bold; */
+}
+/* 차트 테이블 날짜 부분 */
+.chart-date {
+	font-size: 15px;
+}
+
+.chatgpt-content {
+  font-size: 18px;
+}
+
+/* 데이트피커 */
+/* 날짜 선택을 위한 input 요소의 너비 조정 */
+#startDate, #endDate {
+	width: 90px;
+}
+/* 날짜 선택을 위한 input 요소의 스타일 */
+.datepicker {
+	font-size: 12px;
+	padding: 0.25rem 0.5rem;
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	height: calc(1.5em + 0.5rem + 2px);
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+/* .datepicker 스타일에 맞는 버튼 스타일 */
+.datepicker-button {
+	margin: 0px;
+	font-size: 12px;
+	padding: 0.25rem 0.5rem;
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	height: calc(1.5em + 0.5rem + 2px);
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+/* 버튼 눌림 효과 스타일 */
+.datepicker-button:active {
+	box-shadow: none;
+	background-color: #e9ecef;
+}
+
+/* ==================== 미디어쿼리 ==================== */
+/* tablet */
+@media screen and (max-width: 1250px) {
+  #aisdeLeft {
+    display:none;
+  }
+  .form-control {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+/* mobile */
+@media screen and (max-width: 900px) {
+  #aisdeRight {
+    display:none;
+  }
+  .form-control {
+    width: 100%;
+    max-width: 350px;
+  }
+}
