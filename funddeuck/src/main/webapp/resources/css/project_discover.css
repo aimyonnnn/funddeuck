@@ -1,0 +1,9 @@
+@charset "EUC-KR";
+
+select {
+	border: none;
+}
+
+select:focus {
+	outline: none;
+}

@@ -16,4 +16,10 @@ public class ProjectController {
 		return "project/project_status";
 	}
 	
+	// 프로젝트 탐색 페이지
+	@GetMapping("projectDiscover")
+	public String projectDiscoverForm() {
+		return "project/project_discover";
+	}
+	
 }
