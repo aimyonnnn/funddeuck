@@ -26,7 +26,7 @@
 	  var adminFeedbackOffsetTop = adminFeedbackElement.offsetTop;
 	
 	  // 스크롤 위치가 관리자 피드백 요소의 위치 이상일 때
-	  if (window.pageYOffset >= adminFeedbackOffsetTop) {
+	  if (window.pageYOffset = adminFeedbackOffsetTop) {
 	    // sticky 클래스를 추가하여 고정
 	    adminFeedbackElement.classList.add("sticky");
 	  } else {
