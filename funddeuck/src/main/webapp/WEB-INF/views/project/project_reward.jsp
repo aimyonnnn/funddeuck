@@ -46,41 +46,13 @@
 	    }, 250); // 250ms 지연
 	  }
 	});
-	
-	// 메시지 읽음 처리 하기
-	function markNotificationAsRead(notification_idx) {
-		
-		let confirmation = confirm("메시지를 읽음 처리 하시겠습니까?");
-		
-		if(confirmation) {
-			console.log("알림번호 : " + notification_idx);
-			
-			$.ajax({
-				method: 'get',
-				url: '<c:url value="markNotificationAsRead"/>',
-				data: {
-					notification_idx: notification_idx
-				},
-				success: function(response){
-					
-					if(response.trim() == 'true') {
-						// top.jsp의 알림 갯수 조회하는 함수 호출하여 알림 갯수 변경
-						getNotificationCount();
-						alert('읽음 처리 하였습니다!')
-					} 
-				},
-				error: function(error) {
-					console.log("읽음 처리 실패!")
-				}
-			}) // ajax
-			
-		} // confirmation
-		
-	}
 	</script>
 
 </head>
 <body>
+	
+	
+
 	<!-- include -->
  	<jsp:include page="../common/project_top.jsp"></jsp:include>
  	
@@ -114,14 +86,14 @@
             <form action="" class="reward-content" method="post">
 	            <!-- 금액 -->
 	            <div>
-	            	<label class="form-content" for="rewardPrice">금액</label>
-	           		<input class="form-control" type="text" name="rewardPrice" id="rewardPrice" placeholder="금액을 입력하세요" style="width:500px;">
+	            	<label class="form-content subheading" for="reward_price">금액</label>
+	           		<input class="form-control" type="text" name="reward_price" id="reward_price" placeholder="금액을 입력하세요" style="width:500px;">
 	            </div>
 
                 <!-- 리워드 카테고리 -->
-                <label class="form-content" for="rewardCategory">카테고리</label>
+                <label class="form-content subheading" for="reward_category">카테고리</label>
                 <div class="d-flex flew-row">
-                	<select class="form-control" name="rewardCategory" id="rewardCategory" style="width:150px;">
+                	<select class="form-control" name="reward_category" id="reward_category" style="width:150px;">
 	                	<option value="">-- 선택 --</option>
 	                    <option value="tech">테크/가전</option>
 	                    <option value="fassion">패션/잡화</option>
@@ -133,39 +105,53 @@
 
               <!--리워드명 -->
               <div>
-	              <label class="form-content" for="rewardName">리워드명</label>
-	              <input class="form-control" type="text" name="rewardName" id="rewardName" placeholder="예시 - 베이지 이불/베개 1개 세트" style="width:500px;">
+	              <label class="form-content subheading" for="reward_name">리워드명</label>
+	              <input class="form-control" type="text" name="reward_name" id="reward_name" placeholder="예시 - 베이지 이불/베개 1개 세트" style="width:500px;">
+              </div>
+              
+              <!--리워드 수량 -->
+              <div>
+	              <label class="form-content subheading" for="reward_quantity">수량</label>
+	              <input class="form-control" type="text" name="reward_quantity" id="reward_quantity" style="width:500px;">
+              </div>
+              
+              <!--리워드 옵션 -->
+              <div>
+	              <label class="form-content subheading" for="reward_option">옵션</label>
+	              <input class="form-control" type="text" name="reward_option" id="reward_option" style="width:500px;">
               </div>
 
               <!-- 리워드 설명 -->
-              <label class="form-content" for="rewardDetail">리워드 설명</label>
-              <textarea class="form-control reward-info" name="rewardDetail" id="rewardDetail" placeholder="리워드 구성과 혜택을 간결하게 설명해 주세요" style="height: 300px; resize: none;"></textarea>
+              <label class="form-content subheading" for="reward_detail">리워드 설명</label>
+              <textarea class="form-control reward-info" name="reward_detail" id="reward_detail" placeholder="리워드 구성과 혜택을 간결하게 설명해 주세요" style="height: 300px; resize: none;"></textarea>
               
               <!-- 배송여부 -->
               <div class="form-content">
-	              		배송여부
+	              		<span class="subheading">배송여부</span>
 	              <div class="form-check">
-	          		<input class="form-check-input" type="radio" name="delivery" id="deliveryChecke1">
-	                <label class="form-check-label" for="deliveryChecke1">
-	                	배송
+	          		<input class="form-check-input" type="radio" name="delivery_status" id="delivery_status1" value="배송">
+	                <label class="form-check-label" for="delivery_status1">
+	                	<span>배송</span>
 	                </label>
 	              </div>
 	              <div class="form-check">
-	              	<input class="form-check-input" type="radio" name="delivery" id="deliveryChecke2">
-	                <label class="form-check-label" for="deliveryChecke2">
-	                    배송없음
+	              	<input class="form-check-input" type="radio" name="delivery_status" id="delivery_status2" value="배송없음">
+	                <label class="form-check-label" for="delivery_status2">
+	                    <span>배송없음</span>
 	                </label>
 	              </div>
               </div>
 
               <!-- 배송비 -->
               <div>
-                <label class="form-content" for="rewardPrice">배송비</label>
-                <input class="form-control" type="text" name="rewardPrice" id="rewardPrice" placeholder="배송비를 입력하세요" style="width:500px;">
+                <label class="form-content subheading" for="delivery_price">배송비</label>
+                <input class="form-control" type="text" name="delivery_price" id="delivery_price" placeholder="배송비를 입력하세요" style="width:500px;">
               </div>
 
               <!-- 발송 시작일 -->
-              <label class="form-content" for="yearMonth">발송 시작일</label>
+              <label class="form-content subheading" for="yearMonth">발송 시작일</label>
+              <!-- hidden으로 처리할 예정 -->
+              <input type="text" name="delivery_date" id="delivery_date">
               <div class="d-flex flew-row">
                 <select class="form-control" name="yearMonth" id="yearMonth" style="width:150px;">
                   <option value="">-- 선택 --</option>
@@ -174,7 +160,11 @@
                   <option value="2023/10">2023년 10월</option>
                   <option value="2023/11">2023년 11월</option>
                   <option value="2023/12">2023년 12월</option>
-                  <option value="2023/01">2024년 1월</option>
+                  <option value="2024/01">2024년 1월</option>
+                  <option value="2024/02">2024년 2월</option>
+                  <option value="2024/03">2024년 3월</option>
+                  <option value="2024/04">2024년 4월</option>
+                  <option value="2024/05">2024년 5월</option>
                 </select>
                 <select class="form-control ms-3" name="day" id="day" style="width:150px;">
                   <option value="">-- 선택 --</option>
@@ -186,8 +176,8 @@
 
               <!-- 리워드 정보 제공 고시 -->
               <!-- 들여쓰기 안한게 아니라 스페이스바 누르면 뷰에 스페이스바까지 나와서 이렇게 작성한거임 -->
-              <label class="form-content" for="rewardInfo">리워드 정보 제공 고시</label>
-              <textarea class="form-control reward-info" placeholder="제품 소재, 색상, 주의사항, 품질보증기준을 작성해주세요" name="rewardInfo" id="rewardInfo" style="height: 300px; resize: none;">
+              <label class="form-content subheading" for="reward_info">리워드 정보 제공 고시</label>
+              <textarea class="form-control reward-info" placeholder="제품 소재, 색상, 주의사항, 품질보증기준을 작성해주세요" name="reward_info" id="reward_info" style="height: 300px; resize: none;">
 제품소재 :
 
 색상 :
@@ -197,9 +187,11 @@
 주의사항 :
 
 품질보증기준 :</textarea>
-              <div class="d-flex justify-content-center my-3">
-                <input type="submit" value="저장하기" class="btn btn-outline-secondary">
-              </div>
+              	<!-- 저장하기 버튼 -->
+			  	<div class="d-flex justify-content-center my-3">
+				    <button type="button" class="btn btn-outline-secondary mx-3" onclick="addRewardToList()">추가하기</button>
+			  		<button type="button" class="btn btn-outline-secondary" onclick="saveReward()">저장하기</button>
+		      	</div>
             </form>
             <!-- 폼 태그 끝-->
 
@@ -233,7 +225,13 @@
             	
 	        </div>
 	        <!-- 메시지 끝 -->
-
+	        
+	        <!-- 추가한 리워드 수 표시 -->
+	        <div class="alert alert-success" role="alert" id="numRewardsAdded">
+				<a><i class="fas fa-exclamation-circle"></i>&nbsp;추가된 리워드 수 : 0</a>
+			</div>
+	        
+	        
       </div>
       <!-- 관리자 피드백 끝 -->
 
@@ -244,53 +242,98 @@
     </main>
     <!-- main -->
 	
-	<!-- 관리자 피드백 알림 실시간 출력 -->
 	<script type="text/javascript">
-	function getNotifications() {
-		$.ajax({
-			url: '<c:url value="getNotificationByAjax"/>',
-			method: 'get',
-			success: function(response) {
-				
-			var notifications = response; // 알림 데이터 배열
-				  
-		    // 알림 데이터를 화면에 출력하는 코드
-		    var notificationContainer = $('#notificationContainer');
-		    notificationContainer.empty(); // 기존 알림 내용 비우기
-			  
-		    $.each(notifications.slice(0, 10), function(index, notification) {
-		    	var notificationContent = notification.notification_content;
-		        var alertDiv = $('<div class="alert alert-info" role="alert"></div>');
-		        var icon = $('<i class="fas fa-exclamation-circle"></i>');
-		        var content = $('<span>' + notificationContent + '</span>');
-		      	
-		        // 알림 읽음 처리를 하기 위한 함수 호출
-		        content.click(function() {
-        	  		markNotificationAsRead(notification.notification_idx);
-	        	});
-		        
-		   		alertDiv.append(icon);
-			    alertDiv.append(content);
-    		    notificationContainer.append(alertDiv);
-		   });
-		},
-		error: function(xhr, status, error) {
-		  console.log('Error:', error);
-		    }
-		  });
-	}
+    	
+    	// 리워드 추가하기
+        var rewardList = []; // 리워드 데이터를 저장할 배열
+        var project_idx = 1; // 나중에 모델로 받아와야 함!
+
+	    function addRewardToList() {
+	        // rewardList 배열에 수집한 리워드 데이터를 추가
+	        var reward_price = $("#reward_price").val();
+	        var reward_category = $("#reward_category").val();
+	        var reward_name = $("#reward_name").val();
+	        var reward_quantity = $("#reward_quantity").val();
+	        var reward_option = $("#reward_option").val();
+	        var reward_detail = $("#reward_detail").val();
+	        var delivery_status = $("input[name='delivery_status']:checked").val();
+	        var delivery_price = $("#delivery_price").val();
+	        var delivery_date = $("#delivery_date").val();
+	        var reward_info = $("#reward_info").val();
 	
-	// ready
-	$(()=>{
-		// 페이지 로드 후 초기 알림 조회
-		getNotifications();
-		
-		// 일정 시간마다 알림 갱신을 위해 타이머 설정
-// 		setInterval(getNotifications, 5000); // 5초마다 알림 조회
-		
-	})
+	        rewardList.push({
+	        	project_idx: project_idx,
+	            reward_price: reward_price,
+	            reward_category: reward_category,
+	            reward_name: reward_name,
+	            reward_quantity: reward_quantity,
+	            reward_option: reward_option,
+	            reward_detail: reward_detail,
+	            delivery_status: delivery_status,
+	            delivery_price: delivery_price,
+	            delivery_date: delivery_date,
+	            reward_info: reward_info
+	        });
+
+	        // 추가한 리워드 수를 표시 (옵션)
+	        var numRewards = rewardList.length;
+	        document.getElementById("numRewardsAdded").innerText = "추가된 리워드 수: " + numRewards;
+	        
+	        // 입력된 텍스트 지우기
+	        $("#reward_price").val("");
+	        $("#reward_category").val("");
+	        $("#reward_name").val("");
+	        $("#reward_quantity").val("");
+	        $("#reward_option").val("");
+	        $("#reward_detail").val("");
+	        $("input[name='delivery_status']").prop("checked", false);
+	        $("#delivery_price").val("");
+	        $("#yearMonth").val("");
+	        $("#day").val("");
+	        $("#delivery_date").val("");
+	        $("#reward_info").val(`제품소재 :
+
+색상 :
+
+크기 :
+
+주의사항 :
+
+품질보증기준 :`);
+	        
+	        alert("리워드가 추가되었습니다." +
+	        "\n계속해서 추가하시려면 추가하기 버튼을 클릭해주세요");
+	        
+	    }
+
+        function saveReward() {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "<c:url value='saveReward'/>",
+                data: JSON.stringify(rewardList),
+                dataType: "text",
+                success: function (response) {
+                    alert("성공적으로 저장되었습니다!");
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    alert("리워드 데이터 저장에 실패했습니다.");
+                }
+            });
+        }
+    	
+		// 선택 상자의 값을 변경할 때마다 히든 필드 업데이트
+	    document.getElementById("yearMonth").addEventListener("change", updateDeliveryDate);
+	    document.getElementById("day").addEventListener("change", updateDeliveryDate);
+
+	    function updateDeliveryDate() {
+	        var yearMonth = document.getElementById("yearMonth").value;
+	        var day = document.getElementById("day").value;
+	        var delivery_date = yearMonth + day;
+	        document.getElementById("delivery_date").value = delivery_date;
+	    }
 	</script>
-	
 		
 	<!-- bootstrap -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
