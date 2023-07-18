@@ -4,176 +4,176 @@ header,
 aside,
 section,
 footer {
-  margin: 3px;
-  text-align: center;
-  font-size:30px;
+	margin: 3px;
+	text-align: center;
+	font-size:30px;
 }
 
 header,
 footer {
-  background-color: black;
-  color: white;
+	background-color: black;
+	color: white;
 }
 
 .containerCSS {
-  display: flex;
-  margin: 0 auto;
-  max-width: 1360px;
+	display: flex;
+	margin: 0 auto;
+	max-width: 1360px;
 }
 
 #aisdeLeft {
-  flex-grow: 0;
-  width: 200px;
+	flex-grow: 0;
+	width: 200px;
 }
 
 #section {
-  flex-grow: 1;
+	flex-grow: 1;
 }
 
 #aisdeRight {
-  flex-grow: 0;
-  width: 320px;
+	flex-grow: 0;
+	width: 320px;
 }
 
 #article {
-  flex-grow: 1;
-  max-height: 2000px;
+	flex-grow: 1;
+	max-height: 2000px;
 }
 
 /* ==================== 왼쪽 네비게이션바 ==================== */
 #asideLeft {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-right: 1px solid #ddd;
+	background-color: #f8f9fa;
+	padding: 20px;
+	border-right: 1px solid #ddd;
 }
 
 #asideLeftHeader {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 20px;
 }
 
 #navMenu {
-  list-style: none;
-  padding: 0;
+	list-style: none;
+	padding: 0;
 }
 
 #navMenu li {
-  margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 #navMenu li a {
-  color: #333;
-  font-size: 16px;
-  text-decoration: none;
+	color: #333;
+	font-size: 16px;
+	text-decoration: none;
 }
 
 #navMenu li a:hover {
-  color: #000;
-  font-weight: bold;
+	color: #000;
+	font-weight: bold;
 }
 
 /* XXX님의 프로젝트 */
 #projectManagement {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  margin-top:60px;
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	margin-top:60px;
 }
 
 /* 리워드 설계 */
 .reward-area {
-  text-align: left;
-  margin-top: 50px;
-  margin-left: 50px;
-  margin-right: 50px;
+	text-align: left;
+	margin-top: 50px;
+	margin-left: 50px;
+	margin-right: 50px;
 }
 
 .reward-title {
-  font-size: 35px;
-  font-weight: bold;
-  margin-top: 10px;
-  margin-bottom: 5px;
+	font-size: 35px;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 5px;
 }
 
 .reward-content {
-  font-size: 20px;
+	font-size: 20px;
 }
 
 /* 폼 컨트롤 */
 .form-content {
-  font-size: 18px;
-  margin-top: 30px;
+	font-size: 18px;
+	margin-top: 30px;
 }
 
 .reward-info {
-  text-align: left;
+	text-align: left;
 }
 
 /* 관리자 피드백 전체 */
 .admin-feedback {
-  color: #333;
-  font-size: 16px;
-  text-decoration: none;
-  position: relative; /* 관리자 피드백 스크롤 내릴 때 */
+	color: #333;
+	font-size: 16px;
+	text-decoration: none;
+	position: relative; /* 관리자 피드백 스크롤 내릴 때 */
 }
 
 /* 관리자 피드백 스크롤 내릴 때 */
 .admin-feedback.sticky {
-  position: sticky;
-  top: 50px; /* 필요한 위치로 조정 */
+	position: sticky;
+	top: 50px; /* 필요한 위치로 조정 */
 }
 
 /* 관리자 피드백 */
 .admin-title{
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  margin-top:60px;
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	margin-top:60px;
 }
 
 .admin-content {
-  font-size: 15px;
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+	font-size: 15px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
 }
 
 /* 관리자 피드백 메시지 */
 .alert {
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid transparent;
-  border-radius: 4px;
+	padding: 10px;
+	margin-bottom: 10px;
+	border: 1px solid transparent;
+	border-radius: 4px;
 }
 
 .alert-info {
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-  color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+	color: #31708f;
 }
 
 /* ==================== 차트 ==================== */
 .chart-title {
-  font-size: 20px;
-  margin-top: 50px;
-  color: black;
-  text-transform: uppercase;
-  text-align: left;
-  border-radius: 5px;
+	font-size: 20px;
+	margin-top: 50px;
+	color: black;
+	text-transform: uppercase;
+	text-align: left;
+	border-radius: 5px;
 }
 
 .chart-table-title {
-  font-size: 15px;
-  text-align: center;
+  	font-size: 15px;
+  	text-align: center;
 }
 
 th, td {
-  width: 10%; /* 각 셀의 너비를 20%로 설정 */
+  	width: 10%; /* 각 셀의 너비를 20%로 설정 */
 }
 
 .chart-table-content {
-  font-size: 40px;
+  	font-size: 40px;
 }
 
 .chart-date {
@@ -181,7 +181,7 @@ th, td {
 }
 
 .chatgpt-content {
-  font-size: 18px;
+	font-size: 18px;
 }
 
 /* ==================== datepicker ==================== */
@@ -298,24 +298,24 @@ th, td {
  
 a.star-rating,
 a.supporters {
-  display: inline-flex;
-  align-items: center;
-  font-size: 13px;
-  color: black; /* 글자 색상을 검정색으로 설정 */
-  text-decoration: none; /* 하이퍼링크 텍스트의 밑줄 제거 */
+	display: inline-flex;
+	align-items: center;
+	font-size: 13px;
+	color: black; /* 글자 색상을 검정색으로 설정 */
+	text-decoration: none; /* 하이퍼링크 텍스트의 밑줄 제거 */
 }
 
 a.star-rating svg,
 a.supporters svg {
-  margin-right: 5px; /* 아이콘과 텍스트 사이 간격 설정 */
+	margin-right: 5px; /* 아이콘과 텍스트 사이 간격 설정 */
 }
 
 /* 소제목 */
 .subheading {
-  font-size: 23px;
-  font-weight: bold;
-  margin-top: 30px;
-  margin-bottom: 10px;
+	font-size: 23px;
+	font-weight: bold;
+	margin-top: 30px;
+	margin-bottom: 10px;
 }
 
 
@@ -356,6 +356,4 @@ a.supporters svg {
     max-width: 350px;
   }
 }
-/* ==================== 미디어쿼리 ==================== */
-
 

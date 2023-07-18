@@ -49,6 +49,11 @@ public class ProjectController {
 		System.out.println("saveReward");
 		System.out.println(rewardList);
 		
+		if(rewardList.isEmpty()) {
+			System.out.println("isEmpty()");
+			return "false";
+		}
+		
 		int insertCount = 0;
 		for(RewardVO reward : rewardList) {
 			boolean isSuccess = projectService.registReward(reward);

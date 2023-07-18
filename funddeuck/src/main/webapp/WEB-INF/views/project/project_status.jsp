@@ -11,7 +11,6 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<!-- jQuery -->
 	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
-	
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
@@ -19,7 +18,7 @@
 	<!-- chart.js -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	
-    <!-- 관리자 피드백 구역 스크롤 내릴 때 고정시키기-->
+    <!-- 관리자 피드백 스크롤 고정 -->
 	<script>
 	// datepicker
 	$(() => {
@@ -31,16 +30,15 @@
 	});
 	
 	function scrollHandler() {
-	  // 관리자 피드백 요소를 가져옴
-	  var adminFeedbackElement = document.querySelector(".admin-feedback");
-	  // 관리자 피드백 요소의 위치(offsetTop)를 가져옴
-	  var adminFeedbackOffsetTop = adminFeedbackElement.offsetTop;
-	
-	  // 스크롤 위치가 관리자 피드백 요소의 위치 이상일 때
-	  if (window.pageYOffset >= adminFeedbackOffsetTop) {
+	    // 관리자 피드백 요소를 가져옴
+	    var adminFeedbackElement = document.querySelector(".admin-feedback");
+	    // 관리자 피드백 요소의 위치(offsetTop)를 가져옴
+	    var adminFeedbackOffsetTop = adminFeedbackElement.offsetTop;
+	    // 스크롤 위치가 관리자 피드백 요소의 위치와 같을 때
+	    if (window.pageYOffset = adminFeedbackOffsetTop) {
 	    // sticky 클래스를 추가하여 고정
 	    adminFeedbackElement.classList.add("sticky");
-	  } else {
+	  	} else {
 	    // sticky 클래스를 제거하여 고정 해제
 	    adminFeedbackElement.classList.remove("sticky");
 	  }
@@ -48,14 +46,14 @@
 	
 	// 스크롤 이벤트 핸들러 등록
 	window.addEventListener("scroll", function() {
-	  // 스크롤 타임아웃이 없을 경우에만 실행
-	  if (!window.scrollTimeout) {
-	    // 스크롤 이벤트를 지연시킴
-	    window.scrollTimeout = setTimeout(function() {
-	      window.scrollTimeout = null;
-	      scrollHandler();
-	    }, 250); // 250ms 지연
-	  }
+		// 스크롤 타임아웃이 없을 경우에만 실행
+		if (!window.scrollTimeout) {
+			// 스크롤 이벤트를 지연시킴
+			window.scrollTimeout = setTimeout(function() {
+			window.scrollTimeout = null;
+		    	scrollHandler();
+		    }, 250); // 250ms 지연
+	  	}
 	});
 	</script>
 	
@@ -148,7 +146,6 @@
 	        data: BoardListCount
 	    });
 	});
-
 	</script>
 	
 	<script type="text/javascript">
@@ -246,12 +243,10 @@
 
     }); // ready
 	</script>
-
-
 </head>
 <body>
 	<!-- include -->
- 	<jsp:include page="../common/project_top.jsp"></jsp:include>
+ 	<jsp:include page="../common/project_top.jsp"/>
 	
 	<!-- main -->
 	<main id="main">
@@ -274,15 +269,10 @@
 	    <section id="section">
 	    	<article id="article">
 	
-	        <!-- 리워드 설계 시작 -->
+	        <!--  -->
 	        <div class="reward-area">
         	    <p class="reward-title">프로젝트 현황</p>
-	            <p class="reward-content">결제현황, 서포터 관리까지 실시간으로 확인하세요!</p>
-	            
-	            <!-- ======================== 펀딩 결제 현황 그래프 ======================== -->
-	            <p class="chart-title">
-	            	펀딩 결제 현황
-	            </p>
+	            <p class="chart-title subheading">펀딩 결제 현황</p>
 	            <table class="table table-borderless chart-table-title">
 	              <tr>
 	                <td>
@@ -299,15 +289,14 @@
 	                </td>
 	              </tr>
 	            </table>
-	            <canvas id="myChart"></canvas>
-	            <!-- ======================== 펀딩 결제 현황 그래프 ======================== -->
+	            <div>
+		            <!-- 펀딩 결제 현황 그래프 -->
+		            <canvas id="myChart"></canvas>
+	            </div>
 	
-	            <!-- ======================== 게시판 게시물 수 그래프 ======================== -->
-	            <p class="chart-title">
-	            	게시판 게시물 수
-	            </p>
+	            <p class="chart-title subheading">누적 게시물 수</p>
 	            
-            	<!-- 날짜 선택을 위한 input 요소 -->
+            	<!-- 날짜 선택 -->
 	            <div class="d-flex flex-row justify-content-end">
 					<input class="datepicker" id="startDate" placeholder="시작 날짜">
 					<input class="datepicker mx-2" id="endDate" placeholder="끝 날짜">
@@ -338,22 +327,20 @@
 	                </td>
 	              </tr>
 	            </table>
+	            <!-- 게시판 게시물 수 그래프 -->
 	            <div id="chartContainer">
 					<canvas id="myChart2"></canvas>
 				</div>
-	            <!-- ======================== 게시판 게시물 수 그래프 ======================== -->
 	
 	            <!-- ChatGPT -->
 	            <div>
-	              <p class="chart-title">다음 주 예상실적 알아보기!</p>
+	              <p class="chart-title subheading">다음 주 예상실적 알아보기!</p>
 	              <p class="chatgpt-content">현재 판매 실적을 기반으로 다음 주 예상실적을 분석받을 수 있습니다.</p>
-	              <label class="form-content" for="nextWeekPerformance">다음 주 예상실적</label>
 	              <textarea class="form-control reward-info" name="nextWeekPerformance" id="nextWeekPerformance" placeholder="ChatGPT에게 분석받기 버튼을 클릭하세요!" style="height: 350px; resize: none;"></textarea>
 	              <div class="d-flex justify-content-center my-4">
-	                <input type="button" value="ChatGPT에게 분석받기" class="btn btn-outline-secondary">
+	              	<input type="button" value="ChatGPT에게 분석받기" class="btn btn-outline-secondary">
 	              </div>
 	            </div>
-	            <!-- ChatGPT -->
 	
 	        </div>
 	
@@ -362,8 +349,6 @@
 	      <!-- 중앙 섹션 끝 -->
 	
 	      <!-- 오른쪽 네비게이션 -->
-	      <!-- 관리자 피드백 알림 메시지 출력 -->
-	      <!-- 피드백 받은 메시지 내용을 보면서 수정하면 편할듯? -->
 	      <aside id="aisdeRight">
 	        
 	        <!-- 서포터 알림 -->
@@ -398,9 +383,8 @@
 	
 	    </div>
 	  </main>
-	  <!-- main -->
 	
-	  <!-- 차트.js -->
+	  <!-- 차트 -->
 	  <script>
 	    // 펀딩 결제 현황 그래프
 	    var ctx = document.getElementById('myChart').getContext('2d');
@@ -442,9 +426,6 @@
 	    });
 	
 	</script>
-	
-	<!-- -->
-<!-- 	<footer id="footer">#footer</footer> -->
 	
     <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

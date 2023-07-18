@@ -235,33 +235,6 @@
     	// 리워드 추가하기
         var rewardList = []; // 리워드 데이터를 저장할 배열
         var project_idx = 1; // 나중에 모델로 받아와야 함!
-        
-    	// 입력 값이 모두 채워져있는지 검사
-        function isAllFieldsFilled() {
-            var reward_price = $("#reward_price").val();
-            var reward_category = $("#reward_category").val();
-            var reward_name = $("#reward_name").val();
-            var reward_quantity = $("#reward_quantity").val();
-            var reward_option = $("#reward_option").val();
-            var reward_detail = $("#reward_detail").val();
-            var delivery_status = $("input[name='delivery_status']:checked").val();
-            var delivery_price = $("#delivery_price").val();
-            var delivery_date = $("#delivery_date").val();
-            var reward_info = $("#reward_info").val();
-
-            return (
-                reward_price &&
-                reward_category &&
-                reward_name &&
-                reward_quantity &&
-                reward_option &&
-                reward_detail &&
-                delivery_status &&
-                delivery_price &&
-                delivery_date &&
-                reward_info
-            );
-        }
 
 	    function addRewardToList() {
 	        // rewardList 배열에 수집한 리워드 데이터를 추가
@@ -276,8 +249,19 @@
 	        var delivery_date = $("#delivery_date").val();
 	        var reward_info = $("#reward_info").val();
 	        
-	     	// 입력 값이 모두 채워져있는지 검사
-	        if (!isAllFieldsFilled()) {
+	     	// 여기에서 입력 값이 비어있는지 검사
+	        if (
+	            !reward_price ||
+	            !reward_category ||
+	            !reward_name ||
+	            !reward_quantity ||
+	            !reward_option ||
+	            !reward_detail ||
+	            !delivery_status ||
+	            !delivery_price ||
+	            !delivery_date ||
+	            !reward_info
+	        ) {
 	            alert("모든 항목을 입력해주세요.");
 	            return;
 	        }
@@ -335,13 +319,7 @@
                 data: JSON.stringify(rewardList),
                 dataType: "text",
                 success: function (response) {
-                	
-                	if(response == 'true') {
-	                    alert("성공적으로 저장되었습니다!");
-                	} else {
-                		alert("모든 항목을 입력해주세요.");
-                	}
-                	
+                    alert("성공적으로 저장되었습니다!");
                 },
                 error: function (xhr, status, error) {
                     console.error(error);
