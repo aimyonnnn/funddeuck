@@ -56,7 +56,10 @@
             <p class="maker-content">메이커로 출력될 정보를 입력해 주세요.</p>
             
             <!-- 폼 태그 -->
-            <form action="" class="maker-content" method="post" enctype="multipart/form-data">
+            <form action="projectMakerPro" class="maker-content" method="post" enctype="multipart/form-data">
+              
+              <!-- 히든으로 처리할 예정-->
+              <input type="text" name="project_idx" value="1">
               
               <!-- 메이커 유형 -->
               <div>
