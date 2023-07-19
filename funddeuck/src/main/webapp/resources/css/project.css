@@ -106,23 +106,23 @@ footer {
 	margin-top:60px;
 }
 
-/* 리워드 설계 */
-.reward-area {
+/* 프로젝트 관리 공통 영역 */
+.projectArea {
 	text-align: left;
 	margin-top: 50px;
 	margin-left: 50px;
 	margin-right: 50px;
 }
 
-.reward-title {
+.projectTitle {
 	font-size: 35px;
 	font-weight: bold;
 	margin-top: 10px;
 	margin-bottom: 5px;
 }
 
-.reward-content {
-	font-size: 20px;
+.projectContent {
+	font-size: 16px;
 }
 
 /* 폼 컨트롤 */
@@ -335,26 +335,7 @@ a.supporters svg {
 	margin-right: 5px; /* 아이콘과 텍스트 사이 간격 설정 */
 }
 
-/* 추가된 것 */
 /* 프로젝트 관리 */
-.maker-area {
-	text-align: left;
-	margin-top: 50px;
-	margin-left: 50px;
-	margin-right: 50px;
-}
-
-.maker-title {
-	font-size: 35px;
-	font-weight: bold;
-	margin-top: 10px;
-	margin-bottom: 5px;
-}
-
-.maker-content {
-	font-size: 16px;
-}
-
 /* 소제목 */
 .subheading {
 	font-size: 23px;
@@ -390,31 +371,85 @@ a.supporters svg {
 
 /* 기본 요금제 카드 */
 .card-container {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
+/* 카드 너비 */
 .card {
-	width: 100%;
+  width: 100%;
 }
 
+/* 카드 내용 */
 .card-detail {
-	font-size: 15px;
+  font-size: 15px;
 }
 
+/* 약관 */
+.agree_box {
+  border: 1px solid rgba(0, 0, 0, 0.284);
+  border-radius: 5px;
+}
 
+.agree_article {
+  margin-top: 15px;
+  margin-left: -15px;
+  font-size: 13px;
+}
 
+.agree_article li {
+  list-style-type: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 
+.depth2 {
+  font-weight: lighter;
+  border: 1px solid rgba(0, 0, 0, 0.284);
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
 
+/* 발송·환불 관리 */
+/* 반응형 테이블 */
+.table-responsive {
+    display: block;
+    width: 100%;
+    font-size: 12px;
+    overflow-x: auto;
+}
 
+/* 테이블 안 th, td 영역 */
+.tableTag {
+  font-size: 12px;
+  font-weight: bold;
+  display: block;
+}
 
+/* 목록, 리스트 테이블 안 span 영역 */
+.customSpan {
+  font-size: 15px;
+  font-weight: bold;
+}
 
+/* 테이블 부연 설명 */
+.tableDescription {
+  font-size: 11px;
+}
 
+/* 테이블 안 버튼 */
+#tableButton {
+  width: 50px;
+  height: 30px;
+  font-size: 12px;
+}
 
-
-
-
-
+/* 테이블 안 회원 상세정보 링크 */
+.memberLink {
+  font-size: 10px;
+  display: block;
+}
 
 /* ==================== 미디어쿼리 ==================== */
 /* tablet */

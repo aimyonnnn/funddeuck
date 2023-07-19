@@ -23,7 +23,10 @@
       
 			<!-- 왼쪽 네비게이션 시작 -->
 			<aside id="aisdeLeft">
-			    <div id="projectManagement">${sessionScope.sId}님의 프로젝트</div>
+			    <div id="projectManagement">
+					<img src="${pageContext.request.contextPath}/resources/images/managementImage.jpg" width="200px" height="150px">
+			    	${sessionScope.sId}님의 프로젝트
+			    </div>
 			    <ul id="navMenu">
 			        <li>
 			            <a href="#" class="toggleTab">
@@ -32,26 +35,29 @@
 			            </a>
 			            <ul class="subMenu">
 			                <li><a href="projectMaker">메이커 정보</a></li>
-			                <li><a href="#">프로젝트 등록</a></li>
-			                <li><a href="projectReward" id="active-tab">리워드 관리</a></li>
+			                <li><a href="projectManagement">프로젝트 등록</a></li>
+			                <li><a href="projectReward" id="active-tab">리워드 설계</a></li>
 			            </ul>
 			        </li>
 			        <li><a href="projectStatus">프로젝트 현황</a></li>
-			        <li><a href="#">발송/환불 관리</a></li>
-			        <li><a href="#">수수료/정산 관리</a></li>
+			        <li><a href="projectShipping">발송·환불 관리</a></li>
+			        <li><a href="projectSettlement">수수료·정산 관리</a></li>
 			    </ul>
 			</aside>
 
 		    <!-- 중앙 섹션 시작 -->
 		    <section id="section">
 		   		<article id="article">
+		   		<div class="mt-5">
+	      			<img src="${pageContext.request.contextPath}/resources/images/projectRewardImage.png" class="img-fluid me-auto">
+	      		</div>
 		
-		        <div class="reward-area">
-		       		<p class="reward-title">리워드 설계</p>
-		          	<p class="reward-content">서포터들에게 제공할 리워드를 입력해 주세요.</p>
+		        <div class="projectArea">
+		       		<p class="projectTitle">리워드 설계</p>
+		          	<p class="projectContent">서포터들에게 제공할 리워드를 입력해 주세요.</p>
 		            
 		            <!-- 폼 태그 시작 -->
-		            <form action="" class="reward-content" method="post">
+		            <form action="" class="projectContent" method="post">
 			            <!-- 금액 -->
 			            <div>
 			            	<label class="form-content subheading" for="reward_price">금액</label>

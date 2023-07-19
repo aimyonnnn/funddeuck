@@ -26,7 +26,10 @@
       
       	<!-- 왼쪽 네비게이션 시작 -->
 		<aside id="aisdeLeft">
-		    <div id="projectManagement">${sessionScope.sId}님의 프로젝트</div>
+		    <div id="projectManagement">
+				<img src="${pageContext.request.contextPath}/resources/images/managementImage.jpg" width="200px" height="150px">
+		    	${sessionScope.sId}님의 프로젝트
+		    </div>
 		    <ul id="navMenu">
 		        <li>
 		            <a href="#" class="toggleTab">
@@ -35,27 +38,30 @@
 		            </a>
 		            <ul class="subMenu">
 		                <li><a href="projectMaker" id="active-tab">메이커 정보</a></li>
-		                <li><a href="#">프로젝트 등록</a></li>
-		                <li><a href="projectReward">리워드 관리</a></li>
+		                <li><a href="projectManagement">프로젝트 등록</a></li>
+		                <li><a href="projectReward">리워드 설계</a></li>
 		            </ul>
 		        </li>
 		        <li><a href="projectStatus">프로젝트 현황</a></li>
-		        <li><a href="#">발송/환불 관리</a></li>
-		        <li><a href="#">수수료/정산 관리</a></li>
+		        <li><a href="projectShipping">발송·환불 관리</a></li>
+		        <li><a href="projectSettlement">수수료·정산 관리</a></li>
 		    </ul>
 		</aside>
 
       <!-- 중앙 섹션 시작 -->
       <section id="section">
         <article id="article">
-
+			<div class="mt-5">
+	   			<img src="${pageContext.request.contextPath}/resources/images/projectMakerImage.png" class="img-fluid me-auto">
+	   		</div>
+	   		
           <!-- 메이커 정보 등록 시작 -->
-          <div class="maker-area">
-            <p class="maker-title">메이커 정보</p>
-            <p class="maker-content">메이커로 출력될 정보를 입력해 주세요.</p>
+          <div class="projectArea">
+            <p class="projectTitle">메이커 정보</p>
+            <p class="projectContent">메이커로 출력될 정보를 입력해 주세요.</p>
             
             <!-- 폼 태그 -->
-            <form action="projectMakerPro" class="maker-content" method="post" enctype="multipart/form-data">
+            <form action="projectMakerPro" class="projectContent" method="post" enctype="multipart/form-data">
               
               <!-- 히든으로 처리할 예정-->
               <input type="text" name="project_idx" value="1">

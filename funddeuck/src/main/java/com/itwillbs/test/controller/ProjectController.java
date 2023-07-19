@@ -179,12 +179,23 @@ public class ProjectController {
 		
 	}
 	
+	// 프로젝트 등록 페이지
+	@GetMapping("projectManagement")
+	public String projectManagement() {
+		return "project/project_management";
+	}
 	
+	// 발송·환불 관리
+	@GetMapping("projectShipping")
+	public String projectShipping() {
+		return "project/project_shipping";
+	}
 	
-	
-	
-	
-	
+	// 수수료·정산 관리
+	@GetMapping("projectSettlement")
+	public String projectSettlement() {
+		return "project/project_settlement";
+	}
 	
 	
 	

@@ -224,33 +224,36 @@
     	<div class="containerCSS">
 	      
 	    <!-- 왼쪽 네비게이션 시작 -->
-		<aside id="aisdeLeft">
-		    <div id="projectManagement">${sessionScope.sId}님의 프로젝트</div>
-		    <ul id="navMenu">
-		        <li>
-		            <a href="#" class="toggleTab">
-		                &nbsp;&nbsp;&nbsp;프로젝트 관리
-		                <i class="fas fa-caret-down"></i>
-		            </a>
-		            <ul class="subMenu">
-		                <li><a href="projectMaker">메이커 정보</a></li>
-		                <li><a href="#">프로젝트 등록</a></li>
-		                <li><a href="projectReward">리워드 관리</a></li>
-		            </ul>
-		        </li>
-		        <li><a href="projectStatus" id="active-tab">프로젝트 현황</a></li>
-		        <li><a href="#">발송/환불 관리</a></li>
-		        <li><a href="#">수수료/정산 관리</a></li>
-		    </ul>
-		</aside>
+			<aside id="aisdeLeft">
+			    <div id="projectManagement">
+					<img src="${pageContext.request.contextPath}/resources/images/managementImage.jpg" width="200px" height="150px">
+			    	${sessionScope.sId}님의 프로젝트
+			    </div>
+			    <ul id="navMenu">
+			        <li>
+			            <a href="#" class="toggleTab">
+			                &nbsp;&nbsp;&nbsp;프로젝트 관리
+			                <i class="fas fa-caret-down"></i>
+			            </a>
+			            <ul class="subMenu">
+			                <li><a href="projectMaker">메이커 정보</a></li>
+			                <li><a href="projectManagement" id="active-tab">프로젝트 등록</a></li>
+			                <li><a href="projectReward">리워드 설계</a></li>
+			            </ul>
+			        </li>
+			        <li><a href="projectStatus" id="active-tab">프로젝트 현황</a></li>
+			        <li><a href="projectShipping">발송·환불 관리</a></li>
+			        <li><a href="projectSettlement">수수료·정산 관리</a></li>
+			    </ul>
+			</aside>
 	
 	    <!-- 중앙 섹션 시작 -->
 	    <section id="section">
 	    	<article id="article">
 	
 	        <!--  -->
-	        <div class="reward-area">
-        	    <p class="reward-title">프로젝트 현황</p>
+	        <div class="projectArea">
+        	    <p class="projectTitle">프로젝트 현황</p>
 	            <p class="chart-title subheading">펀딩 결제 현황</p>
 	            <table class="table table-borderless chart-table-title">
 	              <tr>
