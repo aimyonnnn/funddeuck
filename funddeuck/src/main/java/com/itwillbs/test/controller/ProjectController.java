@@ -61,13 +61,10 @@ public class ProjectController {
     @ResponseBody
     public String saveReward(@RequestBody List<RewardVO> rewardList) {
 		System.out.println("saveReward");
-		System.out.println(rewardList);
-		
 		if(rewardList.isEmpty()) {
 			System.out.println("isEmpty()");
 			return "false";
 		}
-		
 		int insertCount = 0;
 		for(RewardVO reward : rewardList) {
 			boolean isSuccess = projectService.registReward(reward);
@@ -86,15 +83,13 @@ public class ProjectController {
 	// 메이커 등록 비즈니스 로직처리
 	@PostMapping("projectMakerPro")
 	public String projectMaker(MakerVO maker, Model model, HttpSession session, HttpServletRequest request) {
-		
 		System.out.println(maker);
-		
 		String uploadDir = "/resources/upload"; 
 		String saveDir = session.getServletContext().getRealPath(uploadDir);
-		String subDir = ""; // 서브디렉토리(날짜 구분)
+		String subDir = "";
 		
 		try {
-			Date date = new Date(); // Mon Jun 19 11:26:52 KST 2023
+			Date date = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 			subDir = sdf.format(date);
 			saveDir += "/" + subDir;
@@ -127,19 +122,15 @@ public class ProjectController {
 		if(!mFile1.getOriginalFilename().equals("")) {
 			maker.setMaker_file1(subDir + "/" + fileName1);
 		}
-		
 		if(!mFile2.getOriginalFilename().equals("")) {
 			maker.setMaker_file2(subDir + "/" + fileName2);
 		}
-		
 		if(!mFile3.getOriginalFilename().equals("")) {
 			maker.setMaker_file3(subDir + "/" + fileName3);
 		}
-		
 		if(!mFile4.getOriginalFilename().equals("")) {
 			maker.setMaker_file4(subDir + "/" + fileName4);
 		}
-		
 		if(!mFile5.getOriginalFilename().equals("")) {
 			maker.setMaker_file5(subDir + "/" + fileName5);
 		}
@@ -151,12 +142,8 @@ public class ProjectController {
 		System.out.println("실제 업로드 파일명5 : " + maker.getMaker_file5());
 		
 		// -----------------------------------------------------------------------------------
-		// projectService - registMaker() 메서드를 호출
 		int insertCount = projectService.registMaker(maker);
 		
-		// 게시물 등록 작업 요청 결과 판별
-		// => 성공 시 업로드 파일을 실제 디렉토리에 이동시킨 후 NoticeList 서블릿 리다이렉트
-		// => 실패 시 "글 쓰기 실패!" 메세지 출력 후 이전페이지 돌아가기 처리
 		if(insertCount > 0) { // 성공
 			try {
 				if(!mFile1.getOriginalFilename().equals("")) {
@@ -183,7 +170,6 @@ public class ProjectController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
 			// 리다이렉트
 			return "redirect:/projectMaker";
 		} else { // 실패

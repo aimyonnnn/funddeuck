@@ -30,34 +30,24 @@ public class NotificationController {
             @RequestParam("content") String content,
             @RequestParam("type") String type,
             @RequestParam("url") String url) {
-		System.out.println(
-				"Target: " + target + ", Content: " + content + ", Type: " + type + ", URL: " + url);
 	    // 피드백을 받는 회원 아이디가 존재하는지 판별해야함
 	    int insertCount = service.registNotification(target, content);
-	    System.out.println(insertCount);
-	    if(insertCount > 0) {
-	    	System.out.println("메세지가 발송되었습니다!");
-	    	return "true";
-	    }
-	    return "false";
+	    if(insertCount > 0) { return "true"; } return "false";
 	}
 	
-	// 카운트 조회
+	// 갯수 조회
 	@GetMapping("getNotificationCount")
 	@ResponseBody
 	public String getNotificationCount(@RequestParam String member_id) {
 		System.out.println(member_id);
 		int notificationCount = service.getNotificationCount(member_id);
-		System.out.println(notificationCount);
-		if(notificationCount > 0) return notificationCount+"";
-		return "false";
+		if(notificationCount > 0) { return notificationCount+""; } return "false";
 	}
 	
-	// 관리자 피드백 리스트 조회
+	// 리스트 조회
 	@GetMapping("confirmNotification")
 	public String confirmNotification(HttpSession session, Model model) {
 		String sId = (String) session.getAttribute("sId");
-		// 세션아이디로 읽지않은 알림 조회하기
 		List<NotificationVO> nList = service.getNotificationList(sId);
 		model.addAttribute("nList", nList);
 		return "notification/notification_list";
@@ -73,15 +63,26 @@ public class NotificationController {
 	    return ResponseEntity.ok(nList);
 	}
 	
-	// 관리자 피드백 읽음 처리
+	// 읽음 처리
 	@GetMapping("markNotificationAsRead")
 	@ResponseBody
 	public String markNotificationAsRead(@RequestParam int notification_idx) {
-		System.out.println("알림번호 : " + notification_idx);
+//		System.out.println("markNotificationAsRead : " + notification_idx);
 		int updateCount = service.modifyNotificationStatus(notification_idx);
-		if(updateCount >0 ) return "true";
-		return "false";
+		if(updateCount > 0 ) { return "true"; } return "false";
 	}
-		
+	
+	// 전체 읽음 처리
+	@GetMapping("markAllAsRead")
+	@ResponseBody
+	public ResponseEntity<String> markAllAsRead(@RequestParam String member_id) {
+//		System.out.println("markAllAsRead : " + member_id);
+		int updateCount = service.modifyAllNotificationStatus(member_id);
+		if(updateCount > 0) { return ResponseEntity.ok("true"); } return ResponseEntity.ok("false");
+	}
+	
 	
 }
+
+
+

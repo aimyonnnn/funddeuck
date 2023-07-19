@@ -11,13 +11,15 @@ import com.itwillbs.test.vo.NotificationVO;
 @Mapper
 public interface NotificationMapper {
 
-	// 알림 갯수 조회
-	int selectNotificationCount(String member_id);
-	// 알림 저장
+	// 저장
 	int insertNotification(@Param("target") String target, @Param("content") String content);
-	// 읽지않은 알림 조회
+	// 갯수 조회
+	int selectNotificationCount(String member_id);
+	// 리스트 조회
 	List<NotificationVO> selectNotificationList(String sId);
-	// 알림 확인 시 notification_read_status를 2-읽음으로 변경
+	// 읽음 처리
 	int updateNotificationStatus(int notification_idx);
+	// 전체 읽음 처리
+	int updateAllNotificationStatus(String member_id);
 	
 }

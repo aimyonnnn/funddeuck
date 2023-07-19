@@ -24,8 +24,10 @@
 	        },
 	        dataType: "text",
 	        success: function(data) {   
-	        	console.log(data);
-	            if(data.trim()) { $("#newNotificationCount").text(data); }          
+	       	 	let notificationCount = parseInt(data);
+	            if (!isNaN(notificationCount)) {
+	                $("#newNotificationCount").text(notificationCount);
+	            }
 	        },
 	        error: function() {
 // 	            alert("알림 갯수 조회 실패!");
@@ -76,7 +78,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<div class="container">
 	    <a class="navbar-brand">
-	    		<img src="${pageContext.request.contextPath}/resources/images/logo.png" width="40px" height="40px">
+	    		<img src="${pageContext.request.contextPath}/resources/images/logo.png" width="40px" height="40px" onclick="location.href='projectMaker'">
 	    </a>
 	    <div class="d-flex flex-row align-items-center">
 	    	<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#notifyModal">Admin Feedback</button>
@@ -120,7 +122,7 @@
 					success: function(data){
 						console.log(data);
 						if(data == 'true') { alert('메시지가 발송 되었습니다!'); }
-						socket.send("알림이 도착했어요," + target + "," + content + "," + url);
+						socket.send(type + "," + target + "," + content + "," + url);
 					}, error: function() {
 						alert("메시지 발송 실패!");
 					}
@@ -144,10 +146,10 @@
       <div class="modal-body">
         <form>
           <div class="mb-3">
-          	<label for="notifyId" class="form-label">받는 메이커 아이디</label>
-            <input type="text" class="form-control mb-2" id="notifyId">
-            <label for="message-text" class="form-label">피드백 내용</label>
-            <textarea class="form-control" id="message-text" cols="10" rows="5"></textarea>
+          	<label for="notifyId" class="form-label">받는 사람</label>
+            <input type="text" class="form-control mb-2" id="notifyId" placeholder="메이커 아이디를 입력해주세요">
+            <label for="message-text" class="form-label">내용</label>
+            <textarea class="form-control" id="message-text" cols="10" rows="5" placeholder="메이커에게 전달할 피드백 메시지를 작성해주세요"></textarea>
           </div>
         </form>
       </div>
