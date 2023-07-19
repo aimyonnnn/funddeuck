@@ -19,7 +19,7 @@ import lombok.Data;
 리워드 배송지 주소 (delivery_address) - 문자(500자)
 리워드 배송지 번호(delivery_phone_number) - 문자(10자)
 ---------------------------------------
-CREATE TABLE project (
+CREATE TABLE payment (
 	payment_idx INT PRIMARY KEY AUTO_INCREMENT,
 	payment_date DATE NOT NULL,
 	reward_name VARCHAR(50) NOT NULL,

@@ -6,14 +6,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>projectDiscover</title>
+<title>fundingDiscover</title>
 <!-- line-awesome icons CDN -->
 <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-<!-- projectDiscover page CSS -->
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/project_discover.css">
-<!-- projectDiscover page JS -->
-<script src="${pageContext.request.contextPath }/resources/js/project_discover.js"></script>
-<!-- header include -->
+<!-- fundingDiscover page CSS -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/funding_discover.css">
+<!-- fundingDiscover page JS -->
+<script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
+<!-- funding include -->
 <jsp:include page="../common/main_header.jsp"></jsp:include>
 </head>
 <body>

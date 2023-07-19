@@ -50,12 +50,6 @@ public class ProjectController {
 		return "project/maker_detail";
 	}
 	
-	// 프로젝트 탐색 페이지
-	@GetMapping("projectDiscover")
-	public String projectDiscoverForm() {
-		return "project/project_discover";
-	}
-	
 	// 리워드 추가하기
 	@PostMapping("saveReward")
     @ResponseBody
