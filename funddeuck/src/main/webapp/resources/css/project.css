@@ -1,5 +1,16 @@
 @charset "EUC-KR";
 /* ==================== 기본 레이아웃 ==================== */
+/* 하이퍼링크 밑줄 제거 */
+a {
+	text-decoration: none;
+	color: black;
+}
+#loadingIndicator {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
 header,
 aside,
 section,
@@ -267,12 +278,12 @@ th, td {
    	height: 15px;
    	margin-left: -50px;
    	margin-bottom: 20px;
-   	margin-left: -30px;	
+   	margin-left: -15px;	
 }
 
 /* 종 모양 아이콘 크기 설정 */
 .nav-link svg {
-	font-size: 1.7em; /* 원하는 크기로 조정하세요 */
+	font-size: 1.7em;
 	fill: white; /* 아이콘의 색상을 흰색으로 설정 */
 }
 

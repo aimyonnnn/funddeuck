@@ -17,7 +17,6 @@
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
 </head>
 <body>
-
 	<!-- include -->
  	<jsp:include page="../common/project_top.jsp"/>
 

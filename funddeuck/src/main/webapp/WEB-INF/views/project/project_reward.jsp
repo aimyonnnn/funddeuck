@@ -18,7 +18,6 @@
 	
 </head>
 <body>
-
 	<!-- include -->
  	<jsp:include page="../common/project_top.jsp"/>
  	
@@ -411,6 +410,72 @@
 			alert("임시저장 데이터가 삭제되었습니다.");
 			location.reload();
 		}
+	</script>
+	
+	<script type="text/javascript">
+	function getNotifications() {
+		$.ajax({
+			url: '<c:url value="getNotificationByAjax"/>',
+			method: 'get',
+			success: function(response) {
+				
+			var notifications = response; // 알림 데이터 배열
+				  
+		    // 알림 데이터를 화면에 출력
+		    var notificationContainer = $('#notificationContainer');
+		    notificationContainer.empty(); // 기존 알림 내용 비우기
+			  
+		    $.each(notifications.slice(0, 10), function(index, notification) {
+		    	var notificationContent = notification.notification_content;
+		        var alertDiv = $('<div class="alert alert-info" role="alert"></div>');
+		        var icon = $('<i class="fas fa-exclamation-circle"></i>');
+		        var content = $('<span>&nbsp;' + notificationContent + '</span>');
+		      	
+		        // 알림 읽음 처리를 하기 위한 함수 호출
+		        content.click(function() {
+        	  		markNotificationAsRead(notification.notification_idx);
+	        	});
+		        
+		   		alertDiv.append(icon);
+			    alertDiv.append(content);
+    		    notificationContainer.append(alertDiv);
+		   });
+		},
+		error: function(xhr, status, error) {
+		  console.log('Error:', error);
+		    }
+		  });
+	}
+	
+	$(()=>{
+		getNotifications();
+		setInterval(getNotifications, 5000);
+	})
+	
+	// 메시지 읽음 처리 하기
+	function markNotificationAsRead(notification_idx) {
+		let confirmation = confirm("메시지를 읽음 처리 하시겠습니까?");
+		if(confirmation) {
+			console.log("알림번호 : " + notification_idx);
+			$.ajax({
+				method: 'get',
+				url: '<c:url value="markNotificationAsRead"/>',
+				data: {
+					notification_idx: notification_idx
+				},
+				success: function(response){
+					if(response.trim() == 'true') {
+						// 알림 갯수 변경
+						getNotificationCount();
+						alert('읽음 처리 하였습니다!')
+					} 
+				},
+				error: function(error) {
+					console.log("읽음 처리 실패!")
+				}
+			})
+		}
+	}
 	</script>
 	
 	<!-- js -->
