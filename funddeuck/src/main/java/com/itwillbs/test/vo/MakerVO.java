@@ -40,14 +40,14 @@ public class MakerVO {
     private String maker_img;               // 메이커 사진
     private String maker_logo;              // 메이커 로고
     private String personal_id;             // 메이커 유형 - 개인신분증
-    private String corporate_biz_id;        // 메이커 유형 - 법인사업자 등록증
     private String individual_biz_id;       // 메이커 유형 - 개인사업자 등록증
+    private String corporate_biz_id;        // 메이커 유형 - 법인사업자 등록증
  // input type="file" 태그의 name 속성명(파라미터명)과 동일해야함
- 	private MultipartFile file1;
- 	private MultipartFile file2;
- 	private MultipartFile file3;
- 	private MultipartFile file4;
- 	private MultipartFile file5;
+ 	private MultipartFile file1;			// 개인신분증
+ 	private MultipartFile file2;			// 개인사업자 등록증
+ 	private MultipartFile file3;			// 법인사업자 등록증
+ 	private MultipartFile file4;			// 메이커 사진
+ 	private MultipartFile file5;			// 메이커 로고
 }
 
 

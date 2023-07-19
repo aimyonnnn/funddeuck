@@ -8,41 +8,14 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!--bootstrap -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 	<!-- jQuery -->
 	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
-    <!-- 관리자 피드백 스크롤 고정 -->
-	<script>
-	function scrollHandler() {
-	    // 관리자 피드백 요소를 가져옴
-	    var adminFeedbackElement = document.querySelector(".admin-feedback");
-	    // 관리자 피드백 요소의 위치(offsetTop)를 가져옴
-	    var adminFeedbackOffsetTop = adminFeedbackElement.offsetTop;
-	    // 스크롤 위치가 관리자 피드백 요소의 위치와 같을 때
-	    if (window.pageYOffset = adminFeedbackOffsetTop) {
-	    // sticky 클래스를 추가하여 고정
-	    adminFeedbackElement.classList.add("sticky");
-	  	} else {
-	    // sticky 클래스를 제거하여 고정 해제
-	    adminFeedbackElement.classList.remove("sticky");
-	  }
-	}
-	// 스크롤 이벤트 핸들러 등록
-	window.addEventListener("scroll", function() {
-		// 스크롤 타임아웃이 없을 경우에만 실행
-		if (!window.scrollTimeout) {
-			// 스크롤 이벤트를 지연시킴
-			window.scrollTimeout = setTimeout(function() {
-			window.scrollTimeout = null;
-		    	scrollHandler();
-		    }, 250); // 250ms 지연
-	  	}
-	});
-	</script>
+	
 </head>
 <body>
 
@@ -63,7 +36,7 @@
 	                <i class="fas fa-caret-down"></i>
 	            </a>
 	            <ul class="subMenu">
-	                <li><a href="makerInfo">메이커 정보</a></li>
+	                <li><a href="projectMaker">메이커 정보</a></li>
 	                <li><a href="#">프로젝트 등록</a></li>
 	                <li><a href="projectReward" id="active-tab">리워드 관리</a></li>
 	            </ul>
@@ -73,18 +46,6 @@
 	        <li><a href="#">수수료/정산 관리</a></li>
 	    </ul>
 	</aside>
-
-	<script>
-	    const toggleTab = document.querySelector('.toggleTab');
-	    const subMenu = document.querySelector('.subMenu');
-	
-	    toggleTab.addEventListener('click', function(e) {
-	        e.preventDefault();
-	        subMenu.classList.toggle('showSubMenu');
-	        toggleTab.querySelector('i').classList.toggle('fa-caret-down');
-	        toggleTab.querySelector('i').classList.toggle('fa-caret-up');
-	    });
-	</script>
 
     <!-- 중앙 섹션 시작 -->
     <section id="section">
@@ -218,7 +179,7 @@
         
         <!-- 관리자 피드백 -->
         <div class="admin-feedback">
-        	<div class="admin-title">리워드 피드백</div>
+        	<div class="admin-title">관리자 피드백</div>
         	<div class="admin-content">관리자로부터 수정, 요청사항 피드백을 받으면 이곳에 피드백 메시지가 출력됩니다.</div>
           
 			<!-- 메시지 시작 -->
@@ -231,9 +192,13 @@
 			<!-- 알림 status가 X번 일 때는 프로젝트 수정하는 url도 같이 넣어줘서 바로 프로젝트 수정 페이지로 이동시킴 -->
 			<!-- 관리자가 보낸 메시지를 참고해서 내용을 수정하면 됨 -->
             <div id="notificationContainer">
-            	<!-- 알림 구역 -->
+            	<div class="alert alert-info" role="alert">
+					<i class="fas fa-exclamation-circle"></i><a>&nbsp;알림이 없습니다.</a>
+				</div>
 	        </div>
 	        
+	        <div class="admin-title mt-5">리워드 담아두기</div>
+        	<div class="admin-content"></div>
 	        <!-- 추가한 리워드 수 표시 -->
 	        <div class="alert alert-success" role="alert" id="numRewardsAdded">
 				<a><i class="fas fa-exclamation-circle"></i>&nbsp;추가된 리워드 수 : 0</a>
@@ -447,7 +412,9 @@
 			location.reload();
 		}
 	</script>
-		
+	
+	<!-- js -->
+	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
 	<!-- bootstrap -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
    

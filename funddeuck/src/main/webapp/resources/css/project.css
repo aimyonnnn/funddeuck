@@ -303,7 +303,7 @@ th, td {
 .content-area {
 	display: none;
 	padding: 20px;
-	border: 1px solid #ddd;
+	border: none;
 }
  
 .content-area.active {
@@ -324,6 +324,26 @@ a.supporters svg {
 	margin-right: 5px; /* 아이콘과 텍스트 사이 간격 설정 */
 }
 
+/* 추가된 것 */
+/* 프로젝트 관리 */
+.maker-area {
+	text-align: left;
+	margin-top: 50px;
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+.maker-title {
+	font-size: 35px;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+.maker-content {
+	font-size: 16px;
+}
+
 /* 소제목 */
 .subheading {
 	font-size: 23px;
@@ -332,9 +352,44 @@ a.supporters svg {
 	margin-bottom: 10px;
 }
 
+/* 메이커정보 소제목 */
+.subtitle {
+	font-size:20px;
+	font-weight: bold;
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
 
+/* 소제목 아래 설명 */
+.sideDescription {
+	font-size: 14px;
+	margin-top: 5px;
+}
 
+.flex-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
 
+/* 구분선 */
+.contour {
+	margin-top: 20px;
+}
+
+/* 기본 요금제 카드 */
+.card-container {
+	margin: 0;
+	padding: 0;
+}
+
+.card {
+	width: 100%;
+}
+
+.card-detail {
+	font-size: 15px;
+}
 
 
 

@@ -64,9 +64,9 @@ public class ProjectController {
     }
 	
 	// 메이커 등록 페이지
-	@GetMapping("makerInfo")
+	@GetMapping("projectMaker")
 	public String makerInfo() {
-		return "project/maker_info";
+		return "project/project_maker";
 	}
 	
 	

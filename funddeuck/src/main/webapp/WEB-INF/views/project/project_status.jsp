@@ -7,8 +7,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!--bootstrap -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<!-- bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 	<!-- jQuery -->
 	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
 	<!-- Font Awesome -->
@@ -18,7 +18,6 @@
 	<!-- chart.js -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	
-    <!-- 관리자 피드백 스크롤 고정 -->
 	<script>
 	// datepicker
 	$(() => {
@@ -27,33 +26,6 @@
 	    
 	    // 모든 요소에 datepicker 기능을 적용
 	    $('.datepicker').datepicker();
-	});
-	
-	function scrollHandler() {
-	    // 관리자 피드백 요소를 가져옴
-	    var adminFeedbackElement = document.querySelector(".admin-feedback");
-	    // 관리자 피드백 요소의 위치(offsetTop)를 가져옴
-	    var adminFeedbackOffsetTop = adminFeedbackElement.offsetTop;
-	    // 스크롤 위치가 관리자 피드백 요소의 위치와 같을 때
-	    if (window.pageYOffset = adminFeedbackOffsetTop) {
-	    // sticky 클래스를 추가하여 고정
-	    adminFeedbackElement.classList.add("sticky");
-	  	} else {
-	    // sticky 클래스를 제거하여 고정 해제
-	    adminFeedbackElement.classList.remove("sticky");
-	  }
-	}
-	
-	// 스크롤 이벤트 핸들러 등록
-	window.addEventListener("scroll", function() {
-		// 스크롤 타임아웃이 없을 경우에만 실행
-		if (!window.scrollTimeout) {
-			// 스크롤 이벤트를 지연시킴
-			window.scrollTimeout = setTimeout(function() {
-			window.scrollTimeout = null;
-		    	scrollHandler();
-		    }, 250); // 250ms 지연
-	  	}
 	});
 	</script>
 	
@@ -248,22 +220,29 @@
 	<!-- include -->
  	<jsp:include page="../common/project_top.jsp"/>
 	
-	<!-- main -->
 	<main id="main">
     	<div class="containerCSS">
 	      
 	    <!-- 왼쪽 네비게이션 시작 -->
-	    <aside id="aisdeLeft">
-	    	<div id="projectManagement">${sessionScope.sId}님의 프로젝트</div>
-	        <ul id="navMenu">
-	          <li><a href="#">프로젝트 관리</a></li>
-	          <li><a href="projectReward">리워드 관리</a></li>
-	          <li><a href="projectStatus" id="active-tab">프로젝트 현황</a></li>
-	          <li><a href="#">발송/환불 관리</a></li>
-	          <li><a href="#">수수료/정산 관리</a></li>
-	        </ul> 
-        </aside>
-        <!-- 왼쪽 네비게이션 끝 -->
+		<aside id="aisdeLeft">
+		    <div id="projectManagement">${sessionScope.sId}님의 프로젝트</div>
+		    <ul id="navMenu">
+		        <li>
+		            <a href="#" class="toggleTab">
+		                &nbsp;&nbsp;&nbsp;프로젝트 관리
+		                <i class="fas fa-caret-down"></i>
+		            </a>
+		            <ul class="subMenu">
+		                <li><a href="projectMaker">메이커 정보</a></li>
+		                <li><a href="#">프로젝트 등록</a></li>
+		                <li><a href="projectReward">리워드 관리</a></li>
+		            </ul>
+		        </li>
+		        <li><a href="projectStatus" id="active-tab">프로젝트 현황</a></li>
+		        <li><a href="#">발송/환불 관리</a></li>
+		        <li><a href="#">수수료/정산 관리</a></li>
+		    </ul>
+		</aside>
 	
 	    <!-- 중앙 섹션 시작 -->
 	    <section id="section">
@@ -427,9 +406,10 @@
 	
 	</script>
 	
+	<!-- js -->
+	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
     <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    
 	<!-- datepicker -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
  	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
