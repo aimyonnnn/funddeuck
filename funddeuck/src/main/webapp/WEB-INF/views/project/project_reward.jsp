@@ -55,15 +55,36 @@
       
 	<!-- 왼쪽 네비게이션 시작 -->
 	<aside id="aisdeLeft">
-		<div id="projectManagement">${sessionScope.sId}님의 프로젝트</div>
-	   	<ul id="navMenu">
-		    <li><a href="#">프로젝트 관리</a></li>
-		    <li><a href="projectReward" id="active-tab">리워드 관리</a></li>
-		    <li><a href="projectStatus">프로젝트 현황</a></li>
-		    <li><a href="#">발송/환불 관리</a></li>
-		    <li><a href="#">수수료/정산 관리</a></li>
-	 	</ul> 
+	    <div id="projectManagement">${sessionScope.sId}님의 프로젝트</div>
+	    <ul id="navMenu">
+	        <li>
+	            <a href="#" class="toggleTab">
+	                &nbsp;&nbsp;&nbsp;프로젝트 관리
+	                <i class="fas fa-caret-down"></i>
+	            </a>
+	            <ul class="subMenu">
+	                <li><a href="makerInfo">메이커 정보</a></li>
+	                <li><a href="#">프로젝트 등록</a></li>
+	                <li><a href="projectReward" id="active-tab">리워드 관리</a></li>
+	            </ul>
+	        </li>
+	        <li><a href="projectStatus">프로젝트 현황</a></li>
+	        <li><a href="#">발송/환불 관리</a></li>
+	        <li><a href="#">수수료/정산 관리</a></li>
+	    </ul>
 	</aside>
+
+	<script>
+	    const toggleTab = document.querySelector('.toggleTab');
+	    const subMenu = document.querySelector('.subMenu');
+	
+	    toggleTab.addEventListener('click', function(e) {
+	        e.preventDefault();
+	        subMenu.classList.toggle('showSubMenu');
+	        toggleTab.querySelector('i').classList.toggle('fa-caret-down');
+	        toggleTab.querySelector('i').classList.toggle('fa-caret-up');
+	    });
+	</script>
 
     <!-- 중앙 섹션 시작 -->
     <section id="section">

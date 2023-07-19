@@ -60,6 +60,7 @@ footer {
 
 #navMenu li {
 	margin-bottom: 10px;
+	list-style: none;
 }
 
 #navMenu li a {
@@ -71,6 +72,19 @@ footer {
 #navMenu li a:hover {
 	color: #000;
 	font-weight: bold;
+}
+
+.subMenu {
+    display: none;
+}
+
+.showSubMenu {
+    display: block;
+}
+
+/* Font Awesome 아이콘 스타일 설정 */
+.toggleTab i {
+    margin-left: 5px;
 }
 
 /* XXX님의 프로젝트 */
@@ -317,6 +331,7 @@ a.supporters svg {
 	margin-top: 30px;
 	margin-bottom: 10px;
 }
+
 
 
 
