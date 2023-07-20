@@ -13,14 +13,9 @@
 	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-	<!-- datepicker -->
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<!-- CSS -->
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
-
-	<script>
+	<script> 
 	// datepicker
 	$(function() {
 	$("#projectDatepicker").datepicker({
@@ -467,10 +462,14 @@
 		}
 	}
 	</script>
-
-	<!-- js -->
-	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
+	
 	<!-- bootstrap -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+	<!-- js -->
+	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
+	<!-- datepicker -->
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </body>
 </html>

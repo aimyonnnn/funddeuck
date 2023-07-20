@@ -121,17 +121,17 @@
 	}
 	
 	// 셀렉트 박스
-	function filterNotifications() {
-	       let statusFilter = $("#filterStatus").val();
-	       $("table tr").each(function() {
-	           let statusCell = $(this).find("td:nth-child(4)").text().trim();
-	           if (statusFilter === "" || statusCell === statusFilter) {
-	               $(this).show();
-	           } else {
-	               $(this).hide();
-	           }
-	       });
-	}
+    function filterNotifications() {
+        let statusFilter = $("#filterStatus").val();
+        $("table tr:not(:first-child)").each(function () {
+            let statusCell = $(this).find("td:nth-child(4)").text().trim();
+            if (statusFilter === "" || statusCell === statusFilter) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
 	
 	// 전체 읽음 처리
 	function markAllAsRead(member_id){
