@@ -11,12 +11,12 @@
 <title>펀딩</title>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/> --%>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 </head>
 <body>
 	<!-- 이미지, 프로젝트 정보 -->
 	<div class="container text-center">
-		<div class="row p-2">
+		<div class="row p-2 m-3">
 			<!-- 프로젝트 이미지 영역 -->
 			<!-- 화면 작을 때 이미지 크기 설정필요 -->
 			<div class="col-lg-2 col-4">
@@ -39,7 +39,7 @@
 	<!-- 이미지, 프로젝트 정보 끝 -->
 	<!-- 리워드, 서포터, 배송지, 쿠폰, 결제확인 영역 -->
 	<div class="container text-center">
-		<div class="row">
+		<div class="row m-3">
 			<!--왼쪽 영역-->
 			<div class="col-lg-6 col-md-12 text-start">
 				<!--리워드 정보-->
@@ -119,7 +119,7 @@
 								<span class="fs-6">수취인연락처</span>
 							</div>
 						</div>
-						<div class="col-2">
+						<div class="col-lg-2 col-md-6">
 							<button class="btn btn-primary">변경</button>
 						</div>
 						<!-- 기본 배송지 등록 O 끝 -->
@@ -158,9 +158,9 @@
 			</div>
 			<!--왼쪽 영역 끝-->
 			<!-- 결제 확인 영역-->
-			<div class="col-lg-6 col-md-12 border border-danger">
+			<div class="col-lg-6 col-md-12 p-4">
 				<!-- 후원 금액 -->
-				<div class="row border">
+				<div class="row border ms-2 me-2">
 					<div class="col text-start">
 						<span class="fs-4 fw-bold text-primary">최종 후원 금액</span>
 					</div>
@@ -168,55 +168,72 @@
 						<span class="fs-4 fw-bold">xxxx원</span>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col text-start">
-						<span class="fs-5 fw-bold">리워드 금액</span>
-					</div>
-					<div class="col-4 text-end">
-						<span class="fs-5 fw-bold">xxxx원</span>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col">
-						<span class="fs-5 fw-bold">추가 후원 금액</span>
-					</div>
-					<div class="col-4">
-						<span class="fs-5 fw-bold">xxxx원</span>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col">
-						<span class="fs-5 fw-bold">쿠폰 사용</span>
-					</div>
-					<div class="col-4">
-						<span class="fs-5 fw-bold">-xxxx원</span>
-					</div>
+				<!-- 최종금액 외 금액들 -->
+				<div class="row border ms-2 me-2">
+						<div class="col-6 text-start">
+							<span class="fs-5 fw-bold">리워드 금액</span>
+						</div>
+						<div class="col-6 text-end">
+							<span class="fs-5 fw-bold">xxxx원</span>
+						</div>
+						<div class="col-6 text-start">
+							<span class="fs-5 fw-bold">추가 후원 금액</span>
+						</div>
+						<div class="col-6 text-end">
+							<span class="fs-5 fw-bold">xxxx원</span>
+						</div>
+						<div class="col-6 text-start">
+							<span class="fs-5 fw-bold">쿠폰 사용</span>
+						</div>
+						<div class="col-6 text-end">
+							<span class="fs-5 fw-bold">-xxxx원</span>
+						</div>
 				</div>
 				<!-- 후원 금액 끝-->
-				<!-- 결제전 체크 사항-->
-				<div class="row">
-					<!-- 개인정보 동의, 유의사항 체크박스 -->
-					<div class="col p-5 text-start">
-						<div class="form-check">
+				<!-- 개인정보 동의, 유의사항 -->
+				<div class="row ms-2 me-2">
+					<div class="col pt-2 text-start">
+						<div class="form-check fs-5">
 							<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-							<label class="form-check-label text-start" for="flexCheckDefault">
+							<label class="form-check-label" for="flexCheckDefault">
 								개인정보 제3자 제공 동의
 							</label>
 						</div>
 					</div>
-					<!-- 개인정보 동의, 유의사항 체크박스 끝 -->
 					<!-- a태그 내용보기 -->
 					<!-- 모달창으로 개인정보 동의 내용 보여주기 -->
-					<div class="col p-5">
+					<div class="col-4 pt-2 fs-5">
 						<a href="#">내용보기</a>
 					</div>
 					<!-- a태그 내용보기 끝 -->
 				</div>
-				<!-- 결제전 체크 사항 끝-->
+				<!-- 후원 유의사항 체크 -->
+				<div class="row ms-2 me-2">
+					<div class="col pt-2 text-start">
+						<div class="form-check fs-5">
+							<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+							<label class="form-check-label" for="flexCheckDefault">
+								후원 유의사항 확인
+							</label>
+						</div>
+					</div>
+					<!-- 열기 닫기 버튼으로 보이고 안보이고?-->
+					<div class="col-4 pt-2 fs-5">
+						<button>열기</button>
+<!-- 						<button>닫기</button> -->
+					</div>
+					<!-- a태그 내용보기 끝 -->
+				</div>
+				<div class="row ms-2 me-2 pt-2 text-start">
+					<ul>
+						<li>후원은 구매가 아닌 계획에 자금을 지원하는 일입니다</li>
+					</ul>
+				</div>
+				<!-- 개인정보 동의, 유의사항 끝 -->
 				<!-- 후원하기 버튼 영역 -->
 				<!-- 클릭시 결제 페이지로 이동 -->
-				<div class="row">
-					<button class="btn btn-primary">이 프로젝트 후원하기</button>
+				<div class="row ms-2 me-2">
+					<button class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
 				</div>
 				<!-- 후원하기 버튼 영역 끝-->
 			</div>
