@@ -1,56 +1,89 @@
 @charset "EUC-KR";
+
+	/* 배경 그라데이션 스타일 */
 	.gradient-custom {
-	background: #98D668;
-
-	background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
-
+	    background: #98D668;
+	    background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
 	}
 	
+	/* 카드 스타일 */
 	.card {
-  	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	}
 	
+	/* 원형 이미지 스타일 */
 	.circle-image {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        /* background-color: #your_background_color_here; /* Add a background color to fill the circular area */
-    }
-
-    .circle-image img {
-        width: 100%;
-        height: auto;
-        max-height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-    }
-    
-        .profile-heading {
-            text-align: center;
-            margin-top: 1rem; 
-        }    
-		.link-container {
-            display: flex;
-            justify-content: center; 
-            margin-top: 1rem; 
-        }
-
-        .link-container a {
-            text-decoration: none;
-            color: black;
-            margin: 0 10px; 
-        }
-		textarea {
-            width: 385px;
-            height: 80px;
-        }
-        .button-container {
+	    width: 80px;
+	    height: 80px;
+	    border-radius: 50%;
+	    overflow: hidden;
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+	    align-items: center;
+	}
+	
+	.circle-image img {
+	    width: 100%;
+	    height: auto;
+	    max-height: 100%;
+	    object-fit: cover;
+	    border-radius: 50%;
+	}
+	
+	/* 프로필 제목 스타일 */
+	.profile-heading {
+	    text-align: center;
+	    margin-top: 1rem;
+	}
+	
+	/* 링크 컨테이너 스타일 */
+	.link-container {
+	    display: flex;
+	    justify-content: center;
+	    margin-top: 1rem;
+	}
+	
+	.link-container a {
+	    text-decoration: none;
+	    color: black;
+	    margin: 0 10px;
+	}
+	
+	/* 텍스트 영역 스타일 */
+	textarea {
+	    width: 385px;
+	    height: 80px;
+	    resize: vertical;
+	    overflow-y: hidden;
+	    min-height: 100px;
+	    max-height: 500px;
+	    width: 200%;
+	}
+	
+	/* 반응형 텍스트 영역 스타일 */
+	@media (max-width: 768px) {
+	    textarea {
+	        height: 150px;
+	    }
+	}
+	
+	/* 버튼 위치*/
+	.button-container {
 		  display: flex;
 		  justify-content: center;
 		  gap: 20px;
 		} 
+	
+	/* 섹션 컨텐츠 영역 스타일 */
+	.section-content {
+	    min-height: 80vh;
+	}
+	
+	/* 푸터 스타일 */
+	footer.footer {
+	    position: fixed;
+	    bottom: 0;
+	    left: 0;
+	    width: 100%;
+	}
