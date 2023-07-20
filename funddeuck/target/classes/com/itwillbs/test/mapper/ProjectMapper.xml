@@ -28,7 +28,7 @@
 			into maker
 				values(
 					null
-					, #{project_idx}
+					, #{member_idx}
 					, #{maker_file1}
 					, #{individual_biz_num}
 					, #{individual_biz_name}

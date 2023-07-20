@@ -3,6 +3,7 @@ package com.itwillbs.test.vo;
 import lombok.Data;
 
 /*
+-- 리워드 테이블 생성
 CREATE TABLE reward (
     reward_idx INT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '리워드 번호',
     project_idx INT NOT NULL COMMENT '프로젝트 번호',
@@ -15,8 +16,8 @@ CREATE TABLE reward (
     delivery_status VARCHAR(50) NOT NULL COMMENT '배송여부',
     delivery_price INT NOT NULL COMMENT '배송비',
     delivery_date VARCHAR(50) NOT NULL COMMENT '발송 시작일',
-    reward_info TEXT NOT NULL COMMENT '리워드 정보 제공 고시'
-    -- FOREIGN KEY (project_idx) REFERENCES project (project_idx)
+    reward_info TEXT NOT NULL COMMENT '리워드 정보 제공 고시',
+    FOREIGN KEY (project_idx) REFERENCES project (project_idx)
 ); 
 */
 @Data
