@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.test.mapper.MainMapper">
+
+    <select id="getAllProjects" resultType="com.itwillbs.test.vo.MainVO">
+        SELECT * FROM project
+    </select>
+	
+    <select id="getRankingData" resultType="com.itwillbs.test.vo.MainVO">
+        SELECT p_name, p_intro, p_hit FROM project ORDER BY p_hit DESC LIMIT 10
+    </select>	
+</mapper>
