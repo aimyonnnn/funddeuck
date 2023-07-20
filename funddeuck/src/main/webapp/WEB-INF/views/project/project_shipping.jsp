@@ -182,30 +182,6 @@
 			</section>
 			<!-- 중앙 섹션 끝 -->
 
-			<!-- 오른쪽 네비게이션 -->
-			<aside id="aisdeRight"> 
-				<!-- 관리자 피드백 -->
-				<div class="admin-feedback">
-				<div class="admin-title">관리자 피드백</div>
-				<div class="admin-content">관리자로부터 수정, 요청사항 피드백을 받으면 이곳에 피드백 메시지가 출력됩니다.</div>
-			   
-					<!-- 메시지 시작 -->
-					<!-- DB저장된 알림 메시지를 반복문으로 출력 -->
-					<!-- 관리자 페이지에서 프로젝트를 승인, 반려 할 때
-					반려되는 경우에는 해당 프로젝트를 작성한 id에게 알림 메시지로 수정해야할 내용을 전송함-->
-					<!-- 해당 id가 로그인을 하게되면 상단 종모양 알림 아이콘에 읽지 않은 메시지 갯수가 표시가 됨 -->
-					<!-- DB에 알림 메시지를 저장하기때문에 꼭 실시간으로 로그인을 안해도 알림내역 들어가서 확인할 수 있음 -->
-					<!-- 로그인이 되어 있는 경우에는 하단에 toast팝업으로 알림도착 팝업 띄워주고 종모양 아이콘에 갯수도 변화시킴 -->
-					<!-- 알림 status가 X번 일 때는 프로젝트 수정하는 url도 같이 넣어줘서 바로 프로젝트 수정 페이지로 이동시킴 -->
-					<!-- 관리자가 보낸 메시지를 참고해서 내용을 수정하면 됨 -->
-					<div id="notificationContainer">
-					  	<div class="alert alert-info" role="alert">
-							<i class="fas fa-exclamation-circle"></i><a>&nbsp;알림이 없습니다.</a>
-						</div>
-					</div>
-				</div>
-			</aside>
-			<!-- 오른쪽 네비게이션 끝 -->
 		</div>
 	</main>
 	
@@ -226,69 +202,6 @@
             $(this).addClass("active");
         });
     });
-	
-	// 관리자 피드백
-	function getNotifications() {
-		$.ajax({
-			url: '<c:url value="getNotificationByAjax"/>',
-			method: 'get',
-			success: function(response) {
-				
-			var notifications = response;
-		    var notificationContainer = $('#notificationContainer');
-		    notificationContainer.empty();
-		    
-		    $.each(notifications.slice(0, 5), function(index, notification) {
-		    	var notificationContent = notification.notification_content;
-		        var alertDiv = $('<div class="alert alert-info" role="alert"></div>');
-		        var icon = $('<i class="fas fa-exclamation-circle"></i>');
-		        var content = $('<span>&nbsp;' + notificationContent + '</span>');
-		      	
-		        // 읽음 처리 하기
-		        content.click(function() {
-        	  		markNotificationAsRead(notification.notification_idx);
-	        	});
-		        
-		   		alertDiv.append(icon);
-			    alertDiv.append(content);
-    		    notificationContainer.append(alertDiv);
-		   });
-		},
-		error: function(xhr, status, error) {
-		  console.log('Error:', error);
-		    }
-	  });
-	}
-	
-	$(()=>{
-		getNotifications();
-		setInterval(getNotifications, 5000);
-	})
-	
-	// 메시지 읽음 처리 하기
-	function markNotificationAsRead(notification_idx) {
-		let confirmation = confirm("메시지를 읽음 처리 하시겠습니까?");
-		if(confirmation) {
-			console.log("알림번호 : " + notification_idx);
-			$.ajax({
-				method: 'get',
-				url: '<c:url value="markNotificationAsRead"/>',
-				data: {
-					notification_idx: notification_idx
-				},
-				success: function(response){
-					if(response.trim() == 'true') {
-						// 알림 갯수 변경
-						getNotificationCount();
-						alert('읽음 처리 하였습니다!')
-					} 
-				},
-				error: function(error) {
-					console.log("읽음 처리 실패!")
-				}
-			})
-		}
-	}
 	</script>
 
 	<!-- js -->
