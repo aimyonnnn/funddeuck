@@ -15,9 +15,12 @@
 <%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/> --%>
 <!-- header include -->
 <jsp:include page="../common/main_header.jsp"></jsp:include>
+<!-- 결제 연동 스크립트 -->
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/payment.js"></script>
 </head>
 <body>
-
 	<!--네비게이션 바 -->
 	<!-- color: inherit; 사용시 a태그 파란색 사라짐 -->
 	<div class="container text-center">
@@ -172,7 +175,7 @@
 <!-- 							  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/> -->
 <!-- 							</svg> -->
 						</button>
-						<button class="btn btn-primary me-2">이 프로젝트 후원하기</button>
+						<button class="btn btn-primary me-2" onclick="request_pay()">이 프로젝트 후원하기</button>
 					</div>
 				</div>
 				<!-- 공유, 좋아요, 후원하기 버튼 -->
@@ -196,7 +199,7 @@
 <!-- 							  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/> -->
 <!-- 							</svg> -->
 						</button>
-						<button class="btn btn-primary me-2">이 프로젝트 후원하기</button>
+						<button class="btn btn-primary me-2" onclick="request_pay()">이 프로젝트 후원하기</button>
 					</div>
 				</div>
 				<!--공유, 좋아요, 후원하기 버튼 끝-->

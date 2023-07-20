@@ -1,6 +1,8 @@
 /**
 결제 처리 스크립트
  */
+function request_pay() {
+	
 var IMP = window.IMP;
 IMP.init("imp30787507");
 
@@ -12,7 +14,6 @@ var seconds = today.getSeconds();
 var milliseconds = today.getMilliseconds();
 var makeMerchantUid = hours +  minutes + seconds + milliseconds;
 
-function request_pay() {
 IMP.request_pay({
     pg: "html5_inicis", // PG사 선택
     pay_method: "card", // 지불 수단
