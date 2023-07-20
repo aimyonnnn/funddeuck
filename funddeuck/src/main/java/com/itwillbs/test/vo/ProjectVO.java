@@ -30,8 +30,8 @@ CREATE TABLE project (
     project_settlement_name varchar(50) NOT NULL COMMENT '예금주명',
     project_settlement_image varchar(100) NOT NULL COMMENT '통장사본 이미지',
     project_approve_status int NOT NULL COMMENT '프로젝트 승인 상태',
-    member_idx int NOT NULL COMMENT '멤버 번호',
-    FOREIGN KEY (member_idx) references member(member_idx)
+    maker_idx int NOT NULL COMMENT '메이커 번호',
+    FOREIGN KEY (maker_idx) references maker(maker_idx)
 );
 */
 

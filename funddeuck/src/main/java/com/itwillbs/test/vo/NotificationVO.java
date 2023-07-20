@@ -12,7 +12,7 @@ CREATE TABLE notification (
   notification_content VARCHAR(500) NOT NULL COMMENT '알림내용',
   notification_regdate TIMESTAMP NOT NULL COMMENT '생성날짜',
   notification_read_status INT NOT NULL COMMENT '알림상태: 1-읽지 않음, 2-읽음'
-  -- FOREIGN KEY (member_id) REFERENCES member(member_id)
+  FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
 */
 
