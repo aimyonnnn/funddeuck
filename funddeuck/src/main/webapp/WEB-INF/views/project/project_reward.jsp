@@ -15,6 +15,21 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
+	<style>
+	  /* 버튼과 글자 사이의 높이 간격을 줄임 */
+	  .alert button {
+	    margin-top: -0.25rem; /* 음수 값을 주어서 간격을 줄입니다. */
+	    margin-bottom: -0.25rem; /* 음수 값을 주어서 간격을 줄입니다. */
+	    padding: 0.1rem 0.25rem;
+	  }
+	  /* 경고창 내부 요소들의 두께와 여백 조정 */
+	  .alert .fas,
+	  .alert span {
+	    margin: 0; /* 모든 여백을 제거 */
+	    padding: 0; /* 패딩을 제거 */
+	    line-height: 1; /* 줄 간격을 조정하여 텍스트가 더 밀집되도록 설정*/
+	  }
+	</style>
 </head>
 <body>
  	<jsp:include page="../common/project_top.jsp"/>
