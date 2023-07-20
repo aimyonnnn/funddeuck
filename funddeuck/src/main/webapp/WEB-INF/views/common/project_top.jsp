@@ -4,6 +4,7 @@
 <%session.setAttribute("sId", "admin");%>
 <!-- css -->
 <link href="${pageContext.request.contextPath }/resources/css/project.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 <!-- jQuery -->
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
 <!-- sockJS -->
