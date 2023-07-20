@@ -248,7 +248,7 @@
 	
 	$(()=>{
 		getNotifications();
-		setInterval(getNotifications, 5000);
+// 		setInterval(getNotifications, 5000);
 	})
 	
 	// 메시지 읽음 처리 하기
@@ -266,6 +266,8 @@
 					if(response.trim() == 'true') {
 						// 알림 갯수 변경
 						getNotificationCount();
+						// 관리자 피드백 메시지 업데이트
+						getNotifications();
 						alert('읽음 처리 하였습니다!')
 					} 
 				},

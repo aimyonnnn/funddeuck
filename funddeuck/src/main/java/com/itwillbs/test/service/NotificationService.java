@@ -34,5 +34,9 @@ public class NotificationService {
 	public int modifyAllNotificationStatus(String member_id) {
 		return mapper.updateAllNotificationStatus(member_id);
 	}
+	// 안읽은 메시지 조회
+	public List<NotificationVO> getUnreadNotificationList(String sId) {
+		return mapper.selectUnreadNotificationList(sId);
+	}
 	
 }

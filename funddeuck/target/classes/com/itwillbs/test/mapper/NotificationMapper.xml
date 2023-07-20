@@ -48,6 +48,18 @@
   			where
   				member_id = #{member_id}
   	</update>
+  	
+  	<!-- 안읽은 메시지 조회 -->
+  	<select id="selectUnreadNotificationList">
+  		select *
+  			from notification
+  				where
+  					member_id = #{sId}
+  					and notification_read_status = 1
+  				order by notification_regdate desc
+  	</select>
   
 </mapper>
+
+
 

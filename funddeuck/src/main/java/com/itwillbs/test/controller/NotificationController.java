@@ -54,12 +54,14 @@ public class NotificationController {
 	}
 	
 	// 리워드 설계 페이지 관리자 피드백 출력하기
+	// 안읽은 메시지만 출력함
+	// 클릭 시 읽음 처리 됨
 	@GetMapping("getNotificationByAjax")
 	@ResponseBody
 	public ResponseEntity<List<NotificationVO>> getNotificationByAjax(HttpSession session) {
 		System.out.println("getNotificationByAjax");
 	    String sId = (String) session.getAttribute("sId");
-	    List<NotificationVO> nList = service.getNotificationList(sId);
+	    List<NotificationVO> nList = service.getUnreadNotificationList(sId);
 	    return ResponseEntity.ok(nList);
 	}
 	
@@ -69,7 +71,7 @@ public class NotificationController {
 	public String markNotificationAsRead(@RequestParam int notification_idx) {
 //		System.out.println("markNotificationAsRead : " + notification_idx);
 		int updateCount = service.modifyNotificationStatus(notification_idx);
-		if(updateCount > 0 ) { return "true"; } return "false";
+		if(updateCount > 0) { return "true"; } return "false";
 	}
 	
 	// 전체 읽음 처리

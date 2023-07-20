@@ -330,7 +330,7 @@
 			    	
 			    	if(response.trim() == 'true') {
 				        alert("성공적으로 저장되었습니다!");
-				        location.reload();
+				        location.href='projectReward';
 			    	} else {
 			    		alert("모든 항목을 입력해주세요.");
 			    	}
@@ -358,7 +358,7 @@
 			    	
 			    	if(response.trim() == 'true') {
 				        alert("성공적으로 수정되었습니다!");
-				        location.reload();
+				        location.href = '<c:url value="projectReward?reward_idx="/>' + reward_idx;
 			    	} else {
 			    		alert("수정에 실패했습니다.");
 			    	}
@@ -438,7 +438,7 @@
 	
 	$(()=>{
 		getNotifications();
-		setInterval(getNotifications, 5000);
+// 		setInterval(getNotifications, 5000);
 	})
 	
 	// 메시지 읽음 처리 하기
@@ -456,6 +456,8 @@
 					if(response.trim() == 'true') {
 						// 알림 갯수 변경
 						getNotificationCount();
+						// 관리자 피드백 메시지 업데이트
+						getNotifications();
 						alert('읽음 처리 하였습니다!')
 					} 
 				},

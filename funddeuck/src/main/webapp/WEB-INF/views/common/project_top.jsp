@@ -50,6 +50,8 @@
 	function onMessage(evt) {
 		// 알림을 전달 받았을 때 알림 갯수 조회하는 함수 호출
 		getNotificationCount();
+		// 관리자 피드백 메시지 업데이트
+		getNotifications();
 		var data = evt.data;
 	    // 고유한 ID 생성
 	    var toastId = 'toast-' + toastCount;
@@ -68,10 +70,10 @@
 		});
 	}
 	
-	// 로그아웃
+	// 나가기
 	function logout() {
-		let isLogout = confirm("로그아웃 하시겠습니까?");
-		if(isLogout) { location.href = "MemberLogout"; }
+		let isLogout = confirm("정말 나가시겠습니까?");
+		if(isLogout) { location.href = "./"; }
 	}
 </script>
 	
