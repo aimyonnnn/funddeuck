@@ -21,28 +21,6 @@
 <script src="${pageContext.request.contextPath }/resources/js/payment.js"></script>
 </head>
 <body>
-	<!--네비게이션 바 -->
-	<!-- color: inherit; 사용시 a태그 파란색 사라짐 -->
-<!-- 	<div class="container text-center"> -->
-<!-- 	  <ul class="nav nav-tabs bg-white fixed-top"> -->
-<!-- 	    <li class="nav-item"> -->
-<!-- 	      <a class="nav-link active" aria-current="page" href="#" style="text-decoration: none;">Active</a> -->
-<!-- 	      <div class="progress" style="height: 1px;"> -->
-<!-- 	        <div class="progress-bar" role="progressbar" aria-label="Example 1px high" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div> -->
-<!-- 	      </div> -->
-<!-- 	    </li> -->
-<!-- 	    <li class="nav-item"> -->
-<!-- 	      <a class="nav-link" href="#" style="text-decoration: none; color: inherit;">프로젝트 계획</a> -->
-<!-- 	    </li> -->
-<!-- 	    <li class="nav-item"> -->
-<!-- 	      <a class="nav-link" href="#" style="text-decoration: none; color: inherit;">업데이트</a> -->
-<!-- 	    </li> -->
-<!-- 	    <li class="nav-item"> -->
-<!-- 	      <a class="nav-link disabled">커뮤니티</a> -->
-<!-- 	    </li> -->
-<!-- 	  </ul> -->
-<!-- 	</div> -->
-	<!--네비게이션 바 끝 -->
 	<br>
 	<hr>
 	<br>
@@ -50,10 +28,11 @@
 	<div class="container text-center">
 		<!-- 해시태그 -->
 		<div class="col">
-			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="#" role="button">해시태그</a>
+			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="#" role="button">아트북</a>
 			<br><br>
 			<div class="col">
-				<p class="fs-2 fw-bolder">펀딩 이름</p>
+				<p class="fs-2 fw-bolder"><스파이더맨: 어크로스 더 유니버스> 아트북+공식 굿즈</p>
+				<!-- 오류 아님! 뷰 테스트 확인용 펀딩명 -->
 			</div>
 		</div>
 		<!-- 펀딩이름 -->
@@ -123,31 +102,41 @@
 				  		<small>명</small>&nbsp;
 					</div>
 				</div>
-				<div class="row">
-					<div class="col">
-						<div class="progress">
-							<div class="progress-bar bg-primary" role="progressbar" aria-label="Example with label" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-						</div>
-					</div>
-				</div>
 				<!--펀딩 진행 상태 출력 끝-->
 			
 				 <hr>
 				 <!-- 펀딩 기본 정보-->
 				<table class="table-borderless">
 					<tr>
-				 		<th>목표금액</th>
-				    	<td class="ps-3">xxxxx원</td>
-				 	</tr>
-				 	<tr>
-				   		<th>펀딩 기간</th>
-				   		<td class="ps-3">2023.07.12~ 2023.08.17</td>
-				 	</tr>
-				 	<tr>
-						<th>결제</th>
-						<td class="ps-3">목표 금액 달성시 2023.07.xx일에 결제</td>
+				 		<th><small>목표금액</small></th>
+				 		<td>&nbsp;&nbsp;&nbsp;</td>
+				    	<td><small>2,000,000원</small></td>
 				 	</tr>
 				</table>
+				<div class="row">
+					<div class="col">
+						<div class="progress">
+							<div class="progress-bar bg-success" role="progressbar" aria-label="Example with label" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">112%</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<table class="table-borderless">
+				 	<tr>
+				   		<th><small>펀딩 기간</small></th>
+				   		<td>&nbsp;&nbsp;&nbsp;</td>
+				   		<td><small>2023.07.12~ 2023.08.17</small>
+				   		<span class="badge text-danger text-bg-danger bg-opacity-10">24일 남음</span>
+				   		</td>
+				 	</tr>
+				 	<tr>
+						<th><small>결제</small></th>
+						<td>&nbsp;&nbsp;&nbsp;</td>
+						<td><small>목표 금액 달성시 2023.07.xx일에 결제 진행</small></td>
+				 	</tr>
+				</table>
+				<br>
+				<br>
 				 <!-- 펀딩 기본 정보 끝 -->
 				<!--공유, 좋아요, 후원하기 버튼-->
 				<!--화면크키 작을 때 가장 아래로 이동 -->
@@ -175,26 +164,28 @@
 				</div>
 				<!-- 공유, 좋아요, 후원하기 버튼 -->
 				<!-- 화면크기 lg 일 때-->
-				<div class="row border border-warning d-none d-lg-block">
+				<div class="row d-none d-lg-block">
 					<div class="col-12 col-lg-auto d-flex justify-content-center">
 						<!-- 공유 -->
-						<button class="btn btn-primary me-2">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
+						<button class="btn btn-primary me-2 bg-white border border-secondary border-opacity-25 rounded-0">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-share" viewBox="0 0 16 16">
 							  <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
 							</svg>
+							<small class="text-secondary"><br>16</small>
 						</button>
 						<!-- 좋아요 -->
-						<button class="btn btn-primary me-2">
+						<button class="btn btn-primary me-2 bg-white border border-secondary border-opacity-25 rounded-0">
 							<!-- 빈 하트 -->
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-heart" viewBox="0 0 16 16">
 							  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
 							</svg>
 							<!-- 채워진 하트 -->
 <!-- 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"> -->
 <!-- 							  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/> -->
 <!-- 							</svg> -->
+							<small class="text-secondary"><br>343</small>
 						</button>
-						<button class="btn btn-primary me-2" onclick="request_pay()">이 프로젝트 후원하기</button>
+						<button class="btn btn-primary me-8 bg-success" onclick="request_pay()"><span class="text-center text-white fw-bold">이 프로젝트 후원하기</span></button>
 					</div>
 				</div>
 				<!--공유, 좋아요, 후원하기 버튼 끝-->
@@ -241,11 +232,34 @@
 	<div class="container text-center">
 		<div class="row">
 			<!-- 바뀌는 페이지 -->
-			<div class="col border border-warning">
-				<h1>프로젝트 내용</h1>
-				<h1>프로젝트 내용</h1>
-				<h1>프로젝트 내용</h1>
-				<h1>프로젝트 내용</h1>
+			<div class="col">
+<!-- 		네비게이션 바 -->
+<!-- 		color: inherit; 사용시 a태그 파란색 사라짐 -->
+		<div class="container text-center">
+		  <ul class="nav nav-tabs bg-white">
+		    <li class="nav-item border-dark border-bottom border-4">
+		      <a class="text-dark nav-link active text-decoration-none border border-0 fw-bold" aria-current="page" href="#">프로젝트 계획</a>
+		    </li>
+		    <li class="nav-item border border-0">
+		      <a class="text-dark nav-link text-decoration-none border border-0 fw-bold text-opacity-50" href="#">업데이트</a>
+		    </li>
+		    <li class="nav-item border border-0">
+		      <a class="text-dark nav-link text-decoration-none border border-0 fw-bold text-opacity-50" href="#">커뮤니티</a>
+		    </li>
+		    <li class="nav-item border border-0">
+		      <a class="text-dark nav-link text-decoration-none border border-0 fw-bold text-opacity-50" href="#">추천</a>
+		    </li>
+		  </ul>
+		</div>	
+		<br>
+		<div class="container text-left fw-bold">
+		<img src="${pageContext.request.contextPath }/resources/images/fundingDetail_test_img1.jpg" width="650"><br>
+		<br>
+		<h3 class="fw-bold">더욱 확장된 멀티버스가 열린다!</h3>
+		<h3 class="fw-bold">상상 그 이상을 넘어서는 멀티버스!</h3><br>
+		<h3 class="fw-bold"><스파이더맨: 어크로스 더 유니버스></h3><br>
+		</div>
+<!-- 		네비게이션 바 끝 -->
 			</div>
 			<!-- 메이커 프로필, 리워드 선택 바-->
 			<!-- 화면 클때 -->
