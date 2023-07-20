@@ -191,7 +191,10 @@ public class ProjectController {
 		return "project/project_settlement";
 	}
 	
-	
+	@GetMapping("mypage")
+	public String mypage() {
+		return "myPage";
+	}
 	
 	
 	
