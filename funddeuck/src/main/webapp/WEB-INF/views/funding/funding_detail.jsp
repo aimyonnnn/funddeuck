@@ -23,47 +23,40 @@
 <body>
 	<!--네비게이션 바 -->
 	<!-- color: inherit; 사용시 a태그 파란색 사라짐 -->
-	<div class="container text-center">
-	  <ul class="nav nav-tabs bg-white fixed-top">
-	    <li class="nav-item">
-	      <a class="nav-link active" aria-current="page" href="#" style="text-decoration: none;">Active</a>
-	      <div class="progress" style="height: 1px;">
-	        <div class="progress-bar" role="progressbar" aria-label="Example 1px high" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-	      </div>
-	    </li>
-	    <li class="nav-item">
-	      <a class="nav-link" href="#" style="text-decoration: none; color: inherit;">프로젝트 계획</a>
-	    </li>
-	    <li class="nav-item">
-	      <a class="nav-link" href="#" style="text-decoration: none; color: inherit;">업데이트</a>
-	    </li>
-	    <li class="nav-item">
-	      <a class="nav-link disabled">커뮤니티</a>
-	    </li>
-	  </ul>
-	</div>
+<!-- 	<div class="container text-center"> -->
+<!-- 	  <ul class="nav nav-tabs bg-white fixed-top"> -->
+<!-- 	    <li class="nav-item"> -->
+<!-- 	      <a class="nav-link active" aria-current="page" href="#" style="text-decoration: none;">Active</a> -->
+<!-- 	      <div class="progress" style="height: 1px;"> -->
+<!-- 	        <div class="progress-bar" role="progressbar" aria-label="Example 1px high" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div> -->
+<!-- 	      </div> -->
+<!-- 	    </li> -->
+<!-- 	    <li class="nav-item"> -->
+<!-- 	      <a class="nav-link" href="#" style="text-decoration: none; color: inherit;">프로젝트 계획</a> -->
+<!-- 	    </li> -->
+<!-- 	    <li class="nav-item"> -->
+<!-- 	      <a class="nav-link" href="#" style="text-decoration: none; color: inherit;">업데이트</a> -->
+<!-- 	    </li> -->
+<!-- 	    <li class="nav-item"> -->
+<!-- 	      <a class="nav-link disabled">커뮤니티</a> -->
+<!-- 	    </li> -->
+<!-- 	  </ul> -->
+<!-- 	</div> -->
 	<!--네비게이션 바 끝 -->
-
-
-	<!--해시태그 버튼 안보여서 대신 넣은 이미지-->
-	<div class="container text-center">
-		<img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" class="d-block w-100" alt="...">
-	</div>
+	<br>
+	<hr>
+	<br>
 	<!-- 상단 영역 -->
 	<div class="container text-center">
 		<!-- 해시태그 -->
-		<div class="row">
+		<div class="col">
+			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="#" role="button">해시태그</a>
+			<br><br>
 			<div class="col">
-				<a class="btn btn-primary" href="#" role="button">해시태그1</a>
-				<a class="btn btn-primary" href="#" role="button">해시태그2</a>
+				<p class="fs-2 fw-bolder">펀딩 이름</p>
 			</div>
 		</div>
 		<!-- 펀딩이름 -->
-		<div class="row p-5">
-			<div class="col">
-				<h1>펀딩 이름</h1>
-			</div>
-		</div>
 	
 		<!-- 이미지, 펀딩 진행상태, 기본정보-->
 		<div class="row p-5">
@@ -98,34 +91,36 @@
 			</div>
 			<!--펀딩 이미지 슬라이드 끝-->
 			<!--펀딩 진행 상태, 기본정보-->
-			<div class="col-12 col-lg-6 text-start ps-5">
+			<div class="col-13 col-lg-6 text-start ps-5">
 				<!--펀딩 진행 상태 출력-->
 				<div class="row">
-					<span class="fs-3">모인금액</span>
+					<small>모인금액</small>
 				</div>
 				<div class="row">
 					<div class="col">
-						<span class="fs-1">0000</span>&nbsp;
-						<span class="fs-4">원</span>&nbsp;&nbsp;
-						<span class="fs-4">xxx%</span>
+						<span class="fs-2">2,259,000</span>&nbsp;
+						<small>원</small>&nbsp;
+						<span class="fs-5 fw-bold">112%</span>
 					</div>
 				</div>
+				<br>
 				<div class="row">
-					<span class="fs-3">남은시간</span>
+					<small>남은시간</small>
 				</div>
 				<div class="row">
 					<div class="col">
-						<span class="fs-1">0000</span>&nbsp;
-				  		<span class="fs-4">일</span>&nbsp;&nbsp;
+						<span class="fs-2">24</span>&nbsp;
+				  		<small>일</small>&nbsp;&nbsp;
 					</div>
 				</div>
+				<br>
 				<div class="row">
-					<span class="fs-3">후원자</span>
+					<small>후원자</small>
 				</div>
 				<div class="row">
 					<div class="col">
-				  		<span class="fs-1">0000</span>&nbsp;
-				  		<span class="fs-4">명</span>&nbsp;&nbsp;
+				  		<span class="fs-2">82</span>&nbsp;
+				  		<small>명</small>&nbsp;
 					</div>
 				</div>
 				<div class="row">

@@ -17,7 +17,7 @@ import lombok.Data;
 기부 금액(donation) - 정수
 총 결제금액(total_amount) - 정수, NN
 리워드 배송지 주소 (delivery_address) - 문자(500자)
-리워드 배송지 번호(delivery_phone_number) - 문자(10자)
+리워드 수령자 전화번호(delivery_phone_number) - 문자(10자)
 ---------------------------------------
 CREATE TABLE payment (
 	payment_idx INT PRIMARY KEY AUTO_INCREMENT,
