@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 	<script> 
 	// datepicker
 	$(function() {
@@ -68,7 +69,7 @@
       	<!-- 왼쪽 네비게이션 시작 -->
 		<aside id="aisdeLeft">
 		    <div id="projectManagement">
-				<img src="${pageContext.request.contextPath}/resources/images/managementImage.jpg" width="200px" height="150px">
+				<img src="${pageContext.request.contextPath}/resources/images/managementImage.jpg" class="img-fluid me-auto" width="200px" height="150px">
 		    	${sessionScope.sId}님의 프로젝트
 		    </div>
 		    <ul id="navMenu">
@@ -92,8 +93,8 @@
 		<!-- 중앙 섹션 시작 -->
 		<section id="section">
 	      	<article id="article">
-	      		<div class="mt-5">
-	      			<img src="${pageContext.request.contextPath}/resources/images/projectManagementImage.png" class="img-fluid me-auto">
+	      		<div class="projectProcess">
+	      			<img src="${pageContext.request.contextPath}/resources/images/projectManagementImage.png">
 	      		</div>
 	      		
 		      	<!-- 프로젝트 관리 시작 -->
@@ -221,7 +222,10 @@
               
 					<!-- 정산 정보 -->
 					<div>
-					  <p class="subheading">정산 정보</p>
+						<p class="subheading">정산 정보</p>
+						<div class="mt-5">
+							<img src="${pageContext.request.contextPath}/resources/images/settlementInfo.png" class="img-fluid me-auto">
+						</div>
 					</div>
 
 					<!-- 세금계산서 발행 정보 -->
@@ -371,7 +375,7 @@
 				<!-- 알림 status가 X번 일 때는 프로젝트 수정하는 url도 같이 넣어줘서 바로 프로젝트 수정 페이지로 이동시킴 -->
 				<!-- 관리자가 보낸 메시지를 참고해서 내용을 수정하면 됨 -->
 				<div id="notificationContainer">
-				  	<div class="alert alert-info" role="alert">
+				  	<div class="alert alert-primary" role="alert">
 						<i class="fas fa-exclamation-circle"></i><a>&nbsp;알림이 없습니다.</a>
 					</div>
 				</div>

@@ -103,7 +103,16 @@ footer {
 	font-size: 18px;
 	font-weight: bold;
 	margin-bottom: 10px;
-	margin-top:60px;
+}
+
+/* 프로젝트 프로세스 */
+.projectProcess {
+    text-align: center;
+}
+.projectProcess img {
+	margin-top: 30px;
+    max-width: 80%;
+    height: auto;
 }
 
 /* 프로젝트 관리 공통 영역 */
@@ -251,7 +260,7 @@ th, td {
 /* 종 모양 아이콘 크기 설정 */
 .nav-link svg {
 	font-size: 1.7em;
-	fill: white; /* 아이콘의 색상을 흰색으로 설정 */
+	fill: #9bd668; /* 아이콘의 색상을 흰색으로 설정 */
 }
 
 .nav-link {
@@ -424,19 +433,27 @@ a.supporters svg {
   #aisdeLeft {
     display:none;
   }
+  
   .form-control {
     width: 100%;
     max-width: 400px;
   }
+
 }
 /* mobile */
 @media screen and (max-width: 900px) {
   #aisdeRight {
     display:none;
   }
+  
   .form-control {
     width: 100%;
     max-width: 350px;
+  }
+  
+  .projectProcess img {
+	margin-top: 100px;
+	width: 70%;
   }
 }
 

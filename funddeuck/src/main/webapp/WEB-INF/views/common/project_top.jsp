@@ -75,22 +75,22 @@
 </script>
 	
 <div id="msgStack"></div>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height:60px;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height:60px;">
 	<div class="container">
 	    <a class="navbar-brand">
 	    		<img src="${pageContext.request.contextPath}/resources/images/logo.png" width="30px" height="30px" onclick="location.href='projectMaker'">
 	    </a>
 	    <div class="d-flex flex-row align-items-center">
-	    	<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#notifyModal">Admin Feedback</button>
-		  	<a class="nav-link text-light mx-4" href="#">${sessionScope.sId} 님</a>
-		  	<a class="nav-link text-light me-4" href="javascript:logout()">나가기</a>
+	    	<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#notifyModal">Admin Feedback</button>
+		  	<a class="nav-link text-primary mx-4" href="#">${sessionScope.sId} 님</a>
+		  	<a class="nav-link text-primary me-4" href="javascript:logout()">나가기</a>
 		  	<a class="nav-link py-0" href="confirmNotification">
 			    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bell" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 			    	<path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2z"/>
 			      	<path fill-rule="evenodd" d="M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
 			    </svg>
 		  	</a>
-		  	<span id="newNotificationCount" class="badge bg-primary rounded-pill">1</span>
+		  	<span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
 		</div>
 	    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 	    	<span class="navbar-toggler-icon"></span>
