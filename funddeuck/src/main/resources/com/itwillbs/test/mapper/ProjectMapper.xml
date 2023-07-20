@@ -45,4 +45,47 @@
 				)
 	</insert>
 	
+	<!-- 리워드 갯수 조회하기 -->
+	<select id="selectRewardCount" resultType="int">
+		select count(*)
+			from reward
+				where
+					project_idx = #{project_idx}
+	</select>
+	
+	<!-- 리워드 리스트 조회하기 -->
+	<select id="selectRewardList" resultType="com.itwillbs.test.vo.RewardVO">
+		select *
+			from reward
+				where
+					project_idx = #{project_idx}
+	</select>
+	
+	<!-- 리워드 조회하기 -->
+	<select id="selectRewardInfo">
+		select *
+			from reward
+				where
+					reward_idx = #{reward_idx}
+	</select>
+	
+	<!-- 리워드 수정하기 -->
+	<update id="updateReward">
+		update reward
+			set
+				reward_price = #{reward_price}
+				, reward_category = #{reward_category}
+				, reward_name = #{reward_name}
+				, reward_quantity = #{reward_quantity}
+				, reward_option = #{reward_option}
+				, reward_detail = #{reward_detail}
+				, delivery_status = #{delivery_status}
+				, delivery_price = #{delivery_price}
+				, delivery_date = #{delivery_date}
+				, reward_info = #{reward_info}
+			where
+				reward_idx = #{reward_idx}
+	</update>
+	
+	
 </mapper>

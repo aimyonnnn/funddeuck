@@ -17,8 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +36,12 @@ public class ProjectController {
 	
 	// 리워드 등록
 	@GetMapping("projectReward")
-	public String projectReward() {
+	public String projectReward(@RequestParam(required = false) Integer reward_idx, Model model) {
+		if (reward_idx != null) {
+	        // 수정 버튼을 눌렀을 때 - reward_idx가 존재하면 해당 리워드 정보 조회
+	        RewardVO reward = projectService.getRewardInfo(reward_idx);
+	        model.addAttribute("reward", reward);
+	    }
 		return "project/project_reward";
 	}
 	
@@ -53,20 +60,42 @@ public class ProjectController {
 	// 리워드 추가하기
 	@PostMapping("saveReward")
     @ResponseBody
-    public String saveReward(@RequestBody List<RewardVO> rewardList) {
+    public String saveReward(@ModelAttribute RewardVO reward) {
 		System.out.println("saveReward");
-		if(rewardList.isEmpty()) {
-			System.out.println("isEmpty()");
-			return "false";
-		}
-		int insertCount = 0;
-		for(RewardVO reward : rewardList) {
-			boolean isSuccess = projectService.registReward(reward);
-			if(isSuccess) insertCount++;
-		}
+		int insertCount = projectService.registReward(reward);
+		System.out.println("insertCount : " + insertCount);
 		if(insertCount > 0) return "true";
         return "false";
     }
+	
+	// 리워드 수정하기
+	@PostMapping("modifyReward")
+    @ResponseBody
+    public String modifyReward(@ModelAttribute RewardVO reward, @RequestParam int reward_idx) {
+		System.out.println("reward_idx : " + reward_idx);
+		int updateCount = projectService.modifyReward(reward);
+		System.out.println("updateCount : " + updateCount);
+		if(updateCount > 0) return "true";
+        return "false";
+    }
+	
+	// 리워드 갯수 조회하기
+	@GetMapping("rewardCount")
+	@ResponseBody
+	public String rewardCount(@RequestParam int project_idx) {
+		System.out.println("rewardCount() - project_idx : " + project_idx);
+		int rewardCount = projectService.getRewardCount(project_idx);
+		return rewardCount+"";
+	}
+	
+	// 리워드 리스트 조회하기
+	@GetMapping("rewardList")
+	@ResponseBody
+	public List<RewardVO> rewardList(@RequestParam int project_idx) {
+	    System.out.println("rewardList() - project_idx: " + project_idx);
+	    List<RewardVO> rList = projectService.getRewardList(project_idx);
+	    return rList;
+	}
 	
 	// 메이커 등록 페이지
 	@GetMapping("projectMaker")

@@ -57,11 +57,15 @@
 		          	<p class="projectContent">서포터들에게 제공할 리워드를 입력해 주세요.</p>
 		            
 		            <!-- 폼 태그 시작 -->
-		            <form action="" class="projectContent" method="post">
+		            <form action="" class="projectContent" method="post" id="rewardForm">
+		            	<!-- 히든태그 지우지마세요 테스트 중입니다 -->
+		            	<!-- 프로젝트 등록에서 넘어올 때 파라미터로 받아와야함 -->
+		            	<input type="text" name="project_idx" id="project_idx" value="1" class="form-control" style="width:500px;">
+		            	
 			            <!-- 금액 -->
 			            <div>
 			            	<label class="form-content subheading" for="reward_price">금액</label>
-			           		<input class="form-control" type="text" name="reward_price" id="reward_price" placeholder="금액을 입력하세요" style="width:500px;">
+			           		<input class="form-control" type="text" name="reward_price" id="reward_price" value="${reward.reward_price }" placeholder="금액을 입력하세요" style="width:500px;">
 			            </div>
 		
 		                <!-- 리워드 카테고리 -->
@@ -69,46 +73,48 @@
 		                <div class="d-flex flew-row">
 		                	<select class="form-control" name="reward_category" id="reward_category" style="width:150px;">
 			                	<option value="">-- 선택 --</option>
-			                    <option value="tech">테크/가전</option>
-			                    <option value="fassion">패션/잡화</option>
-			                    <option value="living">홈/리빙</option>
-			                    <option value="beauty">뷰티</option>
-			                    <option value="book">출판</option>
+			                    <option value="tech" <c:if test="${reward.reward_category eq 'tech'}">selected</c:if>>테크/가전</option>
+			                    <option value="fassion" <c:if test="${reward.reward_category eq 'fassion'}">selected</c:if>>패션/잡화</option>
+			                    <option value="living" <c:if test="${reward.reward_category eq 'living'}">selected</c:if>>홈/리빙</option>
+			                    <option value="beauty" <c:if test="${reward.reward_category eq 'beauty'}">selected</c:if>>뷰티</option>
+			                    <option value="book" <c:if test="${reward.reward_category eq 'book'}">selected</c:if>>출판</option>
 		               		</select>
 		              </div>
 		              <!--리워드명 -->
 		              <div>
 			              <label class="form-content subheading" for="reward_name">리워드명</label>
-			              <input class="form-control" type="text" name="reward_name" id="reward_name" placeholder="예시 - 베이지 이불/베개 1개 세트" style="width:500px;">
+			              <input class="form-control" type="text" name="reward_name" id="reward_name" value="${reward.reward_name }" placeholder="예시 - 베이지 이불/베개 1개 세트" style="width:500px;">
 		              </div>
 		              
 		              <!--리워드 수량 -->
 		              <div>
 			              <label class="form-content subheading" for="reward_quantity">수량</label>
-			              <input class="form-control" type="text" name="reward_quantity" id="reward_quantity" style="width:500px;">
+			              <input class="form-control" type="text" name="reward_quantity" id="reward_quantity" value="${reward.reward_quantity }" style="width:500px;">
 		              </div>
 		              
 		              <!--리워드 옵션 -->
 		              <div>
 			              <label class="form-content subheading" for="reward_option">옵션</label>
-			              <input class="form-control" type="text" name="reward_option" id="reward_option" style="width:500px;">
+			              <input class="form-control" type="text" name="reward_option" id="reward_option" value="${reward.reward_option }" style="width:500px;">
 		              </div>
 		
 		              <!-- 리워드 설명 -->
 		              <label class="form-content subheading" for="reward_detail">리워드 설명</label>
-		              <textarea class="form-control reward-info" name="reward_detail" id="reward_detail" placeholder="리워드 구성과 혜택을 간결하게 설명해 주세요" style="height: 300px; resize: none;"></textarea>
+		              <textarea class="form-control reward-info" name="reward_detail" id="reward_detail" placeholder="리워드 구성과 혜택을 간결하게 설명해 주세요" style="height: 300px; resize: none;">${reward.reward_detail}</textarea>
 		              
 		              <!-- 배송여부 -->
 		              <div class="form-content">
               	  		<span class="subheading">배송여부</span>
 			            <div class="form-check">
-			          		<input class="form-check-input" type="radio" name="delivery_status" id="delivery_status1" value="배송">
+			          		<input class="form-check-input" type="radio" name="delivery_status" id="delivery_status1" value="배송"
+			          			<c:if test="${reward.delivery_status eq '배송'}">checked</c:if>>
 			                <label class="form-check-label" for="delivery_status1">
 		                		<span>배송</span>
 			                </label>
 			            </div>
 			            <div class="form-check">
-		              		<input class="form-check-input" type="radio" name="delivery_status" id="delivery_status2" value="배송없음">
+		              		<input class="form-check-input" type="radio" name="delivery_status" id="delivery_status2" value="배송없음"
+		              			<c:if test="${reward.delivery_status eq '배송없음'}">checked</c:if>>
 			                <label class="form-check-label" for="delivery_status2">
 		                    	<span>배송없음</span>
 			                </label>
@@ -118,13 +124,13 @@
 		              <!-- 배송비 -->
 		              <div>
 		                <label class="form-content subheading" for="delivery_price">배송비</label>
-		                <input class="form-control" type="text" name="delivery_price" id="delivery_price" placeholder="배송비를 입력하세요" style="width:500px;">
+		                <input class="form-control" type="text" name="delivery_price" id="delivery_price" value="${reward.delivery_price}" placeholder="배송비를 입력하세요" style="width:500px;">
 		              </div>
 		
 		              <!-- 발송 시작일 -->
 		              <label class="form-content subheading" for="yearMonth">발송 시작일</label>
 		              <!-- 히든으로 처리할 예정 -->
-		              <input type="text" name="delivery_date" id="delivery_date">
+		              <input type="text" name="delivery_date" id="delivery_date" value="${reward.delivery_date}" >
 		              <div class="d-flex flew-row">
 		                <select class="form-control" name="yearMonth" id="yearMonth" style="width:150px;">
 		                  <option value="">-- 선택 --</option>
@@ -150,7 +156,10 @@
               <!-- 리워드 정보 제공 고시 -->
               <!-- 들여쓰기 안한게 아니라 스페이스바 누르면 뷰에 스페이스바까지 나와서 이렇게 작성한거임 -->
               <label class="form-content subheading" for="reward_info">리워드 정보 제공 고시</label>
-              <textarea class="form-control reward-info" placeholder="제품 소재, 색상, 주의사항, 품질보증기준을 작성해주세요" name="reward_info" id="reward_info" style="height: 300px; resize: none;">
+              <c:choose>
+			  	<c:when test="${empty reward.reward_info}">
+				    <!-- 첫 페이지 - 기본 양식 -->
+				    <textarea class="form-control reward-info" placeholder="제품 소재, 색상, 주의사항, 품질보증기준을 작성해주세요" name="reward_info" id="reward_info" style="height: 300px; resize: none;">
 제품소재 :
 
 색상 :
@@ -160,10 +169,26 @@
 주의사항 :
 
 품질보증기준 :</textarea>
-					  	<div class="d-flex justify-content-center my-3">
-						    <button type="button" class="btn btn-outline-primary mx-3" onclick="addRewardToList()">추가하기</button>
-					  		<button type="button" class="btn btn-outline-primary" onclick="saveReward()">저장하기</button>
-				      	</div>
+				</c:when>
+				<c:otherwise>
+				    <textarea class="form-control reward-info" placeholder="제품 소재, 색상, 주의사항, 품질보증기준을 작성해주세요" name="reward_info" id="reward_info" style="height: 300px; resize: none;">${reward.reward_info}</textarea>
+				 </c:otherwise>
+				</c:choose>
+						
+						<!-- 저장하기 & 수정하기 버튼 -->
+						<c:choose>
+							<c:when test="${empty reward.reward_idx}">
+							  	<div class="d-flex justify-content-center my-3">
+							  		<button type="button" class="btn btn-outline-primary" onclick="saveReward()">저장하기</button>
+						      	</div>
+							</c:when>
+							<c:otherwise>
+							  	<div class="d-flex justify-content-center my-3">
+							  		<button type="button" class="btn btn-outline-primary" onclick="modifyReward(${reward.reward_idx})">수정하기</button>
+						      	</div>
+							</c:otherwise>
+						</c:choose>
+				      	
 		            </form>
 		          </div>
 		          <!-- 리워드 설계 끝-->
@@ -194,16 +219,14 @@
 							</div>
 				        </div>
 				        <!--  -->
-				        <div class="admin-title mt-5">리워드 담아두기</div>
-			        	<div class="admin-content"></div>
-				        <!--  -->
+				        <div class="admin-title mt-5">리워드 리스트</div>
 				        <div class="alert alert-success" role="alert" id="numRewardsAdded">
-							<a><i class="fas fa-exclamation-circle"></i>&nbsp;추가된 리워드 수 : 0</a>
+							<a><i class="fas fa-exclamation-circle"></i>&nbsp;현재 등록된 리워드 수 : <span id="rewardCount">0</span></a>
 						</div>
-						<div class="alert alert-warning" role="alert">
-						  <button onclick="saveTemporaryData()" class="btn btn-outline-secondary btn-sm mx-3">임시저장</button>
-						  <button onclick="deleteTemporaryData()" class="btn btn-outline-secondary btn-sm">삭제하기</button>
-						</div>
+						<!-- 이 부분은 리워드 리스트가 출력될 컨테이너입니다. -->
+						<div id="rewardContainer"></div>
+						<button onclick="saveTemporaryData()" class="btn btn-outline-secondary btn-sm mx-3">임시저장</button>
+						<button onclick="deleteTemporaryData()" class="btn btn-outline-secondary btn-sm">삭제하기</button>
 			     	 </div>
 			     </aside>
 			     <!-- 오른쪽 네비게이션 끝 -->
@@ -211,203 +234,136 @@
     </main>
 	
 	<script type="text/javascript">
-    	
-    	// 리워드 추가하기
-        var rewardList = []; // 리워드 데이터를 저장할 배열
-        var project_idx = 1; // 나중에 모델로 받아와야 함!
-        
-    	// 입력 값이 모두 채워져있는지 검사
-        function isAllFieldsFilled() {
-            var reward_price = $("#reward_price").val();
-            var reward_category = $("#reward_category").val();
-            var reward_name = $("#reward_name").val();
-            var reward_quantity = $("#reward_quantity").val();
-            var reward_option = $("#reward_option").val();
-            var reward_detail = $("#reward_detail").val();
-            var delivery_status = $("input[name='delivery_status']:checked").val();
-            var delivery_price = $("#delivery_price").val();
-            var delivery_date = $("#delivery_date").val();
-            var reward_info = $("#reward_info").val();
-
-            return (
-                reward_price &&
-                reward_category &&
-                reward_name &&
-                reward_quantity &&
-                reward_option &&
-                reward_detail &&
-                delivery_status &&
-                delivery_price &&
-                delivery_date &&
-                reward_info
-            );
-        }
-
-	    function addRewardToList() {
-	        // rewardList 배열에 수집한 리워드 데이터를 추가
-	        var reward_price = $("#reward_price").val();
-	        var reward_category = $("#reward_category").val();
-	        var reward_name = $("#reward_name").val();
-	        var reward_quantity = $("#reward_quantity").val();
-	        var reward_option = $("#reward_option").val();
-	        var reward_detail = $("#reward_detail").val();
-	        var delivery_status = $("input[name='delivery_status']:checked").val();
-	        var delivery_price = $("#delivery_price").val();
-	        var delivery_date = $("#delivery_date").val();
-	        var reward_info = $("#reward_info").val();
-	        
-	     	// 입력 값이 모두 채워져있는지 검사
-	        if (!isAllFieldsFilled()) {
-	            alert("모든 항목을 입력해주세요.");
-	            return;
+	// 페이지 로드될 때 리워드 갯수, 리스트 조회하기
+	$(document).ready(function() {
+		// 리워드 갯수 조회하기
+	    $.ajax({
+	        type: "GET",
+	        url: "<c:url value='rewardCount'/>",
+	        data: {
+	            project_idx: $('#project_idx').val()
+	        },
+	        dataType: "text",
+	        success: function (response) {
+	            $('#rewardCount').text(response + "개");
+	        },
+	        error: function (error) {
+	            console.error(error);
+	            alert("리워드 갯수 조회에 실패했습니다.");
 	        }
-	
-	        rewardList.push({
-	        	project_idx: project_idx,
-	            reward_price: reward_price,
-	            reward_category: reward_category,
-	            reward_name: reward_name,
-	            reward_quantity: reward_quantity,
-	            reward_option: reward_option,
-	            reward_detail: reward_detail,
-	            delivery_status: delivery_status,
-	            delivery_price: delivery_price,
-	            delivery_date: delivery_date,
-	            reward_info: reward_info
-	        });
-
-	        // 추가한 리워드 수를 표시 (옵션)
-	        var numRewards = rewardList.length;
-	        document.getElementById("numRewardsAdded").innerHTML = "<i class='fas fa-exclamation-circle'></i>&nbsp;추가된 리워드 수: " + numRewards;
-	        
-	        // 입력된 텍스트 지우기
-	        $("#reward_price").val("");
-	        $("#reward_category").val("");
-	        $("#reward_name").val("");
-	        $("#reward_quantity").val("");
-	        $("#reward_option").val("");
-	        $("#reward_detail").val("");
-	        $("input[name='delivery_status']").prop("checked", false);
-	        $("#delivery_price").val("");
-	        $("#yearMonth").val("");
-	        $("#day").val("");
-	        $("#delivery_date").val("");
-	        $("#reward_info").val(`제품소재 :
-
-색상 :
-
-크기 :
-
-주의사항 :
-
-품질보증기준 :`);
-	        
-	        alert("리워드가 추가되었습니다." +
-	        "\n계속해서 추가하시려면 추가하기 버튼을 클릭해주세요");
-	        
-	    }
-
-        function saveReward() {
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: "<c:url value='saveReward'/>",
-                data: JSON.stringify(rewardList),
-                dataType: "text",
-                success: function (response) {
-                	
-                	if(response == 'true') {
-	                    alert("성공적으로 저장되었습니다!");
-                	} else {
-                		alert("모든 항목을 입력해주세요.");
-                	}
-                	
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                    alert("리워드 데이터 저장에 실패했습니다.");
-                }
-            });
-        }
-    	
-		// 선택 상자의 값을 변경할 때마다 히든 필드 업데이트
-	    document.getElementById("yearMonth").addEventListener("change", updateDeliveryDate);
-	    document.getElementById("day").addEventListener("change", updateDeliveryDate);
-
-	    function updateDeliveryDate() {
-	        var yearMonth = document.getElementById("yearMonth").value;
-	        var day = document.getElementById("day").value;
-	        var delivery_date = yearMonth + day;
-	        document.getElementById("delivery_date").value = delivery_date;
-	    }
+	    }); // ajax
 	    
-	    // 임시 저장하기
-	    function saveTemporaryData() {
-		    // 현재 입력된 리워드 정보를 가져옴
-		    var reward_price = $("#reward_price").val();
-		    var reward_category = $("#reward_category").val();
-		    var reward_name = $("#reward_name").val();
-		    var reward_quantity = $("#reward_quantity").val();
-		    var reward_option = $("#reward_option").val();
-		    var reward_detail = $("#reward_detail").val();
-		    var delivery_status = $("input[name='delivery_status']:checked").val();
-		    var delivery_price = $("#delivery_price").val();
-		    var delivery_date = $("#delivery_date").val();
-		    var reward_info = $("#reward_info").val();
-		
-		    // 리워드 정보를 오브젝트에 저장
-		    var newReward = {
-		        reward_price: reward_price,
-		        reward_category: reward_category,
-		        reward_name: reward_name,
-		        reward_quantity: reward_quantity,
-		        reward_option: reward_option,
-		        reward_detail: reward_detail,
-		        delivery_status: delivery_status,
-		        delivery_price: delivery_price,
-		        delivery_date: delivery_date,
-		        reward_info: reward_info
-		    };
-		
-		    // 로컬 스토리지에 리워드 정보를 저장
-		    localStorage.setItem('newReward', JSON.stringify(newReward));
-		
-		    alert("리워드 데이터가 임시저장되었습니다.");
-		}
-	    
-	    // 페이지 로드 시
-	    window.onload = function() {
-	        var storedNewReward = localStorage.getItem('newReward');
-
-	        if (storedNewReward) {
-	            var lastReward = JSON.parse(storedNewReward);
-	            restoreRewardInputs(lastReward);
+		// 리워드 리스트 조회하기
+	    $.ajax({
+	        type: "GET",
+	        url: "<c:url value='rewardList'/>",
+	        data: {
+	            project_idx: $('#project_idx').val()
+	        },
+	        dataType: "json",
+	        success: function (response) {
+	            // json 데이터를 변수에 저장
+	            let rList = response;
+	            // 리워드 리스트를 생성하여 컨테이너에 추가
+	            let container = $("#rewardContainer");
+	            for (let i = 0; i < rList.length; i++) {
+	                let reward = rList[i];
+	                let rewardInfo = reward.reward_idx + " - " + reward.reward_name;
+	                // 리워드 정보를 담은 html을 생성하여 컨테이너에 추가
+	                let rewardDiv = $('<div>', {
+	                    class: "alert alert-success",
+	                    role: "alert"
+	                }).append(
+	                    $('<a>').append(
+	                        $('<i>', { class: "fas fa-exclamation-circle" }),
+	                        "&nbsp;" + rewardInfo
+	                    ),
+	                    $('<button>', {
+	                        type: "button",
+	                        class: "btn btn-outline-secondary btn-sm mx-2",
+	                        text: "수정",
+	                        click: function() {
+	                            // 수정하기 버튼을 클릭하면 해당 리워드 페이지로 이동
+	                            window.location.href = 'projectReward?reward_idx=' + reward.reward_idx;
+	                        }
+	                    }),
+	                    $('<button>', {
+	                        type: "button",
+	                        class: "btn btn-outline-secondary btn-sm",
+	                        text: "삭제",
+	                        click: function() {
+	                            // 삭제 버튼을 클릭하면 해당 리워드를 삭제하는 코드를 추가할 수 있습니다.
+	                            // (삭제를 위한 추가적인 기능이 필요하다면 서버 코드도 추가되어야 합니다.)
+	                            // 예시: deleteReward(reward.reward_idx);
+	                        }
+	                    })
+	                );
+	                container.append(rewardDiv);
+	            }
+	        },
+	        error: function (error) {
+	            console.error(error);
+	            alert("리워드 리스트 조회에 실패했습니다.");
 	        }
-	    };
-	    
-	    function restoreRewardInputs(lastReward) {
-	        $("#reward_price").val(lastReward.reward_price);
-	        $("#reward_category").val(lastReward.reward_category);
-	        $("#reward_name").val(lastReward.reward_name);
-	        $("#reward_quantity").val(lastReward.reward_quantity);
-	        $("#reward_option").val(lastReward.reward_option);
-	        $("#reward_detail").val(lastReward.reward_detail);
-	        $("input[name='delivery_status'][value='" + lastReward.delivery_status + "']").prop("checked", true);
-	        $("#delivery_price").val(lastReward.delivery_price);
-	        $("#yearMonth").val(lastReward.delivery_date.split("/")[0]);
-	        $("#day").val(lastReward.delivery_date.split("/")[1]);
-	        $("#reward_info").val(lastReward.reward_info);
-	    }
-	    
-	    // 임시저장 된 데이터 삭제하기
-	    function deleteTemporaryData() {
-			localStorage.removeItem('newReward');
-			alert("임시저장 데이터가 삭제되었습니다.");
-			location.reload();
-		}
-	</script>
+	    }); // ajax
+	}); // ready
 	
-	<script type="text/javascript">
+	// 리워드 등록하기
+	function saveReward() {
+		
+		let confirmation = confirm('리워드를 등록 하시겠습니까?')
+		
+		if(confirmation) {
+			$.ajax({
+			    type: "POST",
+			    url: "<c:url value='saveReward'/>",
+			    data: $("#rewardForm").serialize(),
+			    dataType: "text",
+			    success: function (response) {
+			    	
+			    	if(response.trim() == 'true') {
+				        alert("성공적으로 저장되었습니다!");
+				        location.reload();
+			    	} else {
+			    		alert("모든 항목을 입력해주세요.");
+			    	}
+			    },
+			    error: function (error) {
+			        console.error(error);
+			        alert("리워드 데이터 저장에 실패했습니다.");
+			    }
+			}); // ajax
+		}
+    }
+	
+	// 리워드 수정하기
+	function modifyReward(reward_idx) {
+		
+		let confirmation = confirm('리워드를 수정 하시겠습니까?')
+		
+		if(confirmation) {
+			$.ajax({
+			    type: "POST",
+			    url: "<c:url value='modifyReward'/>",
+		        data: $("#rewardForm").serialize() + "&reward_idx=" + reward_idx,
+			    dataType: "text",
+			    success: function (response) {
+			    	
+			    	if(response.trim() == 'true') {
+				        alert("성공적으로 수정되었습니다!");
+				        location.reload();
+			    	} else {
+			    		alert("수정에 실패했습니다.");
+			    	}
+			    },
+			    error: function (error) {
+			        console.error(error);
+			        alert("수정에 실패했습니다.");
+			    }
+			}); // ajax
+		}
+    }
+	
 	// 관리자 피드백
 	function getNotifications() {
 		$.ajax({
@@ -420,6 +376,7 @@
 		    notificationContainer.empty();
 		    
 		    $.each(notifications.slice(0, 5), function(index, notification) {
+		    	
 		    	var notificationContent = notification.notification_content;
 		        var alertDiv = $('<div class="alert alert-primary" role="alert"></div>');
 		        var icon = $('<i class="fas fa-exclamation-circle"></i>');
@@ -443,7 +400,7 @@
 	
 	$(()=>{
 		getNotifications();
-		setInterval(getNotifications, 5000);
+// 		setInterval(getNotifications, 5000);
 	})
 	
 	// 메시지 읽음 처리 하기
