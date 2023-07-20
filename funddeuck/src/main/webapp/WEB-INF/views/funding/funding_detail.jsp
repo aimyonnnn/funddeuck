@@ -209,7 +209,7 @@
 					<!-- 메이커명-->
 					<div class="col text-start p-2">
 						<span class="fs-5 fw-bold p-3">xxx메이커</span>
-						<span class="fs-6 fw-light">xx시간 전 로그인</span>
+						<span class="fs-6 text-muted">xx시간 전 로그인</span>
 					</div>
 				</div>
 				<!-- 팔로우, 1:1문의 버튼-->
@@ -280,7 +280,7 @@
 						<!-- 메이커명-->
 						<div class="col text-lg-start p-2">
 							<span class="fs-5 fw-bold p-3">xxx메이커</span> <br>
-							&nbsp;&nbsp;<span class="fs-6 fw-light">xx시간 전 로그인</span>
+							&nbsp;&nbsp;<span class="fs-6 text-muted">xx시간 전 로그인</span>
 						</div>
 					</div>
 					<!-- 팔로우, 1:1문의 버튼-->
