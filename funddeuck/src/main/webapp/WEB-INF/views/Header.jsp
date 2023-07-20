@@ -16,7 +16,7 @@
     <!-- Bootstrap JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     
-<style>
+	<style>
        .navbar-nav {
             display: flex;
             align-items: center;
@@ -53,7 +53,7 @@
             </div>
             
             <!-- Center-aligned Navbar Items -->
-            <ul class="navbar-nav mx-auto"> <!-- Use mx-auto to center the items -->
+            <ul class="navbar-nav mx-auto"> 
                 <li class="navbar-item">
                     <form class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="원하는 프로젝트는?" aria-label="Search">
@@ -62,7 +62,6 @@
                 </li>
             </ul>
 
-            <!-- Right-aligned Navbar Items -->
             <ul class="navbar-nav">
                 <li class="navbar-item">
                     <a class="nav-link" href="#">로그인</a>
