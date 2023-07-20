@@ -209,39 +209,6 @@ th, td {
 	font-size: 18px;
 }
 
-/* ==================== datepicker ==================== */
-/* 날짜 선택을 위한 input 요소의 너비 조정 */
-#startDate, #endDate {
-	width: 90px;
-}
-
-/* 날짜 선택을 위한 input 요소의 스타일 */
-.datepicker {
-	font-size: 12px;
-	padding: 0.25rem 0.5rem;
-	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
-	height: calc(1.5em + 0.5rem + 2px);
-	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-/* .datepicker 스타일에 맞는 버튼 스타일 */
-.datepicker-button {
-	margin: 0px;
-	font-size: 12px;
-	padding: 0.25rem 0.5rem;
-	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
-	height: calc(1.5em + 0.5rem + 2px);
-	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-/* 버튼 눌림 효과 스타일 */
-.datepicker-button:active {
-	box-shadow: none;
-	background-color: #e9ecef;
-}
-
 /* 네비게이션바 스타일 설정 */
 #navMenu li a {
 	display: block;

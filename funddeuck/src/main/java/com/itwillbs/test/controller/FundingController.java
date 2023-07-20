@@ -18,4 +18,10 @@ public class FundingController {
 		return "funding/funding_detail";
 	}
 	
+	// 펀딩 주문페이지 이동
+	@GetMapping ("fundingOrder")
+	public String fundingOrder() {
+		return "funding/funding_order";
+	}
+		
 }

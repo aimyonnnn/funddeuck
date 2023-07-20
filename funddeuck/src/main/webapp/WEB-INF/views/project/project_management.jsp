@@ -202,14 +202,17 @@
 						<input class="form-control" type="text" name="targetAmount" id="targetAmount" placeholder="금액을 입력해 주세요">
 					</div>
 
-					<!-- 프로젝트 종료일 -->
+					<!-- 프로젝트 일정 -->
 					<div class="mt-4">
-						<label class="subheading" for="projectDatepicker">프로젝트 종료일</label>
+						<p class="subheading">프로젝트 일정</p>
 						<p class="sideDescription">
 							프로젝트 심사부터 리워드 제작 기간 등 전체 일정을 고려해 설정해 주세요.<br>
 							리워드 발송은 프로젝트 종료 후 결제까지 완료되어야 가능해요.
 						</p>
-						<input type="text" name="projectEndDate" id="projectDatepicker"><br>
+						<label class="sideDescription fw-bold" for="projectStartDate">시작일</label>
+						<input type="text" name="projectStartDate" id="projectStartDate"><br>
+						<label class="sideDescription mt-3 fw-bold" for="projectEndDate">종료일</label>
+						<input type="text" name="projectEndDate" id="projectEndDate"><br>
 					</div>
 
 					<!-- 대표자 및 정산 정보 입력 -->

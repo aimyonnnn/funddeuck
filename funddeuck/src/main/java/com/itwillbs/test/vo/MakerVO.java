@@ -7,7 +7,7 @@ import lombok.Data;
 -- 메이커 테이블 생성
 CREATE TABLE maker (
     maker_idx INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '메이커 번호',
-    project_idx INT NOT NULL COMMENT '프로젝트 번호',
+    member_idx INT NOT NULL COMMENT '회원번호',
     maker_file1 VARCHAR(255) COMMENT '메이커 유형-개인신분증',
     individual_biz_num INT COMMENT '메이커 유형-개인사업자등록번호',
     individual_biz_name VARCHAR(255) COMMENT '메이커 유형-개인사업자명',
@@ -20,14 +20,14 @@ CREATE TABLE maker (
     maker_name VARCHAR(255) NOT NULL COMMENT '메이커 이름',
     maker_email VARCHAR(255) NOT NULL COMMENT '메이커 이메일',
     maker_tel VARCHAR(255) NOT NULL COMMENT '메이커 전화번호',
-    maker_url VARCHAR(255) NOT NULL COMMENT '메이커 홈페이지'
--- 	foreign key (project_idx) references project(project_idx)    
+    maker_url VARCHAR(255) NOT NULL COMMENT '메이커 홈페이지',
+	foreign key (member_idx) references members(member_idx)    
 );
 */
 @Data
 public class MakerVO {
     private int maker_idx;                  // 메이커 번호
-    private int project_idx;                // 프로젝트 번호
+    private int member_idx;                 // 회원 번호
     private Integer individual_biz_num;     // 메이커 유형 - 개인사업자 등록번호
     private String individual_biz_name;     // 메이커 유형 - 개인사업자명
     private Integer corporate_biz_num;      // 메이커 유형 - 법인사업자 등록번호

@@ -13,9 +13,10 @@ CREATE TABLE project (
     project_thumnails1 varchar(100) NOT NULL COMMENT '프로젝트 썸네일 (1)',
     project_thumnails2 varchar(100) COMMENT '프로젝트 썸네일 (2)',
     project_thumnails3 varchar(100) COMMENT '프로젝트 썸네일 (3)',
-    project_img varchar(100) NOT NULL COMMENT '프로젝트 내용 상세 이미지',
+    project_image varchar(100) NOT NULL COMMENT '프로젝트 내용 상세 이미지',
     project_introduce varchar(300) NOT NULL COMMENT '프로젝트 소개',
     project_target int NOT NULL COMMENT '목표 금액',
+    project_start_date date NOT NULL COMMENT '프로젝트 시작일',
     project_end_date date NOT NULL COMMENT '프로젝트 종료일',
     project_hashtag1 varchar(20) NOT NULL COMMENT '검색용 태그1',
     project_hashtag2 varchar(20) COMMENT '검색용 태그2',
@@ -29,8 +30,8 @@ CREATE TABLE project (
     project_settlement_name varchar(50) NOT NULL COMMENT '예금주명',
     project_settlement_image varchar(100) NOT NULL COMMENT '통장사본 이미지',
     project_approve_status int NOT NULL COMMENT '프로젝트 승인 상태',
-    member_idx int NOT NULL COMMENT '멤버 번호',
-    FOREIGN KEY (member_idx) references member(member_idx)
+    maker_idx int NOT NULL COMMENT '메이커 번호',
+    FOREIGN KEY (maker_idx) references maker(maker_idx)
 );
 */
 

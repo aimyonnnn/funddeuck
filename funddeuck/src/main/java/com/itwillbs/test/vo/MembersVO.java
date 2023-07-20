@@ -3,7 +3,7 @@ package com.itwillbs.test.vo;
 import lombok.Data;
 
 @Data
-public class MemberVO {
+public class MembersVO {
 	
 	private String member_id;
 	

@@ -75,10 +75,10 @@
 </script>
 	
 <div id="msgStack"></div>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height:60px;">
 	<div class="container">
 	    <a class="navbar-brand">
-	    		<img src="${pageContext.request.contextPath}/resources/images/logo.png" width="40px" height="40px" onclick="location.href='projectMaker'">
+	    		<img src="${pageContext.request.contextPath}/resources/images/logo.png" width="30px" height="30px" onclick="location.href='projectMaker'">
 	    </a>
 	    <div class="d-flex flex-row align-items-center">
 	    	<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#notifyModal">Admin Feedback</button>
