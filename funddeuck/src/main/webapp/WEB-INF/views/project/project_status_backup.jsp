@@ -13,11 +13,9 @@
 	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-	<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 	<!-- CSS -->
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
 	<link href="${pageContext.request.contextPath }/resources/css/project_status.css" rel="styleSheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 	<!-- chart.js -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script>
@@ -217,19 +215,6 @@
 
     }); // ready
 	</script>
-	<style>
-	  /* 아이콘의 크기를 2배로 설정 */
-	  .las.la-chart-line {
-	    font-size: 3em;
-	  }
-	
-	  /* 아이콘의 크기를 3배로 설정하고 색상을 변경 */
-	  .las.la-chart-line {
-	    font-size: 3em;
-	    color: orange; /* 예시로 빨간색으로 변경 */
-	  }
-	</style>
-	
 </head>
 <body>
 	<!-- include -->
@@ -266,138 +251,117 @@
 	    <section id="section">
 	    	<article id="article">
 	
-		        <!--  -->
-		        <div class="projectArea">
-	        	    <p class="projectTitle">프로젝트 현황</p>
-	             	<p class="projectContent mb-4">프로젝트 진행 상황을 실시간으로 한 번에 볼 수 있습니다.</p>
-		            
-		            <div class="container mb-2">
-				    	<div class="row justify-content-center">
-			              
-					      <div class="col-md-12 col-lg-4 d-md-block my-1">
-					        <div class="card">
-					          <div class="card-body d-flex flex-row justify-content-evenly">
-					          <div>
-					            <span class="sideDescription">누적 결제 금액</span>
-					            <h1 class="card-title">919,999<span class="sideDescription">원</span></h1>
-					          </div>
-					          <div class="">
-					            <i class="las la-chart-line" style="color: red;"></i>
-					          </div>
-					          </div>
-					        </div>
-					      </div>
-			              
-					      <div class="col-md-12 col-lg-4 d-md-block my-1">
-					        <div class="card">
-					          <div class="card-body d-flex flex-row justify-content-evenly">
-					          <div>
-					            <span class="sideDescription">펀딩 달성률</span>
-					            <h1 class="card-title">120<span class="sideDescription">%</span></h1>
-					          </div>
-					          <div class="">
-					            <i class="las la-chart-line"></i>
-					          </div>
-					          </div>
-					        </div>
-					      </div>
-			              
-					      <div class="col-md-12 col-lg-4 d-md-block my-1">
-					        <div class="card">
-					          <div class="card-body d-flex flex-row justify-content-evenly">
-					          <div>
-					            <span class="sideDescription">펀딩 건 수</span>
-					            <h1 class="card-title">91<span class="sideDescription">건</span></h1>
-					          </div>
-					          <div class="">
-					            <i class="las la-chart-line" style="color: green;"></i>
-					          </div>
-					          </div>
-					        </div>
-					      </div>
-					      
-				      </div>
-			      	</div>
-	            
+	        <!--  -->
+	        <div class="projectArea">
+        	    <p class="projectTitle">프로젝트 현황</p>
+	            <p class="chart-title subheading">펀딩 결제 현황</p>
+	            <table class="table table-borderless chart-table-title">
+	              <tr>
+	                <td>
+	                  <span>누적 결제 금액</span> &nbsp;
+	                  <span class="chart-table-content" id="">919,999</span>원
+	                </td>
+	                <td>
+	                  <span>펀딩 달성률</span> &nbsp;
+	                  <span class="chart-table-content" id="">110</span>%
+	                </td>
+	                <td>
+	                  <span>펀딩 건 수</span> &nbsp;
+	                  <span class="chart-table-content" id="">91</span>건
+	                </td>
+	              </tr>
+	            </table>
+	            <div>
 		            <!-- 펀딩 결제 현황 그래프 -->
-		            <div>
-			            <canvas id="myChart"></canvas>
-		            </div>
-	            	
-		           <div class="container my-5">
-				    	<div class="row justify-content-center">
-			          	  <p class="subheading">그래프 테스트</p>
-			              <p class="projectContent">결제가 갱신될 때 마다 아래 현황이 업데이트 됩니다.</p>
-			              
-					      <div class="col-md-12 col-lg-4 d-md-block my-1">
-					        <div class="card">
-					          <div class="card-body d-flex flex-row justify-content-evenly">
-					          <div>
-					            <span class="sideDescription">누적 결제 금액</span>
-					            <h1 class="card-title">919,999<span class="sideDescription">원</span></h1>
-					          </div>
-					          <div class="">
-					            <i class="las la-chart-line" style="color: red;"></i>
-					          </div>
-					          </div>
-					        </div>
-					      </div>
-			              
-					      <div class="col-md-12 col-lg-4 d-md-block my-1">
-					        <div class="card">
-					          <div class="card-body d-flex flex-row justify-content-evenly">
-					          <div>
-					            <span class="sideDescription">펀딩 달성률</span>
-					            <h1 class="card-title">120<span class="sideDescription">%</span></h1>
-					          </div>
-					          <div class="">
-					            <i class="las la-chart-line"></i>
-					          </div>
-					          </div>
-					        </div>
-					      </div>
-			              
-					      <div class="col-md-12 col-lg-4 d-md-block my-1">
-					        <div class="card">
-					          <div class="card-body d-flex flex-row justify-content-evenly">
-					          <div>
-					            <span class="sideDescription">펀딩 건 수</span>
-					            <h1 class="card-title">91<span class="sideDescription">건</span></h1>
-					          </div>
-					          <div class="">
-					            <i class="las la-chart-line" style="color: green;"></i>
-					          </div>
-					          </div>
-					        </div>
-					      </div>
-					      
-				      </div>
-			      	</div>
-		            
-		            	<!-- 날짜 선택 -->
-		            <div class="d-flex flex-row justify-content-end">
-						<input class="datepicker" id="startDate" placeholder="시작 날짜">
-						<input class="datepicker mx-2" id="endDate" placeholder="끝 날짜">
-						<select class="datepicker" id="chartType">
-							<option value="">선택</option>
-							<option value="bar">bar</option>
-							<option value="line">line</option>
-							<option value="radar">Radar</option>
-	        				<option value="polarArea">Polar Area</option>
-	        				<option value="doughnut">Doughnut</option>
-						</select>
-						<button class="datepicker-button mx-2" id="updateButton">조회</button>
-		            </div>
-		            
-		            <!--  -->
-		            <div id="chartContainer">
-						<canvas id="myChart2"></canvas>
-					</div>
+		            <canvas id="myChart"></canvas>
+	            </div>
 	
-        		</div>
+	            <p class="chart-title subheading">누적 게시물 수</p>
+	            
+            	<!-- 날짜 선택 -->
+	            <div class="d-flex flex-row justify-content-end">
+					<input class="datepicker" id="startDate" placeholder="시작 날짜">
+					<input class="datepicker mx-2" id="endDate" placeholder="끝 날짜">
+					<select class="datepicker" id="chartType">
+						<option value="">선택</option>
+						<option value="bar">bar</option>
+						<option value="line">line</option>
+						<option value="radar">Radar</option>
+        				<option value="polarArea">Polar Area</option>
+        				<option value="doughnut">Doughnut</option>
+					</select>
+					<button class="datepicker-button mx-2" id="updateButton">조회</button>
+	            </div>
+            	
+	            <table class="table table-borderless chart-table-title">
+	              <tr>
+	                <td>
+	                  <span>누적 게시물 수</span> &nbsp;
+	                  <span class="chart-table-content" id="cumulativePostCount"></span>개
+	                </td>
+	                <td>
+	                  <span>오늘 게시물 수</span> &nbsp;
+	                  <span class="chart-table-content" id="todayPostCount"></span>개
+	                </td>
+	                <td>
+	                  <span>총 회원 수</span> &nbsp;
+	                  <span class="chart-table-content" id="">2</span>명
+	                </td>
+	              </tr>
+	            </table>
+	            <!-- 게시판 게시물 수 그래프 -->
+	            <div id="chartContainer">
+					<canvas id="myChart2"></canvas>
+				</div>
+	
+	            <!-- ChatGPT -->
+	            <div>
+	              <p class="chart-title subheading">다음 주 예상실적 알아보기!</p>
+	              <p class="chatgpt-content">현재 판매 실적을 기반으로 다음 주 예상실적을 분석받을 수 있습니다.</p>
+	              <textarea class="form-control reward-info" name="nextWeekPerformance" id="nextWeekPerformance" placeholder="ChatGPT에게 분석받기 버튼을 클릭하세요!" style="height: 350px; resize: none;"></textarea>
+	              <div class="d-flex justify-content-center my-4">
+	              	<input type="button" value="ChatGPT에게 분석받기" class="btn btn-outline-secondary">
+	              </div>
+	            </div>
+	
+	        </div>
+	
       	  	</article>
 	      </section>
 	      <!-- 중앙 섹션 끝 -->
+	
+	      <!-- 오른쪽 네비게이션 -->
+	      <aside id="aisdeRight">
+	        
+	        <!-- 서포터 알림 -->
+	        <div class="admin-feedback">
+	          <div class="admin-title">서포터 알림</div>
+	          <div class="admin-content">서포터, 댓글이 등록되면 알림이 나타납니다.</div>
+	          
+	          <!-- 메시지 시작 -->
+	          <!-- DB에 저장된 알림 메시지를 반복문으로 출력 -->
+	          <!-- 서포터가 등록되거나(결제되었을 때) 문의사항을 남겼을 때 알림을 보여줌 -->
+	          <!-- 프로젝트를 만든 id가 로그인을 하게되면 상단 종모양 알림 아이콘에 읽지 않은 메시지 갯수가 표시가 됨 -->
+	          <!-- DB에 알림 메시지를 저장하기때문에 꼭 실시간으로 로그인을 안해도 알림내역 들어가서 확인할 수 있음 -->
+	          <!-- 로그인이 되어 있는 경우에는 하단에 실시간으로 toast팝업으로 알림도착 팝업 띄워주고 종모양 아이콘에 갯수도 변화시킴 -->
+	          <div>
+	            <div class="alert alert-info" role="alert">
+	              <i class="fas fa-exclamation-circle"></i>
+	              <span>xxx님이 댓글을 등록하였습니다!</span>
+	            </div>
+	            
+	            <div class="alert alert-info" role="alert">
+	              <i class="fas fa-exclamation-circle"></i>
+	              <span>xxx님이 서포터로 등록되었습니다!</span>
+	            </div>
+	          </div>
+	          <!-- 메시지 끝 -->
+	
+	        </div>
+	        <!-- 서포터 알림 -->
+	
+	      </aside>
+	      <!-- 오른쪽 네비게이션 끝 -->
 	
 	    </div>
 	  </main>

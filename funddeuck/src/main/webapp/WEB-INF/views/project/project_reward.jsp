@@ -161,8 +161,8 @@
 
 품질보증기준 :</textarea>
 					  	<div class="d-flex justify-content-center my-3">
-						    <button type="button" class="btn btn-outline-secondary mx-3" onclick="addRewardToList()">추가하기</button>
-					  		<button type="button" class="btn btn-outline-secondary" onclick="saveReward()">저장하기</button>
+						    <button type="button" class="btn btn-outline-primary mx-3" onclick="addRewardToList()">추가하기</button>
+					  		<button type="button" class="btn btn-outline-primary" onclick="saveReward()">저장하기</button>
 				      	</div>
 		            </form>
 		          </div>
@@ -189,7 +189,7 @@
 						<!-- 알림 status가 X번 일 때는 프로젝트 수정하는 url도 같이 넣어줘서 바로 프로젝트 수정 페이지로 이동시킴 -->
 						<!-- 관리자가 보낸 메시지를 참고해서 내용을 수정하면 됨 -->
 			            <div id="notificationContainer">
-			            	<div class="alert alert-info" role="alert">
+			            	<div class="alert alert-primary" role="alert">
 								<i class="fas fa-exclamation-circle"></i><a>&nbsp;알림이 없습니다.</a>
 							</div>
 				        </div>
@@ -421,7 +421,7 @@
 		    
 		    $.each(notifications.slice(0, 5), function(index, notification) {
 		    	var notificationContent = notification.notification_content;
-		        var alertDiv = $('<div class="alert alert-info" role="alert"></div>');
+		        var alertDiv = $('<div class="alert alert-primary" role="alert"></div>');
 		        var icon = $('<i class="fas fa-exclamation-circle"></i>');
 		        var content = $('<span>&nbsp;' + notificationContent + '</span>');
 		      	

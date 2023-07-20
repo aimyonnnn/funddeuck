@@ -30,24 +30,19 @@ IMP.request_pay({
     app_scheme : '' // 돌아올 app scheme
   }, function (rsp) { // callback
     if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
-        // jQuery로 HTTP 요청
-        jQuery.ajax({
-          url: "https://www.myservice.com/payments/complete", // 가맹점 서버
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          data: {
-              imp_uid: rsp.imp_uid,
-              merchant_uid: rsp.merchant_uid
-          }
+        console.log(rsp);
+        // 결제검증
+        $.ajax({
+			type : "POST",
+			url : "/verifyIamport/" + rsp.imp_uid 
       }).done(function(data) { // 응답 처리
-//          switch(data.status) {
-//            case : "vbankIssued" :
-////               가상계좌 발급 시 로직
-//              break;
-//            case : "success" :
-////               결제 성공 시 로직
-//              break;
-//          }
+      		console.log(data);
+      		// 위의 rsp.paid_amount 와 data.response.amount를 비교한후 로직 실행 (import 서버검증)
+      		if(rsp.paid_amount == data.response.amount){
+		        	alert("결제 및 결제검증완료");
+		    } else {
+	        		alert("결제 실패");
+	        }
         });
     } else {
       alert("결제에 실패하였습니다. 에러 내용: " +  rsp.error_msg);

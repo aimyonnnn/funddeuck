@@ -13,14 +13,10 @@
 	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-	<!-- datepicker -->
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<!-- CSS -->
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
-
-	<script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
+	<script> 
 	// datepicker
 	$(function() {
 	$("#projectDatepicker").datepicker({
@@ -73,7 +69,7 @@
       	<!-- 왼쪽 네비게이션 시작 -->
 		<aside id="aisdeLeft">
 		    <div id="projectManagement">
-				<img src="${pageContext.request.contextPath}/resources/images/managementImage.jpg" width="200px" height="150px">
+				<img src="${pageContext.request.contextPath}/resources/images/managementImage.jpg" class="img-fluid me-auto" width="200px" height="150px">
 		    	${sessionScope.sId}님의 프로젝트
 		    </div>
 		    <ul id="navMenu">
@@ -97,8 +93,8 @@
 		<!-- 중앙 섹션 시작 -->
 		<section id="section">
 	      	<article id="article">
-	      		<div class="mt-5">
-	      			<img src="${pageContext.request.contextPath}/resources/images/projectManagementImage.png" class="img-fluid me-auto">
+	      		<div class="projectProcess">
+	      			<img src="${pageContext.request.contextPath}/resources/images/projectManagementImage.png">
 	      		</div>
 	      		
 		      	<!-- 프로젝트 관리 시작 -->
@@ -226,7 +222,10 @@
               
 					<!-- 정산 정보 -->
 					<div>
-					  <p class="subheading">정산 정보</p>
+						<p class="subheading">정산 정보</p>
+						<div class="mt-5">
+							<img src="${pageContext.request.contextPath}/resources/images/settlementInfo.png" class="img-fluid me-auto">
+						</div>
 					</div>
 
 					<!-- 세금계산서 발행 정보 -->
@@ -376,7 +375,7 @@
 				<!-- 알림 status가 X번 일 때는 프로젝트 수정하는 url도 같이 넣어줘서 바로 프로젝트 수정 페이지로 이동시킴 -->
 				<!-- 관리자가 보낸 메시지를 참고해서 내용을 수정하면 됨 -->
 				<div id="notificationContainer">
-				  	<div class="alert alert-info" role="alert">
+				  	<div class="alert alert-primary" role="alert">
 						<i class="fas fa-exclamation-circle"></i><a>&nbsp;알림이 없습니다.</a>
 					</div>
 				</div>
@@ -467,10 +466,14 @@
 		}
 	}
 	</script>
-
-	<!-- js -->
-	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
+	
 	<!-- bootstrap -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+	<!-- js -->
+	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
+	<!-- datepicker -->
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </body>
 </html>
