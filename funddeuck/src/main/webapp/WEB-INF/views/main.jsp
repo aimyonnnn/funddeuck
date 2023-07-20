@@ -90,7 +90,7 @@
 			<br>
 				<div class="container" style="display: flex;">
 				    <div class="col-md-3 col-sm-12" style="flex: 1; margin-right: 20px;">
-				        <div class="card">
+				        <div class="card-sl">
 				            <div class="card-body">
 				                <h2 class="card-title">실시간 랭킹</h2>
 				                <ul id="rankingList" class="card-text"></ul>
