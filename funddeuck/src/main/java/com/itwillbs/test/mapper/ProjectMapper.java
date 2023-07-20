@@ -28,4 +28,7 @@ public interface ProjectMapper {
 	// 리워드 수정하기
 	int updateReward(RewardVO reward);
 	
+	// 리워드 삭제하기
+	int deleteReward(int reward_idx);
+	
 }

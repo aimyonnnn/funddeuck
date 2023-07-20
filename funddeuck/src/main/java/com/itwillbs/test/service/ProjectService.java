@@ -39,5 +39,9 @@ public class ProjectService {
 	public int modifyReward(RewardVO reward) {
 		return mapper.updateReward(reward);
 	}
+	// 리워드 삭제하기
+	public int removeReward(int reward_idx) {
+		return mapper.deleteReward(reward_idx);
+	}
 	
 }

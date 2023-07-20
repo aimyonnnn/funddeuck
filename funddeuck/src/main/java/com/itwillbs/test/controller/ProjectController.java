@@ -79,6 +79,17 @@ public class ProjectController {
         return "false";
     }
 	
+	// 리워드 삭제하기
+	@PostMapping("removeReward")
+	@ResponseBody
+	public String removeReward(@RequestParam int reward_idx) {
+		System.out.println("reward_idx : " + reward_idx);
+		int deleteCount = projectService.removeReward(reward_idx);
+		System.out.println("deleteCount : " + deleteCount);
+		if(deleteCount > 0) return "true";
+		return "false";
+	}
+	
 	// 리워드 갯수 조회하기
 	@GetMapping("rewardCount")
 	@ResponseBody

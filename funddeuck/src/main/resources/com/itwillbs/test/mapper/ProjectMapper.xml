@@ -87,5 +87,13 @@
 				reward_idx = #{reward_idx}
 	</update>
 	
+	<!-- 리워드 삭제하기 -->
+	<delete id="deleteReward">
+		delete
+			from reward
+				where
+					reward_idx = #{reward_idx}
+	</delete>
+	
 	
 </mapper>

@@ -129,10 +129,10 @@
 		
 		              <!-- 발송 시작일 -->
 		              <label class="form-content subheading" for="yearMonth">발송 시작일</label>
-		              <!-- 히든으로 처리할 예정 -->
-		              <input type="text" name="delivery_date" id="delivery_date" value="${reward.delivery_date}" >
+		              <!-- 히든 처리 예정 -->
+<%-- 		              <input type="text" name="delivery_date" id="delivery_date" value="${reward.delivery_date}" > --%>
 		              <div class="d-flex flew-row">
-		                <select class="form-control" name="yearMonth" id="yearMonth" style="width:150px;">
+		                <select class="form-control" name="yearMonth" id="yearMonth" style="width:130px;">
 		                  <option value="">-- 선택 --</option>
 		                  <option value="2023/08">2023년 8월</option>
 		                  <option value="2023/09">2023년 9월</option>
@@ -145,12 +145,13 @@
 		                  <option value="2024/04">2024년 4월</option>
 		                  <option value="2024/05">2024년 5월</option>
 		                </select>
-		                <select class="form-control ms-3" name="day" id="day" style="width:150px;">
+		                <select class="form-control mx-3" name="day" id="day" style="width:170px;">
 		                  <option value="">-- 선택 --</option>
 		                  <option value="/1~10">1일 ~ 10일(초)</option>
 		                  <option value="/11~20">11일 ~ 20일(중순)</option>
 		                  <option value="/21~30">21일 ~ 30일(말)</option>
 		                </select>
+		                <input type="text" name="delivery_date" id="delivery_date" value="${reward.delivery_date}" class="form-control" style="width:170px;" readonly="readonly">
 		              </div>
 		
               <!-- 리워드 정보 제공 고시 -->
@@ -179,12 +180,13 @@
 						<c:choose>
 							<c:when test="${empty reward.reward_idx}">
 							  	<div class="d-flex justify-content-center my-3">
-							  		<button type="button" class="btn btn-outline-primary" onclick="saveReward()">저장하기</button>
+							  		<button type="button" class="btn btn-outline-primary" onclick="saveReward()">등록하기</button>
 						      	</div>
 							</c:when>
 							<c:otherwise>
 							  	<div class="d-flex justify-content-center my-3">
-							  		<button type="button" class="btn btn-outline-primary" onclick="modifyReward(${reward.reward_idx})">수정하기</button>
+							  		<button type="button" class="btn btn-outline-primary me-3" onclick="modifyReward(${reward.reward_idx})">수정하기</button>
+							  		<button type="button" class="btn btn-outline-primary" onclick="removeReward(${reward.reward_idx})">삭제하기</button>
 						      	</div>
 							</c:otherwise>
 						</c:choose>
@@ -215,17 +217,17 @@
 						<!-- 관리자가 보낸 메시지를 참고해서 내용을 수정하면 됨 -->
 			            <div id="notificationContainer">
 			            	<div class="alert alert-primary" role="alert">
-								<i class="fas fa-exclamation-circle"></i><a>&nbsp;알림이 없습니다.</a>
+								<i class="fas fa-exclamation-circle"></i><span>&nbsp;알림이 없습니다.</span>
 							</div>
 				        </div>
 				        <!--  -->
 				        <div class="admin-title mt-5">리워드 리스트</div>
 				        <div class="alert alert-success" role="alert" id="numRewardsAdded">
-							<a><i class="fas fa-exclamation-circle"></i>&nbsp;현재 등록된 리워드 수 : <span id="rewardCount">0</span></a>
+							<span><i class="fas fa-exclamation-circle"></i>&nbsp;현재 등록된 리워드 수 : <span id="rewardCount">0</span></span>
 						</div>
 						<!-- 이 부분은 리워드 리스트가 출력될 컨테이너입니다. -->
 						<div id="rewardContainer"></div>
-						<button onclick="saveTemporaryData()" class="btn btn-outline-secondary btn-sm mx-3">임시저장</button>
+						<button onclick="saveTemporaryData()" class="btn btn-outline-secondary btn-sm me-3">임시저장</button>
 						<button onclick="deleteTemporaryData()" class="btn btn-outline-secondary btn-sm">삭제하기</button>
 			     	 </div>
 			     </aside>
@@ -271,34 +273,39 @@
 	                let rewardInfo = reward.reward_idx + " - " + reward.reward_name;
 	                // 리워드 정보를 담은 html을 생성하여 컨테이너에 추가
 	                let rewardDiv = $('<div>', {
-	                    class: "alert alert-success",
+	                    class: "alert alert-success d-flex flex-column align-items-center",
 	                    role: "alert"
 	                }).append(
-	                    $('<a>').append(
+	                    $('<span>', {
+	                        class: "mb-3",
+	                    }).append(
 	                        $('<i>', { class: "fas fa-exclamation-circle" }),
 	                        "&nbsp;" + rewardInfo
 	                    ),
-	                    $('<button>', {
-	                        type: "button",
-	                        class: "btn btn-outline-secondary btn-sm mx-2",
-	                        text: "수정",
-	                        click: function() {
-	                            // 수정하기 버튼을 클릭하면 해당 리워드 페이지로 이동
-	                            window.location.href = 'projectReward?reward_idx=' + reward.reward_idx;
-	                        }
-	                    }),
-	                    $('<button>', {
-	                        type: "button",
-	                        class: "btn btn-outline-secondary btn-sm",
-	                        text: "삭제",
-	                        click: function() {
-	                            // 삭제 버튼을 클릭하면 해당 리워드를 삭제하는 코드를 추가할 수 있습니다.
-	                            // (삭제를 위한 추가적인 기능이 필요하다면 서버 코드도 추가되어야 합니다.)
-	                            // 예시: deleteReward(reward.reward_idx);
-	                        }
-	                    })
+	                    $('<div>', { class: "d-flex justify-content-center" }).append(
+	                        $('<button>', {
+	                            type: "button",
+	                            class: "btn btn-outline-secondary btn-sm me-3",
+	                            text: "수정하기",
+	                            click: function() {
+	                                // 수정하기 버튼을 클릭하면 해당 리워드 페이지로 이동
+	                                window.location.href = 'projectReward?reward_idx=' + reward.reward_idx;
+	                            }
+	                        }),
+	                        $('<button>', {
+	                            type: "button",
+	                            class: "btn btn-outline-secondary btn-sm",
+	                            text: "삭제하기",
+	                            click: function() {
+	                                // 삭제 버튼을 클릭 시 removeReward() 함수 호출
+	                                removeReward(reward.reward_idx);
+	                            }
+	                        })
+	                    )
 	                );
+
 	                container.append(rewardDiv);
+
 	            }
 	        },
 	        error: function (error) {
@@ -364,6 +371,37 @@
 		}
     }
 	
+	// 리워드 삭제하기
+	function removeReward(reward_idx) {
+		
+		let confirmation = confirm('리워드를 삭제 하시겠습니까?')
+		
+		if(confirmation) {
+			$.ajax({
+			    type: "POST",
+			    url: "<c:url value='removeReward'/>",
+		        data: {
+		        	reward_idx: reward_idx	
+		        },
+			    dataType: "text",
+			    success: function (response) {
+			    	
+			    	if(response.trim() == 'true') {
+				        alert("성공적으로 삭제되었습니다!");
+				        // 리워드 등록 페이지로 이동
+				        location.href='projectReward';
+			    	} else {
+			    		alert("삭제에 실패했습니다.");
+			    	}
+			    },
+			    error: function (error) {
+			        console.error(error);
+			        alert("삭제에 실패했습니다.");
+			    }
+			}); // ajax
+		}
+    }
+	
 	// 관리자 피드백
 	function getNotifications() {
 		$.ajax({
@@ -400,7 +438,7 @@
 	
 	$(()=>{
 		getNotifications();
-// 		setInterval(getNotifications, 5000);
+		setInterval(getNotifications, 5000);
 	})
 	
 	// 메시지 읽음 처리 하기
@@ -427,6 +465,17 @@
 			})
 		}
 	}
+	
+	// 선택 상자의 값을 변경할 때마다 히든 필드 업데이트
+    document.getElementById("yearMonth").addEventListener("change", updateDeliveryDate);
+    document.getElementById("day").addEventListener("change", updateDeliveryDate);
+
+    function updateDeliveryDate() {
+        var yearMonth = document.getElementById("yearMonth").value;
+        var day = document.getElementById("day").value;
+        var delivery_date = yearMonth + day;
+        document.getElementById("delivery_date").value = delivery_date;
+    }
 	</script>
 	
 	<!-- js -->
