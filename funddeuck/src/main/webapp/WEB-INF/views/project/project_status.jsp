@@ -324,7 +324,7 @@
 			            <canvas id="myChart"></canvas>
 		            </div>
 	            	
-		           <div class="container my-5">
+		           <div class="container mt-5 mb-3">
 				    	<div class="row justify-content-center">
 			          	  <p class="subheading">그래프 테스트</p>
 			              <p class="projectContent">결제가 갱신될 때 마다 아래 현황이 업데이트 됩니다.</p>

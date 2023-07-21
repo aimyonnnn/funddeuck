@@ -11,12 +11,16 @@
 	<!--bootstrap -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 	<!-- jQuery -->
-	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
-	<!-- CSS -->
-	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
+	<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<!-- css -->
+	<link href="${pageContext.request.contextPath}/resources/css/project.css" rel="styleSheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="resources/css/mypage.css" />
 </head>
 <body>
-
+	<jsp:include page="../common/main_header.jsp"/>
+	
 	<div class="container" style="max-width: 600px;">
 	  <div class="row">
 	    <div class="col">
@@ -24,12 +28,12 @@
 			
 		  <!-- 이미지 -->
 	      <div class="d-flex justify-content-center my-2">
-	        <img src="${pageContext.request.contextPath}/resources/images/test.png" alt="Company Image" class="img-fluid" style="max-height: 400px;">
+	        <img src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file4}" alt="메이커사진" class="img-fluid" style="max-height: 400px;">
 	      </div>
 		
 		  <!-- 기업소개 -->
 	      <div class="my-4">
-	        <h4><b>비케이트레이딩</b></h4>
+	        <h4><b>${maker.maker_name }</b></h4>
 	        <p>차량용품 제조&판매 기업입니다.</p>
 		    <a class="star-rating">
 			  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -46,22 +50,55 @@
 			
 		  <!-- Follow 버튼 -->
 	      <div class="text-center my-2">
-	        <button class="btn btn-secondary w-100">+ Follow<span> 239</span></button>
+	        <button class="btn btn-primary w-100">+ Follow<span> 239</span></button>
 	      </div>
 			
 		  <!-- Tab 버튼 -->
 	      <div class="tab-buttons text-center">
-	        <button class="btn btn-outline-secondary tab-button w-100" data-tab="tab1">프로젝트</button>
-	        <button class="btn btn-outline-secondary tab-button w-100" data-tab="tab2">메이커정보</button>
+	      	<button class="btn btn-outline-primary tab-button w-100 active" data-tab="tab1">프로젝트</button>
+	      	<button class="btn btn-outline-primary tab-button w-100" data-tab="tab2">메이커정보</button>
 	      </div>
-	
+			
+		  <!-- 프로젝트 -->
 	      <div class="content-area" id="tab1">
-	        <p>This is the content for Tab 1.</p>
+	        <p>메이커의 프로젝트 리스트를 출력</p>
 	      </div>
-	
+	      
+	      <!-- 메이커 정보 -->
 	      <div class="content-area" id="tab2">
-	        <p>This is the content for Tab 2.</p>
-	      </div>
+			  <table class="table text-center">
+			    <tr>
+			      <th>상호명</th>
+			      <td>${maker.maker_name }</td>
+			    </tr>
+			    <tr>
+			      <th>이메일</th>
+			      <td>${maker.maker_email }</td>
+			    </tr>
+			    <tr>
+			      <th>전화번호</th>
+			      <td>${maker.maker_tel }</td>
+			    </tr>
+			    <tr>
+			      <th>홈페이지</th>
+			      <td>${maker.maker_url }</td>
+			    </tr>
+			    <c:choose>
+			      <c:when test="${not empty maker.corporate_biz_num or not empty maker.individual_biz_num}">
+			        <tr>
+			          <th>사업자등록번호</th>
+			          <td>${maker.corporate_biz_num } ${maker.individual_biz_num }</td>
+			        </tr>
+			      </c:when>
+			      <c:otherwise>
+			        <tr>
+			          <th>사업자등록번호</th>
+			          <td>120-88-00767</td>
+			        </tr>
+			      </c:otherwise>
+			    </c:choose>
+			  </table>
+		  </div>
 	      
 	    <!--  -->  
 	    </div>
@@ -71,13 +108,25 @@
 	<script>
 	 $(document).ready(function () {
 	   $("#tab1").addClass("active");
-	
 	   $(".tab-button").click(function () {
 	     var tabId = $(this).data("tab");
 	     $(".content-area").removeClass("active");
 	     $("#" + tabId).addClass("active");
 	   });
 	 });
+	 
+	 $(document).ready(function() {
+	    // 버튼1 클릭 시
+	    $(".tab-button[data-tab='tab1']").click(function() {
+		   	$(".tab-button[data-tab='tab2']").removeClass("active");
+		   	$(".tab-button[data-tab='tab1']").addClass("active");
+	    });
+		// 버튼2 클릭 시
+	 	$(".tab-button[data-tab='tab2']").click(function() {
+		    $(".tab-button[data-tab='tab1']").removeClass("active");
+		    $(".tab-button[data-tab='tab2']").addClass("active");
+	    });
+	});
 	</script>
 
 	<!-- bootstrap -->
