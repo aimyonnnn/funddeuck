@@ -22,19 +22,24 @@
                 <div class="card mb-3" style="border-radius: .5rem;">
                     <div class="row g-0">
                         <h3 class="profile-heading">프로필 정보 설정</h3>
-                        <div class="col-md-4 gradient-custom text-center text-white"
-                             style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-                            <img src="../resources/images/profile.png"
-                                 alt="profile" class="img-fluid my-5" style="width: 80px;" />
-                            <div class="link-container">
-                                <a href="#!">바꾸기</a>
-                                <a href="#!">삭제</a>
-                            </div>
-                        </div>
+<div class="col-md-4 gradient-custom text-center text-white"
+     style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+    <!-- 파일 선택 기능을 위한 input 요소 추가 -->
+<form id="profileimgForm">
+    <input type="file" id="imageInput" style="display: none;" accept="image/*">
+    <img src="${profile.profile_img}"
+         name = "profile_img" alt="profile" class="img-fluid my-5" style="width: 80px;" />
+    <div class="link-container">
+        <a href="#!" id="changeLink">바꾸기</a>
+        <a href="#!" id="deleteLink">삭제</a>
+    </div>
+</form>
+</div>
+
                         <div class="col-md-8">
                             <div class="card-body p-4">
-                                <hr class="mt-0 mb-4">
 							<form id="profileForm">
+                                <hr class="mt-0 mb-4">
 							    <input type="hidden" name="member_idx" value="${profile.member_idx}" />
                                     <h6>회사 / 직책</h6>
                                 <div class="row pt-1">
@@ -88,35 +93,87 @@
 <%@ include file="../Footer.jsp" %>
 
 <script>
-$(document).ready(function () {
-    $("#saveButton").on("click", function () {
-           console.log("수정");	
-        	
-        $.ajax({
-            type: "POST",
-            url: '<c:url value="/member/profile"/>',
-            data: $("#profileForm").serialize(),
-            dataType: "text",
-            success: function (data) {
-                console.log("실행");
-                alert("프로필이 저장되었습니다.");
-            },
-            error: function () {
-                alert("저장에 실패했습니다. 다시 시도해주세요.");
-            }
-        });
-    });
+    $(document).ready(function () {
+        $("#saveButton").on("click", function () {
+            console.log("수정");
 
-    $("#cancelButton").on("click", function () {
-        var formInputs = $("#profileForm :input");
-        formInputs.each(function() {
-            var prevValue = $(this).data("prev-value");
-            if (prevValue !== undefined) {
-                $(this).val(prevValue);
+            var formData = new FormData();
+            formData.append('profile_img', $("input[name='profile_img']").val());
+            formData.append('profile_job1', $("input[name='profile_job1']").val());
+            formData.append('profile_job2', $("input[name='profile_job2']").val());
+            formData.append('profile_school1', $("input[name='profile_school1']").val());
+            formData.append('profile_school2', $("input[name='profile_school2']").val());
+            formData.append('profile_text', $("textarea[name='profile_text']").val());
+            formData.append('member_idx', $("input[name='member_idx']").val());
+
+            const imageInput = document.getElementById("imageInput");
+            if (imageInput.files.length > 0) {
+                formData.append('profile_img', imageInput.files[0]);
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '<c:url value="/member/profile"/>',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log("실행");
+                    alert("프로필이 저장되었습니다.");
+                },
+                error: function () {
+                    alert("저장에 실패했습니다. 다시 시도해주세요.");
+                }
+            });
+        });
+
+        $("#cancelButton").on("click", function () {
+            var formInputs = $("#profileForm :input");
+            formInputs.each(function () {
+                var prevValue = $(this).data("prev-value");
+                if (prevValue !== undefined) {
+                    $(this).val(prevValue);
+                }
+            });
+        });
+
+        document.getElementById("changeLink").addEventListener("click", function (event) {
+            event.preventDefault();
+            const imageInput = document.getElementById("imageInput");
+            imageInput.click();
+        });
+
+        document.getElementById("imageInput").addEventListener("change", function (event) {
+            const selectedFile = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function () {
+                const newImageUrl = reader.result;
+                const profileImg = document.querySelector(".img-fluid");
+                profileImg.src = newImageUrl;
+
+                alert("프로필 이미지가 변경되었습니다.");
+
+                $("#saveButton").prop("disabled", false);
+            };
+
+            reader.readAsDataURL(selectedFile);
+        });
+
+        document.getElementById("deleteLink").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            const confirmDelete = confirm("프로필 사진을 삭제하시겠습니까?");
+            if (confirmDelete) {
+                const profileImg = document.querySelector(".img-fluid");
+                profileImg.src = ""; 
+
+                alert("프로필 사진이 삭제되었습니다.");
+
+                $("#saveButton").prop("disabled", false);
             }
         });
     });
-});
 </script>
 
 

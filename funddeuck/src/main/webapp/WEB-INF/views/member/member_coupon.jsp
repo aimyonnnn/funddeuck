@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../resources/css/mypage.css" />	
 </head>
 <body>
-
+	
 
 <%@ include file="../Footer.jsp" %>
 
