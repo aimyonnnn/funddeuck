@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.itwillbs.test.vo.MakerVO;
+import com.itwillbs.test.vo.ProjectVO;
 import com.itwillbs.test.vo.RewardVO;
 
 @Mapper
@@ -30,5 +31,8 @@ public interface ProjectMapper {
 	
 	// 리워드 삭제하기
 	int deleteReward(int reward_idx);
+
+	// 프로젝트 등록하기 
+	int insertProject(ProjectVO project);
 	
 }

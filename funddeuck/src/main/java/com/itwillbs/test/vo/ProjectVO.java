@@ -2,6 +2,8 @@ package com.itwillbs.test.vo;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 /*
@@ -37,15 +39,34 @@ CREATE TABLE project (
 
 @Data
 public class ProjectVO {
-	private int project_idx;
-	private String project_title;
-	private String project_category;
-	private String project_content;
-	private String project_image;
-	private Date project_start_date;
-	private Date project_end_date;
-	private int project_like;
-	private Date project_create_date;
-	private Date project_status;
-	private int maker_idx;
+	private int project_idx;						// 프로젝트 번호
+	private String project_category;				// 프로젝트 카테고리
+	private String project_subject;					// 프로젝트 제목
+	private String project_thumnails1;				// 프로젝트 썸네일 (1)
+	private String project_thumnails2;				// 프로젝트 썸네일 (2)
+	private String project_thumnails3;				// 프로젝트 썸네일 (3)
+	private String project_image;					// 프로젝트 내용 상세 이미지
+	private String project_introduce;				// 프로젝트 소개
+	private int project_target;						// 목표 금액
+	private Date project_start_date;				// 프로젝트 시작일
+	private Date project_end_date;					// 프로젝트 종료일
+	private String project_hashtag1;				// 검색용 태그 (1)
+	private String project_hashtag2;				// 검색용 태그 (2)
+	private String project_hashtag3;				// 검색용 태그 (3)
+	private String project_representative_name;		// 대표자명
+	private String project_representative_email;	// 대표 이메일
+	private String project_representative_birth;	// 대표 주민등록번호
+	private String project_tax_email;				// 세금계산서 발행 이메일
+	private String project_settlement_bank;			// 정산받을 은행
+	private String project_settlement_account;		// 정산받을 계좌번호
+	private String project_settlement_name;			// 예금주명
+	private String project_settlement_image;		// 통장사본 이미지
+	private int project_approve_status;				// 프로젝트 승인 상태
+	private int maker_idx;							// 메이커 번호
+	
+	private MultipartFile file1;					// 프로젝트 썸네일 (1)
+ 	private MultipartFile file2;					// 프로젝트 썸네일 (2)
+ 	private MultipartFile file3;					// 프로젝트 썸네일 (3)
+ 	private MultipartFile file4;					// 프로젝트 내용 상세 이미지
+ 	private MultipartFile file5;					// 통장사본 이미지
 }
