@@ -106,7 +106,7 @@
 				<form action="projectManagementPro" class="projectContent" method="post" enctype="multipart/form-data">
 					<!-- 히든태그 지우지마세요 테스트 중입니다 -->
 	            	<!-- 프로젝트 등록에서 넘어올 때 파라미터로 받아와야함 -->
-	            	<input type="text" name="maker_idx" id="maker_idx" value="1" class="form-control" style="width:500px;">
+	            	<input type="text" name="maker_idx" id="maker_idx" value="${param.maker_idx}" class="form-control" style="width:500px;">
 					<!-- 기본 요금제 -->
 					<div class="mt-4">
 						<p class="subheading">기본 요금제</p>

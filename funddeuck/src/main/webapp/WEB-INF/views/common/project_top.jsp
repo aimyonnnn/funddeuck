@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%session.setAttribute("sId", "admin");%>
 <!-- css -->
 <link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
@@ -157,8 +159,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button id="notifySendBtn" type="button" class="btn btn-outline-secondary">전송</button>
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+        <button id="notifySendBtn" type="button" class="btn btn-outline-primary">전송</button>
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">닫기</button>
       </div>
     </div>
   </div>

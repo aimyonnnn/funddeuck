@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>   
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>   
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +48,7 @@
 										xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 										fill="currentColor" class="bi bi-star-fill"
 										viewBox="0 0 16 16">
-			            <path
+			            				<path
 											d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
 			          </svg>만족도:&nbsp;<span>4.0</span>
 								</a> <br>
@@ -56,9 +57,9 @@
 										xmlns="http://www.w3.org/2000/svg" width="16" height="16"
 										fill="currentColor" class="bi bi-person-plus-fill"
 										viewBox="0 0 16 16">
-			            <path
+			            				<path
 											d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-			            <path fill-rule="evenodd"
+			            				<path fill-rule="evenodd"
 											d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
 			          </svg>서포터:&nbsp;<span>19명</span>
 								</a>
@@ -115,14 +116,51 @@
 									<td><input type="text" name="maker_url" class="form-control"
 										value="${maker.maker_url}"></td>
 								</tr>
+								
+								<%-- 파일이 존재할 경우 파일명과 삭제버튼 표시하고, 아니면 파일 등록 버튼 표시 --%>
+								
 								<tr>
 									<th>메이커 사진</th>
-									<td><input type="file" name="file4"></td>
+									<c:choose>
+										<c:when test="${empty maker.maker_file4}">
+											<td style="text-align: left;">
+												<input type="file" name="file4" onchange="checkFileInput('file4')">
+												<button type="button" id="resetBtn4" onclick="resetFileInput('file4')" class="btn btn-outline-danger btn-sm" style="display: none;">선택해제</button>
+											</td>
+										</c:when>
+										<c:otherwise>
+											<td style="text-align: left;">
+												<div class="d-flex justify-content-between">
+													${fn:split(maker.maker_file4, '_')[1] }
+													<input type="button" value="파일삭제" class="btn btn-outline-danger btn-sm me-1"
+													onclick="deleteFile('${maker.maker_idx}', '${maker.maker_file4}', 4)">
+												</div>
+											</td>
+										</c:otherwise>										
+									</c:choose>
 								</tr>
+								
 								<tr>
 									<th>메이커 로고</th>
-									<td><input type="file" name="file5"></td>
+									<c:choose>
+										<c:when test="${empty maker.maker_file5}">
+											<td style="text-align: left;">
+												<input type="file" name="file5" onchange="checkFileInput('file5')">
+												<button type="button" id="resetBtn5" onclick="resetFileInput('file5')" class="btn btn-outline-danger btn-sm" style="display: none;">선택해제</button>
+											</td>
+										</c:when>
+										<c:otherwise>
+											<td style="text-align: left;">
+												<div class="d-flex justify-content-between">
+													${fn:split(maker.maker_file5,'_')[1]}
+													<input type="button" value="파일삭제" class="btn btn-outline-danger btn-sm me-1"
+													onclick="deleteFile('${maker.maker_idx}', '${maker.maker_file5}', 5)" >
+												</div>
+											</td>
+										</c:otherwise>
+									</c:choose>
 								</tr>
+								
 								<c:choose>
 									<c:when test="${not empty maker.corporate_biz_num or not empty maker.individual_biz_num}">
 										<tr>
@@ -142,6 +180,7 @@
 										</tr>
 									</c:otherwise>
 								</c:choose>
+								
 							</table>
 							<div class="d-flex justify-content-center">
 								<input type="submit" value="수정하기" class="btn btn-outline-primary">
@@ -177,6 +216,61 @@
 			$(".tab-button[data-tab='tab2']").addClass("active");
 		});
 	});
+	// 파일 실시간 삭제
+	function deleteFile(maker_idx, fileName, fileNumber) {
+		
+		if(confirm('파일을 삭제 하시겠습니까?')) {
+			
+			$.ajax({
+				type: 'post',
+				url: "<c:url value='deleteFile'/>",
+				data: {
+					maker_idx: maker_idx,
+					fileName: fileName,
+					fileNumber: fileNumber
+				},
+				success: function(result){
+					
+					if(result.trim() === 'success') {
+						// 파일 삭제 성공 시
+						alert('파일이 삭제되었습니다.');
+						location.reload();
+					} else {
+						alert('파일 삭제 실패!');
+					}
+				},
+				error: function (error) {
+					//에러 처리
+					console.log(error);
+				}
+			});	// ajax
+		}
+	}
+	// 개별 파일 첨부 입력 필드 초기화 함수
+	function resetFileInput(inputName) {
+		let fileInput = $('input[name="' + inputName + '"]');
+		fileInput.val(null);
+		alert('파일이 삭제되었습니다.');
+		fileInput.next().hide(); // "지우기" 버튼 숨김
+	}
+
+	// 파일 첨부 입력 필드 상태 감지 함수
+    function checkFileInput() {
+    	let fileInputs = $('input[type="file"]');
+    	
+    	fileInputs.each(function() {
+	      	if (this.files.length > 0) {
+	        	$(this).next().show(); // "지우기" 버튼 표시
+	      	} else {
+	        	$(this).next().hide(); // "지우기" 버튼 숨김
+	     	}
+    	});
+ 	}
+
+   // 페이지 로드 시 파일 첨부 입력 필드 상태 감지 함수 호출
+   $(document).ready(function() {
+   		checkFileInput();
+   });
 	</script>
 
 	<!-- bootstrap -->

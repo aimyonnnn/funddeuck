@@ -39,7 +39,7 @@
 		    </div>
 		</div>
 		<div class="d-flex justify-content-end mb-3">
-		    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="markAllAsRead('${sessionScope.sId}')">전체읽음처리</button>
+		    <button type="button" class="btn btn-outline-primary btn-sm" onclick="markAllAsRead('${sessionScope.sId}')">전체읽음처리</button>
 		</div>
 		<div class="row">
 			<div class="d-flex justify-content-center">

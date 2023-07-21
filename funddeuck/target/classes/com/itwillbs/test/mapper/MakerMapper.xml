@@ -11,8 +11,6 @@
 	</select>
 	
 	<!-- 메이커 페이지 수정하기 -->
-	<!-- 사진, 로고, 이름, 이메일, 전화번호, 홈페이지 번호만 수정 가능 -->
-	<!-- 사업자등록번호는 수정 불가능 -->
 	<update id="updateMaker">
 		update maker
 			set
@@ -29,5 +27,25 @@
 			where
 				maker_idx = #{maker_idx}	
 	</update>
+	
+	<!-- 메이커 페이지 수정하기 - 파일 실시간 삭제 -->
+	<delete id="deleteMakerFile">
+		update maker
+		  set
+		    <choose>
+		      <when test="fileNumber == 4">
+		        maker_file4 = ''
+		      </when>
+		      <when test="fileNumber == 5">
+		        maker_file5 = ''
+		      </when>
+		    </choose>
+		  where
+		    maker_idx = #{maker_idx}
+		    and (
+		      (#{fileNumber} = 4 and maker_file4 != '')
+		      or (#{fileNumber} = 5 and maker_file5 != '')
+		    )
+	</delete>
 
 </mapper>

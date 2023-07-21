@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,8 +74,8 @@
 		            
 		            <!-- 폼 태그 시작 -->
 		            <form action="" class="projectContent" method="post" id="rewardForm">
-		            	<!-- 히든태그 지우지마세요 테스트 중입니다 -->
-		            	<!-- 프로젝트 등록에서 넘어올 때 파라미터로 받아와야함 -->
+		            	<!-- 히든 처리하는 부분 -->
+<!-- 		            	<label class="form-content subheading" for="project_idx">project_idx</label> -->
 		            	<input type="text" name="project_idx" id="project_idx" value="1" class="form-control" style="width:500px;">
 		            	
 			            <!-- 금액 -->

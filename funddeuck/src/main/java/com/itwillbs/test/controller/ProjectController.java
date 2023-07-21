@@ -199,7 +199,7 @@ public class ProjectController {
 				e.printStackTrace();
 			}
 			// 메이커 등록 성공 시 프로젝트 등록 페이지로 이동
-			model.addAttribute("msg", "메이커 등록에 성공하였습니다. 다음 페이지로 이동합니다.");
+			model.addAttribute("msg", "메이커 등록에 성공하였습니다. 프로젝트 등록 페이지로 이동합니다.");
 			model.addAttribute("targetURL", "projectManagement");
 			return "success_forward";
 		} else { // 실패
@@ -288,8 +288,8 @@ public class ProjectController {
 			} catch (IOException e) {
 			    e.printStackTrace();
 			}
-			String targetURL = "makerDetail?maker_idx=" + maker.getMaker_idx(); 
 			// 메이커 수정 성공 시 makerDetail로 이동
+			String targetURL = "makerDetail?maker_idx=" + maker.getMaker_idx(); 
 			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다.");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
@@ -298,6 +298,34 @@ public class ProjectController {
 			return "fail_back";
 		}
 	}
+	
+	// 메이커 페이지 수정하기 - 파일 실시간 삭제
+	@PostMapping("deleteFile")
+	@ResponseBody
+	public String deleteFile(int maker_idx,	String fileName, int fileNumber, HttpSession session) {
+		System.out.println("deleteFile() - fileName : " + fileName);
+		// 파일 삭제 요청
+	    int deleteCount = makerService.removeMakerFile(maker_idx, fileName, fileNumber);
+	    if (deleteCount != 0) {
+	        // 파일 삭제 로직
+	        String uploadDir = "/resources/upload";
+	        String saveDir = session.getServletContext().getRealPath(uploadDir);
+	        String filePath = saveDir + "/" + fileName;
+	        File file = new File(filePath);
+	        if (file.exists()) {
+	            if (file.delete()) {
+	                return "success";
+	            } else {
+	                return "fail";
+	            }
+	        } else {
+	            // 파일이 이미 삭제되어 있음
+	            return "success";
+	        }
+	    } else {
+	        return "fail";
+	    }
+	} // deleteFile
 	
 	// 프로젝트 등록 페이지
 	@GetMapping("projectManagement")
@@ -427,11 +455,9 @@ public class ProjectController {
 		return "myPage";
 	}
 	
+	// 테스트 페이지
 	@GetMapping("projectTest")
 	public String projectTest(Model model, HttpSession session) {
-		
-		
-		
 		return "project/project_test";
 	}
 	

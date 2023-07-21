@@ -63,8 +63,9 @@
             <!-- 폼 태그 -->
             <form action="projectMakerPro" class="projectContent" method="post" enctype="multipart/form-data">
               
-              <!-- 히든으로 처리할 예정-->
-              <input type="text" name="member_idx" value="1">
+              <!-- 히든 처리하는 부분 -->
+<!--               <p class="subheading">member_idx</p> -->
+              <input type="text" name="member_idx" value="1" class="form-control">
               
               <!-- 메이커 유형 -->
               <div>

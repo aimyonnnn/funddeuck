@@ -20,5 +20,10 @@ public class MakerService {
 	public int modifyMaker(MakerVO maker) {
 		return mapper.updateMaker(maker);
 	}
+	// 메이커 페이지 수정하기 - 파일 실시간 삭제
+	public int removeMakerFile(int maker_idx, String fileName, int fileNumber) {
+		return mapper.deleteMakerFile(maker_idx, fileName, fileNumber);
+	}
+
 	
 }
