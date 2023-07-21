@@ -16,10 +16,9 @@ public class MakerService {
 	public MakerVO getMakerInfo(Integer maker_idx) {
 		return mapper.selectMakerInfo(maker_idx);
 	}
-	
 	// 메이커 페이지 수정하기
-	public int modifyMaker(int maker_idx) {
-		return mapper.updateMaker(maker_idx);
+	public int modifyMaker(MakerVO maker) {
+		return mapper.updateMaker(maker);
 	}
 	
 }

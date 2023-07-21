@@ -16,12 +16,16 @@
 	<update id="updateMaker">
 		update maker
 			set
-				maker_file4 = #{maker_file4}      -- 메이커 사진
-				, maker_file5 = #{maker_file5}    -- 메이커 로고
-				, maker_name = #{maker_name}	  -- 메이커 이름		
-				, maker_email = #{maker_email}    -- 메이커 이메일
-				, maker_tel = #{maker_tel}  	  -- 메이커 전화번호
-				, maker_url = #{maker_url}		  -- 메이커 홈페이지
+				<if test="!maker_file4.equals('')">
+					maker_file4 = #{maker_file4} ,      -- 메이커 사진
+				</if>
+				<if test="!maker_file5.equals('')">
+					maker_file5 = #{maker_file5} ,      -- 메이커 로고
+				</if>
+				maker_name = #{maker_name} ,	  		-- 메이커 이름		
+				maker_email = #{maker_email} ,    		-- 메이커 이메일
+				maker_tel = #{maker_tel} ,  	 		-- 메이커 전화번호
+				maker_url = #{maker_url}		 		-- 메이커 홈페이지
 			where
 				maker_idx = #{maker_idx}	
 	</update>

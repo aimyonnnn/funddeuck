@@ -11,7 +11,7 @@ public interface MakerMapper {
 	MakerVO selectMakerInfo(Integer maker_idx);
 	
 	// 메이커 페이지 수정하기
-	int updateMaker(int maker_idx);
+	int updateMaker(MakerVO maker);
 	
 	
 	

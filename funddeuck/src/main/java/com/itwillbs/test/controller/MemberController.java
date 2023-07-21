@@ -21,13 +21,13 @@ public class MemberController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/member/profile")
-    public String getMemberProfile(Model model) {
-        int memberIdx = 1;
-        ProfileVO profileVO = profileService.getProfileData(memberIdx);
-        model.addAttribute("profile", profileVO);
-        return "/member/member_profile";
-    }
+//    @GetMapping("/member/profile")
+//    public String getMemberProfile(Model model) {
+//        int memberIdx = 1;
+//        ProfileVO profileVO = profileService.getProfileData(memberIdx);
+//        model.addAttribute("profile", profileVO);
+//        return "/member/member_profile";
+//    }
 
     @PostMapping("/member/profile")
     @ResponseBody

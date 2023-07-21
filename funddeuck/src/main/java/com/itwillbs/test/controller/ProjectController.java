@@ -37,7 +37,7 @@ public class ProjectController {
 	@Autowired
 	private MakerService makerService;
 	
-	// 리워드 등록
+	// 리워드 등록하기
 	@GetMapping("projectReward")
 	public String projectReward(@RequestParam(required = false) Integer reward_idx, Model model) {
 		if (reward_idx != null) {
@@ -48,105 +48,10 @@ public class ProjectController {
 		return "project/project_reward";
 	}
 	
-	// 프로젝트, 결제 현황
+	// 프로젝트 현황
 	@GetMapping("projectStatus")
 	public String projectStatus() {
 		return "project/project_status";
-	}
-	
-	// 메이커 페이지 디테일
-	@GetMapping("makerDetail")
-	public String makerDetail(@RequestParam(required = false) Integer maker_idx, Model model) {
-		System.out.println("makerDetail");
-		maker_idx = 2;
-		if(maker_idx != null) {
-			// 메이커 정보 조회
-			MakerVO maker = makerService.getMakerInfo(maker_idx);
-			System.out.println("maker : " + maker);
-			model.addAttribute("maker", maker);
-		}
-		return "project/maker_detail";
-	}
-	
-	// 메이커 페이지 수정하기 폼
-	@GetMapping("modifyMakerForm")
-	public String modifyMakerForm(@RequestParam int maker_idx) {
-		System.out.println("modifyMakerForm : " + maker_idx);
-		return "project/maker_detail_modifyForm";
-	}
-	
-	
-	// 메이커 페이지 수정하기
-	@PostMapping("modifyMaker")
-	@ResponseBody
-	public String modifyMaker(@ModelAttribute MakerVO maker, @RequestParam int maker_idx, HttpSession session, Model model) {
-		System.out.println("maker_idx : " + maker_idx);
-		
-		String uploadDir = "/resources/upload";
-		String saveDir = session.getServletContext().getRealPath(uploadDir);
-		String subDir = "";
-		
-		try {
-			Date date = new Date();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-			subDir = sdf.format(date);
-			saveDir += "/" + subDir;
-			// --------------------------------------------------------------
-			Path path = Paths.get(saveDir);
-			Files.createDirectories(path);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		// 파일 업로드 폴더 경로 출력
-		System.out.println("실제 업로드 폴더 경로: " + saveDir);
-		
-		// NoticeVO 객체에 전달된 MultipartFile 객체 꺼내기
-		MultipartFile mFile1 = maker.getFile1();
-		MultipartFile mFile2 = maker.getFile2();
-		
-		String uuid = UUID.randomUUID().toString();
-		maker.setMaker_file1("");
-		maker.setMaker_file2("");
-		
-		// 파일명을 저장할 변수 선언
-		String fileName1 = null;
-		String fileName2 = null;
-
-		if (mFile1 != null && !mFile1.getOriginalFilename().equals("")) {
-		    fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
-		    maker.setMaker_file1(subDir + "/" + fileName1);
-		}
-
-		if (mFile2 != null && !mFile2.getOriginalFilename().equals("")) {
-		    fileName2 = uuid.substring(0, 8) + "_" + mFile2.getOriginalFilename();
-		    maker.setMaker_file2(subDir + "/" + fileName2);
-		}
-
-		System.out.println("실제 업로드 파일명1 : " + maker.getMaker_file1());
-		System.out.println("실제 업로드 파일명2 : " + maker.getMaker_file2());
-		// -----------------------------------------------------------------------------------
-		int updateCount = makerService.modifyMaker(maker_idx);
-		
-		if(updateCount > 0) {
-			// 파일 업로드 처리
-			try {
-			    if (fileName1 != null) {
-			        mFile1.transferTo(new File(saveDir, fileName1));
-			    }
-			    if (fileName2 != null) {
-			        mFile2.transferTo(new File(saveDir, fileName2));
-			    }
-			} catch (IllegalStateException e) {
-			    e.printStackTrace();
-			} catch (IOException e) {
-			    e.printStackTrace();
-			}
-			// 수정 작업 성공 시
-			return "true";
-		} else {
-			return "false";
-		}
 	}
 	
 	// 리워드 추가하기
@@ -156,8 +61,7 @@ public class ProjectController {
 		System.out.println("saveReward");
 		int insertCount = projectService.registReward(reward);
 		System.out.println("insertCount : " + insertCount);
-		if(insertCount > 0) return "true";
-        return "false";
+		if(insertCount > 0) { return "true"; } return "false";
     }
 	
 	// 리워드 수정하기
@@ -167,8 +71,7 @@ public class ProjectController {
 		System.out.println("reward_idx : " + reward_idx);
 		int updateCount = projectService.modifyReward(reward);
 		System.out.println("updateCount : " + updateCount);
-		if(updateCount > 0) return "true";
-        return "false";
+		if(updateCount > 0) { return "true"; } return "false";
     }
 	
 	// 리워드 삭제하기
@@ -178,8 +81,7 @@ public class ProjectController {
 		System.out.println("reward_idx : " + reward_idx);
 		int deleteCount = projectService.removeReward(reward_idx);
 		System.out.println("deleteCount : " + deleteCount);
-		if(deleteCount > 0) return "true";
-		return "false";
+		if(deleteCount > 0) { return "true"; } return "false";
 	}
 	
 	// 리워드 갯수 조회하기
@@ -206,7 +108,7 @@ public class ProjectController {
 		return "project/project_maker";
 	}
 	
-	// 메이커 등록 비즈니스 로직처리
+	// 메이커 등록 비즈니스 로직 처리
 	@PostMapping("projectMakerPro")
 	public String projectMaker(MakerVO maker, Model model, HttpSession session, HttpServletRequest request) {
 		System.out.println(maker);
@@ -296,13 +198,105 @@ public class ProjectController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			// 리다이렉트
-			return "redirect:/projectMaker";
+			// 메이커 등록 성공 시 프로젝트 등록 페이지로 이동
+			model.addAttribute("msg", "메이커 등록에 성공하였습니다. 다음 페이지로 이동합니다.");
+			model.addAttribute("targetURL", "projectManagement");
+			return "success_forward";
 		} else { // 실패
 			model.addAttribute("msg", "메이커 등록 실패!");
 			return "fail_back";
 		}
+	}
+	
+	// 메이커 페이지
+	@GetMapping("makerDetail")
+	public String makerDetail(@RequestParam(required = false) Integer maker_idx, Model model) {
+		System.out.println("makerDetail : " + maker_idx);
+		MakerVO maker = makerService.getMakerInfo(maker_idx);
+		model.addAttribute("maker", maker);
+		return "project/maker_detail";
+	}
+	
+	// 메이커 수정하기 페이지
+	@GetMapping("modifyMakerForm")
+	public String modifyMakerForm(@RequestParam int maker_idx, Model model) {
+		System.out.println("modifyMakerForm : " + maker_idx);
+		// 메이커 정보 조회
+		MakerVO maker = makerService.getMakerInfo(maker_idx);
+		model.addAttribute("maker", maker);
+		return "project/maker_detail_modifyForm";
+	}
+	
+	// 메이커 페이지 수정하기 비즈니스 로직 처리
+	@PostMapping("modifyMaker")
+	public String modifyMaker(MakerVO maker, HttpSession session, Model model) {
+		System.out.println("modifyMaker");
+		String uploadDir = "/resources/upload";
+		String saveDir = session.getServletContext().getRealPath(uploadDir);
+		String subDir = "";
 		
+		try {
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			subDir = sdf.format(date);
+			saveDir += "/" + subDir;
+			Path path = Paths.get(saveDir);
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// 파일 업로드 폴더 경로 출력
+		System.out.println("실제 업로드 폴더 경로: " + saveDir);
+		
+		MultipartFile mFile1 = maker.getFile4();
+		MultipartFile mFile2 = maker.getFile5();
+		
+		String uuid = UUID.randomUUID().toString();
+		maker.setMaker_file4("");
+		maker.setMaker_file5("");
+		
+		String fileName1 = null;
+		String fileName2 = null;
+
+		if (mFile1 != null && !mFile1.getOriginalFilename().equals("")) {
+		    fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
+		    maker.setMaker_file4(subDir + "/" + fileName1);
+		}
+
+		if (mFile2 != null && !mFile2.getOriginalFilename().equals("")) {
+		    fileName2 = uuid.substring(0, 8) + "_" + mFile2.getOriginalFilename();
+		    maker.setMaker_file5(subDir + "/" + fileName2);
+		}
+
+		System.out.println("실제 업로드 파일명1 : " + maker.getMaker_file4());
+		System.out.println("실제 업로드 파일명2 : " + maker.getMaker_file5());
+		// -----------------------------------------------------------------------------------
+		int updateCount = makerService.modifyMaker(maker);
+		
+		if(updateCount > 0) {
+			// 파일 업로드 처리
+			try {
+			    if (fileName1 != null) {
+			        mFile1.transferTo(new File(saveDir, fileName1));
+			    }
+			    if (fileName2 != null) {
+			        mFile2.transferTo(new File(saveDir, fileName2));
+			    }
+			} catch (IllegalStateException e) {
+			    e.printStackTrace();
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
+			String targetURL = "makerDetail?maker_idx=" + maker.getMaker_idx(); 
+			// 메이커 수정 성공 시 makerDetail로 이동
+			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다.");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
+		} else {
+			model.addAttribute("msg", "글 수정 실패!");
+			return "fail_back";
+		}
 	}
 	
 	// 프로젝트 등록 페이지
@@ -432,6 +426,15 @@ public class ProjectController {
 	public String mypage() {
 		return "myPage";
 	}
+	
+	@GetMapping("projectTest")
+	public String projectTest(Model model, HttpSession session) {
+		
+		
+		
+		return "project/project_test";
+	}
+	
 	
 	
 	
