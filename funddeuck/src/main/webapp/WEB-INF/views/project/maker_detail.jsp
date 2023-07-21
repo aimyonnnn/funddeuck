@@ -24,8 +24,9 @@
 	<div class="container" style="max-width: 600px;">
 	  <div class="row">
 	    <div class="col">
-		<!--  -->  
-			
+		<!--  -->
+		  
+		  <form action="" method="post" enctype="multipart/form-data" id="modifyForm">
 		  <!-- 이미지 -->
 	      <div class="d-flex justify-content-center my-2">
 	        <img src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file4}" alt="메이커사진" class="img-fluid" style="max-height: 400px;">
@@ -56,7 +57,7 @@
 			      </div>
 			      <div class="col-sm-6 d-flex justify-content-end align-items-center">
 			        <!-- 수정 버튼 -->
-			        <button class="btn btn-primary" onclick="makerModify(${maker.maker_idx})">수정</button>
+			        <button class="btn btn-primary" onclick="modifyMaker(${maker.maker_idx})">수정</button>
 			      </div>
 			    </div>
 			  </div>
@@ -76,8 +77,7 @@
 		      <div class="content-area" id="tab1">
 		        <p>메이커의 프로젝트 리스트를 출력</p>
 		      </div>
-		      
-		      <!-- 메이커 정보 -->
+	      	  <!-- 메이커 정보 -->
 		      <div class="content-area" id="tab2">
 				  <table class="table text-center">
 				    <tr>
@@ -113,7 +113,7 @@
 				  </table>
 			  </div>
 	      </div>
-	      
+	      </form>
     	<!--  -->  
 	    </div>
 	  </div>
@@ -150,11 +150,9 @@
 		
 		if(confirmation) {
 			$.ajax({
-			    type: "get",
+			    type: "post",
 			    url: "<c:url value='modifyMaker'/>",
-		        data: {
-		        	maker_idx: reward_idx
-		        }
+		        data: $("#modifyForm").serialize() + "&maker_idx=" + maker_idx,
 			    dataType: "text",
 			    success: function (response) {
 			    	

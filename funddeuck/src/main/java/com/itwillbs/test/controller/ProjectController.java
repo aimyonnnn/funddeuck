@@ -69,11 +69,76 @@ public class ProjectController {
 	}
 	
 	// 메이커 페이지 수정하기
-	@GetMapping("modifyMaker")
-	public String modifyMaker(@RequestParam int maker_idx) {
-		System.out.println("modifyMaker : " + maker_idx);
+	@PostMapping("modifyMaker")
+	@ResponseBody
+	public String modifyMaker(@ModelAttribute MakerVO maker, @RequestParam int maker_idx, HttpSession session, Model model) {
+		System.out.println("maker_idx : " + maker_idx);
+		
+		String uploadDir = "/resources/upload";
+		String saveDir = session.getServletContext().getRealPath(uploadDir);
+		String subDir = "";
+		
+		try {
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			subDir = sdf.format(date);
+			saveDir += "/" + subDir;
+			// --------------------------------------------------------------
+			Path path = Paths.get(saveDir);
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// 파일 업로드 폴더 경로 출력
+		System.out.println("실제 업로드 폴더 경로: " + saveDir);
+		
+		// NoticeVO 객체에 전달된 MultipartFile 객체 꺼내기
+		MultipartFile mFile1 = maker.getFile1();
+		MultipartFile mFile2 = maker.getFile2();
+		
+		String uuid = UUID.randomUUID().toString();
+		maker.setMaker_file1("");
+		maker.setMaker_file2("");
+		
+		// 파일명을 저장할 변수 선언
+		String fileName1 = null;
+		String fileName2 = null;
+
+		if (mFile1 != null && !mFile1.getOriginalFilename().equals("")) {
+		    fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
+		    maker.setMaker_file1(subDir + "/" + fileName1);
+		}
+
+		if (mFile2 != null && !mFile2.getOriginalFilename().equals("")) {
+		    fileName2 = uuid.substring(0, 8) + "_" + mFile2.getOriginalFilename();
+		    maker.setMaker_file2(subDir + "/" + fileName2);
+		}
+
+		System.out.println("실제 업로드 파일명1 : " + maker.getMaker_file1());
+		System.out.println("실제 업로드 파일명2 : " + maker.getMaker_file2());
+		// -----------------------------------------------------------------------------------
 		int updateCount = makerService.modifyMaker(maker_idx);
-		if(updateCount > 0) { return "true"; } return "false";
+		
+		if(updateCount > 0) {
+			// 파일 업로드 처리
+			try {
+			    if (fileName1 != null) {
+			        mFile1.transferTo(new File(saveDir, fileName1));
+			    }
+			    if (fileName2 != null) {
+			        mFile2.transferTo(new File(saveDir, fileName2));
+			    }
+			} catch (IllegalStateException e) {
+			    e.printStackTrace();
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
+			// 수정 작업 성공 시
+			return "true";
+		} else {
+			return "false";
+		}
 	}
 	
 	// 리워드 추가하기
