@@ -17,12 +17,12 @@ import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
 @Controller
-public class paymentController {
+public class PaymentController {
 	
 	private IamportClient api;
 	
 	// 아임포트 클라이언트 검증
-	public paymentController() {
+	public PaymentController() {
 		// REST API 키와 REST API secret
 		this.api = new IamportClient("3162026175407507",
 				"lcNI8uNDYbiIPkE5bUhgjvamgWWvdqmpoCZMrTWvKwslV4uLjsbzjNqnJiibjF3IIFZv3okTRqFNuRYL");

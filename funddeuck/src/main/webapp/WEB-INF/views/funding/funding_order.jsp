@@ -66,7 +66,7 @@
 						</div>
 						<!-- 변경 버튼 -->
 						<!--변경 버튼 클릭시 모달창 => 리워드 변경-->
-					    <div class="col-lg-2 col-sm-12 align-self-center">
+					    <div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">
 							<button class="btn btn-primary">변경</button>
 					    </div>
 						<!-- 변경 버튼 끝 -->
@@ -99,7 +99,7 @@
 					<span class="fs-4 fw-bold">배송지</span>
 					<div class="row m-2 p-2 border">
 						<!-- 기본 배송지 등록 X -->
-<!-- 						<div class="row text-center"> -->
+<!-- 						<div class="col d-flex justify-content-center align-self-center"> -->
 <!-- 							<button class="btn btn-primary">추가</button> -->
 <!-- 						</div> -->
 						<!-- 기본 배송지 등록 X 끝 -->
@@ -119,7 +119,7 @@
 								<span class="fs-6">수취인연락처</span>
 							</div>
 						</div>
-						<div class="col-lg-2 col-sm-12 align-self-center">
+						<div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">
 							<button class="btn btn-primary">변경</button>
 						</div>
 						<!-- 기본 배송지 등록 O 끝 -->
@@ -171,22 +171,22 @@
 				<!-- 최종금액 외 금액들 -->
 				<div class="row border ms-2 me-2">
 						<div class="col-6 text-start">
-							<span class="fs-5 fw-bold">리워드 금액</span>
+							<span class="fs-6 fw-bold">리워드 금액</span>
 						</div>
 						<div class="col-6 text-end">
-							<span class="fs-5 fw-bold">xxxx원</span>
+							<span class="fs-6 fw-bold">xxxx원</span>
 						</div>
 						<div class="col-6 text-start">
-							<span class="fs-5 fw-bold">추가 후원 금액</span>
+							<span class="fs-6 fw-bold">추가 후원 금액</span>
 						</div>
 						<div class="col-6 text-end">
-							<span class="fs-5 fw-bold">xxxx원</span>
+							<span class="fs-6 fw-bold">xxxx원</span>
 						</div>
 						<div class="col-6 text-start">
-							<span class="fs-5 fw-bold">쿠폰 사용</span>
+							<span class="fs-6 fw-bold">쿠폰 사용</span>
 						</div>
 						<div class="col-6 text-end">
-							<span class="fs-5 fw-bold">-xxxx원</span>
+							<span class="fs-6 fw-bold">-xxxx원</span>
 						</div>
 				</div>
 				<!-- 후원 금액 끝-->

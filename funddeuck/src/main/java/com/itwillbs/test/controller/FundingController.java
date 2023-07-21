@@ -1,10 +1,21 @@
 package com.itwillbs.test.controller;
 
+import java.util.*;
+
+import javax.servlet.http.*;
+
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
 
+import com.itwillbs.test.service.*;
+import com.itwillbs.test.vo.*;
+
 @Controller
 public class FundingController {
+	
+	@Autowired
+	private ProjectService projectService;
 	
 	// 펀딩 탐색 페이지
 	@GetMapping("fundingDiscover")
@@ -21,6 +32,16 @@ public class FundingController {
 	// 펀딩 주문페이지 이동
 	@GetMapping ("fundingOrder")
 	public String fundingOrder() {
+//		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, HttpSession session) {
+		// session에 저장되어있는 회원아이디 가져오기
+//		String id = (String)session.getAttribute("sId");
+		// 프로젝트 정보 불러오기(임시)
+		int project_idx = 1;
+		// 상세페이지에서 고른 리워드번호 필요
+		int reward_idx = 1;
+		// 선택한 리워드 정보 불러오기
+		
+		
 		return "funding/funding_order";
 	}
 		
