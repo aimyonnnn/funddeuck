@@ -17,4 +17,9 @@ public class MakerService {
 		return mapper.selectMakerInfo(maker_idx);
 	}
 	
+	// 메이커 페이지 수정하기
+	public int modifyMaker(int maker_idx) {
+		return mapper.updateMaker(maker_idx);
+	}
+	
 }

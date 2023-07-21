@@ -56,7 +56,7 @@
 			      </div>
 			      <div class="col-sm-6 d-flex justify-content-end align-items-center">
 			        <!-- 수정 버튼 -->
-			        <button class="btn btn-primary" onclick="">수정</button>
+			        <button class="btn btn-primary" onclick="makerModify(${maker.maker_idx})">수정</button>
 			      </div>
 			    </div>
 			  </div>
@@ -120,15 +120,16 @@
 	</div>
 
 	<script>
-	 $(document).ready(function () {
-	   $("#tab1").addClass("active");
-	   $(".tab-button").click(function () {
-	     var tabId = $(this).data("tab");
-	     $(".content-area").removeClass("active");
-	     $("#" + tabId).addClass("active");
-	   });
+	// 탭 버튼 클릭 시
+	$(document).ready(function () {
+    	$("#tab1").addClass("active");
+	    $(".tab-button").click(function () {
+		    var tabId = $(this).data("tab");
+		    $(".content-area").removeClass("active");
+		    $("#" + tabId).addClass("active");
+	    });
 	 });
-	 
+	 // 탭 버튼 클릭시 active 효과
 	 $(document).ready(function() {
 	    // 버튼1 클릭 시
 	    $(".tab-button[data-tab='tab1']").click(function() {
@@ -141,6 +142,37 @@
 		    $(".tab-button[data-tab='tab2']").addClass("active");
 	    });
 	});
+	 
+	// maker 수정하기
+	function modifyMaker(maker_idx) {
+		
+		let confirmation = confirm('메이커를 정보를 수정 하시겠습니까?')
+		
+		if(confirmation) {
+			$.ajax({
+			    type: "get",
+			    url: "<c:url value='modifyMaker'/>",
+		        data: {
+		        	maker_idx: reward_idx
+		        }
+			    dataType: "text",
+			    success: function (response) {
+			    	
+			    	if(response.trim() == 'true') {
+				        alert("성공적으로 수정되었습니다!");
+				        location.href = '<c:url value="makerDetail?maker_idx="/>' + maker_idx;
+			    	} else {
+			    		alert("수정에 실패했습니다.");
+			    	}
+			    },
+			    error: function (error) {
+			        console.error(error);
+			        alert("수정에 실패했습니다.");
+			    }
+			}); // ajax
+		}
+    }
+	 
 	</script>
 
 	<!-- bootstrap -->

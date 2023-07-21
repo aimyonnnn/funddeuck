@@ -68,6 +68,14 @@ public class ProjectController {
 		return "project/maker_detail";
 	}
 	
+	// 메이커 페이지 수정하기
+	@GetMapping("modifyMaker")
+	public String modifyMaker(@RequestParam int maker_idx) {
+		System.out.println("modifyMaker : " + maker_idx);
+		int updateCount = makerService.modifyMaker(maker_idx);
+		if(updateCount > 0) { return "true"; } return "false";
+	}
+	
 	// 리워드 추가하기
 	@PostMapping("saveReward")
     @ResponseBody

@@ -2,12 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.itwillbs.test.mapper.MakerMapper">
 	
-	<!-- 메이커 정보 조회 -->
+	<!-- 메이커 정보 조회하기 -->
 	<select id="selectMakerInfo" resultType="com.itwillbs.test.vo.MakerVO">
 		select *
 			from maker
 				where
 					maker_idx = #{maker_idx}
 	</select>
+	
+	<!-- 메이커 페이지 수정하기 -->
+	<!-- 사진, 로고, 이름, 이메일, 전화번호, 홈페이지 번호만 수정 가능 -->
+	<!-- 사업자등록번호는 수정 불가능 -->
+	<update id="updateMaker">
+		update maker
+			set
+				maker_file4 = #{maker_file4}      -- 메이커 사진
+				, maker_file5 = #{maker_file5}    -- 메이커 로고
+				, maker_name = #{maker_name}	  -- 메이커 이름		
+				, maker_email = #{maker_email}    -- 메이커 이메일
+				, maker_tel = #{maker_tel}  	  -- 메이커 전화번호
+				, maker_url = #{maker_url}		  -- 메이커 홈페이지
+			where
+				maker_idx = #{maker_idx}	
+	</update>
 
 </mapper>
