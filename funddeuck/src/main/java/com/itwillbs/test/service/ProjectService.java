@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.test.mapper.ProjectMapper;
 import com.itwillbs.test.vo.MakerVO;
+import com.itwillbs.test.vo.ProjectVO;
 import com.itwillbs.test.vo.RewardVO;
 
 @Service
@@ -42,6 +43,11 @@ public class ProjectService {
 	// 리워드 삭제하기
 	public int removeReward(int reward_idx) {
 		return mapper.deleteReward(reward_idx);
+	}
+	
+	// 프로젝트 등록하기
+	public int registProject(ProjectVO project) {
+		return mapper.insertProject(project);
 	}
 	
 }

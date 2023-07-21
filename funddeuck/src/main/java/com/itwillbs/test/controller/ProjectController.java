@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.vo.MakerVO;
+import com.itwillbs.test.vo.ProjectVO;
 import com.itwillbs.test.vo.RewardVO;
 
 @Controller
@@ -217,6 +218,111 @@ public class ProjectController {
 	@GetMapping("projectManagement")
 	public String projectManagement() {
 		return "project/project_management";
+	}
+	
+	// 프로젝트 등록 비즈니스 로직 처리
+	@PostMapping("projectManagementPro")
+	public String projectManagementPro(ProjectVO project, Model model, HttpSession session, HttpServletRequest request) {
+		
+		// 이미지 파일 업로드 
+		String uploadDir = "/resources/upload";
+		String saveDir = session.getServletContext().getRealPath(uploadDir);
+		String subDir = "";
+		
+		try {
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			subDir = sdf.format(date);
+			saveDir += "/" + subDir;
+			Path path = Paths.get(saveDir);
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		MultipartFile mFile1 = project.getFile1();
+		MultipartFile mFile2 = project.getFile2();
+		MultipartFile mFile3 = project.getFile3();
+		MultipartFile mFile4 = project.getFile4();
+		MultipartFile mFile5 = project.getFile5();
+		
+		String uuid = UUID.randomUUID().toString();
+		
+		project.setProject_thumnails1("");
+		project.setProject_thumnails2("");
+		project.setProject_thumnails3("");
+		project.setProject_image("");
+		project.setProject_settlement_image("");
+		
+		String fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
+		String fileName2 = uuid.substring(0, 8) + "_" + mFile2.getOriginalFilename();
+		String fileName3 = uuid.substring(0, 8) + "_" + mFile3.getOriginalFilename();
+		String fileName4 = uuid.substring(0, 8) + "_" + mFile4.getOriginalFilename();
+		String fileName5 = uuid.substring(0, 8) + "_" + mFile5.getOriginalFilename();
+		
+		if(!mFile1.getOriginalFilename().equals("")) {
+			project.setProject_thumnails1(subDir + "/" + fileName1);
+		}
+		if(!mFile2.getOriginalFilename().equals("")) {
+			project.setProject_thumnails2(subDir + "/" + fileName2);
+		}
+		if(!mFile3.getOriginalFilename().equals("")) {
+			project.setProject_thumnails3(subDir + "/" + fileName3);
+		}
+		if(!mFile4.getOriginalFilename().equals("")) {
+			project.setProject_image(subDir + "/" + fileName4);
+		}
+		if(!mFile5.getOriginalFilename().equals("")) {
+			project.setProject_settlement_image(subDir + "/" + fileName5);
+		}
+		
+		System.out.println("실제 업로드 썸네일명1:" + project.getProject_thumnails1());
+		System.out.println("실제 업로드 썸네일명2:" + project.getProject_thumnails1());
+		System.out.println("실제 업로드 썸네일명3:" + project.getProject_thumnails1());
+		System.out.println("실제 업로드 상세이미지명:" + project.getProject_image());
+		System.out.println("실제 업로드 통장사본명:" + project.getProject_settlement_image());
+		
+		// ------------------------------------------------------------------------------------
+		
+		// 주민등록번호 결합
+		String representativeBirth1 = request.getParameter("representativeBirth1"); // 앞자리
+		String representativeBirth2 = request.getParameter("representativeBirth2"); // 뒷자리
+		String project_representative_birth = representativeBirth1 + "-" + representativeBirth2; // 결합
+		project.setProject_representative_birth(project_representative_birth); // 저장
+		
+		int insertCount = projectService.registProject(project);
+		
+		if(insertCount > 0) { // 성공 시 
+			try {
+				if(!mFile1.getOriginalFilename().equals("")) {
+					mFile1.transferTo(new File(saveDir, fileName1));
+				}
+				
+				if(!mFile2.getOriginalFilename().equals("")) {
+					mFile2.transferTo(new File(saveDir, fileName2));
+				}
+				
+				if(!mFile3.getOriginalFilename().equals("")) {
+					mFile3.transferTo(new File(saveDir, fileName3));
+				}
+				
+				if(!mFile4.getOriginalFilename().equals("")) {
+					mFile4.transferTo(new File(saveDir, fileName4));
+				}
+				
+				if(!mFile5.getOriginalFilename().equals("")) {
+					mFile5.transferTo(new File(saveDir, fileName5));
+				}
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return "redirect:/saveReward";
+		} else { // 실패 시
+			model.addAttribute("msg", "프로젝트 등록 실패!");
+			return "fail_back";
+		}
 	}
 	
 	// 발송·환불 관리

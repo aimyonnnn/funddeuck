@@ -95,5 +95,35 @@
 					reward_idx = #{reward_idx}
 	</delete>
 	
-	
+	<!-- 프로젝트 등록하기 -->
+	<insert id="insertProject">
+		INSERT 
+			INTO project
+			VALUES (
+				NULL
+				, #{project_category}
+				, #{project_subject}
+				, #{project_thumnails1}
+				, #{project_thumnails2}
+				, #{project_thumnails3}
+				, #{project_image}
+				, #{project_introduce}
+				, #{project_target}
+				, #{project_start_date}
+				, #{project_end_date}
+				, #{project_hashtag1}
+				, #{project_hashtag2}
+				, #{project_hashtag3}
+				, #{project_representative_name}
+				, #{project_representative_email}
+				, #{project_representative_birth}
+				, #{project_tax_email}
+				, #{project_settlement_bank}
+				, #{project_settlement_account}
+				, #{project_settlement_name}
+				, #{project_settlement_image}
+				, #{project_approve_status}
+				, #{maker_idx}
+			)
+	</insert>
 </mapper>

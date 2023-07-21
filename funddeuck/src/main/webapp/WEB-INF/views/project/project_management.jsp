@@ -103,7 +103,10 @@
 	            <p class="projectContent">프로젝트에 필요한 내용을 작성해 주세요.</p>
             
 				<!-- 폼 태그 시작 -->
-				<form action="" class="projectContent" method="post">
+				<form action="projectManagementPro" class="projectContent" method="post" enctype="multipart/form-data">
+					<!-- 히든태그 지우지마세요 테스트 중입니다 -->
+	            	<!-- 프로젝트 등록에서 넘어올 때 파라미터로 받아와야함 -->
+	            	<input type="text" name="maker_idx" id="maker_idx" value="1" class="form-control" style="width:500px;">
 					<!-- 기본 요금제 -->
 					<div class="mt-4">
 						<p class="subheading">기본 요금제</p>
@@ -131,7 +134,7 @@
 						<label class="subheading" for="projectCategory">프로젝트 정보</label>
 						<p class="sideDescription">카테고리를 선택해주세요.</p>
 						<div class="d-flex flex-row">
-							<select class="form-control" name="projectCategory" id="projectCategory">
+							<select class="form-control" name="project_category" id="projectCategory">
 								<option value="">선택</option>
 								<option value="tech">테크/가전</option>
 								<option value="fassion">패션/잡화</option>
@@ -146,7 +149,7 @@
 					<div class="mt-4">
 						<label class="subheading" for="projectSubject">프로젝트 제목</label>
 						<p class="sideDescription">리워드의 장점과 특징이 잘 드러나는 키워드를 한 가지 이상 포함해 주세요.</p>
-						<input class="form-control" type="text" name="projectSubject" id="projectSubject" placeholder="제목을 입력해 주세요">
+						<input class="form-control" type="text" name="project_subject" id="projectSubject" placeholder="제목을 입력해 주세요">
 					</div>
 
 					<!-- 프로젝트 썸네일 -->
@@ -157,16 +160,16 @@
 							· 텍스트나 로고는 넣을 수 없어요.<br>
 							· 최소 1개에서 최대 3개까지 업로드가 가능해요.
 						</p>
-						<input type="file" name="thumnailsImages"><br>
-						<input type="file" class="mt-2" name="thumnailsImages2"><br>
-						<input type="file" class="mt-2" name="thumnailsImages3"><br>
+						<input type="file" name="file1"><br>
+						<input type="file" class="mt-2" name="file2"><br>
+						<input type="file" class="mt-2" name="file3"><br>
 					</div>
               
 					<!-- 검색용 해시태그 -->
 					<div class="mt-4">
 						<label class="subheading" for="searchTag">검색용 태그(#)</label>
 						<p class="sideDescription">프로젝트가 더 잘 검색될 수 있도록 연관성이 높은 태그를 입력해 주세요.</p>
-						<input class="form-control" type="text" name="searchTag" id="searchTag" placeholder="최대 3개의 태그를 입력해 주세요">
+						<input class="form-control" type="text" name="project_hashtag1" id="searchTag" placeholder="최대 3개의 태그를 입력해 주세요">
 					</div>
 
 					<!-- 프로젝트 소개 -->
@@ -178,7 +181,7 @@
 							기존 제품 ・ 서비스 ・ 콘텐츠를 개선했다면 어떤 점이 달라졌는지 작성해 주세요.<br>
 							위에 입력된 정보를 바탕으로 AI로 자동 입력도 가능해요. 
 						</p>
-						<textarea class="form-control management-info" name="managementDetail" id="managementDetail" placeholder="예시 : 우리집 아이가 ○○ 인형을 좋아하는 모습을 보고 만들게 되었습니다." style="height: 300px; resize: none;"></textarea>
+						<textarea class="form-control management-info" name="project_introduce" id="managementDetail" placeholder="예시 : 우리집 아이가 ○○ 인형을 좋아하는 모습을 보고 만들게 되었습니다." style="height: 300px; resize: none;"></textarea>
 					</div>
 
 					<!-- 프로젝트 상세정보 이미지 -->
@@ -188,14 +191,14 @@
 							· 3MB 이하의 JPG, JPEG, PNG 파일<br>
 							· 프로젝트를 설명할 상세정보를 업로드해요. 
 						</p>
-						<input type="file" name="projectImage"><br>
+						<input type="file" name="file4"><br>
 					</div>
 
 					<!-- 목표 금액 -->
 					<div class="mt-4">
 						<label class="subheading" for="targetAmount">목표 금액</label>
 						<p class="sideDescription">최소 50만 원~최대 1억 원 사이에서 설정해 주세요.</p>
-						<input class="form-control" type="text" name="targetAmount" id="targetAmount" placeholder="금액을 입력해 주세요">
+						<input class="form-control" type="text" name="project_target" id="targetAmount" placeholder="금액을 입력해 주세요">
 					</div>
 
 					<!-- 프로젝트 일정 -->
@@ -206,18 +209,18 @@
 							리워드 발송은 프로젝트 종료 후 결제까지 완료되어야 가능해요.
 						</p>
 						<label class="sideDescription fw-bold" for="projectStartDate">시작일</label>
-						<input type="text" name="projectStartDate" id="projectStartDate" class="datepicker"><br>
+						<input type="text" name="project_start_date" id="projectStartDate" class="datepicker"><br>
 						<label class="sideDescription mt-3 fw-bold" for="projectEndDate">종료일</label>
-						<input type="text" name="projectEndDate" id="projectEndDate" class="datepicker"><br>
+						<input type="text" name="project_end_date" id="projectEndDate" class="datepicker"><br>
 					</div>
 
 					<!-- 대표자 및 정산 정보 입력 -->
 					<div class="mt-5">
 						<p class="subheading">대표자 정보</p>
 						<label class="sideDescription" for="representativeName">대표자명</label>
-						<input class="form-control" type="text" name="representativeName" id="representativeName" placeholder="법인 사업자는 법인등기부상 법인명 / 개인은 성명을 입력해 주세요">
+						<input class="form-control" type="text" name="project_representative_name" id="representativeName" placeholder="법인 사업자는 법인등기부상 법인명 / 개인은 성명을 입력해 주세요">
 						<label class="sideDescription" for="representativeEmail">대표 이메일</label>
-						<input class="form-control" type="text" name="representativeEmail" id="representativeEmail" placeholder="대표자의 이메일을 입력해 주세요"><br>
+						<input class="form-control" type="text" name="project_representative_email" id="representativeEmail" placeholder="대표자의 이메일을 입력해 주세요"><br>
 					</div>
               
 					<!-- 정산 정보 -->
@@ -241,7 +244,7 @@
 						</div>
 					</div>
 					<label class="sideDescription" for="taxEmail">세금계산서 발행 이메일</label>
-					<input class="form-control" type="text" name="taxEmail" id="taxEmail" placeholder="세금계산서를 발행할 이메일을 입력해 주세요"><br>
+					<input class="form-control" type="text" name="project_tax_email" id="taxEmail" placeholder="세금계산서를 발행할 이메일을 입력해 주세요"><br>
 					<label class="sideDescription" for="taxEmail">계좌정보</label>
 					<p class="sideDescription">
 						· 개인사업자의 경우 본인/사업자 명의 계좌 등록이 가능하며, 법인사업자의 경우 법인계좌만 등록 가능해요.<br>
@@ -249,20 +252,20 @@
 						· 저축성 예금 계좌, 외화 예금 계좌, CMA 계좌, 평생 계좌번호(휴대전화 번호) 등은 입금이 불가합니다.
 					</p>
 					<div class="d-flex flex-row">
-						<select class="form-control" name="bankCategory">
+						<select class="form-control" name="project_settlement_bank">
 							<option value="">은행 선택</option>
-							<option value="tech">신한은행</option>
-							<option value="fassion">국민은행</option>
-							<option value="living">농협은행</option>
-							<option value="beauty">우리은행</option>
-							<option value="book">기업은행</option>
-							<option value="book">KEB하나은행</option>
-							<option value="book">부산은행</option>
-							<option value="book">카카오뱅크</option>
+							<option value="SH">신한은행</option>
+							<option value="KB">국민은행</option>
+							<option value="NH">농협은행</option>
+							<option value="WR">우리은행</option>
+							<option value="IBK">기업은행</option>
+							<option value="KEBHana">KEB하나은행</option>
+							<option value="BS">부산은행</option>
+							<option value="Kakao">카카오뱅크</option>
 						</select>
 					</div>
-					<input class="form-control mt-1" type="text" name="bankAccount" placeholder="계좌번호 '-' 없이 숫자만 입력">
-					<input class="form-control mt-1" type="text" name="bankName" placeholder="예금주명"><br>
+					<input class="form-control mt-1" type="text" name="project_settlement_account" placeholder="계좌번호 '-' 없이 숫자만 입력">
+					<input class="form-control mt-1" type="text" name="project_settlement_name" placeholder="예금주명"><br>
 					<button class="btn btn-primary">본인 인증</button>
 					</div>
 
@@ -273,7 +276,7 @@
 							· 10MB 이하의 JPG, JPEG, PNG 파일<br>
 							· 위 계좌 정보와 동일한 명의의 통장 사본을 제출해 주세요.
 						</p>
-						<input type="file" name="bankImage"><br>
+						<input type="file" name="file5"><br>
 					</div>
 
 					<!-- 약관 시작 -->
