@@ -410,7 +410,7 @@ a.supporters svg {
 
 /* 테이블 부연 설명 */
 .tableDescription {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 /* 테이블 안 버튼 */
@@ -453,6 +453,10 @@ a.supporters svg {
   .projectProcess img {
 	margin-top: 100px;
 	width: 70%;
+  }
+  
+  .table-responsive {
+  	overflow-x: auto;
   }
 }
 

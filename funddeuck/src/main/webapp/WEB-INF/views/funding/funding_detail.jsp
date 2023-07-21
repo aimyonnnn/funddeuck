@@ -31,8 +31,7 @@
 			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="#" role="button">아트북</a>
 			<br><br>
 			<div class="col">
-				<p class="fs-2 fw-bolder"><스파이더맨: 어크로스 더 유니버스> 아트북+공식 굿즈</p>
-				<!-- 오류 아님! 뷰 테스트 확인용 펀딩명 -->
+				<p class="fs-2 fw-bolder">&lt;스파이더맨: 어크로스 더 유니버스&gt; 아트북+공식 굿즈</p>
 			</div>
 		</div>
 		<!-- 펀딩이름 -->
@@ -257,8 +256,7 @@
 		<br>
 		<h3 class="fw-bold">더욱 확장된 멀티버스가 열린다!</h3>
 		<h3 class="fw-bold">상상 그 이상을 넘어서는 멀티버스!</h3><br>
-		<h3 class="fw-bold"><스파이더맨: 어크로스 더 유니버스></h3><br>
-		<!-- 오류 아님 -->
+		<h3 class="fw-bold">&lt;스파이더맨: 어크로스 더 유니버스&gt;</h3><br>
 		</div>
 <!-- 		네비게이션 바 끝 -->
 			</div>

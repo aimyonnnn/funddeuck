@@ -14,7 +14,7 @@
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
-	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
+	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<!-- include -->
@@ -106,7 +106,7 @@
 							    </table>
 							</div>
 							<p class="tableDescription">
-								· 리워드 발송이 완료되면 발송정보 입력을 통해 발송처리를 진행하세요.</br>
+								· 리워드 발송이 완료되면 발송정보 입력을 통해 발송처리를 진행하세요.<br>
 								· 상태별 건수는 발송번호 기준으로 계산됩니다.
 							</p>
 						</div>
@@ -116,8 +116,7 @@
 						<div>
 							<p class="subheading">목록 <span class="sideDescription">| 총 829명</span></p>
 							<div class="dropdown">
-								<div class="btn-group">
-								<button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+								<button type="button" class="btn dropdown-toggle btn-outline-primary btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
 									발송·배송 전체 관리
 								</button>
 								<ul class="dropdown-menu">
@@ -132,7 +131,6 @@
 									<li><a class="dropdown-item" href="#">펀딩금 반환 신청 완료</a></li>
 									<li><a class="dropdown-item" href="#">펀딩금 반환 신청 거절</a></li>
 								</ul>
-								</div>
 							</div>
 							<div class="table-responsive">
 							    <table class="table">
@@ -204,9 +202,10 @@
     });
 	</script>
 
+	
 	<!-- js -->
 	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
 	<!-- bootstrap -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>

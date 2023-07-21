@@ -14,12 +14,12 @@
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
-	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
+	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 	<script> 
 	// datepicker
 	$(function() {
-	$("#projectDatepicker").datepicker({
+	$(".datepicker").datepicker({
 	    dateFormat: 'yy-mm-dd'
 	    ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
 	    ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
@@ -39,7 +39,7 @@
 	});                    
 
 	//초기값을 오늘 날짜로 설정
-	$('#projectDatepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
+	$('.datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
 	});
 
 	// 약관 전체동의 체크박스
@@ -206,9 +206,9 @@
 							리워드 발송은 프로젝트 종료 후 결제까지 완료되어야 가능해요.
 						</p>
 						<label class="sideDescription fw-bold" for="projectStartDate">시작일</label>
-						<input type="text" name="projectStartDate" id="projectStartDate"><br>
+						<input type="text" name="projectStartDate" id="projectStartDate" class="datepicker"><br>
 						<label class="sideDescription mt-3 fw-bold" for="projectEndDate">종료일</label>
-						<input type="text" name="projectEndDate" id="projectEndDate"><br>
+						<input type="text" name="projectEndDate" id="projectEndDate" class="datepicker"><br>
 					</div>
 
 					<!-- 대표자 및 정산 정보 입력 -->
@@ -467,13 +467,12 @@
 	}
 	</script>
 	
+	<!-- datepicker -->
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 	<!-- bootstrap -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 	<!-- js -->
 	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
-	<!-- datepicker -->
-	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </body>
 </html>
