@@ -419,7 +419,7 @@
 		    
 		    $.each(notifications.slice(0, 5), function(index, notification) {
 		    	var notificationContent = notification.notification_content;
-		        var alertDiv = $('<div class="alert alert-info" role="alert"></div>');
+		        var alertDiv = $('<div class="alert alert-primary" role="alert"></div>');
 		        var icon = $('<i class="fas fa-exclamation-circle"></i>');
 		        var content = $('<span>&nbsp;' + notificationContent + '</span>');
 		      	
@@ -441,7 +441,7 @@
 	
 	$(()=>{
 		getNotifications();
-		setInterval(getNotifications, 5000);
+// 		setInterval(getNotifications, 5000);
 	})
 	
 	// 메시지 읽음 처리 하기

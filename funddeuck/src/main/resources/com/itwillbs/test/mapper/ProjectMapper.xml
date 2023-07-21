@@ -122,7 +122,7 @@
 				, #{project_settlement_account}
 				, #{project_settlement_name}
 				, #{project_settlement_image}
-				, #{project_approve_status}
+				, 1
 				, #{maker_idx}
 			)
 	</insert>
