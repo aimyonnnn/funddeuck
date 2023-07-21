@@ -49,5 +49,11 @@ public class ProjectService {
 	public int registProject(ProjectVO project) {
 		return mapper.insertProject(project);
 	}
+	public ProjectVO getProjectInfo(int project_idx) {
+		return mapper.selectProject(project_idx);
+	}
+	
+	// 프로젝트 조회하기
+	
 	
 }

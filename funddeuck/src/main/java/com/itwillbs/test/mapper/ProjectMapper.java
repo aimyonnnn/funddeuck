@@ -35,4 +35,7 @@ public interface ProjectMapper {
 	// 프로젝트 등록하기 
 	int insertProject(ProjectVO project);
 	
+	// 프로젝트 조회하기
+	ProjectVO selectProject(int project_idx);
+	
 }

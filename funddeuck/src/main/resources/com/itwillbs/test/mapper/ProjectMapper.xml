@@ -62,7 +62,7 @@
 	</select>
 	
 	<!-- 리워드 조회하기 -->
-	<select id="selectRewardInfo">
+	<select id="selectRewardInfo" resultType="com.itwillbs.test.vo.RewardVO">
 		select *
 			from reward
 				where
@@ -126,4 +126,12 @@
 				, #{maker_idx}
 			)
 	</insert>
+	
+	<!-- 프로젝트 조회하기 -->
+	<select id="selectProject" resultType="com.itwillbs.test.vo.ProjectVO">
+		SELECT *
+			FROM project
+				WHERE project_idx = #{project_idx}
+	</select>
+	
 </mapper>

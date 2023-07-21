@@ -11,7 +11,7 @@
 <title>펀딩</title>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/> --%>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 </head>
 <body>
 	<!-- 이미지, 프로젝트 정보 -->
@@ -28,9 +28,13 @@
 			<!-- 프로젝트 이미지 영역 끝 -->
 			<!-- 프로젝트 정보 영역 -->
 			<div class="col p-2 text-start">
-				<span class="fs-2 fw-bold">프로젝트 명</span> <br>
+				
+				<span class="fs-2 fw-bold">${project.project_subject }</span> <br>
+				<!-- 목표금액 + 후원한 사람들의 총금액 -->
 				<span class="fs-4 fw-bold">xxxx원</span>&nbsp;&nbsp;
+				<!-- 목표금액까지의 % -->
 				<span class="fs-5 text-primary fw-bold">xx%</span> &nbsp; 
+				<!-- 프로젝트 종료일 - 현재시간 -->
 				<span class="fs-6 text-muted">xx일 남음</span>
 			</div>
 			<!-- 프로젝트 정보 영역 끝 -->
@@ -51,16 +55,18 @@
 								<tr>
 									<th>리워드 구성</th>
 									<td>
-										선택한 옵션
+										${reward.reward_name } <br>
+										${reward.reward_option }
 									</td>
 								</tr>
 								<tr>
 									<th>리워드 금액</th>
-									<td>xxx원</td>
+									<td>${reward.reward_price }원</td>
 								</tr>
 								<tr>
-									<th>예상 전달일</th>
-									<td>23년 xx월 xx일</td>
+									<th>발송 시작일</th>
+									<!-- 날짜 사이 하이픈 제거하고 .으로 변경 -->
+									<td>${reward.delivery_date }</td>
 								</tr>
 							</table>
 						</div>
@@ -74,18 +80,18 @@
 				</div>
 				<!--리워드 정보 끝-->
 				<!--서포터 정보-->
-				<div class="row">
+				<div class="row">					
 					<span class="fs-4 fw-bold">서포터 정보</span>
 					<div class="row m-2 p-2 border">
 						<div class="col">
 							<table class="table table-borderless">
 								<tr>
 									<th>연락처</th>
-									<td>010-1234-5678</td>
+									<td>${member.member_phone }</td>
 								</tr>
 								<tr>
 									<th>이메일</th>
-									<td>funddeuck@itwill.co.kr</td>
+									<td>${member.member_email}</td>
 								</tr>
 							</table>
 							<span class="fs-6 text-muted">* 위 연락처와 이메일로 후원 관련 소식이 전달됩니다.</span> <br>
