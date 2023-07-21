@@ -11,7 +11,7 @@
 <title>펀딩</title>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
+<%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/> --%>
 </head>
 <body>
 	<!-- 이미지, 프로젝트 정보 -->
@@ -66,7 +66,7 @@
 						</div>
 						<!-- 변경 버튼 -->
 						<!--변경 버튼 클릭시 모달창 => 리워드 변경-->
-					    <div class="col-lg-2 col-md-6">
+					    <div class="col-lg-2 col-sm-12 align-self-center">
 							<button class="btn btn-primary">변경</button>
 					    </div>
 						<!-- 변경 버튼 끝 -->
@@ -108,7 +108,7 @@
 						<div class="col">
 							<div class="row-12">
 								<span class="fs-6 fw-bold">수취인</span>
-								<span class="bg-danger text-white">기본</span>
+								<span class=" badge bg-danger text-white">기본</span>
 							</div>
 							<div class="row-12">
 								<span class="fs-6">[우편번호]</span>
@@ -119,7 +119,7 @@
 								<span class="fs-6">수취인연락처</span>
 							</div>
 						</div>
-						<div class="col-lg-2 col-md-6">
+						<div class="col-lg-2 col-sm-12 align-self-center">
 							<button class="btn btn-primary">변경</button>
 						</div>
 						<!-- 기본 배송지 등록 O 끝 -->
@@ -190,10 +190,18 @@
 						</div>
 				</div>
 				<!-- 후원 금액 끝-->
+				<!-- 결제 예정일 안내 -->
+				<div class="row pt-2 text-start ms-2 me-2">
+					<p>
+						프로젝트 성공시 결제는 <span class="fw-bold text-danger">23.xx.xx</span>에 진행 예정입니다.<br>
+						프로젝트가 취소됬을 경우, 예약된 결제는 자동으로 결제가 취소됩니다.
+					</p>
+				</div>
+				<!-- 결제 예정일 안내 끝 -->
 				<!-- 개인정보 동의, 유의사항 -->
 				<div class="row ms-2 me-2">
 					<div class="col pt-2 text-start">
-						<div class="form-check fs-5">
+						<div class="form-check fs-6">
 							<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
 							<label class="form-check-label" for="flexCheckDefault">
 								개인정보 제3자 제공 동의
@@ -202,7 +210,7 @@
 					</div>
 					<!-- a태그 내용보기 -->
 					<!-- 모달창으로 개인정보 동의 내용 보여주기 -->
-					<div class="col-4 pt-2 fs-5">
+					<div class="col-4 pt-2 fs-6">
 						<a href="#">내용보기</a>
 					</div>
 					<!-- a태그 내용보기 끝 -->
@@ -210,7 +218,7 @@
 				<!-- 후원 유의사항 체크 -->
 				<div class="row ms-2 me-2">
 					<div class="col pt-2 text-start">
-						<div class="form-check fs-5">
+						<div class="form-check fs-6">
 							<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
 							<label class="form-check-label" for="flexCheckDefault">
 								후원 유의사항 확인
@@ -218,21 +226,35 @@
 						</div>
 					</div>
 					<!-- 열기 닫기 버튼으로 보이고 안보이고?-->
-					<div class="col-4 pt-2 fs-5">
-						<button>열기</button>
-<!-- 						<button>닫기</button> -->
+					<div class="col-4 pt-2 fs-6">
+						<button>
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+							  <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+							</svg>							
+							열기
+						</button>
+<!-- 						<button> -->
+<!-- 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16"> -->
+<!-- 							  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/> -->
+<!-- 							</svg>							 -->
+<!-- 							닫기 -->
+<!-- 						</button> -->
 					</div>
 					<!-- a태그 내용보기 끝 -->
 				</div>
 				<div class="row ms-2 me-2 pt-2 text-start">
-					<ul>
-						<li>후원은 구매가 아닌 계획에 자금을 지원하는 일입니다</li>
-					</ul>
+					<p>
+						펀딩은 일반 쇼핑과 달리 메이커에게 투자하고, 투자의 보상으로 제품이나 서비스를 받는 구조입니다.<br>
+						따라서 단숨 변심으로 인한 환불은 신청하실 수 없습니다. 
+					</p>
+<!-- 					<ul class="list-group"> -->
+<!-- 						<li class="list-group-item"></li> -->
+<!-- 					</ul> -->
 				</div>
 				<!-- 개인정보 동의, 유의사항 끝 -->
 				<!-- 후원하기 버튼 영역 -->
 				<!-- 클릭시 결제 페이지로 이동 -->
-				<div class="row ms-2 me-2">
+				<div class="row ms-2 me-2 pt-3">
 					<button class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
 				</div>
 				<!-- 후원하기 버튼 영역 끝-->
