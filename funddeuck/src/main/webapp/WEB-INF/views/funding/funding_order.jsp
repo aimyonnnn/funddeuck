@@ -22,9 +22,6 @@
 			<div class="col-lg-2 col-4">
 				<img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" class="img-fluid" alt="...">
 			</div>
-<!-- 			<div class="col-12 d-lg-none"> -->
-<!-- 				<img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" class="img-fluid" alt="..."> -->
-<!-- 			</div> -->
 			<!-- 프로젝트 이미지 영역 끝 -->
 			<!-- 프로젝트 정보 영역 -->
 			<div class="col p-2 text-start">
@@ -71,9 +68,9 @@
 							</table>
 						</div>
 						<!-- 변경 버튼 -->
-						<!--변경 버튼 클릭시 모달창 => 리워드 변경-->
+						<!-- 변경 버튼 클릭시 모달창 => 리워드 변경 -->
 					    <div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">
-							<button class="btn btn-primary">변경</button>
+							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rewardListmodal">변경</button>
 					    </div>
 						<!-- 변경 버튼 끝 -->
 					</div>
@@ -136,10 +133,10 @@
 				<div class="row">
 					<span class="fs-4 fw-bold">쿠폰</span>
 					<div class="row m-2 p-2 border">
-						<div class="col-3 text-start">
+						<div class="col text-start">
 							<span class="fs-6 fw-bold">보유 쿠폰</span>
 						</div>
-						<div class="col">
+						<div class="col-8">
 							<!-- 드롭다운으로 가지고있는 쿠폰 선택 -->
 							<div class="row">
 								<div class="dropdown">
@@ -269,12 +266,27 @@
 		</div>
 	</div>
 	<!-- 리워드, 서포터, 배송지, 쿠폰, 결제확인 영역 끝 -->
-	<div class="container text-center">
-		<div class="row">
+	<!-- 리워드 변경 모달창 -->
+	<div class="modal" id="rewardListmodal" tabindex="-1">
+		<!-- modal-fullscreen -->
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">리워드 변경</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<!-- 리워드 리스트 뿌리기 -->
+					${rewardList }
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
 		</div>
-		
-	</div>
-
+	</div>	
+	<!-- 리워드 변경 모달창 끝 -->
   <!-- 부트스트랩 -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>

@@ -43,7 +43,7 @@ public class FundingController {
 		// 프로젝트 번호(가데이터)
 		int project_idx = 1;
 		// 상세페이지에서 고른 리워드번호 필요(가데이터)
-		Integer reward_idx = 1;
+		int reward_idx = 1;
 		// 회원 정보 불러오기
 		MembersVO member = memberService.getMemberInfo(id);
 		System.out.println(member);
@@ -53,9 +53,13 @@ public class FundingController {
 		// 선택한 리워드 정보 불러오기
 		RewardVO reward = projectService.getRewardInfo(reward_idx);
 		System.out.println(reward);
+		// 리워드 리스트 불러오기
+		List<RewardVO> rewardList = projectService.getRewardList(project_idx);
+		System.out.println(rewardList);
 		model.addAttribute("member", member);
 		model.addAttribute("project", project);
 		model.addAttribute("reward", reward);
+		model.addAttribute("rewardList", rewardList);
 		return "funding/funding_order";
 	}
 		
