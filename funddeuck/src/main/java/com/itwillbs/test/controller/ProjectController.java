@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.RewardVO;
@@ -33,6 +34,8 @@ public class ProjectController {
 	
 	@Autowired
 	private ProjectService projectService;
+	@Autowired
+	private MakerService makerService;
 	
 	// 리워드 등록
 	@GetMapping("projectReward")
@@ -53,7 +56,15 @@ public class ProjectController {
 	
 	// 메이커 페이지 디테일
 	@GetMapping("makerDetail")
-	public String makerDetail() {
+	public String makerDetail(@RequestParam(required = false) Integer maker_idx, Model model) {
+		System.out.println("makerDetail");
+		maker_idx = 1;
+		if(maker_idx != null) {
+			// 메이커 정보 조회
+			MakerVO maker = makerService.getMakerInfo(maker_idx);
+			System.out.println("maker : " + maker);
+			model.addAttribute("maker", maker);
+		}
 		return "project/maker_detail";
 	}
 	
