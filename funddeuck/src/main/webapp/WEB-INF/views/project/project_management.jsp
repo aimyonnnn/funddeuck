@@ -14,8 +14,8 @@
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
-	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="stylesheet" type="text/css">
 	<script> 
 	// datepicker
 	$(function() {
@@ -93,7 +93,7 @@
 		<!-- 중앙 섹션 시작 -->
 		<section id="section">
 	      	<article id="article">
-	      		<div class="projectProcess">
+	      		<div class="projectProcess img-fluid me-auto">
 	      			<img src="${pageContext.request.contextPath}/resources/images/projectManagementImage.png">
 	      		</div>
 	      		
