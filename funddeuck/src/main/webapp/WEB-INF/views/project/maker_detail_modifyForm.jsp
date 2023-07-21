@@ -25,7 +25,7 @@
 	  <div class="row">
 	    <div class="col">
 		<!--  -->
-		  
+		
 		  <!-- 이미지 -->
 	      <div class="d-flex justify-content-center my-2">
 	        <img src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file4}" alt="메이커사진" class="img-fluid" style="max-height: 400px;">
@@ -76,28 +76,38 @@
 		      </div>
 	      	  <!-- 메이커 정보 -->
 		      <div class="content-area" id="tab2">
+		      	  <!-- 폼 태그 -->
+		      	  <form action="" method="post" id="modifyForm" enctype="multipart/form-data"> 	
 				  <table class="table text-center">
 				    <tr>
 				      <th>상호명</th>
-				      <td>${maker.maker_name }</td>
+				      <td><input type="text" name="maker_name" value="${maker.maker_name }" ></td>
 				    </tr>
 				    <tr>
 				      <th>이메일</th>
-				      <td>${maker.maker_email }</td>
+				      <td><input type="text" name="maker_email" value="${maker.maker_email }" ></td>
 				    </tr>
 				    <tr>
 				      <th>전화번호</th>
-				      <td>${maker.maker_tel }</td>
+				      <td><input type="text" name="maker_tel" value="${maker.maker_tel }" ></td>
 				    </tr>
 				    <tr>
 				      <th>홈페이지</th>
-				      <td>${maker.maker_url }</td>
+				      <td><input type="text" name="maker_url" value="${maker.maker_url }" ></td>
+				    </tr>
+				    <tr>
+				      <th>메이커 사진</th>
+				      <td><input type="file" name="file4"></td>
+				    </tr>
+				    <tr>
+				      <th>메이커 로고</th>
+				      <td><input type="file" name="file5"></td>
 				    </tr>
 				    <c:choose>
 				      <c:when test="${not empty maker.corporate_biz_num or not empty maker.individual_biz_num}">
 				        <tr>
 				          <th>사업자등록번호</th>
-				          <td>${maker.corporate_biz_num } ${maker.individual_biz_num }</td>
+				          <td>${maker.corporate_biz_num} ${maker.individual_biz_num}</td>
 				        </tr>
 				      </c:when>
 				      <c:otherwise>
@@ -108,9 +118,12 @@
 				      </c:otherwise>
 				    </c:choose>
 				  </table>
+				  </form>
+				  <!-- 폼 태그 -->
+				  <button class="btn btn-primary btn-sm" onclick="modifyMaker(${param.maker_idx})">수정하기</button>
 			  </div>
 	      </div>
-	      <button class="btn btn-primary" onclick="location.href='modifyMakerForm?maker_idx=${param.maker_idx}'">수정</button>
+	      
     	<!--  -->  
 	    </div>
 	  </div>
@@ -139,11 +152,35 @@
 		    $(".tab-button[data-tab='tab2']").addClass("active");
 	    });
 	});
+
+	// maker 수정하기
+	function modifyMaker(maker_idx) {
+		
+		let confirmation = confirm('메이커를 정보를 수정 하시겠습니까?')
+		
+		if(confirmation) {
+			$.ajax({
+			    type: "post",
+			    url: "<c:url value='modifyMaker'/>",
+		        data: $("#modifyForm").serialize() + "&maker_idx=" + maker_idx,
+			    dataType: "text",
+			    success: function (response) {
+			    	
+			    	if(response.trim() == 'true') {
+				        alert("성공적으로 수정되었습니다!");
+				        location.href = '<c:url value="modifyMakerForm?maker_idx="/>' + maker_idx;
+			    	} else {
+			    		alert("수정에 실패했습니다.");
+			    	}
+			    },
+			    error: function (error) {
+			        console.error(error);
+			        alert("수정에 실패했습니다.");
+			    }
+			}); // ajax
+		}
+    }
 	 
-	function redirectToModifyMakerForm(makerIdx) {
-		var newUrl = 'modifyMakerForm?maker_idx=' + makerIdx;
-	    window.location.href = newUrl;
-	}
 	</script>
 
 	<!-- bootstrap -->

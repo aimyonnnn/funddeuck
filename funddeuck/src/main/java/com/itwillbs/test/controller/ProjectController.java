@@ -58,7 +58,7 @@ public class ProjectController {
 	@GetMapping("makerDetail")
 	public String makerDetail(@RequestParam(required = false) Integer maker_idx, Model model) {
 		System.out.println("makerDetail");
-		maker_idx = 1;
+		maker_idx = 2;
 		if(maker_idx != null) {
 			// 메이커 정보 조회
 			MakerVO maker = makerService.getMakerInfo(maker_idx);
@@ -67,6 +67,14 @@ public class ProjectController {
 		}
 		return "project/maker_detail";
 	}
+	
+	// 메이커 페이지 수정하기 폼
+	@GetMapping("modifyMakerForm")
+	public String modifyMakerForm(@RequestParam int maker_idx) {
+		System.out.println("modifyMakerForm : " + maker_idx);
+		return "project/maker_detail_modifyForm";
+	}
+	
 	
 	// 메이커 페이지 수정하기
 	@PostMapping("modifyMaker")
