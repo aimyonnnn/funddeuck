@@ -126,33 +126,7 @@
         </div>
     </div>
     <hr>
-   	<br>
-   <div class="container">
-   	<div style = "max-width:1440px; width:100%; overflow:hidden; margin: 0 auto;" >
-	  <h2>얼리버드</h2>
-	  <p>먼저 참여하는 분들께 드리는 새로운 혜택</p>
-	  <div class="swiper-container" style = "width:100%;">
-	    <div class="swiper-wrapper" >
-	      <c:forEach var="i" begin="0" end="11">
-	        <div class="swiper-slide">
-	          <div>
-	            <img src="resources/images/beautycut${i+1}.jpg" class="d-block w-100" alt="...">
-	            <c:set var="projectId" value="${i+1}" />
-	            <c:set var="project" value="${database.getProjectById(projectId)}" />
-	            <p>[${project.p_name}]</p>
-	            <p>${project.p_introduce}</p>
-	            <p>${project.p_percent}%</p>
-	            <div class="d-flex justify-content-center">
-	              <button class="btn btn-primary">지금 참여하기</button>
-	            </div>
-	          </div>
-	        </div>
-	      </c:forEach>
-	    </div>
-	  </div>
-	</div>
-  </div>
-	<br>
+
   
 	<script src="resources/js/rankingList.js"></script>
     <script src="resources/js/moreButton.js"></script>
