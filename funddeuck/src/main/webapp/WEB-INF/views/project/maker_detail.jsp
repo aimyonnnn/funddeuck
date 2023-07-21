@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- css -->
 	<link href="${pageContext.request.contextPath}/resources/css/project.css" rel="styleSheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
+	<link rel="stylesheet" type="text/css" href="resources/css/mypage.css" />
 </head>
 <body>
 	<jsp:include page="../common/main_header.jsp"/>
@@ -55,8 +55,8 @@
 			
 		  <!-- Tab 버튼 -->
 	      <div class="tab-buttons text-center">
-	        <button class="btn btn-outline-primary tab-button w-100" data-tab="tab1">프로젝트</button>
-	        <button class="btn btn-outline-primary tab-button w-100" data-tab="tab2">메이커정보</button>
+	      	<button class="btn btn-outline-primary tab-button w-100 active" data-tab="tab1">프로젝트</button>
+	      	<button class="btn btn-outline-primary tab-button w-100" data-tab="tab2">메이커정보</button>
 	      </div>
 			
 		  <!-- 프로젝트 -->
@@ -114,6 +114,19 @@
 	     $("#" + tabId).addClass("active");
 	   });
 	 });
+	 
+	 $(document).ready(function() {
+	    // 버튼1 클릭 시
+	    $(".tab-button[data-tab='tab1']").click(function() {
+		   	$(".tab-button[data-tab='tab2']").removeClass("active");
+		   	$(".tab-button[data-tab='tab1']").addClass("active");
+	    });
+		// 버튼2 클릭 시
+	 	$(".tab-button[data-tab='tab2']").click(function() {
+		    $(".tab-button[data-tab='tab1']").removeClass("active");
+		    $(".tab-button[data-tab='tab2']").addClass("active");
+	    });
+	});
 	</script>
 
 	<!-- bootstrap -->
