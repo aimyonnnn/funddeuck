@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- css -->
 	<link href="${pageContext.request.contextPath}/resources/css/project.css" rel="styleSheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="resources/css/mypage.css" />
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 </head>
 <body>
 	<jsp:include page="../common/main_header.jsp"/>
@@ -112,6 +112,7 @@
 				    </c:choose>
 				  </table>
 			  </div>
+	      </div>
 	      
     	<!--  -->  
 	    </div>
