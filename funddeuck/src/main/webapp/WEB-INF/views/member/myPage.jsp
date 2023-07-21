@@ -51,7 +51,8 @@
                         <a href="" class="text-black">닉네임님</a>
                     </div>
                     <hr>
-                    <button class="btn" style="border-radius: 50px;">로그아웃</button>
+                    <button class="btn" style="border-radius: 50px;">로그아웃</button><br>
+					<button class="btn" style="border-radius: 50px;" onclick="location.href='profile'">프로필수정</button>
                 </div>
                 <!-- 프로필 영역 -->
                 <!-- 쿠폰, 펀딩, 스토어 영역 -->

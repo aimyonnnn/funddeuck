@@ -12,12 +12,12 @@ import com.itwillbs.test.service.ProfileService;
 import com.itwillbs.test.vo.ProfileVO;
 
 @Controller
-public class MemberProfileController {
+public class MemberController {
 
     private final ProfileService profileService;
 
     @Autowired
-    public MemberProfileController(ProfileService profileService) {
+    public MemberController(ProfileService profileService) {
         this.profileService = profileService;
     }
 
@@ -36,4 +36,15 @@ public class MemberProfileController {
         profileService.saveProfileData(profileVO);
         return "true";
     }
+    
+    @GetMapping("/member/mypage")
+    public String myPage() {
+        return "member/myPage"; 
+    }
+    
+    @GetMapping("/member/coupon")
+    public String Coupon() {
+    	return "member/member_coupon";
+    }
+    
 }
