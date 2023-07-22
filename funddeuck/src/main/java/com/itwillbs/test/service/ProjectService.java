@@ -55,6 +55,10 @@ public class ProjectService {
 	public ProjectVO getProjectInfo(int project_idx) {
 		return mapper.selectProject(project_idx);
 	}
+	// 메이커 등록 페이지 접속 시
+	public int getMemberIdx(String sId) {
+		return mapper.selectMemberIdx(sId);
+	}
 	
 	
 }

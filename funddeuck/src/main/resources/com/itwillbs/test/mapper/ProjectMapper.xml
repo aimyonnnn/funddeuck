@@ -23,7 +23,7 @@
 	</insert>
 	
 	<!-- 메이커 등록하기 -->
-	<insert id="insertMaker">
+	<insert id="insertMaker" useGeneratedKeys="true" keyProperty="maker_idx">
 		insert
 			into maker
 				values(
@@ -96,7 +96,7 @@
 	</delete>
 	
 	<!-- 프로젝트 등록하기 -->
-	<insert id="insertProject">
+	<insert id="insertProject" useGeneratedKeys="true" keyProperty="project_idx">
 		INSERT 
 			INTO project
 			VALUES (
@@ -143,6 +143,13 @@
 				JOIN members mem ON m.member_idx = mem.member_idx
 					WHERE r.reward_idx = #{reward_idx}
 					AND mem.member_idx = (SELECT member_idx FROM members WHERE member_id = #{sId});
+	</select>
+	
+	<!-- 메이커 등록 페이지 접속 시 -->
+	<select id="selectMemberIdx" resultType="int">
+		select member_idx
+			from members
+				where member_id = #{sId}
 	</select>
 	
 	

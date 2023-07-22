@@ -75,8 +75,8 @@
 		            <!-- 폼 태그 시작 -->
 		            <form action="" class="projectContent" method="post" id="rewardForm">
 		            	<!-- 히든 처리하는 부분 -->
-<!-- 		            	<label class="form-content subheading" for="project_idx">project_idx</label> -->
-		            	<input type="text" name="project_idx" id="project_idx" value="1" class="form-control" style="width:500px;">
+		            	<label class="form-content subheading" for="project_idx">project_idx</label>
+		            	<input type="text" name="project_idx" id="project_idx" value="${param.project_idx}" class="form-control" style="width:500px;">
 		            	
 			            <!-- 금액 -->
 			            <div>
@@ -270,8 +270,8 @@
 	        	}
 	        },
 	        error: function (error) {
-	            console.error(error);
-	            alert("리워드 갯수 조회에 실패했습니다.");
+	            console.log("리워드 갯수 조회에 실패했습니다.");
+// 	            alert("리워드 갯수 조회에 실패했습니다.");
 	        }
 	    }); // ajax
 	    
@@ -330,8 +330,8 @@
 	            }
 	        },
 	        error: function (error) {
-	            console.error(error);
-	            alert("리워드 리스트 조회에 실패했습니다.");
+	            console.log("리워드 리스트 조회에 실패했습니다.");
+// 	            alert("리워드 리스트 조회에 실패했습니다.");
 	        }
 	    }); // ajax
 	}); // ready

@@ -42,5 +42,8 @@ public interface ProjectMapper {
 	// 프로젝트 조회하기
 	ProjectVO selectProject(int project_idx);
 	
+	// 메이커 등록 페이지 접속 시
+	int selectMemberIdx(String sId);
+	
 	
 }

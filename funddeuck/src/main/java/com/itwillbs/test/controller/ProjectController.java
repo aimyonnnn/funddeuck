@@ -131,8 +131,7 @@ public class ProjectController {
 	// 리워드 갯수 조회하기
 	@GetMapping("rewardCount")
 	@ResponseBody
-	public String rewardCount(@RequestParam int project_idx, HttpSession session) {
-		String sId = (String) session.getAttribute("sId");
+	public String rewardCount(@RequestParam int project_idx) {
 		int rewardCount = projectService.getRewardCount(project_idx);
 		return rewardCount+"";
 	}
@@ -140,15 +139,25 @@ public class ProjectController {
 	// 리워드 리스트 조회하기
 	@GetMapping("rewardList")
 	@ResponseBody
-	public List<RewardVO> rewardList(@RequestParam int project_idx, HttpSession session) {
-		String sId = (String) session.getAttribute("sId");
+	public List<RewardVO> rewardList(@RequestParam int project_idx) {
 	    List<RewardVO> rList = projectService.getRewardList(project_idx);
 	    return rList;
 	}
 	
 	// 메이커 등록 페이지
 	@GetMapping("projectMaker")
-	public String makerInfo() {
+	public String makerInfo(HttpSession session, Model model) {
+		
+		// 세션 아이디가 존재하지 않을 때 
+		String sId = (String) session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "fail_back";
+		}
+		
+		// 메이커 등록 페이지 접속 시 세션아이디로 member_idx를 조회 후 model에 저장
+		int member_idx = projectService.getMemberIdx(sId);
+		model.addAttribute("member_idx", member_idx);
 		return "project/project_maker";
 	}
 	
@@ -243,8 +252,10 @@ public class ProjectController {
 				e.printStackTrace();
 			}
 			// 메이커 등록 성공 시 프로젝트 등록 페이지로 이동
+			String targetURL = "projectManagement?maker_idx=" + maker.getMaker_idx();
+			System.out.println("메이커 등록 성공 시 메이커 번호 조회 : " + maker.getMaker_idx());
 			model.addAttribute("msg", "메이커 등록에 성공하였습니다. 프로젝트 등록 페이지로 이동합니다.");
-			model.addAttribute("targetURL", "projectManagement");
+			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
 		} else { // 실패
 			model.addAttribute("msg", "메이커 등록 실패!");
@@ -374,7 +385,14 @@ public class ProjectController {
 	
 	// 프로젝트 등록 페이지
 	@GetMapping("projectManagement")
-	public String projectManagement() {
+	public String projectManagement(HttpSession session, Model model) {
+		
+		// 세션 아이디가 존재하지 않을 때 
+		String sId = (String) session.getAttribute("sId");
+		if(sId == null) {
+			return "false";
+		}
+		
 		return "project/project_management";
 	}
 	
@@ -477,7 +495,8 @@ public class ProjectController {
 				e.printStackTrace();
 			}
 			// 프로젝트 등록 성공 시 리워드 설계 페이지로 이동
-			String targetURL = "projectReward";
+			String targetURL = "projectReward?project_idx=" + project.getProject_idx();
+			System.out.println("프로젝트 등록 성공 시 프로젝트 번호 조회 : " + project.getProject_idx());
 			model.addAttribute("msg", "프로젝트 등록에 성공하였습니다. 리워드 설계 페이지로 이동합니다.");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
