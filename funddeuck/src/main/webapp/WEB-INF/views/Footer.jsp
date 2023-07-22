@@ -45,7 +45,7 @@
   }
 
   .menu-container {
-    padding-right: 70px; /* Add a 70px margin from the right side of the screen */
+    padding-right: 70px;
   }
 
   .dropdown-wrapper {
