@@ -3,8 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%-- <%session.setAttribute("sId", "admin");%> --%>
-<%session.setAttribute("sId", "test");%>
+<%session.setAttribute("sId", "admin");%>
+<%-- <%session.setAttribute("sId", "test");%> --%>
 <!-- css -->
 <link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>

@@ -19,10 +19,10 @@ public interface ProjectMapper {
 	int insertMaker(MakerVO maker);
 	
 	// 리워드 갯수 조회하기
-	int selectRewardCount(@Param("project_idx") int project_idx, @Param("sId") String sId);
+	int selectRewardCount(@Param("project_idx") int project_idx);
 	
 	// 리워드 리스트 조회하기
-	List<RewardVO> selectRewardList(@Param("project_idx") int project_idx, @Param("sId") String sId);
+	List<RewardVO> selectRewardList(int project_idx);
 	
 	// 리워드 조회하기
 	RewardVO selectRewardInfo(Integer reward_idx);

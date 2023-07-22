@@ -133,7 +133,7 @@ public class ProjectController {
 	@ResponseBody
 	public String rewardCount(@RequestParam int project_idx, HttpSession session) {
 		String sId = (String) session.getAttribute("sId");
-		int rewardCount = projectService.getRewardCount(project_idx, sId);
+		int rewardCount = projectService.getRewardCount(project_idx);
 		return rewardCount+"";
 	}
 	
@@ -142,7 +142,7 @@ public class ProjectController {
 	@ResponseBody
 	public List<RewardVO> rewardList(@RequestParam int project_idx, HttpSession session) {
 		String sId = (String) session.getAttribute("sId");
-	    List<RewardVO> rList = projectService.getRewardList(project_idx, sId);
+	    List<RewardVO> rList = projectService.getRewardList(project_idx);
 	    return rList;
 	}
 	
