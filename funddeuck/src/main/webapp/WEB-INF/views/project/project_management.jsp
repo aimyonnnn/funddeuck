@@ -60,6 +60,10 @@
 	</script>
 </head>
 <body>
+	<!-- ajax loading -->
+	<div id="loadingIndicator" style="display: none;">
+	    <img src="${pageContext.request.contextPath }/resources/images/loading.gif" alt="Loading..." />
+	</div>
 	<!-- include -->
  	<jsp:include page="../common/project_top.jsp"/>
 
@@ -106,7 +110,7 @@
 				<form action="projectManagementPro" class="projectContent" method="post" enctype="multipart/form-data">
 					<!-- 히든태그 지우지마세요 테스트 중입니다 -->
 	            	<!-- 프로젝트 등록에서 넘어올 때 파라미터로 받아와야함 -->
-	            	<input type="text" name="maker_idx" id="maker_idx" value="${param.maker_idx}" class="form-control" style="width:500px;">
+	            	<input type="text" name="maker_idx" id="maker_idx" value="1" class="form-control" style="width:500px;">
 					<!-- 기본 요금제 -->
 					<div class="mt-4">
 						<p class="subheading">기본 요금제</p>
@@ -175,7 +179,7 @@
 					<!-- 프로젝트 소개 -->
 					<div class="mt-4">
 						<label class="subheading" for="managementDetail">프로젝트 소개</label>
-						<button class="btn btn-outline-primary btn-sm">AI로 입력</button>
+						<button class="btn btn-outline-primary btn-sm" onclick="makeGpt(event)">AI로 입력</button>
 						<p class="sideDescription">
 							준비하고 계신 리워드의 특별한 점을 작성해 주세요.<br>
 							기존 제품 ・ 서비스 ・ 콘텐츠를 개선했다면 어떤 점이 달라졌는지 작성해 주세요.<br>
@@ -468,6 +472,42 @@
 			})
 		}
 	}
+	// ai로 입력하기
+	function makeGpt(event) {
+	    event.preventDefault(); // 기본 동작 중지
+
+     	// 로딩 이미지 표시
+         $('#loadingIndicator').show();
+     	
+         var makeStoryRequest = {
+             projectName: $('#projectSubject').val(),
+             projectCategory: $('#projectCategory').val(),
+             projectIntroduce: $('#managementDetail').val()
+         };
+
+         $.ajax({
+             type: "POST",
+             url: "<c:url value='MakeStory'/>",
+             contentType: "application/json",
+             data: JSON.stringify(makeStoryRequest),
+             beforeSend: function() {
+                 $('#loadingIndicator').show();
+             },
+             success: function (response) {
+                 $('#loadingIndicator').hide();
+             	
+                 console.log(response);
+                 var responseObject = response; // 이미 json 형식의 응답이므로 파싱하지 않음
+                 var result = responseObject.choices[0].text; // 필요한 필드 추출
+                 $("#managementDetail").val(result).focus(); // textarea에 입력
+                 
+             },
+             error: function (xhr, status, error) {
+             	
+                 console.log(error);
+             }
+         });
+     }
 	</script>
 	
 	<!-- datepicker -->
