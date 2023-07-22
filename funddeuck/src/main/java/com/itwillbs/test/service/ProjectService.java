@@ -25,12 +25,12 @@ public class ProjectService {
 		return mapper.insertMaker(maker);
 	}
 	// 리워드 갯수 조회 하기
-	public int getRewardCount(int project_idx) {
-		return mapper.selectRewardCount(project_idx);
+	public int getRewardCount(int project_idx, String sId) {
+		return mapper.selectRewardCount(project_idx, sId);
 	}
 	// 리워드 리스트 조회 하기
-	public List<RewardVO> getRewardList(int project_idx) {
-		return mapper.selectRewardList(project_idx);
+	public List<RewardVO> getRewardList(int project_idx, String sId) {
+		return mapper.selectRewardList(project_idx, sId);
 	}
 	// 리워드 조회하기
 	public RewardVO getRewardInfo(Integer reward_idx) {
@@ -44,7 +44,10 @@ public class ProjectService {
 	public int removeReward(int reward_idx) {
 		return mapper.deleteReward(reward_idx);
 	}
-	
+	// 리워드 작성자 판별
+	public String getRewardAuthorId(Integer reward_idx, String sId) {
+		return mapper.selectRewardAuthorId(reward_idx, sId);
+	}
 	// 프로젝트 등록하기
 	public int registProject(ProjectVO project) {
 		return mapper.insertProject(project);
@@ -52,8 +55,6 @@ public class ProjectService {
 	public ProjectVO getProjectInfo(int project_idx) {
 		return mapper.selectProject(project_idx);
 	}
-	
-	// 프로젝트 조회하기
 	
 	
 }

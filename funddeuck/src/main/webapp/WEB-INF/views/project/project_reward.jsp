@@ -67,7 +67,7 @@
 		   		<div class="mt-5">
 	      			<img src="${pageContext.request.contextPath}/resources/images/projectRewardImage.png" class="img-fluid me-auto">
 	      		</div>
-		
+				
 		        <div class="projectArea">
 		       		<p class="projectTitle">리워드 설계</p>
 		          	<p class="projectContent">서포터들에게 제공할 리워드를 입력해 주세요.</p>
@@ -76,7 +76,7 @@
 		            <form action="" class="projectContent" method="post" id="rewardForm">
 		            	<!-- 히든 처리하는 부분 -->
 <!-- 		            	<label class="form-content subheading" for="project_idx">project_idx</label> -->
-		            	<input type="text" name="project_idx" id="project_idx" value="1" class="form-control" style="width:500px;">
+		            	<input type="text" name="project_idx" id="project_idx" value="2" class="form-control" style="width:500px;">
 		            	
 			            <!-- 금액 -->
 			            <div>
@@ -263,7 +263,11 @@
 	        },
 	        dataType: "text",
 	        success: function (response) {
-	            $('#rewardCount').text(response + "개");
+	        	if(response.trim() != '0') {
+		            $('#rewardCount').text(response + "개");
+	        	} else {
+	        		console.log(response.trim());
+	        	}
 	        },
 	        error: function (error) {
 	            console.error(error);
@@ -280,6 +284,7 @@
 	        },
 	        dataType: "json",
 	        success: function (response) {
+	        	console.log(response);
 	            // json 데이터를 변수에 저장
 	            let rList = response;
 	            // 리워드 리스트를 생성하여 컨테이너에 추가
@@ -407,7 +412,7 @@
 				        // 리워드 등록 페이지로 이동
 				        location.href='projectReward';
 			    	} else {
-			    		alert("삭제에 실패했습니다.");
+			            alert("삭제 권한이 없습니다. 리워드 작성자만 삭제할 수 있습니다.");
 			    	}
 			    },
 			    error: function (error) {

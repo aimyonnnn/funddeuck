@@ -37,28 +37,37 @@ public class ProjectController {
 	@Autowired
 	private MakerService makerService;
 	
-	// 리워드 등록하기
+	// 리워드 설계 페이지
 	@GetMapping("projectReward")
 	public String projectReward(@RequestParam(required = false) Integer reward_idx, HttpSession session, Model model) {
 		
 		// 세션 아이디가 존재하지 않을 때 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "잘못된 접근입니다!");
+			model.addAttribute("msg", "잘못된 접근입니다.");
 			return "fail_back";
 		}
 		
-		// 수정 버튼을 눌렀을 때 - reward_idx가 존재하면 해당 리워드 정보 조회
+		// 수정 버튼을 눌렀을 때 - reward_idx가 존재하면 리워드 수정을 위해 해당 리워드 정보 조회 후 view에 리워드 정보를 출력 
 		if (reward_idx != null) {
 			System.out.println("수정하기 버튼 클릭 시 - 리워드 번호 : " + reward_idx);
 			
 			// 리워드 작성자 판별 요청
-//		    String rewardWriter = projectService.getRewardAuthorId(reward_idx); // 리워드 작성자의 아이디를 조회
+			// 단, 세션 아이디가 admin이 아닐 때만 수행
+			if(!sId.equals("admin")) {
+				String rewardWriter = projectService.getRewardAuthorId(reward_idx, sId); // 리워드 작성자의 아이디를 조회
+				if(!sId.equals(rewardWriter)) {
+					// 리워드 작성자가 아닌 경우
+					model.addAttribute("msg", "리워드 작성자가 아닙니다.");
+					return "fail_back";
+				} 
+			}
 			
-			
-	        RewardVO reward = projectService.getRewardInfo(reward_idx);
-	        model.addAttribute("reward", reward);
+			// 세션 아이디가 admin이거나 리워드 작성자인 경우, 리워드 정보 조회
+			RewardVO reward = projectService.getRewardInfo(reward_idx);
+			model.addAttribute("reward", reward);
 	    }
+		
 		return "project/project_reward";
 	}
 	
@@ -68,7 +77,7 @@ public class ProjectController {
 		return "project/project_status";
 	}
 	
-	// 리워드 추가하기
+	// 리워드 등록하기
 	@PostMapping("saveReward")
     @ResponseBody
     public String saveReward(@ModelAttribute RewardVO reward) {
@@ -91,28 +100,49 @@ public class ProjectController {
 	// 리워드 삭제하기
 	@PostMapping("removeReward")
 	@ResponseBody
-	public String removeReward(@RequestParam int reward_idx) {
-		System.out.println("reward_idx : " + reward_idx);
-		int deleteCount = projectService.removeReward(reward_idx);
-		System.out.println("deleteCount : " + deleteCount);
-		if(deleteCount > 0) { return "true"; } return "false";
+	public String removeReward(@RequestParam int reward_idx, HttpSession session) {
+		System.out.println("삭제하기 버튼 클릭 시 - 리워드 번호 : " + reward_idx);
+		
+		// 세션 아이디가 존재하지 않을 때 
+		String sId = (String) session.getAttribute("sId");
+		if(sId == null) {
+			return "false";
+		}
+		
+		// 리워드 작성자 판별 요청
+		// 단, 세션 아이디가 admin이 아닐 때만 수행
+	    if(!"admin".equals(sId)) {
+	        String rewardWriter = projectService.getRewardAuthorId(reward_idx, sId);
+	        // 리워드 작성자가 아닌 경우
+	        if (!sId.equals(rewardWriter)) {
+	            return "false";
+	        }
+	    }
+	    
+	    // 리워드 삭제 처리
+	    int deleteCount = projectService.removeReward(reward_idx);
+	    if (deleteCount > 0) {
+	        return "true";
+	    }
+	    
+	    return "false"; // 리워드 삭제 실패 시
 	}
 	
 	// 리워드 갯수 조회하기
 	@GetMapping("rewardCount")
 	@ResponseBody
-	public String rewardCount(@RequestParam int project_idx) {
-		System.out.println("rewardCount() - project_idx : " + project_idx);
-		int rewardCount = projectService.getRewardCount(project_idx);
+	public String rewardCount(@RequestParam int project_idx, HttpSession session) {
+		String sId = (String) session.getAttribute("sId");
+		int rewardCount = projectService.getRewardCount(project_idx, sId);
 		return rewardCount+"";
 	}
 	
 	// 리워드 리스트 조회하기
 	@GetMapping("rewardList")
 	@ResponseBody
-	public List<RewardVO> rewardList(@RequestParam int project_idx) {
-	    System.out.println("rewardList() - project_idx: " + project_idx);
-	    List<RewardVO> rList = projectService.getRewardList(project_idx);
+	public List<RewardVO> rewardList(@RequestParam int project_idx, HttpSession session) {
+		String sId = (String) session.getAttribute("sId");
+	    List<RewardVO> rList = projectService.getRewardList(project_idx, sId);
 	    return rList;
 	}
 	

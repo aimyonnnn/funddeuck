@@ -3,6 +3,7 @@ package com.itwillbs.test.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.ProjectVO;
@@ -18,10 +19,10 @@ public interface ProjectMapper {
 	int insertMaker(MakerVO maker);
 	
 	// 리워드 갯수 조회하기
-	int selectRewardCount(int project_idx);
+	int selectRewardCount(@Param("project_idx") int project_idx, @Param("sId") String sId);
 	
 	// 리워드 리스트 조회하기
-	List<RewardVO> selectRewardList(int project_idx);
+	List<RewardVO> selectRewardList(@Param("project_idx") int project_idx, @Param("sId") String sId);
 	
 	// 리워드 조회하기
 	RewardVO selectRewardInfo(Integer reward_idx);
@@ -31,11 +32,15 @@ public interface ProjectMapper {
 	
 	// 리워드 삭제하기
 	int deleteReward(int reward_idx);
+	
+	// 리워드 작성자 판별
+	String selectRewardAuthorId(@Param("reward_idx") Integer reward_idx, @Param("sId") String sId);
 
 	// 프로젝트 등록하기 
 	int insertProject(ProjectVO project);
 	
 	// 프로젝트 조회하기
 	ProjectVO selectProject(int project_idx);
+	
 	
 }
