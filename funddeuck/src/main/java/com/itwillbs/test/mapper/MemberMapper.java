@@ -9,5 +9,8 @@ public interface MemberMapper {
 	
 	// 회원 정보 조회하기 
 	MembersVO selectMember(String id);
+	
+	// 회원 가입
+	int insertMember(MembersVO member);
 
 }

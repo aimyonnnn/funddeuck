@@ -9,4 +9,17 @@
 				WHERE member_id = #{id}
 		
 	</select>
+	
+	<!-- 회원 가입 -->
+	<insert id="insertMember">
+		INSERT INTO members
+			VALUES(
+				null
+				,#{member_name}
+				,#{member_id}
+				,#{member_passwd}
+				,#{member_email}
+				,#{member_phone}
+			)
+	</insert>
 </mapper>

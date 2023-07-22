@@ -16,4 +16,11 @@ public class MemberService {
 		return mapper.selectMember(id);
 	}
 
+	//회원 가입
+	public int insertMember(MembersVO member) {
+		return mapper.insertMember(member);
+	}
+	
+
+
 }
