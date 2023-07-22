@@ -345,7 +345,7 @@
 			    success: function (response) {
 			    	
 			    	if(response.trim() == 'true') {
-				        alert("성공적으로 저장되었습니다!");
+				        alert("리워드 등록이 완료되었습니다!");
 				        location.href='projectReward';
 			    	} else {
 			    		alert("모든 항목을 입력해주세요.");

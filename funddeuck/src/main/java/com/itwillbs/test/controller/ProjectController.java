@@ -39,9 +39,23 @@ public class ProjectController {
 	
 	// 리워드 등록하기
 	@GetMapping("projectReward")
-	public String projectReward(@RequestParam(required = false) Integer reward_idx, Model model) {
+	public String projectReward(@RequestParam(required = false) Integer reward_idx, HttpSession session, Model model) {
+		
+		// 세션 아이디가 존재하지 않을 때 
+		String sId = (String) session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "잘못된 접근입니다!");
+			return "fail_back";
+		}
+		
+		// 수정 버튼을 눌렀을 때 - reward_idx가 존재하면 해당 리워드 정보 조회
 		if (reward_idx != null) {
-	        // 수정 버튼을 눌렀을 때 - reward_idx가 존재하면 해당 리워드 정보 조회
+			System.out.println("수정하기 버튼 클릭 시 - 리워드 번호 : " + reward_idx);
+			
+			// 리워드 작성자 판별 요청
+//		    String rewardWriter = projectService.getRewardAuthorId(reward_idx); // 리워드 작성자의 아이디를 조회
+			
+			
 	        RewardVO reward = projectService.getRewardInfo(reward_idx);
 	        model.addAttribute("reward", reward);
 	    }
@@ -67,7 +81,7 @@ public class ProjectController {
 	// 리워드 수정하기
 	@PostMapping("modifyReward")
     @ResponseBody
-    public String modifyReward(@ModelAttribute RewardVO reward, @RequestParam int reward_idx) {
+    public String modifyReward(@ModelAttribute RewardVO reward, @RequestParam int reward_idx, HttpSession session) {
 		System.out.println("reward_idx : " + reward_idx);
 		int updateCount = projectService.modifyReward(reward);
 		System.out.println("updateCount : " + updateCount);
@@ -289,7 +303,8 @@ public class ProjectController {
 			    e.printStackTrace();
 			}
 			// 메이커 수정 성공 시 makerDetail로 이동
-			String targetURL = "makerDetail?maker_idx=" + maker.getMaker_idx(); 
+			String targetURL = "makerDetail?maker_idx=" + maker.getMaker_idx();
+			System.out.println("메이커 idx : " + maker.getMaker_idx());
 			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다.");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
@@ -431,7 +446,11 @@ public class ProjectController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			return "redirect:/saveReward";
+			// 프로젝트 등록 성공 시 리워드 설계 페이지로 이동
+			String targetURL = "projectReward";
+			model.addAttribute("msg", "프로젝트 등록에 성공하였습니다. 리워드 설계 페이지로 이동합니다.");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
 		} else { // 실패 시
 			model.addAttribute("msg", "프로젝트 등록 실패!");
 			return "fail_back";
