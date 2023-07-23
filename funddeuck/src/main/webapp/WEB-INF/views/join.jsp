@@ -12,14 +12,57 @@
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/mypage.css"/>
     <script type="text/javascript">
+        	let isPasswd = 0;
+        	let isId = 0;
         $(document).ready(function () {
+        	
+            $("form").submit(function(event) {
+              	var id = $('#member_id').val();
+                var pw = $('#passwd').val();
+                
+               	if (id != "" && pw != "") {
+                	alert("id :: " + id + ", pw :: " + pw);
+                }
+                
+                if (id == "") {
+                	alert("아이디를 입력해주세요.");
+                	$('#member_id').focus();
+                	event.preventDefault();
+                  return false;
+                }
+                
+               	if(isId == 0){
+                	alert("아이디 인증은 필수 입니다.");
+                	$('#member_id').focus();
+               		return false;
+               	}
+               	
+                if (pw == "") {
+                	alert("비밀번호를 입력해주세요.");
+                	$('#passwd').focus();
+                	event.preventDefault();
+                  return false;
+                }   
+                
+                
+                if(isPasswd == 0){
+                	alert("비밀번호가 일치하지 않습니다.\n다시 작성해 주세요.");
+                	$('#passwd').focus();
+                	return false;
+                }
+                
+                
+              });
+
             
             $("#passwd2").focusout(function() {
     			let passwd = $("#passwd").val();
     			let passwd2 = $("#passwd2").val();
     			
     			if(passwd != passwd2){
-    				$("#area").remove();
+    				isPasswd = 0;
+    				$("#passwdarea").remove();
+    				
     				
     				$("#passwd2").after(
     					 "<div style='color: red;' id='area'>"
@@ -27,9 +70,12 @@
     					+ "</div>"
     				);
     			} else {
-    				$("#area").remove();
+    				
+    				isPasswd = 1;
+    				
+    				$("#passwdarea").remove();
     				$("#passwd2").after(
-    						"<div style='color: green;' id='area'>"
+    						"<div style='color: green;' id='passwdarea'>"
     						+ "비밀번호가 일치합니다."
     						+ "</div>"
     				);
@@ -38,7 +84,38 @@
     			
     		});
         });
+	
+        function idDuplicate() {
+			
+        	var id = $("#member_id").val()
+        	
+        	$.ajax({
+        		type:"post",
+        		url:"idDuplicate",
+        		data: {id:id},
+        		dataType:"text",
+        		success: function(data) {
+        			
+        			if(data.trim() == "true"){
+        				isId=1;
+        				
+        				
+        				alert("사용가능한 아이디 입니다.");
+        				$("#member_id").attr("disabled",true); 
 
+        			} else {
+        				
+        				alert("사용불가한 아이디 입니다.");
+
+        			}
+        			
+				},
+				error: function() {
+					alert("실패");
+				}
+        	});
+        	
+		}
         
     </script>
 </head>
@@ -61,7 +138,14 @@
 		                <h6 class="mt-4">이름</h6>
 		                <input class="form-control" type="text" name="member_name" placeholder="이름">
 		                <h6 class="mt-4">아이디</h6>
-		                <input class="form-control" type="text" name="member_id" placeholder="아이디">
+		                <div class="row">
+			                <div class="col-8">
+			                	<input class="form-control" type="text" name="member_id" id="member_id" placeholder="아이디">
+			                </div>
+			                <div class="col">
+			                	<input type="button" value="아이디 확인" class="btn btn-primary" id="isbtn" onclick="idDuplicate()">
+			                </div>
+		                </div>
 		                <h6 class="mt-4">비밀번호</h6>
 		                <input class="form-control" type="password" id="passwd" name="member_passwd" placeholder="비밀번호 입력">
 		                <input class="form-control mt-1" type="password" id="passwd2" placeholder="비밀번호 확인">

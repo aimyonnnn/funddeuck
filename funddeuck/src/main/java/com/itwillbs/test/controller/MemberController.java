@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.test.service.MemberService;
@@ -126,5 +127,19 @@ public class MemberController {
 		return "fail_back";
     	
     }
+    
+    //아이디 확인을 위한 ajax 구문
+    @PostMapping("idDuplicate")
+    @ResponseBody
+    public String idDuplicate(@RequestParam String id) {
+    	
+    	MembersVO member = service.getMemberInfo(id);
+    	
+    	if(member==null) {
+    		return "true";
+    	}
+    	
+    	return "false";
+    } 
     
 }
