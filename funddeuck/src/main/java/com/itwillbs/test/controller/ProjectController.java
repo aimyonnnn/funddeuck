@@ -6,7 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,8 +27,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.test.service.MakerService;
+import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectService;
+import com.itwillbs.test.vo.ChartDataVO;
 import com.itwillbs.test.vo.MakerVO;
+import com.itwillbs.test.vo.PaymentVO;
 import com.itwillbs.test.vo.ProjectVO;
 import com.itwillbs.test.vo.RewardVO;
 
@@ -36,6 +42,8 @@ public class ProjectController {
 	private ProjectService projectService;
 	@Autowired
 	private MakerService makerService;
+	@Autowired
+	private PaymentService paymentService;
 	
 	// 리워드 설계 페이지
 	@GetMapping("projectReward")
@@ -69,12 +77,6 @@ public class ProjectController {
 	    }
 		
 		return "project/project_reward";
-	}
-	
-	// 프로젝트 현황
-	@GetMapping("projectStatus")
-	public String projectStatus() {
-		return "project/project_status";
 	}
 	
 	// 리워드 등록하기
@@ -390,7 +392,8 @@ public class ProjectController {
 		// 세션 아이디가 존재하지 않을 때 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
-			return "false";
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "fail_back";
 		}
 		
 		return "project/project_management";
@@ -529,11 +532,73 @@ public class ProjectController {
 		return "project/project_test";
 	}
 	
+	// 프로젝트 현황
+	@GetMapping("projectStatus")
+	public String projectStatus(HttpSession session, Model model) {
+		System.out.println("projectStatus");
+		return "project/project_status";
+	}
 	
-	
-	
-	
-	
+	// 차트
+	@GetMapping("/chartData")
+    @ResponseBody
+    public ChartDataVO getChartData(@RequestParam String startDate, @RequestParam String endDate, Model model) {
+        // 날짜 형식을 지정하는 DateTimeFormatter 객체 생성
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // 시작일과 종료일을 파싱하여 LocalDate 객체로 변환
+        LocalDate parsedStartDate = LocalDate.parse(startDate, formatter);
+        LocalDate parsedEndDate = LocalDate.parse(endDate, formatter);
+        System.out.println("parsedStartDate : " + parsedStartDate);
+        System.out.println("parsedEndDate : " + parsedEndDate);
+
+        // 결제 금액 데이터 조회
+        List<PaymentVO> paymentList = paymentService.getPaymentListCountByDay(parsedStartDate, parsedEndDate);
+
+        // 서포터 수 데이터 조회
+        List<PaymentVO> supporterList = paymentService.getSupporterListCountByDay(parsedStartDate, parsedEndDate);
+
+        // 차트에 사용될 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 저장할 리스트 초기화
+        List<String> labels = new LinkedList<>();
+        List<Integer> dailyPaymentAmounts = new LinkedList<>();
+        List<Integer> cumulativePaymentAmounts = new LinkedList<>();
+        List<Integer> dailySupporterCounts = new LinkedList<>();
+        List<Integer> cumulativeSupporterCounts = new LinkedList<>();
+
+        int cumulativePaymentAmount = 0;
+        int cumulativeSupporterCount = 0;
+
+        // paymentList에서 하나씩 꺼내면서 리스트에 저장
+        for (PaymentVO payment : paymentList) {
+            String dateString = payment.getDate(); // 변경된 컬럼명인 'date'를 사용
+            labels.add(dateString); // 라벨에 날짜 추가
+            cumulativePaymentAmount += payment.getAmount(); // 누적 결제 금액 계산
+            dailyPaymentAmounts.add(payment.getAmount()); // 일별 결제 금액 추가
+            cumulativePaymentAmounts.add(cumulativePaymentAmount); // 누적 결제 금액 추가
+        }
+
+        int supporterIndex = 0; // 서포터 수 데이터 인덱스
+
+        for (String label : labels) {
+            if (supporterIndex < supporterList.size()) {
+                PaymentVO supporterData = supporterList.get(supporterIndex);
+                String dateString = supporterData.getDate(); // 변경된 컬럼명인 'date'를 사용
+
+                if (label.equals(dateString)) {
+                    cumulativeSupporterCount += supporterData.getCount(); // 누적 서포터 수 갱신
+                    cumulativeSupporterCounts.add(cumulativeSupporterCount); // 누적 서포터 수 추가
+                    dailySupporterCounts.add(supporterData.getCount()); // 일별 서포터 수 추가
+                    supporterIndex++; // 다음 서포터 수 데이터로 이동
+                    continue;
+                }
+            }
+            dailySupporterCounts.add(0); // 누락된 날짜에 대해 0으로 처리된 일별 서포터 수 추가
+            cumulativeSupporterCounts.add(cumulativeSupporterCount); // 이전의 누적 서포터 수 추가 (이전 데이터를 그대로 사용)
+        }
+
+        // ChartDataVO 객체를 생성하여 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 담아 반환
+        return new ChartDataVO(labels, dailyPaymentAmounts, cumulativePaymentAmounts, dailySupporterCounts, cumulativeSupporterCounts);
+    }
 	
 	
 	

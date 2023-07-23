@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.test.mapper.PaymentMapper">
+	
+	  <!-- 일별 결제 금액 조회 -->
+    <select id="selectPaymentListCountByDay" resultType="com.itwillbs.test.vo.PaymentVO">
+        SELECT
+            DATE(p.payment_date) AS date,
+            SUM(p.total_amount) AS amount
+        FROM
+            maker m
+        JOIN
+            project pr ON m.maker_idx = pr.maker_idx
+        JOIN
+            payment p ON pr.project_idx = p.project_idx
+        WHERE
+            p.payment_date BETWEEN #{parsedStartDate} AND #{parsedEndDate}
+        GROUP BY
+            m.maker_idx, m.maker_name, DATE(p.payment_date)
+        ORDER BY
+            m.maker_idx, date
+    </select>
+
+    <!-- 일별 서포터 수 조회 -->
+    <select id="selectSupporterListCountByDay" resultType="com.itwillbs.test.vo.PaymentVO">
+        SELECT
+            DATE(p.payment_date) AS date,
+            COUNT(DISTINCT p.member_idx) AS count
+        FROM
+            maker m
+        JOIN
+            project pr ON m.maker_idx = pr.maker_idx
+        JOIN
+            payment p ON pr.project_idx = p.project_idx
+        WHERE
+            p.payment_date BETWEEN #{parsedStartDate} AND #{parsedEndDate}
+        GROUP BY
+            m.maker_idx, m.maker_name, DATE(p.payment_date)
+        ORDER BY
+            m.maker_idx, date;
+    </select>
+	
+
+</mapper>

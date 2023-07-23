@@ -67,4 +67,11 @@ public class PaymentVO {
 	private String waybill_num;
 	private int delivery_status;
 	
+	// ########## total_amount, payment_date 컬럼명 변경 시 꼭 알려주세요! ##########
+	// 차트 그릴 때 필요해서 넣었습니다.
+	// DB 컬럼에는 추가하는거 아님!
+	private String date; // 결제 날짜
+	private int amount; // 결제 금액
+	private int count; // 서포터 수
+	// ===============================================================================
 }

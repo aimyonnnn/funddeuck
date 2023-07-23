@@ -75,7 +75,7 @@
 		            <!-- 폼 태그 시작 -->
 		            <form action="" class="projectContent" method="post" id="rewardForm">
 		            	<!-- 히든 처리하는 부분 -->
-		            	<label class="form-content subheading" for="project_idx">project_idx</label>
+<!-- 		            	<label class="form-content subheading" for="project_idx">project_idx</label> -->
 		            	<input type="text" name="project_idx" id="project_idx" value="${param.project_idx}" class="form-control" style="width:500px;">
 		            	
 			            <!-- 금액 -->
