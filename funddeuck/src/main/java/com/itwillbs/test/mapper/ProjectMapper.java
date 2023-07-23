@@ -12,38 +12,39 @@ import com.itwillbs.test.vo.RewardVO;
 @Mapper
 public interface ProjectMapper {
 	
-	// 리워드 저장하기
+	// 由ъ���� ���ν��湲�
 	int insertReward(RewardVO reward);
 	
-	// 메이커 등록하기
+	// 硫��댁빱 �깅���湲�
 	int insertMaker(MakerVO maker);
 	
-	// 리워드 갯수 조회하기
+	// 由ъ���� 媛��� 議고����湲�
 	int selectRewardCount(@Param("project_idx") int project_idx);
 	
-	// 리워드 리스트 조회하기
+	// 由ъ���� 由ъ�ㅽ�� 議고����湲�
 	List<RewardVO> selectRewardList(int project_idx);
 	
-	// 리워드 조회하기
+	// 由ъ���� 議고����湲�
 	RewardVO selectRewardInfo(Integer reward_idx);
 	
-	// 리워드 수정하기
+	// 由ъ���� ������湲�
 	int updateReward(RewardVO reward);
 	
-	// 리워드 삭제하기
+	// 由ъ���� ������湲�
 	int deleteReward(int reward_idx);
 	
-	// 리워드 작성자 판별
+	// 由ъ���� ���깆�� ��蹂�
 	String selectRewardAuthorId(@Param("reward_idx") Integer reward_idx, @Param("sId") String sId);
 
-	// 프로젝트 등록하기 
+	// ��濡����� �깅���湲� 
 	int insertProject(ProjectVO project);
 	
-	// 프로젝트 조회하기
+	// ��濡����� 議고����湲�
 	ProjectVO selectProject(int project_idx);
 	
-	// 메이커 등록 페이지 접속 시
+	// 硫��댁빱 �깅� ���댁� ���� ��
 	int selectMemberIdx(String sId);
-	
-	
+
+	List<ProjectVO> selectTop10ProjectsByEndDate();
+
 }

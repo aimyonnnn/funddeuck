@@ -6,45 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.test.service.MemberService;
-import com.itwillbs.test.service.ProfileService;
 import com.itwillbs.test.vo.MembersVO;
-import com.itwillbs.test.vo.ProfileVO;
 
 @Controller
 public class MemberController {
 
-    private final ProfileService profileService;
-    
     @Autowired
     private MemberService service;
 
-    @Autowired
-    public MemberController(ProfileService profileService) {
-        this.profileService = profileService;
-    }
 
-//    @GetMapping("/member/profile")
-//    public String getMemberProfile(Model model) {
-//        int memberIdx = 1;
-//        ProfileVO profileVO = profileService.getProfileData(memberIdx);
-//        model.addAttribute("profile", profileVO);
-//        return "/member/member_profile";
-//    }
-
-    @PostMapping("/member/profile")
-    @ResponseBody
-    public String saveMemberProfile(@ModelAttribute ProfileVO profileVO) {
-    	System.out.println("saveMemberProfile");
-        profileService.saveProfileData(profileVO);
-        return "true";
-    }
-    
     @GetMapping("/member/mypage")
     public String myPage() {
         return "member/myPage"; 
@@ -55,80 +30,80 @@ public class MemberController {
     	return "member/member_coupon";
     }
     
-    //회원가입 뷰로 이동하기 위한 Mapping
+    //����媛��� 酉곕� �대����湲� ���� Mapping
     @GetMapping("JoinForm")
     public String JoinForm(HttpSession session, Model model) {
     	
-    	// session에 id가 존재한다면 접근 불가
+    	// session�� id媛� 議댁�ы���ㅻ㈃ ��洹� 遺�媛�
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "��紐삳�� ��洹쇱������.");
     		return "fail_back";
     	}
     	
     	return "join";
     }
     
-    //회원가입기능
+    //����媛���湲곕��
     @PostMapping("JoinPro")
     public String JoinPro(MembersVO member, HttpSession session, Model model) {
     	
-    	// session에 id가 존재한다면 접근 불가
+    	// session�� id媛� 議댁�ы���ㅻ㈃ ��洹� 遺�媛�
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "��紐삳�� ��洹쇱������.");
     		return "fail_back";
     	}
     	
-    	// 회원가입
+    	// ����媛���
     	int insertCount = service.insertMember(member);
     	
     	if(insertCount > 0) {
     		return "redirect:/";
     	} else {
-    		model.addAttribute("msg", "회원가입실패");
+    		model.addAttribute("msg", "����媛����ㅽ��");
     		return "fail_back";
     	}
     	
     }
     
-    //로그린 폼으로 이동
+    //濡�洹몃┛ �쇱�쇰� �대��
     @GetMapping("LoginForm")
     public String LoginForm(HttpSession session, Model model) {
     	
-    	// session에 id가 존재한다면 접근 불가
+    	// session�� id媛� 議댁�ы���ㅻ㈃ ��洹� 遺�媛�
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "��紐삳�� ��洹쇱������.");
     		return "fail_back";
     	}
     	
     	return "login";
     }
     
-    //로그인
+    //濡�洹몄��
     @PostMapping("LoginPro")
     public String LoginPro(MembersVO member, HttpSession session, Model model) {
     	
     	System.out.println(member);
     	
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "��紐삳�� ��洹쇱������.");
     		return "fail_back";
     	}
     	
-    	//id가 일치한 회원 정보 가져오기
+    	//id媛� �쇱��� ���� ��蹂� 媛��몄�ㅺ린
     	MembersVO isMember = service.getMemberInfo(member.getMember_id());
     	if(isMember == null){
     		session.setAttribute("sId", member.getMember_id());
-    		model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+    		model.addAttribute("msg", "���대�� ���� 鍮�諛�踰��멸� �쇱���吏� ���듬����.");
     		return "fail_back";
     	}else if(isMember.getMember_passwd().equals(member.getMember_passwd())) {
     		return "redirect:/";
     	}
-		model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+		model.addAttribute("msg", "���대�� ���� 鍮�諛�踰��멸� �쇱���吏� ���듬����.");
 		return "fail_back";
     	
     }
     
-    //아이디 확인을 위한 ajax 구문
+    //���대�� ���몄�� ���� ajax 援щЦ
     @PostMapping("idDuplicate")
     @ResponseBody
     public String idDuplicate(@RequestParam String id) {

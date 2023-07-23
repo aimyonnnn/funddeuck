@@ -2,6 +2,8 @@
 <%@ page session="false" contentType="text/html; charset=utf-8" pageEncoding="UTF-8" %>
 
 <html>
+<html lang="ko">
+
 <head>
     <title>Home</title>
     <%@ include file="Header.jsp" %>
@@ -11,6 +13,22 @@
   	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 	<link rel="stylesheet" type="text/css" href="resources/css/mypage.css" />
 	<link rel="stylesheet" type="text/css" href="resources/css/moreProject.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .card-thumbnail {
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%; /* 16:9 비율 */
+      background-size: cover;
+      background-position: center;
+    }
+    
+	.container h3{
+	  margin-top: 40px;
+	}
+  </style>
+
 </head>
 
 <body>
@@ -52,52 +70,54 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-    
-   			<br>
-			<div class="container">
-			    <div class="row">
-			        <div class="col-12">
-			            <h2>오늘의 추천 프로젝트</h2>
-			            <p>함께하는 성공</p>
-			        </div>
-			    </div>
-			    <div class="row">
-			        <c:forEach var="project" items="${projects}">
-			            <div class="col-12 col-sm-6 col-md-4" style="margin-bottom: 20px;">
-			                <div class="card-sl">
-			                    <div class="card-image">
-			                        <img src="<c:url value='/resources/images/beautycut${project.p_num}.jpg' />" class="img-fluid" alt="프로젝트 이미지" style="max-width: 100%;">
-			                    </div>
-			                    <a class="card-action" href="#"><i class="fa fa-heart"></i></a>
-			                    <div class="card-heading">
-			                        [${project.p_name}]
-			                    </div>
-			                    <div class="card-text">
-			                        ${project.p_intro}
-			                    </div>
-			                    <div class="card-text-percent">
-			                        ${project.p_percent}%
-			                    </div>
-			                    <a href="#" class="card-button">자세히보기</a>
-			                </div>
-			            </div>
-			        </c:forEach>
-			    </div>
-			    <div style="width: 100%; text-align: right;">
-			        <button id="moreButton" class="btn btn-primary" onclick="loadMoreProjects()">더보기</button>
-			    </div>
-			</div>
-			<br>
-				<div class="container" style="display: flex;">
-				    <div class="col-md-3 col-sm-12" style="flex: 1; margin-right: 20px;">
-				        <div class="card-sl">
-				            <div class="card-body">
-				                <h2 class="card-title">실시간 랭킹</h2>
-				                <ul id="rankingList" class="card-text"></ul>
-				            </div>
-				        </div>
-				    </div>
-				</div>
+
+	<div class="container">
+	  <h3><b>오늘의 추천 프로젝트</b></h3>
+	  <p>함께 만드는 성공</p>
+	  <!-- 예시 데이터 틀 -->
+	  <div class="row">
+	    <div class="col-md-4 mb-4">
+	      <article class="card">
+	        <div class="card-thumbnail" style="background-image: url('https://cdn.wadiz.kr/wwwwadiz/green001/2023/0627/20230627223339159_223470.jpg/wadiz/resize/600/format/jpg/quality/85/');">
+	        </div>
+	        <div class="card-body">
+	          <em class="card-title">짱구공식굿즈&gt; 짱구 집콕 에디션 최초 공개! 야광 잠옷 & 식기세트 & 수납함</em>
+	          <p class="card-text">
+	            <span class="badge badge-primary">5,875원</span>
+	            캐릭터 · 굿즈
+	          </p>
+	        </div>
+	      </article>
+	    </div>
+	  </div>
+	<!-- 데이터베이스에서 가져와서 출력될 내용 -->
+	<div class="row">
+	  <c:forEach items="${projectList}" var="project" varStatus="status">
+	    <div class="col-md-4 mb-4">
+	      <article class="card">
+	        <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>
+	        <div class="card-body">
+	          <em class="card-title">${project.project_subject}</em>
+	          <p class="card-text">
+	            <span class="badge badge-primary">${project.project_target}원</span>
+	            ${project.project_category}
+	          </p>
+	        </div>
+	      </article>
+	    </div>
+	    <c:if test="${status.count % 4 == 0}"></c:if><div class="row"></div>
+	  </c:forEach>
+	</div>
+	<div class="container mt-4">
+	  <button type="button" class="btn btn-light" onclick="showRandomProjects()" ><b>자동 추천</b></button>
+	</div>
+	<br>
+	      <div class="card-body">
+	      	  <h3><b>추천 순위</b></h3>
+			  <p>곧 끝나는 프로젝트를 확인하세요!</p>
+	        <ul id="rankingList" class="card-text"></ul>
+	      </div>
+	</div>
 
 		    <hr>
 		   	<br>
@@ -128,10 +148,8 @@
     <hr>
 
   
-	<script src="resources/js/rankingList.js"></script>
-    <script src="resources/js/moreButton.js"></script>
-    <script src="resources/js/openProject.js"></script>
-    <script src="resources/js/moreShow.js"></script>
+    <script src="resources/js/showRandomProjects.js"></script>
+  	<script src="resources/js/rankingList.js"></script>
 	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 	
     <%@ include file="Footer.jsp" %>

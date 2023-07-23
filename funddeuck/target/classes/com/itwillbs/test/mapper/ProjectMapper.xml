@@ -151,6 +151,13 @@
 			from members
 				where member_id = #{sId}
 	</select>
-	
-	
+
+	<select id="selectTop10ProjectsByEndDate" resultType="com.itwillbs.test.vo.ProjectVO">
+	    SELECT * FROM project
+	    ORDER BY project_end_date
+	    LIMIT 10
+	</select>
+
 </mapper>
+	
+	
