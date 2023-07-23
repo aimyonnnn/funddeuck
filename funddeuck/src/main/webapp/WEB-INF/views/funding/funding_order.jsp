@@ -70,7 +70,7 @@
 						<!-- 변경 버튼 -->
 						<!-- 변경 버튼 클릭시 모달창 => 리워드 변경 -->
 					    <div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">
-							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rewardListmodal">변경</button>
+							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rewardListModal">변경</button>
 					    </div>
 						<!-- 변경 버튼 끝 -->
 					</div>
@@ -103,7 +103,7 @@
 					<div class="row m-2 p-2 border">
 						<!-- 기본 배송지 등록 X -->
 <!-- 						<div class="col d-flex justify-content-center align-self-center"> -->
-<!-- 							<button class="btn btn-primary">추가</button> -->
+<!-- 							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryAddModal">배송지 추가</button> -->
 <!-- 						</div> -->
 						<!-- 기본 배송지 등록 X 끝 -->
 						<!-- 기본 배송지 등록 O -->
@@ -123,7 +123,7 @@
 							</div>
 						</div>
 						<div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">
-							<button class="btn btn-primary">변경</button>
+							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryModal">변경</button>
 						</div>
 						<!-- 기본 배송지 등록 O 끝 -->
 					</div>
@@ -267,26 +267,174 @@
 	</div>
 	<!-- 리워드, 서포터, 배송지, 쿠폰, 결제확인 영역 끝 -->
 	<!-- 리워드 변경 모달창 -->
-	<div class="modal" id="rewardListmodal" tabindex="-1">
+	<div class="modal" id="rewardListModal" tabindex="-1">
 		<!-- modal-fullscreen -->
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header d-flex justify-content-center">
 					<h5 class="modal-title">리워드 변경</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<!-- 리워드 리스트 뿌리기 -->
-					${rewardList }
+					<div class="container text-center">
+						<c:forEach var="reward" items="${rewardList }">
+							<hr>
+							<div class="row">
+								<div class="col-2 d-flex justify-content-center align-self-center">
+									<div class="form-check">
+										<input class="form-check-input" type="radio" name="rewardCheck" id="rewardCheck">
+									</div>
+								</div>
+								<div class="col text-start">
+									<span class="fs-4 fw-bold">${reward.reward_price }</span><br>
+									<span class="fs-6">${reward.reward_name }</span><br>
+									<span class="fs-6">${reward.reward_option }</span>
+								</div>
+							</div>
+						</c:forEach>
+					</div>
+					
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
+					<button type="button" class="btn btn-primary">변경</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				</div>
 			</div>
 		</div>
 	</div>	
 	<!-- 리워드 변경 모달창 끝 -->
+	<!-- 배송지 추가 모달창 -->
+	<div class="modal" id="deliveryAddModal" tabindex="-1">
+		<!-- modal-fullscreen -->
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header d-flex justify-content-center">
+					<h5 class="modal-title">배송지 추가</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<!-- 배송지 추가 작업 요청 -->
+<!-- 					<form action="deliveryAdd" method="post"> -->
+						<div class="container text-start">
+							<div class="row">
+								<span class="fs-5 fw-bold">받는 사람</span>
+								<input type="text" class="form-control"  name="delivery_reciever">
+							</div>
+							<div class="row">
+								<span class="fs-5 fw-bold">받는 사람 연락처</span>
+								<input type="text" class="form-control"  name="delivery_phone">
+							</div>
+							<div class="row">
+								<span class="fs-5 fw-bold">주소</span>
+								<!-- 돋보기모양 버튼 클릭시 주소찾는 창 -->
+								<input type="button" class="btn btn-primary" onclick="findPostcode()" value="찾기">
+								<span class="fs-6">우편번호</span>
+								<input type="text" class="form-control"  name="delivery_zipcode" id="postcode">
+								<span class="fs-6">도로명 주소</span>
+								<input type="text" class="form-control"  name="delivery_add" id="address">
+								<span class="fs-6">상세 주소</span>
+								<input type="text" class="form-control"  name="delivery_detailadd" id="detailAddress">
+							</div>
+							<div class="row">
+								<div class="form-check text-start">
+									<input class="form-check-input text-start" type="checkbox" value="" id="deliveryDefaultCheck">
+									<label class="form-check-label" for="deliveryDefaultCheck">기본 배송지 설정</label>
+								</div>
+							</div>
+						</div>
+<!-- 					</form> -->
+<!-- 카카오 API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=001f863eaaba2072ed70014e7f424f2f&libraries=services"></script>
+<script>
+    function findPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = data.address; // 최종 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("extraAddress").value = extraAddr;
+                
+                } else {
+                    document.getElementById("extraAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById("postcode").value = data.zonecode;
+                document.getElementById("address").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("detailAddress").focus();
+            }
+        }).open();
+    }
+</script>			
+<!-- 카카오 API 끝 -->					
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">등록</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<!-- 배송지 추가 모달창 끝 -->
+	<!-- 배송지 변경 모달창 -->
+	<div class="modal" id="deliveryModal" tabindex="-1">
+		<!-- modal-fullscreen -->
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header d-flex justify-content-center">
+					<h5 class="modal-title">배송지 변경</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="container text-center">
+						<div class="row">
+							<div class="col">
+								<span class="fs-6">개의 배송지가 있습니다</span>
+							</div>
+							<div class="col text-end">
+								<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryAddModal">추가</button>
+							</div>
+						</div>
+						<!-- 배송지 목록 뿌리기 -->
+						<div class="row">
+						</div>
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">선택</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<!-- 배송지 변경 모달창 끝 -->
   <!-- 부트스트랩 -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
