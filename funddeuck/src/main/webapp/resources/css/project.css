@@ -357,6 +357,26 @@ a.supporters svg {
   font-size: 15px;
 }
 
+/* 해시태그 */
+.tr_hashTag_area {
+  text-align: left;
+}
+
+.tag-item {
+  display: inline-block;
+  background-color: #f0f0f0;
+  border-radius: 25px;
+  padding: 5px 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.del-btn {
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
 /* 약관 */
 .agree_box {
   border: 1px solid rgba(0, 0, 0, 0.284);

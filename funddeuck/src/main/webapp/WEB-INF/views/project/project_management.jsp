@@ -35,11 +35,12 @@
 	    ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
 	    ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트
 	    ,minDate: "-1M" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-	    ,maxDate: "+1M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)                
+	    ,maxDate: "+3M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)                
 	});                    
 
 	//초기값을 오늘 날짜로 설정
-	$('.datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
+	$('#projectStartDate').datepicker('setDate', 'today'); // 시작일(오늘)
+	$('#projectEndDate').datepicker('setDate', '+1M'); // 종료일(한달후)
 	});
 
 	// 약관 전체동의 체크박스
@@ -57,6 +58,69 @@
 	    else $("#agreeAll").prop("checked", true); 
 	  });
 	});
+	
+	// 해시태그 
+	$(document).ready(function () {
+		var tag = {};
+		var counter = 0;
+	
+		// 입력한 값을 태그로 생성한다.
+		function addTag (value) {
+			tag[counter] = value;
+			counter++; // del-btn 의 고유 id 가 된다.
+		}
+	
+		// tag 안에 있는 값을 array type 으로 만들어서 넘긴다.
+		function marginTag () {
+			return Object.values(tag).filter(function (word) {
+			    return word !== "";
+			});
+		}
+	
+		// 서버에 제공
+		$("#project-form").on("submit", function (e) {
+			var value = marginTag().join(', '); // return 
+			$("#searchTag").val(value); 
+		});
+	
+		$("#tag").on("keypress", function (e) {
+	    	var self = $(this);
+	
+		    // 엔터나 스페이스바 눌렀을 때 실행
+		    if (e.key === "Enter" || e.keyCode == 32) {
+	
+	        	var tagValue = self.val(); // 값 가져오기
+	
+		        // 해시태그 값이 없거나 3개를 초과하면 실행X
+		        if (tagValue !== "" && marginTag().length < 3) {
+	
+		            // 같은 태그가 있는지 검사한다. 있다면 해당값이 array로 return된다.
+		            var result = Object.values(tag).filter(function (word) {
+		        		return word === tagValue;
+	            	})
+	
+		            // 해시태그가 중복되었는지 확인
+		            if (result.length == 0) {
+		                $("#tag-list").append("<li class='tag-item'>" + tagValue + "<span class='del-btn' idx='" + counter + "'>x</span></li>");
+		                addTag(tagValue);
+		                self.val("");
+		            } else {
+		            	alert("태그값이 중복됩니다.");
+		            }
+				} else if (tagValue !== "" && marginTag().length == 3) {
+				    alert("해시태그는 3개까지만 입력 가능합니다!"); // 해시태그 제한 메시지
+				}
+	        	e.preventDefault(); // SpaceBar 시 빈공간이 생기지 않도록 방지
+			}
+		});
+		
+		// 인덱스 검사 후 삭제
+		$(document).on("click", ".del-btn", function (e) {
+			var index = $(this).attr("idx");
+			tag[index] = "";
+			$(this).parent().remove();
+		});
+	})
 	</script>
 </head>
 <body>
@@ -107,7 +171,7 @@
 	            <p class="projectContent">프로젝트에 필요한 내용을 작성해 주세요.</p>
             
 				<!-- 폼 태그 시작 -->
-				<form action="projectManagementPro" class="projectContent" method="post" enctype="multipart/form-data">
+				<form id="project-form" action="projectManagementPro" class="projectContent" method="post" enctype="multipart/form-data">
 					<!-- 히든 처리하는 부분 -->
 	            	<!-- 마이페이지, 메이커 등록에서 넘어올 때 파라미터로 받아와야함 -->
 	            	<input type="text" name="maker_idx" id="maker_idx" value="${param.maker_idx}" class="form-control" style="width:500px;">
@@ -170,10 +234,20 @@
 					</div>
               
 					<!-- 검색용 해시태그 -->
-					<div class="mt-4">
-						<label class="subheading" for="searchTag">검색용 태그(#)</label>
-						<p class="sideDescription">프로젝트가 더 잘 검색될 수 있도록 연관성이 높은 태그를 입력해 주세요.</p>
-						<input class="form-control" type="text" name="project_hashtag1" id="searchTag" placeholder="최대 3개의 태그를 입력해 주세요">
+					<div class="tr_hashTag_area">
+					    <p class="subheading">검색용 태그(#)</p>
+					    <p class="sideDescription">
+						    프로젝트가 더 잘 검색될 수 있도록 연관성이 높은 태그를 입력해 주세요.<br>
+						    해시태그는 3개까지 등록이 가능해요.
+					    </p>
+						<div class="form-group">
+							<input type="hidden" value="" name="project_hashtag1" id="searchTag" />
+						</div>
+						             
+						<div class="form-group">
+							<input type="text" id="tag" size="7" placeholder="엔터로 해시태그를 등록해주세요." class="w-100 form-control"/>
+						</div>
+						<ul id="tag-list" class="mt-3"></ul>
 					</div>
 
 					<!-- 프로젝트 소개 -->

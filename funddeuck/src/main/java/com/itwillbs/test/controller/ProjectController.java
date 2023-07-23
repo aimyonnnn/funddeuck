@@ -393,11 +393,11 @@ public class ProjectController {
 	public String projectManagement(HttpSession session, Model model) {
 		
 		// 세션 아이디가 존재하지 않을 때 
-		String sId = (String) session.getAttribute("sId");
-		if(sId == null) {
-			model.addAttribute("msg", "잘못된 접근입니다.");
-			return "fail_back";
-		}
+//		String sId = (String) session.getAttribute("sId");
+//		if(sId == null) {
+//			model.addAttribute("msg", "잘못된 접근입니다.");
+//			return "fail_back";
+//		}
 		
 		return "project/project_management";
 	}
@@ -471,6 +471,11 @@ public class ProjectController {
 		String representativeBirth2 = request.getParameter("representativeBirth2"); // 뒷자리
 		String project_representative_birth = representativeBirth1 + "-" + representativeBirth2; // 결합
 		project.setProject_representative_birth(project_representative_birth); // 저장
+		
+		// 해시태그 값 처리
+		String project_hashtag1 = request.getParameter("project_hashtag1");
+		project.setProject_hashtag1(project_hashtag1);
+		System.out.println("해시태그: " + project.getProject_hashtag1());
 		
 		int insertCount = projectService.registProject(project);
 		
