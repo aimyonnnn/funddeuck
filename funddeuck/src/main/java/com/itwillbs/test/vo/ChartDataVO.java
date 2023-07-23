@@ -15,16 +15,5 @@ public class ChartDataVO {
     private List<Integer> cumulativePaymentAmounts;
     private List<Integer> dailySupporterCounts;
     private List<Integer> cumulativeSupporterCounts;
-
-//    public ChartDataVO() {}
-//
-//    public ChartDataVO(List<String> labels, List<Integer> dailyPaymentAmounts, List<Integer> cumulativePaymentAmounts,
-//                       List<Integer> dailySupporterCounts, List<Integer> cumulativeSupporterCounts) {
-//        this.labels = labels;
-//        this.dailyPaymentAmounts = dailyPaymentAmounts;
-//        this.cumulativePaymentAmounts = cumulativePaymentAmounts;
-//        this.dailySupporterCounts = dailySupporterCounts;
-//        this.cumulativeSupporterCounts = cumulativeSupporterCounts;
-//    }
 }
 

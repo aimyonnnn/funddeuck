@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.itwillbs.test.mapper.PaymentMapper">
 	
-	  <!-- 일별 결제 금액 조회 -->
+	<!-- 메이커별 일별 결제 금액 조회 -->
     <select id="selectPaymentListCountByDay" resultType="com.itwillbs.test.vo.PaymentVO">
         SELECT
             DATE(p.payment_date) AS date,
@@ -22,11 +22,11 @@
             m.maker_idx, date
     </select>
 
-    <!-- 일별 서포터 수 조회 -->
+    <!-- 메이커별 일별 서포터 수 조회 -->
     <select id="selectSupporterListCountByDay" resultType="com.itwillbs.test.vo.PaymentVO">
         SELECT
             DATE(p.payment_date) AS date,
-            COUNT(DISTINCT p.member_idx) AS count
+            COUNT(*) AS count
         FROM
             maker m
         JOIN
@@ -42,17 +42,44 @@
             m.maker_idx, date
     </select>
 	
-	<!-- 지난 7일간 결제 금액 조회 -->
+	<!-- 메이커별 지난 7일간 결제 금액 조회 -->
 	<select id="selectPaymentListAmountBy7Day" resultType="com.itwillbs.test.vo.PaymentVO">
-		select 
-			date(payment_date) as date, sum(total_amount) as amount
-		from
-			payment 
-		where
-			date(payment_date) >= curdate() - interval 7 day
-		group by
-			date(payment_date)
+		SELECT
+		    DATE(p.payment_date) AS date,
+		    SUM(p.total_amount) AS amount
+		FROM
+		    payment p
+		INNER JOIN
+		    project pr ON p.project_idx = pr.project_idx
+		INNER JOIN
+		    maker m ON pr.maker_idx = m.maker_idx
+		WHERE
+		    m.maker_idx = ${maker_idx}
+		    AND DATE(p.payment_date) >= CURDATE() - INTERVAL 7 DAY
+		GROUP BY
+		    m.maker_idx, date
+		ORDER BY
+    		m.maker_idx, date   
 	</select>
 	
+	<!-- 메이커별 지난 7일간 서포터 수 조회 -->
+	<select id="selectSupporterListCountBy7Day" resultType="com.itwillbs.test.vo.PaymentVO">
+		select
+		    DATE(p.payment_date) AS date,
+		    COUNT(*) AS count
+		FROM
+		    maker m
+		JOIN
+		    project pr ON m.maker_idx = pr.maker_idx
+		JOIN
+		    payment p ON pr.project_idx = p.project_idx
+		WHERE
+		    m.maker_idx = ${maker_idx}
+		    AND DATE(p.payment_date) >= CURDATE() - INTERVAL 7 DAY
+		GROUP BY
+		    m.maker_idx, date
+		ORDER BY
+		    m.maker_idx, date
+	</select>
 
 </mapper>

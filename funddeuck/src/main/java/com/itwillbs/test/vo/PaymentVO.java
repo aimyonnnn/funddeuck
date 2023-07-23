@@ -72,6 +72,6 @@ public class PaymentVO {
 	// DB 컬럼에는 추가하는거 아님!
 	private String date; // 결제 날짜
 	private int amount; // 결제 금액
-	private int count; // 서포터 수
+	private int count; // 서포터 수(결제한 사람)
 	// ===============================================================================
 }
