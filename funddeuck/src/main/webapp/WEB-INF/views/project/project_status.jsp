@@ -28,9 +28,8 @@
 	    // 모든 요소에 datepicker 기능을 적용
 	    $('.datepicker').datepicker();
 	});
-	</script>
 	
-	<script type="text/javascript">
+	// java 차트
     $(() => {
         $('.datepicker').datepicker();
 
@@ -40,23 +39,20 @@
             let startDate = $('#startDate').val(); // 시작일 입력값 가져오기
             let endDate = $('#endDate').val(); // 종료일 입력값 가져오기
             let chartType = $('#chartType').val(); // 선택된 차트 유형 가져오기
-
-            console.log(`${startDate}, ${endDate}, ${chartType}`);
+            let maker_idx = ${param.maker_idx}; // 파라미터로 받은 maker_idx를 변수에 저장
 
             $.ajax({
                 type: 'GET',
                 url: '<c:url value="chartData"/>', // 차트 데이터를 가져올 URL 설정
                 data: {
-                    startDate, // 시작일
-                    endDate, // 종료일
-                    chartType // 차트
+                    startDate, 		// 시작일
+                    endDate, 		// 종료일
+                    chartType,  	// 차트
+                    maker_idx 		// 메이커 번호
                 },
                 success: (response) => {
                     console.log(response);
                     updateChart(response, chartType); // 차트 업데이트 함수 호출
-                },
-                error: (xhr, status, error) => {
-                    console.error(error); // 에러 발생 시 콘솔에 출력
                 }
             });
         });
@@ -117,6 +113,60 @@
             });
         };
     }); // ready
+	
+    // js 차트
+    // 페이지 로드 시 불러오는 차트
+    // 변수 초기화
+    let payJson = JSON.parse('${payListAmount}');
+    let labelList = [];
+    let dailyAmountList = [];
+    let cumulativeAmountList = [];
+    let cumulativeAmount = 0;
+    
+    // 결제 금액 구하기
+    for(let i = 0; i < payJson.length; i++) {
+    	let d = payJson[i];
+    	labelList.push(d.date); 						// 날짜 라벨
+    	dailyAmountList.push(d.amount); 				// 일별 결제 금액 추가
+    	cumulativeAmount += d.amount; 					// 누적 결제 금액
+    	cumulativeAmountList.push(cumulativeAmount);	// 누적 결제 금액 추가
+    }
+    
+    // 차트 데이터 설정
+    let payListAmount = {
+    		labels: labelList,
+    		datasets: [
+    					{
+	    					label: '일별 결제 금액',
+	    					data: dailyAmountList,
+	    					backgroundColor: 'rgba(255, 99, 132, 1)',
+	    		            borderColor: 'rgba(255, 99, 132, 1)',
+	    		            borderWidth: 4
+    					},
+    					{
+	    					label: '누적 결제 금액',
+	    					data: cumulativeAmountList,
+    					    backgroundColor: 'rgb(135, 206, 235)',
+    			            borderColor: 'rgb(135, 206, 235)',
+	    		            borderWidth: 4
+    					}
+    		],
+    		option:{
+    			title: {
+    				display: true,
+    				test: '결제금액'
+    			}
+    		}
+    }
+	
+    // 페이지 로드 시 차트 호출하기
+    $(()=>{
+	    let ctx2 = document.getElementById('myChart2').getContext('2d');
+	    let myChart2 = new Chart(ctx2, {
+	        type: 'line',
+	        data: payListAmount
+	    });
+    })
 	</script>
 	<style>
 	  /* 아이콘의 크기를 2배로 설정 */
@@ -234,7 +284,7 @@
 					          <div class="card-body d-flex flex-row justify-content-evenly">
 					          <div>
 					            <span class="sideDescription">누적 결제 금액</span>
-					            <h1 class="card-title">${totalCumulativePaymentAmount}<span class="sideDescription">원</span></h1>
+					            <h1 class="card-title">${totalAmount}<span class="sideDescription">원</span></h1>
 					          </div>
 					          <div class="">
 					            <i class="las la-chart-line" style="color: red;"></i>
@@ -248,7 +298,7 @@
 					          <div class="card-body d-flex flex-row justify-content-evenly">
 					          <div>
 					            <span class="sideDescription">오늘 결제금액</span>
-					            <h1 class="card-title">${todayPaymentAmount}<span class="sideDescription">원</span></h1>
+					            <h1 class="card-title">${todayAmount}<span class="sideDescription">원</span></h1>
 					          </div>
 					          <div class="">
 					            <i class="las la-chart-line"></i>
@@ -342,11 +392,10 @@
 	            }
 	        }
 	    });
-	
 	</script>
 	
 	<!-- js -->
-<%-- 	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script> --%>
+	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
     <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 	<!-- datepicker -->

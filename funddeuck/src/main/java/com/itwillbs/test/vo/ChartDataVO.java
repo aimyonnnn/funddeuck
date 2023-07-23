@@ -2,8 +2,12 @@ package com.itwillbs.test.vo;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class ChartDataVO {
     private List<String> labels;
@@ -12,15 +16,15 @@ public class ChartDataVO {
     private List<Integer> dailySupporterCounts;
     private List<Integer> cumulativeSupporterCounts;
 
-    public ChartDataVO() {}
-
-    public ChartDataVO(List<String> labels, List<Integer> dailyPaymentAmounts, List<Integer> cumulativePaymentAmounts,
-                       List<Integer> dailySupporterCounts, List<Integer> cumulativeSupporterCounts) {
-        this.labels = labels;
-        this.dailyPaymentAmounts = dailyPaymentAmounts;
-        this.cumulativePaymentAmounts = cumulativePaymentAmounts;
-        this.dailySupporterCounts = dailySupporterCounts;
-        this.cumulativeSupporterCounts = cumulativeSupporterCounts;
-    }
+//    public ChartDataVO() {}
+//
+//    public ChartDataVO(List<String> labels, List<Integer> dailyPaymentAmounts, List<Integer> cumulativePaymentAmounts,
+//                       List<Integer> dailySupporterCounts, List<Integer> cumulativeSupporterCounts) {
+//        this.labels = labels;
+//        this.dailyPaymentAmounts = dailyPaymentAmounts;
+//        this.cumulativePaymentAmounts = cumulativePaymentAmounts;
+//        this.dailySupporterCounts = dailySupporterCounts;
+//        this.cumulativeSupporterCounts = cumulativeSupporterCounts;
+//    }
 }
 

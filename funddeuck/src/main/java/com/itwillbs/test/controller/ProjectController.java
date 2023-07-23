@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectService;
@@ -533,16 +536,57 @@ public class ProjectController {
 	}
 	
 	// 프로젝트 현황
+	// 페이지 로드 시 지난 7일간 결제 금액 차트를 불러옴
 	@GetMapping("projectStatus")
-	public String projectStatus(HttpSession session, Model model) {
+	public String projectStatus(@RequestParam(required = false) Integer maker_idx, HttpSession session, Model model) {
 		System.out.println("projectStatus");
+		
+		// 지난 7일간 결제 금액 조회
+		List<PaymentVO> payList = paymentService.getPaymentListAmountBy7Day();
+		
+		// Gson 객체 생성
+		Gson gson = new Gson();
+		
+		// JsonArray 객체 생성
+		JsonArray payArray = new JsonArray(); // 결제 금액
+		
+		// 변수 초기화
+		int totalAmount = 0; // 누적 결제 금액
+		int todayAmount = 0; // 오늘 결제 금액
+		
+		// payList에서 하나씩 꺼내서 JsonObject를 생성하고 payArray에 추가
+		for(PaymentVO pay : payList) {
+			JsonObject object = new JsonObject();
+			object.addProperty("date", pay.getDate());
+			object.addProperty("amount", pay.getAmount());
+			payArray.add(object);
+			
+			// 누적 결제 금액 계산
+		    totalAmount += pay.getAmount();
+
+		    // 오늘 결제 금액 계산 (오늘 날짜와 일치하는 경우)
+		    LocalDate today = LocalDate.now();
+		    LocalDate paymentDate = LocalDate.parse(pay.getDate());
+		    if (today.isEqual(paymentDate)) {
+		        todayAmount += pay.getAmount();
+		    }
+		}
+		
+		// json 문자열로 변환 후 Model에 저장
+		String payListAmount = gson.toJson(payArray);
+		model.addAttribute("payListAmount", payListAmount);
+		model.addAttribute("totalAmount", totalAmount);	// 누적 결제 금액
+		model.addAttribute("todayAmount", todayAmount);	// 오늘 결제 금액
+		
 		return "project/project_status";
 	}
 	
-	// 차트
+	// 시작일, 종료일 => 지정 가능
+	// maker_idx(파라미터)를 받아서 차트를 불러옴
 	@GetMapping("/chartData")
     @ResponseBody
-    public ChartDataVO getChartData(@RequestParam String startDate, @RequestParam String endDate, Model model) {
+    public ChartDataVO getChartData(
+    		@RequestParam String startDate, @RequestParam String endDate, @RequestParam("maker_idx") int maker_idx, Model model) {
         // 날짜 형식을 지정하는 DateTimeFormatter 객체 생성
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -551,12 +595,13 @@ public class ProjectController {
         LocalDate parsedEndDate = LocalDate.parse(endDate, formatter);
         System.out.println("parsedStartDate : " + parsedStartDate);
         System.out.println("parsedEndDate : " + parsedEndDate);
+        System.out.println("메이커 번호 : " + maker_idx);
 
         // 결제 금액 데이터 조회
-        List<PaymentVO> paymentList = paymentService.getPaymentListCountByDay(parsedStartDate, parsedEndDate);
+        List<PaymentVO> paymentList = paymentService.getPaymentListCountByDay(parsedStartDate, parsedEndDate, maker_idx);
 
         // 서포터 수 데이터 조회
-        List<PaymentVO> supporterList = paymentService.getSupporterListCountByDay(parsedStartDate, parsedEndDate);
+        List<PaymentVO> supporterList = paymentService.getSupporterListCountByDay(parsedStartDate, parsedEndDate, maker_idx);
 
         // 차트에 사용될 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 저장할 리스트 초기화
         List<String> labels = new LinkedList<>();

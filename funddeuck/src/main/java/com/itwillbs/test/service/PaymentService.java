@@ -16,12 +16,16 @@ public class PaymentService {
 	private PaymentMapper mapper;
 	
 	// 일별 결제 금액 조회
-	public List<PaymentVO> getPaymentListCountByDay(LocalDate parsedStartDate, LocalDate parsedEndDate) {
-		return mapper.selectPaymentListCountByDay(parsedStartDate, parsedEndDate);
+	public List<PaymentVO> getPaymentListCountByDay(LocalDate parsedStartDate, LocalDate parsedEndDate, int maker_idx) {
+		return mapper.selectPaymentListCountByDay(parsedStartDate, parsedEndDate, maker_idx);
 	}
 	// 일별 서포터 수 조회
-	public List<PaymentVO> getSupporterListCountByDay(LocalDate parsedStartDate, LocalDate parsedEndDate) {
-		return mapper.selectSupporterListCountByDay(parsedStartDate, parsedEndDate);
+	public List<PaymentVO> getSupporterListCountByDay(LocalDate parsedStartDate, LocalDate parsedEndDate, int maker_idx) {
+		return mapper.selectSupporterListCountByDay(parsedStartDate, parsedEndDate, maker_idx);
+	}
+	// 지난 7일간 결제 금액 조회
+	public List<PaymentVO> getPaymentListAmountBy7Day() {
+		return mapper.selectPaymentListAmountBy7Day();
 	}
 	
 }

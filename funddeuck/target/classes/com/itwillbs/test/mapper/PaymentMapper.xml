@@ -15,6 +15,7 @@
             payment p ON pr.project_idx = p.project_idx
         WHERE
             p.payment_date BETWEEN #{parsedStartDate} AND #{parsedEndDate}
+            and m.maker_idx = #{maker_idx}
         GROUP BY
             m.maker_idx, m.maker_name, DATE(p.payment_date)
         ORDER BY
@@ -34,11 +35,24 @@
             payment p ON pr.project_idx = p.project_idx
         WHERE
             p.payment_date BETWEEN #{parsedStartDate} AND #{parsedEndDate}
+            and m.maker_idx = #{maker_idx}
         GROUP BY
             m.maker_idx, m.maker_name, DATE(p.payment_date)
         ORDER BY
-            m.maker_idx, date;
+            m.maker_idx, date
     </select>
+	
+	<!-- 지난 7일간 결제 금액 조회 -->
+	<select id="selectPaymentListAmountBy7Day" resultType="com.itwillbs.test.vo.PaymentVO">
+		select 
+			date(payment_date) as date, sum(total_amount) as amount
+		from
+			payment 
+		where
+			date(payment_date) >= curdate() - interval 7 day
+		group by
+			date(payment_date)
+	</select>
 	
 
 </mapper>
