@@ -2,14 +2,14 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
 <configuration>
 	
-	<typeAliases>
-		<typeAlias type="com.itwillbs.test.vo.DeliveryrVO" alias="Deliveryr"/>
-		<typeAlias type="com.itwillbs.test.vo.MakerVO" alias="Maker"/>
-		<typeAlias type="com.itwillbs.test.vo.MembersVO" alias="Members"/>
-		<typeAlias type="com.itwillbs.test.vo.NotificationVO" alias="Notification"/>
-		<typeAlias type="com.itwillbs.test.vo.PaymentVO" alias="Payment"/>
-		<typeAlias type="com.itwillbs.test.vo.ProjectVO" alias="Project"/>
-		<typeAlias type="com.itwillbs.test.vo.RewardVO" alias="Reward"/>
-	</typeAliases>
+<!-- 	<typeAliases> -->
+<!-- 		<typeAlias type="com.itwillbs.test.vo.DeliveryrVO" alias="Deliveryr"/> -->
+<!-- 		<typeAlias type="com.itwillbs.test.vo.MakerVO" alias="Maker"/> -->
+<!-- 		<typeAlias type="com.itwillbs.test.vo.MembersVO" alias="Members"/> -->
+<!-- 		<typeAlias type="com.itwillbs.test.vo.NotificationVO" alias="Notification"/> -->
+<!-- 		<typeAlias type="com.itwillbs.test.vo.PaymentVO" alias="Payment"/> -->
+<!-- 		<typeAlias type="com.itwillbs.test.vo.ProjectVO" alias="Project"/> -->
+<!-- 		<typeAlias type="com.itwillbs.test.vo.RewardVO" alias="Reward"/> -->
+<!-- 	</typeAliases> -->
 	
 </configuration>

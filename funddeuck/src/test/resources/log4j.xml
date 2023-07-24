@@ -11,9 +11,9 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.itwillbs.test">
-		<level value="info" />
-	</logger>
+<!-- 	<logger name="com.itwillbs.test"> -->
+<!-- 		<level value="info" /> -->
+<!-- 	</logger> -->
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
