@@ -22,7 +22,7 @@ CREATE TABLE delivery (
 );
 */
 @Data
-public class DeliveryrVO {
+public class DeliveryVO {
 	private int delivery_idx;
 	private int member_idx;
 	private String delivery_reciever;
@@ -30,5 +30,6 @@ public class DeliveryrVO {
 	private String delivery_zipcode;
 	private String delivery_add;
 	private String delivery_detailadd;
+	private String delivery_default;
 	
 }

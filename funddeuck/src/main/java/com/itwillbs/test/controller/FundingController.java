@@ -19,7 +19,8 @@ public class FundingController {
 	private ProjectService projectService;
 	@Autowired
 	private MemberService memberService;
-	
+	@Autowired
+	private FundingService fundingService;
 	// 펀딩 탐색 페이지
 	@GetMapping("fundingDiscover")
 	public String fundingDiscoverForm() {
@@ -56,11 +57,34 @@ public class FundingController {
 		// 리워드 리스트 불러오기
 		List<RewardVO> rewardList = projectService.getRewardList(project_idx);
 		System.out.println(rewardList);
+		// 배송지 리스트 불러오기
+//		List<DeliveryrVO> deliveryList = 
+		
+		
 		model.addAttribute("member", member);
 		model.addAttribute("project", project);
 		model.addAttribute("reward", reward);
 		model.addAttribute("rewardList", rewardList);
 		return "funding/funding_order";
+	}
+	
+	@PostMapping("deliveryAdd")
+	@ResponseBody
+	public String deliveryAdd(DeliveryVO delivery) {
+		System.out.println(delivery);
+		// 멤버 아이디 필요(idx 넣기)
+		int member_idx = 1;
+		delivery.setMember_idx(member_idx);
+		// 배송지 DB 등록 작업
+		int insertCount = fundingService.registDelivery(delivery);
+		
+		if(insertCount > 0) {
+			return "success";
+			
+		} else {
+			return "fail";
+		}
+		
 	}
 		
 }
