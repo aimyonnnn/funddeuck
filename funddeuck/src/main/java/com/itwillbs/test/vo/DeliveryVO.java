@@ -18,6 +18,7 @@ CREATE TABLE delivery (
 	delivery_zipcode VARCHAR(10) NOT NULL COMMENT '수취인우편번호',
   	delivery_add VARCHAR(500) NOT NULL COMMENT '수취인주소',
   	delivery_detailadd VARCHAR(500) NOT NULL COMMENT '수취인상세주소',
+  	delivery_default BOOLEAN NOT NULL DEFAULT 0 COMMENT '기본배송지여부(0: 아니오, 1: 예)',
  	FOREIGN KEY (member_idx) REFERENCES members(member_idx)    
 );
 */
