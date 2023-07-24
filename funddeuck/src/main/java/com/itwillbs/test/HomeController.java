@@ -47,6 +47,7 @@ public class HomeController {
         return "main";
     }
 
+    @ResponseBody
     @GetMapping("/list")
     public List<ProjectVO> getProjectList() {
         return ProjectService.getTop10ProjectsByEndDate();

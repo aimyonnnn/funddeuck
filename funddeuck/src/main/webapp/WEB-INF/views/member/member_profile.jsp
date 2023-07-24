@@ -24,7 +24,6 @@
                         <h3 class="profile-heading">프로필 정보 설정</h3>
 <div class="col-md-4 gradient-custom text-center text-white"
      style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-    <!-- 파일 선택 기능을 위한 input 요소 추가 -->
 <form id="profileimgForm">
     <input type="file" id="imageInput" style="display: none;" accept="image/*">
     <img src="${profile.profile_img}"

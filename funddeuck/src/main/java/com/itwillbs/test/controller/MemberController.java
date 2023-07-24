@@ -18,8 +18,7 @@ public class MemberController {
 
     @Autowired
     private MemberService service;
-
-
+    
     @GetMapping("/member/mypage")
     public String myPage() {
         return "member/myPage"; 
