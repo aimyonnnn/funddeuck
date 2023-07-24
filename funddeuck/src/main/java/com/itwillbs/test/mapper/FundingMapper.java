@@ -1,5 +1,7 @@
 package com.itwillbs.test.mapper;
 
+import java.util.*;
+
 import org.apache.ibatis.annotations.*;
 
 import com.itwillbs.test.vo.*;
@@ -8,5 +10,7 @@ import com.itwillbs.test.vo.*;
 public interface FundingMapper {
 
 	int insertDelivery(DeliveryVO delivery);
+
+	List<DeliveryVO> selectDeliveryList(int member_idx);
 	
 }

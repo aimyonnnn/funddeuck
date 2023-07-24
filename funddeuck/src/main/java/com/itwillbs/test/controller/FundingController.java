@@ -86,5 +86,17 @@ public class FundingController {
 		}
 		
 	}
+	// produces = "application/json" => JSON 형식의 응답
+	@GetMapping(value = "getDeliveryList", produces = "application/json")
+	@ResponseBody
+	public List<DeliveryVO> getDeliveryList() {
+		// 멤버 아이디 가져와야함
+		int member_idx = 1;
+		// 배송지 목록을 가져오는 DB 작업
+		List<DeliveryVO> deliveryList = fundingService.getDeliveryList(member_idx);
+		System.out.println(deliveryList);
+		
+		return deliveryList;
+	}
 		
 }

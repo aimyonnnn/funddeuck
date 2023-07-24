@@ -28,7 +28,9 @@
 				if($.trim(msg) == "success") {
 					console.log("배송지 등록 완료!");
 					// 변경하는 모달창 열림
-					$('#deliveryModal').modal('show');
+					$('#deliveryChangeModal').modal('show');
+					// 배송지 추가 모달창 닫힘
+					$('#deliveryAddModal').modal('hide');
 				} else {
 					console.log("배송지 등록 실패!");
 				}
@@ -37,11 +39,62 @@
 				console.error("오류 발생!" , error);
 			}
 		});
-			
-		// 추가하는 모달창 닫힘
-		 $('#deliveryAddModal').modal('hide');
+		
 			
 	});
+	
+	// 배송지 목록을 가져오는 ajax 요청
+	$(document).ready(function() {
+	    $('#deliveryChangeModal').on('show.bs.modal', function (event) {
+	        var modal = $(this);
+	        $.ajax({
+	            type: "GET",
+	            url: "getDeliveryList",
+	            dataType: "json",
+	            success: function(data) {
+					console.log(data);
+					var deliveryListElem = $('#deliveryList');
+					deliveryListElem.empty(); // 배송지 목록 삭제
+					if (data.length > 0) {
+						// 반복문을 사용하여 각 데이터를 배송지 목록에 추가
+						data.forEach(function(delivery) {
+							var html = '';
+							html += '<div class="row border">';
+							html += '<span class="fs-6 fw-bold text-start">' + delivery.delivery_reciever + '</span>';
+							html += '<span class="fs-6 text-start">' + delivery.delivery_phone + '</span>';
+							html += '<span class="fs-6 text-start">[' + delivery.delivery_zipcode + ']' 
+								+ delivery.delivery_add + '&nbsp;&nbsp;' + delivery.delivery_detailadd + '</span>' ;
+							html += '</div>';
+							deliveryListElem.append(html);
+						});
+					}
+	            	
+	            },
+	            error: function(xhr, status, error) {
+	                console.log(error);
+	            }
+	        });
+	    });
+	});	
+	
+	// 기본 배송지 체크박스 체크시 1 해제시 0
+	$(document).ready(function() {
+	    // 체크박스 클릭 이벤트
+	    $("#deliveryDefaultCheck").change(function() {
+	        // 체크된 경우 value를 1로 설정하고, 그렇지 않은 경우 0으로 설정
+	        $("#deliveryDefaultCheck").val(this.checked ? "1" : "0");
+	    });	    
+	    
+
+	});	
+	
+	// 모달창의 입력데이터 지우기
+	$(document).ready(function () {
+	    $("#myModal").on("hidden.bs.modal", function () {
+	        $("#modalForm")[0].reset(); // 입력된 데이터를 지웁니다.
+	    });
+	});
+	
 </script>
 
 </head>
@@ -161,7 +214,7 @@
 							</div>
 						</div>
 						<div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">
-							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryModal">변경</button>
+							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryChangeModal">변경</button>
 						</div>
 						<!-- 기본 배송지 등록 O 끝 -->
 					</div>
@@ -391,7 +444,7 @@
 								</div>							
 								<!-- 주소찾기 영역 끝 -->
 							
-								<div class="form-check text-start ms-3 mt-2">
+								<div class="form-check text-start ms-3 mt-2"> 
 									<input class="form-check-input text-start" type="checkbox" value="1" name="delivery_default" id="deliveryDefaultCheck">
 									<label class="form-check-label" for="deliveryDefaultCheck">기본 배송지 설정</label>
 								</div>
@@ -486,7 +539,7 @@
 	</script>
 	<!-- 카카오 API 끝 -->	
 	<!-- 배송지 변경 모달창 -->
-	<div class="modal" id="deliveryModal" tabindex="-1">
+	<div class="modal" id="deliveryChangeModal" tabindex="-1">
 		<!-- modal-fullscreen -->
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -505,7 +558,11 @@
 							</div>
 						</div>
 						<!-- 배송지 목록 뿌리기 -->
-						<div class="row">
+						<div class="row" id="deliveryList">
+<!-- 							<span class="fs-6 fw-bold text-start">수취인명</span> -->
+<!-- 							<span class="fs-6 text-start">수취인연락처</span> -->
+<!-- 							<span class="fs-6 text-start">[우편번호]&nbsp;&nbsp;주소&nbsp;&nbsp;상세주소</span> -->
+							
 						</div>
 					</div>
 					
