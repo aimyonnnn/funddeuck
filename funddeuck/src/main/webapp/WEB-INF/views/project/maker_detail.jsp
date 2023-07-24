@@ -36,7 +36,7 @@
 					<h4>
 						<b>${maker.maker_name}</b>
 					</h4>
-					<p>${maker.maker_name}입니다. 성공적인 펀딩을 위해 최선을 다하겠습니다.</p>
+					<p>${maker.maker_intro}</p>
 
 					<div class="container">
 						<div class="row">

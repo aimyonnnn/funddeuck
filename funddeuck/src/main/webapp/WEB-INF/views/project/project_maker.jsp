@@ -129,8 +129,8 @@
 				<button class="btn btn-outline-primary btn-sm mx-2" onclick="makeGpt(event)">AI로 입력</button>
                <p class="sideDescription">
 					메이커를 표현할 수 있는 매력적인 문구를 작성해주세요.<br>
-					문구 작성이 막막하시면 AI로도 입력 가능해요.<br>
-					간단하게 작성하고 버튼을 클릭하면 AI 문구를 수정해드려요.
+					문구 작성이 막막하시면 AI가 문구를 추천해 드려요.<br>
+					간단하게 작성하고 버튼을 클릭하면 AI가 문구를 수정해드려요.
 				</p>
                 <input class="form-control" type="text" name="maker_intro" id="maker_intro" placeholder="메이커를 소개를 적어주세요.">
               </div>

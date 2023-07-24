@@ -166,10 +166,11 @@
 					</a>
 						<ul class="subMenu">
 							<li><a href="projectMaker">메이커 정보</a></li>
-							<li><a href="projectManagement" id="active-tab">프로젝트 등록</a></li>
+							<li><a href="projectManagement">프로젝트 등록</a></li>
 							<li><a href="projectReward">리워드 설계</a></li>
-						</ul></li>
-					<li><a href="projectStatus" id="active-tab">프로젝트 현황</a></li>
+						</ul>
+					</li>
+					<li><a href="projectStatus?maker_idx=${param.maker_idx}" id="active-tab">프로젝트 현황</a></li>
 					<li><a href="projectShipping">발송·환불 관리</a></li>
 					<li><a href="projectSettlement">수수료·정산 관리</a></li>
 				</ul>
@@ -381,7 +382,7 @@
 	</script>
 
 	<!-- js -->
-<%-- 	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script> --%>
+	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
     <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 	<!-- datepicker -->
