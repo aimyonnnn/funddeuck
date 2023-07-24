@@ -18,6 +18,7 @@ CREATE TABLE maker (
     maker_file4 VARCHAR(255) NOT NULL COMMENT '메이커 사진',
     maker_file5 VARCHAR(255) NOT NULL COMMENT '메이커 로고',
     maker_name VARCHAR(255) NOT NULL COMMENT '메이커 이름',
+    maker_intro VARCHAR(255) NOT NULL COMMENT '메이커 소개',
     maker_email VARCHAR(255) NOT NULL COMMENT '메이커 이메일',
     maker_tel VARCHAR(255) NOT NULL COMMENT '메이커 전화번호',
     maker_url VARCHAR(255) NOT NULL COMMENT '메이커 홈페이지',
