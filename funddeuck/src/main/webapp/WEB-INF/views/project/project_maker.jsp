@@ -17,10 +17,12 @@
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
 </head>
 <body>
-	<!-- include -->
+	<div id="loadingIndicator" style="display: none;">
+	    <img src="${pageContext.request.contextPath }/resources/images/loading.gif" alt="Loading..." />
+	</div>
+	
  	<jsp:include page="../common/project_top.jsp"/>
 
-	<!--  -->
 	<main id="main">
 		<div class="containerCSS">
       
@@ -114,11 +116,23 @@
 		        </div>
               </div>
 
-              <!-- 메이커 정보 -->
+              <!-- 메이커 명 -->
               <div>
                 <label class="subheading" for="maker_name">메이커명</label>
                 <p class="sideDescription">법인 사업자는 법인등기부상 법인명 / 개인 사업자는 주민등록상 성명 또는 상호 / 개인은 주민등록상 성명을 입력해 주세요.</p>
                 <input class="form-control" type="text" name="maker_name" id="maker_name" placeholder="메이커명을 입력해 주세요">
+              </div>
+              
+              <!-- 메이커 소개 -->
+              <div>
+                <label class="subheading" for="maker_intro">메이커 소개</label>
+				<button class="btn btn-outline-primary btn-sm mx-2" onclick="makeGpt(event)">AI로 입력</button>
+               <p class="sideDescription">
+					메이커를 표현할 수 있는 매력적인 문구를 작성해주세요.<br>
+					문구 작성이 막막하시면 AI로도 입력 가능해요.<br>
+					간단하게 작성하고 버튼을 클릭하면 AI 문구를 수정해드려요.
+				</p>
+                <input class="form-control" type="text" name="maker_intro" id="maker_intro" placeholder="메이커를 소개를 적어주세요.">
               </div>
 
               <!-- 메이커 대표 이미지 -->
@@ -278,6 +292,40 @@
 			})
 		}
 	}
+	// AI로 입력하기
+	function makeGpt(event) {
+	    event.preventDefault(); // 기본 동작 중지
+
+     	// 로딩 이미지 표시
+         $('#loadingIndicator').show();
+     	
+         var makeStoryRequest = {
+             projectIntroduce: $('#maker_intro').val()
+         };
+
+         $.ajax({
+             type: "POST",
+             url: "<c:url value='MakeStory'/>",
+             contentType: "application/json",
+             data: JSON.stringify(makeStoryRequest),
+             beforeSend: function() {
+                 $('#loadingIndicator').show();
+             },
+             success: function (response) {
+                 $('#loadingIndicator').hide();
+             	
+                 console.log(response);
+                 var responseObject = response; // 이미 json 형식의 응답이므로 파싱하지 않음
+                 var result = responseObject.choices[0].text; // 필요한 필드 추출
+                 $("#maker_intro").val(result).focus(); // textarea에 입력
+                 
+             },
+             error: function (xhr, status, error) {
+             	
+                 console.log(error);
+             }
+         });
+     }
 	</script>
 
 	<!-- js -->

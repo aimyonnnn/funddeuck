@@ -39,6 +39,7 @@
 					, #{maker_file4}
 					, #{maker_file5}
 					, #{maker_name}
+					, #{maker_intro}
 					, #{maker_email}
 					, #{maker_tel}
 					, #{maker_url}

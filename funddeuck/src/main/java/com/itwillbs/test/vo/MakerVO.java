@@ -33,6 +33,7 @@ public class MakerVO {
     private Integer corporate_biz_num;      // 메이커 유형 - 법인사업자 등록번호
     private String corporate_biz_name;      // 메이커 유형 - 법인사업자명
     private String maker_name;              // 메이커 이름
+    private String maker_intro;				// 메이커 소개
     private String maker_email;             // 메이커 이메일
     private String maker_tel;               // 메이커 전화번호
     private String maker_url;               // 메이커 홈페이지

@@ -64,6 +64,10 @@ public class ProjectService {
 	public List<ProjectVO> getTop10ProjectsByEndDate() {
         return mapper.selectTop10ProjectsByEndDate();
     }
+	//
+	public List<ProjectVO> getAllProjects() {
+		return null;
+	}
 	
 	
 }

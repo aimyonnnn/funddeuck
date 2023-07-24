@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class MakeStoryService {
 //	 @Value("${gpt.apiKey}")
-	 @Value("#")
+	 @Value("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")
 	    private String API_KEY;
 	    private static RestTemplate restTemplate = new RestTemplate();
 
