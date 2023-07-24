@@ -432,15 +432,23 @@ a.supporters svg {
 
 /* 테이블 안 버튼 */
 #tableButton {
-  width: 50px;
+  width: 60px;
   height: 30px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 /* 테이블 안 회원 상세정보 링크 */
 .memberLink {
   font-size: 10px;
   display: block;
+}
+
+/* 모달 소제목 */
+.modalTitle {
+	font-size:19px;
+	font-weight: bold;
+	margin-top: 30px;
+	margin-bottom: 10px;
 }
 
 /* ==================== 미디어쿼리 ==================== */

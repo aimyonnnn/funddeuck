@@ -54,7 +54,7 @@
 		INNER JOIN
 		    maker m ON pr.maker_idx = m.maker_idx
 		WHERE
-		    m.maker_idx = ${maker_idx}
+		    m.maker_idx = #{maker_idx}
 		    AND DATE(p.payment_date) >= CURDATE() - INTERVAL 7 DAY
 		GROUP BY
 		    m.maker_idx, date
@@ -74,12 +74,89 @@
 		JOIN
 		    payment p ON pr.project_idx = p.project_idx
 		WHERE
-		    m.maker_idx = ${maker_idx}
+		    m.maker_idx = #{maker_idx}
 		    AND DATE(p.payment_date) >= CURDATE() - INTERVAL 7 DAY
 		GROUP BY
 		    m.maker_idx, date
 		ORDER BY
 		    m.maker_idx, date
 	</select>
-
+	
+	<!-- 전체 메이커별 지난 7일간 결제 금액 조회 -->
+	<select id="selectPaymentTotalWeekRange" resultType="com.itwillbs.test.vo.PaymentVO">
+		SELECT
+		    DATE(p.payment_date) AS date,
+		    SUM(p.total_amount) AS amount
+		FROM
+		    payment p
+		INNER JOIN
+		    project pr ON p.project_idx = pr.project_idx
+		INNER JOIN
+		    maker m ON pr.maker_idx = m.maker_idx
+		WHERE
+		    DATE(p.payment_date) >= CURDATE() - INTERVAL 7 DAY
+		GROUP BY
+		    date
+		ORDER BY
+		    date
+	</select>
+	
+	<!-- 전체 메이커별 지난 7일간 등록된 서포터 수 -->
+	<select id="selectSupporterCountWeekRange" resultType="com.itwillbs.test.vo.PaymentVO">
+		SELECT
+		    DATE(p.payment_date) AS date,
+		    COUNT(*) AS count
+		FROM
+		    maker m
+		JOIN
+		    project pr ON m.maker_idx = pr.maker_idx
+		JOIN
+		    payment p ON pr.project_idx = p.project_idx
+		WHERE
+		    DATE(p.payment_date) >= CURDATE() - INTERVAL 7 DAY
+		GROUP BY
+		    date
+		ORDER BY
+		  	date
+	</select>
+	
+	<!-- 전체 메이커별 결제 금액 조회 -->
+	<select id="selectTotalPayment" resultType="com.itwillbs.test.vo.PaymentVO">
+		SELECT
+            DATE(p.payment_date) AS date,
+            SUM(p.total_amount) AS amount
+        FROM
+            maker m
+        JOIN
+            project pr ON m.maker_idx = pr.maker_idx
+        JOIN
+            payment p ON pr.project_idx = p.project_idx
+        WHERE
+            p.payment_date BETWEEN #{parsedStartDate} AND #{parsedEndDate}
+        GROUP BY
+            date
+        ORDER BY
+            date
+	</select>
+	
+	<!-- 전체 메이커별 서포터 수 조회 -->
+	<select id="selectTotalSupporter" resultType="com.itwillbs.test.vo.PaymentVO">
+		SELECT
+            DATE(p.payment_date) AS date,
+            COUNT(*) AS count
+        FROM
+            maker m
+        JOIN
+            project pr ON m.maker_idx = pr.maker_idx
+        JOIN
+            payment p ON pr.project_idx = p.project_idx
+        WHERE
+            p.payment_date BETWEEN #{parsedStartDate} AND #{parsedEndDate}
+        GROUP BY
+            date
+        ORDER BY
+            date
+	</select> 
+	
+	
 </mapper>

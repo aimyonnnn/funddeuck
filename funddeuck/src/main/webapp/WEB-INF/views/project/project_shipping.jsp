@@ -64,7 +64,7 @@
 									<tr>
 										<th>발송·배송 상태</th>
 										<td>
-											<span class="tableTag">미발송</span>
+											<span class="tableTag text-primary">미발송</span>
 											<span class="customSpan">1</span>건
 										</td>
 										<td>
@@ -87,7 +87,7 @@
 									<tr>
 										<th>펀딩금 반환 상태</th>
 										<td>
-											<span class="tableTag">신청</span>
+											<span class="tableTag text-primary">신청</span>
 											<span class="customSpan">1</span>건
 										</td>
 										<td>
@@ -114,9 +114,9 @@
 
 						<!-- 목록 -->
 						<div>
-							<p class="subheading">목록 <span class="sideDescription">| 총 829명</span></p>
+							<p class="subheading">목록 <span class="sideDescription text-primary">| 총 829명</span></p>
 							<div class="dropdown">
-								<button type="button" class="btn dropdown-toggle btn-outline-primary btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
+								<button type="button" class="btn dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
 									발송·배송 전체 관리
 								</button>
 								<ul class="dropdown-menu">
@@ -152,8 +152,9 @@
 										<tr>
 											<td>1111</td>
 											<td>
-												진국이
-												<a class="memberLink" href="#">회원정보</a>
+												진국이<br>
+												test@test.com<br>
+												010-1234-5678
 											</td>
 											<td>완료 01-01</td>
 											<td>25,000원</td>
@@ -161,13 +162,13 @@
 												[패키지A] 5월초 제철 귤 '귤로향' 1 SET (배송비포함) x 1개
 											</td>
 											<td>
-												<button class="btn btn-outline-primary" id="tableButton">입력</button>
+												<button class="btn btn-outline-primary" id="tableButton" data-bs-toggle="modal" data-bs-target="#trackingModal">입력</button>
 											</td>
 											<td>2023-08 초</td>
 											<td>미발송</td>
 											<td>1111-111</td>
 											<td>
-												<button class="btn btn-outline-primary" id="tableButton">신청</button>
+												<button class="btn btn-outline-primary" id="tableButton" data-bs-toggle="modal" data-bs-target="#refundModal">신청</button>
 											</td>
 										</tr>
 									</tbody>
@@ -179,9 +180,104 @@
 				</article>
 			</section>
 			<!-- 중앙 섹션 끝 -->
-
 		</div>
 	</main>
+	
+	<!-- 발송번호 입력 모달창 -->
+	<div class="modal fade" id="trackingModal" tabindex="-1" aria-labelledby="trackingModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+	    		<div class="modal-header">
+	    			<h1 class="modal-title fs-5" id="trackingModalLabel">발송정보</h1>
+	    			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<p class="fw-bold fs-5">[100개 한정] 오픈런(1달 플랜+보틀 증정)</p>
+					  	<p>·주문수량: 1개</p>
+					  	<p>·금액: 50,000원</p>
+					</div>
+					<form action="#" method="post">
+						<div>
+							<p class="modalTitle">발송방법</p>
+							<select class="form-control" name="shipping_method">
+								<option value="">선택</option>
+								<option value="courier">택배</option>
+								<option value="digitalDelivery">디지털 전송</option>
+								<option value="post">우편</option>
+								<option value="donation">후원</option>
+							</select>
+						</div>
+						<div>
+							<p class="modalTitle">택배사</p>
+							<select class="form-control" name="courier">
+								<option value="">선택</option>
+								<option value="cjLogistics">CJ대한통운</option>
+								<option value="koreaPost">우체국택배</option>
+						        <option value="hanjin">한진택배</option>
+						        <option value="lotte">롯데택배</option>
+						        <option value="logen">로젠택배</option>
+						        <option value="ilyang">일양로지스</option>
+							</select>
+						</div>
+						<div>
+							<label class="modalTitle" for="waybillNum">송장번호</label>
+							<input class="form-control" type="text" name="waybill_num" id="waybillNum" placeholder="송장번호를 입력해 주세요">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">완료</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 발송번호 입력 모달창 끝 -->
+	
+	<!-- 펀딩금 반환 모달창 -->
+	<div class="modal fade" id="refundModal" tabindex="-1" aria-labelledby="refundModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="refundModalLabel">펀딩금 반환 처리</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>서포터가 펀딩금 반환을 요청한 내역을 확인하고 승인 또는 거절 처리하세요.</p>
+					<div>
+						<p>
+							<span class="fw-bold">펀딩번호: </span>1111
+						</p>
+						<p>
+							<span class="fw-bold">서포터명: </span>진국이
+						</p>
+					</div>
+					<div>
+						<p class="modalTitle">[100개 한정] 오픈런(1달 플랜+보틀 증정)</p>
+					  	<p>·주문수량: 3개</p>
+					  	<p>·금액: 150,000원</p>
+					</div>
+					<div>
+						<p class="modalTitle">펀딩금 반환 신청 사유</p>
+					  	<p>
+					  		<span class="fw-bold">사유</span><br>
+					  		기능·성능 상 치명적인 초기 결함
+					  	</p>
+					  	<p>
+					  		<span class="fw-bold">증빙 서류</span><br>
+					  		<a href="#">미작동 이미지.jpg</a>
+					  	</p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">반환 신청</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 펀딩금 반환 모달창 끝 -->
 	
 	<script>
 	$(document).ready(function () {

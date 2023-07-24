@@ -31,6 +31,6 @@ public class DeliveryVO {
 	private String delivery_zipcode;
 	private String delivery_add;
 	private String delivery_detailadd;
-	private String delivery_default;
+	private boolean delivery_default;
 	
 }

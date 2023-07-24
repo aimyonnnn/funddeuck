@@ -16,4 +16,10 @@
 			)
 	
 	</insert>
+	
+	<select id="selectDeliveryList" resultType="com.itwillbs.test.vo.DeliveryVO">
+		SELECT * 
+			FROM delivery
+				WHERE member_idx = #{member_idx}
+	</select>
 </mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.test.mapper.ProfileMapper">
+
+	<insert id="insertProfile" parameterType="com.itwillbs.test.vo.ProfileVO">
+        INSERT INTO profile_table (member_idx, profile_job1, profile_job2, profile_school1, profile_school2, profile_text, profile_img)
+        VALUES (#{member_idx}, #{profile_job1}, #{profile_job2}, #{profile_school1}, #{profile_school2}, #{profile_text}, #{profile_img})
+    </insert>
+
+    <update id="updateProfile" parameterType="com.itwillbs.test.vo.ProfileVO">
+        UPDATE profile_table
+        SET profile_job1 = #{profile_job1},
+            profile_job2 = #{profile_job2},
+            profile_school1 = #{profile_school1},
+            profile_school2 = #{profile_school2},
+            profile_text = #{profile_text},
+            profile_img = #{profile_img}
+        WHERE member_idx = #{member_idx}
+    </update>
+
+    <select id="getProfileByMemberIdx" parameterType="int" resultType="com.itwillbs.test.vo.ProfileVO">
+        SELECT member_idx, profile_job1, profile_job2, profile_school1, profile_school2, profile_text, profile_img
+        FROM profile_table
+        WHERE member_idx = #{value}
+    </select>
+
+</mapper>

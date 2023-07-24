@@ -6,21 +6,27 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <title>Admin</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1">
-	<%--line-awesome icon 사용을 위한 스타일 시트 --%>
+    <!--bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<!-- jquery -->
+	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
+	<!-- line-awesome -->
 	<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-    <title>관리자 페이지</title>
+	<!-- css -->
     <link href="${pageContext.request.contextPath}/resources/css/adminDetail.css" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="#">
   </head>
   <body>
-<!-- --------------------사이드 바 영역----------------------------  -->
+
+   <!-- 사이드바 -->
    <input type="checkbox" name="" id="sidebar-toggle">
    
     <div class="sidebar">
       <div class="sidebar-main"> 
         <div class="sidebar-user">
-            <img src="${pageContext.request.contextPath }/resources/images/adminProfile.png">
+            <img src="${pageContext.request.contextPath}/resources/images/adminProfile.png">
           <div>
             <span>관리자 페이지</span>
           </div>
@@ -38,15 +44,15 @@
                 </a>
               </li>
               <li>
-                <a href="adminMain">
+                <a href="admin">
                   <span class="las la-user"></span>
                   관리자 메인
                 </a>
               </li>
               <li>
-                <a href="adminStatistics">
+                <a href="adminChart">
                   <span class="las la-chart-line"></span>
-                  주간 데이터 통계
+                  데이터 분석
                 </a>
               </li>
             </ul>
@@ -56,57 +62,60 @@
           </div>
           <ul>
             <li>
+                <a href="adminProject">
+                 <span class="las la-store"></span>
+                 프로젝트 관리
+                 </a>
+             </li>
+            <li>
                 <a href="adminMember">
                  <span class="las la-users"></span>
                  회원 관리
                  </a>
             </li>
             <li>
-                <a href="adminStore">
-                 <span class="las la-store"></span>
-                 가게 관리
-                 </a>
-             </li>
+              <a href="adminPayment">
+                  <span class="las la-exchange-alt"></span>
+                 결제 관리
+              </a>
+            </li>
              <li>
-                <a href="adminReservation">
+                <a href="#">
                   <span class="las la-history"></span>
-                  예약 관리
+                  점검중
                 </a>
              </li>
             <li>
-              <a href="adminAssignment">
-                  <span class="las la-exchange-alt"></span>
-                 양도 관리
-              </a>
-            </li>
-            <li>
-              <a href="adminReview">
+              <a href="#">
                   <span class="las la-comment-dots"></span>
-                 리뷰 관리
+                 점검중
               </a>
             </li>
            </ul>
            <div class="menu-head">
              <span>2 TEAM</span>
            </div>
-            <li><a><span class="las la-crown"></span>박수민</a></li>
-            <li><a><span class="las la-laugh"></span>김민진</a></li>
-            <li><a><span class="las la-laugh"></span>김보희</a></li>
-            <li><a><span class="las la-laugh"></span>이재승</a></li>
-            <li><a><span class="las la-laugh"></span>김묘정</a></li>
-            <li><a><span class="las la-laugh"></span>이건무</a></li>
+           <ul>
+	           <li><a><span class="las la-crown"></span>박수민</a></li>
+	           <li><a><span class="las la-laugh"></span>김민진</a></li>
+	           <li><a><span class="las la-laugh"></span>김보희</a></li>
+	           <li><a><span class="las la-laugh"></span>이재승</a></li>
+	           <li><a><span class="las la-laugh"></span>김묘정</a></li>
+	           <li><a><span class="las la-laugh"></span>이건무</a></li>
+           </ul>
         </div>
       </div>
     </div>
 <!-- ------------------------------------------------------------------ -->
     <div class="main-content">
-      <header>
-        <div class="menu-toggle">
-          <label for="sidebar-toggle">
-            <span class="las la-bars"></span>
-          </label>
-        </div>
-      </header>
+<!--       <header> -->
+<!--         <div class="menu-toggle"> -->
+<!--           <label for="sidebar-toggle"> -->
+<!--             <span class="las la-bars"></span> -->
+<!--           </label> -->
+<!--         </div> -->
+     	   <jsp:include page="../common/admin_top.jsp"/>  
+<!--       </header> -->
 
       <main>
         <div class="page-header">
@@ -125,7 +134,7 @@
                   <small>총 회원 수</small>
                 </div>
 
-                <h2>${memberList.size()+ceoMemberList.size()} 명</h2>
+                <h2>11 명</h2>
                 <small><a style="color: red;">활동 정지된 회원을 포함한</a> 총 회원 수입니다.</small>
               </div>
               <div class="card-chart danger">
@@ -138,13 +147,13 @@
             <div class="card-flex">
               <div class="card-into">
                 <div class="card-head">
-                  <span>RESTAURANT</span>
-                  <small>총 가게 수</small>
+                  <span>Project</span>
+                  <small>총 프로젝트 수</small>
                 </div>
 
-                <h2>${RestaurantList.size()} 개</h2>
+                <h2>5개</h2>
 
-                <small>현재 영업 중인 총 가게 수입니다.</small>
+                <small>현재 등록된 총 프로젝트 수입니다.</small>
               </div>
               <div class="card-chart success">
                 <span class="las la-chart-line"></span>
@@ -156,13 +165,13 @@
             <div class="card-flex">
               <div class="card-into">
                 <div class="card-head">
-                  <span>RESERVATION</span>
-                  <small>총 예약 수</small>
+                  <span>SUPPORTER</span>
+                  <small>오늘 등록된 서포터 수</small>
                 </div>
 
-                <h2>${reservationList.size()} 개</h2>
+                <h2>7명</h2>
 
-                <small><a style="color: red;">취소된 예약을 포함한</a> 총 예약 건수입니다.</small>
+                <small><a style="color: red;">취소된 서포터를 포함한</a> 총 서포터 수입니다.</small>
               </div>
               <div class="card-chart yellow">
                 <span class="las la-chart-line"></span>
@@ -174,21 +183,21 @@
         <div class="jobs-grid">
           <div class="analytics-card">
             <div class="analytics-head">
-              <h3>오늘 총 예약 수</h3>
+              <h3>오늘 총 서포터 수</h3>
             </div>
 
             <form method="post" class="analytics-chart">
               <div class="chart-circle">
-                <h1>${todayReservationCount.count} 개</h1>
+                <h1>명</h1>
               </div>
-              <small>예약 일자가 <a style="color: blue;">오늘</a>인 예약 데이터만 카운팅합니다.</small>
+              <small>결제 일자가<a style="color: blue;"> 오늘</a>인 서포터 수를 카운팅합니다.</small>
             </form>
           </div>
 
           <div class="jobs">
-            <h2>최근 예약
+            <h2>최근 프로젝트
                 <small>
-                    <a href="adminReservation">전체 예약 확인하기</a>
+                    <a href="adminProject">전체 프로젝트 확인하기</a>
                     <span class="las la-arrow-right"></span>
                 </small>
             </h2>
@@ -198,22 +207,20 @@
               <tbody>
               <tr>
                   <td><div><span class = "indicator"></span></div></td>
-                  <td><div>예약 번호 :</div></td>
-                  <td><div>예약 인원 :</div></td>
-                  <td><div>예약 날짜 :</div></td>
-                  <td><div>총 금액 :</div></td>
+                  <td><div>프로젝트번호 :</div></td>
+                  <td><div>프로젝트명 :</div></td>
+                  <td><div>승인 상태 :</div></td>
+                  <td><div>등록 일자 :</div></td>
                   <td><div><button type="button"
-                                   onclick="location.href='adminReservation'">관리</button></div></td>
+                                   onclick="location.href='adminProject'">관리</button></div></td>
               </tr>
-                  <c:forEach items="${reservationDESCList }" var="reservationDESCList" begin="0" end="4" >
                   <tr>
-                  <td></td>
-                  <td>&nbsp;${reservationDESCList.r_idx }</td>
-                  <td>&nbsp;${reservationDESCList.r_personnel }명</td>
-                  <td><fmt:formatDate value="${reservationDESCList.r_date }" pattern="yy-MM-dd HH:mm" /></td>
-                  <td><fmt:formatNumber value="${reservationDESCList.r_amount }" />원</td>
+	                  <td></td>
+	                  <td>&nbsp;</td>
+	                  <td>&nbsp;</td>
+	                  <td>&nbsp;</td>
+	                  <td>&nbsp;</td>
                   </tr>
-                 </c:forEach>
               </tbody>
             </table>  
           </div>
@@ -223,5 +230,9 @@
     </div> 
     
     <label for="sidebar-toggle" class="body-label"></label>
+    
+    <!-- bootstrap -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    
   </body>
 </html>
