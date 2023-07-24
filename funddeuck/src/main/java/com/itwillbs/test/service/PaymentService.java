@@ -31,5 +31,21 @@ public class PaymentService {
 	public List<PaymentVO> getSupporterListCountBy7Day(Integer maker_idx) {
 		return mapper.selectSupporterListCountBy7Day(maker_idx);
 	}
+	// 메이커별 지난 7일간 전체 결제 금액 조회
+	public List<PaymentVO> getPaymentTotalWeekRange() {
+		return mapper.selectPaymentTotalWeekRange();
+	}
+	// 메이커별 지난 7일간 등록된 전체 서포터 수
+	public List<PaymentVO> getSupporterCountWeekRange() {
+		return mapper.selectSupporterCountWeekRange();
+	}
+	// 전체 메이커별 결제 금액 조회
+	public List<PaymentVO> getTotalPayment(LocalDate parsedStartDate, LocalDate parsedEndDate) {
+		return mapper.selectTotalPayment(parsedStartDate, parsedEndDate);
+	}
+	// 전체 메이커별 서포터 수 조회
+	public List<PaymentVO> getTotalSupporter(LocalDate parsedStartDate, LocalDate parsedEndDate) {
+		return mapper.selectTotalSupporter(parsedStartDate, parsedEndDate);
+	}
 	
 }

@@ -24,6 +24,18 @@ public interface PaymentMapper {
 	
 	// 메이커별 지난 7일간 서포터 수 조회
 	List<PaymentVO> selectSupporterListCountBy7Day(Integer maker_idx);
+	
+	// 전체 메이커별 지난 7일간 결제 금액 조회
+	List<PaymentVO> selectPaymentTotalWeekRange();
+	
+	// 전체 메이커별 지난 7일간 등록된 서포터 수
+	List<PaymentVO> selectSupporterCountWeekRange();
+	
+	// 전체 메이커별 결제 금액 조회
+	List<PaymentVO> selectTotalPayment(@Param("parsedStartDate") LocalDate parsedStartDate, @Param("parsedEndDate") LocalDate parsedEndDate);
+	
+	// 전체 메이커별 서포터 수 조회
+	List<PaymentVO> selectTotalSupporter(@Param("parsedStartDate") LocalDate parsedStartDate, @Param("parsedEndDate") LocalDate parsedEndDate);
 
 	
 	

@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%-- <%session.setAttribute("sId", "admin");%> --%>
+<%session.setAttribute("sId", "admin");%>
 <%-- <%session.setAttribute("sId", "test");%> --%>
 <!-- css -->
 <link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
@@ -88,7 +88,7 @@
 	    </a>
 	    <div class="d-flex flex-row align-items-center">
 	    	<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#notifyModal">Admin Feedback</button>
-		  	<a class="nav-link text-primary mx-4" href="#">${sessionScope.sId} 님</a>
+		  	<a class="nav-link text-primary mx-4" href="admin">${sessionScope.sId}님</a>
 		  	<a class="nav-link text-primary me-4" href="javascript:logout()">나가기</a>
 		  	<a class="nav-link py-0" href="confirmNotification">
 			    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bell" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
