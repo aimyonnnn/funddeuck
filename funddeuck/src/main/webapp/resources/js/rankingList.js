@@ -32,7 +32,7 @@ function getProjectList() {
     },
     error: function (xhr, status, error) {
       // 오류 메시지를 브라우저 콘솔에 출력
-      console.error("AJAX Error:", status, error);
+      console.error(xhr);
     }
   });
 }
