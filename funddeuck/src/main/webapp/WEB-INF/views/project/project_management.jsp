@@ -241,7 +241,7 @@
 						    해시태그는 3개까지 등록이 가능해요.
 					    </p>
 						<div class="form-group">
-							<input type="hidden" value="" name="project_hashtag1" id="searchTag" />
+							<input type="hidden" value="" name="project_hashtag" id="searchTag" />
 						</div>
 						             
 						<div class="form-group">
