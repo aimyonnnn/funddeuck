@@ -68,6 +68,12 @@ public class FundingController {
 		return "funding/funding_order";
 	}
 	
+	// 결제 완료 페이지
+	@GetMapping ("fundingResult")
+	public String fundingResult() {
+		return "funding/funding_result";
+	}	
+	
 	@PostMapping("deliveryAdd")
 	@ResponseBody
 	public String deliveryAdd(DeliveryVO delivery) {
