@@ -117,10 +117,10 @@
       <!-- 모바일 환경-->
       <ul class="navbar-nav mobile">
         <li class="nav-item">
-          <a class="nav-link" href="#">로그인</a>
+          <a class="nav-link" href="LoginForm">로그인</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">회원가입</a>
+          <a class="nav-link" href="JoinForm">회원가입</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">프로젝트 생성</a>

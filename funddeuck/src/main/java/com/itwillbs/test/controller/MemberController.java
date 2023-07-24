@@ -30,80 +30,79 @@ public class MemberController {
     	return "member/member_coupon";
     }
     
-    //����媛��� 酉곕� �대����湲� ���� Mapping
+    //회원가입 페이지로 이동
     @GetMapping("JoinForm")
     public String JoinForm(HttpSession session, Model model) {
     	
-    	// session�� id媛� 議댁�ы���ㅻ㈃ ��洹� 遺�媛�
+    	// session이 존재한다면 접근불가
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "��紐삳�� ��洹쇱������.");
+    		model.addAttribute("msg", "잘못된 접근입니다.");
     		return "fail_back";
     	}
     	
     	return "join";
     }
     
-    //����媛���湲곕��
+    //회원 가입
     @PostMapping("JoinPro")
     public String JoinPro(MembersVO member, HttpSession session, Model model) {
     	
-    	// session�� id媛� 議댁�ы���ㅻ㈃ ��洹� 遺�媛�
+    	// session이 존재한다면 접근불가
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "��紐삳�� ��洹쇱������.");
+    		model.addAttribute("msg", "잘못된 접근입니다.");
     		return "fail_back";
     	}
     	
-    	// ����媛���
     	int insertCount = service.insertMember(member);
     	
     	if(insertCount > 0) {
     		return "redirect:/";
     	} else {
-    		model.addAttribute("msg", "����媛����ㅽ��");
+    		model.addAttribute("msg", "회원가입 실패");
     		return "fail_back";
     	}
     	
     }
     
-    //濡�洹몃┛ �쇱�쇰� �대��
+    //로그인 페이지 이동
     @GetMapping("LoginForm")
     public String LoginForm(HttpSession session, Model model) {
     	
-    	// session�� id媛� 議댁�ы���ㅻ㈃ ��洹� 遺�媛�
+    	// session이 존재한다면 접근불가
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "��紐삳�� ��洹쇱������.");
+    		model.addAttribute("msg", "잘못된 접근입니다.");
     		return "fail_back";
     	}
     	
     	return "login";
     }
     
-    //濡�洹몄��
+    //로그인
     @PostMapping("LoginPro")
     public String LoginPro(MembersVO member, HttpSession session, Model model) {
     	
     	System.out.println(member);
     	
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "��紐삳�� ��洹쇱������.");
+    		model.addAttribute("msg", "잘못된 접근입니다.");
     		return "fail_back";
     	}
     	
-    	//id媛� �쇱��� ���� ��蹂� 媛��몄�ㅺ린
+    	//id와 비밀번호조회를 통한 로그인작업
     	MembersVO isMember = service.getMemberInfo(member.getMember_id());
     	if(isMember == null){
-    		session.setAttribute("sId", member.getMember_id());
-    		model.addAttribute("msg", "���대�� ���� 鍮�諛�踰��멸� �쇱���吏� ���듬����.");
+    		model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
     		return "fail_back";
     	}else if(isMember.getMember_passwd().equals(member.getMember_passwd())) {
+    		session.setAttribute("sId", member.getMember_id());
     		return "redirect:/";
     	}
-		model.addAttribute("msg", "���대�� ���� 鍮�諛�踰��멸� �쇱���吏� ���듬����.");
+		model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
 		return "fail_back";
     	
     }
     
-    //���대�� ���몄�� ���� ajax 援щЦ
+    //ajax를 통한 id중복 확인
     @PostMapping("idDuplicate")
     @ResponseBody
     public String idDuplicate(@RequestParam String id) {

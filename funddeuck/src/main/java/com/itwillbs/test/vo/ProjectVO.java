@@ -20,9 +20,7 @@ CREATE TABLE project (
     project_target int NOT NULL COMMENT '목표 금액',
     project_start_date date NOT NULL COMMENT '프로젝트 시작일',
     project_end_date date NOT NULL COMMENT '프로젝트 종료일',
-    project_hashtag1 varchar(20) NOT NULL COMMENT '검색용 태그1',
-    project_hashtag2 varchar(20) COMMENT '검색용 태그2',
-    project_hashtag3 varchar(20) COMMENT '검색용 태그3',
+    project_hashtag varchar(20) NOT NULL COMMENT '검색용 태그',
     project_representative_name varchar(50) NOT NULL COMMENT '대표자명',
     project_representative_email varchar(50) NOT NULL COMMENT '대표 이메일',
     project_representative_birth varchar(14) NOT NULL COMMENT '대표 주민등록번호',
@@ -50,9 +48,7 @@ public class ProjectVO {
 	private int project_target;						// 목표 금액
 	private Date project_start_date;				// 프로젝트 시작일
 	private Date project_end_date;					// 프로젝트 종료일
-	private String project_hashtag1;				// 검색용 태그 (1)
-	private String project_hashtag2;				// 검색용 태그 (2)
-	private String project_hashtag3;				// 검색용 태그 (3)
+	private String project_hashtag;				// 검색용 태그
 	private String project_representative_name;		// 대표자명
 	private String project_representative_email;	// 대표 이메일
 	private String project_representative_birth;	// 대표 주민등록번호
