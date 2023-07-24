@@ -33,6 +33,15 @@ public class AdminController {
 		return "admin/admin_main";
 	}
 	
+	// 관리자 프로젝트
+	@GetMapping("adminProject")
+	public String adminProject(Model model) {
+		
+		
+		
+		return "admin/admin_project";
+	}
+	
 	// 페이지 로드 시 불러오는 차트
 	@GetMapping("adminChart")
 	public String adminChart(HttpSession session, Model model) {

@@ -8,7 +8,7 @@
 <!-- css -->
 <link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
-<!-- jQuery -->
+<!-- jquery -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <!-- sockJS -->
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
@@ -79,13 +79,10 @@
 		if(isLogout) { location.href = "./"; }
 	}
 </script>
-	
 <div id="msgStack"></div>
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height:60px;">
+<nav class="navbar navbar-expand-lg navbar-light bg-dark" style="height:60px;">
 	<div class="container">
-	    <a class="navbar-brand">
-	    		<img src="${pageContext.request.contextPath}/resources/images/logo.png" width="30px" height="30px" onclick="location.href='projectMaker'">
-	    </a>
+	    <a class="navbar-brand"><label for="sidebar-toggle"><span class="las la-bars"></span></label></a>
 	    <div class="d-flex flex-row align-items-center">
 	    	<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#notifyModal">Message</button>
 		  	<a class="nav-link text-primary mx-4" href="admin">${sessionScope.sId}님</a>
@@ -98,7 +95,7 @@
 		  	</a>
 		  	<span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
 		</div>
-	    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	    <button class="navbar-toggler menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 	    	<span class="navbar-toggler-icon"></span>
 	    </button>
 	  </div>
@@ -153,9 +150,9 @@
         <form>
           <div class="mb-3">
           	<label for="notifyId" class="form-label">받는 사람</label>
-            <input type="text" class="form-control mb-2" id="notifyId" placeholder="메이커 아이디를 입력해주세요">
+            <input type="text" class="form-control mb-2" id="notifyId" placeholder="아이디를 입력해주세요">
             <label for="message-text" class="form-label">내용</label>
-            <textarea class="form-control" id="message-text" cols="10" rows="5" placeholder="메이커에게 전달할 피드백 메시지를 작성해주세요"></textarea>
+            <textarea class="form-control" id="message-text" cols="10" rows="5" placeholder="메시지를 작성해주세요"></textarea>
           </div>
         </form>
       </div>

@@ -108,13 +108,14 @@
     </div>
 <!-- ------------------------------------------------------------------ -->
     <div class="main-content">
-      <header>
-        <div class="menu-toggle">
-          <label for="sidebar-toggle">
-            <span class="las la-bars"></span>
-          </label>
-        </div>
-      </header>
+<!--       <header> -->
+<!--         <div class="menu-toggle"> -->
+<!--           <label for="sidebar-toggle"> -->
+<!--             <span class="las la-bars"></span> -->
+<!--           </label> -->
+<!--         </div> -->
+     	   <jsp:include page="../common/admin_top.jsp"/>  
+<!--       </header> -->
 
       <main>
         <div class="page-header">
@@ -150,7 +151,7 @@
                   <small>총 프로젝트 수</small>
                 </div>
 
-                <h2>5 개</h2>
+                <h2>5개</h2>
 
                 <small>현재 등록된 총 프로젝트 수입니다.</small>
               </div>
@@ -168,7 +169,7 @@
                   <small>오늘 등록된 서포터 수</small>
                 </div>
 
-                <h2>7 개</h2>
+                <h2>7명</h2>
 
                 <small><a style="color: red;">취소된 서포터를 포함한</a> 총 서포터 수입니다.</small>
               </div>
@@ -187,7 +188,7 @@
 
             <form method="post" class="analytics-chart">
               <div class="chart-circle">
-                <h1>${todayReservationCount.count} 개</h1>
+                <h1>명</h1>
               </div>
               <small>결제 일자가<a style="color: blue;"> 오늘</a>인 서포터 수를 카운팅합니다.</small>
             </form>
@@ -196,7 +197,7 @@
           <div class="jobs">
             <h2>최근 프로젝트
                 <small>
-                    <a href="adminReservation">전체 프로젝트 확인하기</a>
+                    <a href="adminProject">전체 프로젝트 확인하기</a>
                     <span class="las la-arrow-right"></span>
                 </small>
             </h2>
@@ -211,7 +212,7 @@
                   <td><div>승인 상태 :</div></td>
                   <td><div>등록 일자 :</div></td>
                   <td><div><button type="button"
-                                   onclick="location.href='adminReservation'">관리</button></div></td>
+                                   onclick="location.href='adminProject'">관리</button></div></td>
               </tr>
                   <tr>
 	                  <td></td>

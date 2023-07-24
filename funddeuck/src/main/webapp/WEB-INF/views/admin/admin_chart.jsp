@@ -16,9 +16,7 @@
 	<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 	<!-- css -->
     <link href="${pageContext.request.contextPath}/resources/css/adminDetail.css" rel="stylesheet" type="text/css"/>
-    <link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
    	<link href="${pageContext.request.contextPath }/resources/css/project_status.css" rel="styleSheet" type="text/css">
-<%--    	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/> --%>
     <link rel="shortcut icon" href="#">
     <!-- chart.js -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -148,7 +146,7 @@
         <div class="sidebar-user">
             <img src="${pageContext.request.contextPath}/resources/images/adminProfile.png">
           <div>
-            <span>데이터 분석</span>
+            <span>${sessionScope.sId}님</span>
           </div>
         </div>
 
@@ -164,7 +162,7 @@
                 </a>
               </li>
               <li>
-                <a href="adminMain">
+                <a href="admin">
                   <span class="las la-user"></span>
                   관리자 메인
                 </a>
@@ -228,18 +226,14 @@
     </div>
 <!-- ------------------------------------------------------------------ -->
 	<div class="main-content">
-		<header>
-			<div class="menu-toggle">
-				<label for="sidebar-toggle"> <span class="las la-bars"></span>
-				</label>
-			</div>
-		</header>
-
+<!-- 		<header> -->
+<!-- 			<div class="menu-toggle"> -->
+<!-- 				<label for="sidebar-toggle"> <span class="las la-bars"></span> -->
+<!-- 				</label> -->
+<!-- 			</div> -->
+			<jsp:include page="../common/admin_top.jsp"/>
+<!-- 		</header> -->
 		<main>
-			<!-- 			<div class="projectArea"> -->
-			<!-- 				<p class="projectTitle">프로젝트 현황</p> -->
-			<!-- 				<p class="projectContent">전체 프로젝트 진행 상황을 실시간으로 한 번에 볼 수 있습니다.</p> -->
-
 			<div class="container mt-3 mb-2">
 				<div class="row justify-content-center">
 
@@ -319,11 +313,8 @@
 				</div>
 			</div>
 
-
 		</main>
 	</div>
-
-	<!-- 	</div>  -->
     
     <label for="sidebar-toggle" class="body-label"></label>
     
