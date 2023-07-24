@@ -473,9 +473,9 @@ public class ProjectController {
 		project.setProject_representative_birth(project_representative_birth); // 저장
 		
 		// 해시태그 값 처리
-		String project_hashtag1 = request.getParameter("project_hashtag1");
-		project.setProject_hashtag1(project_hashtag1);
-		System.out.println("해시태그: " + project.getProject_hashtag1());
+		String project_hashtag = request.getParameter("project_hashtag");
+		project.setProject_hashtag(project_hashtag);
+		System.out.println("해시태그: " + project.getProject_hashtag());
 		
 		int insertCount = projectService.registProject(project);
 		
