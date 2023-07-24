@@ -121,6 +121,90 @@
 			$(this).parent().remove();
 		});
 	})
+	
+	// 임시 저장
+	$(function () {
+		// 저장 함수 정의
+		function save(key, value) {
+			localStorage.setItem(key, value);
+		}
+	
+		// 불러오기 함수 정의
+	    function load(key) {
+			return localStorage.getItem(key);
+	    }
+	
+		// 해시태그 추가 함수 정의
+	    function addTag(tag) {
+			const tagList = $("#tag-list");
+			const counter = tagList.children().length;
+			const newTag = $('<li class="tag-item">' + tag + '<span class="del-btn" idx="' + counter + '">x</span></li>');
+			tagList.append(newTag);
+			
+			newTag.find(".del-btn").on("click", function () {
+			    $(this).parent().remove();
+			});
+		}
+	
+		// 배열 정의
+		const fields = [
+			"#projectCategory",
+			"#projectSubject",
+			"#managementDetail",
+			"#targetAmount",
+			"#projectStartDate",
+			"#projectEndDate",
+			"#representativeName",
+			"#representativeEmail",
+			"#representativeBirth1",
+			"#representativeBirth2",
+			"#taxEmail",
+			"#bankCategory",
+			"#bankAccount",
+			"#bankName"
+		];
+	
+		// 저장하기 버튼 
+		$("#saveButton").click(function () {
+			fields.forEach(f => save(f.substring(1), $(f).val()));
+			
+			// 해시태그 저장하기 
+			var hashtagValue = "";
+			$("#tag-list").children().each(function () {
+			    hashtagValue += $(this).text().replace("x", "").trim() + ", ";
+			});
+			save("project_hashtag", hashtagValue.substring(0, hashtagValue.length - 2));
+			
+			console.log("임시저장 완료");
+		});
+	
+		// 삭제하기 버튼
+	    $("#deleteButton").click(function () {
+			localStorage.clear();
+			console.log("임시저장 삭제 완료");
+	    });
+	
+		// 불러오기 버튼 
+	    $("#loadButton").click(function () {
+			fields.forEach(f => {
+				var value = load(f.substring(1));
+				if (value) {
+					$(f).val(value);
+				}
+			});
+	
+			// 해시태그 불러오기 
+	        const hashtagValue = load("project_hashtag");
+	        if (hashtagValue) {
+				hashtagValue.split(",").forEach(tag => {
+				    tag = tag.trim();
+				    if (tag) {
+				        addTag(tag);
+				    }
+				});
+			}
+		});
+	});
 	</script>
 </head>
 <body>
@@ -330,7 +414,7 @@
 						· 저축성 예금 계좌, 외화 예금 계좌, CMA 계좌, 평생 계좌번호(휴대전화 번호) 등은 입금이 불가합니다.
 					</p>
 					<div class="d-flex flex-row">
-						<select class="form-control" name="project_settlement_bank">
+						<select class="form-control" name="project_settlement_bank" id="bankCategory">
 							<option value="">은행 선택</option>
 							<option value="SH">신한은행</option>
 							<option value="KB">국민은행</option>
@@ -342,8 +426,8 @@
 							<option value="Kakao">카카오뱅크</option>
 						</select>
 					</div>
-					<input class="form-control mt-1" type="text" name="project_settlement_account" placeholder="계좌번호 '-' 없이 숫자만 입력">
-					<input class="form-control mt-1" type="text" name="project_settlement_name" placeholder="예금주명"><br>
+					<input class="form-control mt-1" type="text" name="project_settlement_account" id="bankAccount" placeholder="계좌번호 '-' 없이 숫자만 입력">
+					<input class="form-control mt-1" type="text" name="project_settlement_name" id="bankName" placeholder="예금주명"><br>
 					<button class="btn btn-primary">본인 인증</button>
 					</div>
 
@@ -460,6 +544,9 @@
 						<i class="fas fa-exclamation-circle"></i><a>&nbsp;알림이 없습니다.</a>
 					</div>
 				</div>
+				<button id="saveButton" class="btn btn-outline-secondary btn-sm me-3">임시저장</button>
+				<button id="loadButton" class="btn btn-outline-secondary btn-sm me-3">불러오기</button>
+				<button id="deleteButton" class="btn btn-outline-secondary btn-sm">삭제하기</button>
 			</div>
 		</aside>
 		<!-- 오른쪽 네비게이션 끝 -->
