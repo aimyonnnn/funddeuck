@@ -16,54 +16,51 @@ public class ProjectService {
 	@Autowired
 	private ProjectMapper mapper;
 	
-	// 由ъ���� ���ν��湲�
+	// 리워드 저장하기
 	public int registReward(RewardVO reward) {
 		return mapper.insertReward(reward);
 	}
-	// 硫��댁빱 �깅���湲�
+	// 메이커 등록하기
 	public int registMaker(MakerVO maker) {
 		return mapper.insertMaker(maker);
 	}
-	// 由ъ���� 媛��� 議고�� ��湲�
+	// 리워드 갯수 조회하기
 	public int getRewardCount(int project_idx) {
 		return mapper.selectRewardCount(project_idx);
 	}
-	// 由ъ���� 由ъ�ㅽ�� 議고�� ��湲�
+	// 리워드 리스트 조회하기
 	public List<RewardVO> getRewardList(int project_idx) {
 		return mapper.selectRewardList(project_idx);
 	}
-	// 由ъ���� 議고����湲�
+	// 리워드 조회하기
 	public RewardVO getRewardInfo(Integer reward_idx) {
 		return mapper.selectRewardInfo(reward_idx);
 	}
-	// 由ъ���� ������湲�
+	// 리워드 수정하기
 	public int modifyReward(RewardVO reward) {
 		return mapper.updateReward(reward);
 	}
-	// 由ъ���� ������湲�
+	// 리워드 삭제하기
 	public int removeReward(int reward_idx) {
 		return mapper.deleteReward(reward_idx);
 	}
-	// 由ъ���� ���깆�� ��蹂�
+	// 리워드 작성자 판별
 	public String getRewardAuthorId(Integer reward_idx, String sId) {
 		return mapper.selectRewardAuthorId(reward_idx, sId);
 	}
-	// ��濡����� �깅���湲�
-	public int registProject(ProjectVO project) {
-		return mapper.insertProject(project);
-	}
-	public ProjectVO getProjectInfo(int project_idx) {
-		return mapper.selectProject(project_idx);
-	}
-	// 硫��댁빱 �깅� ���댁� ���� ��
+	// 메이커 등록 페이지 접속 시
 	public int getMemberIdx(String sId) {
 		return mapper.selectMemberIdx(sId);
 	}
-	
-	public List<ProjectVO> getAllProjects() {
-		return null;
+	// 프로젝트 등록하기
+	public int registProject(ProjectVO project) {
+		return mapper.insertProject(project);
 	}
-	
+	// 프로젝트 조회하기
+	public ProjectVO getProjectInfo(int project_idx) {
+		return mapper.selectProject(project_idx);
+	}
+	//
 	public List<ProjectVO> getTop10ProjectsByEndDate() {
         return mapper.selectTop10ProjectsByEndDate();
     }
