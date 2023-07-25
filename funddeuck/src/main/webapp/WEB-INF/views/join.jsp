@@ -30,11 +30,6 @@
                 var email = $("#email").val();
                 var phone = $("#callNumber").val();
                 
-                if(phone.length > 13 || phone.length < 11) {
-                	alert("잘못된 전화번호 입니다.");
-                	$('#callNumber').focus();
-                	return false;
-                }
                 
 				let test = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 				let result = test.test(pw);
@@ -93,7 +88,11 @@
                 	return false;
                 } 
                 
-                
+                if(phone.length > 13 || phone.length < 11) {
+                	alert("잘못된 전화번호 입니다.");
+                	$('#callNumber').focus();
+                	return false;
+                }
 
                 	
                 if(email.length == 0){
@@ -313,7 +312,11 @@
 			
         	var id = $("#member_id").val()
         	
-
+        	if(isId == 1){
+        		alert("인증이 완료되었습니다.");
+        		return false;
+        	}
+			
         	if(id == ""){
         		alert("아이디를 입력해주세요.");
         		return false;
@@ -341,6 +344,7 @@
         				
         				alert("사용가능한 아이디 입니다.");
         				$("#member_id").attr("disabled",true); 
+        				
         			} else {
         				
         				alert("사용불가한 아이디 입니다.");
@@ -354,8 +358,6 @@
         	});
         	
 		}
-        
-
         
     </script>
 </head>

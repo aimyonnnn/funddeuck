@@ -1,6 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" contentType="text/html; charset=utf-8" pageEncoding="UTF-8" %>
-
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8" %>
 <html>
 <html lang="ko">
 
@@ -28,6 +27,10 @@
 	  margin-top: 40px;
 	}
   </style>
+  
+  <script type="text/javascript">
+  	console.log("${sessionScope.sId }");
+  </script>
 
 </head>
 

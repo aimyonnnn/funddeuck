@@ -44,6 +44,11 @@ public class MemberService {
 	public int authCodeDelete(String email, String authCode) {
 		return mapper.deleteAuthCode(email,authCode);
 	}
+
+	public void updateFailCount(MembersVO isMember) {
+		mapper.updateFailCount(isMember);
+		
+	}
 	
 
 

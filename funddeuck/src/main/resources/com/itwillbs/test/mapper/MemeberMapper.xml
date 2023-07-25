@@ -20,9 +20,11 @@
 				,#{member_passwd}
 				,#{member_email}
 				,#{member_phone}
+				,0
 			)
 	</insert>
 	
+	<!-- 이메일 인증 코드 저장 -->
 	<insert id="insertEmailDuplicate">
 		INSERT INTO email 
 			VALUES(
@@ -31,27 +33,37 @@
 			);
 	</insert>
 	
+	<!-- 이메일 존재 여부 확인 -->
 	<select id="selectEmail" resultType="int">
 		SELECT COUNT(*)
 		FROM email
 		WHERE email = #{email}
 	</select>
 	
+	<!-- 이메일 인증 코드 업데이트 -->
 	<update id="updateEmailAuthCode">
 		UPDATE email
 		SET authCode = #{authCode}
 		WHERE email = #{email}
 	</update>
 	
+	<!-- 인증코드가 일치한지 확인 -->
 	<select id="isAuthCode">
 		SELECT COUNT(*)
 			FROM email
 			WHERE email = #{email} and authCode = #{authCode}
 	</select>
 	
+	<!-- 인증코드가 일치할시 삭제 -->
 	<delete id="deleteAuthCode">
 		DELETE FROM email
 			WHERE email = #{email} and authCode = #{authCode}
 	</delete>
+	
+	<update id="updateFailCount">
+		UPDATE members
+		SET false_count = #{false_count}
+		WHERE member_id = #{member_id}
+	</update>
 	
 </mapper>

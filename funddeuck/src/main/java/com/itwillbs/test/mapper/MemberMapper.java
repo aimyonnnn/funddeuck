@@ -27,5 +27,8 @@ public interface MemberMapper {
 	
 	// 이메일 인증 데이터 삭제
 	int deleteAuthCode(@Param("email") String email, @Param("authCode") String authCode);
+	
+	// 실패 카운트
+	void updateFailCount(MembersVO member);
 
 }
