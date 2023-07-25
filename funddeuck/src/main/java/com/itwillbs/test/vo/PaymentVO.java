@@ -63,6 +63,7 @@ public class PaymentVO {
 	private int payment_confirm;
 	private String refund_bank;
 	private String refund_accountnum;
+	private String delivery_method;
 	private String courier;
 	private String waybill_num;
 	private int delivery_status;
