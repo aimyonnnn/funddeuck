@@ -60,6 +60,10 @@ public class ProjectService {
 	public ProjectVO getProjectInfo(int project_idx) {
 		return mapper.selectProject(project_idx);
 	}
+	// 프로젝트 승인 요청
+	public int modifyStatus(int project_idx) {
+		return mapper.updateStatus(project_idx);
+	}
 	//
 	public List<ProjectVO> getTop10ProjectsByEndDate() {
         return mapper.selectTop10ProjectsByEndDate();
@@ -68,15 +72,14 @@ public class ProjectService {
 	public List<ProjectVO> getAllProjects() {
 		return null;
 	}
-	
 	// 펀딩 프로젝트 목록 조회
 	public List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit) {
 		return mapper.selectProjectList(searchType, searchKeyword, startRow, listLimit);
 	}
-	
 	// 전체 펀딩 프로젝트 목록 갯수 조회 요청
 	public int getProjectListCount(String searchType, String searchKeyword) {
 		return mapper.selectProjectListCount(searchType, searchKeyword);
 	}
+	
 	
 }

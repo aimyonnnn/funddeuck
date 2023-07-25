@@ -23,6 +23,14 @@
 		.hover-effect:hover {
 		 	text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */
 		}
+		/* 테이블의 각 행에 마우스를 올렸을 때 */
+		table tr:hover td {
+		  	background-color: rgba(211, 211, 211, 0.5);
+		}
+		/* 페이지네이션 글자색 변경 */
+		.page-link {
+			color: black;
+		}
 	</style>
 </head>
 <body>

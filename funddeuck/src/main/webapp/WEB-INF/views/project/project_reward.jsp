@@ -351,7 +351,40 @@
 			    	
 			    	if(response.trim() == 'true') {
 				        alert("리워드 등록이 완료되었습니다!");
-				        location.href='projectReward';
+// 				        location.href='projectReward';
+					// =====================================================
+					// 관리자에게 프로젝트 승인 요청하기
+					
+					let confirmation = confirm('관리자에게 프로젝트 승인 요청을 하시겠습니까?');
+		
+					if(confirmation) {
+						
+						// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경!
+						// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려
+						// 관리자 페이지에서는 2-승인요청인것만 출력한다!
+						$.ajax({
+							type: "get",
+							url: "<c:url value='approvalRequest'/>",
+							data: {
+								project_idx: ${param.project_idx}
+							},
+							dataType: 'text',
+							success: data => {
+								
+								if(data.trim() == 'true') {
+									alert('승인 요청이 완료되었습니다.');
+								} else {
+									alert('승인 요청에 실패하였습니다.');
+								}
+								
+							},
+							error: () => {
+								console.log('ajax 요청이 실패하였습니다.')
+							}
+						});
+					}
+					
+					// =====================================================
 			    	} else {
 			    		alert("모든 항목을 입력해주세요.");
 			    	}

@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.NotificationService;
 import com.itwillbs.test.service.PaymentService;
+import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.vo.ChartDataVO;
+import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.NotificationVO;
 import com.itwillbs.test.vo.PageInfoVO;
 import com.itwillbs.test.vo.PaymentVO;
@@ -31,6 +34,10 @@ public class AdminController {
 	private PaymentService paymentService;
 	@Autowired
 	private NotificationService notificationService;
+	@Autowired
+	private ProjectService projectService;
+	@Autowired
+	private MakerService makerService;
 	
 	// 관리자 메인
 	@GetMapping("admin")
@@ -41,6 +48,10 @@ public class AdminController {
 	// 관리자 프로젝트
 	@GetMapping("adminProject")
 	public String adminProject(Model model) {
+		
+		
+		
+		
 		return "admin/admin_project";
 	}
 	

@@ -150,6 +150,15 @@
 			from members
 				where member_id = #{sId}
 	</select>
+	
+	<!-- 프로젝트 승인 요청 -->
+	<update id="updateStatus">
+		update project
+			set
+				project_approve_status = 2
+			where
+				project_idx = #{project_idx}		
+	</update>
 
 	<select id="selectTop10ProjectsByEndDate" resultType="com.itwillbs.test.vo.ProjectVO">
 	    SELECT * FROM project

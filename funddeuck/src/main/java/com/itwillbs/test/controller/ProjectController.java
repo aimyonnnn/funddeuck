@@ -59,6 +59,21 @@ public class ProjectController {
 		return "project/project_main";
 	}
 	
+	// 프로젝트 승인 요청
+	@GetMapping("approvalRequest")
+	@ResponseBody
+	public String approvalRequest(@RequestParam int project_idx) {
+		System.out.println("approvalRequest - " + project_idx);
+		// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경!
+		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려
+		// 관리자 페이지에서는 2-승인요청인것만 출력한다!
+		int updateCount = projectService.modifyStatus(project_idx);
+		if(updateCount > 0) {
+			return "true"; 
+		} 
+		return "false"; 
+	}
+	
 	// 작성중인 프로젝트로 이동
 	@GetMapping("projectUrl")
 	public ModelAndView projectUrl(HttpSession session, Model model) {

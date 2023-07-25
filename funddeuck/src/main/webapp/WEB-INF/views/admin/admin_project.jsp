@@ -1,138 +1,224 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Admin</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1">
-    <!--bootstrap -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-	<!-- jquery -->
-	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
-	<!-- line-awesome -->
-	<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-	<!-- css -->
-    <link href="${pageContext.request.contextPath}/resources/css/adminDetail.css" rel="stylesheet" type="text/css"/>
-   	<link href="${pageContext.request.contextPath }/resources/css/project_status.css" rel="styleSheet" type="text/css">
-    <link rel="shortcut icon" href="#">
-   
-  </head>
-  <body>
-
-   <!-- 사이드바 -->
-   <input type="checkbox" name="" id="sidebar-toggle">
-   
-    <div class="sidebar">
-      <div class="sidebar-main"> 
-        <div class="sidebar-user">
-            <img src="${pageContext.request.contextPath}/resources/images/adminProfile.png">
-          <div>
-            <span>${sessionScope.sId}님</span>
-          </div>
-        </div>
-
-        <div class="sidebar-menu">
-          <div class="menu-head">
-              <span></span>
-            </div>
-            <ul>
-              <li>
-                <a href="./">
-                  <span class="las la-home"></span>
-                  홈페이지
-                </a>
-              </li>
-              <li>
-                <a href="admin">
-                  <span class="las la-user"></span>
-                  관리자 메인
-                </a>
-              </li>
-              <li>
-                <a href="adminChart">
-                  <span class="las la-chart-line"></span>
-                  데이터 분석
-                </a>
-              </li>
-            </ul>
-
-          <div class="menu-head">
-            <span>MENU</span>
-          </div>
-          <ul>
-            <li>
-                <a href="adminProject">
-                 <span class="las la-store"></span>
-                 프로젝트 관리
-                 </a>
-             </li>
-            <li>
-                <a href="adminMember">
-                 <span class="las la-users"></span>
-                 회원 관리
-                 </a>
-            </li>
-            <li>
-              <a href="adminPayment">
-                  <span class="las la-exchange-alt"></span>
-                 결제 관리
-              </a>
-            </li>
-             <li>
-                <a href="#">
-                  <span class="las la-history"></span>
-                  점검중
-                </a>
-             </li>
-            <li>
-              <a href="#">
-                  <span class="las la-comment-dots"></span>
-                 점검중
-              </a>
-            </li>
-           </ul>
-           <div class="menu-head">
-             <span>2 TEAM</span>
-           </div>
-           <ul>
-	           <li><a><span class="las la-crown"></span>박수민</a></li>
-	           <li><a><span class="las la-laugh"></span>김민진</a></li>
-	           <li><a><span class="las la-laugh"></span>김보희</a></li>
-	           <li><a><span class="las la-laugh"></span>이재승</a></li>
-	           <li><a><span class="las la-laugh"></span>김묘정</a></li>
-	           <li><a><span class="las la-laugh"></span>이건무</a></li>
-           </ul>
-        </div>
-      </div>
-    </div>
-<!-- ------------------------------------------------------------------ -->
-	<div class="main-content">
-		<jsp:include page="../common/admin_top.jsp"/>
-		<main>
-		
-			<div class="container mt-3 mb-2">
-				<div class="row justify-content-center">
-					
-					
-					
-					
+<head>
+	<meta charset="UTF-8">
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- jQuery -->
+	<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
+    <!-- CSS -->
+    <link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
+    <style>
+	    table {
+	        width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
+	        table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
+	    }
+	    th, td {
+	        width: 10%; /* 각 셀의 너비를 20%로 설정 */
+	    }
+		.hover-effect:hover {
+		 	text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */
+		}
+	</style>
+</head>
+<body>
+	<jsp:include page="../common/admin_top.jsp"/>
+	<!-- pageNum 파라미터 가져와서 저장(기본값 1로 지정함) -->
+	<c:set var="pageNum" value="1"/>
+	<c:if test="${not empty param.pageNum }">
+		<c:set var="pageNum" value="${param.pageNum }" />
+	</c:if>
+	
+	<div class="container my-5">
+		<!-- 검색 버튼 -->
+		<div class="d-flex flex-row justify-content-center my-3">
+			<!-- form 태그 시작 -->
+			<form action="adminMessage" class="d-flex flex-row justify-content-end">
+				<!-- 셀렉트 박스 -->
+				<select class="form-select form-select-sm me-2" name="searchType" id="searchType" style="width: 100px;">
+					<option value="content" <c:if test="${param.searchType eq 'content'}">selected</c:if>>제목</option>
+					<option value="name" <c:if test="${param.searchType eq 'name'}">selected</c:if>>메이커</option>
+				</select>
+				<!-- 검색타입, 검색어 -->
+				<div class="input-group">
+					<input type="text" class="form-control form-control-sm" name="searchKeyword" value="${param.serachKeyword}" id="searchKeyword"
+						aria-describedby="button-addon2" style="width: 500px;">
+					<button class="btn btn-outline-secondary btn-sm" type="submit" value="검색" id="button-addon2">검색</button>
 				</div>
+			</form>
+			<!-- form 태그 끝 -->	
+		</div>
+		
+		<!-- 셀렉트 박스 -->
+		<div class="container mt-5">
+			<div class="d-flex justify-content-end row mb-3">
+			    <div class="col-md-2">
+			        <select class="form-select" id="filterStatus" onchange="filterNotifications()">
+			            <option value="">전체</option>
+			            <option value="읽지않음">읽지않음</option>
+			            <option value="읽음">읽음</option>
+			        </select>
+			    </div>
 			</div>
-
-		</main>
+		</div>
+			
+		<div class="row">
+			<div class="d-flex justify-content-center">
+			
+				<table class="table">
+					<tr>
+						<th class="text-center" style="width: 5%;">번호</th>
+						<th class="text-center" style="width: 20%;">제목</th>
+						<th class="text-center" style="width: 10%;">보낸시각</th>
+						<th class="text-center" style="width: 5%;">상태</th>
+						<th class="text-center" style="width: 5%;">삭제</th>
+					</tr>
+					
+					<c:forEach var="nList" items="${nList}">
+						<tr>
+							<td class="text-center" style="width: 5%;">${nList.notification_idx}</td>
+							<td class="text-center" style="width: 20%;">${nList.notification_content}</td>
+							<td class="text-center" style="width: 10%;">
+								<fmt:formatDate value="${nList.notification_regdate}" pattern="yy-MM-dd HH:mm:ss"/>
+							</td>
+							<c:choose>
+								<c:when test="${nList.notification_read_status eq 1}">
+									<td class="text-center text-danger" style="width: 5%;">읽지않음</td>
+								</c:when>
+								<c:otherwise>
+									<td class="text-center" style="width: 5%;">읽음</td>
+								</c:otherwise>
+							</c:choose>
+							<td class="text-center" style="width: 5%;">
+								<input type="checkbox" class="form-check-input" onclick="deleteNotification(${nList.notification_idx})"/>
+							</td>
+						</tr>
+					</c:forEach>
+				</table>
+		
+			</div>
+		</div>
+	</div>		
+	
+	<!-- 페이징 처리 -->
+	<div class="my-5">
+		<nav aria-label="Page navigation example" class="d-flex flex-row justify-content-center">
+		  <ul class="pagination">
+		    
+	    	<%--
+				현재 페이지 번호(pageNum)가 1보다 클 경우에만 [이전] 버튼 동작
+				=> 클릭 시 BoardList 서블릿 요청(파라미터 : 현재 페이지번호 - 1)
+			--%>
+			 <c:choose>
+			 	<c:when test="${pageNum > 1}">
+			 		<li class="page-item">	
+				      <a class="page-link" aria-label="Previous" onclick="location.href='adminMessage?pageNum=${pageNum - 1}'">
+				        <span aria-hidden="true">&laquo;</span>
+				      </a>
+			       </li>
+			 	</c:when>
+			 	<c:otherwise>
+			 		<li class="page-item">
+				      <a class="page-link" aria-label="Previous" onclick="alert('첫 페이지 입니다!')">
+				        <span aria-hidden="true">&laquo;</span>
+				      </a>
+			       </li>
+			 	</c:otherwise>
+			 </c:choose>
+			 <%-- --%>
+			 
+	 		<%-- 페이지번호 목록은 시작페이지(startPage) 부터 끝페이지(endPage) 까지 표시 --%>
+		    <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+			    <%-- 각 페이지마다 하이퍼링크 설정(단, 현재 페이지는 하이퍼링크 제거) --%>
+				<c:choose>
+					<c:when test="${pageNum eq i}">
+					    <li class="page-item"><a class="page-link">${i}</a></li>
+					</c:when>
+					<c:otherwise>
+					    <li class="page-item"><a class="page-link" href="adminMessage?pageNum=${i}">${i}</a></li>
+					</c:otherwise>
+				</c:choose>
+		    </c:forEach>
+		    
+		    <%--
+				현재 페이지 번호(pageNum)가 최대 페이지 번호(maxPage) 보다 작을 경우에만 [다음] 버튼 동작
+				=> 클릭 시 BoardList.bo 서블릿 요청(파라미터 : 현재 페이지번호 + 1)
+			--%>
+			<c:choose>
+				<c:when test="${pageNum < pageInfo.maxPage}">
+				    <li class="page-item">
+				      <a class="page-link" aria-label="Next" onclick="location.href='adminMessage?pageNum=${pageNum + 1}'">
+				        <span aria-hidden="true">&raquo;</span>
+				      </a>
+				    </li>
+				</c:when>
+				<c:otherwise>
+				    <li class="page-item">
+				      <a class="page-link" aria-label="Next" onclick="alert('마지막 페이지 입니다!')">
+				        <span aria-hidden="true">&raquo;</span>
+				      </a>
+				    </li>
+				</c:otherwise>
+			</c:choose>
+		    
+		  </ul>
+		</nav>
 	</div>
-    
-    <label for="sidebar-toggle" class="body-label"></label>
-    
+	<!-- 페이징 처리 -->
+	
+	<script type="text/javascript">
+	// 셀렉트 박스
+    function filterNotifications() {
+        let statusFilter = $("#filterStatus").val();
+        $("table tr:not(:first-child)").each(function () {
+            let statusCell = $(this).find("td:nth-child(5)").text().trim();
+            if (statusFilter === "" || statusCell === statusFilter) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+	// 메시지 삭제 처리
+	function deleteNotification(notification_idx) {
+		
+		let confirmation = confirm('메시지를 삭제하시겠습니까?');
+		
+		if(confirmation) {
+			
+			$.ajax({
+				method: 'get',
+				url: "<c:url value='deleteNotification'/>",
+				data: {
+					notification_idx: notification_idx
+				},
+				success: function(data){
+					
+					if(data.trim() == 'true') {
+						alert('메시지가 삭제 되었습니다!');
+						location.reload();
+					} else {
+						alert('메시지가 삭제에 실패하였습니다.');
+					}
+				},
+				error: function(){
+					console.log('ajax 요청이 실패하였습니다!');	
+				}
+			});
+			
+			
+		}
+		
+	}
+	
+	</script>
+		
     <!-- bootstrap -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <!-- datepicker -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
- 	
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+   
 </body>
 </html>

@@ -45,6 +45,9 @@ public interface ProjectMapper {
 	// 프로젝트 조회하기
 	ProjectVO selectProject(int project_idx);
 	
+	// 프로젝트 승인 요청
+	int updateStatus(int project_idx);
+	
 	//
 	List<ProjectVO> selectTop10ProjectsByEndDate();
 
@@ -53,4 +56,5 @@ public interface ProjectMapper {
 
 	// 전체 펀딩 프로젝트 목록 갯수 조회 요청
 	int selectProjectListCount(String searchType, String searchKeyword);
+	
 }
