@@ -68,7 +68,7 @@ public class SendMailService {
 				+ "</head>\r\n"
 				+ "<body>\r\n"
 				+ "    <div class=\"container\">\r\n"
-				+ "        <span class=\"subtitle\">FunDing</span>\r\n"
+				+ "        <span class=\"subtitle\">Funddeuck</span>\r\n"
 				+ "        <h1 class=\"title\">\r\n"
 				+ "            <span class=\"point-text\">메일인증</span> 안내입니다.\r\n"
 				+ "        </h1>\r\n"
