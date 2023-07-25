@@ -47,5 +47,13 @@ public class PaymentService {
 	public List<PaymentVO> getTotalSupporter(LocalDate parsedStartDate, LocalDate parsedEndDate) {
 		return mapper.selectTotalSupporter(parsedStartDate, parsedEndDate);
 	}
+	// 프로젝트별 지난 7일간 결제 금액 조회
+	public List<PaymentVO> getProjectDailyPayment(Integer project_idx) {
+		return mapper.selectProjectDailyPayment(project_idx);
+	}
+	// 프로젝트별 지난 7일간 서포터 수 조회
+	public List<PaymentVO> getProjectSupporterCount(Integer project_idx) {
+		return mapper.selectProjectSupporterCount(project_idx);
+	}
 	
 }

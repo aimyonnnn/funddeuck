@@ -182,13 +182,13 @@
 
 					<!--  -->
 					<div class="projectArea">
-						<p class="projectTitle">프로젝트 현황</p>
+						<p class="projectTitle">메이커 현황</p>
 						<p class="projectContent mb-4">프로젝트 진행 상황을 실시간으로 한 번에 볼 수
 							있습니다.</p>
 
 						<div class="container mt-5 mb-3">
 							<div class="row justify-content-center">
-								<p class="subheading">매출 분석</p>
+								<p class="subheading">메이커의 전체 프로젝트 매출 분석</p>
 								<p class="projectContent">결제가 갱신될 때 마다 아래 현황이 업데이트 됩니다.</p>
 
 								<div class="col-md-12 col-lg-4 d-md-block my-1">
@@ -227,9 +227,9 @@
 									<div class="card">
 										<div class="card-body d-flex flex-row justify-content-evenly">
 											<div>
-												<span class="sideDescription">펀딩 달성률</span>
+												<span class="sideDescription">누적 서포터 수</span>
 												<h1 class="card-title">
-													110<span class="sideDescription">%</span>
+													133<span class="sideDescription">명</span>
 												</h1>
 											</div>
 											<div class="">
@@ -257,11 +257,90 @@
 							<button class="datepicker-button mx-2" id="updateButton">조회</button>
 						</div>
 
-						<!--  -->
+						<!-- myChart2 -->
 						<div id="chartContainer">
 							<canvas id="myChart2"></canvas>
 						</div>
+						
+						<hr class="my-5">
+						
+						<div class="container mt-5 mb-3">
+							<div class="row justify-content-center">
+								<p class="subheading">X번 프로젝트 매출 분석</p>
+								<p class="projectContent">X번 프로젝트의 매출 분석 그래프 입니다.</p>
 
+								<div class="col-md-12 col-lg-4 d-md-block my-1">
+									<div class="card">
+										<div class="card-body d-flex flex-row justify-content-evenly">
+											<div>
+												<span class="sideDescription">누적 결제 금액</span>
+												<h1 class="card-title"><span
+														class="sideDescription">원</span>
+												</h1>
+											</div>
+											<div class="">
+												<i class="las la-chart-line" style="color: red;"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-12 col-lg-4 d-md-block my-1">
+									<div class="card">
+										<div class="card-body d-flex flex-row justify-content-evenly">
+											<div>
+												<span class="sideDescription">오늘 결제금액</span>
+												<h1 class="card-title"><span
+														class="sideDescription">원</span>
+												</h1>
+											</div>
+											<div class="">
+												<i class="las la-chart-line"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-12 col-lg-4 d-md-block my-1">
+									<div class="card">
+										<div class="card-body d-flex flex-row justify-content-evenly">
+											<div>
+												<span class="sideDescription">누적 서포터 수</span>
+												<h1 class="card-title">
+													133<span class="sideDescription">명</span>
+												</h1>
+											</div>
+											<div class="">
+												<i class="las la-chart-line" style="color: green;"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+						<!-- 날짜 선택 -->
+						<div class="d-flex flex-row justify-content-end">
+							<input class="datepicker" id="startDate2" placeholder="시작 날짜">
+							<input class="datepicker mx-2" id="endDate2" placeholder="끝 날짜">
+							<select class="datepicker" id="chartType2">
+								<option value="">선택</option>
+								<option value="bar">bar</option>
+								<option value="line">line</option>
+								<option value="radar">Radar</option>
+								<option value="polarArea">Polar Area</option>
+								<option value="doughnut">Doughnut</option>
+							</select>
+							<button class="datepicker-button mx-2" id="updateButton2">조회</button>
+						</div>
+
+						<!-- myChart2 -->
+						<div id="chartContainer">
+							<canvas id="myChart3"></canvas>
+						</div>
+						
+						
 					</div>
 				</article>
 			</section>
@@ -379,6 +458,11 @@
             },
         });
     });
+    //
+    
+    
+    
+    
 	</script>
 
 	<!-- js -->

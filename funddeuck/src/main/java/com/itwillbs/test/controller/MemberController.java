@@ -95,16 +95,33 @@ public class MemberController {
     	
     	//id와 비밀번호조회를 통한 로그인작업
     	MembersVO isMember = service.getMemberInfo(member.getMember_id());
+
+    		
     	if(isMember == null){
-    		model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+    		model.addAttribute("msg", "아이디가 존재하지 않습니다.");
     		return "fail_back";
-    	}else if(isMember.getMember_passwd().equals(member.getMember_passwd())) {
+    	}else if(isMember.getFalse_count()>=4) {
+    			model.addAttribute("msg", "5회 이상 틀린 아이디 입니다.\\n비밀번호찾기를 진행해주세요");
+    		return "fail_back";
+    	} else if(isMember.getMember_passwd().equals(member.getMember_passwd())) {
+    		
+    		isMember.setFalse_count(0);
+    		service.updateFailCount(isMember);
     		session.setAttribute("sId", member.getMember_id());
     		return "redirect:/";
     	}
-		model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+    	isMember.setFalse_count(isMember.getFalse_count()+1);
+    	service.updateFailCount(isMember);
+		model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.\\n"+isMember.getFalse_count()+"회 틀렸습니다. 5회틀릴시 로그인이 불가합니다.");
 		return "fail_back";
     	
+    }
+    
+    @GetMapping("LogOut")
+    public String LogOut(HttpSession session) {
+    	session.invalidate();
+    	
+    	return "redirect:/";
     }
     
     //ajax를 통한 id중복 확인

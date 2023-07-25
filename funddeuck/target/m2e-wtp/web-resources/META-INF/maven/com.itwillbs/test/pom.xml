@@ -143,8 +143,6 @@
 		    <version>1.4.7</version>
 		</dependency>
 		
-		
-		
 		<!-- https://mvnrepository.com/artifact/javax.activation/activation -->
 		<dependency>
 		    <groupId>javax.activation</groupId>
@@ -201,7 +199,7 @@
     		<artifactId>iamport-rest-client-java</artifactId>
    			<version>0.2.14</version>
 		</dependency>
-				
+			
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>

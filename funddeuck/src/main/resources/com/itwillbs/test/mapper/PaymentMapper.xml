@@ -156,7 +156,38 @@
             date
         ORDER BY
             date
+	</select>
+	
+	<!-- 프로젝트별 지난 7일간 결제 금액 조회 -->
+	<select id="selectProjectDailyPayment" resultType="com.itwillbs.test.vo.PaymentVO">
+		SELECT 
+		    DATE(payment_date) AS date,
+		    SUM(total_amount) AS amount
+		FROM 
+		    payment
+		WHERE 
+		    project_idx = #{project_idx}
+		    and date(payment_date) >= curdate() - interval 7 day 
+		GROUP BY 
+		    project_idx, date
+		ORDER BY 
+		    project_idx, date
 	</select> 
 	
+	<!-- 프로젝트별 지난 7일간 서포터 수 조회 -->
+	<select id="selectProjectSupporterCount" resultType="com.itwillbs.test.vo.PaymentVO">
+	  	SELECT 
+		    DATE(payment_date) AS date,
+		    COUNT(*) as count
+		FROM 
+		    payment
+		WHERE 
+		    project_idx = #{project_idx}
+		    and date(payment_date) >= curdate() - interval 7 day
+		GROUP BY 
+		    project_idx, date
+		ORDER BY 
+		    project_idx, date
+	</select>
 	
 </mapper>

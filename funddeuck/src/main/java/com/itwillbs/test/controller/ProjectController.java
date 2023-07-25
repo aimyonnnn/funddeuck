@@ -25,15 +25,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.itwillbs.test.service.MakerService;
+import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.vo.ChartDataVO;
 import com.itwillbs.test.vo.MakerVO;
+import com.itwillbs.test.vo.MembersVO;
 import com.itwillbs.test.vo.PaymentVO;
 import com.itwillbs.test.vo.ProjectVO;
 import com.itwillbs.test.vo.RewardVO;
@@ -47,6 +50,42 @@ public class ProjectController {
 	private MakerService makerService;
 	@Autowired
 	private PaymentService paymentService;
+	@Autowired
+	private MemberService memberService;
+	
+	// 프로젝트 메인
+	@GetMapping("project")
+	public String projectMain() {
+		return "project/project_main";
+	}
+	
+	// 작성중인 프로젝트로 이동
+	@GetMapping("projectUrl")
+	public ModelAndView projectUrl(HttpSession session, Model model) {
+	    String sId = (String) session.getAttribute("sId");
+	    List<MembersVO> memberList = memberService.getIdx(sId);
+	    MembersVO m = memberService.getMemberInfo(sId);
+	    
+	    if (memberList.isEmpty()) {
+	    	model.addAttribute("msg", "작업중인 프로젝트가 없습니다.");
+	    	return new ModelAndView("fail_back");
+	    }
+
+	    MembersVO member = memberList.get(0);
+	    System.out.println("출력 테스트 : " + member);
+	    int rewardIdx = member.getReward_idx();
+	    int projectIdx = member.getProject_idx();
+	    int makerIdx = member.getMaker_idx();
+
+	    if (rewardIdx != 0) {
+	        // reward_idx가 0이 아니면 projectReward로 리다이렉트
+	        return new ModelAndView("redirect:/projectReward?reward_idx=" + rewardIdx);
+	    } else if (makerIdx != 0) {
+	    	// project_idx가 0이 아니면 projectManagement로 리다이렉트
+	    	return new ModelAndView("redirect:/projectManagement?project_idx=" + projectIdx);
+	    }
+	    return new ModelAndView("redirect:/projectMaker?member_idx=" + m.getMember_idx());
+	}
 	
 	// 리워드 설계 페이지
 	@GetMapping("projectReward")
@@ -543,7 +582,10 @@ public class ProjectController {
 	// 프로젝트 현황
 	// 페이지 로드 시 지난 7일간 결제 금액 차트를 불러옴
 	@GetMapping("projectStatus")
-	public String projectStatus(@RequestParam(required = false) Integer maker_idx, HttpSession session, Model model) {
+	public String projectStatus(
+			@RequestParam(required = false) Integer maker_idx, 
+			@RequestParam(required = false) Integer project_idx, 
+			HttpSession session, Model model) {
 		System.out.println("projectStatus");
 
 		// 메이커별 지난 7일간 결제 금액 조회
@@ -595,7 +637,17 @@ public class ProjectController {
 		model.addAttribute("todayAmount", todayAmount); // 오늘 결제 금액
 		model.addAttribute("totalAmount", totalAmount); // 누적 결제 금액
 		model.addAttribute("supporterListCount", supporterListCount); // 지난 7일간 서포터 수
-
+		
+		// ==============================================
+		
+		// 프로젝트별 지난 7일간 결제 금액 조회
+		List<PaymentVO> projectPayList = paymentService.getProjectDailyPayment(project_idx);
+		// 프로젝트별 지난 7일간 서포터 수 조회
+		List<PaymentVO> projectSupporterList = paymentService.getProjectSupporterCount(project_idx);
+		
+		
+		
+		
 		return "project/project_status";
 
 	}
