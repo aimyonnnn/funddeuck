@@ -9,13 +9,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>펀딩</title>
+<!-- 헤더  -->
+<jsp:include page="../common/main_header.jsp"></jsp:include>
 <!-- 부트스트랩 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
+<!-- jQuery 라이브러리 추가 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- 부트스트랩 5.3.0 CSS 추가 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+<!-- 부트스트랩 5.3.0 JS 추가 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- 공용 css -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
+
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
 <script type="text/javascript">
 	// 배송지 등록을 위한 ajax 요청
 	$(document).on("click", "#deliveryAdd", function() {
+        $("#deliveryChangeModalClose").click();
+		
 		// 폼 데이터 가져오기
 		var formData = $("#deliveryAddModal form").serialize();
 		console.log(formData);
@@ -27,10 +42,15 @@
 			success: function(msg) {
 				if($.trim(msg) == "success") {
 					console.log("배송지 등록 완료!");
-					// 변경하는 모달창 열림
-					$('#deliveryChangeModal').modal('show');
-					// 배송지 추가 모달창 닫힘
-					$('#deliveryAddModal').modal('hide');
+					// 배송지 추가 모달창의 입력된 데이터 지우기
+					$("#deliveryAddModal input").val("");
+					// 배송지 추가 모달창 닫힘(부트스트랩 5.3.0에서는 X)
+// 					$('#deliveryAddModal').modal('hide');
+			        // 배송지 추가 모달창 닫기 버튼 클릭 발생
+			        $("#deliveryAddModalClose").click();
+					
+					// 배송지 변경 모달창 열림
+					$("#deliveryChangeModal").modal("show");
 				} else {
 					console.log("배송지 등록 실패!");
 				}
@@ -43,8 +63,73 @@
 			
 	});
 	
-	// 배송지 목록을 가져오는 ajax 요청
 	$(document).ready(function() {
+		// 리워드 변경 모달창
+		// 리워드 변경 버튼 클릭시 라디오박스에 해당하는 리워드 번호 전달하는 ajax
+		$("#rewardChange").on("click", function()  {
+			// 체크된 라디오 박스
+			let checkedRadio = $('input[name="rewardCheck"]:checked');
+			
+			// 체크된 라디오 버튼 있는지 확인
+			if(checkedRadio.length > 0) {
+				// 선택한 라디오 버튼의 상위 row 요소 선택
+				let rewardRow = checkedRadio.closest('.row');
+				// 리워드 번호 가져오기
+				let reward_idx = rewardRow.find('input[type="hidden"]').val();
+				
+				// ajax 요청 컨트롤러 전달
+				$.ajax({
+					type: "POST",
+					url: "rewardChange",
+					data: {reward_idx: reward_idx},
+					success: function(reward) {
+						// 전달받은 RewardVO 출력
+						console.log(reward);
+						// 리워드 변경 모달창 닫기
+						$("#rewardListModalClose").click();
+						// 기존 HTML 지우기
+						$('#rewardContainer').html('');
+						
+						
+						// HTML 출력할 내용
+						let output = '<input type="hidden" value="' + reward.reward_idx + '"name="reward_idx">'
+						            + '<table class="table table-borderless" style="table-layout: fixed">'
+						            +  '<tr>'
+						            +   '<th>리워드 구성</th>'   
+						            +   '<td>'
+						            +     reward.reward_name + '<br>'
+						            +     reward.reward_option
+						            +   '</td>'
+						            +  '</tr>' 
+						            +  '<tr>'
+						            +   '<th>리워드 금액</th>'
+						            +   '<td>' + reward.reward_price + '원</td>'
+						            +  '</tr>'
+						            +  '<tr>'
+						            +   '<th>배송비</th>'
+						            +   '<td>' + reward.delivery_price + '원</td>'
+						            +  '</tr>'
+						            +  '<tr>'
+						            +   '<th>발송 시작일</th>'
+						            +   '<td>' + reward.delivery_date + '</td>'
+						            +  '</tr>'
+						            + '</table>';				
+			            // 출력하기
+			            $('#rewardContainer').html(output);
+						
+					},
+					error: function(xhr, status, error) {
+						 console.error("Error:", error);
+					}
+					
+				});
+				
+			} else {
+				alert("리워드를 선택하세요");
+			}
+		});
+		// 리워드 변경 모달창 끝
+		// 배송지 목록을 가져오는 ajax 요청
 	    $('#deliveryChangeModal').on('show.bs.modal', function (event) {
 	        var modal = $(this);
 	        $.ajax({
@@ -75,25 +160,15 @@
 	            }
 	        });
 	    });
-	});	
-	
-	// 기본 배송지 체크박스 체크시 1 해제시 0
-	$(document).ready(function() {
-	    // 체크박스 클릭 이벤트
-	    $("#deliveryDefaultCheck").change(function() {
-	        // 체크된 경우 value를 1로 설정하고, 그렇지 않은 경우 0으로 설정
-	        $("#deliveryDefaultCheck").val(this.checked ? "1" : "0");
-	    });	    
 	    
-
+	    // 배송지 추가 모달 열릴때 배송지 변경 모달 닫힘
+	    $("#deliveryAddModal").on("show.bs.modal", function() {
+	    	$("#deliveryChangeModalClose").click();
+	    });
+	    
 	});	
 	
-	// 모달창의 입력데이터 지우기
-	$(document).ready(function () {
-	    $("#myModal").on("hidden.bs.modal", function () {
-	        $("#modalForm")[0].reset(); // 입력된 데이터를 지웁니다.
-	    });
-	});
+	
 	
 </script>
 
@@ -103,14 +178,15 @@
 	<div class="container text-center">
 		<div class="row p-2 m-3">
 			<!-- 프로젝트 이미지 영역 -->
-			<!-- 화면 작을 때 이미지 크기 설정필요 -->
+			<!-- 프로젝트 이미지 불러오기 -->
 			<div class="col-lg-2 col-4">
 				<img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" class="img-fluid" alt="...">
 			</div>
 			<!-- 프로젝트 이미지 영역 끝 -->
 			<!-- 프로젝트 정보 영역 -->
 			<div class="col p-2 text-start">
-				
+				<!-- form으로 전달할 project_idx-->
+				<input type="hidden" value="${project.project_idx }" name="project_idx">
 				<span class="fs-2 fw-bold">${project.project_subject }</span> <br>
 				<!-- 목표금액 + 후원한 사람들의 총금액 -->
 				<span class="fs-4 fw-bold">xxxx원</span>&nbsp;&nbsp;
@@ -132,8 +208,9 @@
 				<div class="row">
 					<span class="fs-4 fw-bold">리워드 정보</span>
 					<div class="row m-2 p-2 border">
-						<div class="col">
-							<table class="table table-borderless">
+						<div class="col" id="rewardContainer">
+							<input type="hidden" value="${reward.reward_idx }" name="reward_idx">
+							<table class="table table-borderless"  style="table-layout: fixed">
 								<tr>
 									<th>리워드 구성</th>
 									<td>
@@ -365,25 +442,26 @@
 	<!-- 리워드, 서포터, 배송지, 쿠폰, 결제확인 영역 끝 -->
 	<!-- 리워드 변경 모달창 -->
 	<div class="modal" id="rewardListModal" tabindex="-1">
-		<!-- modal-fullscreen -->
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header d-flex justify-content-center">
 					<h5 class="modal-title">리워드 변경</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="rewardListModalClose"></button>
 				</div>
 				<div class="modal-body">
-					<!-- 리워드 리스트 뿌리기 -->
 					<div class="container text-center">
-						<c:forEach var="reward" items="${rewardList }">
+						<!-- 반복문사용하여 리워드 리스트 뿌리기 -->
+						<c:forEach var="reward" items="${rewardList }" varStatus="loop">
 							<hr>
 							<div class="row">
 								<div class="col-2 d-flex justify-content-center align-self-center">
 									<div class="form-check">
-										<input class="form-check-input" type="radio" name="rewardCheck" id="rewardCheck">
+										<input class="form-check-input" type="radio" name="rewardCheck" id="rewardCheck_${loop.index }">
 									</div>
 								</div>
 								<div class="col text-start">
+									<!-- hidden 값으로 리워드 번호 전달 -->
+									<input type="hidden" value="${reward.reward_idx }">
 									<span class="fs-4 fw-bold">${reward.reward_price }</span><br>
 									<span class="fs-6">${reward.reward_name }</span><br>
 									<span class="fs-6">${reward.reward_option }</span>
@@ -391,11 +469,10 @@
 							</div>
 						</c:forEach>
 					</div>
-					
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">변경</button>
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary" id="rewardChange">변경</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="rewardListModalClose">닫기</button>
 				</div>
 			</div>
 		</div>
@@ -408,7 +485,7 @@
 			<div class="modal-content">
 				<div class="modal-header d-flex justify-content-center">
 					<h5 class="modal-title">배송지 추가</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deliveryAddModalClose"></button>
 				</div>
 				<div class="modal-body">
 					<!-- 배송지 추가 작업 요청 -->
@@ -426,7 +503,7 @@
 								<div class="col">
 									<span class="fs-5 fw-bold text-start">주소</span>
 									&nbsp;&nbsp;
-									<input type="button" class="btn btn-primary " onclick="findPostcode()" value="찾기">
+									<button type="button" class="btn btn-primary " onclick="findPostcode()">찾기</button>
 								</div>
 							</div>
 							<div class="row p-2">
@@ -454,7 +531,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-primary" id="deliveryAdd">등록</button>
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="deliveryAddModalClose">닫기</button>
 				</div>
 			</div>
 		</div>
@@ -545,7 +622,7 @@
 			<div class="modal-content">
 				<div class="modal-header d-flex justify-content-center">
 					<h5 class="modal-title">배송지 변경</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deliveryChangeModalClose"></button>
 				</div>
 				<div class="modal-body">
 					<div class="container text-center">
@@ -569,7 +646,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary">선택</button>
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="deliveryChangeModalClose">닫기</button>
 				</div>
 			</div>
 		</div>

@@ -58,7 +58,7 @@ public class FundingController {
 		// 리워드 리스트 불러오기
 		List<RewardVO> rewardList = projectService.getRewardList(project_idx);
 		System.out.println(rewardList);
-		// 배송지 리스트 불러오기
+		// 기본 배송지가 있는지 확인
 //		List<DeliveryrVO> deliveryList = 
 		
 		
@@ -75,6 +75,7 @@ public class FundingController {
 		return "funding/funding_result";
 	}	
 	
+	// 배송지 추가 모달 ajax
 	@PostMapping("deliveryAdd")
 	@ResponseBody
 	public String deliveryAdd(DeliveryVO delivery) {
@@ -82,6 +83,9 @@ public class FundingController {
 		// 멤버 아이디 필요(idx 넣기)
 		int member_idx = 1;
 		delivery.setMember_idx(member_idx);
+		
+		// 기본배송지 있는지 확인, 있으면 0으로 만들어줘야함
+		
 		// 배송지 DB 등록 작업
 		int insertCount = fundingService.registDelivery(delivery);
 		
@@ -94,6 +98,7 @@ public class FundingController {
 		
 	}
 	
+	// 배송지 목록 가져오기 ajax
 	// produces = "application/json" => JSON 형식의 응답
 	@GetMapping(value = "getDeliveryList", produces = "application/json")
 	@ResponseBody
@@ -105,6 +110,17 @@ public class FundingController {
 		System.out.println(deliveryList);
 		
 		return deliveryList;
+	}
+	
+	@PostMapping("rewardChange")
+	@ResponseBody
+	public RewardVO rewardChange(int reward_idx) {
+		System.out.println("ajax로 요청받은 reward_idx" + reward_idx);
+		// 전달받은 reward_idx 로 RewardVO 조회
+		RewardVO reward = projectService.getRewardInfo(reward_idx);
+		
+		// 조회한 RewardVO 전달
+		return reward;
 	}
 		
 }
