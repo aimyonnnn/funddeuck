@@ -47,16 +47,15 @@ public class MemberService {
 	public int authCodeDelete(String email, String authCode) {
 		return mapper.deleteAuthCode(email,authCode);
 	}
-<<<<<<< HEAD
 	// url 판별
 	public List<MembersVO> getIdx(String sId) {
 		return mapper.selectIdx(sId);
-=======
-
+	}
+	
+	// 로그인 실패 카운트 업데이트
 	public void updateFailCount(MembersVO isMember) {
 		mapper.updateFailCount(isMember);
 		
->>>>>>> refs/heads/Member
 	}
 	
 
