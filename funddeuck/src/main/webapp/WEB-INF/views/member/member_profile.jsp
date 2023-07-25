@@ -22,18 +22,18 @@
                 <div class="card mb-3" style="border-radius: .5rem;">
                     <div class="row g-0">
                         <h3 class="profile-heading">프로필 정보 설정</h3>
-<div class="col-md-4 gradient-custom text-center text-white"
-     style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-<form id="profileimgForm">
-    <input type="file" id="imageInput" style="display: none;" accept="image/*">
-    <img src="${profile.profile_img}"
-         name = "profile_img" alt="profile" class="img-fluid my-5" style="width: 80px;" />
-    <div class="link-container">
-        <a href="#!" id="changeLink">바꾸기</a>
-        <a href="#!" id="deleteLink">삭제</a>
-    </div>
-</form>
-</div>
+						<div class="col-md-4 gradient-custom text-center text-white"
+						     style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+						<form id="profileimgForm">
+						    <input type="file" id="imageInput" style="display: none;" accept="image/*">
+						    <img src="${profile.profile_img}"
+						         name = "profile_img" alt="profile" class="img-fluid my-5" style="width: 80px;" />
+						    <div class="Imgcontainer">
+						        <a href="#!" id="changeImg">바꾸기</a>
+						        <a href="#!" id="deleteImg">삭제</a>
+						    </div>
+						</form>
+						</div>
 
                         <div class="col-md-8">
                             <div class="card-body p-4">
@@ -136,7 +136,7 @@
             });
         });
 
-        document.getElementById("changeLink").addEventListener("click", function (event) {
+        document.getElementById("changeImg").addEventListener("click", function (event) {
             event.preventDefault();
             const imageInput = document.getElementById("imageInput");
             imageInput.click();
@@ -159,7 +159,7 @@
             reader.readAsDataURL(selectedFile);
         });
 
-        document.getElementById("deleteLink").addEventListener("click", function (event) {
+        document.getElementById("deleteImg").addEventListener("click", function (event) {
             event.preventDefault();
 
             const confirmDelete = confirm("프로필 사진을 삭제하시겠습니까?");

@@ -2,13 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.itwillbs.test.mapper.ProfileMapper">
 
-	<insert id="insertProfile" parameterType="com.itwillbs.test.vo.ProfileVO">
-        INSERT INTO profile_table (member_idx, profile_job1, profile_job2, profile_school1, profile_school2, profile_text, profile_img)
-        VALUES (#{member_idx}, #{profile_job1}, #{profile_job2}, #{profile_school1}, #{profile_school2}, #{profile_text}, #{profile_img})
-    </insert>
+    <resultMap id="profileResultMap" type="com.itwillbs.test.vo.ProfileVO">
+        <id property="profile_idx" column="profile_idx" />
+        <result property="member_idx" column="member_idx" />
+        <result property="profile_job1" column="profile_job1" />
+        <result property="profile_job2" column="profile_job2" />
+        <result property="profile_school1" column="profile_school1" />
+        <result property="profile_school2" column="profile_school2" />
+        <result property="profile_text" column="profile_text" />
+        <result property="profile_img" column="profile_img" />
+    </resultMap>
+
+    <select id="getProfileByMemberId" resultMap="profileResultMap">
+        SELECT * FROM profile WHERE member_idx = #{member_idx}
+    </select>
 
     <update id="updateProfile" parameterType="com.itwillbs.test.vo.ProfileVO">
-        UPDATE profile_table
+        UPDATE profile
         SET profile_job1 = #{profile_job1},
             profile_job2 = #{profile_job2},
             profile_school1 = #{profile_school1},
@@ -17,11 +27,5 @@
             profile_img = #{profile_img}
         WHERE member_idx = #{member_idx}
     </update>
-
-    <select id="getProfileByMemberIdx" parameterType="int" resultType="com.itwillbs.test.vo.ProfileVO">
-        SELECT member_idx, profile_job1, profile_job2, profile_school1, profile_school2, profile_text, profile_img
-        FROM profile_table
-        WHERE member_idx = #{value}
-    </select>
 
 </mapper>
