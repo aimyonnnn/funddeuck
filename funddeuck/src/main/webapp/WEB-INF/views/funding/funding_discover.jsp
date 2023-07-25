@@ -122,22 +122,22 @@
 		<a class="text-decoration-none text-dark-emphasis fw-bold" href="">최신순</a>
 	</div>
 	<br>
-</div>
 <!-- 프로젝트 리스트 영역 -->
-	<div class="container-sm">
+	<div class="col with .gy-5 gutters">
 		<small class="text-danger">679</small><small>개의 프로젝트가 있습니다.</small>
-		<div class="row row-cols-1 row-cols-sm-4 g-0">
-		<c:forEach begin="1" end="8" step="1">
+		<div class="row row-cols-3 row-cols-sm-4 g-3">
+		<c:forEach begin="1" end="9" step="1">
 			<div class="col">
-			<div class="card h-100 w-100 p-4 border-0">
-				<img src="${pageContext.request.contextPath }/resources/images/goods1.png" class="card-img-top" alt="..." style="height: 150px; width: 100%;">
+			<div class="card h-100 w-100 p-3 border-0">
+				<img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" 
+				class="card-img-top object-fit-contain" alt="..." >
 				<div class="card-body">
-					<small class="card-title opacity-75">도감 | Mole&Crow</small>
-					<p class="card-text fw-bold">"꿈 여행자가 수집한"<100가지 꿈속 아이템 도감></p>
-					<small class="opacity-50">꿈 여행자가 사람들의 꿈속을 여행하며 경험한 이야기와 아이템들을 수록한 도감! 영감 폭발!</small>
+					<small class="card-title opacity-75">아트북 | 아르누보</small>
+					<p class="card-text fw-bold text-start">&lt;스파이더맨: 어크로스 더 유니버스&gt; 아트북+공식 굿즈</p>
+					<small class="opacity-50">상상 그 이상을 넘어서는 멀티버스의 세계 속으로!</small>
 				</div>
 				<a href="#" class="stretched-link"></a>
-				<div class="card-footer">
+				<div class="card-footer bg-white">
 	      			<small class="fw-bold text-success">26.014%</small>&nbsp;
 	      			<small class="opacity-75">25,478,800원
 	      			<small class="fw-bold float-end">23일 남음</small></small>
@@ -150,5 +150,6 @@
 		</c:forEach>
 		</div>
 	</div>
+</div>
 </body>
 </html>
