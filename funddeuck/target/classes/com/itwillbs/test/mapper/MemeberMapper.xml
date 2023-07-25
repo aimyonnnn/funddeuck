@@ -22,4 +22,36 @@
 				,#{member_phone}
 			)
 	</insert>
+	
+	<insert id="insertEmailDuplicate">
+		INSERT INTO email 
+			VALUES(
+				#{email}
+				, #{authCode}
+			);
+	</insert>
+	
+	<select id="selectEmail" resultType="int">
+		SELECT COUNT(*)
+		FROM email
+		WHERE email = #{email}
+	</select>
+	
+	<update id="updateEmailAuthCode">
+		UPDATE email
+		SET authCode = #{authCode}
+		WHERE email = #{email}
+	</update>
+	
+	<select id="isAuthCode">
+		SELECT COUNT(*)
+			FROM email
+			WHERE email = #{email} and authCode = #{authCode}
+	</select>
+	
+	<delete id="deleteAuthCode">
+		DELETE FROM email
+			WHERE email = #{email} and authCode = #{authCode}
+	</delete>
+	
 </mapper>

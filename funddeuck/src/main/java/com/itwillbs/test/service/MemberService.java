@@ -21,6 +21,30 @@ public class MemberService {
 		return mapper.insertMember(member);
 	}
 	
+	//이메일 인증
+	public int emailDuplicate(String email, String authCode) {
+		return mapper.insertEmailDuplicate(email,authCode);
+	}
+	
+	//이메일 존재 여부 확인
+	public int selectEmail(String email) {
+		return mapper.selectEmail(email);
+	}
+	
+	//이메일 코드 업데이트
+	public int updateAuthCode(String email, String authCode) {
+		return mapper.updateEmailAuthCode(email, authCode);
+	}
+	
+	//이메일과 코드의 존재 여부 판별
+	public int isAuthCode(String email, String authCode) {
+		return mapper.isAuthCode(email, authCode);
+	}
+
+	public int authCodeDelete(String email, String authCode) {
+		return mapper.deleteAuthCode(email,authCode);
+	}
+	
 
 
 }

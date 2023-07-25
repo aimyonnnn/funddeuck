@@ -1,5 +1,7 @@
 package com.itwillbs.test.controller;
 
+import java.util.Random;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.test.service.MemberService;
+import com.itwillbs.test.service.SendMailService;
 import com.itwillbs.test.vo.MembersVO;
 
 @Controller
@@ -18,6 +21,9 @@ public class MemberController {
 
     @Autowired
     private MemberService service;
+    
+    @Autowired
+    private SendMailService mailService;
     
     @GetMapping("/member/mypage")
     public String myPage() {
@@ -114,5 +120,88 @@ public class MemberController {
     	
     	return "false";
     } 
+    
+    //ajax를 통한 email 중복확인 및 발송 및 재발송
+    @PostMapping("emailDuplicate")
+    @ResponseBody
+    public String emailDuplicate(@RequestParam String email) {
+    	
+    	String authCode = generateRandomNumbers(6);
+    	
+    	new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				System.out.println("여기옴");
+				mailService.sendAuthMail(email, authCode);
+			}
+		}).start();
+    	
+    	
+    	if(authCode == null || authCode.equals("")) {
+    		return "false";
+    	}
+    	
+    	int isEmail = service.selectEmail(email);
+    	
+    	if(isEmail > 0) {
+    		int updateCount = service.updateAuthCode(email, authCode);
+    		if(updateCount > 0) {
+    			return "true";
+    		} else {
+    			return "false";
+    		}
+    	} else {
+    		int insertCount = service.emailDuplicate(email, authCode);
+    		if(insertCount > 0) {
+    			return "true";
+    		} else {
+    			return "false";
+    		}
+    	}
+    }
+    
+    //이메일 코드가 일치한지 확인
+    @PostMapping("certificationAuthCode")
+    @ResponseBody
+    public String certificationAuthCode(@RequestParam String email, @RequestParam String authCode) {
+    	
+    	if(email == null || email.equals("") || authCode == null || authCode.equals("")) {
+    		return "false";
+    	}
+    	
+    	int selectCount = service.isAuthCode(email, authCode);
+    	
+    	System.out.println("selectCount" + selectCount);
+    	
+    	if(selectCount > 0) {
+    		
+    		int deleteCount = service.authCodeDelete(email, authCode);
+    		
+    		System.out.println("deleteCount"+deleteCount);
+    		
+    		if(deleteCount > 0) {
+    			return "true";
+    		}
+    		
+    		return "false";
+    	}
+    	
+    	return "false";
+    }
+    
+	// 랜덤 코드 생성
+    public static String generateRandomNumbers(int count) {
+        StringBuilder number = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < count; i++) {
+            // 0 이상 9 이하의 랜덤 숫자 생성
+            int digit = random.nextInt(10);
+            number.append(digit);
+        }
+
+        return number.toString();
+    }
     
 }
