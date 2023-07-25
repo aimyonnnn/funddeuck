@@ -58,7 +58,7 @@ public class FundingController {
 		// 리워드 리스트 불러오기
 		List<RewardVO> rewardList = projectService.getRewardList(project_idx);
 		System.out.println(rewardList);
-		// 기본 배송지가 있는지 확인
+		// 기본 배송지가 있는지 확인해서 있으면 전달
 //		List<DeliveryrVO> deliveryList = 
 		
 		

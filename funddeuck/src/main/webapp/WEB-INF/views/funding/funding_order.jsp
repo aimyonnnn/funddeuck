@@ -246,6 +246,7 @@
 					<span class="fs-4 fw-bold">서포터 정보</span>
 					<div class="row m-2 p-2 border">
 						<div class="col">
+							<input type="hidden" value="${member.member_idx }" name="member_idx">
 							<table class="table table-borderless">
 								<tr>
 									<th>연락처</th>
@@ -626,7 +627,7 @@
 				</div>
 				<div class="modal-body">
 					<div class="container text-center">
-						<div class="row">
+						<div class="row mb-2">
 							<div class="col">
 								<span class="fs-6">개의 배송지가 있습니다</span>
 							</div>
