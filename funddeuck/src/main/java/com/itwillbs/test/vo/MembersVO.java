@@ -21,4 +21,9 @@ public class MembersVO {
 	private String member_email;
 	private String member_phone;
 	
+	//
+	private int reward_idx;
+	private int project_idx;
+	private int maker_idx;
+	
 }

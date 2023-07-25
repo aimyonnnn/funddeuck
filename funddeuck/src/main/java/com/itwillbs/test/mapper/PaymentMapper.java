@@ -36,7 +36,12 @@ public interface PaymentMapper {
 	
 	// 전체 메이커별 서포터 수 조회
 	List<PaymentVO> selectTotalSupporter(@Param("parsedStartDate") LocalDate parsedStartDate, @Param("parsedEndDate") LocalDate parsedEndDate);
-
+	
+	// 프로젝트별 지난 7일간 결제 금액 조회
+	List<PaymentVO> selectProjectDailyPayment(Integer project_idx);
+	
+	// 프로젝트별 지난 7일간 서포터 수 조회
+	List<PaymentVO> selectProjectSupporterCount(Integer project_idx);
 	
 	
 }

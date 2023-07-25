@@ -1,5 +1,8 @@
 package com.itwillbs.test.mapper;
 
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.*;
 
 import com.itwillbs.test.vo.*;
@@ -27,5 +30,8 @@ public interface MemberMapper {
 	
 	// 이메일 인증 데이터 삭제
 	int deleteAuthCode(@Param("email") String email, @Param("authCode") String authCode);
+	
+	// url 판별
+	List<MembersVO> selectIdx(String sId);
 
 }

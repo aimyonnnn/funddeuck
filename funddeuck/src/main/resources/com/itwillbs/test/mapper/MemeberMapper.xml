@@ -54,4 +54,19 @@
 			WHERE email = #{email} and authCode = #{authCode}
 	</delete>
 	
+	<!-- url 판별 -->
+	<select id="selectIdx" resultType="com.itwillbs.test.vo.MembersVO">
+ 	 	SELECT 
+		   IFNULL(ma.maker_idx, 0) AS maker_idx,
+		   IFNULL(r.reward_idx, 0) AS reward_idx,
+		   IFNULL(p.project_idx, 0) AS project_idx
+		FROM 
+		    maker ma
+			LEFT JOIN members m ON m.member_idx = ma.member_idx
+			LEFT JOIN project p ON ma.maker_idx = p.maker_idx AND p.project_approve_status = 1
+			LEFT JOIN reward r ON p.project_idx = r.project_idx
+		WHERE 
+	    	m.member_id = #{sId}
+	</select> 
+	
 </mapper>
