@@ -83,6 +83,15 @@ public class NotificationController {
 		if(updateCount > 0) { return ResponseEntity.ok("true"); } return ResponseEntity.ok("false");
 	}
 	
+	// 삭제 처리
+	@GetMapping("deleteNotification")
+	@ResponseBody
+	public String deleteNotification(@RequestParam int notification_idx) {
+		System.out.println("deleteNotification");
+		int deleteCount = service.removeNotification(notification_idx);
+		if(deleteCount > 0) { return "true"; } return "false";
+	}
+	
 	
 }
 

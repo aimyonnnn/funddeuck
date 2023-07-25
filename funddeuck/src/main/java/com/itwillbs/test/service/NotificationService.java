@@ -38,5 +38,17 @@ public class NotificationService {
 	public List<NotificationVO> getUnreadNotificationList(String sId) {
 		return mapper.selectUnreadNotificationList(sId);
 	}
+	// 전체 메시지 조회 - 관리자
+	public List<NotificationVO> getTotalList(String searchType, String searchKeyword, int startRow, int listLimit) {
+		return mapper.selectTotalList(searchType, searchKeyword, startRow, listLimit);
+	}
+	// 전체 메시지 갯수 조회 - 관리자
+	public int getNotificationListCount(String searchType, String searchKeyword) {
+		return mapper.selectNotificationListCount(searchKeyword, searchType);
+	}
+	// 삭제 처리
+	public int removeNotification(int notification_idx) {
+		return mapper.deleteNotification(notification_idx);
+	}
 	
 }

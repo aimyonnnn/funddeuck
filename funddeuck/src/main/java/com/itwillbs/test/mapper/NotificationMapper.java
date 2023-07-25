@@ -29,4 +29,17 @@ public interface NotificationMapper {
 	// 안읽은 메시지 조회
 	List<NotificationVO> selectUnreadNotificationList(String sId);
 	
+	// 전체 메시지 조회 - 관리자
+	List<NotificationVO> selectTotalList(
+			@Param("searchType") String searchType,
+			@Param("searchKeyword") String searchKeyword,
+			@Param("startRow") int startRow,
+			@Param("listLimit") int listLimit);
+	
+	// 전체 메시지 갯수 조회 - 관리자
+	int selectNotificationListCount(String searchKeyword, String searchType);
+	
+	// 삭제 처리
+	int deleteNotification(int notification_idx);
+	
 }
