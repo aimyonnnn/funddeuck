@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.servlet.http.*;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
@@ -92,6 +93,7 @@ public class FundingController {
 		}
 		
 	}
+	
 	// produces = "application/json" => JSON 형식의 응답
 	@GetMapping(value = "getDeliveryList", produces = "application/json")
 	@ResponseBody

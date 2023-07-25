@@ -11,12 +11,18 @@
 <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <!-- fundingDiscover page CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/funding_discover.css">
-<!-- fundingDiscover page JS -->
-<script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
 <!-- header include -->
 <jsp:include page="../common/main_header.jsp"></jsp:include>
+<!-- fundingDiscover page JS -->
+<script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
 </head>
 <body>
+<!-- 상단 이동 버튼 -->
+	<button type="button" class="btn btn-dark position-fixed bottom-0 end-0" id="go-top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-up-square-fill" viewBox="0 0 16 16">
+	<path d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z"/>
+	</svg>&nbsp;상단으로
+	</button>
 <!-- 상위 노출 슬라이드 이미지 영역 -->
 <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-bs-ride="carousel">
 	<div class="carousel-indicators">

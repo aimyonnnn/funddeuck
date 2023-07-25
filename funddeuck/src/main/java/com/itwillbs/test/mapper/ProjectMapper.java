@@ -48,4 +48,9 @@ public interface ProjectMapper {
 	//
 	List<ProjectVO> selectTop10ProjectsByEndDate();
 
+	// 펀딩 프로젝트 목록 조회
+	List<ProjectVO> selectProjectList(String searchType, String searchKeyword, int startRow, int listLimit);
+
+	// 전체 펀딩 프로젝트 목록 갯수 조회 요청
+	int selectProjectListCount(String searchType, String searchKeyword);
 }

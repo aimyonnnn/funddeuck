@@ -69,5 +69,14 @@ public class ProjectService {
 		return null;
 	}
 	
+	// 펀딩 프로젝트 목록 조회
+	public List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit) {
+		return mapper.selectProjectList(searchType, searchKeyword, startRow, listLimit);
+	}
+	
+	// 전체 펀딩 프로젝트 목록 갯수 조회 요청
+	public int getProjectListCount(String searchType, String searchKeyword) {
+		return mapper.selectProjectListCount(searchType, searchKeyword);
+	}
 	
 }
