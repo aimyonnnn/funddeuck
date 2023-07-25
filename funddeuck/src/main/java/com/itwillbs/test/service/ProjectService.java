@@ -72,6 +72,12 @@ public class ProjectService {
 	public int modifyProjectStatus(int project_idx, int project_approve_status) {
 		return mapper.updateProjectStatus(project_idx, project_approve_status);
 	}
+	// maker_idx 조회하기
+	public MakerVO getMakerIdx(int project_idx) {
+		int makerIdx = mapper.selectMakerIdx(project_idx);
+		return mapper.selectMakerInfo(makerIdx);
+	}
+	
 	//
 	public List<ProjectVO> getTop10ProjectsByEndDate() {
         return mapper.selectTop10ProjectsByEndDate();

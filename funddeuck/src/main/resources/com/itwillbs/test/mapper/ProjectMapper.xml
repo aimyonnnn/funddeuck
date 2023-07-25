@@ -169,6 +169,14 @@
 					project_approve_status != 1
 	</select>
 	
+	<!-- maker_idx 조회하기 -->
+	<select id="selectMakerIdx">
+		select maker_idx
+			from project
+				where
+					project_idx = #{project_idx}
+	</select>
+	
 	<!-- 프로젝트 상태컬럼 변경 -->
 	<update id="updateProjectStatus">
 		update project
@@ -177,6 +185,14 @@
 			where
 				project_idx = #{project_idx}
 	</update>
+	
+	<!-- 메이커 조회 -->
+	<select id="selectMakerInfo" resultType="com.itwillbs.test.vo.MakerVO">
+		select *
+			from maker
+				where
+					maker_idx = #{makerIdx}
+	</select>
 	
 	<select id="selectTop10ProjectsByEndDate" resultType="com.itwillbs.test.vo.ProjectVO">
 	    SELECT * FROM project

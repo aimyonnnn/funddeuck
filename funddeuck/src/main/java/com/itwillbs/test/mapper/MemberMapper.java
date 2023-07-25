@@ -36,5 +36,8 @@ public interface MemberMapper {
 
 	// 실패 카운트
 	void updateFailCount(MembersVO member);
+	
+	// 피드백 메시지를 보내기 위해 member_id를 조회
+	String selectMemberId(int member_idx);
 
 }

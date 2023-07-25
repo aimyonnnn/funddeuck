@@ -54,6 +54,12 @@ public interface ProjectMapper {
 	// 프로젝트 상태컬럼 변경
 	int updateProjectStatus(@Param("project_idx") int project_idx, @Param("project_approve_status") int project_approve_status);
 	
+	// maker_idx 조회하기
+	int selectMakerIdx(int project_idx);
+	
+	// 메이커 조회
+	MakerVO selectMakerInfo(int makerIdx);
+	
 	//
 	List<ProjectVO> selectTop10ProjectsByEndDate();
 
@@ -62,6 +68,7 @@ public interface ProjectMapper {
 
 	// 전체 펀딩 프로젝트 목록 갯수 조회 요청
 	int selectProjectListCount(String searchType, String searchKeyword);
+	
 	
 	
 	

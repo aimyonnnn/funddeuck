@@ -63,9 +63,9 @@
 	<!-- url 판별 -->
 	<select id="selectIdx" resultType="com.itwillbs.test.vo.MembersVO">
  	 	SELECT 
-		   IFNULL(ma.maker_idx, 0) AS maker_idx,
-		   IFNULL(r.reward_idx, 0) AS reward_idx,
-		   IFNULL(p.project_idx, 0) AS project_idx
+		    IFNULL(ma.maker_idx, 0) AS maker_idx,
+		    IFNULL(r.reward_idx, 0) AS reward_idx,
+	    	IFNULL(p.project_idx, 0) AS project_idx
 		FROM 
 		    maker ma
 			LEFT JOIN members m ON m.member_idx = ma.member_idx
@@ -81,5 +81,14 @@
 		SET false_count = #{false_count}
 		WHERE member_id = #{member_id}
 	</update>
+	
+	<!-- 피드백 메시지를 보내기 위해 member_id를 조회 -->
+	<select id="selectMemberId">
+		select member_id
+			from
+				members
+			where
+				member_idx = #{member_idx}		
+	</select>
 	
 </mapper>

@@ -47,7 +47,7 @@ public class MemberService {
 	public int authCodeDelete(String email, String authCode) {
 		return mapper.deleteAuthCode(email,authCode);
 	}
-	// url 판별
+	// 프로젝트 페이지 url 판별
 	public List<MembersVO> getIdx(String sId) {
 		return mapper.selectIdx(sId);
 	}
@@ -56,6 +56,11 @@ public class MemberService {
 	public void updateFailCount(MembersVO isMember) {
 		mapper.updateFailCount(isMember);
 		
+	}
+	
+	// 피드백 메시지를 보내기 위해 member_id를 조회
+	public String getMemberId(int member_idx) {
+		return mapper.selectMemberId(member_idx);
 	}
 	
 

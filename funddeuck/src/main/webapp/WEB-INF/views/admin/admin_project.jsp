@@ -59,7 +59,6 @@
 			    <div class="col-md-2">
 			        <select class="form-select" id="filterStatus" onchange="filterNotifications()">
 			            <option value="">전체</option>
-			            <option value="미승인">미승인</option>
 			            <option value="승인요청">승인요청</option>
 			            <option value="승인완료">승인완료</option>
 			            <option value="승인거절">승인거절</option>
@@ -225,11 +224,8 @@
 					console.log('ajax 요청이 실패하였습니다!');	
 				}
 			});
-			
 		}
-		
 	}
-	
 	</script>
 		
     <!-- bootstrap -->
