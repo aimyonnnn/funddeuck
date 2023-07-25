@@ -30,31 +30,26 @@ public class MemberController {
         return "member/myPage"; 
     }
     
-    @GetMapping("/member/coupon")
-    public String Coupon() {
-    	return "member/member_coupon";
-    }
-    
-    //회원가입 페이지로 이동
+    //����媛��� ���댁�濡� �대��
     @GetMapping("JoinForm")
     public String JoinForm(HttpSession session, Model model) {
     	
-    	// session이 존재한다면 접근불가
+    	// session�� 議댁�ы���ㅻ㈃ ��洹쇰�媛�
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "��紐삳�� ��洹쇱������.");
     		return "fail_back";
     	}
     	
     	return "join";
     }
     
-    //회원 가입
+    //���� 媛���
     @PostMapping("JoinPro")
     public String JoinPro(MembersVO member, HttpSession session, Model model) {
     	
-    	// session이 존재한다면 접근불가
+    	// session�� 議댁�ы���ㅻ㈃ ��洹쇰�媛�
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "��紐삳�� ��洹쇱������.");
     		return "fail_back";
     	}
     	
@@ -63,45 +58,45 @@ public class MemberController {
     	if(insertCount > 0) {
     		return "redirect:/";
     	} else {
-    		model.addAttribute("msg", "회원가입 실패");
+    		model.addAttribute("msg", "����媛��� �ㅽ��");
     		return "fail_back";
     	}
     	
     }
     
-    //로그인 페이지 이동
+    //濡�洹몄�� ���댁� �대��
     @GetMapping("LoginForm")
     public String LoginForm(HttpSession session, Model model) {
     	
-    	// session이 존재한다면 접근불가
+    	// session�� 議댁�ы���ㅻ㈃ ��洹쇰�媛�
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "��紐삳�� ��洹쇱������.");
     		return "fail_back";
     	}
     	
     	return "login";
     }
     
-    //로그인
+    //濡�洹몄��
     @PostMapping("LoginPro")
     public String LoginPro(MembersVO member, HttpSession session, Model model) {
     	
     	System.out.println(member);
     	
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "��紐삳�� ��洹쇱������.");
     		return "fail_back";
     	}
     	
-    	//id와 비밀번호조회를 통한 로그인작업
+    	//id�� 鍮�諛�踰��몄“��瑜� �듯�� 濡�洹몄�몄����
     	MembersVO isMember = service.getMemberInfo(member.getMember_id());
 
     		
     	if(isMember == null){
-    		model.addAttribute("msg", "아이디가 존재하지 않습니다.");
+    		model.addAttribute("msg", "���대��媛� 議댁�ы��吏� ���듬����.");
     		return "fail_back";
     	}else if(isMember.getFalse_count()>=4) {
-    			model.addAttribute("msg", "5회 이상 틀린 아이디 입니다.\\n비밀번호찾기를 진행해주세요");
+    			model.addAttribute("msg", "5�� �댁�� ��由� ���대�� ������.\\n鍮�諛�踰��몄갼湲곕�� 吏����댁＜�몄��");
     		return "fail_back";
     	} else if(isMember.getMember_passwd().equals(member.getMember_passwd())) {
     		
@@ -112,7 +107,7 @@ public class MemberController {
     	}
     	isMember.setFalse_count(isMember.getFalse_count()+1);
     	service.updateFailCount(isMember);
-		model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.\\n"+isMember.getFalse_count()+"회 틀렸습니다. 5회틀릴시 로그인이 불가합니다.");
+		model.addAttribute("msg", "���대�� ���� 鍮�諛�踰��멸� �쇱���吏� ���듬����.\\n"+isMember.getFalse_count()+"�� ���몄�듬����. 5����由댁�� 濡�洹몄�몄�� 遺�媛��⑸����.");
 		return "fail_back";
     	
     }
@@ -124,7 +119,7 @@ public class MemberController {
     	return "redirect:/";
     }
     
-    //ajax를 통한 id중복 확인
+    //ajax瑜� �듯�� id以�蹂� ����
     @PostMapping("idDuplicate")
     @ResponseBody
     public String idDuplicate(@RequestParam String id) {
@@ -138,7 +133,7 @@ public class MemberController {
     	return "false";
     } 
     
-    //ajax를 통한 email 중복확인 및 발송 및 재발송
+    //ajax瑜� �듯�� email 以�蹂듯���� 諛� 諛��� 諛� �щ���
     @PostMapping("emailDuplicate")
     @ResponseBody
     public String emailDuplicate(@RequestParam String email) {
@@ -149,7 +144,7 @@ public class MemberController {
 			
 			@Override
 			public void run() {
-				System.out.println("여기옴");
+				System.out.println("�ш린��");
 				mailService.sendAuthMail(email, authCode);
 			}
 		}).start();
@@ -178,7 +173,7 @@ public class MemberController {
     	}
     }
     
-    //이메일 코드가 일치한지 확인
+    //�대��� 肄���媛� �쇱���吏� ����
     @PostMapping("certificationAuthCode")
     @ResponseBody
     public String certificationAuthCode(@RequestParam String email, @RequestParam String authCode) {
@@ -207,13 +202,13 @@ public class MemberController {
     	return "false";
     }
     
-	// 랜덤 코드 생성
+	// ���� 肄��� ����
     public static String generateRandomNumbers(int count) {
         StringBuilder number = new StringBuilder();
         Random random = new Random();
 
         for (int i = 0; i < count; i++) {
-            // 0 이상 9 이하의 랜덤 숫자 생성
+            // 0 �댁�� 9 �댄���� ���� �レ�� ����
             int digit = random.nextInt(10);
             number.append(digit);
         }
