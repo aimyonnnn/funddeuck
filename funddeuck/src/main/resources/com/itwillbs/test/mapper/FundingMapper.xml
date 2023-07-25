@@ -13,6 +13,7 @@
 				, #{delivery_add}
 				, #{delivery_detailadd}
 				, #{delivery_default}
+				, null
 			)
 	
 	</insert>

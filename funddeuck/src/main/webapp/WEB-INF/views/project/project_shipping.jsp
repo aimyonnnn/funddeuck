@@ -200,7 +200,7 @@
 					<form action="#" method="post">
 						<div>
 							<p class="modalTitle">발송방법</p>
-							<select class="form-control" name="shipping_method">
+							<select class="form-control" name="delivery_method">
 								<option value="">선택</option>
 								<option value="courier">택배</option>
 								<option value="digitalDelivery">디지털 전송</option>

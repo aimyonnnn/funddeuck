@@ -32,5 +32,6 @@ public class DeliveryVO {
 	private String delivery_add;
 	private String delivery_detailadd;
 	private boolean delivery_default;
+	private String delivery_method;
 	
 }
