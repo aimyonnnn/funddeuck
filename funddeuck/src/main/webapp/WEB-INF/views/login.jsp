@@ -13,10 +13,22 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/mypage.css"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#header").load("top/top.html");
-            $("#footer").load("top/bottom.html");
-        });
+    $(function() {
+        $("form").submit(function(event) {
+			
+        	let id = $("#id").val();
+        	let passwd = $("#passwd").val();
+        	
+        	if(id.length == 0){
+        		alert("아이디를 입력해주세요");
+        		return false;
+        	} else if(passwd.length == 0){
+        		alert("비밀번호를 입력해주세요");
+        		return false;
+        	}
+        	
+		});
+	});
     </script>
 </head>
 
@@ -32,13 +44,13 @@
             <h2 class="float-start mt-5" style="font-weight: bold;">로그인</h2>
             <br>    
             <form method="post" action="LoginPro">
-                <input class="form-control center mt-5" type="text" name="member_id" placeholder="아이디를 작성해주세요.">
-                <input class="form-control mt-2" type="password" name="member_passwd" placeholder="비밀번호를 작성해주세요.">
+                <input class="form-control center mt-5" type="text" name="member_id" id="id" placeholder="아이디를 작성해주세요.">
+                <input class="form-control mt-2" type="password" id="passwd" name="member_passwd" placeholder="비밀번호를 작성해주세요.">
             <a class="float-end mt-2" href="" style="text-decoration: none; color: gray;">로그인 정보를 잊으셨나요?</a>
-            <input class="btn btn-primary w-100 mt-5 p-2" type="submit" value="로그인"/>
+            <input class="btn btn-primary w-100 mt-5 p-2" id="LoginSubmit" type="submit" value="로그인"/>
             </form>
             <input class="btn btn-warning w-100 mt-2 p-2 mb-4" type="button" value="카카오로 시작하기"/>
-            아직 계정이 없으신가요? <a class=" mt-2" href="">회원가입</a>
+            아직 계정이 없으신가요? <a class=" mt-2" href="JoinForm" style="color: blue">회원가입</a>
         </div>
         <div class="col"></div>
     </div>

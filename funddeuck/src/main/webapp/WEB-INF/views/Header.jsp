@@ -1,5 +1,4 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
 <%@ page contentType="text/html; charset=utf-8" %>
 <!DOCTYPE html>
 <html>
@@ -116,15 +115,27 @@
 
       <!-- 모바일 환경-->
       <ul class="navbar-nav mobile">
-        <li class="nav-item">
-          <a class="nav-link" href="LoginForm">로그인</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="JoinForm">회원가입</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">프로젝트 생성</a>
-        </li>
+      	<c:choose>
+	      	<c:when test="${empty sessionScope.sId}">
+		        <li class="nav-item">
+		          <a class="nav-link" href="LoginForm">로그인</a>
+		        </li>
+		        <li class="nav-item">
+		          <a class="nav-link" href="JoinForm">회원가입</a>
+		        </li>
+		        <li class="nav-item">
+		          <a class="nav-link" href="#">프로젝트 생성</a>
+		        </li>
+	        </c:when>
+	        <c:otherwise>
+	        	<li class="nav-item">
+		          <a class="nav-link" href="#">프로젝트 생성</a>
+		        </li>
+	        	<li class="nav-item">
+		          <a class="nav-link" href="LogOut">로그아웃</a>
+		        </li>
+	        </c:otherwise>
+        </c:choose>
       </ul>
 
       <form class="form-inline my-2 my-md-0">

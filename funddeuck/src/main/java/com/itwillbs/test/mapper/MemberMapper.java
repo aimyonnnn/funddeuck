@@ -1,8 +1,5 @@
 package com.itwillbs.test.mapper;
 
-
-import java.util.List;
-
 import org.apache.ibatis.annotations.*;
 
 import com.itwillbs.test.vo.*;
@@ -33,5 +30,9 @@ public interface MemberMapper {
 	
 	// url 판별
 	List<MembersVO> selectIdx(String sId);
+	
+	// 실패 카운트
+	void updateFailCount(MembersVO member);
+	
 
 }
