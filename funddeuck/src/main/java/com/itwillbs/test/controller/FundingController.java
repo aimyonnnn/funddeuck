@@ -71,7 +71,9 @@ public class FundingController {
 	
 	// 결제 완료 페이지
 	@GetMapping ("fundingResult")
-	public String fundingResult() {
+	public String fundingResult(
+//			@RequestParam String merchant_uid payment 테이블 데이터 추가 시 주석 해제
+			) {
 		return "funding/funding_result";
 	}	
 	

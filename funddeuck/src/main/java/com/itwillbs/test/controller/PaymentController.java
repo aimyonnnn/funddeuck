@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.siot.IamportRestClient.IamportClient;
@@ -30,7 +31,7 @@ public class PaymentController {
 	
 	// 결제 정보 검증
 	@ResponseBody
-	@RequestMapping(value = "/verifyIamport/{imp_uid}")
+	@RequestMapping(value = "/payments/{imp_uid}")
 	public IamportResponse<Payment> paymentByImpUid(
 			Model model,
 			Locale locale,
@@ -38,6 +39,5 @@ public class PaymentController {
 			@PathVariable(value= "imp_uid") String imp_uid) throws IamportResponseException, IOException {
 				return api.paymentByImpUid(imp_uid);
 	} 
-		
 }	
 	
