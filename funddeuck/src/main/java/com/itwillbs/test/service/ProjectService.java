@@ -64,6 +64,14 @@ public class ProjectService {
 	public int modifyStatus(int project_idx) {
 		return mapper.updateStatus(project_idx);
 	}
+	// project_approve_status != 1 리스트 조회
+	public List<ProjectVO> getAllRequestProject() {
+		return mapper.selectAllRequestProject();
+	}
+	// 프로젝트 상태컬럼 변경
+	public int modifyProjectStatus(int project_idx, int project_approve_status) {
+		return mapper.updateProjectStatus(project_idx, project_approve_status);
+	}
 	//
 	public List<ProjectVO> getTop10ProjectsByEndDate() {
         return mapper.selectTop10ProjectsByEndDate();

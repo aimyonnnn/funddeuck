@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.itwillbs.test.handler.EchoHandler;
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.PaymentService;
@@ -53,6 +54,12 @@ public class ProjectController {
 	@Autowired
 	private MemberService memberService;
 	
+	private EchoHandler echoHandler;
+	@Autowired
+	public ProjectController(EchoHandler echoHandler) {
+		this.echoHandler = echoHandler;
+	}
+	
 	// 프로젝트 메인
 	@GetMapping("project")
 	public String projectMain() {
@@ -62,13 +69,24 @@ public class ProjectController {
 	// 프로젝트 승인 요청
 	@GetMapping("approvalRequest")
 	@ResponseBody
-	public String approvalRequest(@RequestParam int project_idx) {
+	public String approvalRequest(@RequestParam int project_idx, HttpServletRequest request) {
 		System.out.println("approvalRequest - " + project_idx);
 		// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경!
 		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려
 		// 관리자 페이지에서는 2-승인요청인것만 출력한다!
 		int updateCount = projectService.modifyStatus(project_idx);
 		if(updateCount > 0) {
+			// 관리자에게 승인 요청 toast 팝업 띄우기
+			// toast 클릭 시 관리자의 프로젝트 승인 페이지로 이동
+			String adminProjectUrl = 
+				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/funddeuck/adminProject";
+			String notification = 
+					"<a href='" + adminProjectUrl + "' style='text-decoration: none; color: black;'>메이커님께서 프로젝트 승인을 요청하였습니다.</a>";
+			try {
+				echoHandler.sendNotificationToUser("admin", notification);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			return "true"; 
 		} 
 		return "false"; 

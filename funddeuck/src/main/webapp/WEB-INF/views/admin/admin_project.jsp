@@ -59,8 +59,10 @@
 			    <div class="col-md-2">
 			        <select class="form-select" id="filterStatus" onchange="filterNotifications()">
 			            <option value="">전체</option>
-			            <option value="읽지않음">읽지않음</option>
-			            <option value="읽음">읽음</option>
+			            <option value="미승인">미승인</option>
+			            <option value="승인요청">승인요청</option>
+			            <option value="승인완료">승인완료</option>
+			            <option value="승인거절">승인거절</option>
 			        </select>
 			    </div>
 			</div>
@@ -68,33 +70,46 @@
 			
 		<div class="row">
 			<div class="d-flex justify-content-center">
-			
+				
 				<table class="table">
 					<tr>
-						<th class="text-center" style="width: 5%;">번호</th>
-						<th class="text-center" style="width: 20%;">제목</th>
-						<th class="text-center" style="width: 10%;">보낸시각</th>
+						<th class="text-center" style="width: 5%;">프로젝트 번호</th>
+						<th class="text-center" style="width: 20%;">프로젝트 이름</th>
+						<th class="text-center" style="width: 10%;">대표자 이름</th>
+						 <!-- 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려 -->
 						<th class="text-center" style="width: 5%;">상태</th>
-						<th class="text-center" style="width: 5%;">삭제</th>
+						<th class="text-center" style="width: 5%;">승인처리</th>
+						<th class="text-center" style="width: 5%;">반려처리</th>
 					</tr>
 					
-					<c:forEach var="nList" items="${nList}">
+					<c:forEach var="pList" items="${pList}">
 						<tr>
-							<td class="text-center" style="width: 5%;">${nList.notification_idx}</td>
-							<td class="text-center" style="width: 20%;">${nList.notification_content}</td>
-							<td class="text-center" style="width: 10%;">
-								<fmt:formatDate value="${nList.notification_regdate}" pattern="yy-MM-dd HH:mm:ss"/>
+							<td class="text-center" style="width: 5%;">${pList.project_idx}</td>
+							<td class="text-center" style="width: 20%;">
+								<a href="adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}" style="text-decoration: none; color: black;">
+									${pList.project_subject}
+								</a> 
 							</td>
+							<td class="text-center" style="width: 20%;">${pList.project_representative_name}</td>
 							<c:choose>
-								<c:when test="${nList.notification_read_status eq 1}">
-									<td class="text-center text-danger" style="width: 5%;">읽지않음</td>
+								<c:when test="${pList.project_approve_status eq 1}">
+									<td class="text-center text-danger" style="width: 5%;">미승인</td>
+								</c:when>
+								<c:when test="${pList.project_approve_status eq 2}">
+									<td class="text-center text-danger" style="width: 5%;">승인요청</td>
+								</c:when>
+								<c:when test="${pList.project_approve_status eq 3}">
+									<td class="text-center text-danger" style="width: 5%;">승인완료</td>
 								</c:when>
 								<c:otherwise>
-									<td class="text-center" style="width: 5%;">읽음</td>
+									<td class="text-center" style="width: 5%;">승인거절</td>
 								</c:otherwise>
 							</c:choose>
 							<td class="text-center" style="width: 5%;">
-								<input type="checkbox" class="form-check-input" onclick="deleteNotification(${nList.notification_idx})"/>
+								<input type="checkbox" class="form-check-input" onclick="updateProjectStatus(${pList.project_idx}, 3)"/>
+							</td>
+							<td class="text-center" style="width: 5%;">
+								<input type="checkbox" class="form-check-input" onclick="updateProjectStatus(${pList.project_idx}, 4)"/>
 							</td>
 						</tr>
 					</c:forEach>
@@ -175,7 +190,7 @@
     function filterNotifications() {
         let statusFilter = $("#filterStatus").val();
         $("table tr:not(:first-child)").each(function () {
-            let statusCell = $(this).find("td:nth-child(5)").text().trim();
+            let statusCell = $(this).find("td:nth-child(4)").text().trim();
             if (statusFilter === "" || statusCell === statusFilter) {
                 $(this).show();
             } else {
@@ -183,33 +198,33 @@
             }
         });
     }
-	// 메시지 삭제 처리
-	function deleteNotification(notification_idx) {
+	// 프로젝트 승인 처리
+	function updateProjectStatus(project_idx, project_approve_status) {
 		
-		let confirmation = confirm('메시지를 삭제하시겠습니까?');
+		let confirmation = confirm('프로젝트 상태를 변경하시겠습니까?');
 		
 		if(confirmation) {
 			
 			$.ajax({
 				method: 'get',
-				url: "<c:url value='deleteNotification'/>",
+				url: "<c:url value='updateProjectStatus'/>",
 				data: {
-					notification_idx: notification_idx
+					project_idx: project_idx,
+					project_approve_status: project_approve_status
 				},
 				success: function(data){
 					
 					if(data.trim() == 'true') {
-						alert('메시지가 삭제 되었습니다!');
+						alert('프로젝트 상태가 변경되었습니다.');
 						location.reload();
 					} else {
-						alert('메시지가 삭제에 실패하였습니다.');
+						alert('프로젝트 상태 변경에 실패하였습니다.');
 					}
 				},
 				error: function(){
 					console.log('ajax 요청이 실패하였습니다!');	
 				}
 			});
-			
 			
 		}
 		

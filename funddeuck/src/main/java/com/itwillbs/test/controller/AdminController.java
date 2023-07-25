@@ -26,6 +26,7 @@ import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.NotificationVO;
 import com.itwillbs.test.vo.PageInfoVO;
 import com.itwillbs.test.vo.PaymentVO;
+import com.itwillbs.test.vo.ProjectVO;
 
 @Controller
 public class AdminController {
@@ -48,11 +49,32 @@ public class AdminController {
 	// 관리자 프로젝트
 	@GetMapping("adminProject")
 	public String adminProject(Model model) {
-		
-		
-		
-		
+		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려
+		// project_approve_status = 2번인 프로젝트 리스트만 출력 후
+		// 관리자 페이지 내에서 승인 요청을 신청한 프로젝트의
+		// 메이커, 리워드 버튼을 클릭 시에 다시 ajax로 리스트를 요청 후에 출력한다.
+		// project_approve_status != 1 리스트 조회
+		List<ProjectVO> pList = projectService.getAllRequestProject();
+		model.addAttribute("pList", pList);
 		return "admin/admin_project";
+	}
+	
+	// 프로젝트 상태컬럼 변경
+	@GetMapping("updateProjectStatus")
+	@ResponseBody
+	public String updateProjectStatus(
+			@RequestParam int project_idx, @RequestParam int project_approve_status) {
+		System.out.println("updateProjectStatus");
+		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
+		if(updateCount > 0) { return "true"; } return "false";
+	}
+	
+	// 프로젝트 디테일
+	@GetMapping("adminProjectDetail")
+	public String adminProjectDetail(HttpSession session, Model model) {
+		
+		
+		return "admin/admin_project_detail";
 	}
 	
 	// 관리자 메시지
