@@ -32,13 +32,7 @@
 			<h5><b>현재 사용가능 쿠폰</b></h5>
 			<br>
 <p><a href="#" onclick="showCouponInput()">⊕ 쿠폰 등록하기</a></p>
-<div>
-    <h3>쿠폰 정보</h3>
-    <p><b>쿠폰 이름:</b> ${coupon.coupon_name}</p>
-    <p><b>쿠폰 용도:</b> ${coupon.coupon_text}</p>
-    <p><b>쿠폰 시작일자:</b> ${coupon.coupon_start}</p>
-    <p><b>쿠폰 만료일자:</b> ${coupon.coupon_end}</p>
-</div>
+
 			<br>
 			<h5><b>펀딩 쿠폰 이용안내</b></h5>
 			<ol>
@@ -78,16 +72,25 @@
 			});
 		});
 	</script>
-	
-<script>
+<script>	
 function showCouponInput() {
     var couponInput = prompt("쿠폰 번호를 입력하세요:");
-
     if (couponInput) {
-        // 쿠폰 번호를 서버로 전송하는 로직을 추가해야 합니다.
-        window.location.href = "/member/coupon?couponNumber=" + couponInput;
+      console.log("Coupon Number:", couponInput);
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/member/coupon?coupon_num=" + encodeURIComponent(couponInput), true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          var couponData = JSON.parse(xhr.responseText);
+          console.log("Coupon Data:", couponData);
+          if (couponData) {
+          } else {
+            alert("Coupon not found!");
+          }
+        }
+      };
     }
-}
+  }
 </script>
 
 	

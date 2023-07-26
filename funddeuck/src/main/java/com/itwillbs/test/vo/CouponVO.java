@@ -1,7 +1,5 @@
 package com.itwillbs.test.vo;
 
-import java.time.LocalDate;
-
 import lombok.Data;
 
 /*
@@ -21,9 +19,9 @@ public class CouponVO {
 	private int coupon_idx;
     private String coupon_name;
     private String coupon_text;
-    private String coupon_num;
+    private int coupon_num;
     private int coupon_sale;
-    private LocalDate coupon_start; 
-    private LocalDate coupon_end; 
+    private int coupon_start; 
+    private int coupon_end; 
     private int coupon_use;
 }
