@@ -39,5 +39,8 @@ public interface MemberMapper {
 	
 	// 피드백 메시지를 보내기 위해 member_id를 조회
 	String selectMemberId(int member_idx);
+	
+	// 휴대폰 번호 조회
+	String selectMemberPhone(int member_idx);
 
 }

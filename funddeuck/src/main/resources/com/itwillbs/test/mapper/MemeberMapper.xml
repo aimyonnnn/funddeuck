@@ -91,4 +91,12 @@
 				member_idx = #{member_idx}		
 	</select>
 	
+	<select id="selectMemberPhone">
+		select member_phone
+			from
+				members
+			where
+				member_idx = #{member_idx}
+	</select>
+	
 </mapper>

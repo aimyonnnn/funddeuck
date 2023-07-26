@@ -42,7 +42,7 @@
 			<div class="d-flex justify-content-end mb-1">
 				<button class="btn btn-outline-primary btn-sm" id="feedbackMessage">피드백 메시지</button>
 				<button class="btn btn-outline-primary btn-sm mx-2" onclick="updateProjectStatus(${project.project_idx}, 3)">승인처리</button>
-				<button class="btn btn-outline-primary btn-sm" onclick="updateProjectStatus(${project.project_idx}, 4)">반려처리</button>
+				<button class="btn btn-outline-primary btn-sm" onclick="updateProjectStatusRejection(${project.project_idx}, 4)">반려처리</button>
 			</div>
 		</div>
 		
@@ -446,7 +446,7 @@
     // 프로젝트 승인 처리
 	function updateProjectStatus(project_idx, project_approve_status) {
 		
-		let confirmation = confirm('프로젝트 상태를 변경하시겠습니까?');
+		let confirmation = confirm('프로젝트 승인 처리를 하시겠습니까?');
 		
 		if(confirmation) {
 			
@@ -460,10 +460,68 @@
 				success: function(data){
 					
 					if(data.trim() == 'true') {
-						alert('프로젝트 상태가 변경되었습니다.');
+						alert('프로젝트 승인 처리가 완료되었습니다.');
+						
+						// 프로젝트 승인 처리 시 메이커에게 알림 문자를 전송!
+			            let memberPhone = ${memberPhone};
+			            let message = "프로젝트 승인이 완료되었습니다.";
+			            sendNotificationMessage(memberPhone, message);
+// 						location.reload();
+
+					} else {
+						alert('프로젝트 승인 처리 실패하였습니다.');
+					}
+				},
+				error: function(){
+					console.log('ajax 요청이 실패하였습니다!');	
+				}
+			});
+		}
+	}
+	// 문자 보내기
+	function sendNotificationMessage(memberPhone, message) {
+		
+		$.ajax({
+		    method: 'post',
+		    url: "<c:url value='/sendPhoneMessage'/>",
+		    data: {
+		    	memberPhone: memberPhone,
+			    message: message
+		    },
+		    success: function(data) {
+		    	
+		    	if(data.trim() == 'true') {
+			    	alert('알림 문자가 성공적으로 전송되었습니다.');
+			    	location.reload();
+		    	}
+		    	
+		    },
+		    error: function() {
+		      alert('알림 문자 전송에 실패하였습니다.');
+		    }
+		  });
+	}
+	// 프로젝트 반려 처리
+	function updateProjectStatusRejection(project_idx, project_approve_status) {
+		
+		let confirmation = confirm('프로젝트 반려 처리를 하시겠습니까?');
+		
+		if(confirmation) {
+			
+			$.ajax({
+				method: 'get',
+				url: "<c:url value='updateProjectStatus'/>",
+				data: {
+					project_idx: project_idx,
+					project_approve_status: project_approve_status
+				},
+				success: function(data){
+					
+					if(data.trim() == 'true') {
+						alert('프로젝트 반려 처리가 완료되었습니다.');
 						location.reload();
 					} else {
-						alert('프로젝트 상태 변경에 실패하였습니다.');
+						alert('프로젝트 승인 처리 실패하였습니다.');
 					}
 				},
 				error: function(){

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,6 +23,7 @@ import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.NotificationService;
 import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectService;
+import com.itwillbs.test.service.SendPhoneMessageService;
 import com.itwillbs.test.vo.ChartDataVO;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.NotificationVO;
@@ -29,6 +31,8 @@ import com.itwillbs.test.vo.PageInfoVO;
 import com.itwillbs.test.vo.PaymentVO;
 import com.itwillbs.test.vo.ProjectVO;
 import com.itwillbs.test.vo.RewardVO;
+
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 @Controller
 public class AdminController {
@@ -41,11 +45,20 @@ public class AdminController {
 	private ProjectService projectService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private SendPhoneMessageService sendPhoneMessageService;
 	
 	// 관리자 메인
 	@GetMapping("admin")
 	public String adminMain(HttpSession session, Model model) {
 		return "admin/admin_main";
+	}
+	
+	// 프로젝트 승인 완료 시 메이커에게 문자 메시지 전송
+	@PostMapping("sendPhoneMessage")
+	@ResponseBody 
+	public String checkPhone(@RequestParam String memberPhone, @RequestParam String message) throws CoolsmsException {
+		return sendPhoneMessageService.SendMessage(memberPhone, message);
 	}
 	
 	// 관리자 프로젝트
@@ -81,13 +94,17 @@ public class AdminController {
 		// maker_idx로 메이커 테이블을 조회 후 리턴받기!
 		MakerVO maker = projectService.getMakerIdx(project_idx);
 		// 피드백 메시지를 보내기 위해 member_id를 조회
-		// 메시지 보내기를 클릭하면 자동으로 member_id를 출력함
+		// 메시지 보내기를 클릭하면 받는사람 인풋에 member_id를 자동으로 호출함
 		String memberId = memberService.getMemberId(maker.getMember_idx());
-//		System.out.println("아이디 출력 : " + memberId);
+		System.out.println("아이디 조회 : " + memberId);
+		// 승인 완료 문자 발송을 위해 휴대폰 번호 조회
+		String memberPhone = memberService.getMemberPhone(maker.getMember_idx());
+		System.out.println("휴대폰 번호 조회 : " + memberPhone);
 		model.addAttribute("project", project);
 		model.addAttribute("rList", rList);
 		model.addAttribute("maker", maker);
 		model.addAttribute("memberId", memberId);
+		model.addAttribute("memberPhone", memberPhone);
 		return "admin/admin_project_detail";
 	}
 	

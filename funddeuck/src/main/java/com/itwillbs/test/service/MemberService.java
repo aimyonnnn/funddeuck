@@ -63,6 +63,11 @@ public class MemberService {
 		return mapper.selectMemberId(member_idx);
 	}
 	
+	// 휴대폰 번호 조회
+	public String getMemberPhone(int member_idx) {
+		return mapper.selectMemberPhone(member_idx);
+	}
+	
 
 
 }

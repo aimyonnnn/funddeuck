@@ -108,7 +108,7 @@
 								<input type="checkbox" class="form-check-input" onclick="updateProjectStatus(${pList.project_idx}, 3)"/>
 							</td>
 							<td class="text-center" style="width: 5%;">
-								<input type="checkbox" class="form-check-input" onclick="updateProjectStatus(${pList.project_idx}, 4)"/>
+								<input type="checkbox" class="form-check-input" onclick="updateProjectStatusRejection(${pList.project_idx}, 4)"/>
 							</td>
 						</tr>
 					</c:forEach>
@@ -218,6 +218,35 @@
 						location.reload();
 					} else {
 						alert('프로젝트 상태 변경에 실패하였습니다.');
+					}
+				},
+				error: function(){
+					console.log('ajax 요청이 실패하였습니다!');	
+				}
+			});
+		}
+	}
+	// 프로젝트 반려 처리
+	function updateProjectStatusRejection(project_idx, project_approve_status) {
+		
+		let confirmation = confirm('프로젝트 반려 처리를 하시겠습니까?');
+		
+		if(confirmation) {
+			
+			$.ajax({
+				method: 'get',
+				url: "<c:url value='updateProjectStatus'/>",
+				data: {
+					project_idx: project_idx,
+					project_approve_status: project_approve_status
+				},
+				success: function(data){
+					
+					if(data.trim() == 'true') {
+						alert('프로젝트 반려 처리가 완료되었습니다.');
+						location.reload();
+					} else {
+						alert('프로젝트 승인 처리 실패하였습니다.');
 					}
 				},
 				error: function(){
