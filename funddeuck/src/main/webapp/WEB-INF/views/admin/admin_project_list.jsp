@@ -37,11 +37,11 @@
 		<!-- 검색 버튼 -->
 		<div class="d-flex flex-row justify-content-center my-3">
 			<!-- form 태그 시작 -->
-			<form action="adminMessage" class="d-flex flex-row justify-content-end">
+			<form action="adminProjectList" class="d-flex flex-row justify-content-end">
 				<!-- 셀렉트 박스 -->
 				<select class="form-select form-select-sm me-2" name="searchType" id="searchType" style="width: 100px;">
-					<option value="content" <c:if test="${param.searchType eq 'content'}">selected</c:if>>제목</option>
-					<option value="name" <c:if test="${param.searchType eq 'name'}">selected</c:if>>메이커</option>
+					<option value="subject" <c:if test="${param.searchType eq 'subject'}">selected</c:if>>제목</option>
+					<option value="name" <c:if test="${param.searchType eq 'name'}">selected</c:if>>이름</option>
 				</select>
 				<!-- 검색타입, 검색어 -->
 				<div class="input-group">
@@ -92,13 +92,13 @@
 							<td class="text-center" style="width: 20%;">${pList.project_representative_name}</td>
 							<c:choose>
 								<c:when test="${pList.project_approve_status eq 1}">
-									<td class="text-center text-danger" style="width: 5%;">미승인</td>
+									<td class="text-center" style="width: 5%;">미승인</td>
 								</c:when>
 								<c:when test="${pList.project_approve_status eq 2}">
 									<td class="text-center text-danger" style="width: 5%;">승인요청</td>
 								</c:when>
 								<c:when test="${pList.project_approve_status eq 3}">
-									<td class="text-center text-danger" style="width: 5%;">승인완료</td>
+									<td class="text-center text-success" style="width: 5%;">승인완료</td>
 								</c:when>
 								<c:otherwise>
 									<td class="text-center" style="width: 5%;">승인거절</td>
@@ -130,7 +130,7 @@
 			 <c:choose>
 			 	<c:when test="${pageNum > 1}">
 			 		<li class="page-item">	
-				      <a class="page-link" aria-label="Previous" onclick="location.href='adminMessage?pageNum=${pageNum - 1}'">
+				      <a class="page-link" aria-label="Previous" onclick="location.href='adminProjectList?pageNum=${pageNum - 1}'">
 				        <span aria-hidden="true">&laquo;</span>
 				      </a>
 			       </li>
@@ -153,7 +153,7 @@
 					    <li class="page-item"><a class="page-link">${i}</a></li>
 					</c:when>
 					<c:otherwise>
-					    <li class="page-item"><a class="page-link" href="adminMessage?pageNum=${i}">${i}</a></li>
+					    <li class="page-item"><a class="page-link" href="adminProjectList?pageNum=${i}">${i}</a></li>
 					</c:otherwise>
 				</c:choose>
 		    </c:forEach>
@@ -165,7 +165,7 @@
 			<c:choose>
 				<c:when test="${pageNum < pageInfo.maxPage}">
 				    <li class="page-item">
-				      <a class="page-link" aria-label="Next" onclick="location.href='adminMessage?pageNum=${pageNum + 1}'">
+				      <a class="page-link" aria-label="Next" onclick="location.href='adminProjectList?pageNum=${pageNum + 1}'">
 				        <span aria-hidden="true">&raquo;</span>
 				      </a>
 				    </li>
@@ -224,6 +224,9 @@
 					console.log('ajax 요청이 실패하였습니다!');	
 				}
 			});
+		} else {
+			// 취소 선택 시 체크박스 해제
+			$('input[type=checkbox]').prop('checked', false);
 		}
 	}
 	// 프로젝트 반려 처리
@@ -253,6 +256,9 @@
 					console.log('ajax 요청이 실패하였습니다!');	
 				}
 			});
+		} else {
+			// 취소 선택 시 체크박스 해제
+			$('input[type=checkbox]').prop('checked', false);
 		}
 	}
 	</script>

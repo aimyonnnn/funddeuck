@@ -59,10 +59,10 @@
 								<td class="text-danger">승인요청</td>
 							</c:when>
 							<c:when test="${project.project_approve_status eq 3}">
-								<td class="text-danger">승인완료</td>
+								<td class="text-success">승인완료</td>
 							</c:when>
 							<c:otherwise>
-								<td class="text-danger">승인거절</td>
+								<td>승인거절</td>
 							</c:otherwise>
 						</c:choose>
 					</tr>
@@ -363,7 +363,7 @@
 				<!-- 하단 버튼 -->
 				<div class="d-flex justify-content-center my-3">
 						<input type="button" value="목록" class="btn btn-outline-primary btn-sm" 
-							onclick="location.href='adminProject?pageNum=${param.pageNum}'">
+							onclick="location.href='adminProjectList?pageNum=${param.pageNum}'">
 				</div>	
 			 	
 			</div>
@@ -476,6 +476,9 @@
 					console.log('ajax 요청이 실패하였습니다!');	
 				}
 			});
+		} else {
+			// 취소 선택 시 체크박스 해제
+			$('input[type=checkbox]').prop('checked', false);
 		}
 	}
 	// 문자 보내기
@@ -528,6 +531,9 @@
 					console.log('ajax 요청이 실패하였습니다!');	
 				}
 			});
+		} else {
+			// 취소 선택 시 체크박스 해제
+			$('input[type=checkbox]').prop('checked', false);
 		}
 	}
 	</script>

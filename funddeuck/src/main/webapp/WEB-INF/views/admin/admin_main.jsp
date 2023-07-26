@@ -62,7 +62,7 @@
           </div>
           <ul>
             <li>
-                <a href="adminProject">
+                <a href="adminProjectList">
                  <span class="las la-store"></span>
                  프로젝트 관리
                  </a>

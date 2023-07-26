@@ -49,7 +49,12 @@ public interface ProjectMapper {
 	int updateStatus(int project_idx);
 	
 	// project_approve_status != 1 리스트 조회
-	List<ProjectVO> selectAllRequestProject();
+	List<ProjectVO> selectAllRequestProject(
+			@Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword, 
+			@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+	
+	// project_approve_status != 1 리스트 갯수 조회
+	int selectAllRequestProjectCount(@Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword);
 	
 	// 프로젝트 상태컬럼 변경
 	int updateProjectStatus(@Param("project_idx") int project_idx, @Param("project_approve_status") int project_approve_status);

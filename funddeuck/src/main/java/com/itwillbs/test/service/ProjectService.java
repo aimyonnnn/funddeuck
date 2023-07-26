@@ -65,8 +65,12 @@ public class ProjectService {
 		return mapper.updateStatus(project_idx);
 	}
 	// project_approve_status != 1 리스트 조회
-	public List<ProjectVO> getAllRequestProject() {
-		return mapper.selectAllRequestProject();
+	public List<ProjectVO> getAllRequestProject(String searchType, String searchKeyword, int startRow, int listLimit) {
+		return mapper.selectAllRequestProject(searchType, searchKeyword, startRow, listLimit);
+	}
+	// project_approve_status != 1 리스트 갯수 조회
+	public int getAllRequestProjectCount(String searchType, String searchKeyword) {
+		return mapper.selectAllRequestProjectCount(searchType, searchKeyword);
 	}
 	// 프로젝트 상태컬럼 변경
 	public int modifyProjectStatus(int project_idx, int project_approve_status) {
