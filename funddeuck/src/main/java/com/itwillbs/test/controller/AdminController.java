@@ -54,6 +54,18 @@ public class AdminController {
 		return "admin/admin_main";
 	}
 	
+	// 프로젝트 관리
+	@GetMapping("projectControl")
+	public String projectControl() {
+		return "admin/admin_project_control";
+	}
+	
+	// 결제 관리
+	@GetMapping("adminPayment")
+	public String adminPayment() {
+		return "admin/admin_payment";
+	}
+	
 	// 프로젝트 승인 완료 시 메이커에게 문자 메시지 전송
 	@PostMapping("sendPhoneMessage")
 	@ResponseBody 
@@ -61,7 +73,7 @@ public class AdminController {
 		return sendPhoneMessageService.SendMessage(memberPhone, message);
 	}
 	
-	// 프로젝트 리스트
+	// 프로젝트 승인관리
 	@GetMapping("adminProjectList")
 	public String adminProject(
 			@RequestParam(defaultValue = "") String searchType,
@@ -73,7 +85,7 @@ public class AdminController {
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		
 		// 프로젝트 목록 조회 요청
-		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려
+		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 		// project_approve_status = 2번인 프로젝트 리스트만 출력 후
 		// 관리자 페이지 내에서 승인 요청을 신청한 프로젝트의
 		// 메이커, 리워드 버튼을 클릭 시에 다시 ajax로 리스트를 요청 후에 출력한다.
@@ -83,22 +95,15 @@ public class AdminController {
 		// 페이징 처리를 위한 계산 작업
 		// 1. 전체 게시물 수 조회 요청
 		int listCount = projectService.getAllRequestProjectCount(searchType, searchKeyword);
-		
 		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
 		int pageListLimit = 10;
-		
 		// 3. 전체 페이지 목록 갯수 계산
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
-		
 		// 4. 시작 페이지 번호 계산
 		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
-		
 		// 5. 끝 페이지 번호 계산
 		int endPage = startPage + pageListLimit - 1;
-		
-		if(endPage > maxPage) {
-			endPage = maxPage;
-		}
+		if(endPage > maxPage) {	endPage = maxPage; }
 		
 		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
 		model.addAttribute("pList", pList);
@@ -107,6 +112,7 @@ public class AdminController {
 	}
 	
 	// 프로젝트 상태컬럼 변경
+	// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 	@GetMapping("updateProjectStatus")
 	@ResponseBody
 	public String updateProjectStatus(

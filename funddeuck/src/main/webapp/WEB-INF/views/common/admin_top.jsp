@@ -74,9 +74,14 @@
 	}
 	
 	// 나가기
+	function exit() {
+		let isExit = confirm("정말 나가시겠습니까?");
+		if(isExit) { location.href = "./"; }
+	}
+	// 로그아웃
 	function logout() {
-		let isLogout = confirm("정말 나가시겠습니까?");
-		if(isLogout) { location.href = "./"; }
+		let isLogout = confirm("로그아웃 하시겠습니까?");
+		if(isLogout) { location.href = "LogOut"; }
 	}
 </script>
 <div id="msgStack"></div>
@@ -86,7 +91,8 @@
 	    <div class="d-flex flex-row align-items-center">
 	    	<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#notifyModal">Message</button>
 		  	<a class="nav-link text-primary mx-4" href="admin">${sessionScope.sId}님</a>
-		  	<a class="nav-link text-primary me-4" href="javascript:logout()">나가기</a>
+		  	<a class="nav-link text-primary me-4" href="javascript:exit()">나가기</a>
+		  	<a class="nav-link text-primary me-4" href="javascript:logout()">로그아웃</a>
 		  	<a class="nav-link py-0" href="adminMessage">
 			    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bell" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 			    	<path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2z"/>
