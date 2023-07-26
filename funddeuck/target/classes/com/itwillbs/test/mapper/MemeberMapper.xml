@@ -99,4 +99,42 @@
 				member_idx = #{member_idx}
 	</select>
 	
+	<!-- Members 테이블의 email 존재 여부 확인 -->
+	<select id="selectMemberEmail" resultType="int">
+		SELECT COUNT(*)
+			FROM members
+			WHERE member_email = #{email}
+	</select>
+	
+	<select id="selectMemberInfoEmail">
+		SELECT *
+			FROM members
+			WHERE member_email = #{email}
+	</select>
+	
+	<update id="updatePasswd">
+		UPDATE members
+			SET member_passwd = #{passwd}
+			WHERE member_email = #{email}
+	</update>
+	
+	<!-- Members 테이블의 email 존재 여부 확인 -->
+	<select id="selectMemberEmail" resultType="int">
+		SELECT COUNT(*)
+			FROM members
+			WHERE member_email = #{email}
+	</select>
+	
+	<select id="selectMemberInfoEmail">
+		SELECT *
+			FROM members
+			WHERE member_email = #{email}
+	</select>
+	
+	<update id="updatePasswd">
+		UPDATE members
+			SET member_passwd = #{passwd}
+			WHERE member_email = #{email}
+	</update>
+	
 </mapper>

@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bootstrap demo</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -251,7 +252,15 @@
 								+'</div>'
             				);
 
-            			} else {
+            			} else if(data.trim() == "duplication"){
+            				
+            				Swal.fire({
+            					  icon: 'error',
+            					  title: 'Oops...',
+            					  text: '이미 존재하는 이메일 입니다.',
+            					})
+            				
+            			}else{
             				alert("이메일 발송실패");
             			}
             			
@@ -363,7 +372,7 @@
 </head>
 
 <body>
-
+    <%@ include file="Header.jsp" %>
 	
 	<header id="header"></header>
 	<!-- 탑 영역 -->
@@ -418,7 +427,7 @@
 
 
 
-	<footer id="footer"></footer>
+	<%@ include file="Footer.jsp" %>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
