@@ -58,6 +58,21 @@ public class MemberService {
 		
 	}
 	
+	// Members 테이블에 email 존재 여부 확인
+	public int selectMemberEmail(String email) {
+		return mapper.selectMemberEmail(email);
+	}
+	
+	// email 로 member 정보 불러오기
+	public MembersVO getMemberInfoEmail(String email) {
+		return mapper.selectMemberInfoEmail(email);
+	}
+	
+	// email 로 조회후 passwd 변경
+	public int modifyPasswd(String passwd, String email) {
+		return mapper.updatePasswd(passwd, email);
+	}
+	
 
 
 }

@@ -36,5 +36,14 @@ public interface MemberMapper {
 
 	// 실패 카운트
 	void updateFailCount(MembersVO member);
+	
+	// Member 테이블에 email 존재 여부 확인
+	int selectMemberEmail(String email);
+	
+	//email 로 Member정보 불러오기
+	MembersVO selectMemberInfoEmail(String email);
+	
+	//email 로 조회후 passwd 변경
+	int updatePasswd(@Param("passwd") String passwd, @Param("email") String email);
 
 }

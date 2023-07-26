@@ -1,6 +1,9 @@
 package com.itwillbs.test.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -117,6 +120,7 @@ public class MemberController {
     	
     }
     
+    //로그아웃
     @GetMapping("LogOut")
     public String LogOut(HttpSession session) {
     	session.invalidate();
@@ -143,6 +147,12 @@ public class MemberController {
     @ResponseBody
     public String emailDuplicate(@RequestParam String email) {
     	
+    	int isMemberEmail = service.selectMemberEmail(email);
+    	
+    	if(isMemberEmail > 0) {
+    		return "duplication";
+    	}
+    	
     	String authCode = generateRandomNumbers(6);
     	
     	new Thread(new Runnable() {
@@ -154,10 +164,6 @@ public class MemberController {
 			}
 		}).start();
     	
-    	
-    	if(authCode == null || authCode.equals("")) {
-    		return "false";
-    	}
     	
     	int isEmail = service.selectEmail(email);
     	
@@ -206,6 +212,141 @@ public class MemberController {
     	
     	return "false";
     }
+    
+    // 아이디 찾기 form 으로 이동
+    @GetMapping("idFindForm")
+    public String idFindForm() {
+    	return "Login/id_find";
+    }
+    
+    // 아이디 찾기
+    @PostMapping("idFindPro")
+    @ResponseBody
+    public Map<String, Object> idFindPro(@RequestParam String email) {
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	
+    	System.out.println(email);
+    	
+    	
+    	MembersVO member = service.getMemberInfoEmail(email);
+    	
+    	if(member == null) {
+    		map.put("result", "false");
+    		return map;
+    	}
+    	
+    	map.put("result", "true");
+    	map.put("member", member);
+    	
+    	return map;
+    }
+    
+    // 비밀번호 찾기 form 으로 이동
+    @GetMapping("passwdFindForm")
+    public String passwdFindForm() {
+    	return "Login/passwd_find";
+    }
+    
+    @PostMapping("passwdFindPro")
+    @ResponseBody
+    public Map<String,Object> passwdFindPro(@RequestParam String email, @RequestParam String id){
+    	
+    	Map<String, Object> map = new HashMap<>();
+    	
+    	
+    	MembersVO member = service.getMemberInfo(id);
+    	
+    	if(member.getMember_email().equals(email)) {
+	    	UUID uuid = UUID.randomUUID();
+	    	
+	    	String authCode = uuid.toString().split("-")[4];
+	    	
+	    	new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					mailService.sendPasswdMail(email, authCode);
+				}
+			}).start();
+	    	
+	    	map.put("result", "true");
+	    	map.put("url", email.split("@")[1]);
+	    	
+	    	int isEmail = service.selectEmail(email);
+	    	
+			if (isEmail > 0) {
+				service.updateAuthCode(email, authCode);
+			} else {
+				service.emailDuplicate(email, authCode);
+			}
+	    	
+	    	
+    	} else {
+    		map.put("result", "false");
+    	}
+    	
+    	
+    	return map;
+    }
+    
+    @GetMapping("ModifyPasswdForm")
+    public String ModifyPasswdForm (@RequestParam String authCode, @RequestParam String email, Model model, HttpSession session) {
+    	
+    	MembersVO member = service.getMemberInfoEmail(email);
+    	
+    	if(member == null || session.getAttribute("sId") != null) {
+    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
+    	int selectCount = service.isAuthCode(email, authCode);
+    	
+    	System.out.println("selectCount" + selectCount);
+    	
+    	if(selectCount > 0) {
+    		
+    		int deleteCount = service.authCodeDelete(email, authCode);
+    		
+    		System.out.println("deleteCount"+deleteCount);
+    		
+    		if(deleteCount > 0) {
+    			
+    			model.addAttribute("email", email);
+    			
+    			return "Login/passwd_modify";
+    			
+    		}
+    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	model.addAttribute("msg", "잘못된 접근입니다.");
+		return "fail_back";
+    	
+    }
+    
+    @PostMapping("ModifyPasswdPro")
+    public String ModifyPasswdPro(@RequestParam String passwd, @RequestParam String email, Model model, HttpSession session) {
+    	
+    	if(session.getAttribute("id") != null) {
+    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
+    	int updateCount = service.modifyPasswd(passwd, email);
+    	
+    	if(updateCount > 0) {
+    		model.addAttribute("msg", "비밀번호가 변경되었습니다.");
+    		model.addAttribute("targetURL", "./");
+    		return "success_forward";
+    	} else {
+    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
+    }
+    
+    
     
 	// 랜덤 코드 생성
     public static String generateRandomNumbers(int count) {
