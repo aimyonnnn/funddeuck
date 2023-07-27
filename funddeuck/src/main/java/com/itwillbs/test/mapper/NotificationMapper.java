@@ -38,7 +38,9 @@ public interface NotificationMapper {
 			);
 	
 	// 전체 메시지 갯수 조회 - 관리자
-	int selectNotificationListCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType);
+	int selectNotificationListCount(
+			@Param("searchKeyword") String searchKeyword,
+			@Param("searchType") String searchType);
 	
 	// 삭제 처리
 	int deleteNotification(int notification_idx);
@@ -53,6 +55,10 @@ public interface NotificationMapper {
 			);
 	
 	// 아이디별 메시지 갯수 조회
-	int selectTotalListCountById(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType, @Param("sId") String sId);
+	int selectTotalListCountById(
+			@Param("searchKeyword") String searchKeyword,
+			@Param("searchType") String searchType,
+			@Param("sId") String sId
+			);
 	
 }

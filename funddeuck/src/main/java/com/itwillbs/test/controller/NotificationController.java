@@ -53,6 +53,8 @@ public class NotificationController {
 			@RequestParam(defaultValue = "1") int pageNum, 
 			HttpSession session, Model model) {
 		String sId = (String) session.getAttribute("sId");
+		System.out.println("검색타입 : " + searchType);
+		System.out.println("검색어 : " + searchKeyword);
 		// -------------------------------------------------------------------------
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
@@ -64,6 +66,7 @@ public class NotificationController {
 		// 한 페이지에서 표시할 페이지 목록(번호) 계산
 		// 1. notificationService - getNotificationListCount() 메서드를 호출하여
 		int listCount = service.getTotalListCountById(searchType, searchKeyword, sId);
+		System.out.println("getTotalListCountById 갯수 : " + listCount);
 		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
 		int pageListLimit = 10;
 		// 3. 전체 페이지 목록 갯수 계산

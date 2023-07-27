@@ -104,71 +104,92 @@
 		
 			</div>
 		</div>
-	</div>		
-	
+	</div>
+			
 	<!-- 페이징 처리 -->
 	<div class="my-5">
-		<nav aria-label="Page navigation example" class="d-flex flex-row justify-content-center">
-		  <ul class="pagination">
-		    
-	    	<%--
-				현재 페이지 번호(pageNum)가 1보다 클 경우에만 [이전] 버튼 동작
-				=> 클릭 시 BoardList 서블릿 요청(파라미터 : 현재 페이지번호 - 1)
-			--%>
-			 <c:choose>
-			 	<c:when test="${pageNum > 1}">
-			 		<li class="page-item">	
-				      <a class="page-link" aria-label="Previous" onclick="location.href='adminMessage?pageNum=${pageNum - 1}'">
-				        <span aria-hidden="true">&laquo;</span>
-				      </a>
-			       </li>
-			 	</c:when>
-			 	<c:otherwise>
-			 		<li class="page-item">
-				      <a class="page-link" aria-label="Previous" onclick="alert('첫 페이지 입니다!')">
-				        <span aria-hidden="true">&laquo;</span>
-				      </a>
-			       </li>
-			 	</c:otherwise>
-			 </c:choose>
-			 <%-- --%>
-			 
-	 		<%-- 페이지번호 목록은 시작페이지(startPage) 부터 끝페이지(endPage) 까지 표시 --%>
-		    <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
-			    <%-- 각 페이지마다 하이퍼링크 설정(단, 현재 페이지는 하이퍼링크 제거) --%>
-				<c:choose>
-					<c:when test="${pageNum eq i}">
-					    <li class="page-item"><a class="page-link">${i}</a></li>
-					</c:when>
-					<c:otherwise>
-					    <li class="page-item"><a class="page-link" href="adminMessage?pageNum=${i}">${i}</a></li>
-					</c:otherwise>
-				</c:choose>
-		    </c:forEach>
-		    
-		    <%--
-				현재 페이지 번호(pageNum)가 최대 페이지 번호(maxPage) 보다 작을 경우에만 [다음] 버튼 동작
-				=> 클릭 시 BoardList.bo 서블릿 요청(파라미터 : 현재 페이지번호 + 1)
-			--%>
-			<c:choose>
-				<c:when test="${pageNum < pageInfo.maxPage}">
-				    <li class="page-item">
-				      <a class="page-link" aria-label="Next" onclick="location.href='adminMessage?pageNum=${pageNum + 1}'">
-				        <span aria-hidden="true">&raquo;</span>
-				      </a>
-				    </li>
-				</c:when>
-				<c:otherwise>
-				    <li class="page-item">
-				      <a class="page-link" aria-label="Next" onclick="alert('마지막 페이지 입니다!')">
-				        <span aria-hidden="true">&raquo;</span>
-				      </a>
-				    </li>
-				</c:otherwise>
-			</c:choose>
-		    
-		  </ul>
-		</nav>
+	    <nav aria-label="Page navigation example" class="d-flex flex-row justify-content-center">
+	        <ul class="pagination">
+	            <%-- 현재 페이지 번호(pageNum)가 1보다 클 경우 [이전] 버튼 활성화 --%>
+	            <c:choose>
+	                <c:when test="${pageNum > 1}">
+	                	<c:choose>
+	                		<c:when test="${not empty param.searchType and not empty param.searchKeyword}">
+			                    <li class="page-item">
+			                        <a class="page-link" aria-label="Previous" href="adminMessage?pageNum=${pageNum - 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">
+			                            <span aria-hidden="true">&laquo;</span>
+			                        </a>
+			                    </li>
+	                		</c:when>
+		                	<c:otherwise>
+			                    <li class="page-item">
+			                        <a class="page-link" aria-label="Previous" href="adminMessage?pageNum=${pageNum - 1}">
+			                            <span aria-hidden="true">&laquo;</span>
+			                        </a>
+			                    </li>
+		                	</c:otherwise> 
+	                	</c:choose>
+	                </c:when>
+	                <c:otherwise>
+	                    <li class="page-item">
+	                        <a class="page-link" aria-label="Previous" onclick="alert('첫 페이지 입니다!')">
+	                            <span aria-hidden="true">&laquo;</span>
+	                        </a>
+	                    </li>
+	                </c:otherwise>
+	            </c:choose>
+	
+	            <%-- 페이지번호 목록은 시작페이지(startPage) 부터 끝페이지(endPage) 까지 표시 --%>
+	            <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+	                <c:choose>
+	                    <%-- 현재 페이지면 하이퍼링크 제거 --%>
+	                    <c:when test="${pageNum eq i}">
+	                        <li class="page-item"><a class="page-link">${i}</a></li>
+	                    </c:when>
+	                    <c:otherwise>
+	                        <%-- 검색 키워드가 있을 때와 없을 때를 구분하여 페이지 이동 URL 생성 --%>
+	                        <c:choose>
+	                            <c:when test="${not empty param.searchType and not empty param.searchKeyword}">
+	                                <li class="page-item"><a class="page-link" href="adminMessage?pageNum=${i}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">${i}</a></li>
+	                            </c:when>
+	                            <c:otherwise>
+	                                <li class="page-item"><a class="page-link" href="adminMessage?pageNum=${i}">${i}</a></li>
+	                            </c:otherwise>
+	                        </c:choose>
+	                    </c:otherwise>
+	                </c:choose>
+	            </c:forEach>
+	
+	            <c:choose>
+	                <%-- 현재 페이지 번호(pageNum)가 최대 페이지 번호(maxPage) 보다 작을 경우 [다음] 버튼 활성화 --%>
+	                <c:when test="${pageNum < pageInfo.maxPage}">
+	                	<c:choose>
+	                		<c:when test="${not empty param.searchType and not empty param.searchKeyword}">
+			                    <li class="page-item">
+			                        <a class="page-link" aria-label="Next" href="adminMessage?pageNum=${pageNum + 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">
+			                            <span aria-hidden="true">&raquo;</span>
+			                        </a>
+			                    </li>
+	                		</c:when>
+	                		<c:otherwise>
+			                    <li class="page-item">
+			                        <a class="page-link" aria-label="Next" href="adminMessage?pageNum=${pageNum + 1}">
+			                            <span aria-hidden="true">&raquo;</span>
+			                        </a>
+			                    </li>
+	                		</c:otherwise>
+	                	</c:choose>
+	                </c:when>
+	                <c:otherwise>
+	                    <li class="page-item">
+	                        <a class="page-link" aria-label="Next" onclick="alert('마지막 페이지 입니다!')">
+	                            <span aria-hidden="true">&raquo;</span>
+	                        </a>
+	                    </li>
+	                </c:otherwise>
+	            </c:choose>
+	        </ul>
+	    </nav>
 	</div>
 	<!-- 페이징 처리 -->
 	

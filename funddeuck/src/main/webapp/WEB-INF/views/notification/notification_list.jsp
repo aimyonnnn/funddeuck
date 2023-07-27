@@ -132,10 +132,19 @@
 	            <%-- 현재 페이지 번호(pageNum)가 1보다 클 경우 [이전] 버튼 활성화 --%>
 	            <c:choose>
 	                <c:when test="${pageNum > 1}">
+	                	<c:choose>
+	                		<c:when test="${not empty param.searchType and not empty param.searchKeyword}">
+		                        <a class="page-link" aria-label="Previous" href="confirmNotification?pageNum=${pageNum - 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">
+		                            <span aria-hidden="true">&laquo;</span>
+		                        </a>
+	                		</c:when>
+	                		<c:otherwise>
+		                        <a class="page-link" aria-label="Previous" href="confirmNotification?pageNum=${pageNum - 1}">
+		                            <span aria-hidden="true">&laquo;</span>
+		                        </a>
+	                		</c:otherwise>
+	                	</c:choose>
 	                    <li class="page-item">
-	                        <a class="page-link" aria-label="Previous" href="confirmNotification?pageNum=${pageNum - 1}">
-	                            <span aria-hidden="true">&laquo;</span>
-	                        </a>
 	                    </li>
 	                </c:when>
 	                <c:otherwise>
@@ -171,11 +180,22 @@
 	            <c:choose>
 	                <%-- 현재 페이지 번호(pageNum)가 최대 페이지 번호(maxPage) 보다 작을 경우 [다음] 버튼 활성화 --%>
 	                <c:when test="${pageNum < pageInfo.maxPage}">
-	                    <li class="page-item">
-	                        <a class="page-link" aria-label="Next" href="confirmNotification?pageNum=${pageNum + 1}">
-	                            <span aria-hidden="true">&raquo;</span>
-	                        </a>
-	                    </li>
+	                	<c:choose>
+	                		<c:when test="${not empty param.searchType and not empty param.searchKeyword}">
+			                    <li class="page-item">
+			                        <a class="page-link" aria-label="Next" href="confirmNotification?pageNum=${pageNum + 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">
+			                            <span aria-hidden="true">&raquo;</span>
+			                        </a>
+			                    </li>
+	                		</c:when>
+	                		<c:otherwise>
+			                    <li class="page-item">
+			                        <a class="page-link" aria-label="Next" href="confirmNotification?pageNum=${pageNum + 1}">
+			                            <span aria-hidden="true">&raquo;</span>
+			                        </a>
+			                    </li>
+	                		</c:otherwise> 
+	                	</c:choose>
 	                </c:when>
 	                <c:otherwise>
 	                    <li class="page-item">
