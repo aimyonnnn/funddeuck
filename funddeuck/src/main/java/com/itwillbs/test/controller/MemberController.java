@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.test.handler.MyPasswordEncoder;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.SendMailService;
 import com.itwillbs.test.vo.MembersVO;
@@ -60,6 +62,16 @@ public class MemberController {
     	model.addAttribute("msg", "잘못된 접근입니다.");
     	return "fail_back";
     	}
+	
+		// ------------ BCryptPasswordEncoder 객체 활용한 패스워드 암호화(= 해싱) --------------
+		// => MyPasswordEncoder 클래스에 모듈화
+		// 1. MyPasswordEncoder 객체 생성
+		MyPasswordEncoder passwordEncoder = new MyPasswordEncoder();
+		// 2. getCryptoPassword() 메서드에 평문 전달하여 암호문 얻어오기
+		String securePasswd = passwordEncoder.getCryptoPassword(member.getMember_passwd());
+		// 3. 리턴받은 암호문을 MemberVO 객체에 덮어쓰기
+		member.setMember_passwd(securePasswd);
+		// -------------------------------------------------------------------------------------
     	
     	int insertCount = service.insertMember(member);
     	
@@ -96,6 +108,10 @@ public class MemberController {
     		return "fail_back";
     	}
     	
+    	//1. BCryptPasswordEncoder 객체 생성
+    	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    	
+    	
     	//id와 비밀번호조회를 통한 로그인작업
     	MembersVO isMember = service.getMemberInfo(member.getMember_id());
 
@@ -106,7 +122,7 @@ public class MemberController {
     	}else if(isMember.getFalse_count()>=4) {
     			model.addAttribute("msg", "5회 이상 틀린 아이디 입니다.\\n비밀번호찾기를 진행해주세요");
     		return "fail_back";
-    	} else if(isMember.getMember_passwd().equals(member.getMember_passwd())) {
+    	} else if(passwordEncoder.matches(member.getMember_passwd(), isMember.getMember_passwd())) {
     		
     		isMember.setFalse_count(0);
     		service.updateFailCount(isMember);
@@ -248,6 +264,7 @@ public class MemberController {
     	return "Login/passwd_find";
     }
     
+    //페스워드 찾기 ajax
     @PostMapping("passwdFindPro")
     @ResponseBody
     public Map<String,Object> passwdFindPro(@RequestParam String email, @RequestParam String id){
@@ -335,7 +352,15 @@ public class MemberController {
     		return "fail_back";
     	}
     	
-    	int updateCount = service.modifyPasswd(passwd, email);
+		// ------------ BCryptPasswordEncoder 객체 활용한 패스워드 암호화(= 해싱) --------------
+		// => MyPasswordEncoder 클래스에 모듈화
+		// 1. MyPasswordEncoder 객체 생성
+		MyPasswordEncoder passwordEncoder = new MyPasswordEncoder();
+		// 2. getCryptoPassword() 메서드에 평문 전달하여 암호문 얻어오기
+		String securePasswd = passwordEncoder.getCryptoPassword(passwd);
+		// -------------------------------------------------------------------------------------
+    	
+    	int updateCount = service.modifyPasswd(securePasswd, email);
     	
     	if(updateCount > 0) {
     		model.addAttribute("msg", "비밀번호가 변경되었습니다.");
@@ -362,6 +387,27 @@ public class MemberController {
         }
 
         return number.toString();
+    }
+    
+    @GetMapping("passwdForm")
+    public String passwdForm() {
+    	return "passwd";
+    }
+    
+    @GetMapping("passwd")
+    @ResponseBody
+    public String passwd(@RequestParam String passwd) {
+    	
+    	System.out.println(passwd);
+    	
+		// ------------ BCryptPasswordEncoder 객체 활용한 패스워드 암호화(= 해싱) --------------
+		// => MyPasswordEncoder 클래스에 모듈화
+		// 1. MyPasswordEncoder 객체 생성
+		MyPasswordEncoder passwordEncoder = new MyPasswordEncoder();
+		// 2. getCryptoPassword() 메서드에 평문 전달하여 암호문 얻어오기
+		return passwordEncoder.getCryptoPassword(passwd);
+		// -------------------------------------------------------------------------------------
+    	
     }
     
 }
