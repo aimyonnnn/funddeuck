@@ -15,6 +15,66 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="stylesheet" type="text/css">
+	<script>
+	// 서포터 관리
+	$(document).ready(function() {
+		$("#project-btn").siblings(".dropdown-menu").find("a").click(function(event) {
+			// 드롭다운 버튼 클릭 시 텍스트 활성화 
+		    var selectedText = $(this).text();
+		    $('#project-btn').text(selectedText);
+			
+			// 클릭한 dropdown의 id 값을 가져옴
+			var project_idx = $(this).data("id");
+			
+			// 배송 및 환불 카운트 - Ajax 요청
+			$.ajax({
+				url: "shippingStatus",
+				method: "POST",
+				data: {project_idx: project_idx},
+				dataType: "json",
+				success: function(data) {
+					var deliveryStatus = data.deliveryStatus; // 배송 상황
+					var refundStatus = data.refundStatus; // 환불 승인 여부
+					
+					
+					for (var i = 0; i < deliveryStatus.length; i++) {
+					      var status = deliveryStatus[i].delivery_status;
+					      var count = deliveryStatus[i].count;
+
+					      if (status == 1) {
+					        $(".table .text-primary:eq(0)").next().text(count);
+					      } else if (status == 2) {
+					        $(".table .tableTag:eq(1)").next().text(count);
+					      } else if (status == 3) {
+					        $(".table .tableTag:eq(2)").next().text(count);
+					      }
+					    }
+
+					    // 컨트롤러에서 조회된 결제승인여부 데이터 처리
+					    for (var i = 0; i < refundStatus.length; i++) {
+					      var status = refundStatus[i].payment_confirm;
+					      var count = refundStatus[i].count;
+
+					      if (status == 2) {
+					        $(".table .text-primary:eq(1)").next().text(count);
+					      } else if (status == 3) {
+					        $(".table .tableTag:eq(4)").next().text(count);
+					      } else if (status == 4) {
+					        $(".table .tableTag:eq(5)").next().text(count);
+					      }
+					    }
+			    },
+				error: function() {
+					// Ajax 요청에 실패한 경우 처리
+					alert("요청에 오류가 발생했습니다.");
+				}
+			});
+			// 링크 클릭 시 발생하는 페이지 이동 차단
+	        event.preventDefault();
+		});
+	});
+	
+	</script>
 </head>
 <body>
 	<!-- include -->
@@ -53,9 +113,23 @@
 		      	
 			      	<!-- 발송·환불 관리 시작 -->
 					<div class="projectArea">
-						<p class="projectTitle">발송·환불 관리</p>
-						<p class="projectContent">펀딩 리워드의 발송 및 펀딩금 반환까지 한눈에 볼 수 있어요.</p>
-						
+						<div class="shippingManagementTitle">
+							<div>발송·환불 관리</div>
+						    <!-- 프로젝트 선택 -->
+						    <div class="dropdown ms-4">
+						        <button type="button" class="btn dropdown-toggle btn-sm" id="project-btn" data-bs-toggle="dropdown" aria-expanded="false">
+						            프로젝트 선택
+						        </button>
+						        <ul class="dropdown-menu" aria-labelledby="project-btn">
+							        <c:forEach var="projectList" items="${projectList }">
+							            <li>
+							            	<a class="dropdown-item" href="#" data-id="${projectList.project_idx}">${projectList.project_subject }</a>
+							            </li>
+							        </c:forEach>
+						        </ul>
+						    </div>
+						</div>
+						<div class="projectContent">펀딩 리워드의 발송 및 펀딩금 반환까지 한눈에 볼 수 있어요.</div>
 						<!-- 서포터 관리 -->
 						<div>
 							<p class="subheading">서포터 관리</p>
@@ -65,42 +139,30 @@
 										<th>발송·배송 상태</th>
 										<td>
 											<span class="tableTag text-primary">미발송</span>
-											<span class="customSpan">1</span>건
-										</td>
-										<td>
-											<span class="tableTag">발송 확인중</span>
-											<span class="customSpan">1</span>건
+											<span class="customSpan"></span>건
 										</td>
 										<td>
 											<span class="tableTag">배송중</span>
-											<span class="customSpan">1</span>건
-										</td>
-										<td>
-											<span class="tableTag">수령 확인중</span>
-											<span class="customSpan">1</span>건
+											<span class="customSpan"></span>건
 										</td>
 										<td>
 											<span class="tableTag">배송완료</span>
-											<span class="customSpan">1</span>건
+											<span class="customSpan"></span>건
 										</td>
 									</tr>
 									<tr>
 										<th>펀딩금 반환 상태</th>
 										<td>
 											<span class="tableTag text-primary">신청</span>
-											<span class="customSpan">1</span>건
-										</td>
-										<td>
-											<span class="tableTag">신청취소</span>
-											<span class="customSpan">1</span>건
+											<span class="customSpan"></span>건
 										</td>
 										<td>
 											<span class="tableTag">완료</span>
-											<span class="customSpan">1</span>건
+											<span class="customSpan"></span>건
 										</td>
 										<td colspan="2">
 											<span class="tableTag">거절</span>
-											<span class="customSpan">1</span>건
+											<span class="customSpan"></span>건
 										</td>
 									</tr>
 							    </table>
@@ -114,23 +176,21 @@
 
 						<!-- 목록 -->
 						<div>
-							<p class="subheading">목록 <span class="sideDescription text-primary">| 총 829명</span></p>
-							<div class="dropdown">
-								<button type="button" class="btn dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
-									발송·배송 전체 관리
-								</button>
-								<ul class="dropdown-menu">
-									<li><a class="dropdown-item" href="#">미발송</a></li>
-									<li><a class="dropdown-item" href="#">발송 확인중</a></li>
-									<li><a class="dropdown-item" href="#">배송중</a></li>
-									<li><a class="dropdown-item" href="#">수령 확인중</a></li>
-									<li><a class="dropdown-item" href="#">배송 완료</a></li>
-									<li><hr class="dropdown-divider"></li>
-									<li><a class="dropdown-item" href="#">펀딩금 반환 신청</a></li>
-									<li><a class="dropdown-item" href="#">펀딩금 반환 신청 취소</a></li>
-									<li><a class="dropdown-item" href="#">펀딩금 반환 신청 완료</a></li>
-									<li><a class="dropdown-item" href="#">펀딩금 반환 신청 거절</a></li>
-								</ul>
+							<div class="shippingSubheading">목록 <span class="sideDescription text-primary">| 총 829명</span>
+								<div class="dropdown">
+									<button type="button" class="btn dropdown-toggle btn-sm" id="list-btn" data-bs-toggle="dropdown" aria-expanded="false">
+										발송·배송 전체 관리
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="list-btn">
+										<li><a class="dropdown-item" href="#">미발송</a></li>
+										<li><a class="dropdown-item" href="#">배송중</a></li>
+										<li><a class="dropdown-item" href="#">배송 완료</a></li>
+										<li><hr class="dropdown-divider"></li>
+										<li><a class="dropdown-item" href="#">펀딩금 반환 신청</a></li>
+										<li><a class="dropdown-item" href="#">펀딩금 반환 신청 완료</a></li>
+										<li><a class="dropdown-item" href="#">펀딩금 반환 신청 거절</a></li>
+									</ul>
+								</div>
 							</div>
 							<div class="table-responsive">
 							    <table class="table">

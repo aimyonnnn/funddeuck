@@ -2,6 +2,7 @@ package com.itwillbs.test.mapper;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -42,6 +43,12 @@ public interface PaymentMapper {
 	
 	// 프로젝트별 지난 7일간 서포터 수 조회
 	List<PaymentVO> selectProjectSupporterCount(Integer project_idx);
+
+	// 프로젝트별 배송상황 조회
+	List<Map<String, Object>> selectDeliveryList(int project_idx);
+
+	// 환불승인여부 조회
+	List<Map<String, Object>> selectRefundList(int project_idx);
 	
 	
 }

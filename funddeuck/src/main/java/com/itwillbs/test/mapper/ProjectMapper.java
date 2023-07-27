@@ -65,6 +65,9 @@ public interface ProjectMapper {
 	// 메이커 조회
 	MakerVO selectMakerInfo(int makerIdx);
 	
+	// 프로젝트 리스트 조회
+	List<ProjectVO> selectProjectList(int member_idx);
+	
 	//
 	List<ProjectVO> selectTop10ProjectsByEndDate();
 
@@ -73,6 +76,7 @@ public interface ProjectMapper {
 
 	// 전체 펀딩 프로젝트 목록 갯수 조회 요청
 	int selectProjectListCount(String searchType, String searchKeyword);
+
 	
 	
 	

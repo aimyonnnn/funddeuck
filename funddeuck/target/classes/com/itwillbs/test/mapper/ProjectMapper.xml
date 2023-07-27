@@ -222,6 +222,18 @@
 					maker_idx = #{makerIdx}
 	</select>
 	
+	<!-- 프로젝트 리스트 조회 -->
+	<select id="selectProjectList" resultType="com.itwillbs.test.vo.ProjectVO">
+		SELECT *
+			FROM project
+			WHERE maker_idx 
+			IN (
+				SELECT maker_idx 
+				FROM maker 
+				WHERE member_idx = #{member_idx}
+			)
+	</select>
+	
 	<select id="selectTop10ProjectsByEndDate" resultType="com.itwillbs.test.vo.ProjectVO">
 	    SELECT * FROM project
 	    ORDER BY project_end_date

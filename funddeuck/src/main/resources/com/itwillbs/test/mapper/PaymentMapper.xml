@@ -190,4 +190,21 @@
 		    project_idx, date
 	</select>
 	
+	<!-- 프로젝트별 배송상황 조회 -->
+	<select id="selectDeliveryList" resultType="java.util.HashMap">
+		SELECT delivery_status, count(*) as count
+			FROM payment
+			WHERE project_idx = #{project_idx}
+			GROUP BY delivery_status;
+	</select>
+	
+	<!-- 프로젝트별 환불승인여부 조회 -->
+	<select id="selectRefundList" resultType="java.util.HashMap">
+		SELECT payment_confirm, count(*) as count
+			FROM payment
+			WHERE project_idx = #{project_idx}
+			GROUP BY payment_confirm;
+			
+	</select>
+	
 </mapper>

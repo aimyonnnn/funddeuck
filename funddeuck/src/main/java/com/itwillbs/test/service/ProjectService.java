@@ -81,6 +81,10 @@ public class ProjectService {
 		int makerIdx = mapper.selectMakerIdx(project_idx);
 		return mapper.selectMakerInfo(makerIdx);
 	}
+	// 프로젝트 리스트 조회 
+	public List<ProjectVO> getProjectList(int member_idx) {
+		return mapper.selectProjectList(member_idx);
+	}
 	
 	//
 	public List<ProjectVO> getTop10ProjectsByEndDate() {
@@ -98,6 +102,7 @@ public class ProjectService {
 	public int getProjectListCount(String searchType, String searchKeyword) {
 		return mapper.selectProjectListCount(searchType, searchKeyword);
 	}
+	
 	
 	
 }

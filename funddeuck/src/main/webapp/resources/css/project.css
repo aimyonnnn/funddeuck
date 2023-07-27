@@ -131,6 +131,15 @@ footer {
 	font-size: 16px;
 }
 
+/* 발송·환불 타이틀 */
+.shippingManagementTitle {
+	font-size: 35px;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 5px;
+	display: flex;
+}
+
 /* 폼 컨트롤 */
 .form-content {
 	font-size: 18px;
@@ -310,6 +319,14 @@ a.supporters svg {
 /* 프로젝트 관리 */
 /* 소제목 */
 .subheading {
+	font-size: 23px;
+	font-weight: bold;
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
+
+/* 발송·환불 소제목 */
+.shippingSubheading {
 	font-size: 23px;
 	font-weight: bold;
 	margin-top: 30px;

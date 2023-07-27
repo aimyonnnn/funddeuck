@@ -9,8 +9,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -592,8 +594,45 @@ public class ProjectController {
 	
 	// 발송·환불 관리
 	@GetMapping("projectShipping")
-	public String projectShipping() {
+	public String projectShipping(HttpSession session, Model model) {
+		
+		// 세션 아이디가 존재하지 않을 때 
+		String sId = (String) session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "fail_back";
+		}
+		
+		// 세션 아이디로 member_idx 조회 
+		int member_idx = projectService.getMemberIdx(sId);
+		
+		// 프로젝트 리스트 가져와서 Model 객체에 저장
+		List<ProjectVO> projectList = projectService.getProjectList(member_idx);
+		model.addAttribute("projectList", projectList);
+		
 		return "project/project_shipping";
+	}
+	
+	// 서포터 관리 출력
+	@ResponseBody
+	@PostMapping("shippingStatus")
+	public Map<String, Object> shippingStatus(@RequestParam("project_idx") int project_idx) {
+		Map<String, Object> data = new HashMap<>();
+		
+		// 배송상황 조회
+		List<Map<String, Object>> deliveryStatus = paymentService.getDeliveryList(project_idx);
+		
+		// 환불승인여부 조회
+		List<Map<String, Object>> refundStatus = paymentService.getRefundList(project_idx);
+		
+		System.out.println("프로젝트 번호: " + project_idx);
+		System.out.println("배송상황: " + deliveryStatus);
+		System.out.println("환불승인여부: " + refundStatus);
+		
+		data.put("deliveryStatus", deliveryStatus);
+		data.put("refundStatus", refundStatus);
+		
+		return data;
 	}
 	
 	// 수수료·정산 관리

@@ -33,11 +33,11 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/profile")
+//    @GetMapping("/profile")
 //    public String showProfilePage(Model model, HttpSession session) {
 //        Integer memberIdx = (Integer) session.getAttribute("member_idx");
 //        if (memberIdx == null) {
-//            return "member/member_profile"; // ·Î±×ÀÎ ÆäÀÌÁö·Î ¸®´ÙÀÌ·ºÆ® ¿¹½Ã
+//            return "member/member_profile"; // ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
 //        }
 //
 //        ProfileVO profile = profileService.getProfileByMemberId(memberIdx.intValue());
@@ -46,7 +46,7 @@ public class ProfileController {
 //    }
     
     public String showProfilePage(Model model) {
-        int memberIdx = 1; // °¡Á¤»ó ·Î±×ÀÎ ¾øÀÌ member_idx°¡ 1·Î ÁÖ¾îÁ³´Ù°í °¡Á¤
+        int memberIdx = 1; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ member_idxï¿½ï¿½ 1ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½Ù°ï¿½ ï¿½ï¿½ï¿½ï¿½
         ProfileVO profile = profileService.getProfileByMemberId(memberIdx);
         model.addAttribute("profile", profile);
         return "member/member_profile";
@@ -64,10 +64,10 @@ public class ProfileController {
             }
 
             profileService.updateProfile(profileVO);
-            return ResponseEntity.ok("ÇÁ·ÎÇÊÀÌ ÀúÀåµÇ¾ú½À´Ï´Ù.");
+            return ResponseEntity.ok("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("ÀúÀå¿¡ ½ÇÆÐÇß½À´Ï´Ù. ´Ù½Ã ½ÃµµÇØÁÖ¼¼¿ä.");
+                    .body("ï¿½ï¿½ï¿½å¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½. ï¿½Ù½ï¿½ ï¿½Ãµï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.");
         }
     }
 
@@ -91,7 +91,7 @@ public class ProfileController {
 
             return profileImagePath;
         } catch (IOException e) {
-            throw new IOException("»çÁø ÀúÀåÀ» ½ÇÆÐÇß½À´Ï´Ù.", e);
+            throw new IOException("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.", e);
         }
     }
 

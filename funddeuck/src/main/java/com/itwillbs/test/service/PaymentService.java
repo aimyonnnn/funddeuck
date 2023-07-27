@@ -2,6 +2,7 @@ package com.itwillbs.test.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,5 +56,16 @@ public class PaymentService {
 	public List<PaymentVO> getProjectSupporterCount(Integer project_idx) {
 		return mapper.selectProjectSupporterCount(project_idx);
 	}
+	
+	// 프로젝트별 배송상황 조회
+	public List<Map<String, Object>> getDeliveryList(int project_idx) {
+		return mapper.selectDeliveryList(project_idx);
+	}
+	
+	// 환불승인여부 조회
+	public List<Map<String, Object>> getRefundList(int project_idx) {
+		return mapper.selectRefundList(project_idx);
+	}
+	
 	
 }
