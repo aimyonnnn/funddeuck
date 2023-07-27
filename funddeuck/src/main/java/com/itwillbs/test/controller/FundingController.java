@@ -36,7 +36,7 @@ public class FundingController {
 	// 펀딩 주문페이지 이동
 	@GetMapping ("fundingOrder")
 	public String fundingOrder(Model model) {
-//		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, HttpSession session) {
+//		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, @RequestParam String addDonationAmount, HttpSession session) {
 		// session에 저장되어있는 회원아이디 가져오기
 //		String id = (String)session.getAttribute("sId");
 		// 아이디(가데이터)
@@ -45,31 +45,37 @@ public class FundingController {
 		int project_idx = 1;
 		// 상세페이지에서 고른 리워드번호 필요(가데이터)
 		int reward_idx = 1;
+		// 상세페이지에서 전달받은 추가후원금액
+		String addDonationAmount = "10000";
 		// 회원 정보 불러오기
 		MembersVO member = memberService.getMemberInfo(id);
-		System.out.println(member);
+		System.out.println("회원 정보 : " + member);
 		// 프로젝트 정보 불러오기
 		ProjectVO project = projectService.getProjectInfo(project_idx);
-		System.out.println(project);
+		System.out.println("프로젝트 정보 : " + project);
 		// 선택한 리워드 정보 불러오기
 		RewardVO reward = projectService.getRewardInfo(reward_idx);
-		System.out.println(reward);
-		// 리워드 리스트 불러오기
+		System.out.println("리워드 정보 : " + reward);
+		// 리워드 리스트 불러오기(리워드 변경 모달창)
 		List<RewardVO> rewardList = projectService.getRewardList(project_idx);
 		System.out.println(rewardList);
 		// 로그인한 회원의 기본 배송지가 있는지 확인해서 있으면 전달
 		DeliveryVO deliveryDefault = fundingService.getDeliveryDefault(id);
-		System.out.println("deliveryDefault : " + deliveryDefault);
+		System.out.println("기본 배송지 정보 : " + deliveryDefault);
 		if(deliveryDefault != null) {
+			// 기본 배송지 정보
 			model.addAttribute("deliveryDefault", deliveryDefault);
-			
 		}
-//		List<DeliveryrVO> deliveryList = 
 		
-		
+		// 추가후원금액
+		model.addAttribute("addDonationAmount", addDonationAmount);
+		// 회원 정보
 		model.addAttribute("member", member);
+		// 프로젝트 정보
 		model.addAttribute("project", project);
+		// 리워드 정보
 		model.addAttribute("reward", reward);
+		// 리워드리스트(리워드 변경 모달창)
 		model.addAttribute("rewardList", rewardList);
 		return "funding/funding_order";
 	}

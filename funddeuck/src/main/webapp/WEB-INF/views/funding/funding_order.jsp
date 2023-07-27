@@ -54,20 +54,20 @@
 			        $('#deliveryContainer').html('');
 			        
 			        let output = '<div class="col">'
-					+ '<div class="row-12">'
-					+ '<span class="fs-6 fw-bold">' + saveDelivery.delivery_reciever + '</span>&nbsp;'
-					+ '<span class=" badge bg-danger text-white">기본</span>'	
-					+ '</div>'
-					+ '<div class="row-12">'
-					+ '<span class="fs-6">[' + saveDelivery.delivery_zipcode + ']</span>&nbsp;'
-					+ '<span class="fs-6">' + saveDelivery.delivery_add + '</span>&nbsp;'
-					+ '<c:if test="${not empty'	+  aveDelivery.delivery_detailadds + '}">'
-					+ '<span class="fs-6">' + saveDelivery.delivery_detailadd + '</span>'
-					+ '</c:if>'
-					+ '</div>'
-					+ '<div class="row-12">'
-					+ '<span class="fs-6">' + saveDelivery.delivery_phone + '</span>'
-					+ '</div></div>';
+							+ '<div class="row-12">'
+							+ '<span class="fs-6 fw-bold">' + saveDelivery.delivery_reciever + '</span>&nbsp;'
+							+ '<span class=" badge bg-danger text-white">기본</span>'	
+							+ '</div>'
+							+ '<div class="row-12">'
+							+ '<span class="fs-6">[' + saveDelivery.delivery_zipcode + ']</span>&nbsp;'
+							+ '<span class="fs-6">' + saveDelivery.delivery_add + '</span>&nbsp;'
+							+ '<c:if test="${not empty'	+  aveDelivery.delivery_detailadds + '}">'
+							+ '<span class="fs-6">' + saveDelivery.delivery_detailadd + '</span>'
+							+ '</c:if>'
+							+ '</div>'
+							+ '<div class="row-12">'
+							+ '<span class="fs-6">' + saveDelivery.delivery_phone + '</span>'
+							+ '</div></div>';
 			        // 배송지란에 등록된 기본배송지 출력
 			        $('#deliveryContainer').html(output);
 			        	
@@ -149,6 +149,9 @@
 						$("#rewardListModalClose").click();
 						// 기존 HTML 지우기
 						$('#rewardContainer').html('');
+						$('#rewardPrice').html('');
+						$('#rewardDeliveryPrice').html('');
+						
 						
 						
 						// HTML 출력할 내용
@@ -174,9 +177,14 @@
 						            +   '<th>발송 시작일</th>'
 						            +   '<td>' + reward.delivery_date + '</td>'
 						            +  '</tr>'
-						            + '</table>';				
+						            + '</table>';			
+						            
+						let output2 = '<span class="fs-6 fw-bold">' + reward.reward_price + '원</span>';
+						let output3 = '<span class="fs-6 fw-bold">' + reward.delivery_price + '원</span>';
 			            // 출력하기
 			            $('#rewardContainer').html(output);
+			            $('#rewardPrice').html(output2);
+			            $('#rewardDeliveryPrice').html(output3);
 						
 					},
 					error: function(xhr, status, error) {
@@ -191,7 +199,7 @@
 		});
 		// 리워드 변경 모달창 끝
 		// 배송지 목록을 가져오는 ajax 요청
-	    $('#deliveryChangeModal').on('show.bs.modal', function (event) {
+	    $('#deliveryChangeModal').on('show.bs.modal', function(event) {
 	        var modal = $(this);
 	        $.ajax({
 	            type: "GET",
@@ -205,11 +213,21 @@
 						// 반복문을 사용하여 각 데이터를 배송지 목록에 추가
 						data.forEach(function(delivery) {
 							var html = '';
+							
 							html += '<div class="row border">';
-							html += '<span class="fs-6 fw-bold text-start">' + delivery.delivery_reciever + '</span>';
-							html += '<span class="fs-6 text-start">' + delivery.delivery_phone + '</span>';
-							html += '<span class="fs-6 text-start">[' + delivery.delivery_zipcode + ']' 
+// 							html += '<div class="col-1">';
+							html += '<div class="form-check col-1 d-flex justify-content-center align-self-center">';
+							html += '<input class="form-check-input " type="radio">';
+							html += '</div>';
+// 							html += '</div>';
+							html += '<div class="col text-start">';
+							html += '<span class="fs-6 fw-bold">' + delivery.delivery_reciever + '</span>';
+							html += '<br>';
+							html += '<span class="fs-6">' + delivery.delivery_phone + '</span>';
+							html += '<br>';
+							html += '<span class="fs-6t">[' + delivery.delivery_zipcode + ']' 
 								+ delivery.delivery_add + '&nbsp;&nbsp;' + delivery.delivery_detailadd + '</span>' ;
+							html += '</div>';
 							html += '</div>';
 							deliveryListElem.append(html);
 						});
@@ -228,6 +246,35 @@
 	    });
 	    
 	});	
+	
+	$(document).ready(function() {
+		// 열기 버튼 클릭시 후원 유의사항 출력
+		$("#notesOpen").on("click", function() {
+			// 열기 버튼 숨김
+			$('#notesOpen').hide();
+			// notesContainer
+			// 후원 유의사항
+			let output = '<p>'
+				+ '펀딩은 일반 쇼핑과 달리 메이커에게 투자하고, 투자의 보상으로 제품이나 서비스를 받는 구조입니다.<br>'
+				+ '따라서 단숨 변심으로 인한 환불은 신청하실 수 없습니다.'
+				+ '</p>';
+			$('#notesContainer').html(output);
+			
+			// 닫기 버튼 보임
+			$('#notesClose').show();
+		});
+		// 닫기 버튼 클릭시 후원 유의사항 지우기
+		$("#notesClose").on("click", function() {
+			// 열기 버튼 숨김
+			$('#notesClose').hide();
+			// notesContainer
+			$('#notesContainer').html('');
+			
+			// 닫기 버튼 보임
+			$('#notesOpen').show();
+		});
+		
+	});
 	
 	
 	
@@ -326,7 +373,8 @@
 				<!--서포터 정보 끝--> 
 				<!--배송지--> 
 				<!-- 기본배송지 유무 판별 -->
-				<!-- 배송지 정보 아무것도 없을 경우 기본배송지 등록 -->
+				<!-- 기본 배송지 정보 아무것도 없을 경우 배송지 추가 버튼만 -->
+				<!-- 기본 배송지 정보 있을 경우 기본 배송지 출력 -->
 				<div class="row">
 					<span class="fs-4 fw-bold">배송지</span>
 					<div class="row m-2 p-2 border" id="deliveryContainer">
@@ -409,20 +457,20 @@
 						<div class="col-6 text-start">
 							<span class="fs-6 fw-bold">리워드 금액</span>
 						</div>
-						<div class="col-6 text-end">
+						<div class="col-6 text-end" id="rewardPrice">
 							<span class="fs-6 fw-bold">${reward.reward_price }원</span>
 						</div>
 						<div class="col-6 text-start">
 							<span class="fs-6 fw-bold">배송비</span>
 						</div>
-						<div class="col-6 text-end">
+						<div class="col-6 text-end" id="rewardDeliveryPrice">
 							<span class="fs-6 fw-bold">${reward.delivery_price }원</span>
 						</div>
 						<div class="col-6 text-start">
 							<span class="fs-6 fw-bold">추가 후원 금액</span>
 						</div>
 						<div class="col-6 text-end">
-							<span class="fs-6 fw-bold">xxxx원</span>
+							<span class="fs-6 fw-bold">${addDonationAmount }원</span>
 						</div>
 						<div class="col-6 text-start">
 							<span class="fs-6 fw-bold">쿠폰 사용</span>
@@ -434,8 +482,8 @@
 				<!-- 후원 금액 끝-->
 				<!-- 결제 예정일 안내 -->
 				<div class="row pt-2 text-start ms-2 me-2">
-					<p>
-						프로젝트 성공시 결제는 <span class="fw-bold text-danger">23.xx.xx</span>에 진행 예정입니다.<br>
+					<p><!-- 결제일 => 프로젝트 종료일  -->
+						프로젝트 성공시 결제는 <span class="fw-bold text-danger">${project.project_end_date }</span>에 진행 예정입니다.<br>
 						프로젝트가 취소됬을 경우, 예약된 결제는 자동으로 결제가 취소됩니다.
 					</p>
 				</div>
@@ -453,7 +501,7 @@
 					<!-- a태그 내용보기 -->
 					<!-- 모달창으로 개인정보 동의 내용 보여주기 -->
 					<div class="col-4 pt-2 fs-6">
-						<a href="#">내용보기</a>
+						<a href="#" onclick="">내용보기</a>
 					</div>
 					<!-- a태그 내용보기 끝 -->
 				</div>
@@ -469,30 +517,29 @@
 					</div>
 					<!-- 열기 닫기 버튼으로 보이고 안보이고?-->
 					<div class="col-4 pt-2 fs-6">
-						<button>
+						<a id="notesOpen" role="button" style="display:block;">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
 							  <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
 							</svg>							
 							열기
-						</button>
-<!-- 						<button> -->
-<!-- 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16"> -->
-<!-- 							  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/> -->
-<!-- 							</svg>							 -->
-<!-- 							닫기 -->
-<!-- 						</button> -->
+						</a>
+						<a id="notesClose" role="button" style="display:none;">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+							  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+							</svg>							
+							닫기
+						</a>
 					</div>
 					<!-- a태그 내용보기 끝 -->
 				</div>
-				<div class="row ms-2 me-2 pt-2 text-start">
-					<p>
-						펀딩은 일반 쇼핑과 달리 메이커에게 투자하고, 투자의 보상으로 제품이나 서비스를 받는 구조입니다.<br>
-						따라서 단숨 변심으로 인한 환불은 신청하실 수 없습니다. 
-					</p>
+				<!-- 후원 유의사항 -->
+				<div class="row ms-2 me-2 pt-2 text-start" id="notesContainer">
+
 <!-- 					<ul class="list-group"> -->
 <!-- 						<li class="list-group-item"></li> -->
 <!-- 					</ul> -->
 				</div>
+				<!-- 후원 유의사항 끝 -->
 				<!-- 개인정보 동의, 유의사항 끝 -->
 				<!-- 후원하기 버튼 영역 -->
 				<!-- 클릭시 결제 페이지로 이동 -->
@@ -595,7 +642,7 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary" id="deliveryAdd">등록</button>
+					<button type="submit" class="btn btn-primary" id="deliveryAdd">추가</button>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="deliveryAddModalClose">닫기</button>
 				</div>
 			</div>
