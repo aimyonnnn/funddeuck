@@ -34,12 +34,25 @@ public interface NotificationMapper {
 			@Param("searchType") String searchType,
 			@Param("searchKeyword") String searchKeyword,
 			@Param("startRow") int startRow,
-			@Param("listLimit") int listLimit);
+			@Param("listLimit") int listLimit
+			);
 	
 	// 전체 메시지 갯수 조회 - 관리자
-	int selectNotificationListCount(String searchKeyword, String searchType);
+	int selectNotificationListCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType);
 	
 	// 삭제 처리
 	int deleteNotification(int notification_idx);
+	
+	// 아이디별 메시지 리스트 조회
+	List<NotificationVO> selectTotalListById(
+			@Param("searchType") String searchType,
+			@Param("searchKeyword") String searchKeyword,
+			@Param("sId") String sId,
+			@Param("startRow") int startRow,
+			@Param("listLimit") int listLimit
+			);
+	
+	// 아이디별 메시지 갯수 조회
+	int selectTotalListCountById(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType, @Param("sId") String sId);
 	
 }

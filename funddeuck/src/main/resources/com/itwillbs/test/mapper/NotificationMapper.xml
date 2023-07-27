@@ -99,6 +99,47 @@
   					notification_idx = #{notification_idx}
   	</delete>
   	
+  	<!-- 아이디별 메시지 리스트 조회 -->
+  	<select id="selectTotalListById">
+  		select *
+  			from notification -- 동적 SQL문
+		WHERE
+  			<!-- 1. 검색어(searchKeyword)가 널스트링이 아닐 때 검색어 추가할 WHERE 절 수행, 아니면 생략 -->
+			<if test="!searchKeyword.equals('')">
+				<!-- 2. 검색타입(searchType)에 따른 WHERE 절 조건 대상 변경 -->
+				<choose>
+					<when test="searchType.equals('content')">
+						notification_content LIKE '%${searchKeyword}%'
+							and
+					</when>
+				</choose>
+			</if>
+				member_id = #{sId}
+			order by
+				notification_regdate desc
+  			LIMIT
+				#{startRow}
+				, #{listLimit}
+  	</select>
+  	
+  	<!-- 아이디별 메시지 갯수 조회 -->
+  	<select id="selectTotalListCountById" resultType="int">
+  		select count(*)
+  			from notification -- 동적 SQL문
+		WHERE
+  			<!-- 1. 검색어(searchKeyword)가 널스트링이 아닐 때 검색어 추가할 WHERE 절 수행, 아니면 생략 -->
+			<if test="!searchKeyword.equals('')">
+				<!-- 2. 검색타입(searchType)에 따른 WHERE 절 조건 대상 변경 -->
+				<choose>
+					<when test="searchType.equals('content')">
+						notification_content LIKE '%${searchKeyword}%'
+							and
+					</when>
+				</choose>
+			</if>
+				member_id = #{sId}
+  	</select>
+  	
 </mapper>
 
 

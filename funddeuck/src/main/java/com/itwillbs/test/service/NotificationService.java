@@ -50,5 +50,13 @@ public class NotificationService {
 	public int removeNotification(int notification_idx) {
 		return mapper.deleteNotification(notification_idx);
 	}
+	// 아이디별 메시지 리스트 조회
+	public List<NotificationVO> getTotalListById(String searchType, String searchKeyword, String sId, int startRow, int listLimit) {
+		return mapper.selectTotalListById(searchType, searchKeyword, sId, startRow, listLimit);
+	}
+	// 아이디별 메시지 갯수 조회
+	public int getTotalListCountById(String searchType, String searchKeyword, String sId) {
+		return mapper.selectTotalListCountById(searchType, searchKeyword, sId);
+	}
 	
 }

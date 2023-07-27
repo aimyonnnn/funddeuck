@@ -45,13 +45,14 @@
 				</select>
 				<!-- 검색타입, 검색어 -->
 				<div class="input-group">
-					<input type="text" class="form-control form-control-sm" name="searchKeyword" value="${param.serachKeyword}" id="searchKeyword"
+					<input type="text" class="form-control form-control-sm" name="searchKeyword" value="${param.searchKeyword}" id="searchKeyword"
 						aria-describedby="button-addon2" style="width: 500px;">
 					<button class="btn btn-outline-secondary btn-sm" type="submit" value="검색" id="button-addon2">검색</button>
 				</div>
 			</form>
 			<!-- form 태그 끝 -->	
 		</div>
+		<!-- 검색 버튼 -->
 		
 		<!-- 셀렉트 박스 -->
 		<div class="container mt-5">

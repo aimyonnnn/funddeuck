@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.test.service.NotificationService;
 import com.itwillbs.test.vo.NotificationVO;
+import com.itwillbs.test.vo.PageInfoVO;
 
 @Controller
 public class NotificationController {
@@ -46,10 +47,40 @@ public class NotificationController {
 	
 	// 리스트 조회
 	@GetMapping("confirmNotification")
-	public String confirmNotification(HttpSession session, Model model) {
+	public String confirmNotification(
+			@RequestParam(defaultValue = "") String searchType, 
+			@RequestParam(defaultValue = "") String searchKeyword, 
+			@RequestParam(defaultValue = "1") int pageNum, 
+			HttpSession session, Model model) {
 		String sId = (String) session.getAttribute("sId");
-		List<NotificationVO> nList = service.getNotificationList(sId);
+		// -------------------------------------------------------------------------
+		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		// -------------------------------------------------------------------------
+		// notificationService - getTotalList() 메서드 호출하여 게시물 목록 조회 요청
+		List<NotificationVO> nList = service.getTotalListById(searchType, searchKeyword, sId, startRow, listLimit);
+		// -------------------------------------------------------------------------
+		// 한 페이지에서 표시할 페이지 목록(번호) 계산
+		// 1. notificationService - getNotificationListCount() 메서드를 호출하여
+		int listCount = service.getTotalListCountById(searchType, searchKeyword, sId);
+		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+		int pageListLimit = 10;
+		// 3. 전체 페이지 목록 갯수 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 4. 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5. 끝 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		// 6. 만약, 끝 페이지 번호(endPage)가 전체(최대) 페이지 번호(maxPage) 보다
+	//	    클 경우 끝 페이지 번호를 최대 페이지 번호로 교체
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		// 페이징 처리 정보를 저장할 PageInfoVO 객체에 계산된 데이터 저장
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
 		model.addAttribute("nList", nList);
+		model.addAttribute("pageInfo", pageInfo);
 		return "notification/notification_list";
 	}
 	
