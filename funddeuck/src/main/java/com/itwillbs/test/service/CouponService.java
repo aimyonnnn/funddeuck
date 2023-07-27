@@ -21,4 +21,12 @@ public class CouponService {
     public List<CouponVO> getUsedCoupons() {
         return couponMapper.getCouponsByUse(1);
     }
+
+	public void saveCoupon(CouponVO couponVO) {
+		couponMapper.saveCoupon(couponVO);
+	}
+	
+    public List<CouponVO> getAllCoupons() {
+        return couponMapper.getAllCoupons();
+    }
 }

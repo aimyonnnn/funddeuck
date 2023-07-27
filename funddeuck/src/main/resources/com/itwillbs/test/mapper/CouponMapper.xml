@@ -11,4 +11,13 @@
         SELECT * FROM coupon
         WHERE coupon_use = 1
     </select>
+    
+    <insert id="saveCoupon" parameterType="com.itwillbs.test.vo.CouponVO">
+        INSERT INTO coupon (coupon_name, coupon_text, coupon_num, coupon_sale, coupon_start, coupon_end, coupon_use)
+        VALUES (#{coupon_name}, #{coupon_text}, #{coupon_num}, #{coupon_sale}, #{coupon_start}, #{coupon_end}, false)
+    </insert>
+    
+    <select id="getAllCoupons" resultType="com.itwillbs.test.vo.CouponVO">
+        SELECT * FROM coupon
+    </select>    
 </mapper>

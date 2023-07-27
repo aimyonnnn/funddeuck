@@ -13,4 +13,8 @@ public interface CouponMapper {
     
     List<CouponVO> getCouponsByUse(@Param("couponUse") int couponUse);
 
+	void saveCoupon(CouponVO couponVO);
+
+	List<CouponVO> getAllCoupons();
+
 }
