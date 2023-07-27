@@ -21,7 +21,7 @@
 		  <h3><b>쿠폰</b></h3>
 			<ul class="nav nav-tabs">
 		<li class="nav-item">
-			<a class="nav-link active" aria-current="page" href="#coupon">나의 쿠폰</a>
+			<a class="nav-link " aria-current="page" href="#coupon">나의 쿠폰</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="#couponHistory" id="usedCoupon">지난 쿠폰 내역</a>
@@ -45,28 +45,28 @@
 			</ol>
 		</div>
 		<div id="couponHistory">
-        <h5><b>사용 쿠폰 이용내역</b></h5>
-        <br>
-        <div id="couponUseDiv">
-            <c:forEach var="couponData" items="${usedCoupons}">
-                <c:if test="${couponData.coupon_use == true}">
-                    <p><b>사용 쿠폰 이름:</b> ${couponData.coupon_name}</p>
-                    <p><b>사용 쿠폰 설명:</b> ${couponData.coupon_text}</p>
-                    <p><b>사용 쿠폰 시작일:</b> ${couponData.coupon_start}</p>
-                    <p><b>사용 쿠폰 종료일:</b> ${couponData.coupon_end}</p>
-                    <hr>
-                </c:if>
-            </c:forEach>
-        </div>			
-			<br>
-			<h5><b>지난 쿠폰 내역 안내</b></h5>
-			<ol>
-				<li>3개월 이내에 사용했거나 만료된 쿠폰에 한하여 노출됩니다.</li>
-				<li>프로젝트가 실패하거나 결제취소를 한 경우, 쿠폰은 반환됩니다.</li>
-				<li>결제 실패일 경우, 쿠폰이 반환되지 않고 소멸됩니다.</li>
-			</ol>
+	        <h5><b>사용 쿠폰 이용내역</b></h5>
+	        <br>
+	        <div id="couponUseDiv">
+	            <c:forEach var="couponData" items="${usedCoupons}">
+	                <c:if test="${couponData.coupon_use == true}">
+	                    <p><b>사용 쿠폰 이름:</b> ${couponData.coupon_name}</p>
+	                    <p><b>사용 쿠폰 설명:</b> ${couponData.coupon_text}</p>
+	                    <p><b>사용 쿠폰 시작일:</b> ${couponData.coupon_start}</p>
+	                    <p><b>사용 쿠폰 종료일:</b> ${couponData.coupon_end}</p>
+	                    <hr>
+	                </c:if>
+	            </c:forEach>
+	        </div>			
+				<br>
+				<h5><b>지난 쿠폰 내역 안내</b></h5>
+				<ol>
+					<li>3개월 이내에 사용했거나 만료된 쿠폰에 한하여 노출됩니다.</li>
+					<li>프로젝트가 실패하거나 결제취소를 한 경우, 쿠폰은 반환됩니다.</li>
+					<li>결제 실패일 경우, 쿠폰이 반환되지 않고 소멸됩니다.</li>
+				</ol>
+			</div>
 		</div>
-	</div>
 
 	</div>
 </section>
