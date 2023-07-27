@@ -35,41 +35,36 @@ public class MemberController {
         return "member/myPage"; 
     }
     
-    @GetMapping("/member/coupon")
-    public String Coupon() {
-    	return "member/member_coupon";
-    }
-    
-    //회원가입 페이지로 이동
+    //�쉶�썝媛��엯 �럹�씠吏�濡� �씠�룞
     @GetMapping("JoinForm")
     public String JoinForm(HttpSession session, Model model) {
     	
-    	// session이 존재한다면 접근불가
+    	// session�씠 議댁옱�븳�떎硫� �젒洹쇰텋媛�
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "�옒紐삳맂 �젒洹쇱엯�땲�떎.");
     		return "fail_back";
     	}
     	
     	return "join";
     }
     
-    //회원 가입
+    //�쉶�썝 媛��엯
     @PostMapping("JoinPro")
     public String JoinPro(MembersVO member, HttpSession session, Model model) {
     	
-        	// session이 존재한다면 접근불가
+        	// session�씠 議댁옱�븳�떎硫� �젒洹쇰텋媛�
 	if(session.getAttribute("sId") != null) {
-    	model.addAttribute("msg", "잘못된 접근입니다.");
+    	model.addAttribute("msg", "�옒紐삳맂 �젒洹쇱엯�땲�떎.");
     	return "fail_back";
     	}
 	
-		// ------------ BCryptPasswordEncoder 객체 활용한 패스워드 암호화(= 해싱) --------------
-		// => MyPasswordEncoder 클래스에 모듈화
-		// 1. MyPasswordEncoder 객체 생성
+		// ------------ BCryptPasswordEncoder 媛앹껜 �솢�슜�븳 �뙣�뒪�썙�뱶 �븫�샇�솕(= �빐�떛) --------------
+		// => MyPasswordEncoder �겢�옒�뒪�뿉 紐⑤뱢�솕
+		// 1. MyPasswordEncoder 媛앹껜 �깮�꽦
 		MyPasswordEncoder passwordEncoder = new MyPasswordEncoder();
-		// 2. getCryptoPassword() 메서드에 평문 전달하여 암호문 얻어오기
+		// 2. getCryptoPassword() 硫붿꽌�뱶�뿉 �룊臾� �쟾�떖�븯�뿬 �븫�샇臾� �뼸�뼱�삤湲�
 		String securePasswd = passwordEncoder.getCryptoPassword(member.getMember_passwd());
-		// 3. 리턴받은 암호문을 MemberVO 객체에 덮어쓰기
+		// 3. 由ы꽩諛쏆� �븫�샇臾몄쓣 MemberVO 媛앹껜�뿉 �뜮�뼱�벐湲�
 		member.setMember_passwd(securePasswd);
 		// -------------------------------------------------------------------------------------
     	
@@ -78,49 +73,49 @@ public class MemberController {
     	if(insertCount > 0) {
     		return "redirect:/";
     	} else {
-    		model.addAttribute("msg", "회원가입 실패");
+    		model.addAttribute("msg", "�쉶�썝媛��엯 �떎�뙣");
     		return "fail_back";
     	}
     	
     }
     
-    //로그인 페이지 이동
+    //濡쒓렇�씤 �럹�씠吏� �씠�룞
     @GetMapping("LoginForm")
     public String LoginForm(HttpSession session, Model model) {
     	
-    	// session이 존재한다면 접근불가
+    	// session�씠 議댁옱�븳�떎硫� �젒洹쇰텋媛�
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "�옒紐삳맂 �젒洹쇱엯�땲�떎.");
     		return "fail_back";
     	}
     	
     	return "login";
     }
     
-    //로그인
+    //濡쒓렇�씤
     @PostMapping("LoginPro")
     public String LoginPro(MembersVO member, HttpSession session, Model model) {
     	
     	System.out.println(member);
     	
     	if(session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "�옒紐삳맂 �젒洹쇱엯�땲�떎.");
     		return "fail_back";
     	}
     	
-    	//1. BCryptPasswordEncoder 객체 생성
+    	//1. BCryptPasswordEncoder 媛앹껜 �깮�꽦
     	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     	
     	
-    	//id와 비밀번호조회를 통한 로그인작업
+    	//id�� 鍮꾨�踰덊샇議고쉶瑜� �넻�븳 濡쒓렇�씤�옉�뾽
     	MembersVO isMember = service.getMemberInfo(member.getMember_id());
 
     		
     	if(isMember == null){
-    		model.addAttribute("msg", "아이디가 존재하지 않습니다.");
+    		model.addAttribute("msg", "�븘�씠�뵒媛� 議댁옱�븯吏� �븡�뒿�땲�떎.");
     		return "fail_back";
     	}else if(isMember.getFalse_count()>=4) {
-    			model.addAttribute("msg", "5회 이상 틀린 아이디 입니다.\\n비밀번호찾기를 진행해주세요");
+    			model.addAttribute("msg", "5�쉶 �씠�긽 ��由� �븘�씠�뵒 �엯�땲�떎.\\n鍮꾨�踰덊샇李얘린瑜� 吏꾪뻾�빐二쇱꽭�슂");
     		return "fail_back";
     	} else if(passwordEncoder.matches(member.getMember_passwd(), isMember.getMember_passwd())) {
     		
@@ -131,12 +126,12 @@ public class MemberController {
     	}
     	isMember.setFalse_count(isMember.getFalse_count()+1);
     	service.updateFailCount(isMember);
-		model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.\\n"+isMember.getFalse_count()+"회 틀렸습니다. 5회틀릴시 로그인이 불가합니다.");
+		model.addAttribute("msg", "�븘�씠�뵒 �삉�뒗 鍮꾨�踰덊샇媛� �씪移섑븯吏� �븡�뒿�땲�떎.\\n"+isMember.getFalse_count()+"�쉶 ���졇�뒿�땲�떎. 5�쉶��由댁떆 濡쒓렇�씤�씠 遺덇��빀�땲�떎.");
 		return "fail_back";
     	
     }
     
-    //로그아웃
+    //濡쒓렇�븘�썐
     @GetMapping("LogOut")
     public String LogOut(HttpSession session) {
     	session.invalidate();
@@ -144,7 +139,7 @@ public class MemberController {
     	return "redirect:/";
     }
     
-  //ajax를 통한 id중복 확인
+  //ajax瑜� �넻�븳 id以묐났 �솗�씤
     @PostMapping("idDuplicate")
     @ResponseBody
     public String idDuplicate(@RequestParam String id) {
@@ -158,7 +153,7 @@ public class MemberController {
     	return "false";
     } 
     
-  //ajax를 통한 email 중복확인 및 발송 및 재발송
+  //ajax瑜� �넻�븳 email 以묐났�솗�씤 諛� 諛쒖넚 諛� �옱諛쒖넚
     @PostMapping("emailDuplicate")
     @ResponseBody
     public String emailDuplicate(@RequestParam String email) {
@@ -175,7 +170,7 @@ public class MemberController {
 			
 			@Override
 			public void run() {
-				System.out.println("여기옴");
+				System.out.println("�뿬湲곗샂");
 				mailService.sendAuthMail(email, authCode);
 			}
 		}).start();
@@ -200,7 +195,7 @@ public class MemberController {
     	}
     }
     
-    //이메일 코드가 일치한지 확인
+    //�씠硫붿씪 肄붾뱶媛� �씪移섑븳吏� �솗�씤
     @PostMapping("certificationAuthCode")
     @ResponseBody
     public String certificationAuthCode(@RequestParam String email, @RequestParam String authCode) {
@@ -229,13 +224,13 @@ public class MemberController {
     	return "false";
     }
     
-    // 아이디 찾기 form 으로 이동
+    // �븘�씠�뵒 李얘린 form �쑝濡� �씠�룞
     @GetMapping("idFindForm")
     public String idFindForm() {
     	return "Login/id_find";
     }
     
-    // 아이디 찾기
+    // �븘�씠�뵒 李얘린
     @PostMapping("idFindPro")
     @ResponseBody
     public Map<String, Object> idFindPro(@RequestParam String email) {
@@ -258,13 +253,13 @@ public class MemberController {
     	return map;
     }
     
-    // 비밀번호 찾기 form 으로 이동
+    // 鍮꾨�踰덊샇 李얘린 form �쑝濡� �씠�룞
     @GetMapping("passwdFindForm")
     public String passwdFindForm() {
     	return "Login/passwd_find";
     }
     
-    //페스워드 찾기 ajax
+    //�럹�뒪�썙�뱶 李얘린 ajax
     @PostMapping("passwdFindPro")
     @ResponseBody
     public Map<String,Object> passwdFindPro(@RequestParam String email, @RequestParam String id){
@@ -307,14 +302,14 @@ public class MemberController {
     	return map;
     }
     
-    //페스워드 변경 폼으로 이동
+    //�럹�뒪�썙�뱶 蹂�寃� �뤌�쑝濡� �씠�룞
     @GetMapping("ModifyPasswdForm")
     public String ModifyPasswdForm (@RequestParam String authCode, @RequestParam String email, Model model, HttpSession session) {
     	
     	MembersVO member = service.getMemberInfoEmail(email);
     	
     	if(member == null || session.getAttribute("sId") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "�옒紐삳맂 �젒洹쇱엯�땲�떎.");
     		return "fail_back";
     	}
     	
@@ -335,39 +330,39 @@ public class MemberController {
     			return "Login/passwd_modify";
     			
     		}
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "�옒紐삳맂 �젒洹쇱엯�땲�떎.");
     		return "fail_back";
     	}
-    	model.addAttribute("msg", "잘못된 접근입니다.");
+    	model.addAttribute("msg", "�옒紐삳맂 �젒洹쇱엯�땲�떎.");
 		return "fail_back";
     	
     }
     
-    //페스워드 변경
+    //�럹�뒪�썙�뱶 蹂�寃�
     @PostMapping("ModifyPasswdPro")
     public String ModifyPasswdPro(@RequestParam String passwd, @RequestParam String email, Model model, HttpSession session) {
     	
     	if(session.getAttribute("id") != null) {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "�옒紐삳맂 �젒洹쇱엯�땲�떎.");
     		return "fail_back";
     	}
     	
-		// ------------ BCryptPasswordEncoder 객체 활용한 패스워드 암호화(= 해싱) --------------
-		// => MyPasswordEncoder 클래스에 모듈화
-		// 1. MyPasswordEncoder 객체 생성
+		// ------------ BCryptPasswordEncoder 媛앹껜 �솢�슜�븳 �뙣�뒪�썙�뱶 �븫�샇�솕(= �빐�떛) --------------
+		// => MyPasswordEncoder �겢�옒�뒪�뿉 紐⑤뱢�솕
+		// 1. MyPasswordEncoder 媛앹껜 �깮�꽦
 		MyPasswordEncoder passwordEncoder = new MyPasswordEncoder();
-		// 2. getCryptoPassword() 메서드에 평문 전달하여 암호문 얻어오기
+		// 2. getCryptoPassword() 硫붿꽌�뱶�뿉 �룊臾� �쟾�떖�븯�뿬 �븫�샇臾� �뼸�뼱�삤湲�
 		String securePasswd = passwordEncoder.getCryptoPassword(passwd);
 		// -------------------------------------------------------------------------------------
     	
     	int updateCount = service.modifyPasswd(securePasswd, email);
     	
     	if(updateCount > 0) {
-    		model.addAttribute("msg", "비밀번호가 변경되었습니다.");
+    		model.addAttribute("msg", "鍮꾨�踰덊샇媛� 蹂�寃쎈릺�뿀�뒿�땲�떎.");
     		model.addAttribute("targetURL", "./");
     		return "success_forward";
     	} else {
-    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		model.addAttribute("msg", "�옒紐삳맂 �젒洹쇱엯�땲�떎.");
     		return "fail_back";
     	}
     	
@@ -375,13 +370,13 @@ public class MemberController {
     
     
     
- // 랜덤 코드 생성
+ // �옖�뜡 肄붾뱶 �깮�꽦
     public static String generateRandomNumbers(int count) {
         StringBuilder number = new StringBuilder();
         Random random = new Random();
 
         for (int i = 0; i < count; i++) {
-        	// 0 이상 9 이하의 랜덤 숫자 생성
+        	// 0 �씠�긽 9 �씠�븯�쓽 �옖�뜡 �닽�옄 �깮�꽦
             int digit = random.nextInt(10);
             number.append(digit);
         }
@@ -400,11 +395,11 @@ public class MemberController {
     	
     	System.out.println(passwd);
     	
-		// ------------ BCryptPasswordEncoder 객체 활용한 패스워드 암호화(= 해싱) --------------
-		// => MyPasswordEncoder 클래스에 모듈화
-		// 1. MyPasswordEncoder 객체 생성
+		// ------------ BCryptPasswordEncoder 媛앹껜 �솢�슜�븳 �뙣�뒪�썙�뱶 �븫�샇�솕(= �빐�떛) --------------
+		// => MyPasswordEncoder �겢�옒�뒪�뿉 紐⑤뱢�솕
+		// 1. MyPasswordEncoder 媛앹껜 �깮�꽦
 		MyPasswordEncoder passwordEncoder = new MyPasswordEncoder();
-		// 2. getCryptoPassword() 메서드에 평문 전달하여 암호문 얻어오기
+		// 2. getCryptoPassword() 硫붿꽌�뱶�뿉 �룊臾� �쟾�떖�븯�뿬 �븫�샇臾� �뼸�뼱�삤湲�
 		return passwordEncoder.getCryptoPassword(passwd);
 		// -------------------------------------------------------------------------------------
     	
