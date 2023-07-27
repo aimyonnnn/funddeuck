@@ -4,7 +4,6 @@ import java.util.*;
 
 import javax.servlet.http.*;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
@@ -41,7 +40,7 @@ public class FundingController {
 		// session에 저장되어있는 회원아이디 가져오기
 //		String id = (String)session.getAttribute("sId");
 		// 아이디(가데이터)
-		String id = "honggd";
+		String id = "kim1234";
 		// 프로젝트 번호(가데이터)
 		int project_idx = 1;
 		// 상세페이지에서 고른 리워드번호 필요(가데이터)
@@ -58,7 +57,13 @@ public class FundingController {
 		// 리워드 리스트 불러오기
 		List<RewardVO> rewardList = projectService.getRewardList(project_idx);
 		System.out.println(rewardList);
-		// 기본 배송지가 있는지 확인해서 있으면 전달
+		// 로그인한 회원의 기본 배송지가 있는지 확인해서 있으면 전달
+		DeliveryVO deliveryDefault = fundingService.getDeliveryDefault(id);
+		System.out.println("deliveryDefault : " + deliveryDefault);
+		if(deliveryDefault != null) {
+			model.addAttribute("deliveryDefault", deliveryDefault);
+			
+		}
 //		List<DeliveryrVO> deliveryList = 
 		
 		
@@ -77,18 +82,47 @@ public class FundingController {
 		return "funding/funding_result";
 	}	
 	
+	// 배송지 신규 등록 모달 ajax
+	@PostMapping("deliveryNewAdd")
+	@ResponseBody
+	public DeliveryVO deliveryNewAdd(DeliveryVO delivery, HttpSession session) {
+		//세션아이디 가져와서 DeliveryVO에 저장
+//		String id = (String)session.getAttribute("sId");
+		// 멤버 아이디 필요(가데이터)
+		String id = "kim1234";
+		delivery.setMember_id(id);
+		
+		// 신규 등록시 자동으로 기본배송지로 등록
+		delivery.setDelivery_default(true);
+		
+		// 배송지 등록 DB 작업
+		int insertCount = fundingService.registDelivery(delivery);
+		if(insertCount > 0) {
+			// 기본 배송지 조회 후 전달
+			DeliveryVO saveDelivery = fundingService.getDeliveryDefault(id);
+			return saveDelivery;
+			
+		} else {
+			DeliveryVO saveDelivery = null;
+			return saveDelivery;
+			
+		}
+		
+	}
 	// 배송지 추가 모달 ajax
 	@PostMapping("deliveryAdd")
 	@ResponseBody
-	public String deliveryAdd(DeliveryVO delivery) {
+	public String deliveryAdd(DeliveryVO delivery, HttpSession session) {
 		System.out.println(delivery);
-		// 멤버 아이디 필요(idx 넣기)
-		int member_idx = 1;
-		delivery.setMember_idx(member_idx);
+		//세션아이디 가져와서 DeliveryVO에 저장
+//		String id = (String)session.getAttribute("sId");
+		// 멤버 아이디 필요(가데이터)
+		String id = "kim1234";
+		delivery.setMember_id(id);
 		
 		// 기본배송지 있는지 확인, 있으면 0으로 만들어줘야함
 		
-		// 배송지 DB 등록 작업
+		// 배송지 등록 DB 작업
 		int insertCount = fundingService.registDelivery(delivery);
 		
 		if(insertCount > 0) {
@@ -104,16 +138,18 @@ public class FundingController {
 	// produces = "application/json" => JSON 형식의 응답
 	@GetMapping(value = "getDeliveryList", produces = "application/json")
 	@ResponseBody
-	public List<DeliveryVO> getDeliveryList() {
-		// 멤버 아이디 가져와야함
-		int member_idx = 1;
+	public List<DeliveryVO> getDeliveryList(HttpSession session) {
+		// 세션 아이디 가져오기
+//		String id = (String)session.getAttribute("sId");
+		String id = "kim1234";
 		// 배송지 목록을 가져오는 DB 작업
-		List<DeliveryVO> deliveryList = fundingService.getDeliveryList(member_idx);
+		List<DeliveryVO> deliveryList = fundingService.getDeliveryList(id);
 		System.out.println(deliveryList);
 		
 		return deliveryList;
 	}
 	
+	// 리워드 변경 요청 ajax
 	@PostMapping("rewardChange")
 	@ResponseBody
 	public RewardVO rewardChange(int reward_idx) {

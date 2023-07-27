@@ -18,8 +18,12 @@ public class FundingService {
 		return mapper.insertDelivery(delivery);
 	}
 	// 배송지 목록 조회
-	public List<DeliveryVO> getDeliveryList(int member_idx) {
-		return mapper.selectDeliveryList(member_idx);
+	public List<DeliveryVO> getDeliveryList(String id) {
+		return mapper.selectDeliveryList(id);
+	}
+	// 기본 배송지 조회
+	public DeliveryVO getDeliveryDefault(String id) {
+		return mapper.selectDeliveryDefault(id);
 	}
 
 }

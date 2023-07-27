@@ -6,7 +6,7 @@
 		INSERT INTO delivery
 			VALUES (
 				null 
-				, #{member_idx}
+				, #{member_id}
 				, #{delivery_reciever}
 				, #{delivery_phone}
 				, #{delivery_zipcode}
@@ -17,9 +17,18 @@
 	
 	</insert>
 	
+	<!-- 배송지 목록 조회 -->
 	<select id="selectDeliveryList" resultType="com.itwillbs.test.vo.DeliveryVO">
 		SELECT * 
+			FROM delivery 
+				WHERE member_id = #{id}
+	</select>
+	
+	<!-- 기본 배송지 조회 -->
+	<select id="selectDeliveryDefault">
+		SELECT * 
 			FROM delivery
-				WHERE member_idx = #{member_idx}
+				WHERE delivery_default = 1 
+					AND member_id = #{id}
 	</select>
 </mapper>

@@ -27,7 +27,65 @@
 
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
 <script type="text/javascript">
-	// 배송지 등록을 위한 ajax 요청
+
+	// 배송지 신규 등록을 위한 ajax 요청 (기본 배송지로 등록)
+	$(document).on("click", "#deliveryNewAdd", function() {
+		
+		// 폼 데이터 가져오기
+		var formData = $("#deliveryNewAddModal form").serialize();
+		console.log(formData);
+		// ajax 요청
+		$.ajax({
+			type: "POST",
+			url: "deliveryNewAdd",
+			data: formData,
+			success: function(saveDelivery) {
+				if(saveDelivery != null) {
+					console.log("배송지 신규 등록 완료!");
+					// 배송지 추가 모달창의 입력된 데이터 지우기
+					$("#deliveryNewAddModal input").val("");
+					// 배송지 추가 모달창 닫힘(부트스트랩 5.3.0에서는 X)
+	//					$('#deliveryAddModal').modal('hide');
+			        // 배송지 추가 모달창 닫기 버튼 클릭 발생
+			        $("#deliveryNewAddModalClose").click();
+			        
+			        console.log(saveDelivery);
+			        // 기존 배송지란에 있던 내용 지우기
+			        $('#deliveryContainer').html('');
+			        
+			        let output = '<div class="col">'
+					+ '<div class="row-12">'
+					+ '<span class="fs-6 fw-bold">' + saveDelivery.delivery_reciever + '</span>&nbsp;'
+					+ '<span class=" badge bg-danger text-white">기본</span>'	
+					+ '</div>'
+					+ '<div class="row-12">'
+					+ '<span class="fs-6">[' + saveDelivery.delivery_zipcode + ']</span>&nbsp;'
+					+ '<span class="fs-6">' + saveDelivery.delivery_add + '</span>&nbsp;'
+					+ '<c:if test="${not empty'	+  aveDelivery.delivery_detailadds + '}">'
+					+ '<span class="fs-6">' + saveDelivery.delivery_detailadd + '</span>'
+					+ '</c:if>'
+					+ '</div>'
+					+ '<div class="row-12">'
+					+ '<span class="fs-6">' + saveDelivery.delivery_phone + '</span>'
+					+ '</div></div>';
+			        // 배송지란에 등록된 기본배송지 출력
+			        $('#deliveryContainer').html(output);
+			        	
+			        
+					
+				} else {
+					console.log("배송지 신규 등록 실패!");
+				}
+			},
+			error: function (xhr, status, error) {
+				console.error("오류 발생!" , error);
+			}
+		});
+		
+			
+	});
+
+	// 배송지 등록을 위한 ajax 요청 (기본 배송지 O)
 	$(document).on("click", "#deliveryAdd", function() {
         $("#deliveryChangeModalClose").click();
 		
@@ -62,7 +120,9 @@
 		
 			
 	});
+
 	
+	// 리워드 변경 요청 ajax
 	$(document).ready(function() {
 		// 리워드 변경 모달창
 		// 리워드 변경 버튼 클릭시 라디오박스에 해당하는 리워드 번호 전달하는 ajax
@@ -92,6 +152,7 @@
 						
 						
 						// HTML 출력할 내용
+						// hidden 값으로 리워드번호 전달
 						let output = '<input type="hidden" value="' + reward.reward_idx + '"name="reward_idx">'
 						            + '<table class="table table-borderless" style="table-layout: fixed">'
 						            +  '<tr>'
@@ -263,38 +324,41 @@
 					</div>
 				</div>
 				<!--서포터 정보 끝--> 
-				<!--배송지-->     
+				<!--배송지--> 
+				<!-- 기본배송지 유무 판별 -->
+				<!-- 배송지 정보 아무것도 없을 경우 기본배송지 등록 -->
 				<div class="row">
 					<span class="fs-4 fw-bold">배송지</span>
-					<div class="row m-2 p-2 border">
+					<div class="row m-2 p-2 border" id="deliveryContainer">
 						<c:choose>
-							<c:when test=""></c:when>
+							<c:when test="${not empty deliveryDefault}">
+								<div class="col">
+									<div class="row-12">
+										<span class="fs-6 fw-bold">${deliveryDefault.delivery_reciever }</span>
+										<span class=" badge bg-danger text-white">기본</span>
+									</div>
+									<div class="row-12">
+										<span class="fs-6">[${deliveryDefault.delivery_zipcode }]</span>
+										<span class="fs-6">${deliveryDefault.delivery_add }</span>
+										<c:if test="${not empty deliveryDefault.delivery_detailadd}">
+											<span class="fs-6">${deliveryDefault.delivery_detailadd }</span>
+										</c:if>
+									</div>
+									<div class="row-12">
+										<span class="fs-6">${deliveryDefault.delivery_phone }</span>
+									</div>
+								</div>
+								
+								<div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">
+									<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryChangeModal">변경</button>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="col d-flex justify-content-center align-self-center">
+									<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryNewAddModal">배송지 추가</button>
+								</div>
+							</c:otherwise>
 						</c:choose>
-						<!-- 기본 배송지 등록 X -->
-<!-- 						<div class="col d-flex justify-content-center align-self-center"> -->
-<!-- 							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryAddModal">배송지 추가</button> -->
-<!-- 						</div> -->
-						<!-- 기본 배송지 등록 X 끝 -->
-						<!-- 기본 배송지 등록 O -->
-						<!-- 변경 버튼 클릭시 모달창 => 배송지 정보 -->
-						<div class="col">
-							<div class="row-12">
-								<span class="fs-6 fw-bold">수취인</span>
-								<span class=" badge bg-danger text-white">기본</span>
-							</div>
-							<div class="row-12">
-								<span class="fs-6">[우편번호]</span>
-								<span class="fs-6">수취인주소</span>
-								<span class="fs-6">수취인상세주소</span>
-							</div>
-							<div class="row-12">
-								<span class="fs-6">수취인연락처</span>
-							</div>
-						</div>
-						<div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">
-							<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryChangeModal">변경</button>
-						</div>
-						<!-- 기본 배송지 등록 O 끝 -->
 					</div>
 				</div>
 				<!--배송지 끝--> 
@@ -479,7 +543,7 @@
 		</div>
 	</div>	
 	<!-- 리워드 변경 모달창 끝 -->
-	<!-- 배송지 추가 모달창 -->
+	<!-- 배송지 추가 모달창(기본배송지 있을 경우) -->
 	<div class="modal" id="deliveryAddModal" tabindex="-1">
 		<!-- modal-fullscreen -->
 		<div class="modal-dialog">
@@ -504,7 +568,7 @@
 								<div class="col">
 									<span class="fs-5 fw-bold text-start">주소</span>
 									&nbsp;&nbsp;
-									<button type="button" class="btn btn-primary " onclick="findPostcode()">찾기</button>
+									<button type="button" class="btn btn-primary " onclick="findPostcode(wrap)">찾기</button>
 								</div>
 							</div>
 							<div class="row p-2">
@@ -537,19 +601,75 @@
 			</div>
 		</div>
 	</div>	
-	<!-- 배송지 추가 모달창 끝 -->
+	<!-- 배송지 추가 모달창(기본배송지 있을 경우) 끝 -->
+	<!-- 배송지 신규 등록 모달창(배송지 없을 경우 기본 배송지로 등록) -->
+	<div class="modal" id="deliveryNewAddModal" tabindex="-1">
+		<!-- modal-fullscreen -->
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header d-flex justify-content-center">
+					<h5 class="modal-title">배송지 등록</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deliveryAddModalClose"></button>
+				</div>
+				<div class="modal-body">
+					<!-- 배송지 등록 작업 요청 -->
+					<form action="deliveryNewAdd" method="post">
+						<div class="container text-start">
+							<div class="row p-1">
+								<span class="fs-5 fw-bold">받는 사람</span>
+								<input type="text" class="form-control"  name="delivery_reciever">
+							</div>
+							<div class="row p-1">
+								<span class="fs-5 fw-bold">받는 사람 연락처</span>
+								<input type="text" class="form-control"  name="delivery_phone">
+							</div>
+							<div class="row p-1">
+								<div class="col">
+									<span class="fs-5 fw-bold text-start">주소</span>
+									&nbsp;&nbsp;
+									<button type="button" class="btn btn-primary " onclick="findPostcode(wrap2)">찾기</button>
+								</div>
+							</div>
+							<div class="row p-2">
+								<span class="fs-6">우편번호</span>
+								<input type="text" class="form-control" id="postcode2" name="delivery_zipcode" placeholder="우편번호">
+								<span class="fs-6">도로명 주소</span>
+								<input type="text" class="form-control" id="address2"  name="delivery_add" placeholder="주소"><br>
+								<span class="fs-6">상세주소</span>
+								<input type="text" class="form-control" id="detailAddress2" name="delivery_detailadd" placeholder="상세주소">
+								<span class="fs-6">참고항목</span>
+								<input type="text" class="form-control" id="extraAddress2" placeholder="참고항목">
+								<!-- 주소찾기 영역 -->
+								<div id="wrap2" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
+									<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+								</div>							
+								<!-- 주소찾기 영역 끝 -->
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary" id="deliveryNewAdd">등록</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="deliveryNewAddModalClose">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<!-- 배송지 신규 등록 모달창 끝 -->
 	<!-- 카카오 API -->	
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 	    // 우편번호 찾기 찾기 화면을 넣을 element
 	    var element_wrap = document.getElementById('wrap');
+	    var element_wrap2 = document.getElementById('wrap2');
 	
 	    function foldDaumPostcode() {
 	        // iframe을 넣은 element를 안보이게 한다.
 	        element_wrap.style.display = 'none';
+	        element_wrap2.style.display = 'none';
 	    }
 	
-	    function findPostcode() {
+	    function findPostcode(targetElement) {
 	        // 현재 scroll 위치를 저장해놓는다.
 	        var currentScroll = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
 	        new daum.Postcode({
@@ -583,37 +703,67 @@
 	                    if(extraAddr !== ''){
 	                        extraAddr = ' (' + extraAddr + ')';
 	                    }
-	                    // 조합된 참고항목을 해당 필드에 넣는다.
-	                    document.getElementById("extraAddress").value = extraAddr;
+	                    if(targetElement === element_wrap) {
+		                    // 조합된 참고항목을 해당 필드에 넣는다.
+		                    document.getElementById("extraAddress").value = extraAddr;
+	                    	
+	                    } else if(targetElement === element_wrap2) { 
+		                    // 조합된 참고항목을 해당 필드에 넣는다.
+		                    document.getElementById("extraAddress2").value = extraAddr;
+	                    	
+	                    }
 	                
 	                } else {
-	                    document.getElementById("extraAddress").value = '';
+	                    if(targetElement === element_wrap) {
+		                    // 조합된 참고항목을 해당 필드에 넣는다.
+		                    document.getElementById("extraAddress").value = '';
+	                    	
+	                    } else if(targetElement === element_wrap2) { 
+		                    // 조합된 참고항목을 해당 필드에 넣는다.
+		                    document.getElementById("extraAddress2").value = '';
+	                    	
+	                    }
+	                	
 	                }
 	
-	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-	                document.getElementById('postcode').value = data.zonecode;
-	                document.getElementById("address").value = addr;
-	                // 커서를 상세주소 필드로 이동한다.
-	                document.getElementById("detailAddress").focus();
 	
 	                // iframe을 넣은 element를 안보이게 한다.
 	                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
-	                element_wrap.style.display = 'none';
+	                if(targetElement === element_wrap) { // 배송지 추가 등록
+		                element_wrap.style.display = 'none';
+		                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+		                document.getElementById('postcode').value = data.zonecode;
+		                document.getElementById("address").value = addr;
+		                // 커서를 상세주소 필드로 이동한다.
+		                document.getElementById("detailAddress").focus();
+	                } else if(targetElement === element_wrap2) { // 신규 배송지 등록
+		                element_wrap2.style.display = 'none';
+		                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+		                document.getElementById('postcode2').value = data.zonecode;
+		                document.getElementById("address2").value = addr;
+		                // 커서를 상세주소 필드로 이동한다.
+		                document.getElementById("detailAddress2").focus();
+	                }
 	
 	                // 우편번호 찾기 화면이 보이기 이전으로 scroll 위치를 되돌린다.
 	                document.body.scrollTop = currentScroll;
 	            },
 	            // 우편번호 찾기 화면 크기가 조정되었을때 실행할 코드를 작성하는 부분. iframe을 넣은 element의 높이값을 조정한다.
 	            onresize : function(size) {
-	                element_wrap.style.height = size.height+'px';
+	                if(targetElement === element_wrap) {
+		                element_wrap.style.height = size.height+'px';
+	                } else if(targetElement === element_wrap2) {
+		                element_wrap2.style.height = size.height+'px';
+	                }
 	            },
 	            width : '100%',
 	            height : '100%'
-	        }).embed(element_wrap);
+	        }).embed(targetElement);
 	
 	        // iframe을 넣은 element를 보이게 한다.
-	        element_wrap.style.display = 'block';
+	        targetElement.style.display = 'block';
 	    }
+	    
 	</script>
 	<!-- 카카오 API 끝 -->	
 	<!-- 배송지 변경 모달창 -->
