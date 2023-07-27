@@ -83,6 +83,11 @@ public class MemberService {
 		return mapper.updatePasswd(passwd, email);
 	}
 	
+	// 존재하는 회원인지 확인하기
+	public MembersVO isCorrectMember(String target) {
+		return mapper.selectCorrectMember(target);
+	}
+	
 
 
 }

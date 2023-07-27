@@ -51,5 +51,8 @@ public interface MemberMapper {
 	
 	//email 로 조회후 passwd 변경
 	int updatePasswd(@Param("passwd") String passwd, @Param("email") String email);
+	
+	// 존재하는 회원인지 확인하기
+	MembersVO selectCorrectMember(String target);
 
 }

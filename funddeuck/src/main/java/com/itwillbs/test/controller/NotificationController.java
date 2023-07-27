@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.NotificationService;
+import com.itwillbs.test.vo.MembersVO;
 import com.itwillbs.test.vo.NotificationVO;
 import com.itwillbs.test.vo.PageInfoVO;
 
@@ -22,6 +24,8 @@ public class NotificationController {
 	
 	@Autowired
 	private NotificationService service;
+	@Autowired
+	private MemberService memberService;
 	
 	// 관리자 피드백 저장하기
 	@PostMapping("saveNotification")
@@ -31,9 +35,15 @@ public class NotificationController {
             @RequestParam("content") String content,
             @RequestParam("type") String type,
             @RequestParam("url") String url) {
-	    // 피드백을 받는 회원 아이디가 존재하는지 판별해야함
-	    int insertCount = service.registNotification(target, content);
-	    if(insertCount > 0) { return "true"; } return "false";
+		
+	    // 메시지를 받는 회원 아이디가 존재하는지 판별해야함
+		// 파라미터 - 회원 아이디(target)
+		MembersVO member = memberService.isCorrectMember(target);
+		if(member != null) {
+			int insertCount = service.registNotification(target, content);
+			if(insertCount > 0) { return "true"; } return "false";
+		} 
+		return "false";
 	}
 	
 	// 갯수 조회

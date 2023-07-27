@@ -209,35 +209,49 @@
 	// 메시지 삭제 처리
 	function deleteNotification(notification_idx) {
 		
-		let confirmation = confirm('메시지를 삭제하시겠습니까?');
-		
-		if(confirmation) {
+		Swal.fire({
+			title: '메시지 삭제 진행',
+			text: '메시지를 삭제 하시겠습니까?',
+			icon: 'question',
+			showCancelButton: true,
+			confirmButtonText: '예',
+			cancelButtonText: '아니오'
+		})
+		.then((result) => {
+			if (result.isConfirmed) {
 			
-			$.ajax({
-				method: 'get',
-				url: "<c:url value='deleteNotification'/>",
-				data: {
-					notification_idx: notification_idx
-				},
-				success: function(data){
-					
-					if(data.trim() == 'true') {
-						alert('메시지가 삭제 되었습니다!');
-						location.reload();
-					} else {
-						alert('메시지가 삭제에 실패하였습니다.');
+				$.ajax({
+					method: 'get',
+					url: "<c:url value='deleteNotification'/>",
+					data: {
+						notification_idx: notification_idx
+					},
+					success: function(data){
+						
+						if(data.trim() == 'true') {
+							Swal.fire({
+								icon: 'success',
+								title: '메시지 삭제처리 완료.',
+								text: '메시지가 성공적으로 삭제되었습니다.'
+							}).then(function() {
+								location.reload();
+							});
+						} else {
+							Swal.fire({
+								icon: 'error',
+								title: '메시지 삭제처리 실패',
+								text: '메시지 삭제에 실패하였습니다.' 
+							})
+						}
+						
+					},
+					error: function(){
+						console.log('ajax 요청이 실패하였습니다!');	
 					}
-				},
-				error: function(){
-					console.log('ajax 요청이 실패하였습니다!');	
-				}
-			});
-			
-			
-		}
-		
+				});
+			}
+		});
 	}
-	
 	</script>
 		
     <!-- bootstrap -->

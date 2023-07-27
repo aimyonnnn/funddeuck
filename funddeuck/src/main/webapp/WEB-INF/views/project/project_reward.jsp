@@ -310,7 +310,7 @@
 	                            text: "수정하기",
 	                            click: function() {
 	                                // 수정하기 버튼을 클릭하면 해당 리워드 페이지로 이동
-	                                window.location.href = 'projectReward?reward_idx=' + reward.reward_idx;
+	                                window.location.href = 'projectReward?project_idx=${param.project_idx}&reward_idx=' + reward.reward_idx;
 	                            }
 	                        }),
 	                        $('<button>', {
@@ -412,7 +412,7 @@
 			    	
 			    	if(response.trim() == 'true') {
 				        alert("성공적으로 수정되었습니다!");
-				        location.href = '<c:url value="projectReward?reward_idx="/>' + reward_idx;
+				        location.href = '<c:url value="projectReward?project_idx=${param.project_idx}&reward_idx="/>' + reward_idx;
 			    	} else {
 			    		alert("수정에 실패했습니다.");
 			    	}
@@ -443,7 +443,7 @@
 			    	if(response.trim() == 'true') {
 				        alert("성공적으로 삭제되었습니다!");
 				        // 리워드 등록 페이지로 이동
-				        location.href='projectReward';
+				        location.href='projectReward?project_idx=${param.project_idx}';
 			    	} else {
 			            alert("삭제 권한이 없습니다. 리워드 작성자만 삭제할 수 있습니다.");
 			    	}

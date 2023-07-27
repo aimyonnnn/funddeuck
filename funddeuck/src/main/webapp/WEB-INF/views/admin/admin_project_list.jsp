@@ -8,10 +8,13 @@
 	<meta charset="UTF-8">
 	<!-- bootstrap -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <!-- jQuery -->
+    <!-- jquery -->
 	<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
-    <!-- CSS -->
+    <!-- css -->
     <link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
+    <!-- sweetalert -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <style>
 	    table {
 	        width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
@@ -26,12 +29,12 @@
 	</style>
 </head>
 <body>
-	<jsp:include page="../common/admin_top.jsp"/>
-	<!-- pageNum 파라미터 가져와서 저장(기본값 1로 지정함) -->
-	<c:set var="pageNum" value="1"/>
-	<c:if test="${not empty param.pageNum }">
-		<c:set var="pageNum" value="${param.pageNum }" />
-	</c:if>
+<jsp:include page="../common/admin_top.jsp"/>
+<!-- pageNum 파라미터 가져와서 저장(기본값 1로 지정함) -->
+<c:set var="pageNum" value="1"/>
+<c:if test="${not empty param.pageNum }">
+	<c:set var="pageNum" value="${param.pageNum }" />
+</c:if>
 	
 	<div class="container my-5">
 		<!-- 검색 버튼 -->
@@ -222,67 +225,104 @@
 	// 프로젝트 승인 처리
 	function updateProjectStatus(project_idx, project_approve_status) {
 		
-		let confirmation = confirm('프로젝트 상태를 변경하시겠습니까?');
-		
-		if(confirmation) {
+		Swal.fire({
+			title: '프로젝트 상태 변경',
+			text: '프로젝트 승인 처리를 하시겠습니까?',
+			icon: 'question',
+			showCancelButton: true,
+			confirmButtonText: '예',
+			cancelButtonText: '아니오'
+		})
+		.then((result) => {
+			if (result.isConfirmed) {
 			
-			$.ajax({
-				method: 'get',
-				url: "<c:url value='updateProjectStatus'/>",
-				data: {
-					project_idx: project_idx,
-					project_approve_status: project_approve_status
-				},
-				success: function(data){
-					
-					if(data.trim() == 'true') {
-						alert('프로젝트 상태가 변경되었습니다.');
-						location.reload();
-					} else {
-						alert('프로젝트 상태 변경에 실패하였습니다.');
+				$.ajax({
+					method: 'get',
+					url: "<c:url value='updateProjectStatus'/>",
+					data: {
+						project_idx: project_idx,
+						project_approve_status: project_approve_status
+					},
+					success: function(data){
+						
+						if(data.trim() == 'true') {
+							Swal.fire({
+							      icon: 'success',
+							      title: '프로젝트 승인처리 완료.',
+							      text: '프로젝트 상태가 성공적으로 변경되었습니다.',
+						    }).then(function(){
+							    location.reload();
+						    });
+						} else {
+							Swal.fire({
+							      icon: 'error',
+							      title: '프로젝트 승인처리 실패.',
+							      text: '프로젝트 상태 변경에 실패하였습니다.',
+						    });
+						}
+	
+					},
+					error: function(){
+						console.log('ajax 요청이 실패하였습니다!');	
 					}
-				},
-				error: function(){
-					console.log('ajax 요청이 실패하였습니다!');	
-				}
-			});
-		} else {
-			// 취소 선택 시 체크박스 해제
-			$('input[type=checkbox]').prop('checked', false);
-		}
+				});
+			} else {
+				// 취소 선택 시 체크박스 해제
+				$('input[type=checkbox]').prop('checked', false);
+			}
+		});
 	}
 	// 프로젝트 반려 처리
 	function updateProjectStatusRejection(project_idx, project_approve_status) {
 		
-		let confirmation = confirm('프로젝트 반려 처리를 하시겠습니까?');
-		
-		if(confirmation) {
+		Swal.fire({
+			title: '프로젝트 상태 변경',
+			text: '프로젝트 반려 처리를 하시겠습니까?',
+			icon: 'question',
+			showCancelButton: true,
+			confirmButtonText: '예',
+			cancelButtonText: '아니오'
+		})
+		.then((result) => {
 			
-			$.ajax({
-				method: 'get',
-				url: "<c:url value='updateProjectStatus'/>",
-				data: {
-					project_idx: project_idx,
-					project_approve_status: project_approve_status
-				},
-				success: function(data){
-					
-					if(data.trim() == 'true') {
-						alert('프로젝트 반려 처리가 완료되었습니다.');
-						location.reload();
-					} else {
-						alert('프로젝트 승인 처리 실패하였습니다.');
+			if (result.isConfirmed) {
+			
+				$.ajax({
+					method: 'get',
+					url: "<c:url value='updateProjectStatus'/>",
+					data: {
+						project_idx: project_idx,
+						project_approve_status: project_approve_status
+					},
+					success: function(data){
+						
+						if(data.trim() == 'true') {
+							Swal.fire({
+							      icon: 'success',
+							      title: '프로젝트 반려처리 완료.',
+							      text: '프로젝트 상태가 성공적으로 변경되었습니다.',
+						    }).then(function(){
+							    location.reload();
+						    });
+						} else {
+							Swal.fire({
+							      icon: 'error',
+							      title: '프로젝트 반려처리 실패.',
+							      text: '프로젝트 상태 변경에 실패하였습니다.',
+						    });
+						}
+						
+					},
+					error: function(){
+						console.log('ajax 요청이 실패하였습니다!');	
 					}
-				},
-				error: function(){
-					console.log('ajax 요청이 실패하였습니다!');	
-				}
-			});
-		} else {
-			// 취소 선택 시 체크박스 해제
-			$('input[type=checkbox]').prop('checked', false);
-		}
-	}
+				});
+			} else {
+				// 취소 선택 시 체크박스 해제
+				$('input[type=checkbox]').prop('checked', false);
+			}
+		});
+	}	
 	</script>
 		
     <!-- bootstrap -->

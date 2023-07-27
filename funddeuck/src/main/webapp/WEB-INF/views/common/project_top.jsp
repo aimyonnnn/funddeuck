@@ -74,9 +74,9 @@
 	}
 	
 	// 나가기
-	function logout() {
-		let isLogout = confirm("정말 나가시겠습니까?");
-		if(isLogout) { location.href = "./"; }
+	function exit() {
+		let exit = confirm("정말 나가시겠습니까?");
+		if(exit) { location.href = "./"; }
 	}
 </script>
 	
@@ -89,7 +89,7 @@
 	    <div class="d-flex flex-row align-items-center">
 	    	<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#notifyModal">Message</button>
 		  	<a class="nav-link text-primary mx-4" href="admin">${sessionScope.sId}님</a>
-		  	<a class="nav-link text-primary me-4" href="javascript:logout()">나가기</a>
+		  	<a class="nav-link text-primary me-4" href="javascript:exit()">나가기</a>
 		  	<a class="nav-link py-0" href="confirmNotification">
 			    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bell" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 			    	<path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2z"/>
@@ -127,8 +127,12 @@
 					dataType: 'text',
 					success: function(data){
 						console.log(data);
-						if(data == 'true') { alert('메시지가 발송 되었습니다!'); }
-						socket.send(type + "," + target + "," + content + "," + url);
+						if(data == 'true') { 
+							alert('메시지가 발송 되었습니다!');
+							socket.send(type + "," + target + "," + content + "," + url);
+						} else {
+							alert('존재하지 않는 회원입니다.');
+						} 
 					}, error: function() {
 						alert("메시지 발송 실패!");
 					}

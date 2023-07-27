@@ -79,7 +79,8 @@ public class ProjectController {
 			// 관리자에게 승인 요청 toast 팝업 띄우기
 			// toast 클릭 시 관리자의 프로젝트 승인 페이지로 이동
 			String adminProjectUrl = 
-				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/funddeuck/adminProject";
+				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/test/adminProjectList";
+//				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/funddeuck/adminProjectList";
 			String notification = 
 					"<a href='" + adminProjectUrl + "' style='text-decoration: none; color: black;'>메이커님께서 프로젝트 승인을 요청하였습니다.</a>";
 			try {
