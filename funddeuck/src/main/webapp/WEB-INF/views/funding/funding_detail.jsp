@@ -19,6 +19,7 @@
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <%-- <script src="${pageContext.request.contextPath }/resources/js/payment.js"></script> --%>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/funding_detail.css">
 </head>
 <body>
 	<br>
@@ -264,66 +265,97 @@
 			<!-- 화면 클때 -->
 			<div class="col-4 d-none d-lg-block">
 				<!--메이커 프로필 영역-->
-				<div class="row p-3 border border-primary">
-					<div class="row text-start pb-3">
-						<span class="fs-5 fw-bold">메이커 프로필</span>
+				<div class="row p-3 border border-secondary-subtle shadow-sm">
+					<div class="row">
+						<span class="text-dark text-decoration-none fw-bold text-start pb-1" onclick="location.href='#'" style="cursor:pointer;">(주)XX북스
+						<button class="btn btn-outline-success rounded-0 btn-sm btn float-end">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+						</svg>팔로우</button>	
+						</span>
 					</div>
 					<div class="row">
 						<!-- 프로필 이미지 -->
-						<div class="col-lg-2">
+						<div class="col-lg-8">
 						<!-- 프로필 클릭시 메이커 새탭 이동-->
 							<a href="#" target="_blank">
-								<img src="https://cdn-icons-png.flaticon.com/512/3135/3135707.png" class="rounded-circle" alt="..." width="40px" height="40px">
-							</a>
+								<img src="https://cdn-icons-png.flaticon.com/512/3135/3135707.png" class="rounded-circle" alt="..." width="40px" height="40px"></a>
+							<small class="opacity-75">마지막 로그인</small>
+							<span><small class="fw-bold fw-bold">10시간 전</small></span>
 						</div>
+						<br>
+						<small class="text-start pb-3">필요한 것이 있다면 1:1 대화를 요청해주세요! -XX북스</small>
 						<!-- 메이커명-->
-						<div class="col text-lg-start p-2">
-							<span class="fs-5 fw-bold p-3">xxx메이커</span> <br>
-							&nbsp;&nbsp;<span class="fs-6 text-muted">xx시간 전 로그인</span>
-						</div>
 					</div>
 					<!-- 팔로우, 1:1문의 버튼-->
 					<div class="row">
-						<div class="col d-flex justify-content-center">
-							<button class="btn btn-primary me-2">팔로우</button>
-							<button class="btn btn-primary me-2">1:1문의</button>
-						</div>
+						<button class="btn btn-outline-success me-2 rounded-0 btn-block">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
+						<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+						<path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+						</svg>
+						문의하기</button>
 					</div>
 	      			<!-- 팔로우, 1:1문의 버튼 끝-->
 				</div>
 				<!--메이커 프로필 영역 끝-->
 				<!-- 리워드 선택 바-->
+				<div class="row">
+					<span class="fs-5 fw-bold p-3 text-start">리워드 선택</span>
+				</div>
 				<!--스크롤-->
-				<div class="row p-3 border border-success" style="overflow:auto;">
-					<div class="row text-start pb-3">
-						<span class="fs-5 fw-bold">리워드 선택</span>
-					</div>
-					<div class="row pb-3 d-flex justify-content-center">
-						<div class="card" style="width: 18rem;">
+				<div class="row" style="overflow:auto;">
+					<div class="row pb-3 d-flex text-start">
+						<div class="card">
 							<div class="card-body">
-								<h4 class="card-title">리워드명</h4>
-								<h4 class="card-title">XXXX원</h4>
-								<h6 class="card-subtitle mb-2 text-muted">xx명이 선택</h6>
-								<p class="card-text">
-									- 옵션1
-									- 옵션2
-								</p>
+								<span class="fs-4 card-title fw-bold">1000원 +</span><br>
+								<small class="card-text opacity-75">선물 없이 후원하기</small>
+							</div>
+							<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
+							<div>&nbsp;</div>
+							<a href="#" class="stretched-link"></a>
+						</div>
+					</div>
+				<c:forEach begin="1" end="6" step="1">
+					<div class="row pb-3 d-flex text-start">
+						<div class="card">
+							<div class="card-body">
+								<span class="card-subtitle mb-2 text-muted">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+								<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+								</svg>
+								<small>27명이 선택</small>
+								<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button">
+								155개 남음</a>
+								</span><br>
+								<span class="fs-4 card-title fw-bold">27,000원 +</span><br>
+								<small class="card-text opacity-75">한정판 다이어리 + 스티커 세트</small>
+								<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
+								<div>&nbsp;</div>
+								<a href="#" class="stretched-link"></a>
 							</div>
 						</div>
 					</div>
-					<div class="row pb-3 d-flex justify-content-center">
-						<div class="card" style="width: 18rem;">
+					<div class="row pb-3 d-flex text-start">
+						<div class="card">
 							<div class="card-body">
-								<h4 class="card-title">리워드명2</h4>
-								<h4 class="card-title">XXXX원</h4>
-								<h6 class="card-subtitle mb-2 text-muted">xx명이 선택</h6>
-								<p class="card-text">
-									- 옵션1
-									- 옵션2
-								</p>
+								<span class="card-subtitle mb-2 text-muted">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+								<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+								</svg>
+								<small>1829명이 선택</small>
+								<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button">
+								27개 남음</a>
+								</span><br>
+								<span class="fs-4 card-title fw-bold">43,000원 +</span><br>
+								<small class="card-text opacity-75">&lt;스파이더맨: 어크로스 더 유니버스&gt;아트북</small>
+								<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
+								<div>&nbsp;</div>
+								<a href="#" class="stretched-link"></a>
 							</div>
 						</div>
 					</div>
+				</c:forEach>
 				</div>
 				<!-- 리워드 선택 바 끝-->
 	
