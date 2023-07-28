@@ -77,6 +77,9 @@ public interface ProjectMapper {
 	// 전체 펀딩 프로젝트 목록 갯수 조회 요청
 	int selectProjectListCount(String searchType, String searchKeyword);
 
+	// 펀딩 프로젝트 탐색
+	List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit);
+
 	
 	
 	

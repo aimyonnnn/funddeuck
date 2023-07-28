@@ -239,6 +239,47 @@
 	    ORDER BY project_end_date
 	    LIMIT 10
 	</select>
+	
+	
+	<!-- 프로젝트 탐색 -->
+	<select id="getProjectList" resultType="com.itwillbs.test.vo.ProjectVO">
+		SELECT *
+			FROM project
+	</select>
+	
+	<!-- 프로젝트 수 조회  -->
+	<select id="selectProjectListCount" resultType="int">
+		SELECT COUNT(*)
+			FROM project
+	</select>
+
+	<!-- 프로젝트 추천순 조회 -->
+	<select id="selectProjectFavorScore" resultType="java.util.Map">
+		SELECT *
+			FROM project
+				ORDER BY project_favor DESC
+	</select>
+	
+	<!-- 프로젝트 공유순 조회 -->
+	<select id="selectProjectSharingScore" resultType="java.util.Map">
+		SELECT *
+			FROM project
+				ORDER BY project_sharingCount DESC	
+	</select>
+	
+	<!-- 프로젝트 모집금액순 조회 -->
+	<select id="selectProjectAmountScore" resultType="java.util.Map">
+		SELECT *
+			FROM project
+				ORDER BY project_now_amount DESC	
+	</select>
+	
+	<!-- 프로젝트 최신순 조회 -->
+	<select id="selectNewProject" resultType="java.util.Map">
+		SELECT *
+			FROM project
+				ORDER BY project_start_date DESC	
+	</select>
 
 </mapper>
 	
