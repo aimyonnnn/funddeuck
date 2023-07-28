@@ -75,7 +75,7 @@ public class ProjectController {
 	public String approvalRequest(@RequestParam int project_idx, HttpServletRequest request) {
 		System.out.println("approvalRequest - " + project_idx);
 		// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경!
-		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려
+		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 		// 관리자 페이지에서는 2-승인요청인것만 출력한다!
 		int updateCount = projectService.modifyStatus(project_idx);
 		if(updateCount > 0) {
@@ -83,6 +83,8 @@ public class ProjectController {
 			// toast 클릭 시 관리자의 프로젝트 승인 페이지로 이동
 			String adminProjectUrl = 
 				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/funddeuck/adminProject";
+//				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/test/adminProjectList";
+			
 			String notification = 
 					"<a href='" + adminProjectUrl + "' style='text-decoration: none; color: black;'>메이커님께서 프로젝트 승인을 요청하였습니다.</a>";
 			try {
@@ -616,15 +618,15 @@ public class ProjectController {
 	public Map<String, Object> shippingStatus(@RequestParam("project_idx") int project_idx) {
 		Map<String, Object> data = new HashMap<>();
 		
-		// ��ۻ�Ȳ ��ȸ
+		// 배송상황 조회
 		List<Map<String, Object>> deliveryStatus = paymentService.getDeliveryList(project_idx);
 		
-		// ȯ�ҽ��ο��� ��ȸ
+		// 환불승인여부 조회
 		List<Map<String, Object>> refundStatus = paymentService.getRefundList(project_idx);
 		
-		System.out.println("������Ʈ ��ȣ: " + project_idx);
-		System.out.println("��ۻ�Ȳ: " + deliveryStatus);
-		System.out.println("ȯ�ҽ��ο���: " + refundStatus);
+		System.out.println("프로젝트 번호: " + project_idx);
+		System.out.println("배송상황: " + deliveryStatus);
+		System.out.println("환불승인여부: " + refundStatus);
 		
 		data.put("deliveryStatus", deliveryStatus);
 		data.put("refundStatus", refundStatus);
@@ -658,6 +660,7 @@ public class ProjectController {
 		return "project/project_settlement";
 	}
 	
+	// 메이커 마이페이지
 	@GetMapping("mypage")
 	public String mypage() {
 		return "myPage";
