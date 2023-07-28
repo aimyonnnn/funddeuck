@@ -304,7 +304,7 @@
 					<span class="fs-5 fw-bold p-3 text-start">리워드 선택</span>
 				</div>
 				<!--스크롤-->
-				<div class="row" style="overflow:auto;">
+				<div class="row" id="scrollBar">
 					<div class="row pb-3 d-flex text-start">
 						<div class="card">
 							<div class="card-body">
