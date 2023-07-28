@@ -72,6 +72,40 @@
 			// 링크 클릭 시 발생하는 페이지 이동 차단
 	        event.preventDefault();
 		});
+		
+		// 목록 - Ajax 요청
+		$('.shipping-filter-item').on('click', function(event) {
+			event.preventDefault(); // 이벤트 방지 
+			
+			// 드롭다운 버튼 클릭 시 텍스트 활성화 
+		    var selectedDrop = $(this).text();
+		    $('#list-btn').text(selectedDrop);
+		    
+		    var project_idx = $("#project-btn").siblings(".dropdown-menu").find("a").data('id'); // 프로젝트 번호
+		    var filter = $(this).data('filter'); // 배송 상태
+		    var type = $(this).data('type'); // 환불 상태
+		    console.log(project_idx);
+		    console.log(filter);
+		    console.log(type);
+		    
+		    $.ajax({
+		    	url: "shippingList",
+		    	method: "POST",
+		    	data: {
+		    		project_idx: project_idx,
+		    		filter: filter,
+		    		type: type
+		    	},
+		    	dataType: "json",
+		    	success: function(data) {
+		    		
+		    	},
+		    	error: function() {
+		    		
+		    	}
+		    	
+		    });
+		});
 	});
 	
 	</script>
@@ -182,13 +216,13 @@
 										발송·배송 전체 관리
 									</button>
 									<ul class="dropdown-menu" aria-labelledby="list-btn">
-										<li><a class="dropdown-item" href="#">미발송</a></li>
-										<li><a class="dropdown-item" href="#">배송중</a></li>
-										<li><a class="dropdown-item" href="#">배송 완료</a></li>
+										<li><a class="dropdown-item shipping-filter-item" href="#" data-filter="1">미발송</a></li>
+										<li><a class="dropdown-item shipping-filter-item" href="#" data-filter="2" href="#">배송중</a></li>
+										<li><a class="dropdown-item shipping-filter-item" href="#" data-filter="3">배송 완료</a></li>
 										<li><hr class="dropdown-divider"></li>
-										<li><a class="dropdown-item" href="#">펀딩금 반환 신청</a></li>
-										<li><a class="dropdown-item" href="#">펀딩금 반환 신청 완료</a></li>
-										<li><a class="dropdown-item" href="#">펀딩금 반환 신청 거절</a></li>
+										<li><a class="dropdown-item shipping-filter-item" href="#" data-type="2">펀딩금 반환 신청</a></li>
+										<li><a class="dropdown-item shipping-filter-item" href="#" data-type="3">펀딩금 반환 신청 완료</a></li>
+										<li><a class="dropdown-item shipping-filter-item" href="#" data-type="4">펀딩금 반환 신청 거절</a></li>
 									</ul>
 								</div>
 							</div>

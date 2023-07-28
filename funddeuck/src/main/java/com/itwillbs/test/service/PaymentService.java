@@ -67,5 +67,15 @@ public class PaymentService {
 		return mapper.selectRefundList(project_idx);
 	}
 	
+	// delivery_status(배송상황)가 있을 때 목록 조회
+	public List<PaymentVO> getDeliveryAllList(int project_idx, String filter) {
+		return mapper.selectDeliveryAllList(project_idx, filter);
+	}
+	
+	// payment_confirm(환불승인여부)가 있을 때 목록 조회
+	public List<PaymentVO> getRefundAllList(int project_idx, String type) {
+		return mapper.selectRefundAllList(project_idx, type);
+	}
+	
 	
 }

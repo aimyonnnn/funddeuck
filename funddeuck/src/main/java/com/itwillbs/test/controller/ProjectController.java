@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -613,7 +614,7 @@ public class ProjectController {
 		return "project/project_shipping";
 	}
 	
-	// 서포터 관리 출력
+	// 발송·환불 관리 - 서포터 관리 출력
 	@ResponseBody
 	@PostMapping("shippingStatus")
 	public Map<String, Object> shippingStatus(@RequestParam("project_idx") int project_idx) {
@@ -632,6 +633,26 @@ public class ProjectController {
 		data.put("deliveryStatus", deliveryStatus);
 		data.put("refundStatus", refundStatus);
 		
+		return data;
+	}
+	
+	// 발송·환불 관리 - 목록 출력
+	@ResponseBody
+	@PostMapping("shippingList")
+	public List<PaymentVO> shippingList(@RequestParam int project_idx, 
+										@RequestParam(value="filter", required = false) String filter, 
+										@RequestParam(value="type", required = false) String type) {
+		List<PaymentVO> data = new ArrayList<>();
+		
+		if(filter != null) { // delivery_status(배송상황)가 있을 때 목록 조회
+			List<PaymentVO> deliveryAllList = paymentService.getDeliveryAllList(project_idx, filter);
+			data.addAll(deliveryAllList);
+		} else if(type != null) { // payment_confirm(환불승인여부)가 있을 때 목록 조회
+			List<PaymentVO> refundAllList = paymentService.getRefundAllList(project_idx, type);
+			data.addAll(refundAllList); 
+		}
+		
+		System.out.println("data : " + data);
 		return data;
 	}
 	

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.test.vo.PaymentVO;
 
@@ -49,6 +50,12 @@ public interface PaymentMapper {
 
 	// 환불승인여부 조회
 	List<Map<String, Object>> selectRefundList(int project_idx);
+
+	// delivery_status(배송상황)가 있을 때 목록 조회
+	List<PaymentVO> selectDeliveryAllList(@Param("project_idx") int project_idx, @Param("filter") String filter);
+
+	// payment_confirm(환불승인여부)가 있을 때 목록 조회
+	List<PaymentVO> selectRefundAllList(@Param("project_idx") int project_idx, @Param("type") String type);
 	
 	
 }

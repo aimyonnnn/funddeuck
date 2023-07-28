@@ -207,4 +207,24 @@
 			
 	</select>
 	
+	<!-- delivery_status(배송상황)가 있을 때 목록 조회 -->
+	<select id="selectDeliveryAllList" resultType="com.itwillbs.test.vo.PaymentVO">
+		SELECT *
+		  FROM payment p
+		  JOIN members m ON p.member_idx = m.member_idx
+		  JOIN reward r ON p.reward_idx = r.reward_idx
+		  WHERE p.project_idx = #{project_idx}
+		    AND p.delivery_status = #{filter}
+	</select>
+	
+	<!-- payment_confirm(환불승인여부)가 있을 때 목록 조회 -->
+	<select id="selectRefundAllList" resultType="com.itwillbs.test.vo.PaymentVO">
+		SELECT *
+		  FROM payment p
+		  JOIN members m ON p.member_idx = m.member_idx
+		  JOIN reward r ON p.reward_idx = r.reward_idx
+		  WHERE p.project_idx = #{project_idx}
+		    AND p.payment_confirm = #{type}
+	</select>
+	
 </mapper>
