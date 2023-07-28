@@ -27,8 +27,8 @@
         $('.datepicker').datepicker();
     });
 
-    <!-- 시작일, 종료일 => 지정 가능 -->
-    <!-- maker_idx(파라미터)를 받아서 차트를 불러옴 -->
+    // 시작일, 종료일 => 지정 가능
+    // maker_idx(파라미터)를 받아서 차트를 불러옴
     $(() => {
         $('.datepicker').datepicker();
 
@@ -59,20 +59,20 @@
 
     let updateChart = (data, chartType) => {
         // 응답 데이터에서 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 추출
-        let { labels, dailyPaymentAmounts, acmlPaymentAmounts, dailySupporterCounts, acmlSupporterCounts } = data;
+        let { labels, dailyPaymentAmounts, cumulativePaymentAmounts, dailySupporterCounts, cumulativeSupporterCounts } = data;
         // 차트 컨테이너 요소
         let chartContainer = document.getElementById('chartContainer');
         // 기존의 차트 캔버스를 제거
         chartContainer.innerHTML = '<canvas id="myChart2"></canvas>';
         // 새로운 차트를 위한 캔버스 요소
         let ctx2 = document.getElementById('myChart2').getContext('2d');
-        // 기존의 차트 객체가 존재하는 경우 제거함
+     	// 기존의 차트 객체가 존재하는 경우 제거함
         if (myChart2 && myChart2 instanceof Chart) {
             myChart2.destroy();
         }
         // 새로운 차트 객체를 생성
         myChart2 = new Chart(ctx2, {
-//                 type: 'bar', // 바 차트로 초기 설정
+//             type: 'bar', // 바 차트로 초기 설정
             type: chartType, // 바 차트로 초기 설정
             data: {
                 labels, // 라벨
@@ -89,7 +89,7 @@
                     },
                     {
                         label: '누적 결제 금액',
-                        data: acmlPaymentAmounts, // 누적 결제 금액 설정
+                        data: cumulativePaymentAmounts, // 누적 결제 금액 설정
                         type: 'line', // 라인 차트로 설정
                         backgroundColor: 'rgb(135, 206, 235)',
                         borderColor: 'rgb(135, 206, 235)',
@@ -99,10 +99,10 @@
                     },
                     {
                         label: '누적 회원 수',
-                        data: acmlSupporterCounts, // 누적 회원 수 설정
+                        data: cumulativeSupporterCounts, // 누적 회원 수 설정
                         type: chartType,
-                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                        borderColor: 'rgba(153, 102, 255, 0.2)',
+                        backgroundColor: 'orange',
+                        borderColor: 'orange',
                         borderWidth: 4,
                         yAxisID: 'y-axis-2', // 오른쪽 축에 연결될 Y축 ID
                     }
@@ -133,6 +133,7 @@
         });
     };
 	</script>
+
 	<style>
 	  /* 아이콘의 크기를 2배로 설정 */
 	  .las.la-chart-line {
@@ -148,6 +149,7 @@
 </head>
 <body>
 	<jsp:include page="../common/project_top.jsp" />
+
 	<main id="main">
 		<div class="containerCSS">
 
@@ -168,7 +170,7 @@
 							<li><a href="projectReward">리워드 설계</a></li>
 						</ul>
 					</li>
-					<li><a href="projectStatus?maker_idx=${param.maker_idx}&project_idx=${param.project_idx}" id="active-tab">프로젝트 현황</a></li>
+					<li><a href="projectStatus?maker_idx=${param.maker_idx}" id="active-tab">프로젝트 현황</a></li>
 					<li><a href="projectShipping">발송·환불 관리</a></li>
 					<li><a href="projectSettlement">수수료·정산 관리</a></li>
 				</ul>
@@ -199,7 +201,7 @@
 												</h1>
 											</div>
 											<div class="">
-												<i class="las la-chart-line" style="color: rgba(255, 99, 132, 1);"></i>
+												<i class="las la-chart-line" style="color: red;"></i>
 											</div>
 										</div>
 									</div>
@@ -215,7 +217,7 @@
 												</h1>
 											</div>
 											<div class="">
-												<i class="las la-chart-line" style="color: rgb(135, 206, 235);"></i>
+												<i class="las la-chart-line"></i>
 											</div>
 										</div>
 									</div>
@@ -231,7 +233,7 @@
 												</h1>
 											</div>
 											<div class="">
-												<i class="las la-chart-line" style="color: rgba(153, 102, 255, 0.2);"></i>
+												<i class="las la-chart-line" style="color: green;"></i>
 											</div>
 										</div>
 									</div>
@@ -279,7 +281,7 @@
 												</h1>
 											</div>
 											<div class="">
-												<i class="las la-chart-line" style="color: rgba(255, 99, 132, 1);"></i>
+												<i class="las la-chart-line" style="color: red;"></i>
 											</div>
 										</div>
 									</div>
@@ -295,7 +297,7 @@
 												</h1>
 											</div>
 											<div class="">
-												<i class="las la-chart-line" style="color: rgb(135, 206, 235);"></i>
+												<i class="las la-chart-line"></i>
 											</div>
 										</div>
 									</div>
@@ -311,13 +313,28 @@
 												</h1>
 											</div>
 											<div class="">
-												<i class="las la-chart-line" style="color: rgba(75, 192, 192, 0.2);"></i>
+												<i class="las la-chart-line" style="color: green;"></i>
 											</div>
 										</div>
 									</div>
 								</div>
 
 							</div>
+						</div>
+
+						<!-- 날짜 선택 -->
+						<div class="d-flex flex-row justify-content-end">
+							<input class="datepicker" id="startDate2" placeholder="시작 날짜">
+							<input class="datepicker mx-2" id="endDate2" placeholder="끝 날짜">
+							<select class="datepicker" id="chartType2">
+								<option value="">선택</option>
+								<option value="bar">bar</option>
+								<option value="line">line</option>
+								<option value="radar">Radar</option>
+								<option value="polarArea">Polar Area</option>
+								<option value="doughnut">Doughnut</option>
+							</select>
+							<button class="datepicker-button mx-2" id="updateButton2">조회</button>
 						</div>
 
 						<!-- myChart3 -->
@@ -336,49 +353,49 @@
 	<!-- 페이지 로드 시 출력되는 차트 -->
 	<!-- 메이커의 전체 프로젝트(통합) 차트 -->
 	<script type="text/javascript">
-    let payJson = JSON.parse('${payListAmount}');
-    let supporterJson = JSON.parse('${supporterListCount}');
+    var payJson = JSON.parse('${payListAmount}');
+    var supporterJson = JSON.parse('${supporterListCount}');
 
-    let labelList = [];
-    let dailyAmountList = []; // 일별 결제 금액
-    let acmlAmountList = []; // 누적 결제 금액
-    let acmlAmount = 0; // 누적 결제 금액 초기값
+    var labelList = [];
+    var dailyAmountList = []; // 일별 결제 금액
+    var cumulativeAmountList = []; // 누적 결제 금액
+    var cumulativeAmount = 0; // 누적 결제 금액 초기값
 
-    let acmlSupporterCounts = []; // 누적 서포터 수 리스트
-    let acmlSupporterCount = 0; // 누적 서포터 수 초기값
+    var cumulativeSupporterCounts = []; // 누적 서포터 수 리스트
+    var cumulativeSupporterCount = 0; // 누적 서포터 수 초기값
 
     // 결제 금액 구하기
-    for (let i = 0; i < payJson.length; i++) {
-        let d = payJson[i];
+    for (var i = 0; i < payJson.length; i++) {
+        var d = payJson[i];
         labelList.push(d.date); // 날짜 라벨
         dailyAmountList.push(d.amount); // 일별 결제 금액 추가
-        acmlAmount += d.amount; // 누적 결제 금액
-        acmlAmountList.push(acmlAmount); // 누적 결제 금액 추가
+        cumulativeAmount += d.amount; // 누적 결제 금액
+        cumulativeAmountList.push(cumulativeAmount); // 누적 결제 금액 추가
     }
 
-    // 누적 서포터 수 구하기
-    for (let i = 0; i < supporterJson.length; i++) {
-        let supporter = supporterJson[i];
-        acmlSupporterCount += supporter.supporterCount; // 누적 서포터 수 갱신
-        acmlSupporterCounts.push(acmlSupporterCount); // 누적 서포터 수 추가
+ 	// 누적 서포터 수 구하기
+    for (var i = 0; i < supporterJson.length; i++) {
+        var supporter = supporterJson[i];
+        cumulativeSupporterCount += supporter.supporterCount; // 누적 서포터 수 갱신
+        cumulativeSupporterCounts.push(cumulativeSupporterCount); // 누적 서포터 수 추가
     }
-
-    // 누락된 데이터 채우기
-    for (let i = 1; i < labelList.length; i++) {
+ 	
+ 	// 누락된 데이터 채우기
+    for (var i = 1; i < labelList.length; i++) {
         // 결제 금액의 누적 값 채우기
         if (dailyAmountList[i] === undefined) {
             dailyAmountList[i] = dailyAmountList[i - 1];
-            acmlAmountList[i] = acmlAmountList[i - 1];
+            cumulativeAmountList[i] = cumulativeAmountList[i - 1];
         }
 
         // 누적 서포터 수 채우기
-        if (acmlSupporterCounts[i] === undefined) {
-            acmlSupporterCounts[i] = acmlSupporterCounts[i - 1];
+        if (cumulativeSupporterCounts[i] === undefined) {
+            cumulativeSupporterCounts[i] = cumulativeSupporterCounts[i - 1];
         }
     }
 
     // 결제 금액과 누적 서포터 수 데이터 설정
-    let chartData = {
+    var chartData = {
         labels: labelList,
         datasets: [
             {
@@ -393,7 +410,7 @@
             },
             {
                 label: '누적 결제 금액',
-                data: acmlAmountList,
+                data: cumulativeAmountList,
                 backgroundColor: 'rgb(135, 206, 235)',
                 borderColor: 'rgb(135, 206, 235)',
                 borderWidth: 4,
@@ -403,9 +420,9 @@
             },
             {
                 label: '누적 서포터 수',
-                data: acmlSupporterCounts,
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                borderColor: 'rgba(153, 102, 255, 0.2)',
+                data: cumulativeSupporterCounts,
+                backgroundColor: 'orange',
+                borderColor: 'orange',
                 borderWidth: 4,
                 yAxisID: 'y-axis-2', // 오른쪽 축에 연결될 Y축 ID
                 type: 'bar', // bar 차트로 설정
@@ -447,57 +464,57 @@
 	
 	<!-- 메이커의 프로젝트별 차트 -->
 	<script type="text/javascript">
-    let pPayData = JSON.parse('${projectPayListAmount}');
-    let prSupporterData = JSON.parse('${projectSupporterListCount}');
-    let pTotalAmount = ${projectTotalAmount};
-    let pTodayAmount = ${projectTodayAmount};
-    let pTotalSupporterCount = ${projectTotalSupporterCount};
+    var projectPayJson = JSON.parse('${projectPayListAmount}');
+    var projectSupporterJson = JSON.parse('${projectSupporterListCount}');
+    var projectTotalAmount = ${projectTotalAmount};
+    var projectTodayAmount = ${projectTodayAmount};
+    var projectTotalSupporterCount = ${projectTotalSupporterCount};
 
-    let pLabelList = [];
-    let pDailyAmountList = [];
-    let pAcmlAmountList = [];
-    let pAcmlAmount = 0;
+    var projectLabelList = [];
+    var projectDailyAmountList = [];
+    var projectCumulativeAmountList = [];
+    var projectCumulativeAmount = 0;
 
-    let pAcmlSupporterCounts = [];
-    let pAcmlSupporterCount = 0;
+    var projectCumulativeSupporterCounts = [];
+    var projectCumulativeSupporterCount = 0;
 
     // 결제 금액 구하기
-    for (let i = 0; i < pPayData.length; i++) {
-        let pData = pPayData[i];
-        pLabelList.push(pData.date); // 날짜 라벨
-        pDailyAmountList.push(pData.amount); // 일별 결제 금액 추가
-        pAcmlAmount += pData.amount; // 누적 결제 금액
-        pAcmlAmountList.push(pAcmlAmount); // 누적 결제 금액 추가
+    for (var i = 0; i < projectPayJson.length; i++) {
+        var d = projectPayJson[i];
+        projectLabelList.push(d.date); // 날짜 라벨
+        projectDailyAmountList.push(d.amount); // 일별 결제 금액 추가
+        projectCumulativeAmount += d.amount; // 누적 결제 금액
+        projectCumulativeAmountList.push(projectCumulativeAmount); // 누적 결제 금액 추가
     }
 
     // 누적 서포터 수 구하기
-    for (let i = 0; i < prSupporterData.length; i++) {
-        let supporter = prSupporterData[i];
-        pAcmlSupporterCount += supporter.projectSupporterCount; // 누적 서포터 수 갱신
-        pAcmlSupporterCounts.push(pAcmlSupporterCount); // 누적 서포터 수 추가
+    for (var i = 0; i < projectSupporterJson.length; i++) {
+        var supporter = projectSupporterJson[i];
+        projectCumulativeSupporterCount += supporter.projectSupporterCount; // 누적 서포터 수 갱신
+        projectCumulativeSupporterCounts.push(projectCumulativeSupporterCount); // 누적 서포터 수 추가
     }
 
     // 누락된 데이터 채우기
-    for (let i = 1; i < pLabelList.length; i++) {
+    for (var i = 1; i < projectLabelList.length; i++) {
         // 결제 금액의 누적 값 채우기
-        if (pDailyAmountList[i] === undefined) {
-            pDailyAmountList[i] = pDailyAmountList[i - 1];
-            pAcmlAmountList[i] = pAcmlAmountList[i - 1];
+        if (projectDailyAmountList[i] === undefined) {
+            projectDailyAmountList[i] = projectDailyAmountList[i - 1];
+            projectCumulativeAmountList[i] = projectCumulativeAmountList[i - 1];
         }
 
         // 누적 서포터 수 채우기
-        if (pAcmlSupporterCounts[i] === undefined) {
-            pAcmlSupporterCounts[i] = pAcmlSupporterCounts[i - 1];
+        if (projectCumulativeSupporterCounts[i] === undefined) {
+            projectCumulativeSupporterCounts[i] = projectCumulativeSupporterCounts[i - 1];
         }
     }
-
+	
     // 결제 금액과 누적 서포터 수 데이터 설정
-    let projectChartData = {
-        labels: pLabelList,
+    var projectChartData = {
+        labels: projectLabelList,
         datasets: [
             {
                 label: '일별 결제 금액',
-                data: pDailyAmountList,
+                data: projectDailyAmountList,
                 backgroundColor: 'rgba(255, 99, 132, 1)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 4,
@@ -507,7 +524,7 @@
             },
             {
                 label: '누적 결제 금액',
-                data: pAcmlAmountList,
+                data: projectCumulativeAmountList,
                 backgroundColor: 'rgb(135, 206, 235)',
                 borderColor: 'rgb(135, 206, 235)',
                 borderWidth: 4,
@@ -517,9 +534,9 @@
             },
             {
                 label: '누적 서포터 수',
-                data: pAcmlSupporterCounts,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 0.2)',
+                data: projectCumulativeSupporterCounts,
+                backgroundColor: 'orange',
+                borderColor: 'orange',
                 borderWidth: 4,
                 yAxisID: 'y-axis-2', // 오른쪽 축에 연결될 Y축 ID
                 type: 'bar', // bar 차트로 설정
@@ -529,34 +546,34 @@
 
     // 차트 생성
     $(() => {
-        let ctx3 = document.getElementById('myChart3').getContext('2d');
-        let myChart3 = new Chart(ctx3, {
-            type: 'bar', // 바 차트로 초기 설정
-            data: projectChartData,
-            options: {
-                title: {
-                    display: true,
-                    text: '프로젝트별 결제 금액과 누적 서포터 수 데이터' // 차트 제목
-                },
-                scales: {
-                    yAxes: [
-                        {
-                            type: 'linear',
-                            display: true,
-                            position: 'left',
-                            id: 'y-axis-1', // 왼쪽 Y축 ID
-                        },
-                        {
-                            type: 'linear',
-                            display: true,
-                            position: 'right',
-                            id: 'y-axis-2', // 오른쪽 Y축 ID
-                        },
-                    ],
-                },
-            },
-        });
-    });
+	    let ctx3 = document.getElementById('myChart3').getContext('2d');
+	    let myChart3 = new Chart(ctx3, {
+	        type: 'bar', // 바 차트로 초기 설정
+	        data: projectChartData,
+	        options: {
+	            title: {
+	                display: true,
+	                text: '프로젝트별 결제 금액과 누적 서포터 수 데이터' // 차트 제목
+	            },
+	            scales: {
+	                yAxes: [
+	                    {
+	                        type: 'linear',
+	                        display: true,
+	                        position: 'left',
+	                        id: 'y-axis-1', // 왼쪽 Y축 ID
+	                    },
+	                    {
+	                        type: 'linear',
+	                        display: true,
+	                        position: 'right',
+	                        id: 'y-axis-2', // 오른쪽 Y축 ID
+	                    },
+	                ],
+	            },
+	        },
+	    });
+	});    
 	</script>
 
 	<!-- js -->

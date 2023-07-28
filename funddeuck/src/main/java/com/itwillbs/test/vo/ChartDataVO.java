@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 public class ChartDataVO {
     private List<String> labels;
     private List<Integer> dailyPaymentAmounts;
-    private List<Integer> cumulativePaymentAmounts;
+    private List<Integer> acmlPaymentAmounts;
     private List<Integer> dailySupporterCounts;
-    private List<Integer> cumulativeSupporterCounts;
+    private List<Integer> acmlSupporterCounts;
 }
+
 

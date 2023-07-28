@@ -240,7 +240,6 @@
 	    LIMIT 10
 	</select>
 	
-	
 	<!-- 프로젝트 탐색 -->
 	<select id="getProjectList" resultType="com.itwillbs.test.vo.ProjectVO">
 		SELECT *
@@ -280,7 +279,15 @@
 			FROM project
 				ORDER BY project_start_date DESC	
 	</select>
-
+	
+	<!-- 메이커와 관련된 프로젝트 정보를 조회 -->
+	<select id="selectProjectsByMakerId">
+		select *
+			from project
+		where
+			maker_idx = #{maker_idx}	
+	</select>
+	
 </mapper>
 	
 	

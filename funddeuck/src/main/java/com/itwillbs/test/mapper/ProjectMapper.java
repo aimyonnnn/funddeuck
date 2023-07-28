@@ -79,6 +79,10 @@ public interface ProjectMapper {
 
 	// 펀딩 프로젝트 탐색
 	List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit);
+	
+	// 메이커와 관련된 프로젝트 정보를 조회
+	List<ProjectVO> selectProjectsByMakerId(int maker_idx);
+
 
 	
 	

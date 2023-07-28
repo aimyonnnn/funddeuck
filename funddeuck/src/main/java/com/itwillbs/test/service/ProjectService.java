@@ -103,7 +103,10 @@ public class ProjectService {
 	public int getProjectListCount(String searchType, String searchKeyword) {
 		return mapper.selectProjectListCount(searchType, searchKeyword);
 	}
-	
+	// 메이커와 관련된 프로젝트 정보를 조회
+	public List<ProjectVO> getProjectsByMakerId(int maker_idx) {
+		return mapper.selectProjectsByMakerId(maker_idx);
+	}
 	
 	
 }

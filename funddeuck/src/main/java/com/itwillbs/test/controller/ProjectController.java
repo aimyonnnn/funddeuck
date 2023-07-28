@@ -679,133 +679,200 @@ public class ProjectController {
 			@RequestParam(required = false) Integer maker_idx, 
 			@RequestParam(required = false) Integer project_idx, 
 			HttpSession session, Model model) {
-	System.out.println("projectStatus");
-
-	// 메이커별 지난 7일간 결제 금액 조회
-	List<PaymentVO> payList = paymentService.getPaymentListAmountBy7Day(maker_idx);
-	// 메이커별 지난 7일간 서포터 수 조회
-	List<PaymentVO> supporterList = paymentService.getSupporterListCountBy7Day(maker_idx);
-
-	// Gson 객체 생성
-	Gson gson = new Gson();
-
-	// JsonArray 객체 생성
-	JsonArray payArray = new JsonArray(); // 결제 금액
-	JsonArray supporterArray = new JsonArray(); // 서포터 수
-
-	// 변수 초기화
-	int totalAmount = 0; // 누적 결제 금액
-	int todayAmount = 0; // 오늘 결제 금액
-
-	// payList에서 하나씩 꺼내서 JsonObject를 생성하고 payArray에 추가
-	for (PaymentVO pay : payList) {
-	    JsonObject object = new JsonObject();
-	    object.addProperty("date", pay.getDate());
-	    object.addProperty("amount", pay.getAmount());
-	    payArray.add(object);
-
-	    // 누적 결제 금액 계산
-	    totalAmount += pay.getAmount();
-
-	    // 오늘 결제 금액 계산 (오늘 날짜와 일치하는 경우)
-	    LocalDate today = LocalDate.now();
-	    LocalDate paymentDate = LocalDate.parse(pay.getDate());
-	    if (today.isEqual(paymentDate)) {
-	        todayAmount += pay.getAmount();
-	    }
-	}
-
-	// supporterList에서 하나씩 꺼내서 JsonObject를 생성하고 supporterArray에 추가
-	for (PaymentVO supporter : supporterList) {
-	    JsonObject object = new JsonObject();
-	    object.addProperty("date", supporter.getDate());
-	    object.addProperty("supporterCount", supporter.getCount());
-	    supporterArray.add(object);
-	}
-
-	// json 문자열로 변환 후 Model에 저장
-	String payListAmount = gson.toJson(payArray);
-	String supporterListCount = gson.toJson(supporterArray);
-	model.addAttribute("payListAmount", payListAmount);
-	model.addAttribute("todayAmount", todayAmount); // 오늘 결제 금액
-	model.addAttribute("totalAmount", totalAmount); // 누적 결제 금액
-	model.addAttribute("supporterListCount", supporterListCount); // 지난 7일간 서포터 수
+		
+		// ================================ 세션 차단 ================================
+		
+		// 세션 아이디가 존재하지 않을 때 
+		String sId = (String) session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "fail_back";
+		}
+		
+		// ================================ 메이커의 전체 프로젝트(통합) 차트 출력 ================================
+		
+		
+		// 메이커 지난 7일간 결제 금액 조회
+		List<PaymentVO> payList = paymentService.getPaymentListAmountBy7Day(maker_idx);
+		// 메이커 지난 7일간 서포터 수 조회
+		List<PaymentVO> supporterList = paymentService.getSupporterListCountBy7Day(maker_idx);
 	
-	// ==============================================
+		// Gson 객체 생성
+		Gson gson = new Gson();
 	
-	// 프로젝트별 지난 7일간 결제 금액 조회
-	List<PaymentVO> projectPayList = paymentService.getProjectDailyPayment(project_idx);
-	// 프로젝트별 지난 7일간 서포터 수 조회
-	List<PaymentVO> projectSupporterList = paymentService.getProjectSupporterCount(project_idx);
-	// 차트 출력 예정
+		// JsonArray 객체 생성
+		JsonArray payArray = new JsonArray(); // 결제 금액
+		JsonArray supporterArray = new JsonArray(); // 서포터 수
 	
+		// 변수 초기화
+		int totalAmount = 0; // 누적 결제 금액
+		int todayAmount = 0; // 오늘 결제 금액
+		int totalSupporterCount = 0; // 메이커의 지난 7일간 누적 서포터 수
 	
-	return "project/project_status";
+		// payList에서 하나씩 꺼내서 JsonObject를 생성하고 payArray에 추가
+		for (PaymentVO pay : payList) {
+		    JsonObject object = new JsonObject();
+		    object.addProperty("date", pay.getDate());
+		    object.addProperty("amount", pay.getAmount());
+		    payArray.add(object);
+	
+		    // 누적 결제 금액 계산
+		    totalAmount += pay.getAmount();
+	
+		    // 오늘 결제 금액 계산 (오늘 날짜와 일치하는 경우)
+		    LocalDate today = LocalDate.now();
+		    LocalDate paymentDate = LocalDate.parse(pay.getDate());
+		    if (today.isEqual(paymentDate)) {
+		        todayAmount += pay.getAmount();
+		    }
+		}
+	
+		// supporterList에서 하나씩 꺼내서 JsonObject를 생성하고 supporterArray에 추가
+		for (PaymentVO supporter : supporterList) {
+		    JsonObject object = new JsonObject();
+		    object.addProperty("date", supporter.getDate());
+		    object.addProperty("supporterCount", supporter.getCount());
+		    supporterArray.add(object);
+		    
+		    // 메이커별 지난 7일간 누적 서포터 수 계산하여 더해줌
+	        totalSupporterCount += supporter.getCount();
+		}
+	
+		// json 문자열로 변환 후 Model에 저장
+		String payListAmount = gson.toJson(payArray);
+		String supporterListCount = gson.toJson(supporterArray);
+		model.addAttribute("payListAmount", payListAmount);
+		model.addAttribute("supporterListCount", supporterListCount);
+	    model.addAttribute("totalSupporterCount", totalSupporterCount); // 메이커의 지난 7일간 누적 서포터 수
+		model.addAttribute("todayAmount", todayAmount); // 오늘 결제 금액
+		model.addAttribute("totalAmount", totalAmount); // 누적 결제 금액
+		
+		
+		
+		// ================================ 메이커의 프로젝트별 차트 출력 ================================
+		
+		
+		// 메이커의 프로젝트별 차트 출력(메이커는 여러개의 프로젝트를 생성할 수 있음)
+		// 프로젝트별 지난 7일간 결제 금액 조회
+		List<PaymentVO> projectPayList = paymentService.getProjectDailyPayment(project_idx);
+		// 프로젝트별 지난 7일간 서포터 수 조회
+		List<PaymentVO> projectSupporterList = paymentService.getProjectSupporterCount(project_idx);
+		
+		// Gson 객체 생성
+		Gson gson2 = new Gson();
+		
+		// JsonArray 객체 생성
+		JsonArray projectPayListArray = new JsonArray(); // 결제 금액
+		JsonArray projectSupporterListArray = new JsonArray(); // 서포터 수
+		
+		// 변수 초기화
+		int projectTotalAmount = 0; // 누적 결제 금액
+		int projectTodayAmount = 0; // 오늘 결제 금액
+		int projectTotalSupporterCount = 0; // 프로젝트별 지난 7일간 누적 서포터 수
+		
+		// projectPayList에서 하나씩 꺼내서 JsonObject를 생성하고 projectPayListArray에 추가
+		for(PaymentVO pay : projectPayList) {
+			JsonObject object = new JsonObject();
+			object.addProperty("date", pay.getDate());
+			object.addProperty("amount", pay.getAmount());
+			projectPayListArray.add(object);
+			
+			// 누적 결제 금액 계산
+			projectTotalAmount += pay.getAmount();
+			
+			// 오늘 결제 금액 계산 (오늘 날짜와 일치하는 경우)
+			LocalDate today = LocalDate.now();
+			LocalDate paymentDate = LocalDate.parse(pay.getDate());
+			if(today.isEqual(paymentDate)) {
+				projectTodayAmount += pay.getAmount();
+			}
+		}
+				
+		// projectSupporterList에서 하나씩 꺼내서 JsonObject를 생성하고 projectSupporterListArray에 추가
+		for(PaymentVO ps : projectSupporterList) {
+			JsonObject object = new JsonObject();
+			object.addProperty("date", ps.getDate());
+			object.addProperty("projectSupporterCount", ps.getCount());
+			projectSupporterListArray.add(object);
+			
+			projectTotalSupporterCount += ps.getCount();
+		}
+		
+		// json 문자열로 변환 후 Model에 저장
+		String projectPayListAmount = gson2.toJson(projectPayListArray);
+		String projectSupporterListCount = gson2.toJson(projectSupporterListArray);
+		model.addAttribute("projectPayListAmount", projectPayListAmount);
+		model.addAttribute("projectSupporterListCount", projectSupporterListCount);
+		model.addAttribute("projectTotalAmount", projectTotalAmount); // 누적 결제 금액
+		model.addAttribute("projectTodayAmount", projectTodayAmount); // 오늘 결제 금액
+		model.addAttribute("projectTotalSupporterCount", projectTotalSupporterCount); // 프로젝트별 지난 7일간 누적 서포터 수
+	
+		return "project/project_status";
 
 	}
 		
 	// 시작일, 종료일 => 지정 가능
 	// maker_idx(파라미터)를 받아서 차트를 불러옴
 	@GetMapping("/chartData")
-    @ResponseBody
-    public ChartDataVO getChartData(
-		@RequestParam String startDate, @RequestParam String endDate, @RequestParam("maker_idx") int maker_idx, Model model) {
-    // 날짜 형식을 지정하는 DateTimeFormatter 객체 생성
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	@ResponseBody
+	public ChartDataVO getChartData(
+	    @RequestParam String startDate, @RequestParam String endDate, @RequestParam("maker_idx") int maker_idx, Model model) {
+	    // 날짜 형식을 지정하는 DateTimeFormatter 객체 생성
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    // 시작일과 종료일을 파싱하여 LocalDate 객체로 변환
-    LocalDate parsedStartDate = LocalDate.parse(startDate, formatter);
-    LocalDate parsedEndDate = LocalDate.parse(endDate, formatter);
-    System.out.println("parsedStartDate : " + parsedStartDate);
-    System.out.println("parsedEndDate : " + parsedEndDate);
-    System.out.println("메이커 번호 : " + maker_idx);
+	    // 시작일과 종료일을 파싱하여 LocalDate 객체로 변환
+	    LocalDate parsedStartDate = LocalDate.parse(startDate, formatter);
+	    LocalDate parsedEndDate = LocalDate.parse(endDate, formatter);
+	    System.out.println("parsedStartDate : " + parsedStartDate);
+	    System.out.println("parsedEndDate : " + parsedEndDate);
+	    System.out.println("메이커 번호 : " + maker_idx);
 
-    // 메이커별 결제 금액 조회
-    List<PaymentVO> paymentList = paymentService.getPaymentListCountByDay(parsedStartDate, parsedEndDate, maker_idx);
+	    // 메이커별 결제 금액 조회
+	    List<PaymentVO> paymentList = paymentService.getPaymentListCountByDay(parsedStartDate, parsedEndDate, maker_idx);
 
-    // 메이커별 서포터 수 조회
-    List<PaymentVO> supporterList = paymentService.getSupporterListCountByDay(parsedStartDate, parsedEndDate, maker_idx);
+	    // 메이커별 서포터 수 조회
+	    List<PaymentVO> supporterList = paymentService.getSupporterListCountByDay(parsedStartDate, parsedEndDate, maker_idx);
 
-    // 차트에 사용될 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 저장할 리스트 초기화
-    List<String> labels = new LinkedList<>();
-    List<Integer> dailyPaymentAmounts = new LinkedList<>();
-    List<Integer> cumulativePaymentAmounts = new LinkedList<>();
-    List<Integer> dailySupporterCounts = new LinkedList<>();
-    List<Integer> cumulativeSupporterCounts = new LinkedList<>();
+	    // 차트에 사용될 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 저장할 리스트 초기화
+	    List<String> labels = new LinkedList<>();
+	    List<Integer> dailyPaymentAmounts = new LinkedList<>();
+	    List<Integer> acmlPaymentAmounts = new LinkedList<>();
+	    List<Integer> dailySupporterCounts = new LinkedList<>();
+	    List<Integer> acmlSupporterCounts = new LinkedList<>();
 
-    int cumulativePaymentAmount = 0;
-    int cumulativeSupporterCount = 0;
+	    int acmlPaymentAmount = 0;
+	    int acmlSupporterCount = 0;
 
-    // paymentList에서 하나씩 꺼내면서 리스트에 저장
-    for (PaymentVO payment : paymentList) {
-        String dateString = payment.getDate(); // 변경된 컬럼명인 'date'를 사용
-        labels.add(dateString); // 라벨에 날짜 추가
-        cumulativePaymentAmount += payment.getAmount(); // 누적 결제 금액 계산
-        dailyPaymentAmounts.add(payment.getAmount()); // 일별 결제 금액 추가
-        cumulativePaymentAmounts.add(cumulativePaymentAmount); // 누적 결제 금액 추가
-    }
+	    // paymentList에서 하나씩 꺼내면서 리스트에 저장
+	    for (PaymentVO payment : paymentList) {
+	        String dateString = payment.getDate(); // 변경된 컬럼명인 'date'를 사용
+	        labels.add(dateString); // 라벨에 날짜 추가
+	        acmlPaymentAmount += payment.getAmount(); // 누적 결제 금액 계산
+	        dailyPaymentAmounts.add(payment.getAmount()); // 일별 결제 금액 추가
+	        acmlPaymentAmounts.add(acmlPaymentAmount); // 누적 결제 금액 추가
+	    }
 
-    int supporterIndex = 0; // 서포터 수 데이터 인덱스
+	    int supporterIndex = 0; // 서포터 수 데이터 인덱스
 
-    for (String label : labels) {
-        if (supporterIndex < supporterList.size()) {
-            PaymentVO supporterData = supporterList.get(supporterIndex);
-            String dateString = supporterData.getDate(); // 변경된 컬럼명인 'date'를 사용
+	    for (String label : labels) {
+	        if (supporterIndex < supporterList.size()) {
+	            PaymentVO supporterData = supporterList.get(supporterIndex);
+	            String dateString = supporterData.getDate(); // 변경된 컬럼명인 'date'를 사용
 
-            if (label.equals(dateString)) {
-                cumulativeSupporterCount += supporterData.getCount(); // 누적 서포터 수 갱신
-                cumulativeSupporterCounts.add(cumulativeSupporterCount); // 누적 서포터 수 추가
-                dailySupporterCounts.add(supporterData.getCount()); // 일별 서포터 수 추가
-                supporterIndex++; // 다음 서포터 수 데이터로 이동
-                continue;
-            }
-        }
-        dailySupporterCounts.add(0); // 누락된 날짜에 대해 0으로 처리된 일별 서포터 수 추가
-        cumulativeSupporterCounts.add(cumulativeSupporterCount); // 이전의 누적 서포터 수 추가 (이전 데이터를 그대로 사용)
-    }
+	            if (label.equals(dateString)) {
+	                acmlSupporterCount += supporterData.getCount(); // 누적 서포터 수 갱신
+	                acmlSupporterCounts.add(acmlSupporterCount); // 누적 서포터 수 추가
+	                dailySupporterCounts.add(supporterData.getCount()); // 일별 서포터 수 추가
+	                supporterIndex++; // 다음 서포터 수 데이터로 이동
+	                continue;
+	            }
+	        }
+	        dailySupporterCounts.add(0); // 누락된 날짜에 대해 0으로 처리된 일별 서포터 수 추가
+	        acmlSupporterCounts.add(acmlSupporterCount); // 이전의 누적 서포터 수 추가 (이전 데이터를 그대로 사용)
+	    }
 
-    // ChartDataVO 객체를 생성하여 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 담아 반환
-    return new ChartDataVO(labels, dailyPaymentAmounts, cumulativePaymentAmounts, dailySupporterCounts, cumulativeSupporterCounts);
-    }
+	    // ChartDataVO 객체를 생성하여 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 담아 반환
+	    return new ChartDataVO(labels, dailyPaymentAmounts, acmlPaymentAmounts, dailySupporterCounts, acmlSupporterCounts);
+	}
 	
 }
