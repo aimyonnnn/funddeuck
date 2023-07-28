@@ -67,7 +67,11 @@
 							+ '</div>'
 							+ '<div class="row-12">'
 							+ '<span class="fs-6">' + saveDelivery.delivery_phone + '</span>'
-							+ '</div></div>';
+							+ '</div></div>'
+							+ '<div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">'
+							+ '<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryChangeModal">변경</button>'
+							+ '</div>';
+						
 			        // 배송지란에 등록된 기본배송지 출력
 			        $('#deliveryContainer').html(output);
 			        	
@@ -109,6 +113,50 @@
 					
 					// 배송지 변경 모달창 열림
 					$("#deliveryChangeModal").modal("show");
+				} else {
+					console.log("배송지 등록 실패!");
+				}
+			},
+			error: function (xhr, status, error) {
+				console.error("오류 발생!" , error);
+			}
+		});
+		
+			
+	});
+	
+	
+	// 배송지 변경 모달창에서 선택된 배송지의 번호를 hidden에 전달
+	$(document).ready(function() {
+	    // 라디오 버튼이 선택되었을 때, 값을 #deliver_idx 인 hidden input에 전달하기 위한 이벤트 리스너
+	    $(document).on('change', 'input[type="radio"].radio-input', function() {
+	        var selectedValue = $(this).val();
+	        $('#changeDelivery_idx').val(selectedValue);
+	    });
+	});
+	
+	// 배송지 변경 출력을 위한 ajax 요청
+	$(document).on("click", "#deliveryChange", function() {
+		
+		// 폼 데이터 가져오기
+		var formData = $("#deliveryChangeModal form").serialize();
+		console.log(formData);
+		// ajax 요청
+		$.ajax({
+			type: "POST",
+			url: "deliveryChange",
+			data: formData,
+			success: function(delivery) {
+				consol.log(delivery);
+				if($.trim(msg) == "success") {
+					console.log("배송지 등록 완료!");
+					// 배송지란의 입력된 데이터 지우기
+					// 배송지 변경 모달창 닫힘(부트스트랩 5.3.0에서는 X)
+// 					$('#deliveryAddModal').modal('hide');
+			        // 배송지 변경 모달창 닫기 버튼 클릭 발생
+			        $("#deliveryChangeModalClose").click();
+			     	// 배송지란의 전달받은 데이터 출력
+					
 				} else {
 					console.log("배송지 등록 실패!");
 				}
@@ -178,7 +226,6 @@
 						            +   '<td>' + reward.delivery_date + '</td>'
 						            +  '</tr>'
 						            + '</table>';			
-						            
 						let output2 = '<span class="fs-6 fw-bold">' + reward.reward_price + '원</span>';
 						let output3 = '<span class="fs-6 fw-bold">' + reward.delivery_price + '원</span>';
 			            // 출력하기
@@ -215,13 +262,16 @@
 							var html = '';
 							
 							html += '<div class="row border">';
-// 							html += '<div class="col-1">';
 							html += '<div class="form-check col-1 d-flex justify-content-center align-self-center">';
-							html += '<input class="form-check-input " type="radio">';
+							html += '<input class="form-check-input radio-input" type="radio" name="deliveryGroup" value="'+ delivery.delivery_idx + '">';
 							html += '</div>';
-// 							html += '</div>';
 							html += '<div class="col text-start">';
 							html += '<span class="fs-6 fw-bold">' + delivery.delivery_reciever + '</span>';
+							// 기본 배송지 있을 경우 기본 뱃지 표시 
+						    if (delivery.delivery_default == 1) {
+						        html += '&nbsp;<span class="badge bg-danger text-white">기본</span>';
+						    }
+							
 							html += '<br>';
 							html += '<span class="fs-6">' + delivery.delivery_phone + '</span>';
 							html += '<br>';
@@ -275,6 +325,9 @@
 		});
 		
 	});
+	
+	
+
 	
 	
 	
@@ -383,7 +436,7 @@
 								<div class="col">
 									<div class="row-12">
 										<span class="fs-6 fw-bold">${deliveryDefault.delivery_reciever }</span>
-										<span class=" badge bg-danger text-white">기본</span>
+										<span class="badge bg-danger text-white">기본</span>
 									</div>
 									<div class="row-12">
 										<span class="fs-6">[${deliveryDefault.delivery_zipcode }]</span>
@@ -492,8 +545,8 @@
 				<div class="row ms-2 me-2">
 					<div class="col pt-2 text-start">
 						<div class="form-check fs-6">
-							<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-							<label class="form-check-label" for="flexCheckDefault">
+							<input class="form-check-input" type="checkbox" value="" id="personalInfoAgree">
+							<label class="form-check-label" for="personalInfoAgree">
 								개인정보 제3자 제공 동의
 							</label>
 						</div>
@@ -509,8 +562,8 @@
 				<div class="row ms-2 me-2">
 					<div class="col pt-2 text-start">
 						<div class="form-check fs-6">
-							<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-							<label class="form-check-label" for="flexCheckDefault">
+							<input class="form-check-input" type="checkbox" value="" id="notesCheck">
+							<label class="form-check-label" for="notesCheck">
 								후원 유의사항 확인
 							</label>
 						</div>
@@ -839,11 +892,15 @@
 <!-- 							<span class="fs-6 text-start">[우편번호]&nbsp;&nbsp;주소&nbsp;&nbsp;상세주소</span> -->
 							
 						</div>
+						<!-- 체크된 배송지의 delivery_idx를 넣기 -->
+						<form action="deliveryChange" method="post">
+							<input type="hidden" value="" name="changeDelivery_idx" id="changeDelivery_idx">
+						</form>
 					</div>
 					
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">선택</button>
+					<button type="submit" class="btn btn-primary" id="deliveryChange">선택</button>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="deliveryChangeModalClose">닫기</button>
 				</div>
 			</div>

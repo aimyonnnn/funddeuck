@@ -166,5 +166,20 @@ public class FundingController {
 		// 조회한 RewardVO 전달
 		return reward;
 	}
+	
+	// 배송지 변경 모달 ajax
+	@PostMapping("deliveryChange")
+	@ResponseBody
+	public DeliveryVO deliveryChange(int changeDelivery_idx, HttpSession session) {
+		System.out.println("전달받은 delivery_idx = " + changeDelivery_idx);
+		// 세션 아이디 가져오기
+//		String id = (String)session.getAttribute("sId");
+		String id = "kim1234";
+		// 해당 회원 아이디와 배송지 번호가 전달받은 changeDelivery_idx 인 배송지 조회
+		DeliveryVO delivery = fundingService.getDeliveryInfo(id, changeDelivery_idx);
+		System.out.println("조회한 delivery : " + delivery);
+		
+		return delivery;
+	}
 		
 }

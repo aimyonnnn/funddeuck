@@ -25,5 +25,9 @@ public class FundingService {
 	public DeliveryVO getDeliveryDefault(String id) {
 		return mapper.selectDeliveryDefault(id);
 	}
+	// 선택한 배송지 조회
+	public DeliveryVO getDeliveryInfo(String id, int changeDelivery_idx) {
+		return mapper.selectDelivery(id, changeDelivery_idx);
+	}
 
 }
