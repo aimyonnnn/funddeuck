@@ -2,6 +2,7 @@ package com.itwillbs.test.mapper;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
 
@@ -51,5 +52,8 @@ public interface MemberMapper {
 	
 	//email 로 조회후 passwd 변경
 	int updatePasswd(@Param("passwd") String passwd, @Param("email") String email);
+	
+	//팔로우 리스트 조회
+	List<Map<String, Object>> selectFallowList(String sId);
 
 }

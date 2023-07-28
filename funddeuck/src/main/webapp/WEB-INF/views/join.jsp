@@ -7,6 +7,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bootstrap demo</title>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link
@@ -22,7 +23,21 @@
         	let isEmail = 0;
 
         $(document).ready(function () {
+        	let email = "${sessionScope.email}";
         	
+        	if(email.length != 0){
+        		isEmail = 1;
+                $("#email").val(email);
+                $("#email").attr("disabled",true);
+				$("#authCodeArea").remove();
+				$("#emailbtn").remove();
+				$("#email").after(
+					"<div style='color:green'>"
+					+ "이메일 인증 완료"
+					+ "</div>"
+				);
+        		
+        	} 
         	
             $("form").submit(function(event) {
               	var id = $('#member_id').val();

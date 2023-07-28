@@ -1,6 +1,7 @@
 package com.itwillbs.test.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itwillbs.test.handler.MyPasswordEncoder;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.SendMailService;
+import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.MembersVO;
 
 @Controller
@@ -30,7 +32,7 @@ public class MemberController {
     @Autowired
     private SendMailService mailService;
     
-    @GetMapping("/member/mypage")
+    @GetMapping("memberMypage")
     public String myPage() {
         return "member/myPage"; 
     }
@@ -373,6 +375,22 @@ public class MemberController {
     	
     }
     
+    @GetMapping("FallowingForm")
+    public String FallowingForm(HttpSession session, Model model) {
+    	
+    	if(session.getAttribute("sId") == null) {
+    		model.addAttribute("msg","잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
+    	List<Map<String,Object>> fallowList = service.getfallowList((String)session.getAttribute("sId"));
+    	
+    	model.addAttribute("fallowList", fallowList);
+    	
+    	
+    	return "member/member_fallowing";
+    	
+    }
     
     
  // 랜덤 코드 생성

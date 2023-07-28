@@ -2,6 +2,7 @@ package com.itwillbs.test.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -81,6 +82,11 @@ public class MemberService {
 	// email 로 조회후 passwd 변경
 	public int modifyPasswd(String passwd, String email) {
 		return mapper.updatePasswd(passwd, email);
+	}
+	
+	// 팔로잉 리스트 뽑기
+	public List<Map<String, Object>> getfallowList(String sId) {
+		return mapper.selectFallowList(sId);
 	}
 	
 

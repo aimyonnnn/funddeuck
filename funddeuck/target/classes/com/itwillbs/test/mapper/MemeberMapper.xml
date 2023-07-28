@@ -118,4 +118,21 @@
 			WHERE member_email = #{email}
 	</update>
 	
+	<!-- 팔로우 리스트 가져오기 -->
+	<select id="selectFallowList">
+		SELECT
+		    mk.maker_name,
+		    COUNT(f.maker_idx) as follower_count
+			FROM
+			    maker mk
+			LEFT JOIN
+			    fallowing f ON mk.maker_idx = f.maker_idx
+			JOIN
+			    members m ON f.member_idx = m.member_idx
+			WHERE
+			    m.member_id = #{sId}
+			GROUP BY
+			    mk.maker_idx, mk.maker_name;
+	</select>
+	
 </mapper>

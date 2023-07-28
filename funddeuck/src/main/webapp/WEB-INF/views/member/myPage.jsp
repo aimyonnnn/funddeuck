@@ -106,7 +106,7 @@
                             <h5>나의 활동</h5>
                         </div>
                         <div class="col-sm-12 col-md-6">
-                            <a href="" class="text-black w-100">
+                            <a href="FallowingForm" class="text-black w-100">
                                 <div class="row me-md-2">
                                     <div class="col text-start my-3">
                                         <i class="bi bi-people"></i> 팔로잉
