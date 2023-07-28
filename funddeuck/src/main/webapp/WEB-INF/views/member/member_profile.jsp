@@ -22,24 +22,24 @@
                 <div class="card mb-3" style="border-radius: .5rem;">
                     <div class="row g-0">
                         <h3 class="profile-heading">프로필 정보 설정</h3>
-						<div class="col-md-4 gradient-custom text-center text-white"
-						     style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-						<form id="profileimgForm">
-						    <input type="file" id="imageInput" style="display: none;" accept="image/*">
-						    <img src="${profile.profile_img}"
-						         name = "profile_img" alt="profile" class="img-fluid my-5" style="width: 80px;" />
-						    <div class="Imgcontainer">
-						        <a href="#!" id="changeImg">바꾸기</a>
-						        <a href="#!" id="deleteImg">삭제</a>
-						    </div>
-						</form>
+						<div class="col-md-4 gradient-custom text-center text-white" style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+						    <img src="${pageContext.request.contextPath}/resources/upload/${profile.profile_img}" alt="프로필 사진을 업로드 해주세요" style="max-height: 100px;">
+						    <form action="updateProfileImage" method="post" enctype="multipart/form-data">
+						        <input type="hidden" name="member_idx" value="${profile.member_idx}" />
+						        <div class="custom-file">
+						            <input type="file" class="custom-file-input" name="file"  value="바꾸기" id="customFile">
+						            <label class="custom-file-label" for="customFile"></label>
+						        </div>
+						        <button type="submit" class="btn btn-primary mt-3">사진 저장</button>
+						    </form>
 						</div>
+
 
                         <div class="col-md-8">
                             <div class="card-body p-4">
 							<form id="profileForm">
                                 <hr class="mt-0 mb-4">
-							    <input type="hidden" name="member_idx" value="${profile.member_idx}" />
+							    <input type="text" name="member_idx" value="${profile.member_idx}" />
                                     <h6>회사 / 직책</h6>
                                 <div class="row pt-1">
                                     <div class="col-6 mb-3">
@@ -97,7 +97,6 @@
             console.log("수정");
 
             var formData = new FormData();
-            formData.append('profile_img', $("input[name='profile_img']").val());
             formData.append('profile_job1', $("input[name='profile_job1']").val());
             formData.append('profile_job2', $("input[name='profile_job2']").val());
             formData.append('profile_school1', $("input[name='profile_school1']").val());
@@ -105,11 +104,7 @@
             formData.append('profile_text', $("textarea[name='profile_text']").val());
             formData.append('member_idx', $("input[name='member_idx']").val());
 
-            const imageInput = document.getElementById("imageInput");
-            if (imageInput.files.length > 0) {
-                formData.append('profile_img', imageInput.files[0]);
-            }
-
+            
             $.ajax({
                 type: "POST",
                 url: '<c:url value="/member/profile"/>',
@@ -119,6 +114,7 @@
                 success: function (data) {
                     console.log("실행");
                     alert("프로필이 저장되었습니다.");
+                   	location.reload();
                 },
                 error: function () {
                     alert("저장에 실패했습니다. 다시 시도해주세요.");
@@ -135,44 +131,9 @@
                 }
             });
         });
-
-        document.getElementById("changeImg").addEventListener("click", function (event) {
-            event.preventDefault();
-            const imageInput = document.getElementById("imageInput");
-            imageInput.click();
         });
+        
 
-        document.getElementById("imageInput").addEventListener("change", function (event) {
-            const selectedFile = event.target.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function () {
-                const newImageUrl = reader.result;
-                const profileImg = document.querySelector(".img-fluid");
-                profileImg.src = newImageUrl;
-
-                alert("프로필 이미지가 변경되었습니다.");
-
-                $("#saveButton").prop("disabled", false);
-            };
-
-            reader.readAsDataURL(selectedFile);
-        });
-
-        document.getElementById("deleteImg").addEventListener("click", function (event) {
-            event.preventDefault();
-
-            const confirmDelete = confirm("프로필 사진을 삭제하시겠습니까?");
-            if (confirmDelete) {
-                const profileImg = document.querySelector(".img-fluid");
-                profileImg.src = ""; 
-
-                alert("프로필 사진이 삭제되었습니다.");
-
-                $("#saveButton").prop("disabled", false);
-            }
-        });
-    });
 </script>
 
 

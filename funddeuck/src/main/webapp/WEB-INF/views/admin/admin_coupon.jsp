@@ -72,8 +72,9 @@
                     <br>
                 </div>
                 <div id="couponControll">
-                    <h5><b>사용 쿠폰 이용내역</b></h5>
+                    <h5><b>사용 기간 만료된 쿠폰목록</b></h5>
                     <br>
+                    
                 </div>
             </div>
         </div>
