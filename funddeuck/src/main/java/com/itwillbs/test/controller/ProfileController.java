@@ -2,6 +2,11 @@ package com.itwillbs.test.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -33,21 +38,17 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-//    @GetMapping("/profile")
-//    public String showProfilePage(Model model, HttpSession session) {
-//        Integer memberIdx = (Integer) session.getAttribute("member_idx");
-//        if (memberIdx == null) {
-//            return "member/member_profile"; // �α��� �������� �����̷�Ʈ ����
-//        }
-//
-//        ProfileVO profile = profileService.getProfileByMemberId(memberIdx.intValue());
-//        model.addAttribute("profile", profile);
-//        return "member/member_profile";
-//    }
-    
-    public String showProfilePage(Model model) {
-        int memberIdx = 1; // ������ �α��� ���� member_idx�� 1�� �־����ٰ� ����
-        ProfileVO profile = profileService.getProfileByMemberId(memberIdx);
+    @GetMapping("/profile")
+    public String showProfilePage(Model model, HttpSession session) {
+    	
+    	session.setAttribute("member_idx", 1);
+    	
+        Integer memberIdx = (Integer) session.getAttribute("member_idx");
+        if (memberIdx == null) {
+            return "member/member_profile"; 
+        }
+
+        ProfileVO profile = profileService.getProfileByMemberId(memberIdx.intValue());
         model.addAttribute("profile", profile);
         return "member/member_profile";
     }
@@ -55,46 +56,77 @@ public class ProfileController {
 
     @PostMapping("/profile")
     @ResponseBody
-    public ResponseEntity<String> saveProfile(@ModelAttribute ProfileVO profileVO,
-                                              @RequestParam(value = "profile_img", required = false) MultipartFile profileImage) {
-        try {
-            if (profileImage != null && !profileImage.isEmpty()) {
-                String profileImagePath = saveProfileImage(profileImage);
-                profileVO.setProfile_img(profileImagePath);
-            }
+    public ResponseEntity<String> saveProfile(@ModelAttribute ProfileVO profileVO){
 
             profileService.updateProfile(profileVO);
-            return ResponseEntity.ok("�������� ����Ǿ����ϴ�.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("���忡 �����߽��ϴ�. �ٽ� �õ����ּ���.");
-        }
+            return ResponseEntity.ok("수정완료되었습니다.");
     }
+    	
+    @PostMapping("updateProfileImage")
+    public String updateProfileImage(ProfileVO profile, HttpSession session, Model model) {
+    	
+    	System.out.println(profile);
+    	
+		String uploadDir = "/resources/upload";
+		String saveDir = session.getServletContext().getRealPath(uploadDir);
+		String subDir = "";
+		
+		try {
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			subDir = sdf.format(date);
+			saveDir += "/" + subDir;
+			Path path = Paths.get(saveDir);
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// 파일 업로드 폴더 경로 출력
+		System.out.println("실제 업로드 폴더 경로: " + saveDir);
+		
+		MultipartFile mFile1 = profile.getFile();
+		
+		System.out.println("파일 출력 테스트 : " + mFile1);
+		
+		String uuid = UUID.randomUUID().toString();
+		profile.setProfile_img("");
+		
+		String fileName1 = null;
 
-    private String saveProfileImage(MultipartFile profileImage) throws IOException {
-        if (profileImage == null || profileImage.isEmpty()) {
-            return null; 
-        }
+		if (mFile1 != null && !mFile1.getOriginalFilename().equals("")) {
+		    fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
+		    profile.setProfile_img(subDir + "/" + fileName1);
+		}
 
-        String profileImageDirectory = "/path/to/save/images/";
-        String originalFilename = profileImage.getOriginalFilename();
-        String profileImagePath = profileImageDirectory + UUID.randomUUID().toString() + "_" + originalFilename;
 
-        try {
-            File directory = new File(profileImageDirectory);
-            if (!directory.exists()) {
-                directory.mkdirs(); 
-            }
-
-            File profileImageFile = new File(profileImagePath);
-            profileImage.transferTo(profileImageFile);
-
-            return profileImagePath;
-        } catch (IOException e) {
-            throw new IOException("���� ������ �����߽��ϴ�.", e);
-        }
+		System.out.println("실제 업로드 파일명 : " + profile.getProfile_img());
+		// -----------------------------------------------------------------------------------
+		int updateCount = profileService.modifyProfileImage(profile);
+		
+		if(updateCount > 0) {
+			// 파일 업로드 처리
+			try {
+			    if (fileName1 != null) {
+			        mFile1.transferTo(new File(saveDir, fileName1));
+			    }
+			} catch (IllegalStateException e) {
+			    e.printStackTrace();
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
+			String targetURL = "profile";
+			model.addAttribute("msg", "프로필 사진 수정이 완료되었습니다.");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
+		} else {
+			model.addAttribute("msg", "사진 수정 실패!");
+			return "fail_back";
+		}
+	}
+    	
     }
-
-}
+    
+    
 
 

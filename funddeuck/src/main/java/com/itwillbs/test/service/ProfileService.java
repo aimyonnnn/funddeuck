@@ -8,7 +8,8 @@ import com.itwillbs.test.vo.ProfileVO;
 
 @Service
 public class ProfileService {
-
+	
+	@Autowired
     private final ProfileMapper profileMapper;
 
     @Autowired
@@ -23,4 +24,8 @@ public class ProfileService {
     public void updateProfile(ProfileVO profileVO) {
         profileMapper.updateProfile(profileVO);
     }
+
+	public int modifyProfileImage(ProfileVO profile) {
+		return profileMapper.updateProfileImage(profile);
+	}
 }

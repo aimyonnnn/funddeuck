@@ -62,29 +62,29 @@ public class ProjectController {
 		this.echoHandler = echoHandler;
 	}
 	
-	// í”„ë¡œì íŠ¸ ë©”ì¸
+	// ÇÁ·ÎÁ§Æ® ¸ŞÀÎ
 	@GetMapping("project")
 	public String projectMain() {
 		return "project/project_main";
 	}
 	
-	// í”„ë¡œì íŠ¸ ìŠ¹ì¸ ìš”ì²­
+	// ÇÁ·ÎÁ§Æ® ½ÂÀÎ ¿äÃ»
 	@GetMapping("approvalRequest")
 	@ResponseBody
 	public String approvalRequest(@RequestParam int project_idx, HttpServletRequest request) {
 		System.out.println("approvalRequest - " + project_idx);
-		// íŒŒë¼ë¯¸í„°ë¡œ ì „ë‹¬ë°›ì€ project_idxë¡œ project_approve_status ìƒíƒœë¥¼ 2-ìŠ¹ì¸ìš”ì²­ìœ¼ë¡œ ë³€ê²½!
-		// í”„ë¡œì íŠ¸ ìŠ¹ì¸ ìƒíƒœ 1-ë¯¸ìŠ¹ì¸ 2-ìŠ¹ì¸ìš”ì²­ 3-ìŠ¹ì¸ 4-ë°˜ë ¤
-		// ê´€ë¦¬ì í˜ì´ì§€ì—ì„œëŠ” 2-ìŠ¹ì¸ìš”ì²­ì¸ê²ƒë§Œ ì¶œë ¥í•œë‹¤!
+		// ÆÄ¶ó¹ÌÅÍ·Î Àü´Ş¹ŞÀº project_idx·Î project_approve_status »óÅÂ¸¦ 2-½ÂÀÎ¿äÃ»À¸·Î º¯°æ!
+		// ÇÁ·ÎÁ§Æ® ½ÂÀÎ »óÅÂ 1-¹Ì½ÂÀÎ 2-½ÂÀÎ¿äÃ» 3-½ÂÀÎ 4-¹İ·Á
+		// °ü¸®ÀÚ ÆäÀÌÁö¿¡¼­´Â 2-½ÂÀÎ¿äÃ»ÀÎ°Í¸¸ Ãâ·ÂÇÑ´Ù!
 		int updateCount = projectService.modifyStatus(project_idx);
 		if(updateCount > 0) {
-			// ê´€ë¦¬ìì—ê²Œ ìŠ¹ì¸ ìš”ì²­ toast íŒì—… ë„ìš°ê¸°
-			// toast í´ë¦­ ì‹œ ê´€ë¦¬ìì˜ í”„ë¡œì íŠ¸ ìŠ¹ì¸ í˜ì´ì§€ë¡œ ì´ë™
+			// °ü¸®ÀÚ¿¡°Ô ½ÂÀÎ ¿äÃ» toast ÆË¾÷ ¶ç¿ì±â
+			// toast Å¬¸¯ ½Ã °ü¸®ÀÚÀÇ ÇÁ·ÎÁ§Æ® ½ÂÀÎ ÆäÀÌÁö·Î ÀÌµ¿
 			String adminProjectUrl = 
 				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/test/adminProjectList";
 //				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/funddeuck/adminProjectList";
 			String notification = 
-					"<a href='" + adminProjectUrl + "' style='text-decoration: none; color: black;'>ë©”ì´ì»¤ë‹˜ê»˜ì„œ í”„ë¡œì íŠ¸ ìŠ¹ì¸ì„ ìš”ì²­í•˜ì˜€ìŠµë‹ˆë‹¤.</a>";
+					"<a href='" + adminProjectUrl + "' style='text-decoration: none; color: black;'>¸ŞÀÌÄ¿´Ô²²¼­ ÇÁ·ÎÁ§Æ® ½ÂÀÎÀ» ¿äÃ»ÇÏ¿´½À´Ï´Ù.</a>";
 			try {
 				echoHandler.sendNotificationToUser("admin", notification);
 			} catch (IOException e) {
@@ -95,7 +95,7 @@ public class ProjectController {
 		return "false"; 
 	}
 	
-	// ì‘ì„±ì¤‘ì¸ í”„ë¡œì íŠ¸ë¡œ ì´ë™
+	// ÀÛ¼ºÁßÀÎ ÇÁ·ÎÁ§Æ®·Î ÀÌµ¿
 	@GetMapping("projectUrl")
 	public ModelAndView projectUrl(HttpSession session, Model model) {
 	    String sId = (String) session.getAttribute("sId");
@@ -103,53 +103,53 @@ public class ProjectController {
 	    MembersVO m = memberService.getMemberInfo(sId);
 	    
 	    if (memberList.isEmpty()) {
-	    	model.addAttribute("msg", "ì‘ì—…ì¤‘ì¸ í”„ë¡œì íŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤.");
+	    	model.addAttribute("msg", "ÀÛ¾÷ÁßÀÎ ÇÁ·ÎÁ§Æ®°¡ ¾ø½À´Ï´Ù.");
 	    	return new ModelAndView("fail_back");
 	    }
 
 	    MembersVO member = memberList.get(0);
-	    System.out.println("ì¶œë ¥ í…ŒìŠ¤íŠ¸ : " + member);
+	    System.out.println("Ãâ·Â Å×½ºÆ® : " + member);
 	    int rewardIdx = member.getReward_idx();
 	    int projectIdx = member.getProject_idx();
 	    int makerIdx = member.getMaker_idx();
 
 	    if (rewardIdx != 0) {
-	        // reward_idxê°€ 0ì´ ì•„ë‹ˆë©´ projectRewardë¡œ ë¦¬ë‹¤ì´ë ‰íŠ¸
+	        // reward_idx°¡ 0ÀÌ ¾Æ´Ï¸é projectReward·Î ¸®´ÙÀÌ·ºÆ®
 	        return new ModelAndView("redirect:/projectReward?reward_idx=" + rewardIdx);
 	    } else if (makerIdx != 0) {
-	    	// project_idxê°€ 0ì´ ì•„ë‹ˆë©´ projectManagementë¡œ ë¦¬ë‹¤ì´ë ‰íŠ¸
+	    	// project_idx°¡ 0ÀÌ ¾Æ´Ï¸é projectManagement·Î ¸®´ÙÀÌ·ºÆ®
 	    	return new ModelAndView("redirect:/projectManagement?project_idx=" + projectIdx);
 	    }
 	    return new ModelAndView("redirect:/projectMaker?member_idx=" + m.getMember_idx());
 	}
 	
-	// ë¦¬ì›Œë“œ ì„¤ê³„ í˜ì´ì§€
+	// ¸®¿öµå ¼³°è ÆäÀÌÁö
 	@GetMapping("projectReward")
 	public String projectReward(@RequestParam(required = false) Integer reward_idx, HttpSession session, Model model) {
 		
-		// ì„¸ì…˜ ì•„ì´ë””ê°€ ì¡´ì¬í•˜ì§€ ì•Šì„ ë•Œ 
+		// ¼¼¼Ç ¾ÆÀÌµğ°¡ Á¸ÀçÇÏÁö ¾ÊÀ» ¶§ 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "ì˜ëª»ëœ ì ‘ê·¼ì…ë‹ˆë‹¤.");
+			model.addAttribute("msg", "Àß¸øµÈ Á¢±ÙÀÔ´Ï´Ù.");
 			return "fail_back";
 		}
 		
-		// ìˆ˜ì • ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ - reward_idxê°€ ì¡´ì¬í•˜ë©´ ë¦¬ì›Œë“œ ìˆ˜ì •ì„ ìœ„í•´ í•´ë‹¹ ë¦¬ì›Œë“œ ì •ë³´ ì¡°íšŒ í›„ viewì— ë¦¬ì›Œë“œ ì •ë³´ë¥¼ ì¶œë ¥ 
+		// ¼öÁ¤ ¹öÆ°À» ´­·¶À» ¶§ - reward_idx°¡ Á¸ÀçÇÏ¸é ¸®¿öµå ¼öÁ¤À» À§ÇØ ÇØ´ç ¸®¿öµå Á¤º¸ Á¶È¸ ÈÄ view¿¡ ¸®¿öµå Á¤º¸¸¦ Ãâ·Â 
 		if (reward_idx != null) {
-			System.out.println("ìˆ˜ì •í•˜ê¸° ë²„íŠ¼ í´ë¦­ ì‹œ - ë¦¬ì›Œë“œ ë²ˆí˜¸ : " + reward_idx);
+			System.out.println("¼öÁ¤ÇÏ±â ¹öÆ° Å¬¸¯ ½Ã - ¸®¿öµå ¹øÈ£ : " + reward_idx);
 			
-			// ë¦¬ì›Œë“œ ì‘ì„±ì íŒë³„ ìš”ì²­
-			// ë‹¨, ì„¸ì…˜ ì•„ì´ë””ê°€ adminì´ ì•„ë‹ ë•Œë§Œ ìˆ˜í–‰
+			// ¸®¿öµå ÀÛ¼ºÀÚ ÆÇº° ¿äÃ»
+			// ´Ü, ¼¼¼Ç ¾ÆÀÌµğ°¡ adminÀÌ ¾Æ´Ò ¶§¸¸ ¼öÇà
 			if(!sId.equals("admin")) {
-				String rewardWriter = projectService.getRewardAuthorId(reward_idx, sId); // ë¦¬ì›Œë“œ ì‘ì„±ìì˜ ì•„ì´ë””ë¥¼ ì¡°íšŒ
+				String rewardWriter = projectService.getRewardAuthorId(reward_idx, sId); // ¸®¿öµå ÀÛ¼ºÀÚÀÇ ¾ÆÀÌµğ¸¦ Á¶È¸
 				if(!sId.equals(rewardWriter)) {
-					// ë¦¬ì›Œë“œ ì‘ì„±ìê°€ ì•„ë‹Œ ê²½ìš°
-					model.addAttribute("msg", "ë¦¬ì›Œë“œ ì‘ì„±ìê°€ ì•„ë‹™ë‹ˆë‹¤.");
+					// ¸®¿öµå ÀÛ¼ºÀÚ°¡ ¾Æ´Ñ °æ¿ì
+					model.addAttribute("msg", "¸®¿öµå ÀÛ¼ºÀÚ°¡ ¾Æ´Õ´Ï´Ù.");
 					return "fail_back";
 				} 
 			}
 			
-			// ì„¸ì…˜ ì•„ì´ë””ê°€ adminì´ê±°ë‚˜ ë¦¬ì›Œë“œ ì‘ì„±ìì¸ ê²½ìš°, ë¦¬ì›Œë“œ ì •ë³´ ì¡°íšŒ
+			// ¼¼¼Ç ¾ÆÀÌµğ°¡ adminÀÌ°Å³ª ¸®¿öµå ÀÛ¼ºÀÚÀÎ °æ¿ì, ¸®¿öµå Á¤º¸ Á¶È¸
 			RewardVO reward = projectService.getRewardInfo(reward_idx);
 			model.addAttribute("reward", reward);
 	    }
@@ -157,7 +157,7 @@ public class ProjectController {
 		return "project/project_reward";
 	}
 	
-	// ë¦¬ì›Œë“œ ë“±ë¡í•˜ê¸°
+	// ¸®¿öµå µî·ÏÇÏ±â
 	@PostMapping("saveReward")
     @ResponseBody
     public String saveReward(@ModelAttribute RewardVO reward) {
@@ -167,7 +167,7 @@ public class ProjectController {
 		if(insertCount > 0) { return "true"; } return "false";
     }
 	
-	// ë¦¬ì›Œë“œ ìˆ˜ì •í•˜ê¸°
+	// ¸®¿öµå ¼öÁ¤ÇÏ±â
 	@PostMapping("modifyReward")
     @ResponseBody
     public String modifyReward(@ModelAttribute RewardVO reward, @RequestParam int reward_idx, HttpSession session) {
@@ -177,38 +177,38 @@ public class ProjectController {
 		if(updateCount > 0) { return "true"; } return "false";
     }
 	
-	// ë¦¬ì›Œë“œ ì‚­ì œí•˜ê¸°
+	// ¸®¿öµå »èÁ¦ÇÏ±â
 	@PostMapping("removeReward")
 	@ResponseBody
 	public String removeReward(@RequestParam int reward_idx, HttpSession session) {
-		System.out.println("ì‚­ì œí•˜ê¸° ë²„íŠ¼ í´ë¦­ ì‹œ - ë¦¬ì›Œë“œ ë²ˆí˜¸ : " + reward_idx);
+		System.out.println("»èÁ¦ÇÏ±â ¹öÆ° Å¬¸¯ ½Ã - ¸®¿öµå ¹øÈ£ : " + reward_idx);
 		
-		// ì„¸ì…˜ ì•„ì´ë””ê°€ ì¡´ì¬í•˜ì§€ ì•Šì„ ë•Œ 
+		// ¼¼¼Ç ¾ÆÀÌµğ°¡ Á¸ÀçÇÏÁö ¾ÊÀ» ¶§ 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
 			return "false";
 		}
 		
-		// ë¦¬ì›Œë“œ ì‘ì„±ì íŒë³„ ìš”ì²­
-		// ë‹¨, ì„¸ì…˜ ì•„ì´ë””ê°€ adminì´ ì•„ë‹ ë•Œë§Œ ìˆ˜í–‰
+		// ¸®¿öµå ÀÛ¼ºÀÚ ÆÇº° ¿äÃ»
+		// ´Ü, ¼¼¼Ç ¾ÆÀÌµğ°¡ adminÀÌ ¾Æ´Ò ¶§¸¸ ¼öÇà
 	    if(!"admin".equals(sId)) {
 	        String rewardWriter = projectService.getRewardAuthorId(reward_idx, sId);
-	        // ë¦¬ì›Œë“œ ì‘ì„±ìê°€ ì•„ë‹Œ ê²½ìš°
+	        // ¸®¿öµå ÀÛ¼ºÀÚ°¡ ¾Æ´Ñ °æ¿ì
 	        if (!sId.equals(rewardWriter)) {
 	            return "false";
 	        }
 	    }
 	    
-	    // ë¦¬ì›Œë“œ ì‚­ì œ ì²˜ë¦¬
+	    // ¸®¿öµå »èÁ¦ Ã³¸®
 	    int deleteCount = projectService.removeReward(reward_idx);
 	    if (deleteCount > 0) {
 	        return "true";
 	    }
 	    
-	    return "false"; // ë¦¬ì›Œë“œ ì‚­ì œ ì‹¤íŒ¨ ì‹œ
+	    return "false"; // ¸®¿öµå »èÁ¦ ½ÇÆĞ ½Ã
 	}
 	
-	// ë¦¬ì›Œë“œ ê°¯ìˆ˜ ì¡°íšŒí•˜ê¸°
+	// ¸®¿öµå °¹¼ö Á¶È¸ÇÏ±â
 	@GetMapping("rewardCount")
 	@ResponseBody
 	public String rewardCount(@RequestParam int project_idx) {
@@ -216,7 +216,7 @@ public class ProjectController {
 		return rewardCount+"";
 	}
 	
-	// ë¦¬ì›Œë“œ ë¦¬ìŠ¤íŠ¸ ì¡°íšŒí•˜ê¸°
+	// ¸®¿öµå ¸®½ºÆ® Á¶È¸ÇÏ±â
 	@GetMapping("rewardList")
 	@ResponseBody
 	public List<RewardVO> rewardList(@RequestParam int project_idx) {
@@ -224,24 +224,24 @@ public class ProjectController {
 	    return rList;
 	}
 	
-	// ë©”ì´ì»¤ ë“±ë¡ í˜ì´ì§€
+	// ¸ŞÀÌÄ¿ µî·Ï ÆäÀÌÁö
 	@GetMapping("projectMaker")
 	public String makerInfo(HttpSession session, Model model) {
 		
-		// ì„¸ì…˜ ì•„ì´ë””ê°€ ì¡´ì¬í•˜ì§€ ì•Šì„ ë•Œ 
+		// ¼¼¼Ç ¾ÆÀÌµğ°¡ Á¸ÀçÇÏÁö ¾ÊÀ» ¶§ 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "ì˜ëª»ëœ ì ‘ê·¼ì…ë‹ˆë‹¤.");
+			model.addAttribute("msg", "Àß¸øµÈ Á¢±ÙÀÔ´Ï´Ù.");
 			return "fail_back";
 		}
 		
-		// ë©”ì´ì»¤ ë“±ë¡ í˜ì´ì§€ ì ‘ì† ì‹œ ì„¸ì…˜ì•„ì´ë””ë¡œ member_idxë¥¼ ì¡°íšŒ í›„ modelì— ì €ì¥
+		// ¸ŞÀÌÄ¿ µî·Ï ÆäÀÌÁö Á¢¼Ó ½Ã ¼¼¼Ç¾ÆÀÌµğ·Î member_idx¸¦ Á¶È¸ ÈÄ model¿¡ ÀúÀå
 		int member_idx = projectService.getMemberIdx(sId);
 		model.addAttribute("member_idx", member_idx);
 		return "project/project_maker";
 	}
 	
-	// ë©”ì´ì»¤ ë“±ë¡ ë¹„ì¦ˆë‹ˆìŠ¤ ë¡œì§ ì²˜ë¦¬
+	// ¸ŞÀÌÄ¿ µî·Ï ºñÁî´Ï½º ·ÎÁ÷ Ã³¸®
 	@PostMapping("projectMakerPro")
 	public String projectMaker(MakerVO maker, Model model, HttpSession session, HttpServletRequest request) {
 		System.out.println(maker);
@@ -296,16 +296,16 @@ public class ProjectController {
 			maker.setMaker_file5(subDir + "/" + fileName5);
 		}
 		
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ íŒŒì¼ëª…1 : " + maker.getMaker_file1());
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ íŒŒì¼ëª…2 : " + maker.getMaker_file2());
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ íŒŒì¼ëª…3 : " + maker.getMaker_file3());
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ íŒŒì¼ëª…4 : " + maker.getMaker_file4());
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ íŒŒì¼ëª…5 : " + maker.getMaker_file5());
+		System.out.println("½ÇÁ¦ ¾÷·Îµå ÆÄÀÏ¸í1 : " + maker.getMaker_file1());
+		System.out.println("½ÇÁ¦ ¾÷·Îµå ÆÄÀÏ¸í2 : " + maker.getMaker_file2());
+		System.out.println("½ÇÁ¦ ¾÷·Îµå ÆÄÀÏ¸í3 : " + maker.getMaker_file3());
+		System.out.println("½ÇÁ¦ ¾÷·Îµå ÆÄÀÏ¸í4 : " + maker.getMaker_file4());
+		System.out.println("½ÇÁ¦ ¾÷·Îµå ÆÄÀÏ¸í5 : " + maker.getMaker_file5());
 		
 		// -----------------------------------------------------------------------------------
 		int insertCount = projectService.registMaker(maker);
 		
-		if(insertCount > 0) { // ì„±ê³µ
+		if(insertCount > 0) { // ¼º°ø
 			try {
 				if(!mFile1.getOriginalFilename().equals("")) {
 					mFile1.transferTo(new File(saveDir, fileName1));
@@ -331,19 +331,19 @@ public class ProjectController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			// ë©”ì´ì»¤ ë“±ë¡ ì„±ê³µ ì‹œ í”„ë¡œì íŠ¸ ë“±ë¡ í˜ì´ì§€ë¡œ ì´ë™
+			// ¸ŞÀÌÄ¿ µî·Ï ¼º°ø ½Ã ÇÁ·ÎÁ§Æ® µî·Ï ÆäÀÌÁö·Î ÀÌµ¿
 			String targetURL = "projectManagement?maker_idx=" + maker.getMaker_idx();
-			System.out.println("ë©”ì´ì»¤ ë“±ë¡ ì„±ê³µ ì‹œ ë©”ì´ì»¤ ë²ˆí˜¸ ì¡°íšŒ : " + maker.getMaker_idx());
-			model.addAttribute("msg", "ë©”ì´ì»¤ ë“±ë¡ì— ì„±ê³µí•˜ì˜€ìŠµë‹ˆë‹¤. í”„ë¡œì íŠ¸ ë“±ë¡ í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.");
+			System.out.println("¸ŞÀÌÄ¿ µî·Ï ¼º°ø ½Ã ¸ŞÀÌÄ¿ ¹øÈ£ Á¶È¸ : " + maker.getMaker_idx());
+			model.addAttribute("msg", "¸ŞÀÌÄ¿ µî·Ï¿¡ ¼º°øÇÏ¿´½À´Ï´Ù. ÇÁ·ÎÁ§Æ® µî·Ï ÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
-		} else { // ì‹¤íŒ¨
-			model.addAttribute("msg", "ë©”ì´ì»¤ ë“±ë¡ ì‹¤íŒ¨!");
+		} else { // ½ÇÆĞ
+			model.addAttribute("msg", "¸ŞÀÌÄ¿ µî·Ï ½ÇÆĞ!");
 			return "fail_back";
 		}
 	}
 	
-	// ë©”ì´ì»¤ í˜ì´ì§€
+	// ¸ŞÀÌÄ¿ ÆäÀÌÁö
 	@GetMapping("makerDetail")
 	public String makerDetail(@RequestParam(required = false) Integer maker_idx, Model model) {
 		System.out.println("makerDetail : " + maker_idx);
@@ -352,17 +352,17 @@ public class ProjectController {
 		return "project/maker_detail";
 	}
 	
-	// ë©”ì´ì»¤ ìˆ˜ì •í•˜ê¸° í˜ì´ì§€
+	// ¸ŞÀÌÄ¿ ¼öÁ¤ÇÏ±â ÆäÀÌÁö
 	@GetMapping("modifyMakerForm")
 	public String modifyMakerForm(@RequestParam int maker_idx, Model model) {
 		System.out.println("modifyMakerForm : " + maker_idx);
-		// ë©”ì´ì»¤ ì •ë³´ ì¡°íšŒ
+		// ¸ŞÀÌÄ¿ Á¤º¸ Á¶È¸
 		MakerVO maker = makerService.getMakerInfo(maker_idx);
 		model.addAttribute("maker", maker);
 		return "project/maker_detail_modifyForm";
 	}
 	
-	// ë©”ì´ì»¤ í˜ì´ì§€ ìˆ˜ì •í•˜ê¸° ë¹„ì¦ˆë‹ˆìŠ¤ ë¡œì§ ì²˜ë¦¬
+	// ¸ŞÀÌÄ¿ ÆäÀÌÁö ¼öÁ¤ÇÏ±â ºñÁî´Ï½º ·ÎÁ÷ Ã³¸®
 	@PostMapping("modifyMaker")
 	public String modifyMaker(MakerVO maker, HttpSession session, Model model) {
 		System.out.println("modifyMaker");
@@ -381,8 +381,8 @@ public class ProjectController {
 			e.printStackTrace();
 		}
 		
-		// íŒŒì¼ ì—…ë¡œë“œ í´ë” ê²½ë¡œ ì¶œë ¥
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ í´ë” ê²½ë¡œ: " + saveDir);
+		// ÆÄÀÏ ¾÷·Îµå Æú´õ °æ·Î Ãâ·Â
+		System.out.println("½ÇÁ¦ ¾÷·Îµå Æú´õ °æ·Î: " + saveDir);
 		
 		MultipartFile mFile1 = maker.getFile4();
 		MultipartFile mFile2 = maker.getFile5();
@@ -404,13 +404,13 @@ public class ProjectController {
 		    maker.setMaker_file5(subDir + "/" + fileName2);
 		}
 
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ íŒŒì¼ëª…1 : " + maker.getMaker_file4());
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ íŒŒì¼ëª…2 : " + maker.getMaker_file5());
+		System.out.println("½ÇÁ¦ ¾÷·Îµå ÆÄÀÏ¸í1 : " + maker.getMaker_file4());
+		System.out.println("½ÇÁ¦ ¾÷·Îµå ÆÄÀÏ¸í2 : " + maker.getMaker_file5());
 		// -----------------------------------------------------------------------------------
 		int updateCount = makerService.modifyMaker(maker);
 		
 		if(updateCount > 0) {
-			// íŒŒì¼ ì—…ë¡œë“œ ì²˜ë¦¬
+			// ÆÄÀÏ ¾÷·Îµå Ã³¸®
 			try {
 			    if (fileName1 != null) {
 			        mFile1.transferTo(new File(saveDir, fileName1));
@@ -423,27 +423,27 @@ public class ProjectController {
 			} catch (IOException e) {
 			    e.printStackTrace();
 			}
-			// ë©”ì´ì»¤ ìˆ˜ì • ì„±ê³µ ì‹œ makerDetailë¡œ ì´ë™
+			// ¸ŞÀÌÄ¿ ¼öÁ¤ ¼º°ø ½Ã makerDetail·Î ÀÌµ¿
 			String targetURL = "makerDetail?maker_idx=" + maker.getMaker_idx();
-			System.out.println("ë©”ì´ì»¤ idx : " + maker.getMaker_idx());
-			model.addAttribute("msg", "ë©”ì´ì»¤ ì •ë³´ ìˆ˜ì •ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
+			System.out.println("¸ŞÀÌÄ¿ idx : " + maker.getMaker_idx());
+			model.addAttribute("msg", "¸ŞÀÌÄ¿ Á¤º¸ ¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
 		} else {
-			model.addAttribute("msg", "ê¸€ ìˆ˜ì • ì‹¤íŒ¨!");
+			model.addAttribute("msg", "±Û ¼öÁ¤ ½ÇÆĞ!");
 			return "fail_back";
 		}
 	}
 	
-	// ë©”ì´ì»¤ í˜ì´ì§€ ìˆ˜ì •í•˜ê¸° - íŒŒì¼ ì‹¤ì‹œê°„ ì‚­ì œ
+	// ¸ŞÀÌÄ¿ ÆäÀÌÁö ¼öÁ¤ÇÏ±â - ÆÄÀÏ ½Ç½Ã°£ »èÁ¦
 	@PostMapping("deleteFile")
 	@ResponseBody
 	public String deleteFile(int maker_idx,	String fileName, int fileNumber, HttpSession session) {
 		System.out.println("deleteFile() - fileName : " + fileName);
-		// íŒŒì¼ ì‚­ì œ ìš”ì²­
+		// ÆÄÀÏ »èÁ¦ ¿äÃ»
 	    int deleteCount = makerService.removeMakerFile(maker_idx, fileName, fileNumber);
 	    if (deleteCount != 0) {
-	        // íŒŒì¼ ì‚­ì œ ë¡œì§
+	        // ÆÄÀÏ »èÁ¦ ·ÎÁ÷
 	        String uploadDir = "/resources/upload";
 	        String saveDir = session.getServletContext().getRealPath(uploadDir);
 	        String filePath = saveDir + "/" + fileName;
@@ -455,7 +455,7 @@ public class ProjectController {
 	                return "fail";
 	            }
 	        } else {
-	            // íŒŒì¼ì´ ì´ë¯¸ ì‚­ì œë˜ì–´ ìˆìŒ
+	            // ÆÄÀÏÀÌ ÀÌ¹Ì »èÁ¦µÇ¾î ÀÖÀ½
 	            return "success";
 	        }
 	    } else {
@@ -463,25 +463,25 @@ public class ProjectController {
 	    }
 	} // deleteFile
 	
-	// í”„ë¡œì íŠ¸ ë“±ë¡ í˜ì´ì§€
+	// ÇÁ·ÎÁ§Æ® µî·Ï ÆäÀÌÁö
 	@GetMapping("projectManagement")
 	public String projectManagement(HttpSession session, Model model) {
 		
-		// ì„¸ì…˜ ì•„ì´ë””ê°€ ì¡´ì¬í•˜ì§€ ì•Šì„ ë•Œ 
+		// ¼¼¼Ç ¾ÆÀÌµğ°¡ Á¸ÀçÇÏÁö ¾ÊÀ» ¶§ 
 //		String sId = (String) session.getAttribute("sId");
 //		if(sId == null) {
-//			model.addAttribute("msg", "ì˜ëª»ëœ ì ‘ê·¼ì…ë‹ˆë‹¤.");
+//			model.addAttribute("msg", "Àß¸øµÈ Á¢±ÙÀÔ´Ï´Ù.");
 //			return "fail_back";
 //		}
 		
 		return "project/project_management";
 	}
 	
-	// í”„ë¡œì íŠ¸ ë“±ë¡ ë¹„ì¦ˆë‹ˆìŠ¤ ë¡œì§ ì²˜ë¦¬
+	// ÇÁ·ÎÁ§Æ® µî·Ï ºñÁî´Ï½º ·ÎÁ÷ Ã³¸®
 	@PostMapping("projectManagementPro")
 	public String projectManagementPro(ProjectVO project, Model model, HttpSession session, HttpServletRequest request) {
 		
-		// ì´ë¯¸ì§€ íŒŒì¼ ì—…ë¡œë“œ 
+		// ÀÌ¹ÌÁö ÆÄÀÏ ¾÷·Îµå 
 		String uploadDir = "/resources/upload";
 		String saveDir = session.getServletContext().getRealPath(uploadDir);
 		String subDir = "";
@@ -533,28 +533,28 @@ public class ProjectController {
 			project.setProject_settlement_image(subDir + "/" + fileName5);
 		}
 		
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ ì¸ë„¤ì¼ëª…1:" + project.getProject_thumnails1());
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ ì¸ë„¤ì¼ëª…2:" + project.getProject_thumnails1());
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ ì¸ë„¤ì¼ëª…3:" + project.getProject_thumnails1());
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ ìƒì„¸ì´ë¯¸ì§€ëª…:" + project.getProject_image());
-		System.out.println("ì‹¤ì œ ì—…ë¡œë“œ í†µì¥ì‚¬ë³¸ëª…:" + project.getProject_settlement_image());
+		System.out.println("½ÇÁ¦ ¾÷·Îµå ½æ³×ÀÏ¸í1:" + project.getProject_thumnails1());
+		System.out.println("½ÇÁ¦ ¾÷·Îµå ½æ³×ÀÏ¸í2:" + project.getProject_thumnails1());
+		System.out.println("½ÇÁ¦ ¾÷·Îµå ½æ³×ÀÏ¸í3:" + project.getProject_thumnails1());
+		System.out.println("½ÇÁ¦ ¾÷·Îµå »ó¼¼ÀÌ¹ÌÁö¸í:" + project.getProject_image());
+		System.out.println("½ÇÁ¦ ¾÷·Îµå ÅëÀå»çº»¸í:" + project.getProject_settlement_image());
 		
 		// ------------------------------------------------------------------------------------
 		
-		// ì£¼ë¯¼ë“±ë¡ë²ˆí˜¸ ê²°í•©
-		String representativeBirth1 = request.getParameter("representativeBirth1"); // ì•ìë¦¬
-		String representativeBirth2 = request.getParameter("representativeBirth2"); // ë’·ìë¦¬
-		String project_representative_birth = representativeBirth1 + "-" + representativeBirth2; // ê²°í•©
-		project.setProject_representative_birth(project_representative_birth); // ì €ì¥
+		// ÁÖ¹Îµî·Ï¹øÈ£ °áÇÕ
+		String representativeBirth1 = request.getParameter("representativeBirth1"); // ¾ÕÀÚ¸®
+		String representativeBirth2 = request.getParameter("representativeBirth2"); // µŞÀÚ¸®
+		String project_representative_birth = representativeBirth1 + "-" + representativeBirth2; // °áÇÕ
+		project.setProject_representative_birth(project_representative_birth); // ÀúÀå
 		
-		// í•´ì‹œíƒœê·¸ ê°’ ì²˜ë¦¬
+		// ÇØ½ÃÅÂ±× °ª Ã³¸®
 		String project_hashtag = request.getParameter("project_hashtag");
 		project.setProject_hashtag(project_hashtag);
-		System.out.println("í•´ì‹œíƒœê·¸: " + project.getProject_hashtag());
+		System.out.println("ÇØ½ÃÅÂ±×: " + project.getProject_hashtag());
 		
 		int insertCount = projectService.registProject(project);
 		
-		if(insertCount > 0) { // ì„±ê³µ ì‹œ 
+		if(insertCount > 0) { // ¼º°ø ½Ã 
 			try {
 				if(!mFile1.getOriginalFilename().equals("")) {
 					mFile1.transferTo(new File(saveDir, fileName1));
@@ -580,54 +580,54 @@ public class ProjectController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			// í”„ë¡œì íŠ¸ ë“±ë¡ ì„±ê³µ ì‹œ ë¦¬ì›Œë“œ ì„¤ê³„ í˜ì´ì§€ë¡œ ì´ë™
+			// ÇÁ·ÎÁ§Æ® µî·Ï ¼º°ø ½Ã ¸®¿öµå ¼³°è ÆäÀÌÁö·Î ÀÌµ¿
 			String targetURL = "projectReward?project_idx=" + project.getProject_idx();
-			System.out.println("í”„ë¡œì íŠ¸ ë“±ë¡ ì„±ê³µ ì‹œ í”„ë¡œì íŠ¸ ë²ˆí˜¸ ì¡°íšŒ : " + project.getProject_idx());
-			model.addAttribute("msg", "í”„ë¡œì íŠ¸ ë“±ë¡ì— ì„±ê³µí•˜ì˜€ìŠµë‹ˆë‹¤. ë¦¬ì›Œë“œ ì„¤ê³„ í˜ì´ì§€ë¡œ ì´ë™í•©ë‹ˆë‹¤.");
+			System.out.println("ÇÁ·ÎÁ§Æ® µî·Ï ¼º°ø ½Ã ÇÁ·ÎÁ§Æ® ¹øÈ£ Á¶È¸ : " + project.getProject_idx());
+			model.addAttribute("msg", "ÇÁ·ÎÁ§Æ® µî·Ï¿¡ ¼º°øÇÏ¿´½À´Ï´Ù. ¸®¿öµå ¼³°è ÆäÀÌÁö·Î ÀÌµ¿ÇÕ´Ï´Ù.");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
-		} else { // ì‹¤íŒ¨ ì‹œ
-			model.addAttribute("msg", "í”„ë¡œì íŠ¸ ë“±ë¡ ì‹¤íŒ¨!");
+		} else { // ½ÇÆĞ ½Ã
+			model.addAttribute("msg", "ÇÁ·ÎÁ§Æ® µî·Ï ½ÇÆĞ!");
 			return "fail_back";
 		}
 	}
 	
-	// ë°œì†¡Â·í™˜ë¶ˆ ê´€ë¦¬
+	// ¹ß¼Û¡¤È¯ºÒ °ü¸®
 	@GetMapping("projectShipping")
 	public String projectShipping(HttpSession session, Model model) {
 		
-		// ì„¸ì…˜ ì•„ì´ë””ê°€ ì¡´ì¬í•˜ì§€ ì•Šì„ ë•Œ 
+		// ¼¼¼Ç ¾ÆÀÌµğ°¡ Á¸ÀçÇÏÁö ¾ÊÀ» ¶§ 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "ì˜ëª»ëœ ì ‘ê·¼ì…ë‹ˆë‹¤.");
+			model.addAttribute("msg", "Àß¸øµÈ Á¢±ÙÀÔ´Ï´Ù.");
 			return "fail_back";
 		}
 		
-		// ì„¸ì…˜ ì•„ì´ë””ë¡œ member_idx ì¡°íšŒ 
+		// ¼¼¼Ç ¾ÆÀÌµğ·Î member_idx Á¶È¸ 
 		int member_idx = projectService.getMemberIdx(sId);
 		
-		// í”„ë¡œì íŠ¸ ë¦¬ìŠ¤íŠ¸ ê°€ì ¸ì™€ì„œ Model ê°ì²´ì— ì €ì¥
+		// ÇÁ·ÎÁ§Æ® ¸®½ºÆ® °¡Á®¿Í¼­ Model °´Ã¼¿¡ ÀúÀå
 		List<ProjectVO> projectList = projectService.getProjectList(member_idx);
 		model.addAttribute("projectList", projectList);
 		
 		return "project/project_shipping";
 	}
 	
-	// ì„œí¬í„° ê´€ë¦¬ ì¶œë ¥
+	// ¼­Æ÷ÅÍ °ü¸® Ãâ·Â
 	@ResponseBody
 	@PostMapping("shippingStatus")
 	public Map<String, Object> shippingStatus(@RequestParam("project_idx") int project_idx) {
 		Map<String, Object> data = new HashMap<>();
 		
-		// ë°°ì†¡ìƒí™© ì¡°íšŒ
+		// ¹è¼Û»óÈ² Á¶È¸
 		List<Map<String, Object>> deliveryStatus = paymentService.getDeliveryList(project_idx);
 		
-		// í™˜ë¶ˆìŠ¹ì¸ì—¬ë¶€ ì¡°íšŒ
+		// È¯ºÒ½ÂÀÎ¿©ºÎ Á¶È¸
 		List<Map<String, Object>> refundStatus = paymentService.getRefundList(project_idx);
 		
-		System.out.println("í”„ë¡œì íŠ¸ ë²ˆí˜¸: " + project_idx);
-		System.out.println("ë°°ì†¡ìƒí™©: " + deliveryStatus);
-		System.out.println("í™˜ë¶ˆìŠ¹ì¸ì—¬ë¶€: " + refundStatus);
+		System.out.println("ÇÁ·ÎÁ§Æ® ¹øÈ£: " + project_idx);
+		System.out.println("¹è¼Û»óÈ²: " + deliveryStatus);
+		System.out.println("È¯ºÒ½ÂÀÎ¿©ºÎ: " + refundStatus);
 		
 		data.put("deliveryStatus", deliveryStatus);
 		data.put("refundStatus", refundStatus);
@@ -635,7 +635,7 @@ public class ProjectController {
 		return data;
 	}
 	
-	// ìˆ˜ìˆ˜ë£ŒÂ·ì •ì‚° ê´€ë¦¬
+	// ¼ö¼ö·á¡¤Á¤»ê °ü¸®
 	@GetMapping("projectSettlement")
 	public String projectSettlement() {
 		return "project/project_settlement";
@@ -646,14 +646,14 @@ public class ProjectController {
 		return "myPage";
 	}
 	
-	// í…ŒìŠ¤íŠ¸ í˜ì´ì§€
+	// Å×½ºÆ® ÆäÀÌÁö
 	@GetMapping("projectTest")
 	public String projectTest(Model model, HttpSession session) {
 		return "project/project_test";
 	}
 	
-	// í”„ë¡œì íŠ¸ í˜„í™©
-	// í˜ì´ì§€ ë¡œë“œ ì‹œ ì§€ë‚œ 7ì¼ê°„ ê²°ì œ ê¸ˆì•¡ ì°¨íŠ¸ë¥¼ ë¶ˆëŸ¬ì˜´
+	// ÇÁ·ÎÁ§Æ® ÇöÈ²
+	// ÆäÀÌÁö ·Îµå ½Ã Áö³­ 7ÀÏ°£ °áÁ¦ ±İ¾× Â÷Æ®¸¦ ºÒ·¯¿È
 	@GetMapping("projectStatus")
 	public String projectStatus(
 			@RequestParam(required = false) Integer maker_idx, 
@@ -661,33 +661,33 @@ public class ProjectController {
 			HttpSession session, Model model) {
 		System.out.println("projectStatus");
 
-		// ë©”ì´ì»¤ë³„ ì§€ë‚œ 7ì¼ê°„ ê²°ì œ ê¸ˆì•¡ ì¡°íšŒ
+		// ¸ŞÀÌÄ¿º° Áö³­ 7ÀÏ°£ °áÁ¦ ±İ¾× Á¶È¸
 		List<PaymentVO> payList = paymentService.getPaymentListAmountBy7Day(maker_idx);
-		// ë©”ì´ì»¤ë³„ ì§€ë‚œ 7ì¼ê°„ ì„œí¬í„° ìˆ˜ ì¡°íšŒ
+		// ¸ŞÀÌÄ¿º° Áö³­ 7ÀÏ°£ ¼­Æ÷ÅÍ ¼ö Á¶È¸
 		List<PaymentVO> supporterList = paymentService.getSupporterListCountBy7Day(maker_idx);
 
-		// Gson ê°ì²´ ìƒì„±
+		// Gson °´Ã¼ »ı¼º
 		Gson gson = new Gson();
 
-		// JsonArray ê°ì²´ ìƒì„±
-		JsonArray payArray = new JsonArray(); // ê²°ì œ ê¸ˆì•¡
-		JsonArray supporterArray = new JsonArray(); // ì„œí¬í„° ìˆ˜
+		// JsonArray °´Ã¼ »ı¼º
+		JsonArray payArray = new JsonArray(); // °áÁ¦ ±İ¾×
+		JsonArray supporterArray = new JsonArray(); // ¼­Æ÷ÅÍ ¼ö
 
-		// ë³€ìˆ˜ ì´ˆê¸°í™”
-		int totalAmount = 0; // ëˆ„ì  ê²°ì œ ê¸ˆì•¡
-		int todayAmount = 0; // ì˜¤ëŠ˜ ê²°ì œ ê¸ˆì•¡
+		// º¯¼ö ÃÊ±âÈ­
+		int totalAmount = 0; // ´©Àû °áÁ¦ ±İ¾×
+		int todayAmount = 0; // ¿À´Ã °áÁ¦ ±İ¾×
 
-		// payListì—ì„œ í•˜ë‚˜ì”© êº¼ë‚´ì„œ JsonObjectë¥¼ ìƒì„±í•˜ê³  payArrayì— ì¶”ê°€
+		// payList¿¡¼­ ÇÏ³ª¾¿ ²¨³»¼­ JsonObject¸¦ »ı¼ºÇÏ°í payArray¿¡ Ãß°¡
 		for (PaymentVO pay : payList) {
 		    JsonObject object = new JsonObject();
 		    object.addProperty("date", pay.getDate());
 		    object.addProperty("amount", pay.getAmount());
 		    payArray.add(object);
 
-		    // ëˆ„ì  ê²°ì œ ê¸ˆì•¡ ê³„ì‚°
+		    // ´©Àû °áÁ¦ ±İ¾× °è»ê
 		    totalAmount += pay.getAmount();
 
-		    // ì˜¤ëŠ˜ ê²°ì œ ê¸ˆì•¡ ê³„ì‚° (ì˜¤ëŠ˜ ë‚ ì§œì™€ ì¼ì¹˜í•˜ëŠ” ê²½ìš°)
+		    // ¿À´Ã °áÁ¦ ±İ¾× °è»ê (¿À´Ã ³¯Â¥¿Í ÀÏÄ¡ÇÏ´Â °æ¿ì)
 		    LocalDate today = LocalDate.now();
 		    LocalDate paymentDate = LocalDate.parse(pay.getDate());
 		    if (today.isEqual(paymentDate)) {
@@ -695,7 +695,7 @@ public class ProjectController {
 		    }
 		}
 
-		// supporterListì—ì„œ í•˜ë‚˜ì”© êº¼ë‚´ì„œ JsonObjectë¥¼ ìƒì„±í•˜ê³  supporterArrayì— ì¶”ê°€
+		// supporterList¿¡¼­ ÇÏ³ª¾¿ ²¨³»¼­ JsonObject¸¦ »ı¼ºÇÏ°í supporterArray¿¡ Ãß°¡
 		for (PaymentVO supporter : supporterList) {
 		    JsonObject object = new JsonObject();
 		    object.addProperty("date", supporter.getDate());
@@ -703,19 +703,19 @@ public class ProjectController {
 		    supporterArray.add(object);
 		}
 
-		// json ë¬¸ìì—´ë¡œ ë³€í™˜ í›„ Modelì— ì €ì¥
+		// json ¹®ÀÚ¿­·Î º¯È¯ ÈÄ Model¿¡ ÀúÀå
 		String payListAmount = gson.toJson(payArray);
 		String supporterListCount = gson.toJson(supporterArray);
 		model.addAttribute("payListAmount", payListAmount);
-		model.addAttribute("todayAmount", todayAmount); // ì˜¤ëŠ˜ ê²°ì œ ê¸ˆì•¡
-		model.addAttribute("totalAmount", totalAmount); // ëˆ„ì  ê²°ì œ ê¸ˆì•¡
-		model.addAttribute("supporterListCount", supporterListCount); // ì§€ë‚œ 7ì¼ê°„ ì„œí¬í„° ìˆ˜
+		model.addAttribute("todayAmount", todayAmount); // ¿À´Ã °áÁ¦ ±İ¾×
+		model.addAttribute("totalAmount", totalAmount); // ´©Àû °áÁ¦ ±İ¾×
+		model.addAttribute("supporterListCount", supporterListCount); // Áö³­ 7ÀÏ°£ ¼­Æ÷ÅÍ ¼ö
 		
 		// ==============================================
 		
-		// í”„ë¡œì íŠ¸ë³„ ì§€ë‚œ 7ì¼ê°„ ê²°ì œ ê¸ˆì•¡ ì¡°íšŒ
+		// ÇÁ·ÎÁ§Æ®º° Áö³­ 7ÀÏ°£ °áÁ¦ ±İ¾× Á¶È¸
 		List<PaymentVO> projectPayList = paymentService.getProjectDailyPayment(project_idx);
-		// í”„ë¡œì íŠ¸ë³„ ì§€ë‚œ 7ì¼ê°„ ì„œí¬í„° ìˆ˜ ì¡°íšŒ
+		// ÇÁ·ÎÁ§Æ®º° Áö³­ 7ÀÏ°£ ¼­Æ÷ÅÍ ¼ö Á¶È¸
 		List<PaymentVO> projectSupporterList = paymentService.getProjectSupporterCount(project_idx);
 		
 		
@@ -725,29 +725,29 @@ public class ProjectController {
 
 	}
 	
-	// ì‹œì‘ì¼, ì¢…ë£Œì¼ => ì§€ì • ê°€ëŠ¥
-	// maker_idx(íŒŒë¼ë¯¸í„°)ë¥¼ ë°›ì•„ì„œ ì°¨íŠ¸ë¥¼ ë¶ˆëŸ¬ì˜´
+	// ½ÃÀÛÀÏ, Á¾·áÀÏ => ÁöÁ¤ °¡´É
+	// maker_idx(ÆÄ¶ó¹ÌÅÍ)¸¦ ¹Ş¾Æ¼­ Â÷Æ®¸¦ ºÒ·¯¿È
 	@GetMapping("/chartData")
     @ResponseBody
     public ChartDataVO getChartData(
     		@RequestParam String startDate, @RequestParam String endDate, @RequestParam("maker_idx") int maker_idx, Model model) {
-        // ë‚ ì§œ í˜•ì‹ì„ ì§€ì •í•˜ëŠ” DateTimeFormatter ê°ì²´ ìƒì„±
+        // ³¯Â¥ Çü½ÄÀ» ÁöÁ¤ÇÏ´Â DateTimeFormatter °´Ã¼ »ı¼º
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        // ì‹œì‘ì¼ê³¼ ì¢…ë£Œì¼ì„ íŒŒì‹±í•˜ì—¬ LocalDate ê°ì²´ë¡œ ë³€í™˜
+        // ½ÃÀÛÀÏ°ú Á¾·áÀÏÀ» ÆÄ½ÌÇÏ¿© LocalDate °´Ã¼·Î º¯È¯
         LocalDate parsedStartDate = LocalDate.parse(startDate, formatter);
         LocalDate parsedEndDate = LocalDate.parse(endDate, formatter);
         System.out.println("parsedStartDate : " + parsedStartDate);
         System.out.println("parsedEndDate : " + parsedEndDate);
-        System.out.println("ë©”ì´ì»¤ ë²ˆí˜¸ : " + maker_idx);
+        System.out.println("¸ŞÀÌÄ¿ ¹øÈ£ : " + maker_idx);
 
-        // ë©”ì´ì»¤ë³„ ê²°ì œ ê¸ˆì•¡ ì¡°íšŒ
+        // ¸ŞÀÌÄ¿º° °áÁ¦ ±İ¾× Á¶È¸
         List<PaymentVO> paymentList = paymentService.getPaymentListCountByDay(parsedStartDate, parsedEndDate, maker_idx);
 
-        // ë©”ì´ì»¤ë³„ ì„œí¬í„° ìˆ˜ ì¡°íšŒ
+        // ¸ŞÀÌÄ¿º° ¼­Æ÷ÅÍ ¼ö Á¶È¸
         List<PaymentVO> supporterList = paymentService.getSupporterListCountByDay(parsedStartDate, parsedEndDate, maker_idx);
 
-        // ì°¨íŠ¸ì— ì‚¬ìš©ë  ë¼ë²¨, ì¼ë³„ ê²°ì œ ê¸ˆì•¡, ëˆ„ì  ê²°ì œ ê¸ˆì•¡, ì¼ë³„ ì„œí¬í„° ìˆ˜, ëˆ„ì  ì„œí¬í„° ìˆ˜ë¥¼ ì €ì¥í•  ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™”
+        // Â÷Æ®¿¡ »ç¿ëµÉ ¶óº§, ÀÏº° °áÁ¦ ±İ¾×, ´©Àû °áÁ¦ ±İ¾×, ÀÏº° ¼­Æ÷ÅÍ ¼ö, ´©Àû ¼­Æ÷ÅÍ ¼ö¸¦ ÀúÀåÇÒ ¸®½ºÆ® ÃÊ±âÈ­
         List<String> labels = new LinkedList<>();
         List<Integer> dailyPaymentAmounts = new LinkedList<>();
         List<Integer> cumulativePaymentAmounts = new LinkedList<>();
@@ -757,35 +757,35 @@ public class ProjectController {
         int cumulativePaymentAmount = 0;
         int cumulativeSupporterCount = 0;
 
-        // paymentListì—ì„œ í•˜ë‚˜ì”© êº¼ë‚´ë©´ì„œ ë¦¬ìŠ¤íŠ¸ì— ì €ì¥
+        // paymentList¿¡¼­ ÇÏ³ª¾¿ ²¨³»¸é¼­ ¸®½ºÆ®¿¡ ÀúÀå
         for (PaymentVO payment : paymentList) {
-            String dateString = payment.getDate(); // ë³€ê²½ëœ ì»¬ëŸ¼ëª…ì¸ 'date'ë¥¼ ì‚¬ìš©
-            labels.add(dateString); // ë¼ë²¨ì— ë‚ ì§œ ì¶”ê°€
-            cumulativePaymentAmount += payment.getAmount(); // ëˆ„ì  ê²°ì œ ê¸ˆì•¡ ê³„ì‚°
-            dailyPaymentAmounts.add(payment.getAmount()); // ì¼ë³„ ê²°ì œ ê¸ˆì•¡ ì¶”ê°€
-            cumulativePaymentAmounts.add(cumulativePaymentAmount); // ëˆ„ì  ê²°ì œ ê¸ˆì•¡ ì¶”ê°€
+            String dateString = payment.getDate(); // º¯°æµÈ ÄÃ·³¸íÀÎ 'date'¸¦ »ç¿ë
+            labels.add(dateString); // ¶óº§¿¡ ³¯Â¥ Ãß°¡
+            cumulativePaymentAmount += payment.getAmount(); // ´©Àû °áÁ¦ ±İ¾× °è»ê
+            dailyPaymentAmounts.add(payment.getAmount()); // ÀÏº° °áÁ¦ ±İ¾× Ãß°¡
+            cumulativePaymentAmounts.add(cumulativePaymentAmount); // ´©Àû °áÁ¦ ±İ¾× Ãß°¡
         }
 
-        int supporterIndex = 0; // ì„œí¬í„° ìˆ˜ ë°ì´í„° ì¸ë±ìŠ¤
+        int supporterIndex = 0; // ¼­Æ÷ÅÍ ¼ö µ¥ÀÌÅÍ ÀÎµ¦½º
 
         for (String label : labels) {
             if (supporterIndex < supporterList.size()) {
                 PaymentVO supporterData = supporterList.get(supporterIndex);
-                String dateString = supporterData.getDate(); // ë³€ê²½ëœ ì»¬ëŸ¼ëª…ì¸ 'date'ë¥¼ ì‚¬ìš©
+                String dateString = supporterData.getDate(); // º¯°æµÈ ÄÃ·³¸íÀÎ 'date'¸¦ »ç¿ë
 
                 if (label.equals(dateString)) {
-                    cumulativeSupporterCount += supporterData.getCount(); // ëˆ„ì  ì„œí¬í„° ìˆ˜ ê°±ì‹ 
-                    cumulativeSupporterCounts.add(cumulativeSupporterCount); // ëˆ„ì  ì„œí¬í„° ìˆ˜ ì¶”ê°€
-                    dailySupporterCounts.add(supporterData.getCount()); // ì¼ë³„ ì„œí¬í„° ìˆ˜ ì¶”ê°€
-                    supporterIndex++; // ë‹¤ìŒ ì„œí¬í„° ìˆ˜ ë°ì´í„°ë¡œ ì´ë™
+                    cumulativeSupporterCount += supporterData.getCount(); // ´©Àû ¼­Æ÷ÅÍ ¼ö °»½Å
+                    cumulativeSupporterCounts.add(cumulativeSupporterCount); // ´©Àû ¼­Æ÷ÅÍ ¼ö Ãß°¡
+                    dailySupporterCounts.add(supporterData.getCount()); // ÀÏº° ¼­Æ÷ÅÍ ¼ö Ãß°¡
+                    supporterIndex++; // ´ÙÀ½ ¼­Æ÷ÅÍ ¼ö µ¥ÀÌÅÍ·Î ÀÌµ¿
                     continue;
                 }
             }
-            dailySupporterCounts.add(0); // ëˆ„ë½ëœ ë‚ ì§œì— ëŒ€í•´ 0ìœ¼ë¡œ ì²˜ë¦¬ëœ ì¼ë³„ ì„œí¬í„° ìˆ˜ ì¶”ê°€
-            cumulativeSupporterCounts.add(cumulativeSupporterCount); // ì´ì „ì˜ ëˆ„ì  ì„œí¬í„° ìˆ˜ ì¶”ê°€ (ì´ì „ ë°ì´í„°ë¥¼ ê·¸ëŒ€ë¡œ ì‚¬ìš©)
+            dailySupporterCounts.add(0); // ´©¶ôµÈ ³¯Â¥¿¡ ´ëÇØ 0À¸·Î Ã³¸®µÈ ÀÏº° ¼­Æ÷ÅÍ ¼ö Ãß°¡
+            cumulativeSupporterCounts.add(cumulativeSupporterCount); // ÀÌÀüÀÇ ´©Àû ¼­Æ÷ÅÍ ¼ö Ãß°¡ (ÀÌÀü µ¥ÀÌÅÍ¸¦ ±×´ë·Î »ç¿ë)
         }
 
-        // ChartDataVO ê°ì²´ë¥¼ ìƒì„±í•˜ì—¬ ë¼ë²¨, ì¼ë³„ ê²°ì œ ê¸ˆì•¡, ëˆ„ì  ê²°ì œ ê¸ˆì•¡, ì¼ë³„ ì„œí¬í„° ìˆ˜, ëˆ„ì  ì„œí¬í„° ìˆ˜ë¥¼ ë‹´ì•„ ë°˜í™˜
+        // ChartDataVO °´Ã¼¸¦ »ı¼ºÇÏ¿© ¶óº§, ÀÏº° °áÁ¦ ±İ¾×, ´©Àû °áÁ¦ ±İ¾×, ÀÏº° ¼­Æ÷ÅÍ ¼ö, ´©Àû ¼­Æ÷ÅÍ ¼ö¸¦ ´ã¾Æ ¹İÈ¯
         return new ChartDataVO(labels, dailyPaymentAmounts, cumulativePaymentAmounts, dailySupporterCounts, cumulativeSupporterCounts);
     }
 	

@@ -10,5 +10,7 @@ public interface ProfileMapper {
     ProfileVO getProfileByMemberId(int member_idx);
 
     void updateProfile(ProfileVO profileVO);
+
+	int updateProfileImage(ProfileVO profile);
 }
 
