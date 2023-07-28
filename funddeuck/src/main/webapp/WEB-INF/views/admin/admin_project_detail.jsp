@@ -504,7 +504,9 @@
 		    url: "<c:url value='/sendPhoneMessage'/>",
 		    data: {
 		    	memberPhone: memberPhone,
-			    message: message
+			    message: message,
+			    projectIdx: ${project.project_idx},
+			    memberId: ${maker.member_idx}
 		    },
 		    success: function(data) {
 		    	

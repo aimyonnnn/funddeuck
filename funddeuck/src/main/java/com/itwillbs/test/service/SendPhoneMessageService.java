@@ -10,7 +10,7 @@ import net.nurigo.java_sdk.exceptions.CoolsmsException;
 @Service
 public class SendPhoneMessageService {
 	
-	public String SendMessage(String memberPhone, String message) throws CoolsmsException{
+	public String SendMessage(String memberPhone, String message, String memberId, int projectIdx) throws CoolsmsException{
 		String api_key = "NCSDN9DK2QVHTNK3"; // 실제 테스트 시에 바꿔줘야함!
 		String api_secret = "#"; // 실제 테스트 시에 바꿔줘야함!
 		Message coolsms = new Message(api_key, api_secret);

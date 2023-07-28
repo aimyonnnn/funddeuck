@@ -69,8 +69,10 @@ public class AdminController {
 	// 프로젝트 승인 완료 시 메이커에게 문자 메시지 전송
 	@PostMapping("sendPhoneMessage")
 	@ResponseBody 
-	public String checkPhone(@RequestParam String memberPhone, @RequestParam String message) throws CoolsmsException {
-		return sendPhoneMessageService.SendMessage(memberPhone, message);
+	public String checkPhone(
+			@RequestParam String memberPhone, @RequestParam String message,
+			@RequestParam String memberId, @RequestParam int projectIdx) throws CoolsmsException {
+		return sendPhoneMessageService.SendMessage(memberPhone, message, memberId, projectIdx);
 	}
 	
 	// 프로젝트 승인관리
