@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.servlet.http.*;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
@@ -21,11 +22,41 @@ public class FundingController {
 	private MemberService memberService;
 	@Autowired
 	private FundingService fundingService;
+	
 	// 펀딩 탐색 페이지
 	@GetMapping("fundingDiscover")
-	public String fundingDiscoverForm() {
+	public String fundingDiscover() {
 		return "funding/funding_discover";
 	}
+	
+	// 펀딩 리스트 조회
+	@ResponseBody
+	@GetMapping("fundingDiscoverList")
+	public String fundingDiscoverList(
+			@RequestParam(defaultValue = "") String searchType, 
+			@RequestParam(defaultValue = "") String searchKeyword, 
+			@RequestParam(defaultValue = "1") int pageNum, 
+			Model model,
+			HttpServletResponse response) {
+
+
+	int listLimit = 12; // 한 페이지에서 표시할 목록 갯수 지정
+	int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+
+	List<ProjectVO> projectList = projectService.getProjectList(searchType, searchKeyword, startRow, listLimit);
+	
+	System.out.println(projectList);
+	// 페이징 처리를 위한 계산 작업
+	int listCount = projectService.getProjectListCount(searchType, searchKeyword);
+	int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+	
+	JSONObject jsonObject = new JSONObject();
+	
+	jsonObject.put("projectList", projectList);
+	jsonObject.put("maxPage", maxPage);
+
+		return jsonObject.toString();		
+	}	
 	
 	// 펀딩 상세페이지 이동
 	@GetMapping ("fundingDetail")
@@ -165,6 +196,21 @@ public class FundingController {
 		
 		// 조회한 RewardVO 전달
 		return reward;
+	}
+	
+	// 배송지 변경 모달 ajax
+	@PostMapping("deliveryChange")
+	@ResponseBody
+	public DeliveryVO deliveryChange(int changeDelivery_idx, HttpSession session) {
+		System.out.println("전달받은 delivery_idx = " + changeDelivery_idx);
+		// 세션 아이디 가져오기
+//		String id = (String)session.getAttribute("sId");
+		String id = "kim1234";
+		// 해당 회원 아이디와 배송지 번호가 전달받은 changeDelivery_idx 인 배송지 조회
+		DeliveryVO delivery = fundingService.getDeliveryInfo(id, changeDelivery_idx);
+		System.out.println("조회한 delivery : " + delivery);
+		
+		return delivery;
 	}
 		
 }

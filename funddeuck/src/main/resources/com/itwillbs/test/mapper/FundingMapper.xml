@@ -31,4 +31,13 @@
 				WHERE delivery_default = 1 
 					AND member_id = #{id}
 	</select>
+	
+	<!-- 선택한 배송지 조회 -->
+	<select id="selectDelivery">
+		SELECT * 
+			FROM delivery
+				WHERE delivery_idx = #{delivery_idx}
+					AND member_id = #{id}
+		
+	</select>
 </mapper>

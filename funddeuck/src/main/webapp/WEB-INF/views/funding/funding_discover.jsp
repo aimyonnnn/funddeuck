@@ -17,6 +17,7 @@
 <script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
 </head>
 <body>
+<form action="fundingDiscoverList">
 <!-- 상단 이동 버튼 -->
 	<button type="button" class="btn btn-dark position-fixed bottom-0 end-0" id="go-top">
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-up-square-fill" viewBox="0 0 16 16">
@@ -124,32 +125,35 @@
 	<br>
 <!-- 프로젝트 리스트 영역 -->
 	<div class="col with .gy-5 gutters">
+	<input type="submit" value="JSON 타입 객체 리턴 확인용 버튼">
 		<small class="text-danger">679</small><small>개의 프로젝트가 있습니다.</small>
 		<div class="row row-cols-3 row-cols-sm-4 g-3">
+		<!-- 페이징 처리 -->
 		<c:forEach begin="1" end="9" step="1">
 			<div class="col">
-			<div class="card h-100 w-100 p-3 border-0">
-				<img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" 
-				class="card-img-top object-fit-contain" alt="..." >
-				<div class="card-body">
-					<small class="card-title opacity-75">아트북 | 아르누보</small>
-					<p class="card-text fw-bold text-start">&lt;스파이더맨: 어크로스 더 유니버스&gt; 아트북+공식 굿즈</p>
-					<small class="opacity-50">상상 그 이상을 넘어서는 멀티버스의 세계 속으로!</small>
+				<div class="card h-100 w-100 p-3 border-0">
+					<img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" 
+					class="card-img-top object-fit-contain" alt="..." >
+					<div class="card-body">
+						<small class="card-title opacity-75">아트북 | 아르누보</small>
+						<p class="card-text fw-bold text-start">&lt;스파이더맨: 어크로스 더 유니버스&gt; 아트북+공식 굿즈</p>
+						<small class="opacity-50">상상 그 이상을 넘어서는 멀티버스의 세계 속으로!</small>
+					</div>
+						<a href="fundingDetail" class="stretched-link"></a>
+					<div class="card-footer bg-white">
+		      			<small class="fw-bold text-success">26.014%</small>&nbsp;
+		      			<small class="opacity-75">25,478,800원
+		      			<small class="fw-bold float-end">23일 남음</small></small>
+		        	<div class="progress">
+	  					<div class="progress-bar bg-success" role="progressbar" aria-label="Success example" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+					</div>
+					</div>
 				</div>
-				<a href="fundingDetail" class="stretched-link"></a>
-				<div class="card-footer bg-white">
-	      			<small class="fw-bold text-success">26.014%</small>&nbsp;
-	      			<small class="opacity-75">25,478,800원
-	      			<small class="fw-bold float-end">23일 남음</small></small>
-	        	<div class="progress">
-  					<div class="progress-bar bg-success" role="progressbar" aria-label="Success example" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-				</div>
-				</div>
-			</div>
 			</div>
 		</c:forEach>
 		</div>
 	</div>
 </div>
+</form>
 </body>
 </html>

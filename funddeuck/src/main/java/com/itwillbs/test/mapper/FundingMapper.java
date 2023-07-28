@@ -15,4 +15,6 @@ public interface FundingMapper {
 	// 기본 배송지 조회
 	DeliveryVO selectDeliveryDefault(String id);
 	
+	DeliveryVO selectDelivery(@Param(value = "id") String id,@Param(value = "delivery_idx") int changeDelivery_idx);
+	
 }

@@ -63,29 +63,29 @@ public class ProjectController {
 		this.echoHandler = echoHandler;
 	}
 	
-	// 프로젝트 메인
+	// ������Ʈ ����
 	@GetMapping("project")
 	public String projectMain() {
 		return "project/project_main";
 	}
 	
-	// 프로젝트 승인 요청
+	// ������Ʈ ���� ��û
 	@GetMapping("approvalRequest")
 	@ResponseBody
 	public String approvalRequest(@RequestParam int project_idx, HttpServletRequest request) {
 		System.out.println("approvalRequest - " + project_idx);
-		// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경!
-		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려
-		// 관리자 페이지에서는 2-승인요청인것만 출력한다!
+		// �Ķ���ͷ� ���޹��� project_idx�� project_approve_status ���¸� 2-���ο�û���� ����!
+		// ������Ʈ ���� ���� 1-�̽��� 2-���ο�û 3-���� 4-�ݷ�
+		// ������ ������������ 2-���ο�û�ΰ͸� ����Ѵ�!
 		int updateCount = projectService.modifyStatus(project_idx);
 		if(updateCount > 0) {
-			// 관리자에게 승인 요청 toast 팝업 띄우기
-			// toast 클릭 시 관리자의 프로젝트 승인 페이지로 이동
+			// �����ڿ��� ���� ��û toast �˾� ����
+			// toast Ŭ�� �� �������� ������Ʈ ���� �������� �̵�
 			String adminProjectUrl = 
 				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/test/adminProjectList";
 //				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/funddeuck/adminProjectList";
 			String notification = 
-					"<a href='" + adminProjectUrl + "' style='text-decoration: none; color: black;'>메이커님께서 프로젝트 승인을 요청하였습니다.</a>";
+					"<a href='" + adminProjectUrl + "' style='text-decoration: none; color: black;'>����Ŀ�Բ��� ������Ʈ ������ ��û�Ͽ����ϴ�.</a>";
 			try {
 				echoHandler.sendNotificationToUser("admin", notification);
 			} catch (IOException e) {
@@ -96,7 +96,7 @@ public class ProjectController {
 		return "false"; 
 	}
 	
-	// 작성중인 프로젝트로 이동
+	// �ۼ����� ������Ʈ�� �̵�
 	@GetMapping("projectUrl")
 	public ModelAndView projectUrl(HttpSession session, Model model) {
 	    String sId = (String) session.getAttribute("sId");
@@ -104,53 +104,53 @@ public class ProjectController {
 	    MembersVO m = memberService.getMemberInfo(sId);
 	    
 	    if (memberList.isEmpty()) {
-	    	model.addAttribute("msg", "작업중인 프로젝트가 없습니다.");
+	    	model.addAttribute("msg", "�۾����� ������Ʈ�� �����ϴ�.");
 	    	return new ModelAndView("fail_back");
 	    }
 
 	    MembersVO member = memberList.get(0);
-	    System.out.println("출력 테스트 : " + member);
+	    System.out.println("��� �׽�Ʈ : " + member);
 	    int rewardIdx = member.getReward_idx();
 	    int projectIdx = member.getProject_idx();
 	    int makerIdx = member.getMaker_idx();
 
 	    if (rewardIdx != 0) {
-	        // reward_idx가 0이 아니면 projectReward로 리다이렉트
+	        // reward_idx�� 0�� �ƴϸ� projectReward�� �����̷�Ʈ
 	        return new ModelAndView("redirect:/projectReward?reward_idx=" + rewardIdx);
 	    } else if (makerIdx != 0) {
-	    	// project_idx가 0이 아니면 projectManagement로 리다이렉트
+	    	// project_idx�� 0�� �ƴϸ� projectManagement�� �����̷�Ʈ
 	    	return new ModelAndView("redirect:/projectManagement?project_idx=" + projectIdx);
 	    }
 	    return new ModelAndView("redirect:/projectMaker?member_idx=" + m.getMember_idx());
 	}
 	
-	// 리워드 설계 페이지
+	// ������ ���� ������
 	@GetMapping("projectReward")
 	public String projectReward(@RequestParam(required = false) Integer reward_idx, HttpSession session, Model model) {
 		
-		// 세션 아이디가 존재하지 않을 때 
+		// ���� ���̵� �������� ���� �� 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "잘못된 접근입니다.");
+			model.addAttribute("msg", "�߸��� �����Դϴ�.");
 			return "fail_back";
 		}
 		
-		// 수정 버튼을 눌렀을 때 - reward_idx가 존재하면 리워드 수정을 위해 해당 리워드 정보 조회 후 view에 리워드 정보를 출력 
+		// ���� ��ư�� ������ �� - reward_idx�� �����ϸ� ������ ������ ���� �ش� ������ ���� ��ȸ �� view�� ������ ������ ��� 
 		if (reward_idx != null) {
-			System.out.println("수정하기 버튼 클릭 시 - 리워드 번호 : " + reward_idx);
+			System.out.println("�����ϱ� ��ư Ŭ�� �� - ������ ��ȣ : " + reward_idx);
 			
-			// 리워드 작성자 판별 요청
-			// 단, 세션 아이디가 admin이 아닐 때만 수행
+			// ������ �ۼ��� �Ǻ� ��û
+			// ��, ���� ���̵� admin�� �ƴ� ���� ����
 			if(!sId.equals("admin")) {
-				String rewardWriter = projectService.getRewardAuthorId(reward_idx, sId); // 리워드 작성자의 아이디를 조회
+				String rewardWriter = projectService.getRewardAuthorId(reward_idx, sId); // ������ �ۼ����� ���̵� ��ȸ
 				if(!sId.equals(rewardWriter)) {
-					// 리워드 작성자가 아닌 경우
-					model.addAttribute("msg", "리워드 작성자가 아닙니다.");
+					// ������ �ۼ��ڰ� �ƴ� ���
+					model.addAttribute("msg", "������ �ۼ��ڰ� �ƴմϴ�.");
 					return "fail_back";
 				} 
 			}
 			
-			// 세션 아이디가 admin이거나 리워드 작성자인 경우, 리워드 정보 조회
+			// ���� ���̵� admin�̰ų� ������ �ۼ����� ���, ������ ���� ��ȸ
 			RewardVO reward = projectService.getRewardInfo(reward_idx);
 			model.addAttribute("reward", reward);
 	    }
@@ -158,7 +158,7 @@ public class ProjectController {
 		return "project/project_reward";
 	}
 	
-	// 리워드 등록하기
+	// ������ ����ϱ�
 	@PostMapping("saveReward")
     @ResponseBody
     public String saveReward(@ModelAttribute RewardVO reward) {
@@ -168,7 +168,7 @@ public class ProjectController {
 		if(insertCount > 0) { return "true"; } return "false";
     }
 	
-	// 리워드 수정하기
+	// ������ �����ϱ�
 	@PostMapping("modifyReward")
     @ResponseBody
     public String modifyReward(@ModelAttribute RewardVO reward, @RequestParam int reward_idx, HttpSession session) {
@@ -178,38 +178,38 @@ public class ProjectController {
 		if(updateCount > 0) { return "true"; } return "false";
     }
 	
-	// 리워드 삭제하기
+	// ������ �����ϱ�
 	@PostMapping("removeReward")
 	@ResponseBody
 	public String removeReward(@RequestParam int reward_idx, HttpSession session) {
-		System.out.println("삭제하기 버튼 클릭 시 - 리워드 번호 : " + reward_idx);
+		System.out.println("�����ϱ� ��ư Ŭ�� �� - ������ ��ȣ : " + reward_idx);
 		
-		// 세션 아이디가 존재하지 않을 때 
+		// ���� ���̵� �������� ���� �� 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
 			return "false";
 		}
 		
-		// 리워드 작성자 판별 요청
-		// 단, 세션 아이디가 admin이 아닐 때만 수행
+		// ������ �ۼ��� �Ǻ� ��û
+		// ��, ���� ���̵� admin�� �ƴ� ���� ����
 	    if(!"admin".equals(sId)) {
 	        String rewardWriter = projectService.getRewardAuthorId(reward_idx, sId);
-	        // 리워드 작성자가 아닌 경우
+	        // ������ �ۼ��ڰ� �ƴ� ���
 	        if (!sId.equals(rewardWriter)) {
 	            return "false";
 	        }
 	    }
 	    
-	    // 리워드 삭제 처리
+	    // ������ ���� ó��
 	    int deleteCount = projectService.removeReward(reward_idx);
 	    if (deleteCount > 0) {
 	        return "true";
 	    }
 	    
-	    return "false"; // 리워드 삭제 실패 시
+	    return "false"; // ������ ���� ���� ��
 	}
 	
-	// 리워드 갯수 조회하기
+	// ������ ���� ��ȸ�ϱ�
 	@GetMapping("rewardCount")
 	@ResponseBody
 	public String rewardCount(@RequestParam int project_idx) {
@@ -217,7 +217,7 @@ public class ProjectController {
 		return rewardCount+"";
 	}
 	
-	// 리워드 리스트 조회하기
+	// ������ ����Ʈ ��ȸ�ϱ�
 	@GetMapping("rewardList")
 	@ResponseBody
 	public List<RewardVO> rewardList(@RequestParam int project_idx) {
@@ -225,24 +225,24 @@ public class ProjectController {
 	    return rList;
 	}
 	
-	// 메이커 등록 페이지
+	// ����Ŀ ��� ������
 	@GetMapping("projectMaker")
 	public String makerInfo(HttpSession session, Model model) {
 		
-		// 세션 아이디가 존재하지 않을 때 
+		// ���� ���̵� �������� ���� �� 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "잘못된 접근입니다.");
+			model.addAttribute("msg", "�߸��� �����Դϴ�.");
 			return "fail_back";
 		}
 		
-		// 메이커 등록 페이지 접속 시 세션아이디로 member_idx를 조회 후 model에 저장
+		// ����Ŀ ��� ������ ���� �� ���Ǿ��̵�� member_idx�� ��ȸ �� model�� ����
 		int member_idx = projectService.getMemberIdx(sId);
 		model.addAttribute("member_idx", member_idx);
 		return "project/project_maker";
 	}
 	
-	// 메이커 등록 비즈니스 로직 처리
+	// ����Ŀ ��� ����Ͻ� ���� ó��
 	@PostMapping("projectMakerPro")
 	public String projectMaker(MakerVO maker, Model model, HttpSession session, HttpServletRequest request) {
 		System.out.println(maker);
@@ -297,16 +297,16 @@ public class ProjectController {
 			maker.setMaker_file5(subDir + "/" + fileName5);
 		}
 		
-		System.out.println("실제 업로드 파일명1 : " + maker.getMaker_file1());
-		System.out.println("실제 업로드 파일명2 : " + maker.getMaker_file2());
-		System.out.println("실제 업로드 파일명3 : " + maker.getMaker_file3());
-		System.out.println("실제 업로드 파일명4 : " + maker.getMaker_file4());
-		System.out.println("실제 업로드 파일명5 : " + maker.getMaker_file5());
+		System.out.println("���� ���ε� ���ϸ�1 : " + maker.getMaker_file1());
+		System.out.println("���� ���ε� ���ϸ�2 : " + maker.getMaker_file2());
+		System.out.println("���� ���ε� ���ϸ�3 : " + maker.getMaker_file3());
+		System.out.println("���� ���ε� ���ϸ�4 : " + maker.getMaker_file4());
+		System.out.println("���� ���ε� ���ϸ�5 : " + maker.getMaker_file5());
 		
 		// -----------------------------------------------------------------------------------
 		int insertCount = projectService.registMaker(maker);
 		
-		if(insertCount > 0) { // 성공
+		if(insertCount > 0) { // ����
 			try {
 				if(!mFile1.getOriginalFilename().equals("")) {
 					mFile1.transferTo(new File(saveDir, fileName1));
@@ -332,19 +332,19 @@ public class ProjectController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			// 메이커 등록 성공 시 프로젝트 등록 페이지로 이동
+			// ����Ŀ ��� ���� �� ������Ʈ ��� �������� �̵�
 			String targetURL = "projectManagement?maker_idx=" + maker.getMaker_idx();
-			System.out.println("메이커 등록 성공 시 메이커 번호 조회 : " + maker.getMaker_idx());
-			model.addAttribute("msg", "메이커 등록에 성공하였습니다. 프로젝트 등록 페이지로 이동합니다.");
+			System.out.println("����Ŀ ��� ���� �� ����Ŀ ��ȣ ��ȸ : " + maker.getMaker_idx());
+			model.addAttribute("msg", "����Ŀ ��Ͽ� �����Ͽ����ϴ�. ������Ʈ ��� �������� �̵��մϴ�.");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
-		} else { // 실패
-			model.addAttribute("msg", "메이커 등록 실패!");
+		} else { // ����
+			model.addAttribute("msg", "����Ŀ ��� ����!");
 			return "fail_back";
 		}
 	}
 	
-	// 메이커 페이지
+	// ����Ŀ ������
 	@GetMapping("makerDetail")
 	public String makerDetail(@RequestParam(required = false) Integer maker_idx, Model model) {
 		System.out.println("makerDetail : " + maker_idx);
@@ -353,17 +353,17 @@ public class ProjectController {
 		return "project/maker_detail";
 	}
 	
-	// 메이커 수정하기 페이지
+	// ����Ŀ �����ϱ� ������
 	@GetMapping("modifyMakerForm")
 	public String modifyMakerForm(@RequestParam int maker_idx, Model model) {
 		System.out.println("modifyMakerForm : " + maker_idx);
-		// 메이커 정보 조회
+		// ����Ŀ ���� ��ȸ
 		MakerVO maker = makerService.getMakerInfo(maker_idx);
 		model.addAttribute("maker", maker);
 		return "project/maker_detail_modifyForm";
 	}
 	
-	// 메이커 페이지 수정하기 비즈니스 로직 처리
+	// ����Ŀ ������ �����ϱ� ����Ͻ� ���� ó��
 	@PostMapping("modifyMaker")
 	public String modifyMaker(MakerVO maker, HttpSession session, Model model) {
 		System.out.println("modifyMaker");
@@ -382,8 +382,8 @@ public class ProjectController {
 			e.printStackTrace();
 		}
 		
-		// 파일 업로드 폴더 경로 출력
-		System.out.println("실제 업로드 폴더 경로: " + saveDir);
+		// ���� ���ε� ���� ��� ���
+		System.out.println("���� ���ε� ���� ���: " + saveDir);
 		
 		MultipartFile mFile1 = maker.getFile4();
 		MultipartFile mFile2 = maker.getFile5();
@@ -405,13 +405,13 @@ public class ProjectController {
 		    maker.setMaker_file5(subDir + "/" + fileName2);
 		}
 
-		System.out.println("실제 업로드 파일명1 : " + maker.getMaker_file4());
-		System.out.println("실제 업로드 파일명2 : " + maker.getMaker_file5());
+		System.out.println("���� ���ε� ���ϸ�1 : " + maker.getMaker_file4());
+		System.out.println("���� ���ε� ���ϸ�2 : " + maker.getMaker_file5());
 		// -----------------------------------------------------------------------------------
 		int updateCount = makerService.modifyMaker(maker);
 		
 		if(updateCount > 0) {
-			// 파일 업로드 처리
+			// ���� ���ε� ó��
 			try {
 			    if (fileName1 != null) {
 			        mFile1.transferTo(new File(saveDir, fileName1));
@@ -424,27 +424,27 @@ public class ProjectController {
 			} catch (IOException e) {
 			    e.printStackTrace();
 			}
-			// 메이커 수정 성공 시 makerDetail로 이동
+			// ����Ŀ ���� ���� �� makerDetail�� �̵�
 			String targetURL = "makerDetail?maker_idx=" + maker.getMaker_idx();
-			System.out.println("메이커 idx : " + maker.getMaker_idx());
-			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다.");
+			System.out.println("����Ŀ idx : " + maker.getMaker_idx());
+			model.addAttribute("msg", "����Ŀ ���� ������ �Ϸ�Ǿ����ϴ�.");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
 		} else {
-			model.addAttribute("msg", "글 수정 실패!");
+			model.addAttribute("msg", "�� ���� ����!");
 			return "fail_back";
 		}
 	}
 	
-	// 메이커 페이지 수정하기 - 파일 실시간 삭제
+	// ����Ŀ ������ �����ϱ� - ���� �ǽð� ����
 	@PostMapping("deleteFile")
 	@ResponseBody
 	public String deleteFile(int maker_idx,	String fileName, int fileNumber, HttpSession session) {
 		System.out.println("deleteFile() - fileName : " + fileName);
-		// 파일 삭제 요청
+		// ���� ���� ��û
 	    int deleteCount = makerService.removeMakerFile(maker_idx, fileName, fileNumber);
 	    if (deleteCount != 0) {
-	        // 파일 삭제 로직
+	        // ���� ���� ����
 	        String uploadDir = "/resources/upload";
 	        String saveDir = session.getServletContext().getRealPath(uploadDir);
 	        String filePath = saveDir + "/" + fileName;
@@ -456,7 +456,7 @@ public class ProjectController {
 	                return "fail";
 	            }
 	        } else {
-	            // 파일이 이미 삭제되어 있음
+	            // ������ �̹� �����Ǿ� ����
 	            return "success";
 	        }
 	    } else {
@@ -464,25 +464,25 @@ public class ProjectController {
 	    }
 	} // deleteFile
 	
-	// 프로젝트 등록 페이지
+	// ������Ʈ ��� ������
 	@GetMapping("projectManagement")
 	public String projectManagement(HttpSession session, Model model) {
 		
-		// 세션 아이디가 존재하지 않을 때 
+		// ���� ���̵� �������� ���� �� 
 //		String sId = (String) session.getAttribute("sId");
 //		if(sId == null) {
-//			model.addAttribute("msg", "잘못된 접근입니다.");
+//			model.addAttribute("msg", "�߸��� �����Դϴ�.");
 //			return "fail_back";
 //		}
 		
 		return "project/project_management";
 	}
 	
-	// 프로젝트 등록 비즈니스 로직 처리
+	// ������Ʈ ��� ����Ͻ� ���� ó��
 	@PostMapping("projectManagementPro")
 	public String projectManagementPro(ProjectVO project, Model model, HttpSession session, HttpServletRequest request) {
 		
-		// 이미지 파일 업로드 
+		// �̹��� ���� ���ε� 
 		String uploadDir = "/resources/upload";
 		String saveDir = session.getServletContext().getRealPath(uploadDir);
 		String subDir = "";
@@ -534,28 +534,28 @@ public class ProjectController {
 			project.setProject_settlement_image(subDir + "/" + fileName5);
 		}
 		
-		System.out.println("실제 업로드 썸네일명1:" + project.getProject_thumnails1());
-		System.out.println("실제 업로드 썸네일명2:" + project.getProject_thumnails1());
-		System.out.println("실제 업로드 썸네일명3:" + project.getProject_thumnails1());
-		System.out.println("실제 업로드 상세이미지명:" + project.getProject_image());
-		System.out.println("실제 업로드 통장사본명:" + project.getProject_settlement_image());
+		System.out.println("���� ���ε� ����ϸ�1:" + project.getProject_thumnails1());
+		System.out.println("���� ���ε� ����ϸ�2:" + project.getProject_thumnails1());
+		System.out.println("���� ���ε� ����ϸ�3:" + project.getProject_thumnails1());
+		System.out.println("���� ���ε� ���̹�����:" + project.getProject_image());
+		System.out.println("���� ���ε� ����纻��:" + project.getProject_settlement_image());
 		
 		// ------------------------------------------------------------------------------------
 		
-		// 주민등록번호 결합
-		String representativeBirth1 = request.getParameter("representativeBirth1"); // 앞자리
-		String representativeBirth2 = request.getParameter("representativeBirth2"); // 뒷자리
-		String project_representative_birth = representativeBirth1 + "-" + representativeBirth2; // 결합
-		project.setProject_representative_birth(project_representative_birth); // 저장
+		// �ֹε�Ϲ�ȣ ����
+		String representativeBirth1 = request.getParameter("representativeBirth1"); // ���ڸ�
+		String representativeBirth2 = request.getParameter("representativeBirth2"); // ���ڸ�
+		String project_representative_birth = representativeBirth1 + "-" + representativeBirth2; // ����
+		project.setProject_representative_birth(project_representative_birth); // ����
 		
-		// 해시태그 값 처리
+		// �ؽ��±� �� ó��
 		String project_hashtag = request.getParameter("project_hashtag");
 		project.setProject_hashtag(project_hashtag);
-		System.out.println("해시태그: " + project.getProject_hashtag());
+		System.out.println("�ؽ��±�: " + project.getProject_hashtag());
 		
 		int insertCount = projectService.registProject(project);
 		
-		if(insertCount > 0) { // 성공 시 
+		if(insertCount > 0) { // ���� �� 
 			try {
 				if(!mFile1.getOriginalFilename().equals("")) {
 					mFile1.transferTo(new File(saveDir, fileName1));
@@ -581,33 +581,33 @@ public class ProjectController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			// 프로젝트 등록 성공 시 리워드 설계 페이지로 이동
+			// ������Ʈ ��� ���� �� ������ ���� �������� �̵�
 			String targetURL = "projectReward?project_idx=" + project.getProject_idx();
-			System.out.println("프로젝트 등록 성공 시 프로젝트 번호 조회 : " + project.getProject_idx());
-			model.addAttribute("msg", "프로젝트 등록에 성공하였습니다. 리워드 설계 페이지로 이동합니다.");
+			System.out.println("������Ʈ ��� ���� �� ������Ʈ ��ȣ ��ȸ : " + project.getProject_idx());
+			model.addAttribute("msg", "������Ʈ ��Ͽ� �����Ͽ����ϴ�. ������ ���� �������� �̵��մϴ�.");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
-		} else { // 실패 시
-			model.addAttribute("msg", "프로젝트 등록 실패!");
+		} else { // ���� ��
+			model.addAttribute("msg", "������Ʈ ��� ����!");
 			return "fail_back";
 		}
 	}
 	
-	// 발송·환불 관리
+	// �߼ۡ�ȯ�� ����
 	@GetMapping("projectShipping")
 	public String projectShipping(HttpSession session, Model model) {
 		
-		// 세션 아이디가 존재하지 않을 때 
+		// ���� ���̵� �������� ���� �� 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "잘못된 접근입니다.");
+			model.addAttribute("msg", "�߸��� �����Դϴ�.");
 			return "fail_back";
 		}
 		
-		// 세션 아이디로 member_idx 조회 
+		// ���� ���̵�� member_idx ��ȸ 
 		int member_idx = projectService.getMemberIdx(sId);
 		
-		// 프로젝트 리스트 가져와서 Model 객체에 저장
+		// ������Ʈ ����Ʈ �����ͼ� Model ��ü�� ����
 		List<ProjectVO> projectList = projectService.getProjectList(member_idx);
 		model.addAttribute("projectList", projectList);
 		
@@ -620,15 +620,15 @@ public class ProjectController {
 	public Map<String, Object> shippingStatus(@RequestParam("project_idx") int project_idx) {
 		Map<String, Object> data = new HashMap<>();
 		
-		// 배송상황 조회
+		// ��ۻ�Ȳ ��ȸ
 		List<Map<String, Object>> deliveryStatus = paymentService.getDeliveryList(project_idx);
 		
-		// 환불승인여부 조회
+		// ȯ�ҽ��ο��� ��ȸ
 		List<Map<String, Object>> refundStatus = paymentService.getRefundList(project_idx);
 		
-		System.out.println("프로젝트 번호: " + project_idx);
-		System.out.println("배송상황: " + deliveryStatus);
-		System.out.println("환불승인여부: " + refundStatus);
+		System.out.println("������Ʈ ��ȣ: " + project_idx);
+		System.out.println("��ۻ�Ȳ: " + deliveryStatus);
+		System.out.println("ȯ�ҽ��ο���: " + refundStatus);
 		
 		data.put("deliveryStatus", deliveryStatus);
 		data.put("refundStatus", refundStatus);
@@ -667,14 +667,14 @@ public class ProjectController {
 		return "myPage";
 	}
 	
-	// 테스트 페이지
+	// �׽�Ʈ ������
 	@GetMapping("projectTest")
 	public String projectTest(Model model, HttpSession session) {
 		return "project/project_test";
 	}
 	
-	// 프로젝트 현황
-	// 페이지 로드 시 지난 7일간 결제 금액 차트를 불러옴
+	// ������Ʈ ��Ȳ
+	// ������ �ε� �� ���� 7�ϰ� ���� �ݾ� ��Ʈ�� �ҷ���
 	@GetMapping("projectStatus")
 	public String projectStatus(
 			@RequestParam(required = false) Integer maker_idx, 
@@ -682,33 +682,33 @@ public class ProjectController {
 			HttpSession session, Model model) {
 		System.out.println("projectStatus");
 
-		// 메이커별 지난 7일간 결제 금액 조회
+		// ����Ŀ�� ���� 7�ϰ� ���� �ݾ� ��ȸ
 		List<PaymentVO> payList = paymentService.getPaymentListAmountBy7Day(maker_idx);
-		// 메이커별 지난 7일간 서포터 수 조회
+		// ����Ŀ�� ���� 7�ϰ� ������ �� ��ȸ
 		List<PaymentVO> supporterList = paymentService.getSupporterListCountBy7Day(maker_idx);
 
-		// Gson 객체 생성
+		// Gson ��ü ����
 		Gson gson = new Gson();
 
-		// JsonArray 객체 생성
-		JsonArray payArray = new JsonArray(); // 결제 금액
-		JsonArray supporterArray = new JsonArray(); // 서포터 수
+		// JsonArray ��ü ����
+		JsonArray payArray = new JsonArray(); // ���� �ݾ�
+		JsonArray supporterArray = new JsonArray(); // ������ ��
 
-		// 변수 초기화
-		int totalAmount = 0; // 누적 결제 금액
-		int todayAmount = 0; // 오늘 결제 금액
+		// ���� �ʱ�ȭ
+		int totalAmount = 0; // ���� ���� �ݾ�
+		int todayAmount = 0; // ���� ���� �ݾ�
 
-		// payList에서 하나씩 꺼내서 JsonObject를 생성하고 payArray에 추가
+		// payList���� �ϳ��� ������ JsonObject�� �����ϰ� payArray�� �߰�
 		for (PaymentVO pay : payList) {
 		    JsonObject object = new JsonObject();
 		    object.addProperty("date", pay.getDate());
 		    object.addProperty("amount", pay.getAmount());
 		    payArray.add(object);
 
-		    // 누적 결제 금액 계산
+		    // ���� ���� �ݾ� ���
 		    totalAmount += pay.getAmount();
 
-		    // 오늘 결제 금액 계산 (오늘 날짜와 일치하는 경우)
+		    // ���� ���� �ݾ� ��� (���� ��¥�� ��ġ�ϴ� ���)
 		    LocalDate today = LocalDate.now();
 		    LocalDate paymentDate = LocalDate.parse(pay.getDate());
 		    if (today.isEqual(paymentDate)) {
@@ -716,7 +716,7 @@ public class ProjectController {
 		    }
 		}
 
-		// supporterList에서 하나씩 꺼내서 JsonObject를 생성하고 supporterArray에 추가
+		// supporterList���� �ϳ��� ������ JsonObject�� �����ϰ� supporterArray�� �߰�
 		for (PaymentVO supporter : supporterList) {
 		    JsonObject object = new JsonObject();
 		    object.addProperty("date", supporter.getDate());
@@ -724,19 +724,19 @@ public class ProjectController {
 		    supporterArray.add(object);
 		}
 
-		// json 문자열로 변환 후 Model에 저장
+		// json ���ڿ��� ��ȯ �� Model�� ����
 		String payListAmount = gson.toJson(payArray);
 		String supporterListCount = gson.toJson(supporterArray);
 		model.addAttribute("payListAmount", payListAmount);
-		model.addAttribute("todayAmount", todayAmount); // 오늘 결제 금액
-		model.addAttribute("totalAmount", totalAmount); // 누적 결제 금액
-		model.addAttribute("supporterListCount", supporterListCount); // 지난 7일간 서포터 수
+		model.addAttribute("todayAmount", todayAmount); // ���� ���� �ݾ�
+		model.addAttribute("totalAmount", totalAmount); // ���� ���� �ݾ�
+		model.addAttribute("supporterListCount", supporterListCount); // ���� 7�ϰ� ������ ��
 		
 		// ==============================================
 		
-		// 프로젝트별 지난 7일간 결제 금액 조회
+		// ������Ʈ�� ���� 7�ϰ� ���� �ݾ� ��ȸ
 		List<PaymentVO> projectPayList = paymentService.getProjectDailyPayment(project_idx);
-		// 프로젝트별 지난 7일간 서포터 수 조회
+		// ������Ʈ�� ���� 7�ϰ� ������ �� ��ȸ
 		List<PaymentVO> projectSupporterList = paymentService.getProjectSupporterCount(project_idx);
 		
 		
@@ -746,29 +746,29 @@ public class ProjectController {
 
 	}
 	
-	// 시작일, 종료일 => 지정 가능
-	// maker_idx(파라미터)를 받아서 차트를 불러옴
+	// ������, ������ => ���� ����
+	// maker_idx(�Ķ����)�� �޾Ƽ� ��Ʈ�� �ҷ���
 	@GetMapping("/chartData")
     @ResponseBody
     public ChartDataVO getChartData(
     		@RequestParam String startDate, @RequestParam String endDate, @RequestParam("maker_idx") int maker_idx, Model model) {
-        // 날짜 형식을 지정하는 DateTimeFormatter 객체 생성
+        // ��¥ ������ �����ϴ� DateTimeFormatter ��ü ����
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        // 시작일과 종료일을 파싱하여 LocalDate 객체로 변환
+        // �����ϰ� �������� �Ľ��Ͽ� LocalDate ��ü�� ��ȯ
         LocalDate parsedStartDate = LocalDate.parse(startDate, formatter);
         LocalDate parsedEndDate = LocalDate.parse(endDate, formatter);
         System.out.println("parsedStartDate : " + parsedStartDate);
         System.out.println("parsedEndDate : " + parsedEndDate);
-        System.out.println("메이커 번호 : " + maker_idx);
+        System.out.println("����Ŀ ��ȣ : " + maker_idx);
 
-        // 메이커별 결제 금액 조회
+        // ����Ŀ�� ���� �ݾ� ��ȸ
         List<PaymentVO> paymentList = paymentService.getPaymentListCountByDay(parsedStartDate, parsedEndDate, maker_idx);
 
-        // 메이커별 서포터 수 조회
+        // ����Ŀ�� ������ �� ��ȸ
         List<PaymentVO> supporterList = paymentService.getSupporterListCountByDay(parsedStartDate, parsedEndDate, maker_idx);
 
-        // 차트에 사용될 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 저장할 리스트 초기화
+        // ��Ʈ�� ���� ��, �Ϻ� ���� �ݾ�, ���� ���� �ݾ�, �Ϻ� ������ ��, ���� ������ ���� ������ ����Ʈ �ʱ�ȭ
         List<String> labels = new LinkedList<>();
         List<Integer> dailyPaymentAmounts = new LinkedList<>();
         List<Integer> cumulativePaymentAmounts = new LinkedList<>();
@@ -778,35 +778,35 @@ public class ProjectController {
         int cumulativePaymentAmount = 0;
         int cumulativeSupporterCount = 0;
 
-        // paymentList에서 하나씩 꺼내면서 리스트에 저장
+        // paymentList���� �ϳ��� �����鼭 ����Ʈ�� ����
         for (PaymentVO payment : paymentList) {
-            String dateString = payment.getDate(); // 변경된 컬럼명인 'date'를 사용
-            labels.add(dateString); // 라벨에 날짜 추가
-            cumulativePaymentAmount += payment.getAmount(); // 누적 결제 금액 계산
-            dailyPaymentAmounts.add(payment.getAmount()); // 일별 결제 금액 추가
-            cumulativePaymentAmounts.add(cumulativePaymentAmount); // 누적 결제 금액 추가
+            String dateString = payment.getDate(); // ����� �÷����� 'date'�� ���
+            labels.add(dateString); // �󺧿� ��¥ �߰�
+            cumulativePaymentAmount += payment.getAmount(); // ���� ���� �ݾ� ���
+            dailyPaymentAmounts.add(payment.getAmount()); // �Ϻ� ���� �ݾ� �߰�
+            cumulativePaymentAmounts.add(cumulativePaymentAmount); // ���� ���� �ݾ� �߰�
         }
 
-        int supporterIndex = 0; // 서포터 수 데이터 인덱스
+        int supporterIndex = 0; // ������ �� ������ �ε���
 
         for (String label : labels) {
             if (supporterIndex < supporterList.size()) {
                 PaymentVO supporterData = supporterList.get(supporterIndex);
-                String dateString = supporterData.getDate(); // 변경된 컬럼명인 'date'를 사용
+                String dateString = supporterData.getDate(); // ����� �÷����� 'date'�� ���
 
                 if (label.equals(dateString)) {
-                    cumulativeSupporterCount += supporterData.getCount(); // 누적 서포터 수 갱신
-                    cumulativeSupporterCounts.add(cumulativeSupporterCount); // 누적 서포터 수 추가
-                    dailySupporterCounts.add(supporterData.getCount()); // 일별 서포터 수 추가
-                    supporterIndex++; // 다음 서포터 수 데이터로 이동
+                    cumulativeSupporterCount += supporterData.getCount(); // ���� ������ �� ����
+                    cumulativeSupporterCounts.add(cumulativeSupporterCount); // ���� ������ �� �߰�
+                    dailySupporterCounts.add(supporterData.getCount()); // �Ϻ� ������ �� �߰�
+                    supporterIndex++; // ���� ������ �� �����ͷ� �̵�
                     continue;
                 }
             }
-            dailySupporterCounts.add(0); // 누락된 날짜에 대해 0으로 처리된 일별 서포터 수 추가
-            cumulativeSupporterCounts.add(cumulativeSupporterCount); // 이전의 누적 서포터 수 추가 (이전 데이터를 그대로 사용)
+            dailySupporterCounts.add(0); // ������ ��¥�� ���� 0���� ó���� �Ϻ� ������ �� �߰�
+            cumulativeSupporterCounts.add(cumulativeSupporterCount); // ������ ���� ������ �� �߰� (���� �����͸� �״�� ���)
         }
 
-        // ChartDataVO 객체를 생성하여 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 담아 반환
+        // ChartDataVO ��ü�� �����Ͽ� ��, �Ϻ� ���� �ݾ�, ���� ���� �ݾ�, �Ϻ� ������ ��, ���� ������ ���� ��� ��ȯ
         return new ChartDataVO(labels, dailyPaymentAmounts, cumulativePaymentAmounts, dailySupporterCounts, cumulativeSupporterCounts);
     }
 	
