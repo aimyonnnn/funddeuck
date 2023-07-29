@@ -56,4 +56,12 @@ public interface MemberMapper {
 	//팔로우 리스트 조회
 	List<Map<String, Object>> selectFallowList(String sId);
 
+	//팔로우 알람 설정
+	int updateFallowingAlam(@Param("maker_name") String maker_name, @Param("is_alam") int is_alam,@Param("sId") String sId);
+	
+	//팔로우 설정
+	int deleteFallow(@Param("maker_name") String maker_name,@Param("sId") String sId);
+
+	int insertFallow(@Param("maker_name") String maker_name,@Param("sId") String sId);
+
 }

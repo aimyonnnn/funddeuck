@@ -88,6 +88,18 @@ public class MemberService {
 	public List<Map<String, Object>> getfallowList(String sId) {
 		return mapper.selectFallowList(sId);
 	}
+
+	public int fallowingAlam(String maker_name, int is_alam, String sId) {
+		return mapper.updateFallowingAlam(maker_name, is_alam, sId);
+	}
+
+	public int deleteFallow(String maker_name, String sId) {
+		return mapper.deleteFallow(maker_name, sId);
+	}
+
+	public int insertFallow(String maker_name, String sId) {
+		return mapper.insertFallow(maker_name, sId);
+	}
 	
 
 

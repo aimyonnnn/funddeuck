@@ -392,6 +392,47 @@ public class MemberController {
     	
     }
     
+    // 팔로우 알람에 대한 ajax
+    @PostMapping("fallowingAlam")
+    @ResponseBody
+    public String isAlam(@RequestParam String maker_name, @RequestParam int is_alam, HttpSession session) {
+    	
+    	int updateCount = service.fallowingAlam(maker_name, is_alam, (String)session.getAttribute("sId"));
+    	
+    	if(updateCount > 0) {
+    		return "true";
+    	} else {
+    		return "false";
+    	}
+    }
+    
+    // 팔로우 채크에 대한 ajax
+    @PostMapping("fallowCheck")
+    @ResponseBody
+    public String fallowCheck(@RequestParam String maker_name, @RequestParam int is_fallow, HttpSession session) {
+    	
+    	
+    	if(is_fallow == 1) {
+    		int deleteCount = service.deleteFallow(maker_name, (String)session.getAttribute("sId"));
+    		
+    		if(deleteCount > 0) {
+    			return "true";
+    		} else {
+    			return "false";
+    		}
+    	} else {
+    		int insertCount = service.insertFallow(maker_name, (String)session.getAttribute("sId"));
+    		
+    		if(insertCount > 0) {
+    			return "true";
+    		} else {
+    			return "false";
+    		}
+    	}
+    	
+    	
+    }
+    
     
  // 랜덤 코드 생성
     public static String generateRandomNumbers(int count) {
