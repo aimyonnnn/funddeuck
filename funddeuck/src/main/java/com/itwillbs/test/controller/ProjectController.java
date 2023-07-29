@@ -689,9 +689,16 @@ public class ProjectController {
 			return "fail_back";
 		}
 		
+		// 멤버, 메이커, 프로젝트 테이블을 조인하여 일치하는 데이터 조회
+	    List<ProjectVO> projects = projectService.getProjectsByMemberId(sId, maker_idx, project_idx);
+	    // 조회된 데이터가 없으면 차단
+	    if (projects.isEmpty()) {
+	        model.addAttribute("msg", "본인의 데이터만 조회할 수 있습니다.");
+	        return "fail_back";
+	    }
+	    
 		// ================================ 메이커의 전체 프로젝트(통합) 차트 출력 ================================
-		
-		
+	    
 		// 메이커 지난 7일간 결제 금액 조회
 		List<PaymentVO> payList = paymentService.getPaymentListAmountBy7Day(maker_idx);
 		// 메이커 지난 7일간 서포터 수 조회
@@ -747,10 +754,7 @@ public class ProjectController {
 		model.addAttribute("todayAmount", todayAmount); // 오늘 결제 금액
 		model.addAttribute("totalAmount", totalAmount); // 누적 결제 금액
 		
-		
-		
 		// ================================ 메이커의 프로젝트별 차트 출력 ================================
-		
 		
 		// 메이커의 프로젝트별 차트 출력(메이커는 여러개의 프로젝트를 생성할 수 있음)
 		// 프로젝트별 지난 7일간 결제 금액 조회
@@ -874,5 +878,15 @@ public class ProjectController {
 	    // ChartDataVO 객체를 생성하여 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 담아 반환
 	    return new ChartDataVO(labels, dailyPaymentAmounts, acmlPaymentAmounts, dailySupporterCounts, acmlSupporterCounts);
 	}
+	
+	@GetMapping("getProjectListByMakerIdx")
+	@ResponseBody
+	public List<ProjectVO> getProjectListByMakerIdx(@RequestParam int maker_idx) {
+		// 메이커 번호로 프로젝트 리스트 조회
+		List<ProjectVO> pList = projectService.getProjectListByMakerIdx(maker_idx);
+		return pList;
+	}
+	
+	
 	
 }

@@ -68,6 +68,15 @@ public interface ProjectMapper {
 	// 프로젝트 리스트 조회
 	List<ProjectVO> selectProjectList(int member_idx);
 	
+	// 멤버, 메이커, 프로젝트 테이블을 조인하여 일치하는 데이터 조회
+	List<ProjectVO> selectProjectsByMemberId(
+			@Param("sId") String sId,
+			@Param("maker_idx") Integer maker_idx,
+			@Param("project_idx") Integer project_idx);
+	
+	// 메이커 번호로 프로젝트 리스트 조회
+	List<ProjectVO> selectProjectListByMakerIdx(int maker_idx);
+	
 	//
 	List<ProjectVO> selectTop10ProjectsByEndDate();
 
@@ -80,12 +89,7 @@ public interface ProjectMapper {
 	// 펀딩 프로젝트 탐색
 	List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit);
 	
-	// 메이커와 관련된 프로젝트 정보를 조회
-	List<ProjectVO> selectProjectsByMakerId(int maker_idx);
 
 
-	
-	
-	
 	
 }

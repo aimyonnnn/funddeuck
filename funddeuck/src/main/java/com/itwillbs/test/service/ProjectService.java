@@ -85,16 +85,23 @@ public class ProjectService {
 	public List<ProjectVO> getProjectList(int member_idx) {
 		return mapper.selectProjectList(member_idx);
 	}
+	// 멤버, 메이커, 프로젝트 테이블을 조인하여 일치하는 데이터 조회
+	public List<ProjectVO> getProjectsByMemberId(String sId, Integer maker_idx, Integer project_idx) {
+		return mapper.selectProjectsByMemberId(sId, maker_idx, project_idx);
+	}
+	// 메이커 번호로 프로젝트 리스트 조회
+	public List<ProjectVO> getProjectListByMakerIdx(int maker_idx) {
+		return mapper.selectProjectListByMakerIdx(maker_idx);
+	}
 	
 	//
-	public List<ProjectVO> getTop10ProjectsByEndDate() {
+ 	public List<ProjectVO> getTop10ProjectsByEndDate() {
         return mapper.selectTop10ProjectsByEndDate();
     }
 	//
 	public List<ProjectVO> getAllProjects() {
 		return null;
 	}
-	
 	// 펀딩 프로젝트 목록 조회
 	public List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit) {
 		return mapper.getProjectList(searchType, searchKeyword, startRow, listLimit);
@@ -103,10 +110,5 @@ public class ProjectService {
 	public int getProjectListCount(String searchType, String searchKeyword) {
 		return mapper.selectProjectListCount(searchType, searchKeyword);
 	}
-	// 메이커와 관련된 프로젝트 정보를 조회
-	public List<ProjectVO> getProjectsByMakerId(int maker_idx) {
-		return mapper.selectProjectsByMakerId(maker_idx);
-	}
-	
 	
 }

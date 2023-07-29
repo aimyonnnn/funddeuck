@@ -280,12 +280,22 @@
 				ORDER BY project_start_date DESC	
 	</select>
 	
-	<!-- 메이커와 관련된 프로젝트 정보를 조회 -->
-	<select id="selectProjectsByMakerId">
+	<!-- 멤버, 메이커, 프로젝트 테이블을 조인하여 일치하는 데이터 조회 -->
+	<select id="selectProjectsByMemberId">
+		SELECT p.* FROM project p
+	    INNER JOIN maker m ON p.maker_idx = m.maker_idx
+	    INNER JOIN members mb ON m.member_idx = mb.member_idx
+	   	WHERE mb.member_id = #{sId}
+	   	AND m.maker_idx = #{maker_idx}
+	   	AND p.project_idx = #{project_idx}
+	</select>
+	
+	<!-- 메이커 번호로 프로젝트 리스트 조회 -->
+	<select id="selectProjectListByMakerIdx">
 		select *
 			from project
 		where
-			maker_idx = #{maker_idx}	
+			maker_idx = #{maker_idx}
 	</select>
 	
 </mapper>

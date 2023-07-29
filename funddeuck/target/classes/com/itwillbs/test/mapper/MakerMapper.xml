@@ -48,13 +48,4 @@
 		    )
 	</delete>
 	
-	<!-- 멤버 정보로 메이커 정보 조회 -->
-	<select id="selectMakerByMemberId">
-		select *
-			from maker
-		where
-			member_idx = #{member_idx}
-	</select>
-	
-
 </mapper>

@@ -24,10 +24,6 @@ public class MakerService {
 	public int removeMakerFile(int maker_idx, String fileName, int fileNumber) {
 		return mapper.deleteMakerFile(maker_idx, fileName, fileNumber);
 	}
-	// 멤버 정보로 메이커 정보 조회
-	public MakerVO getMakerByMemberId(int member_idx) {
-		return mapper.selectMakerByMemberId(member_idx);
-	}
 
 	
 }

@@ -180,10 +180,83 @@
 
 					<!--  -->
 					<div class="projectArea">
-						<p class="projectTitle">메이커 현황</p>
+						<p class="projectTitle">프로젝트 현황</p>
 						<p class="projectContent mb-4">프로젝트 진행 상황을 실시간으로 한 번에 볼 수
 							있습니다.</p>
+						
+						<!-- 메이커의 프로젝트별 차트 출력 -->
+						<!-- 메이커는 여러개의 프로젝트를 소유 할 수 있음 -->
+						<div class="container mt-5 mb-3">
+							<div class="row justify-content-center">
+								<p class="subheading">프로젝트별 매출 분석</p>
+								<p class="projectContent"><strong>${param.project_idx}번 </strong> 프로젝트의 매출 분석 그래프 입니다.</p>
+								
+								<div class="col-md-12 col-lg-4 d-md-block my-1">
+									<div class="card">
+										<div class="card-body d-flex flex-row justify-content-evenly">
+											<div>
+												<span class="sideDescription">누적 결제 금액</span>
+												<h1 class="card-title">
+													${projectTotalAmount}<span class="sideDescription">원</span>
+												</h1>
+											</div>
+											<div class="">
+												<i class="las la-chart-line" style="color: rgba(255, 99, 132, 1);"></i>
+											</div>
+										</div>
+									</div>
+								</div>
 
+								<div class="col-md-12 col-lg-4 d-md-block my-1">
+									<div class="card">
+										<div class="card-body d-flex flex-row justify-content-evenly">
+											<div>
+												<span class="sideDescription">오늘 결제금액</span>
+												<h1 class="card-title">
+													${projectTodayAmount}<span class="sideDescription">원</span>
+												</h1>
+											</div>
+											<div class="">
+												<i class="las la-chart-line" style="color: rgb(135, 206, 235);"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-12 col-lg-4 d-md-block my-1">
+									<div class="card">
+										<div class="card-body d-flex flex-row justify-content-evenly">
+											<div>
+												<span class="sideDescription">누적 서포터 수</span>
+												<h1 class="card-title">
+													${projectTotalSupporterCount}<span class="sideDescription">명</span>
+												</h1>
+											</div>
+											<div class="">
+												<i class="las la-chart-line" style="color: rgba(75, 192, 192, 0.2);"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							<!-- 프로젝트 선택을 위한 드롭다운 메뉴 -->
+							<div class="d-flex flex-row justify-content-end mt-3">
+								<select id="projectSelect" class="datepicker-button" onchange="loadChartData()">
+								</select>
+							</div>
+							<!-- 프로젝트 선택을 위한 드롭다운 메뉴 -->
+							
+							</div>
+						</div>
+						
+						
+						<!-- myChart3 -->
+						<div id="chartContainer3">
+							<canvas id="myChart3"></canvas>
+						</div>
+						
+						<hr>
+						
 						<div class="container mt-5 mb-3">
 							<div class="row justify-content-center">
 								<p class="subheading">메이커의 전체 프로젝트 매출 분석</p>
@@ -258,71 +331,6 @@
 						<!-- myChart2 -->
 						<div id="chartContainer">
 							<canvas id="myChart2"></canvas>
-						</div>
-						
-						<hr class="my-5">
-						
-						<!-- 메이커의 프로젝트별 차트 출력 -->
-						<!-- 메이커는 여러개의 프로젝트를 소유 할 수 있음 -->
-						<div class="container mt-5 mb-3">
-							<div class="row justify-content-center">
-								<p class="subheading">프로젝트별 매출 분석</p>
-								<p class="projectContent"><strong>${param.project_idx}번</strong> 프로젝트의 매출 분석 그래프 입니다.</p>
-
-								<div class="col-md-12 col-lg-4 d-md-block my-1">
-									<div class="card">
-										<div class="card-body d-flex flex-row justify-content-evenly">
-											<div>
-												<span class="sideDescription">누적 결제 금액</span>
-												<h1 class="card-title">
-													${projectTotalAmount}<span class="sideDescription">원</span>
-												</h1>
-											</div>
-											<div class="">
-												<i class="las la-chart-line" style="color: rgba(255, 99, 132, 1);"></i>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="col-md-12 col-lg-4 d-md-block my-1">
-									<div class="card">
-										<div class="card-body d-flex flex-row justify-content-evenly">
-											<div>
-												<span class="sideDescription">오늘 결제금액</span>
-												<h1 class="card-title">
-													${projectTodayAmount}<span class="sideDescription">원</span>
-												</h1>
-											</div>
-											<div class="">
-												<i class="las la-chart-line" style="color: rgb(135, 206, 235);"></i>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="col-md-12 col-lg-4 d-md-block my-1">
-									<div class="card">
-										<div class="card-body d-flex flex-row justify-content-evenly">
-											<div>
-												<span class="sideDescription">누적 서포터 수</span>
-												<h1 class="card-title">
-													${projectTotalSupporterCount}<span class="sideDescription">명</span>
-												</h1>
-											</div>
-											<div class="">
-												<i class="las la-chart-line" style="color: rgba(75, 192, 192, 0.2);"></i>
-											</div>
-										</div>
-									</div>
-								</div>
-
-							</div>
-						</div>
-
-						<!-- myChart3 -->
-						<div id="chartContainer3">
-							<canvas id="myChart3"></canvas>
 						</div>
 						
 					</div>
@@ -557,6 +565,61 @@
             },
         });
     });
+	</script>
+	
+	<script>
+	// 서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가하는 함수
+	function getProjectList() {
+		
+		$.ajax({
+			method: 'get',
+			data: {
+				maker_idx: ${param.maker_idx}
+			},
+			url: '<c:url value="getProjectListByMakerIdx"/>',
+		  	success: function (data) {
+		  		
+		  		console.log(data);
+		  		
+			    let selectElement = document.getElementById("projectSelect");
+			    
+			    data.forEach((project) => {
+			      let option = document.createElement("option");
+			      option.value = project.project_idx;
+			      option.textContent = project.project_subject;
+			      selectElement.appendChild(option);
+			    });
+			    
+			    let selectedProjectIdx = ${param.project_idx};
+			    selectElement.value = selectedProjectIdx;
+			    
+		  	},
+		  	error: function (error) {
+		    console.error(error);
+		  }
+		});
+	}
+	
+	// 선택한 프로젝트의 차트 데이터를 서버로 요청하는 함수
+	function loadChartData() {
+	  let selectedProjectIdx = document.getElementById("projectSelect").value;
+	  let maker_idx = "${param.maker_idx}";
+	  
+	  // 현재 도메인과 포트를 동적으로 가져옴
+	  let currentDomain = window.location.protocol + '//' + window.location.host;
+
+	  // 현재 도메인과 포트를 사용하여 동적인 URL을 생성
+	  let url = `${currentDomain}/funddeuck/projectStatus?maker_idx=${'${maker_idx}'}&project_idx=${'${selectedProjectIdx}'}`;
+
+	  // 생성된 동적인 URL로 이동
+	  window.location.href = url;
+	  
+	}
+
+	// 페이지 로드 후 프로젝트 리스트를 조회
+	$(document).ready(function () {
+		getProjectList();
+	});
 	</script>
 
 	<!-- js -->
