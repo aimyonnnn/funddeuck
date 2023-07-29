@@ -127,4 +127,55 @@
 				member_id = #{target}
 	</select>
 	
+	<!-- 팔로우 리스트 가져오기 -->
+	<select id="selectFallowList">
+    SELECT maker_name,
+           (SELECT COUNT(*) FROM fallowing WHERE maker_idx = f.maker_idx) AS follower_count,
+           MAX(is_alam) AS is_alam,
+           f.maker_idx
+    FROM fallowing f join maker k
+    on f.maker_idx = k.maker_idx
+    WHERE f.member_idx = (SELECT member_idx
+                        FROM members
+                        WHERE member_id = #{sId})
+    GROUP BY k.maker_idx;
+	</select>
+	
+	<!-- 팔로우 알람 설정 -->
+	<update id="updateFallowingAlam">
+		UPDATE fallowing
+		SET is_alam = #{is_alam}
+		WHERE member_idx = (SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+				AND
+			  maker_idx = (SELECT maker_idx
+			  			   FROM maker
+			  			   WHERE maker_name = #{maker_name}) 
+	</update>
+	
+	<!-- 팔로우 삭제 -->
+	<delete id="deleteFallow">
+		DELETE FROM fallowing
+		WHERE member_idx = (SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+			AND
+			maker_idx = (SELECT maker_idx
+			  			   FROM maker
+			  			   WHERE maker_name = #{maker_name}) 
+	</delete>
+
+	<!-- 팔로우 추가 -->
+	<insert id="insertFallow">
+		INSERT INTO fallowing
+		VALUES ((SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+				,(SELECT maker_idx
+			  			   FROM maker
+			  			   WHERE maker_name = #{maker_name})
+			  	, 1) 
+	</insert>
+	
 </mapper>

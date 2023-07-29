@@ -2,6 +2,7 @@ package com.itwillbs.test.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -86,6 +87,26 @@ public class MemberService {
 	// 존재하는 회원인지 확인하기
 	public MembersVO isCorrectMember(String target) {
 		return mapper.selectCorrectMember(target);
+	}
+	
+	// 팔로잉 리스트 뽑기
+	public List<Map<String, Object>> getfallowList(String sId) {
+		return mapper.selectFallowList(sId);
+	}
+	
+	// 팔로우 알람 설정
+	public int fallowingAlam(String maker_name, int is_alam, String sId) {
+		return mapper.updateFallowingAlam(maker_name, is_alam, sId);
+	}
+	
+	//팔로우 설정 
+	public int deleteFallow(String maker_name, String sId) {
+		return mapper.deleteFallow(maker_name, sId);
+	}
+	
+	//팔로우 설정
+	public int insertFallow(String maker_name, String sId) {
+		return mapper.insertFallow(maker_name, sId);
 	}
 	
 

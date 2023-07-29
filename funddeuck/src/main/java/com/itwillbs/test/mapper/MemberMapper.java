@@ -2,6 +2,7 @@ package com.itwillbs.test.mapper;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
 
@@ -54,5 +55,17 @@ public interface MemberMapper {
 	
 	// 존재하는 회원인지 확인하기
 	MembersVO selectCorrectMember(String target);
+	
+	//팔로우 리스트 조회
+	List<Map<String, Object>> selectFallowList(String sId);
+
+	//팔로우 알람 설정
+	int updateFallowingAlam(@Param("maker_name") String maker_name, @Param("is_alam") int is_alam,@Param("sId") String sId);
+	
+	//팔로우 설정
+	int deleteFallow(@Param("maker_name") String maker_name,@Param("sId") String sId);
+	
+	// 팔로우 설정
+	int insertFallow(@Param("maker_name") String maker_name,@Param("sId") String sId);
 
 }
