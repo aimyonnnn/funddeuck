@@ -76,6 +76,10 @@ public class PaymentService {
 	public List<PaymentVO> getRefundAllList(int project_idx, String type) {
 		return mapper.selectRefundAllList(project_idx, type);
 	}
+	// 메이커의 전체 프로젝트 결제 내역 조회
+	public List<PaymentVO> getAllMakerPayment(Integer maker_idx) {
+		return mapper.selectAllMakerPayment(maker_idx);
+	}
 	
 	
 }

@@ -57,5 +57,8 @@ public interface PaymentMapper {
 	// payment_confirm(환불승인여부)가 있을 때 목록 조회
 	List<PaymentVO> selectRefundAllList(@Param("project_idx") int project_idx, @Param("type") String type);
 	
+	// 메이커의 전체 프로젝트 결제 내역 조회
+	List<PaymentVO> selectAllMakerPayment(Integer maker_idx);
+	
 	
 }
