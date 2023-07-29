@@ -74,8 +74,16 @@
 		    </div>
 		</div>
 		<div class="d-flex justify-content-end mb-3">
-		    <button type="button" class="btn btn-outline-primary btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#orderModal">결제하기</button>
-		    <button type="button" class="btn btn-outline-primary btn-sm" onclick="markAllAsRead('${sessionScope.sId}')">전체읽음처리</button>
+			<%-- 프로젝트 상태컬럼이 3-승인일때만 결제하기 버튼 출력 --%>
+			<c:choose>
+				<c:when test="${orderModal}">
+				    <button type="button" class="btn btn-outline-primary btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#orderModal">결제하기</button>
+				    <button type="button" class="btn btn-outline-primary btn-sm" onclick="markAllAsRead('${sessionScope.sId}')">전체읽음처리</button>
+				</c:when>
+				<c:otherwise>
+				    <button type="button" class="btn btn-outline-primary btn-sm" onclick="markAllAsRead('${sessionScope.sId}')">전체읽음처리</button>
+				</c:otherwise>
+			</c:choose>
 		</div>
 		<div class="row">
 			<div class="d-flex justify-content-center">
@@ -298,7 +306,7 @@
               </tr>
               <tr>
                 <th scope="row" width="150"><label for="resName">결제상품</label></th>
-                <td>기본 요금제</td>
+                <td>프로젝트 요금제</td>
               </tr>
               <tr>
                 <th scope="row" width="150"><label for="pay">결제금액</label></th>
@@ -306,15 +314,15 @@
               </tr>
               <tr>
                 <th scope="row"><label for="userName">이름</label></th>
-                <td>아이유</td>
+                <td>${project.project_representative_name}</td>
               </tr>
               <tr>
                 <th scope="row"><label for="userTel">전화번호</label></th>
-                <td>010-1234-5678</td>
+                <td>${member.member_phone}</td>
               </tr>
               <tr>
                 <th scope="row"><label for="userEmail">이메일</label></th>
-                <td>admin@admin.com</td>
+                <td>${project.project_representative_email}</td>
               </tr>
               <tr>
 		        <td colspan="2"><button id="requestPay" class="btn btn-primary w-100">결제하기</button></td>
@@ -325,6 +333,7 @@
   </div>
 </div>
 
+<!-- 프로젝트 요금제명, 금액 추가로 불어와야함! -->
 <script type="text/javascript">
 $(()=>{
    
@@ -336,11 +345,11 @@ $(()=>{
     	pg: "kakopay",
     	pay_method: "card",
         merchant_uid: createOrderNum(),
-        name: "아이유",
+        name: "${project.project_representative_name}",
         amount: "10",
-        buyer_email: "admin@admin.com",
-        buyer_name: "아이유", 
-        buyer_tel: "01012345678"
+        buyer_email: "${project.project_representative_email}",
+        buyer_name: "${project.project_representative_name}", 
+        buyer_tel: "${member.member_phone}"
        }, 
        
        function(rsp) {
@@ -363,7 +372,7 @@ $(()=>{
 				method: 'get',
 				url: "<c:url value='updateProjectStatus'/>",
 				data: {
-					project_idx: 4,
+					project_idx: ${project.project_idx},
 					project_approve_status: 5
 				},
 				success: function(data){
@@ -371,7 +380,7 @@ $(()=>{
 					if(data.trim() == 'true') {
 						alert('펀딩+ 페이지에서 프로젝트를 확인해주세요!');
 						$('#orderModal').modal('hide');
-// 						location.reload();
+						location.href='confirmNotification';
 					} 
 				},
 				error: function(){
@@ -403,6 +412,15 @@ function createOrderNum() {
 	}
 		return orderNum;
 }
+// 프로젝트 상태컬럼이 3-승인일 경우 결제 모달창 자동으로 실행
+$(document).ready(function () {
+	let orderModal = ${orderModal}; // orderModal 값 가져오기
+	let projectStatus = ${project.project_approve_status}; // 프로젝트 상태값 가져오기
+	// 프로젝트 상태가 3-승인인 경우에만 모달창을 자동으로 열기
+	if (orderModal && projectStatus === 3) {
+	    $('#orderModal').modal('show');
+	}
+});
 </script>
 	
 <!-- bootstrap -->

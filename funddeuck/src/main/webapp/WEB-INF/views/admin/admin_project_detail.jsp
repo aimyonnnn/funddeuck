@@ -463,6 +463,7 @@
 					method: 'get',
 					url: "<c:url value='updateProjectStatus'/>",
 					data: {
+						member_idx: ${maker.member_idx},
 						project_idx: project_idx,
 						project_approve_status: project_approve_status
 					},
@@ -506,7 +507,7 @@
 		    	memberPhone: memberPhone,
 			    message: message,
 			    projectIdx: ${project.project_idx},
-			    memberId: ${maker.member_idx}
+			    memberIdx: ${maker.member_idx}
 		    },
 		    success: function(data) {
 		    	

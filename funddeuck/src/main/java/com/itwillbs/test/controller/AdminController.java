@@ -1,10 +1,12 @@
 package com.itwillbs.test.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.itwillbs.test.service.MakerService;
+import com.itwillbs.test.handler.EchoHandler;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.NotificationService;
 import com.itwillbs.test.service.PaymentService;
@@ -48,6 +50,13 @@ public class AdminController {
 	@Autowired
 	private SendPhoneMessageService sendPhoneMessageService;
 	
+	private EchoHandler echoHandler;
+	@Autowired
+	public AdminController(EchoHandler echoHandler) {
+		this.echoHandler = echoHandler;
+	}
+	
+	
 	// 관리자 메인
 	@GetMapping("admin")
 	public String adminMain(HttpSession session, Model model) {
@@ -70,9 +79,11 @@ public class AdminController {
 	@PostMapping("sendPhoneMessage")
 	@ResponseBody 
 	public String checkPhone(
-			@RequestParam String memberPhone, @RequestParam String message,
-			@RequestParam String memberId, @RequestParam int projectIdx) throws CoolsmsException {
-		return sendPhoneMessageService.SendMessage(memberPhone, message, memberId, projectIdx);
+			@RequestParam String memberPhone,
+			@RequestParam String message,
+			@RequestParam String memberIdx,
+			@RequestParam int projectIdx) throws CoolsmsException {
+		return sendPhoneMessageService.SendMessage(memberPhone, message, memberIdx, projectIdx);
 	}
 	
 	// 프로젝트 승인관리
@@ -118,10 +129,42 @@ public class AdminController {
 	@GetMapping("updateProjectStatus")
 	@ResponseBody
 	public String updateProjectStatus(
-			@RequestParam int project_idx, @RequestParam int project_approve_status) {
+			@RequestParam int member_idx,
+			@RequestParam int project_idx,
+			@RequestParam int project_approve_status,
+			HttpServletRequest request) {
 		System.out.println("updateProjectStatus");
+		
+		// toast 팝업 알림을 보내기 위해 member_id 조회하기
+		String memberId = memberService.getMemberId(member_idx);
+		
+		// 프로젝트 상태컬럼 변경하기 3-승인
 		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
-		if(updateCount > 0) { return "true"; } return "false";
+		
+		// 1. 상태컬럼 변경 성공 시 결제url이 담긴 toast 팝업 알림 보내기
+		// 2. 결제url이 담긴 메시지 보내기
+		if(updateCount > 0) { 
+			
+			// toast 팝업 알림 보내기
+			String paymnetUrl =
+					request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/funddeuck/confirmNotification?project_idx=" + project_idx;
+			String notification = 
+					"<a href='" + paymnetUrl + "' style='text-decoration: none; color: black;'>프로젝트 승인이 완료되었습니다. 아래 링크를 접속하여 결제를 진행해주세요</a>";
+			try {
+				echoHandler.sendNotificationToUser(memberId, notification);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			// 결제url이 담긴 메시지 보내기
+			int insertCount = notificationService.registNotification(memberId, notification);
+			// 메시지 보내기 성공 시
+			if(insertCount > 0) {
+				return "true";
+			}
+			
+		} 
+		return "false";
 	}
 	
 	// 프로젝트 디테일

@@ -10,16 +10,16 @@ import net.nurigo.java_sdk.exceptions.CoolsmsException;
 @Service
 public class SendPhoneMessageService {
 	
-	public String SendMessage(String memberPhone, String message, String memberId, int projectIdx) throws CoolsmsException{
+	public String SendMessage(String memberPhone, String message, String memberIdx, int projectIdx) throws CoolsmsException{
 		String api_key = "NCSDN9DK2QVHTNK3"; // 실제 테스트 시에 바꿔줘야함!
-		String api_secret = "#"; // 실제 테스트 시에 바꿔줘야함!
+		String api_secret = "J62CUX5Q1HVNPUB3TFFN1FM1DWMNL7ZC"; // 실제 테스트 시에 바꿔줘야함!
 		Message coolsms = new Message(api_key, api_secret);
-			
+		
 		HashMap<String, String> params = new HashMap<String, String>();
 	    params.put("to", memberPhone);    // 수신전화번호
 	    params.put("from", "01041532874"); // 발신전화번호, 실제 테스트 시에 바꿔줘야함!
 	    params.put("type", "sms"); 
-	    params.put("text", "프로젝트 승인이 완료되었습니다. 아래 페이지에서 요금 결제를 진행해주세요.");
+	    params.put("text", "[Funddeuck]프로젝트 승인이 완료되었습니다. 아래 페이지에서 요금 결제를 진행해주세요.");
 	 
 	    coolsms.send(params); // 메시지 전송
 			  

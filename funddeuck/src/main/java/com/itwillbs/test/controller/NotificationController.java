@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.NotificationService;
+import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.vo.MembersVO;
 import com.itwillbs.test.vo.NotificationVO;
 import com.itwillbs.test.vo.PageInfoVO;
+import com.itwillbs.test.vo.ProjectVO;
 
 @Controller
 public class NotificationController {
@@ -26,6 +28,8 @@ public class NotificationController {
 	private NotificationService service;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private ProjectService projectService;
 	
 	// 관리자 피드백 저장하기
 	@PostMapping("saveNotification")
@@ -58,6 +62,7 @@ public class NotificationController {
 	// 리스트 조회
 	@GetMapping("confirmNotification")
 	public String confirmNotification(
+			@RequestParam(name = "project_idx", required = false) Integer project_idx,
 			@RequestParam(defaultValue = "") String searchType, 
 			@RequestParam(defaultValue = "") String searchKeyword, 
 			@RequestParam(defaultValue = "1") int pageNum, 
@@ -65,6 +70,20 @@ public class NotificationController {
 		String sId = (String) session.getAttribute("sId");
 		System.out.println("검색타입 : " + searchType);
 		System.out.println("검색어 : " + searchKeyword);
+		// -------------------------------------------------------------------------
+		// 프로젝트 상태컬럼이 3-승인인 경우에만 결제 모달창 자동 실행
+		System.out.println("프로젝트 번호 출력 테스트 : " + project_idx);
+	    if (project_idx != null && project_idx > 0) {
+	        ProjectVO project = projectService.getProjectInfo(project_idx);
+	        if (project != null && project.getProject_approve_status() == 3) {
+	        	// 세션 아이디로 member 조회하기(결제 시 구매자 전화번호 필요함)
+	        	MembersVO member = memberService.getMemberInfo(sId);
+	        	model.addAttribute("member", member);
+	            // 프로젝트 상태가 3-승인인 경우, 결제하기 모달창을 자동으로 실행하도록 설정
+	            model.addAttribute("orderModal", true);
+	            model.addAttribute("project", project);
+	        }
+	    }
 		// -------------------------------------------------------------------------
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
