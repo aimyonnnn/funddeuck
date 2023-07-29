@@ -124,11 +124,11 @@ public class AdminController {
 		return "admin/admin_project_list";
 	}
 	
-	// 프로젝트 상태컬럼 변경
+	// 관리자 - 프로젝트 승인 처리
 	// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
-	@GetMapping("updateProjectStatus")
+	@GetMapping("approveProjectStatus")
 	@ResponseBody
-	public String updateProjectStatus(
+	public String approveProjectStatus(
 			@RequestParam int member_idx,
 			@RequestParam int project_idx,
 			@RequestParam int project_approve_status,
@@ -149,7 +149,7 @@ public class AdminController {
 			String paymnetUrl =
 					request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/funddeuck/confirmNotification?project_idx=" + project_idx;
 			String notification = 
-					"<a href='" + paymnetUrl + "' style='text-decoration: none; color: black;'>프로젝트 승인이 완료되었습니다. 아래 링크를 접속하여 결제를 진행해주세요</a>";
+					"<a href='" + paymnetUrl + "' style='text-decoration: none; color: black;'>프로젝트 승인이 완료되었습니다. 클릭 시 결제 페이지로 이동합니다.</a>";
 			try {
 				echoHandler.sendNotificationToUser(memberId, notification);
 			} catch (IOException e) {
@@ -157,14 +157,45 @@ public class AdminController {
 			}
 			
 			// 결제url이 담긴 메시지 보내기
+			// 메세지함에서 해당 url 클릭 시 결제 페이지로 이동함
 			int insertCount = notificationService.registNotification(memberId, notification);
-			// 메시지 보내기 성공 시
-			if(insertCount > 0) {
+			if(insertCount > 0) { // 메시지 보내기 성공 시
 				return "true";
 			}
 			
 		} 
 		return "false";
+	}
+	
+	// 관리자 - 프로젝트 반려 처리
+	@GetMapping("rejectProjectStatus")
+	@ResponseBody
+	public String rejectProjectStatus(@RequestParam int project_idx, @RequestParam int project_approve_status) {
+		// 프로젝트 상태컬럼 변경하기 4-반려
+		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
+		if(updateCount > 0) { return "true"; } return "false";
+	}
+	
+	// 관리자 - 프로젝트 결제 완료
+	@GetMapping("completePaymentStatus")
+	@ResponseBody
+	public String completePaymentStatus(@RequestParam int project_idx, @RequestParam int project_approve_status) {
+		// 프로젝트 상태컬럼 변경하기 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
+		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
+		if(updateCount > 0) { return "true"; } return "false";
+	}
+	
+	// 관리자 - 프로젝트 승인여부 확인하기
+	@GetMapping("isProjectApproved")
+	@ResponseBody
+	public String isProjectApproved(@RequestParam int project_idx, @RequestParam int project_approve_status) {
+		// 프로젝트 승인여부 확인하기
+		ProjectVO project = projectService.getProjectApproved(project_idx, project_approve_status);
+		// project가 null이 아니면 이미 승인처리 되었기 때문에 false 리턴
+		if(project != null) {
+			return "false";
+		}
+		return "true";
 	}
 	
 	// 프로젝트 디테일
@@ -212,26 +243,19 @@ public class AdminController {
 		// 한 페이지에서 표시할 페이지 목록(번호) 계산
 		// 1. notificationService - getNotificationListCount() 메서드를 호출하여
 		int listCount = notificationService.getNotificationListCount(searchType, searchKeyword);
-	
 		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
 		int pageListLimit = 10;
-	
 		// 3. 전체 페이지 목록 갯수 계산
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
-	//			System.out.println("전체 페이지 목록 갯수 : " + maxPage);
-	
 		// 4. 시작 페이지 번호 계산
 		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
-	
 		// 5. 끝 페이지 번호 계산
 		int endPage = startPage + pageListLimit - 1;
-	
 		// 6. 만약, 끝 페이지 번호(endPage)가 전체(최대) 페이지 번호(maxPage) 보다
-	//	    클 경우 끝 페이지 번호를 최대 페이지 번호로 교체
+		//	  클 경우 끝 페이지 번호를 최대 페이지 번호로 교체
 		if(endPage > maxPage) {
 			endPage = maxPage;
 		}
-	
 		// 페이징 처리 정보를 저장할 PageInfoVO 객체에 계산된 데이터 저장
 		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
 		model.addAttribute("nList", nList);
@@ -311,7 +335,6 @@ public class AdminController {
 
 	    return "admin/admin_chart";
 	}
-
 	
 	@GetMapping("/chartData2")
 	@ResponseBody

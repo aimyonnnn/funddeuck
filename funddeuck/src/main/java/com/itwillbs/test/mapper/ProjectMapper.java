@@ -77,6 +77,10 @@ public interface ProjectMapper {
 	// 메이커 번호로 프로젝트 리스트 조회
 	List<ProjectVO> selectProjectListByMakerIdx(int maker_idx);
 	
+	// 프로젝트 승인여부 확인하기
+	ProjectVO selectProjectApproved(
+			@Param("project_idx") int project_idx, @Param("project_approve_status") int project_approve_status);
+	
 	//
 	List<ProjectVO> selectTop10ProjectsByEndDate();
 
@@ -88,6 +92,7 @@ public interface ProjectMapper {
 
 	// 펀딩 프로젝트 탐색
 	List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit);
+	
 	
 
 

@@ -81,7 +81,7 @@
 						<th class="text-center" style="width: 10%;">대표자 이름</th>
 						 <!-- 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려 -->
 						<th class="text-center" style="width: 5%;">상태</th>
-						<th class="text-center" style="width: 5%;">승인처리</th>
+						<th class="text-center" style="width: 5%;">상세보기</th>
 						<th class="text-center" style="width: 5%;">반려처리</th>
 					</tr>
 					
@@ -104,15 +104,19 @@
 								<c:when test="${pList.project_approve_status eq 3}">
 									<td class="text-center text-success" style="width: 5%;">승인완료</td>
 								</c:when>
+								<c:when test="${pList.project_approve_status eq 5}">
+									<td class="text-center" style="width: 5%;">결제완료</td>
+								</c:when>
 								<c:otherwise>
 									<td class="text-center" style="width: 5%;">승인거절</td>
 								</c:otherwise>
 							</c:choose>
 							<td class="text-center" style="width: 5%;">
-								<input type="checkbox" class="form-check-input" onclick="updateProjectStatus(${pList.project_idx}, 3)"/>
+								<button class="btn btn-outline-primary btn-sm" 
+								onclick="location.href='adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}'">상세보기</button>
 							</td>
 							<td class="text-center" style="width: 5%;">
-								<input type="checkbox" class="form-check-input" onclick="updateProjectStatusRejection(${pList.project_idx}, 4)"/>
+								<input type="checkbox" class="form-check-input" onclick="rejectProjectStatus(${pList.project_idx}, 4)"/>
 							</td>
 						</tr>
 					</c:forEach>
@@ -222,58 +226,8 @@
             }
         });
     }
-	// 프로젝트 승인 처리
-	function updateProjectStatus(project_idx, project_approve_status) {
-		
-		Swal.fire({
-			title: '프로젝트 상태 변경',
-			text: '프로젝트 승인 처리를 하시겠습니까?',
-			icon: 'question',
-			showCancelButton: true,
-			confirmButtonText: '예',
-			cancelButtonText: '아니오'
-		})
-		.then((result) => {
-			if (result.isConfirmed) {
-			
-				$.ajax({
-					method: 'get',
-					url: "<c:url value='updateProjectStatus'/>",
-					data: {
-						project_idx: project_idx,
-						project_approve_status: project_approve_status
-					},
-					success: function(data){
-						
-						if(data.trim() == 'true') {
-							Swal.fire({
-							      icon: 'success',
-							      title: '프로젝트 승인처리 완료.',
-							      text: '프로젝트 상태가 성공적으로 변경되었습니다.',
-						    }).then(function(){
-							    location.reload();
-						    });
-						} else {
-							Swal.fire({
-							      icon: 'error',
-							      title: '프로젝트 승인처리 실패.',
-							      text: '프로젝트 상태 변경에 실패하였습니다.',
-						    });
-						}
-	
-					},
-					error: function(){
-						console.log('ajax 요청이 실패하였습니다!');	
-					}
-				});
-			} else {
-				// 취소 선택 시 체크박스 해제
-				$('input[type=checkbox]').prop('checked', false);
-			}
-		});
-	}
 	// 프로젝트 반려 처리
-	function updateProjectStatusRejection(project_idx, project_approve_status) {
+	function rejectProjectStatus(project_idx, project_approve_status) {
 		
 		Swal.fire({
 			title: '프로젝트 상태 변경',
@@ -289,7 +243,7 @@
 			
 				$.ajax({
 					method: 'get',
-					url: "<c:url value='updateProjectStatus'/>",
+					url: "<c:url value='rejectProjectStatus'/>",
 					data: {
 						project_idx: project_idx,
 						project_approve_status: project_approve_status

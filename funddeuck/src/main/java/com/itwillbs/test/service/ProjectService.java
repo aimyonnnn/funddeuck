@@ -93,6 +93,10 @@ public class ProjectService {
 	public List<ProjectVO> getProjectListByMakerIdx(int maker_idx) {
 		return mapper.selectProjectListByMakerIdx(maker_idx);
 	}
+	// 프로젝트 승인여부 확인하기
+	public ProjectVO getProjectApproved(int project_idx, int project_approve_status) {
+		return mapper.selectProjectApproved(project_idx, project_approve_status);
+	}
 	
 	//
  	public List<ProjectVO> getTop10ProjectsByEndDate() {

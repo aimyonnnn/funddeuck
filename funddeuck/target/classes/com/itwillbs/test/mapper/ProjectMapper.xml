@@ -234,6 +234,16 @@
 			)
 	</select>
 	
+	<!-- 프로젝트 승인여부 확인하기  -->
+	<select id="selectProjectApproved">
+		select *
+			from
+				project
+			where
+				project_idx = #{project_idx}
+				and project_approve_status = #{project_approve_status}
+	</select>
+	
 	<select id="selectTop10ProjectsByEndDate" resultType="com.itwillbs.test.vo.ProjectVO">
 	    SELECT * FROM project
 	    ORDER BY project_end_date

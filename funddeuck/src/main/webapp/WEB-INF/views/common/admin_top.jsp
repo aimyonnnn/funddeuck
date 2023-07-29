@@ -15,6 +15,12 @@
  <!-- sweetalert -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+<style>
+/* 페이지네이션 글자색 변경 */
+.page-link {
+	color: black;
+}
+</style>
 <script>
 	//전역변수 설정
 	var socket = null;

@@ -221,32 +221,50 @@
 	<script type="text/javascript">
 	// 메시지 읽음 처리 하기
 	function markNotificationAsRead(notification_idx, checkbox) {
-		let confirmation = confirm("메시지를 읽음 처리 하시겠습니까?");
-		if(confirmation) {
-			console.log("알림번호 : " + notification_idx);
-			$.ajax({
-				method: 'get',
-				url: '<c:url value="markNotificationAsRead"/>',
-				data: {
-					notification_idx: notification_idx
-				},
-				success: function(response){
-					if(response.trim() == 'true') {
-						// 알림 갯수 변경
-						getNotificationCount();
-						alert('읽음 처리 하였습니다!');
-						location.reload();
-						checkbox.checked = false;
-					} 
-				},
-				error: function(error) {
-					console.log("읽음 처리 실패!")
-				}
-			})
-		} else {
-			// 취소 선택 시 체크박스 해제
-			checkbox.checked = false;
-		}
+		
+		Swal.fire({
+		    title: '읽음처리 하시겠습니까?',
+		    icon: 'question',
+		    showCancelButton: true,
+		    confirmButtonText: '확인',
+		    cancelButtonText: '취소'
+	  	}).then((result) => {
+	  		
+		    if (result.isConfirmed) {
+		    	console.log("알림번호 : " + notification_idx);
+		    	
+				$.ajax({
+					method: 'get',
+					url: '<c:url value="markNotificationAsRead"/>',
+					data: {
+						notification_idx: notification_idx
+					},
+					success: function(response){
+						
+						if(response.trim() == 'true') {
+							
+							Swal.fire({
+								icon: 'success',
+								title: '메시지 읽음처리 완료!',
+								text: '메시지 읽음처리가 완료되었습니다.'
+							}).then(function() {
+								getNotificationCount(); // 알림 갯수 변경하기
+								location.reload();
+								checkbox.checked = false;
+							});
+						} 
+						
+					},
+					error: function(error) {
+						console.log("읽음 처리 실패!")
+					}
+				});
+				
+			} else {
+				// 취소 선택 시 체크박스 해제
+				checkbox.checked = false;
+			}
+		});
 	}
 	
 	// 셀렉트 박스
@@ -263,30 +281,47 @@
     }
 	
 	// 전체 읽음 처리
-	function markAllAsRead(member_id){
-		let confirmation = confirm("모든 메시지를 읽음 처리 하시겠습니까?");
-		if(confirmation) {
-			$.ajax({
-				method: 'get',
-				url: '<c:url value="markAllAsRead"/>',
-				data: {
-					member_id: member_id
-				},
-				dataType: 'text',
-				success: function(response){
-					
-					if(response.trim() == 'true') {
-						//알림 갯수 변경
-						getNotificationCount();
-						alert('모든 메시지를 읽음처리 하였습니다!');
-						location.reload();
+	function markAllAsRead(member_id) {
+		
+		Swal.fire({
+		    title: '전체읽음처리 하시겠습니까?',
+		    icon: 'question',
+		    showCancelButton: true,
+		    confirmButtonText: '확인',
+		    cancelButtonText: '취소'
+	  	}).then((result) => {
+	  		
+		    if (result.isConfirmed) {
+		    	
+				$.ajax({
+					method: 'get',
+					url: '<c:url value="markAllAsRead"/>',
+					data: {
+						member_id: member_id
+					},
+					dataType: 'text',
+					success: function(response){
+						
+						if(response.trim() == 'true') {
+							
+							Swal.fire({
+								icon: 'success',
+								title: '모든 메시지 읽음처리 완료!',
+								text: '모든 메시지가 읽음처리 되었습니다.'
+							}).then(function() {
+								getNotificationCount(); // 알림 갯수 변경하기
+								location.reload();
+								checkbox.checked = false;
+							});
+							
+						}
+					},
+					error: function(){
+						console.log("ajax 요청이 실패하였습니다");
 					}
-				},
-				error: function(){
-					alert("ajax 요청이 실패하였습니다");
-				}
-			});			
-		}
+				});			
+			}
+	  	});
 	}
 	</script>
 	
@@ -337,65 +372,74 @@
 <script type="text/javascript">
 $(()=>{
    
-   var IMP = window.IMP;
+   let IMP = window.IMP;
    IMP.init("imp61372336");
    
     $('#requestPay').on('click', function() {
-       IMP.request_pay({
-    	pg: "kakopay",
-    	pay_method: "card",
-        merchant_uid: createOrderNum(),
-        name: "${project.project_representative_name}",
-        amount: "10",
-        buyer_email: "${project.project_representative_email}",
-        buyer_name: "${project.project_representative_name}", 
-        buyer_tel: "${member.member_phone}"
-       }, 
-       
+    	
+        IMP.request_pay({
+        	
+			pg: "kakopay",
+			pay_method: "card",
+			merchant_uid: createOrderNum(),
+			name: "${project.project_representative_name}",
+			amount: "10",
+			buyer_email: "${project.project_representative_email}",
+			buyer_name: "${project.project_representative_name}", 
+			buyer_tel: "${member.member_phone}"
+			
+       },
        function(rsp) {
-         console.log(rsp);
+       console.log(rsp);
          
          // ================= 결제 성공 시 =================
-         if (rsp.success) {
-         	
-	        alert('결제가 완료되었습니다.');
-	        console.log('결제가 완료되었습니다.');
+       		if(rsp.success) {
+	     		console.log('결제가 완료되었습니다.');
 	        
-// 	        let payment_num = rsp.imp_uid; // 아임포트 주문번호
+// 	       		let payment_num = rsp.imp_uid; // 아임포트 주문번호
 //  		 	let p_orderNum = rsp.merchant_uid; // 주문번호-자동생성한것
 //  		 	let payment_total_price = rsp.paid_amount; // 결제가격
 	        
-	        // ================= DB 작업 =================
-	        // 1. project_approve_status = 5일 경우 결제테이블 결제 정보 저장하기
-	        // 2. 프로젝트 상태컬럼을 5-결제완료 상태로 변경(펀딩+ 페이지에 출력 가능한 상태)
-	        $.ajax({
-				method: 'get',
-				url: "<c:url value='updateProjectStatus'/>",
-				data: {
-					project_idx: ${project.project_idx},
-					project_approve_status: 5
-				},
-				success: function(data){
-					
-					if(data.trim() == 'true') {
-						alert('펀딩+ 페이지에서 프로젝트를 확인해주세요!');
-						$('#orderModal').modal('hide');
-						location.href='confirmNotification';
-					} 
-				},
-				error: function(){
-					console.log('ajax 요청이 실패하였습니다!');	
-				}
-			});
-	     	// ================= DB 작업 =================
-	         
-         // ================= 결제 실패 시 =================
-         } else {
-           var msg = '결제에 실패하였습니다.';
-           msg += '에러내용: ' + rsp.error_msg;
-           alert(msg);
-         }
-       });
+		        // ================= DB 작업 =================
+		        // 1. project_approve_status = 5일 경우 결제테이블 결제 정보 저장하기
+		        // 2. 프로젝트 상태컬럼을 5-결제완료 상태로 변경(펀딩+ 페이지에 출력 가능한 상태)
+		        $.ajax({
+					method: 'get',
+					url: "<c:url value='completePaymentStatus'/>",
+					data: {
+						project_idx: ${project.project_idx},
+						project_approve_status: 5
+					},
+					success: function(data){
+						
+						if(data.trim() == 'true') {
+							
+							Swal.fire({
+								icon: 'success',
+								title: '프로젝트 요금제 결제완료',
+								text: '펀딩+ 페이지에서 프로젝트를 확인해주세요!'
+							}).then(function() {
+								// 결제 완료 시 이동 할 페이지
+								// 나중에 시간나면 결제 완료 페이지 만들어 보기!
+								$('#orderModal').modal('hide');
+								location.href='confirmNotification';
+							});
+							
+						}
+						
+					},
+					error: function(){
+						console.log('ajax 요청이 실패하였습니다!');	
+					}
+				});
+		    	// ================= DB 작업 =================
+	        // ================= 결제 실패 시 =================
+	        } else {
+	            var msg = '결제에 실패하였습니다.';
+	            msg += '에러내용: ' + rsp.error_msg;
+	            alert(msg);
+         	}
+      });
    });
 }); // ready
 
@@ -410,8 +454,9 @@ function createOrderNum() {
 	for(let i=0;i<10;i++) {
 		orderNum += Math.floor(Math.random() * 8);	
 	}
-		return orderNum;
+	return orderNum;
 }
+
 // 프로젝트 상태컬럼이 3-승인일 경우 결제 모달창 자동으로 실행
 $(document).ready(function () {
 	let orderModal = ${orderModal}; // orderModal 값 가져오기
@@ -422,9 +467,7 @@ $(document).ready(function () {
 	}
 });
 </script>
-	
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-   
 </body>
 </html>
