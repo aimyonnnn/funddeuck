@@ -88,17 +88,37 @@ public class MemberService {
 	public List<Map<String, Object>> getfallowList(String sId) {
 		return mapper.selectFallowList(sId);
 	}
-
+	
+	// 팔로잉 알람 설정
 	public int fallowingAlam(String maker_name, int is_alam, String sId) {
 		return mapper.updateFallowingAlam(maker_name, is_alam, sId);
 	}
-
+	
+	// 팔로잉 삭제
 	public int deleteFallow(String maker_name, String sId) {
 		return mapper.deleteFallow(maker_name, sId);
 	}
-
+	
+	//팔로잉 등록
 	public int insertFallow(String maker_name, String sId) {
 		return mapper.insertFallow(maker_name, sId);
+	}
+	
+	// 찜 목록 가져오기
+	public List<Map<String, Object>> getZimList(String sId) {
+		return mapper.selectZimList(sId);
+	}
+
+	public int zimAlam(int project_idx, int isAlam, String sId) {
+		return mapper.updateZimAlam(project_idx, isAlam, sId);
+	}
+
+	public int deleteZim(int project_idx, String sId) {
+		return mapper.deleteZim(project_idx, sId);
+	}
+
+	public int insertZim(int project_idx, String sId) {
+		return mapper.insertZim(project_idx, sId);
 	}
 	
 

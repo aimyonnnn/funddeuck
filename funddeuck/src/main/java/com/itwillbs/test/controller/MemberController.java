@@ -429,7 +429,61 @@ public class MemberController {
     			return "false";
     		}
     	}
+    }
+    
+    @GetMapping("ZimForm")
+    public String ZimForm(HttpSession session, Model model) {
     	
+    	if(session.getAttribute("sId") == null) {
+    		model.addAttribute("msg","잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
+    	List<Map<String,Object>> zimList = service.getZimList((String)session.getAttribute("sId"));
+    	
+    	model.addAttribute("zimList",zimList);
+    	
+    	return "member/member_zim";
+    }
+    
+    @PostMapping("zimAlam")
+    @ResponseBody
+    public String zimAlam(HttpSession session, @RequestParam int isAlam, @RequestParam int project_idx) {
+    	
+    	System.out.println(isAlam + ", " + project_idx);
+    	
+    	int updateCount = service.zimAlam(project_idx, isAlam , (String)session.getAttribute("sId"));
+    	
+    	if(updateCount > 0) {
+    		return "true";
+    	} else {
+    		return "false";
+    	}
+    	
+    	
+    }
+    
+    @PostMapping("isZim")
+    @ResponseBody
+    public String isZim(HttpSession session, @RequestParam int is_zim, @RequestParam int project_idx) {
+    	
+    	if(is_zim == 0) {
+    		int deleteCount = service.deleteZim(project_idx, (String)session.getAttribute("sId"));
+    		
+    		if(deleteCount > 0) {
+    			return "true";
+    		} else {
+    			return "false";
+    		}
+    	} else {
+    		int insertCount = service.insertZim(project_idx, (String)session.getAttribute("sId"));
+    		
+    		if(insertCount > 0) {
+    			return "true";
+    		} else {
+    			return "false";
+    		}
+    	}
     	
     }
     
