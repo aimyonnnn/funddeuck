@@ -138,7 +138,7 @@
 				    	                            }
 				    	                        })()
 			    	                        + "</td>" +
-			    	                        "<td class='waybillNum'>" + 
+			    	                        "<td class='waybillNum' data-payment-idx=" + row.payment_idx + ">" +  // data-payment-idx 속성 추가
 			    	                        	(function() {
 			    	                        		if(row.waybill_num == null) { // 운송장번호 없을 시
 			    	                        			return "";
@@ -217,7 +217,6 @@
 					  '</tr>';
 
 				      // 테이블 바디에 추가
-				      console.log(tableBodyHtml);
 				      $("#trackingModal .shippingModalTbody").html(tableBodyHtml);
 					
 				},
@@ -240,9 +239,10 @@
 		        type: 'POST', 
 		        data: $(this).serialize(), 
 		        success: function(data) {
-		        	var newRowContent = data.waybill_num ? data.waybill_num : "";
-		            $('td.waybillNum[data-payment-idx="' + payment_idx + '"]').html(newRowContent); // 운송장 <td> 태그 업데이트
-		        	
+		            var newRowContent = (data[0] && data[0].waybill_num) ? data[0].waybill_num : "";
+		            var updatedTd = $('td.waybillNum[data-payment-idx="' + payment_idx + '"]');
+				    updatedTd.html(newRowContent);
+		            
 		            $("#trackingModal").modal("hide"); // 모달을 닫음
 		            alert('성공적으로 데이터가 처리되었습니다.');
 		        },
