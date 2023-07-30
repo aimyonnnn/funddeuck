@@ -1,6 +1,7 @@
 package com.itwillbs.test.vo;
 
 import java.sql.Date;
+import java.util.Optional;
 
 import lombok.Data;
 
@@ -71,13 +72,14 @@ public class PaymentVO {
 	// ########## total_amount, payment_date 컬럼명 변경 시 꼭 알려주세요! ##########
 	// 차트 그릴 때 필요해서 넣었습니다.
 	// DB 컬럼에는 추가하는거 아님!
-	private String date; // 결제 날짜
-	private int amount; // 결제 금액
-	private int count; // 서포터 수(결제한 사람)
+	private String date; 					// 결제 날짜
+	private int amount;						// 결제 금액
+	private int count; 						// 서포터 수 
+	private String project_subject;			// 프로젝트 이름
+	private String reward_name;				// 리워드 이름
 	// ===============================================================================
 	// 발송·환불 목록 출력 시 사용 
 	private String member_name;
-	private String reward_name;
 	private String delivery_date;
 	private String delivery_reciever;
 	private String delivery_phone;

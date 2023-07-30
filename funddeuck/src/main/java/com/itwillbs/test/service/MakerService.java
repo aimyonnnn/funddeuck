@@ -24,6 +24,5 @@ public class MakerService {
 	public int removeMakerFile(int maker_idx, String fileName, int fileNumber) {
 		return mapper.deleteMakerFile(maker_idx, fileName, fileNumber);
 	}
-
 	
 }

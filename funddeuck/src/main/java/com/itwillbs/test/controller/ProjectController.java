@@ -84,7 +84,7 @@ public class ProjectController {
 			// 관리자에게 승인 요청 toast 팝업 띄우기
 			// toast 클릭 시 관리자의 프로젝트 승인 페이지로 이동
 			String adminProjectUrl = 
-				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/funddeuck/adminProject";
+				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/funddeuck/adminProjectList";
 //				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/test/adminProjectList";
 			
 			String notification = 
@@ -701,11 +701,11 @@ public class ProjectController {
 	// 페이지 로드 시 지난 7일간 결제 금액 차트를 불러옴
 	@GetMapping("projectStatus")
 	public String projectStatus(
-			@RequestParam(required = false) Integer maker_idx, 
-			@RequestParam(required = false) Integer project_idx, 
+			@RequestParam(value = "maker_idx", required = false) Integer maker_idx, 
+			@RequestParam(value = "project_idx", required = false) Integer project_idx, 
 			HttpSession session, Model model) {
 		
-		// ================================ 세션 차단 ================================
+		// ================================ 접근 차단 ================================
 		
 		// 세션 아이디가 존재하지 않을 때 
 		String sId = (String) session.getAttribute("sId");
@@ -721,6 +721,13 @@ public class ProjectController {
 	        model.addAttribute("msg", "본인의 데이터만 조회할 수 있습니다.");
 	        return "fail_back";
 	    }
+	    
+	    // ================================ 전체 결제 내역 출력 ================================
+	    
+	    // 메이커의 전체 프로젝트 결제 내역 조회
+	    List<PaymentVO> pList = paymentService.getAllMakerPayment(maker_idx);
+	    
+	    model.addAttribute("pList", pList);
 	    
 		// ================================ 메이커의 전체 프로젝트(통합) 차트 출력 ================================
 	    

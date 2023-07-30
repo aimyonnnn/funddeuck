@@ -227,6 +227,7 @@
 		    AND p.payment_confirm = #{type}
 	</select>
 	
+
 	<!-- 발송입력 - 모달창 리스트 조회 -->
 	<select id="selectShippingModalList" resultType="com.itwillbs.test.vo.PaymentVO">
 		SELECT *
@@ -251,4 +252,14 @@
 			FROM payment
 			WHERE payment_idx = #{payment_idx}
 	</select>
+
+	<!-- 메이커의 전체 프로젝트 결제 내역 조회 -->
+	<select id="selectAllMakerPayment" resultType="com.itwillbs.test.vo.PaymentVO">
+		SELECT p.*, proj.project_subject, r.reward_name
+        FROM payment p
+        INNER JOIN project proj ON p.project_idx = proj.project_idx
+        LEFT JOIN reward r ON p.reward_idx = r.reward_idx
+        WHERE proj.maker_idx = #{maker_idx}
+	</select>
+
 </mapper>
