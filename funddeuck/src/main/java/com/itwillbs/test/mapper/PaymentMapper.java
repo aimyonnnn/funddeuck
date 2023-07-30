@@ -40,10 +40,12 @@ public interface PaymentMapper {
 	List<PaymentVO> selectTotalSupporter(@Param("parsedStartDate") LocalDate parsedStartDate, @Param("parsedEndDate") LocalDate parsedEndDate);
 	
 	// 프로젝트별 지난 7일간 결제 금액 조회
-	List<PaymentVO> selectProjectDailyPayment(Integer project_idx);
+	List<PaymentVO> selectProjectDailyPayment(
+			@Param("project_idx") Integer project_idx, @Param("startDateProject")String startDateProject, @Param("endDateProject") String endDateProject);
 	
 	// 프로젝트별 지난 7일간 서포터 수 조회
-	List<PaymentVO> selectProjectSupporterCount(Integer project_idx);
+	List<PaymentVO> selectProjectSupporterCount(
+			@Param("project_idx") Integer project_idx, @Param("startDateProject")String startDateProject, @Param("endDateProject") String endDateProject);
 
 	// 프로젝트별 배송상황 조회
 	List<Map<String, Object>> selectDeliveryList(int project_idx);
