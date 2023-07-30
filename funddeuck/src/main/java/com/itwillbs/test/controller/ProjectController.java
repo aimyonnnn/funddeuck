@@ -539,12 +539,6 @@ public class ProjectController {
 			project.setProject_settlement_image(subDir + "/" + fileName5);
 		}
 		
-		System.out.println("실제 업로드 썸네일명1:" + project.getProject_thumnails1());
-		System.out.println("실제 업로드 썸네일명2:" + project.getProject_thumnails1());
-		System.out.println("실제 업로드 썸네일명3:" + project.getProject_thumnails1());
-		System.out.println("실제 업로드 상세이미지명:" + project.getProject_image());
-		System.out.println("실제 업로드 통장사본명:" + project.getProject_settlement_image());
-		
 		// ------------------------------------------------------------------------------------
 		
 		// 주민등록번호 결합

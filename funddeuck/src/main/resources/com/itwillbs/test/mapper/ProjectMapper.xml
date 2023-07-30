@@ -102,6 +102,7 @@
 			INTO project
 			VALUES (
 				NULL
+				, #{project_plan}
 				, #{project_category}
 				, #{project_subject}
 				, #{project_thumnails1}
