@@ -707,7 +707,7 @@ public class ProjectController {
 			@RequestParam(value = "project_idx", required = false) Integer project_idx, 
 			HttpSession session, Model model) {
 		
-		// ================================ 접근 차단 ================================
+		// ================================ 세션 차단 ================================
 		
 		// 세션 아이디가 존재하지 않을 때 
 		String sId = (String) session.getAttribute("sId");
@@ -724,34 +724,10 @@ public class ProjectController {
 	        return "fail_back";
 	    }
 	    
-	    // ================================ 페이징 처리 ================================
-	    // 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
- 		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
- 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
- 		// -------------------------------------------------------------------------
- 		// paymentService - getAllMakerPayment() 메서드 호출하여 게시물 목록 조회 요청
- 		// 메이커의 전체 프로젝트 결제 내역 조회
- 		List<PaymentVO> pList = paymentService.getAllMakerPayment(maker_idx, startRow, listLimit);
- 		// -------------------------------------------------------------------------
- 		// 한 페이지에서 표시할 페이지 목록(번호) 계산
- 		// 1. notificationService - getNotificationListCount() 메서드를 호출하여
- 		int listCount = paymentService.getAllMakerPaymentCount(maker_idx);
- 		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
- 		int pageListLimit = 10;
- 		// 3. 전체 페이지 목록 갯수 계산
- 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
- 		// 4. 시작 페이지 번호 계산
- 		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
- 		// 5. 끝 페이지 번호 계산
- 		int endPage = startPage + pageListLimit - 1;
- 		// 6. 만약, 끝 페이지 번호(endPage)가 전체(최대) 페이지 번호(maxPage) 보다
- 		//	  클 경우 끝 페이지 번호를 최대 페이지 번호로 교체
- 		if(endPage > maxPage) {
- 			endPage = maxPage;
- 		}
- 		// 페이징 처리 정보를 저장할 PageInfoVO 객체에 계산된 데이터 저장
- 		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
- 		model.addAttribute("pageInfo", pageInfo);
+	    // ================================ 테이블 출력 ================================
+	    
+	    // 메이커의 전체 결제 내역 조회
+	    List<PaymentVO> pList = paymentService.getAllMakerPayment(maker_idx);
  		model.addAttribute("pList", pList);
 	    
 		// ================================ 메이커의 전체 프로젝트(통합) 차트 출력 ================================

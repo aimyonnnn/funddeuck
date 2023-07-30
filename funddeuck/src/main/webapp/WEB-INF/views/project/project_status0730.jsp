@@ -9,12 +9,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- bootstrap -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-	<!-- jQuery -->
+	<!-- jquery -->
 	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
-	<!-- Font Awesome -->
+	<!-- font awesome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-	<!-- CSS -->
+	<!-- css -->
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
 	<link href="${pageContext.request.contextPath }/resources/css/project_status.css" rel="styleSheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
@@ -134,20 +134,35 @@
     };
 	</script>
 	<style>
-	  /* 아이콘의 크기를 2배로 설정 */
-	  .las.la-chart-line {
-	    font-size: 3em;
-	  }
-	
-	  /* 아이콘의 크기를 3배로 설정하고 색상을 변경 */
-	  .las.la-chart-line {
-	    font-size: 3em;
-	    color: orange; /* 예시로 빨간색으로 변경 */
-	  }
+		/* 아이콘의 크기를 2배로 설정 */
+		.las.la-chart-line {
+			font-size: 3em;
+		}
+		/* 아이콘의 크기를 3배로 설정하고 색상을 변경 */
+		.las.la-chart-line {
+			font-size: 3em;
+			color: orange; /* 예시로 빨간색으로 변경 */
+		}
+		table {
+			width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
+			table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
+		}
+		th, td {
+			width: 10%; /* 각 셀의 너비를 20%로 설정 */
+		}
+		.hover-effect:hover {
+			text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */
+		}
 	</style>
 </head>
 <body>
-	<jsp:include page="../common/project_top.jsp" />
+<jsp:include page="../common/project_top.jsp" />
+<!-- pageNum 파라미터 가져와서 저장(기본값 1로 지정함) -->
+<c:set var="pageNum" value="1"/>
+<c:if test="${not empty param.pageNum }">
+	<c:set var="pageNum" value="${param.pageNum }" />
+</c:if>
+
 	<main id="main">
 		<div class="containerCSS">
 
@@ -183,11 +198,86 @@
 						<p class="projectTitle">프로젝트 현황</p>
 						<p class="projectContent mb-4">프로젝트 진행 상황을 실시간으로 한 번에 볼 수
 							있습니다.</p>
+						
+						<!-- 메이커의 프로젝트별 차트 시작 -->
+						<div class="container mt-5 mb-3">
+							<div class="row justify-content-center">
+								<p class="subheading">프로젝트별 매출 분석</p>
+								<p class="projectContent"><strong>${param.project_idx}번 </strong> 프로젝트의 매출 분석 그래프 입니다.</p>
+								
+								<div class="col-md-12 col-lg-4 d-md-block my-1">
+									<div class="card">
+										<div class="card-body d-flex flex-row justify-content-evenly">
+											<div>
+												<span class="sideDescription">누적 결제 금액</span>
+												<h1 class="card-title">
+													${projectTotalAmount}<span class="sideDescription">원</span>
+												</h1>
+											</div>
+											<div class="">
+												<i class="las la-chart-line" style="color: rgba(255, 99, 132, 1);"></i>
+											</div>
+										</div>
+									</div>
+								</div>
 
+								<div class="col-md-12 col-lg-4 d-md-block my-1">
+									<div class="card">
+										<div class="card-body d-flex flex-row justify-content-evenly">
+											<div>
+												<span class="sideDescription">오늘 결제금액</span>
+												<h1 class="card-title">
+													${projectTodayAmount}<span class="sideDescription">원</span>
+												</h1>
+											</div>
+											<div class="">
+												<i class="las la-chart-line" style="color: rgb(135, 206, 235);"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-12 col-lg-4 d-md-block my-1">
+									<div class="card">
+										<div class="card-body d-flex flex-row justify-content-evenly">
+											<div>
+												<span class="sideDescription">누적 서포터 수</span>
+												<h1 class="card-title">
+													${projectTotalSupporterCount}<span class="sideDescription">명</span>
+												</h1>
+											</div>
+											<div class="">
+												<i class="las la-chart-line" style="color: rgba(75, 192, 192, 0.2);"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- 프로젝트 선택을 위한 드롭다운 메뉴 -->
+								<div class="d-flex flex-row justify-content-end mt-3">
+									<select id="projectSelect" class="datepicker-button" onchange="loadChartData()">
+									</select>
+								</div>
+								<!-- 프로젝트 선택을 위한 드롭다운 메뉴 -->
+							
+							</div>
+						</div>
+						
+						<!-- myChart3 -->
+						<div id="chartContainer3">
+							<canvas id="myChart3"></canvas>
+						</div>
+						<!-- myChart3 -->
+						<!-- 메이커의 프로젝트별 차트 끝 -->
+						
+						<!-- 구분선 -->
+						<hr>
+						
+						<!-- 메이커의 전체 프로젝트 차트 시작 -->					
 						<div class="container mt-5 mb-3">
 							<div class="row justify-content-center">
 								<p class="subheading">메이커의 전체 프로젝트 매출 분석</p>
-								<p class="projectContent">결제가 갱신될 때 마다 아래 현황이 업데이트 됩니다.</p>
+								<p class="projectContent">메이커님이 소유한 전체 프로젝트의 매출을 확인할 수 있습니다.</p>
 
 								<div class="col-md-12 col-lg-4 d-md-block my-1">
 									<div class="card">
@@ -240,7 +330,7 @@
 							</div>
 						</div>
 
-						<!-- 날짜 선택 -->
+						<!-- 데이트피커 -->
 						<div class="d-flex flex-row justify-content-end">
 							<input class="datepicker" id="startDate" placeholder="시작 날짜">
 							<input class="datepicker mx-2" id="endDate" placeholder="끝 날짜">
@@ -254,85 +344,77 @@
 							</select>
 							<button class="datepicker-button mx-2" id="updateButton">조회</button>
 						</div>
+						<!-- 데이트피커 -->
 
 						<!-- myChart2 -->
 						<div id="chartContainer">
 							<canvas id="myChart2"></canvas>
 						</div>
+						<!-- myChart2 -->
+						<!-- 메이커의 전체 프로젝트 차트 끝 -->
 						
-						<hr class="my-5">
-						
-						<!-- 메이커의 프로젝트별 차트 출력 -->
-						<!-- 메이커는 여러개의 프로젝트를 소유 할 수 있음 -->
+						<!-- 전체 결제 내역 조회 -->
 						<div class="container mt-5 mb-3">
 							<div class="row justify-content-center">
-								<p class="subheading">프로젝트별 매출 분석</p>
-								<p class="projectContent"><strong>${param.project_idx}번 </strong> 프로젝트의 매출 분석 그래프 입니다.</p>
+								<p class="subheading">전체 결제 내역 조회</p>
+								<p class="projectContent">결제 내역을 실시간으로 조회 할 수 있습니다.</p>
+							
+								<!-- 셀렉트 박스 -->
+								<div class="container mt-5">
+									<div class="d-flex justify-content-end row mb-3">
+									    <div class="col-md-2">
+									        <select class="form-select"  onchange="filterNotifications()">
+									            <option value="">전체</option>
+									        </select>
+									    </div>
+									</div>
+								</div>
+								<!-- 셀렉트 박스 -->
 								
-
-								<div class="col-md-12 col-lg-4 d-md-block my-1">
-									<div class="card">
-										<div class="card-body d-flex flex-row justify-content-evenly">
-											<div>
-												<span class="sideDescription">누적 결제 금액</span>
-												<h1 class="card-title">
-													${projectTotalAmount}<span class="sideDescription">원</span>
-												</h1>
-											</div>
-											<div class="">
-												<i class="las la-chart-line" style="color: rgba(255, 99, 132, 1);"></i>
-											</div>
-										</div>
+								<div class="row">
+									<div class="d-flex justify-content-center">
+									
+									<!-- 결제 테이블 -->
+									<table class="table" style="font-size: 15px">
+										<tr>
+											<th class="text-center" style="width: 3%;">번호</th>
+											<th class="text-center" style="width: 13%;">프로젝트명</th>
+											<th class="text-center" style="width: 15%;">리워드명</th>
+											<th class="text-center" style="width: 3%;">수량</th>
+											<th class="text-center" style="width: 5%;">결제금액</th>
+											<th class="text-center" style="width: 7%;">주문날짜</th>
+											<th class="text-center" style="width: 5%;">상태</th>
+											<th class="text-center" style="width: 7%;">상세보기</th>
+										</tr>
+										<c:forEach var="pList" items="${pList}">
+											<tr>
+												<th class="text-center">${pList.payment_idx }</th>
+												<th class="text-center">[${pList.project_idx}]-${pList.project_subject }</th>
+												<th class="text-center">[${pList.reward_idx}]-${pList.reward_name }</th>
+												<th class="text-center">${pList.payment_quantity }</th>
+												<th class="text-center">${pList.total_amount }</th>
+												<th class="text-center">${pList.payment_date }</th>
+												<c:choose>
+													<c:when test="${pList.payment_confirm eq 1}">
+														<th class="text-center">결제완료</th>
+													</c:when>
+													<c:when test="${pList.payment_confirm eq 2}">
+														<th class="text-center">취소요청</th>
+													</c:when>
+													<c:otherwise>
+														<th class="text-center">취소완료</th>
+													</c:otherwise>
+												</c:choose>
+												<th class="text-center"><button class="btn btn-outline-primary btn-sm">상세보기</button></th>
+											</tr>
+										</c:forEach> 
+									</table>
 									</div>
 								</div>
-
-								<div class="col-md-12 col-lg-4 d-md-block my-1">
-									<div class="card">
-										<div class="card-body d-flex flex-row justify-content-evenly">
-											<div>
-												<span class="sideDescription">오늘 결제금액</span>
-												<h1 class="card-title">
-													${projectTodayAmount}<span class="sideDescription">원</span>
-												</h1>
-											</div>
-											<div class="">
-												<i class="las la-chart-line" style="color: rgb(135, 206, 235);"></i>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="col-md-12 col-lg-4 d-md-block my-1">
-									<div class="card">
-										<div class="card-body d-flex flex-row justify-content-evenly">
-											<div>
-												<span class="sideDescription">누적 서포터 수</span>
-												<h1 class="card-title">
-													${projectTotalSupporterCount}<span class="sideDescription">명</span>
-												</h1>
-											</div>
-											<div class="">
-												<i class="las la-chart-line" style="color: rgba(75, 192, 192, 0.2);"></i>
-											</div>
-										</div>
-									</div>
-								</div>
-
-							<!-- 프로젝트 선택을 위한 드롭다운 메뉴 -->
-							<div class="d-flex flex-row justify-content-end mt-3">
-							<select id="projectSelect" class="datepicker-button" onchange="loadChartData()">
-							  <option value="">프로젝트 선택</option>
-							</select>
+							
 							</div>
+						</div>	
 						
-							</div>
-						</div>
-						
-						
-						<!-- myChart3 -->
-						<div id="chartContainer3">
-							<canvas id="myChart3"></canvas>
-						</div>
 						
 					</div>
 				</article>
@@ -591,15 +673,18 @@
 			      selectElement.appendChild(option);
 			    });
 			    
+			    let selectedProjectIdx = ${param.project_idx};
+			    selectElement.value = selectedProjectIdx;
+			    
 		  	},
 		  	error: function (error) {
 		    console.error(error);
 		  }
 		});
 	}
-	
 	// 선택한 프로젝트의 차트 데이터를 서버로 요청하는 함수
 	function loadChartData() {
+		
 	  let selectedProjectIdx = document.getElementById("projectSelect").value;
 	  let maker_idx = "${param.maker_idx}";
 	  

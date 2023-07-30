@@ -234,20 +234,7 @@
         INNER JOIN project proj ON p.project_idx = proj.project_idx
         LEFT JOIN reward r ON p.reward_idx = r.reward_idx
         WHERE proj.maker_idx = #{maker_idx}
-        order by
-			p.payment_date desc
-  		LIMIT
-			#{startRow}
-			, #{listLimit}
-	</select>
-	
-	<!-- 메이커의 전체 프로젝트 결제 내역 갯수 조회 -->
-	<select id="selectAllMakerPaymentCount" resultType="int">
-		SELECT COUNT(*)
-	    FROM payment p
-	    INNER JOIN project proj ON p.project_idx = proj.project_idx
-	    LEFT JOIN reward r ON p.reward_idx = r.reward_idx
-	    WHERE proj.maker_idx = #{maker_idx}
+        order by p.payment_date desc
 	</select>
 	
 </mapper>
