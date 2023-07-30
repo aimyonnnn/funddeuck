@@ -687,12 +687,6 @@ public class ProjectController {
 		return "myPage";
 	}
 	
-	// 테스트 페이지
-	@GetMapping("projectTest")
-	public String projectTest(Model model, HttpSession session) {
-		return "project/project_test";
-	}
-	
 	// 프로젝트 현황
 	@GetMapping("projectStatus")
 	public String projectStatus(HttpSession session, Model model) {
@@ -719,13 +713,16 @@ public class ProjectController {
 		System.out.println("멤버idx : " + member_idx);					
 		System.out.println("메이커idx : " + maker_idx);
 		System.out.println("프로젝트idx : " + projectList.get(0).getProject_idx());
-		System.out.println("프로젝트리스트 : " + projectList);
 		
-	    // 메이커의 전체 결제 내역 조회
-	    List<PaymentVO> pList = paymentService.getAllMakerPayment(maker_idx);
- 		model.addAttribute("pList", pList);
-	
 		return "project/project_status";
+	}
+	
+	// 메이커의 전체 결제 내역 조회
+	@PostMapping("getAllMakerPayment")
+	@ResponseBody
+	public List<PaymentVO> getAllMakerPayment(@RequestParam int maker_idx) {
+	    List<PaymentVO> mList = paymentService.getAllMakerPayment(maker_idx);
+		return mList;
 	}
 		
 	// 메이커의 전체 프로젝트 차트 출력
@@ -796,6 +793,14 @@ public class ProjectController {
 		return pList;
 	}
 	
+	// 프로젝트 리스트 출력
+	@PostMapping("getPaymentByProjectIdx")
+	@ResponseBody
+	public List<ProjectVO> getPaymentByProjectIdx(@RequestParam int project_idx) {
+		List<ProjectVO> pList = projectService.getPaymentByProjectIdx(project_idx);
+		return pList;
+	}
+	
 	// 메이커의 프로젝트별 차트 출력
 	@PostMapping("/chartDataProject")
 	@ResponseBody
@@ -845,14 +850,16 @@ public class ProjectController {
 	        }
 	    }
 	    
-	    ChartDataProjectVO chartDataProjectVO = new ChartDataProjectVO();
-	    chartDataProjectVO.setLabels(labels);                			   	// 날짜 라벨
-	    chartDataProjectVO.setDailyPaymentAmounts(dailyPaymentAmounts);    	// 일별 결제 금액
-	    chartDataProjectVO.setAcmlPaymentAmounts(acmlPaymentAmounts);      	// 누적 결제 금액
-	    chartDataProjectVO.setDailySupporterCounts(dailySupporterCounts);  	// 일별 서포터 수
-	    chartDataProjectVO.setAcmlSupporterCounts(acmlSupporterCounts);    	// 누적 서포터 수
-
-	    return chartDataProjectVO;
+//	    ChartDataProjectVO chartDataProjectVO = new ChartDataProjectVO();
+//	    chartDataProjectVO.setLabels(labels);                			   	// 날짜 라벨
+//	    chartDataProjectVO.setDailyPaymentAmounts(dailyPaymentAmounts);    	// 일별 결제 금액
+//	    chartDataProjectVO.setAcmlPaymentAmounts(acmlPaymentAmounts);      	// 누적 결제 금액
+//	    chartDataProjectVO.setDailySupporterCounts(dailySupporterCounts);  	// 일별 서포터 수
+//	    chartDataProjectVO.setAcmlSupporterCounts(acmlSupporterCounts);    	// 누적 서포터 수
+//	    return chartDataProjectVO;
+	    
+	    return new ChartDataProjectVO(
+	    		labels, dailyPaymentAmounts, acmlPaymentAmounts, dailySupporterCounts, acmlSupporterCounts, acmlPaymentAmount, acmlSupporterCount);
 	}
 	
 	

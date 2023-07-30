@@ -89,7 +89,9 @@ public interface ProjectMapper {
 
 	// 펀딩 프로젝트 탐색
 	List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit);
-
+	
+	// 프로젝트 리스트 조회
+	List<ProjectVO> selectPaymentByProjectIdx(int project_idx);
 	
 	//-----main page---------
 		// show all project
@@ -97,6 +99,8 @@ public interface ProjectMapper {
 
 		//ranking system
 		List<ProjectVO> selectTop10ProjectsByEndDate();
+
+		
 			
 
 

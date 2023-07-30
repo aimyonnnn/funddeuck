@@ -237,6 +237,17 @@
         order by p.payment_date desc
 	</select>
 	
+	<!--  -->
+	<select id="selectPaymentByProjectIdx" resultType="com.itwillbs.test.vo.PaymentVO">
+		SELECT p.*, proj.project_subject, r.reward_name
+        FROM payment p
+        INNER JOIN project proj ON p.project_idx = proj.project_idx
+        LEFT JOIN reward r ON p.reward_idx = r.reward_idx
+        WHERE proj.maker_idx = #{maker_idx}
+        	  AND proj.project_idx = #{project_idx}
+        order by p.payment_date desc
+	</select>
+	
 	<!-- 발송입력 - 모달창 리스트 조회 -->
 	<select id="selectShippingModalList" resultType="com.itwillbs.test.vo.PaymentVO">
 		SELECT *

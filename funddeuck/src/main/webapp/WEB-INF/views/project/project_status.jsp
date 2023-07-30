@@ -611,8 +611,8 @@ th, td {
 
 					<!-- 데이트피커 -->
 					<div class="d-flex flex-row justify-content-end">
-						<input type="date" class="datepicker" id="startDate" placeholder="시작 날짜">
-						<input type="date" class="datepicker mx-2" id="endDate" placeholder="끝 날짜">
+						<input type="date" class="datepicker" id="startDate" placeholder="시작 날짜" style="width: 115px;">
+						<input type="date" class="datepicker mx-2" id="endDate" placeholder="끝 날짜" style="width: 115px;">
 						<select class="datepicker" id="chartType">
 							<option value="">선택</option>
 							<option value="bar">bar</option>
@@ -636,54 +636,32 @@ th, td {
 							<p class="projectContent">결제 내역을 실시간으로 조회 할 수 있습니다.</p>
 						
 							<!-- 셀렉트 박스 -->
-							<div class="container mt-5">
-								<div class="d-flex justify-content-end row mb-3">
-								    <div class="col-md-2">
-								        <select class="form-select"  onchange="filterNotifications()">
-								            <option value="">전체</option>
-								        </select>
-								    </div>
-								</div>
+							<div class="d-flex flex-row justify-content-end">
+								<select id="projectSelect2" class="datepicker-button">
+									<option value="">선택</option>
+								</select>		
 							</div>
-							<!-- 셀렉트 박스 -->
 							
 							<div class="row">
 								<div class="d-flex justify-content-center">
 								
 								<!-- 결제 테이블 -->
 								<table class="table" style="font-size: 15px">
+								<thead>
 									<tr>
 										<th class="text-center" style="width: 3%;">번호</th>
 										<th class="text-center" style="width: 13%;">프로젝트명</th>
-										<th class="text-center" style="width: 15%;">리워드명</th>
+										<th class="text-center" style="width: 13%;">리워드명</th>
 										<th class="text-center" style="width: 3%;">수량</th>
-										<th class="text-center" style="width: 5%;">결제금액</th>
+										<th class="text-center" style="width: 6%;">결제금액</th>
 										<th class="text-center" style="width: 7%;">주문날짜</th>
 										<th class="text-center" style="width: 5%;">상태</th>
 										<th class="text-center" style="width: 7%;">상세보기</th>
 									</tr>
-									<c:forEach var="pList" items="${pList}">
-										<tr>
-											<th class="text-center">${pList.payment_idx }</th>
-											<th class="text-center">[${pList.project_idx}]-${pList.project_subject }</th>
-											<th class="text-center">[${pList.reward_idx}]-${pList.reward_name }</th>
-											<th class="text-center">${pList.payment_quantity }</th>
-											<th class="text-center">${pList.total_amount }</th>
-											<th class="text-center">${pList.payment_date }</th>
-											<c:choose>
-												<c:when test="${pList.payment_confirm eq 1}">
-													<th class="text-center">결제완료</th>
-												</c:when>
-												<c:when test="${pList.payment_confirm eq 2}">
-													<th class="text-center">취소요청</th>
-												</c:when>
-												<c:otherwise>
-													<th class="text-center">취소완료</th>
-												</c:otherwise>
-											</c:choose>
-											<th class="text-center"><button class="btn btn-outline-primary btn-sm">상세보기</button></th>
-										</tr>
-									</c:forEach> 
+								</thead>
+								<tbody id="paymentTableBody">
+								
+								</tbody>
 								</table>
 								<!--  -->
 								
@@ -712,12 +690,13 @@ $(() => {
 	   
 	// 프로젝트 리스트를 조회
 	getProjectList();
+	getProjectList2();
 });
 
 // 서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
 function getProjectList() {
 	
-	const selectElement = document.getElementById("projectSelect");
+	let selectElement = document.getElementById("projectSelect");
 	
 	$.ajax({
 		method: 'post',
@@ -745,6 +724,102 @@ function getProjectList() {
 	  }
 	});
 }
+
+//서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
+function getProjectList2() {
+	
+    let selectElement = document.getElementById("projectSelect2");
+    
+    $.ajax({
+        method: 'post',
+        data: {
+            maker_idx: ${maker_idx}
+        },
+        url: '<c:url value="getProjectListByMakerIdx"/>',
+        success: function (data) {
+
+            console.log(data);
+
+            data.forEach((project) => {
+                let option = document.createElement("option");
+                option.value = project.project_idx;
+                option.textContent = project.project_subject;
+                selectElement.appendChild(option);
+            });
+
+            let selectedProjectIdx = ${firstProjectIdx};
+            selectElement.value = selectedProjectIdx;
+
+        },
+        error: function (error) {
+            console.error(error);
+        }
+    });
+}
+
+// 메이커 전체 결제 내역 조회
+$(document).ready(function() {
+	$.ajax({
+	    url: '<c:url value="getAllMakerPayment"/>',
+	    method: 'post',
+	    data: {
+	    	maker_idx: ${maker_idx}
+	    },
+	    dataType: 'json',
+	    success: function(data) {
+	        updatePaymentTable(data);
+	    },
+	    error: function(error) {
+	        console.error(error);
+	    }
+	});
+});
+
+// 결제내역 데이터를 테이블에 추가하는 함수
+function updatePaymentTable(data) {
+   
+    let tbody = $('#paymentTableBody');
+    tbody.empty();
+    
+    // 날짜 변환
+    function formatDate(timestamp) {
+		  let date = new Date(timestamp);
+		  let year = date.getFullYear();
+		  let month = ('0' + (date.getMonth() + 1)).slice(-2);
+		  let day = ('0' + date.getDate()).slice(-2);
+		  return year + '-' + month + '-' + day;
+	}
+    
+    data.forEach(function(payment, index) {
+    	// 결제상태 판별하기
+    	let status;
+        if (payment.payment_confirm === 1) {
+            status = "결제완료";
+        } else if (payment.payment_confirm === 2) {
+            status = "취소요청";
+        } else if (payment.payment_confirm === 3) {
+            status = "취소완료";
+        } else {
+            status = "없음";
+        }
+    	
+    	let formattedDate = formatDate(payment.payment_date); // 주문 날짜 변환
+	   	let newRow = 
+		   	    "<tr>" +
+			   	    "<td class='text-center'>" + payment.payment_idx + "</td>" +
+			   	    "<td class='text-center'>" + payment.project_subject + "</td>" +
+			   	    "<td class='text-center'>" + payment.reward_name + "</td>" +
+			   	    "<td class='text-center'>" + payment.payment_quantity + "</td>" +
+			   	    "<td class='text-center'>" + payment.total_amount + "</td>" +
+			   	    "<td class='text-center'>" + formattedDate + "</td>" +
+			   	    "<td class='text-center'>" + status + "</td>" +
+			   	    "<td class='text-center'><button class='btn btn-outline-primary btn-sm'>상세보기</button></td>" +
+		   	    "</tr>";
+        tbody.append(newRow);
+    });
+}
+// ========= 
+
 </script>
 <!-- js -->
 <script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
