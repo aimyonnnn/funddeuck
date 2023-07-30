@@ -56,6 +56,15 @@ public interface PaymentMapper {
 
 	// payment_confirm(환불승인여부)가 있을 때 목록 조회
 	List<PaymentVO> selectRefundAllList(@Param("project_idx") int project_idx, @Param("type") String type);
+
+	// 발송입력 - 모달창 리스트 조회
+	List<PaymentVO> selectShippingModalList(int payment_idx);
+
+	// 송장 입력 후 발송 업데이트
+	int updateShippingInfo(@Param("payment_idx") int payment_idx, @Param("delivery_method") String delivery_method, @Param("courier") String courier, @Param("waybill_num") String waybill_num);
+
+	// 결제 목록 조회
+	List<PaymentVO> selectPaymentList(int payment_idx);
 	
 	
 }

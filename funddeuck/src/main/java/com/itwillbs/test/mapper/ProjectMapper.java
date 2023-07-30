@@ -92,7 +92,7 @@ public interface ProjectMapper {
 
 	// 펀딩 프로젝트 탐색
 	List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit);
-	
+
 	
 
 

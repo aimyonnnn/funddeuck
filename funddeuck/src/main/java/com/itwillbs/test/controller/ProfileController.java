@@ -28,7 +28,7 @@ import com.itwillbs.test.service.ProfileService;
 import com.itwillbs.test.vo.ProfileVO;
 
 @Controller
-@RequestMapping("/member")
+//@RequestMapping("/member")
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -54,7 +54,7 @@ public class ProfileController {
     }
 
 
-    @PostMapping("/profile")
+    @PostMapping("/saveProfile")
     @ResponseBody
     public ResponseEntity<String> saveProfile(@ModelAttribute ProfileVO profileVO){
 

@@ -75,4 +75,13 @@ public class PaymentVO {
 	private int amount; // 결제 금액
 	private int count; // 서포터 수(결제한 사람)
 	// ===============================================================================
+	// 발송·환불 목록 출력 시 사용 
+	private String member_name;
+	private String reward_name;
+	private String delivery_date;
+	private String delivery_reciever;
+	private String delivery_phone;
+	private String delivery_zipcode;
+	private String delivery_add;
+	private String delivery_detailadd;
 }

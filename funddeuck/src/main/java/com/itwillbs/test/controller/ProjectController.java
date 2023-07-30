@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -624,10 +626,6 @@ public class ProjectController {
 		// 환불승인여부 조회
 		List<Map<String, Object>> refundStatus = paymentService.getRefundList(project_idx);
 		
-		System.out.println("프로젝트 번호: " + project_idx);
-		System.out.println("배송상황: " + deliveryStatus);
-		System.out.println("환불승인여부: " + refundStatus);
-		
 		data.put("deliveryStatus", deliveryStatus);
 		data.put("refundStatus", refundStatus);
 		
@@ -650,8 +648,35 @@ public class ProjectController {
 			data.addAll(refundAllList); 
 		}
 		
-		System.out.println("data : " + data);
 		return data;
+	}
+	
+	// 발송입력 - 모달창 리스트 출력 
+	@ResponseBody
+	@PostMapping("shippingModalList")
+	public List<PaymentVO> shippingModalList(@RequestParam("payment_idx") int payment_idx) {
+		List<PaymentVO> shippingModalList = paymentService.getShippingModalList(payment_idx);
+		
+		return shippingModalList;
+	}
+	
+	// 발송번호 입력
+	@ResponseBody
+	@PostMapping("updateShippingInfo")
+	public ResponseEntity<?> updateShippingInfo(@RequestParam("payment_idx") int payment_idx,
+									 @RequestParam("delivery_method") String delivery_method,
+									 @RequestParam("courier") String courier,
+									 @RequestParam("waybill_num") String waybill_num) {
+		
+		int updateCount = paymentService.modifyShippingInfo(payment_idx, delivery_method, courier, waybill_num);
+		
+		if(updateCount > 0) { // 성공적으로 수정 시
+			List<PaymentVO> paymentList = paymentService.getPaymentList(payment_idx);
+			return new ResponseEntity<>(paymentList, HttpStatus.OK);
+		} else { // 수정 실패 시
+	        String message = "송장번호 입력 실패!";
+	        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	// 수수료·정산 관리

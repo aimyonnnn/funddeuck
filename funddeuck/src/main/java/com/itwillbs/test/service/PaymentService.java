@@ -77,5 +77,20 @@ public class PaymentService {
 		return mapper.selectRefundAllList(project_idx, type);
 	}
 	
+	// 발송입력 - 모달창 리스트 조회
+	public List<PaymentVO> getShippingModalList(int payment_idx) {
+		return mapper.selectShippingModalList(payment_idx);
+	}
+	
+	// 송장 입력 후 발송 업데이트
+	public int modifyShippingInfo(int payment_idx, String delivery_method, String courier, String waybill_num) {
+		return mapper.updateShippingInfo(payment_idx, delivery_method, courier, waybill_num);
+	}
+	
+	// 결제 목록 조회 
+	public List<PaymentVO> getPaymentList(int payment_idx) {
+		return mapper.selectPaymentList(payment_idx);
+	}
+	
 	
 }
