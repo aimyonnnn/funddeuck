@@ -20,6 +20,7 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 <!-- chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 // 메이커 통합 차트
 $(() => {
@@ -28,13 +29,14 @@ $(() => {
     let myChart2 = null; // Chart 객체를 저장하기 위한 변수
 
     $('#updateButton').click(() => {
+    	
         let startDate = $('#startDate').val(); 		// 시작일 입력값 가져오기
         let endDate = $('#endDate').val(); 			// 종료일 입력값 가져오기
         let chartType = $('#chartType').val(); 		// 선택된 차트 유형 가져오기
-        let maker_idx = ${param.maker_idx}; 		// 파라미터로 받은 maker_idx를 변수에 저장
+        let maker_idx = ${maker_idx}; 				// 파라미터로 받은 maker_idx를 변수에 저장
 
         $.ajax({
-            type: 'GET',
+            type: 'post',
             url: '<c:url value="chartData"/>', 		// 차트 데이터를 가져올 URL 설정
             data: {
                 startDate,      // 시작일
@@ -73,8 +75,8 @@ let updateChart = (data, chartType) => {
                     label: '일별 결제 금액',
                     data: dailyPaymentAmounts, 					// 일별 결제 금액 설정
                     type: 'line', 								// 라인 차트로 설정
-                    backgroundColor: 'rgba(255, 99, 132, 1)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgb(135, 206, 235)',
+                    borderColor: 'rgb(135, 206, 235)',
                     borderWidth: 4,
                     fill: false,
                     yAxisID: 'y-axis-1', 						// 왼쪽 축에 연결될 Y축 ID
@@ -83,8 +85,8 @@ let updateChart = (data, chartType) => {
                     label: '누적 결제 금액',
                     data: acmlPaymentAmounts, 					// 누적 결제 금액 설정
                     type: 'line', 								// 라인 차트로 설정
-                    backgroundColor: 'rgb(135, 206, 235)',
-                    borderColor: 'rgb(135, 206, 235)',
+                    backgroundColor: 'rgba(255, 99, 132, 1)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 4,
                     fill: false,
                     yAxisID: 'y-axis-1', 						// 왼쪽 축에 연결될 Y축 ID
@@ -171,16 +173,20 @@ $(() => {
             document.getElementById("chartTypeProject").focus();
             return;
         }
+        
+        var selectedProjectIdx = document.getElementById("projectSelect").value; 	// 셀렉트 박스에서 선택된 값을 가져오기
+        var selectedText = $('#projectSelect option:selected').text();				// 셀렉트 박스에서 선택된 옵션의 표시 텍스트를 가져오기
+        $("#selectedProjectIdx").text(selectedProjectIdx + "번 " + selectedText);	// selectedProjectIdx 요소의 내용을 업데이트 하기
     	
-        let startDateProject = $('#startDateProject').val(); 		// 시작일 입력값 가져오기
-        let endDateProject = $('#endDateProject').val(); 			// 종료일 입력값 가져오기
-        let chartTypeProject = $('#chartTypeProject').val(); 		// 선택된 차트 유형 가져오기
-        let maker_idx = ${param.maker_idx}; 						// 파라미터로 받은 maker_idx를 변수에 저장
-        let project_idx = $('#projectSelect').val(); 				// 선택된 프로젝트 번호 가져오기
+        let startDateProject = $('#startDateProject').val(); 						// 시작일 입력값 가져오기
+        let endDateProject = $('#endDateProject').val(); 							// 종료일 입력값 가져오기
+        let chartTypeProject = $('#chartTypeProject').val(); 						// 선택된 차트 유형 가져오기
+        let maker_idx = ${maker_idx}; 												// 파라미터로 받은 maker_idx를 변수에 저장
+        let project_idx = $('#projectSelect').val(); 								// 선택된 프로젝트 번호 가져오기
 
         $.ajax({
-            type: 'GET',
-            url: '<c:url value="chartDataProject"/>', 				// 프로젝트별 차트 데이터를 가져올 URL
+            type: 'POST',
+            url: '<c:url value="chartDataProject"/>',  // 프로젝트별 차트 데이터를 가져올 URL
             data: {
                 startDateProject,   // 시작일
                 endDateProject,     // 종료일
@@ -189,8 +195,14 @@ $(() => {
                 project_idx         // 프로젝트 번호
             },
             success: (response) => {
+            	
                 console.log(response);
+                
+                const accumulatedAmount = response.acmlPaymentAmounts;
+                $("#accumulatedAmount").html(`${accumulatedAmount}<span class="sideDescription">원</span>`);
+                
                 updateProjectChart(response, chartTypeProject); 	// 프로젝트별 차트 업데이트 함수 호출
+                
             }
         });
     });
@@ -219,8 +231,8 @@ let updateProjectChart = (data, chartTypeProject) => {
                     label: '일별 결제 금액',
                     data: dailyPaymentAmounts, 						// 일별 결제 금액 설정
                     type: 'line', 									// 라인 차트로 설정
-                    backgroundColor: 'rgba(255, 99, 132, 1)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgb(135, 206, 235)',
+                    borderColor: 'rgb(135, 206, 235)',
                     borderWidth: 4,
                     fill: false,
                     yAxisID: 'y-axis-1', 							// 왼쪽 축에 연결될 Y축 ID
@@ -229,8 +241,8 @@ let updateProjectChart = (data, chartTypeProject) => {
                     label: '누적 결제 금액',
                     data: acmlPaymentAmounts, 						// 누적 결제 금액 설정
                     type: 'line', 									// 라인 차트로 설정
-                    backgroundColor: 'rgb(135, 206, 235)',
-                    borderColor: 'rgb(135, 206, 235)',
+                    backgroundColor: 'rgba(255, 99, 132, 1)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 4,
                     fill: false,
                     yAxisID: 'y-axis-1', 							// 왼쪽 축에 연결될 Y축 ID
@@ -239,8 +251,8 @@ let updateProjectChart = (data, chartTypeProject) => {
                     label: '누적 서포터 수',
                     data: acmlSupporterCounts, 						// 누적 서포터 수 설정
                     type: chartTypeProject,
-                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                    borderColor: 'rgba(153, 102, 255, 0.2)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 0.2)',
                     borderWidth: 4,
                     yAxisID: 'y-axis-2', 							// 오른쪽 축에 연결될 Y축 ID
                 }
@@ -269,6 +281,38 @@ let updateProjectChart = (data, chartTypeProject) => {
             },
         },
     });
+    
+    // 텍스트 업데이트 작업 시작
+    // 기간별 누적 결제 금액 업데이트
+    let acmlPaymentAmountElement = document.getElementById('acmlPaymentAmount');
+	let acmlPaymentAmount = acmlPaymentAmounts[acmlPaymentAmounts.length - 1];
+	
+	if (acmlPaymentAmount !== undefined) {
+	    acmlPaymentAmountElement.textContent = acmlPaymentAmount;
+	} else {
+	    acmlPaymentAmountElement.textContent = '0';
+	}
+	
+    // 오늘 결제 금액 업데이트
+    let todayPaymentAmountElement = document.getElementById('todayPaymentAmount');
+	let todayPaymentAmount = dailyPaymentAmounts[dailyPaymentAmounts.length - 1];
+	
+	if (todayPaymentAmount !== undefined) {
+	    todayPaymentAmountElement.textContent = todayPaymentAmount;
+	} else {
+	    todayPaymentAmountElement.textContent = '0';
+	}
+
+    // 기간별누적 서포터 수 업데이트
+	let acmlSupporterCountElement = document.getElementById('acmlSupporterCount');
+	let acmlSupporterCount = acmlSupporterCounts[acmlSupporterCounts.length - 1];
+
+	if (acmlSupporterCount !== undefined) {
+	    acmlSupporterCountElement.textContent = acmlSupporterCount;
+	} else {
+	    acmlSupporterCountElement.textContent = '0';
+	}
+    
 };
 // 페이지 로드시에 차트 출력하기
 window.addEventListener('load', function() {
@@ -335,7 +379,7 @@ th, td {
 						<li><a href="projectReward">리워드 설계</a></li>
 					</ul>
 				</li>
-				<li><a href="projectStatus?maker_idx=${param.maker_idx}&project_idx=${param.project_idx}" id="active-tab">프로젝트 현황</a></li>
+				<li><a href="projectStatus" id="active-tab">프로젝트 현황</a></li>
 				<li><a href="projectShipping">발송·환불 관리</a></li>
 				<li><a href="projectSettlement">수수료·정산 관리</a></li>
 			</ul>
@@ -355,7 +399,7 @@ th, td {
 					<div class="container mt-5 mb-3">
 						<div class="row justify-content-center">
 							<p class="subheading">프로젝트별 매출 분석</p>
-							<p class="projectContent"><strong>${param.project_idx}번 </strong> 프로젝트의 매출 분석 그래프 입니다.</p>
+							<p class="projectContent"><strong id="selectedProjectIdx"></strong> 프로젝트의 매출 분석 그래프 입니다.</p>
 							
 							<div class="col-md-12 col-lg-4 d-md-block my-1">
 								<div class="card">
@@ -363,7 +407,7 @@ th, td {
 										<div>
 											<span class="sideDescription">누적 결제 금액</span>
 											<h1 class="card-title">
-												${chartDataProjectVO.acmlPaymentAmounts}<span class="sideDescription">원</span>
+												<span id="acmlPaymentAmount"></span><span class="sideDescription">원</span>
 											</h1>
 										</div>
 										<div class="">
@@ -379,7 +423,7 @@ th, td {
 										<div>
 											<span class="sideDescription">오늘 결제금액</span>
 											<h1 class="card-title">
-												${chartDataProjectVO.dailyPaymentAmounts}<span class="sideDescription">원</span>
+												<span id="todayPaymentAmount"></span><span class="sideDescription">원</span>
 											</h1>
 										</div>
 										<div class="">
@@ -395,7 +439,7 @@ th, td {
 										<div>
 											<span class="sideDescription">누적 서포터 수</span>
 											<h1 class="card-title">
-												${chartDataProjectVO.acmlSupporterCounts}<span class="sideDescription">명</span>
+												<span id="acmlSupporterCount"></span><span class="sideDescription">명</span>
 											</h1>
 										</div>
 										<div class="">
@@ -634,8 +678,8 @@ th, td {
            {
                label: '일별 결제 금액',
                data: dailyAmountList,
-               backgroundColor: 'rgba(255, 99, 132, 1)',
-               borderColor: 'rgba(255, 99, 132, 1)',
+               backgroundColor: 'rgb(135, 206, 235)',
+               borderColor: 'rgb(135, 206, 235)',
                borderWidth: 4,
                fill: false,
                yAxisID: 'y-axis-1', // 왼쪽 축에 연결될 Y축 ID
@@ -644,8 +688,8 @@ th, td {
            {
                label: '누적 결제 금액',
                data: acmlAmountList,
-               backgroundColor: 'rgb(135, 206, 235)',
-               borderColor: 'rgb(135, 206, 235)',
+               backgroundColor: 'rgba(255, 99, 132, 1)',
+               borderColor: 'rgba(255, 99, 132, 1)',
                borderWidth: 4,
                fill: false,
                yAxisID: 'y-axis-1', // 왼쪽 축에 연결될 Y축 ID
@@ -712,9 +756,9 @@ function getProjectList() {
 	const selectElement = document.getElementById("projectSelect");
 	
 	$.ajax({
-		method: 'get',
+		method: 'post',
 		data: {
-			maker_idx: ${param.maker_idx}
+			maker_idx: ${maker_idx}
 		},
 		url: '<c:url value="getProjectListByMakerIdx"/>',
 	  	success: function (data) {
@@ -728,7 +772,7 @@ function getProjectList() {
 		        selectElement.appendChild(option);
 		    });
 		    
-		    let selectedProjectIdx = ${param.project_idx};
+		    let selectedProjectIdx = ${firstProjectIdx};
 		    selectElement.value = selectedProjectIdx;
 		    
 	  	},

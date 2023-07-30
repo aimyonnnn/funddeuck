@@ -718,62 +718,12 @@ public class ProjectController {
 		
 		System.out.println("멤버idx : " + member_idx);					
 		System.out.println("메이커idx : " + maker_idx);
-		System.out.println("프로젝트idx : " + projectList.get(maker_idx).getProject_idx());
+		System.out.println("프로젝트idx : " + projectList.get(0).getProject_idx());
 		System.out.println("프로젝트리스트 : " + projectList);
 		
-	    // 테이블 출력 
 	    // 메이커의 전체 결제 내역 조회
 	    List<PaymentVO> pList = paymentService.getAllMakerPayment(maker_idx);
  		model.addAttribute("pList", pList);
-	    
-		// 메이커 지난 7일간 결제 금액 조회
-		List<PaymentVO> payList = paymentService.getPaymentListAmountBy7Day(maker_idx);
-		// 메이커 지난 7일간 서포터 수 조회
-		List<PaymentVO> supporterList = paymentService.getSupporterListCountBy7Day(maker_idx);
-		// Gson 객체 생성
-		Gson gson = new Gson();
-		// JsonArray 객체 생성
-		JsonArray payArray = new JsonArray(); // 결제 금액
-		JsonArray supporterArray = new JsonArray(); // 서포터 수
-		// 변수 초기화
-		int totalAmount = 0; // 누적 결제 금액
-		int todayAmount = 0; // 오늘 결제 금액
-		int totalSupporterCount = 0; // 메이커의 지난 7일간 누적 서포터 수
-		// payList에서 하나씩 꺼내서 JsonObject를 생성하고 payArray에 추가
-		for (PaymentVO pay : payList) {
-		    JsonObject object = new JsonObject();
-		    object.addProperty("date", pay.getDate());
-		    object.addProperty("amount", pay.getAmount());
-		    payArray.add(object);
-	
-		    // 누적 결제 금액 계산
-		    totalAmount += pay.getAmount();
-	
-		    // 오늘 결제 금액 계산 (오늘 날짜와 일치하는 경우)
-		    LocalDate today = LocalDate.now();
-		    LocalDate paymentDate = LocalDate.parse(pay.getDate());
-		    if (today.isEqual(paymentDate)) {
-		        todayAmount += pay.getAmount();
-		    }
-		}
-		// supporterList에서 하나씩 꺼내서 JsonObject를 생성하고 supporterArray에 추가
-		for (PaymentVO supporter : supporterList) {
-		    JsonObject object = new JsonObject();
-		    object.addProperty("date", supporter.getDate());
-		    object.addProperty("supporterCount", supporter.getCount());
-		    supporterArray.add(object);
-		    
-		    // 메이커별 지난 7일간 누적 서포터 수 계산하여 더해줌
-	        totalSupporterCount += supporter.getCount();
-		}
-		// json 문자열로 변환 후 Model에 저장
-		String payListAmount = gson.toJson(payArray);
-		String supporterListCount = gson.toJson(supporterArray);
-		model.addAttribute("payListAmount", payListAmount);
-		model.addAttribute("supporterListCount", supporterListCount);
-	    model.addAttribute("totalSupporterCount", totalSupporterCount); // 메이커의 지난 7일간 누적 서포터 수
-		model.addAttribute("todayAmount", todayAmount); // 오늘 결제 금액
-		model.addAttribute("totalAmount", totalAmount); // 누적 결제 금액
 	
 		return "project/project_status";
 	}
@@ -833,8 +783,9 @@ public class ProjectController {
 	        acmlSupporterCounts.add(acmlSupporterCount); 					// 이전의 누적 서포터 수 추가 (이전 데이터를 그대로 사용)
 	    }
 
-	    // ChartDataVO 객체를 생성하여 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 담아 반환
-	    return new ChartDataVO(labels, dailyPaymentAmounts, acmlPaymentAmounts, dailySupporterCounts, acmlSupporterCounts);
+	    return new ChartDataVO(
+	    		labels, dailyPaymentAmounts, acmlPaymentAmounts, dailySupporterCounts, acmlSupporterCounts, acmlPaymentAmount, acmlSupporterCount);
+
 	}
 	
 	// 셀렉트 박스에 프로젝트 리스트 출력

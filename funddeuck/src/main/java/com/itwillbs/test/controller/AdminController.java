@@ -393,8 +393,8 @@ public class AdminController {
 	        acmlSupporterCounts.add(acmlSupporterCount); // 이전의 누적 서포터 수 추가 (이전 데이터를 그대로 사용)
 	    }
 
-	    // ChartDataVO 객체를 생성하여 라벨, 일별 결제 금액, 누적 결제 금액, 일별 서포터 수, 누적 서포터 수를 담아 반환
-	    return new ChartDataVO(labels, dailyPaymentAmounts, acmlPaymentAmounts, dailySupporterCounts, acmlSupporterCounts);
+	    return new ChartDataVO(
+    		labels, dailyPaymentAmounts, acmlPaymentAmounts, dailySupporterCounts, acmlSupporterCounts, acmlPaymentAmount, acmlSupporterCount);
 	}
 
 	
