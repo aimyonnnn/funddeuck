@@ -67,7 +67,9 @@ public interface PaymentMapper {
 	List<PaymentVO> selectPaymentList(int payment_idx);
 	
 	// 메이커의 전체 프로젝트 결제 내역 조회
-	List<PaymentVO> selectAllMakerPayment(Integer maker_idx);
+	List<PaymentVO> selectAllMakerPayment(@Param("maker_idx") Integer maker_idx, @Param("startRow") int startRow, @Param("listLimit") int listLimit);
 	
+	// 메이커의 전체 프로젝트 결제 내역 갯수 조회
+	int selectAllMakerPaymentCount(Integer maker_idx);
 	
 }
