@@ -266,15 +266,36 @@
 						<div class="flex-container">
 					    	<div class="card">
 								<div class="card-header bg-primary text-white">
+					                <input type="radio" name="project_plan" value="1" class="card-radio" checked>
 									FUNDDEUCK 회원제(5%) (VAT 별도)
 								</div>
 								<div class="card-body">
 									<blockquote class="blockquote mb-0">
-										<p class="card-detail">
+										<span class="card-detail">
+											· 기본 요금제<br>
 										    · 프로젝트 공개<br>
 										    · 오픈예정 서비스<br>
 										    · 새소식 알림<br>
-										</p>
+										</span>
+									</blockquote>
+								</div>
+							</div>
+						    <div class="mx-2"></div> <!-- 가운데 마진 추가 -->
+							<div class="card">
+								<div class="card-header bg-primary text-white">
+									<input type="radio" name="project_plan" value="2" class="card-radio">
+									INFLUENCER 요금제 (3%) (VAT 별도)
+								</div>
+								<div class="card-body">
+									<blockquote class="blockquote mb-0">
+										<span class="card-detail">
+											· 긍정적 영향을 미치는 인플루언서들의 요금제<br>
+											· 친환경/기부/동물보호 카테고리 이용자<br>
+											· 수수료 할인<br>
+										    · 프로젝트 공개<br>
+										    · 오픈예정 서비스<br>
+										    · 새소식 알림<br>
+										</span>
 									</blockquote>
 								</div>
 							</div>
@@ -288,11 +309,14 @@
 						<div class="d-flex flex-row">
 							<select class="form-control" name="project_category" id="projectCategory">
 								<option value="">선택</option>
-								<option value="tech">테크/가전</option>
-								<option value="fassion">패션/잡화</option>
-								<option value="living">홈/리빙</option>
-								<option value="beauty">뷰티</option>
-								<option value="book">출판</option>
+								<option value="테크/가전">테크/가전</option>
+								<option value="패션/잡화">패션/잡화</option>
+								<option value="홈/리빙">홈/리빙</option>
+								<option value="뷰티">뷰티</option>
+								<option value="출판">출판</option>
+								<option value="친환경">친환경</option>
+								<option value="기부">기부</option>
+								<option value="동물보호">동물보호</option>
 							</select>
 						</div>
 					</div>

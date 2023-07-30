@@ -40,10 +40,12 @@ public interface PaymentMapper {
 	List<PaymentVO> selectTotalSupporter(@Param("parsedStartDate") LocalDate parsedStartDate, @Param("parsedEndDate") LocalDate parsedEndDate);
 	
 	// 프로젝트별 지난 7일간 결제 금액 조회
-	List<PaymentVO> selectProjectDailyPayment(Integer project_idx);
+	List<PaymentVO> selectProjectDailyPayment(
+			@Param("project_idx") Integer project_idx, @Param("startDateProject")String startDateProject, @Param("endDateProject") String endDateProject);
 	
 	// 프로젝트별 지난 7일간 서포터 수 조회
-	List<PaymentVO> selectProjectSupporterCount(Integer project_idx);
+	List<PaymentVO> selectProjectSupporterCount(
+			@Param("project_idx") Integer project_idx, @Param("startDateProject")String startDateProject, @Param("endDateProject") String endDateProject);
 
 	// 프로젝트별 배송상황 조회
 	List<Map<String, Object>> selectDeliveryList(int project_idx);
@@ -67,7 +69,7 @@ public interface PaymentMapper {
 	List<PaymentVO> selectPaymentList(int payment_idx);
 	
 	// 메이커의 전체 프로젝트 결제 내역 조회
-	List<PaymentVO> selectAllMakerPayment(@Param("maker_idx") Integer maker_idx, @Param("startRow") int startRow, @Param("listLimit") int listLimit);
+	List<PaymentVO> selectAllMakerPayment(@Param("maker_idx") Integer maker_idx);
 	
 	// 메이커의 전체 프로젝트 결제 내역 갯수 조회
 	int selectAllMakerPaymentCount(Integer maker_idx);

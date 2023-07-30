@@ -161,33 +161,33 @@
 	<!-- 프로젝트별 지난 7일간 결제 금액 조회 -->
 	<select id="selectProjectDailyPayment" resultType="com.itwillbs.test.vo.PaymentVO">
 		SELECT 
-		    DATE(payment_date) AS date,
-		    SUM(total_amount) AS amount
+			DATE(payment_date) AS date,
+			SUM(total_amount) AS amount
 		FROM 
-		    payment
+			payment
 		WHERE 
-		    project_idx = #{project_idx}
-		    and date(payment_date) >= curdate() - interval 7 day 
+		  	project_idx = #{project_idx}
+		  	AND DATE(payment_date) BETWEEN #{startDateProject} AND #{endDateProject}
 		GROUP BY 
-		    project_idx, date
+		  	project_idx, date
 		ORDER BY 
-		    project_idx, date
-	</select> 
+		  	project_idx, date
+	</select>
 	
-	<!-- 프로젝트별 지난 7일간 서포터 수 조회 -->
+	<!-- 프로젝트별 지정 기간 동안 서포터 수 조회 -->
 	<select id="selectProjectSupporterCount" resultType="com.itwillbs.test.vo.PaymentVO">
 	  	SELECT 
-		    DATE(payment_date) AS date,
-		    COUNT(*) as count
-		FROM 
-		    payment
-		WHERE 
-		    project_idx = #{project_idx}
-		    and date(payment_date) >= curdate() - interval 7 day
-		GROUP BY 
-		    project_idx, date
-		ORDER BY 
-		    project_idx, date
+	    	DATE(payment_date) AS date,
+	    	COUNT(*) AS count
+	  	FROM 
+	    	payment
+	  	WHERE 
+	    	project_idx = #{project_idx}
+	    	AND DATE(payment_date) BETWEEN #{startDateProject} AND #{endDateProject}
+	  	GROUP BY 
+	    	project_idx, date
+	  	ORDER BY 
+	    	project_idx, date
 	</select>
 	
 	<!-- 프로젝트별 배송상황 조회 -->
@@ -234,20 +234,7 @@
         INNER JOIN project proj ON p.project_idx = proj.project_idx
         LEFT JOIN reward r ON p.reward_idx = r.reward_idx
         WHERE proj.maker_idx = #{maker_idx}
-        order by
-			p.payment_date desc
-  		LIMIT
-			#{startRow}
-			, #{listLimit}
-	</select>
-	
-	<!-- 메이커의 전체 프로젝트 결제 내역 갯수 조회 -->
-	<select id="selectAllMakerPaymentCount" resultType="int">
-		SELECT COUNT(*)
-	    FROM payment p
-	    INNER JOIN project proj ON p.project_idx = proj.project_idx
-	    LEFT JOIN reward r ON p.reward_idx = r.reward_idx
-	    WHERE proj.maker_idx = #{maker_idx}
+        order by p.payment_date desc
 	</select>
 	
 </mapper>

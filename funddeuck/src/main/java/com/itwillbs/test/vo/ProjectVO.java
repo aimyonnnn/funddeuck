@@ -10,6 +10,7 @@ import lombok.Data;
 -- 프로젝트 테이블 생성
 CREATE TABLE project (
     project_idx int PRIMARY KEY AUTO_INCREMENT COMMENT '프로젝트 번호',
+    project_plan int NOT NULL COMMENT '프로젝트 요금제: 1- 기본요금제, 2-인플루언서요금제',
     project_category varchar(10) NOT NULL COMMENT '프로젝트 카테고리',
     project_subject varchar(30) NOT NULL COMMENT '프로젝트 제목',
     project_thumnails1 varchar(100) NOT NULL COMMENT '프로젝트 썸네일 (1)',
@@ -38,6 +39,7 @@ CREATE TABLE project (
 @Data
 public class ProjectVO {
 	private int project_idx;						// 프로젝트 번호
+	private int project_plan;						// 프로젝트 요금제
 	private String project_category;				// 프로젝트 카테고리
 	private String project_subject;					// 프로젝트 제목
 	private String project_thumnails1;				// 프로젝트 썸네일 (1)
@@ -45,7 +47,7 @@ public class ProjectVO {
 	private String project_thumnails3;				// 프로젝트 썸네일 (3)
 	private String project_image;					// 프로젝트 내용 상세 이미지
 	private String project_introduce;				// 프로젝트 소개
-	private String project_semi_introduce;			// 프로젝트 한줄소개
+//	private String project_semi_introduce;			// 프로젝트 한줄소개
 	private int project_target;						// 목표 금액
 	private int project_amount;						// 프로젝트 달성 금액
 	private Date project_start_date;				// 프로젝트 시작일

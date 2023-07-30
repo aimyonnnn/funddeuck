@@ -28,7 +28,6 @@ $(() => {
     let myChart2 = null; // Chart 객체를 저장하기 위한 변수
 
     $('#updateButton').click(() => {
-    	
         let startDate = $('#startDate').val(); 		// 시작일 입력값 가져오기
         let endDate = $('#endDate').val(); 			// 종료일 입력값 가져오기
         let chartType = $('#chartType').val(); 		// 선택된 차트 유형 가져오기
@@ -190,14 +189,8 @@ $(() => {
                 project_idx         // 프로젝트 번호
             },
             success: (response) => {
-            	
                 console.log(response);
-                
-                const accumulatedAmount = response.acmlPaymentAmounts;
-                $("#accumulatedAmount").html(`${accumulatedAmount}<span class="sideDescription">원</span>`);
-                
                 updateProjectChart(response, chartTypeProject); 	// 프로젝트별 차트 업데이트 함수 호출
-                
             }
         });
     });
@@ -276,38 +269,6 @@ let updateProjectChart = (data, chartTypeProject) => {
             },
         },
     });
-    
-    // 텍스트 업데이트 작업 시작
-    // 기간별 누적 결제 금액 업데이트
-    let acmlPaymentAmountElement = document.getElementById('acmlPaymentAmount');
-	let acmlPaymentAmount = acmlPaymentAmounts[acmlPaymentAmounts.length - 1];
-	
-	if (acmlPaymentAmount !== undefined) {
-	    acmlPaymentAmountElement.textContent = acmlPaymentAmount;
-	} else {
-	    acmlPaymentAmountElement.textContent = '0';
-	}
-	
-    // 오늘 결제 금액 업데이트
-    let todayPaymentAmountElement = document.getElementById('todayPaymentAmount');
-	let todayPaymentAmount = dailyPaymentAmounts[dailyPaymentAmounts.length - 1];
-	
-	if (todayPaymentAmount !== undefined) {
-	    todayPaymentAmountElement.textContent = todayPaymentAmount;
-	} else {
-	    todayPaymentAmountElement.textContent = '0';
-	}
-
-    // 기간별 누적 서포터 수 업데이트
-	let acmlSupporterCountElement = document.getElementById('acmlSupporterCount');
-	let acmlSupporterCount = acmlSupporterCounts[acmlSupporterCounts.length - 1];
-
-	if (acmlSupporterCount !== undefined) {
-	    acmlSupporterCountElement.textContent = acmlSupporterCount;
-	} else {
-	    acmlSupporterCountElement.textContent = '0';
-	}
-    
 };
 // 페이지 로드시에 차트 출력하기
 window.addEventListener('load', function() {
@@ -402,7 +363,7 @@ th, td {
 										<div>
 											<span class="sideDescription">누적 결제 금액</span>
 											<h1 class="card-title">
-												<span id="acmlPaymentAmount"></span><span class="sideDescription">원</span>
+												${chartDataProjectVO.acmlPaymentAmounts}<span class="sideDescription">원</span>
 											</h1>
 										</div>
 										<div class="">
@@ -418,7 +379,7 @@ th, td {
 										<div>
 											<span class="sideDescription">오늘 결제금액</span>
 											<h1 class="card-title">
-												<span id="todayPaymentAmount"></span><span class="sideDescription">원</span>
+												${chartDataProjectVO.dailyPaymentAmounts}<span class="sideDescription">원</span>
 											</h1>
 										</div>
 										<div class="">
@@ -434,7 +395,7 @@ th, td {
 										<div>
 											<span class="sideDescription">누적 서포터 수</span>
 											<h1 class="card-title">
-												<span id="acmlSupporterCount"></span><span class="sideDescription">명</span>
+												${chartDataProjectVO.acmlSupporterCounts}<span class="sideDescription">명</span>
 											</h1>
 										</div>
 										<div class="">

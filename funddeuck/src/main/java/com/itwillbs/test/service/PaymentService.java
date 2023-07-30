@@ -49,12 +49,12 @@ public class PaymentService {
 		return mapper.selectTotalSupporter(parsedStartDate, parsedEndDate);
 	}
 	// 프로젝트별 지난 7일간 결제 금액 조회
-	public List<PaymentVO> getProjectDailyPayment(Integer project_idx) {
-		return mapper.selectProjectDailyPayment(project_idx);
+	public List<PaymentVO> getProjectDailyPayment(Integer project_idx, String startDateProject, String endDateProject) {
+		return mapper.selectProjectDailyPayment(project_idx, startDateProject, endDateProject);
 	}
 	// 프로젝트별 지난 7일간 서포터 수 조회
-	public List<PaymentVO> getProjectSupporterCount(Integer project_idx) {
-		return mapper.selectProjectSupporterCount(project_idx);
+	public List<PaymentVO> getProjectSupporterCount(Integer project_idx, String startDateProject, String endDateProject) {
+		return mapper.selectProjectSupporterCount(project_idx, startDateProject, endDateProject);
 	}
 	
 	// 프로젝트별 배송상황 조회
@@ -93,8 +93,8 @@ public class PaymentService {
 	}
 	
 	// 메이커의 전체 프로젝트 결제 내역 조회
-		public List<PaymentVO> getAllMakerPayment(Integer maker_idx, int startRow, int listLimit) {
-			return mapper.selectAllMakerPayment(maker_idx, startRow, listLimit);
+	public List<PaymentVO> getAllMakerPayment(Integer maker_idx) {
+		return mapper.selectAllMakerPayment(maker_idx);
 	}
 		
 	// 메이커의 전체 프로젝트 결제 내역 갯수 조회
