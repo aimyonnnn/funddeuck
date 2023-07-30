@@ -48,4 +48,15 @@
 		    )
 	</delete>
 	
+	<!-- maker_idx 조회하기 -->
+	<select id="selectMakerIdx" resultType="int">
+		SELECT maker_idx
+			FROM maker
+			WHERE member_idx = (
+			    SELECT member_idx
+			    FROM members
+			    WHERE member_id = #{sId}
+			);
+	</select>
+	
 </mapper>

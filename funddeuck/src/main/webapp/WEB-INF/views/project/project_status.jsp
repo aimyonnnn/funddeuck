@@ -20,6 +20,7 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 <!-- chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 // 메이커 통합 차트
 $(() => {
@@ -32,10 +33,10 @@ $(() => {
         let startDate = $('#startDate').val(); 		// 시작일 입력값 가져오기
         let endDate = $('#endDate').val(); 			// 종료일 입력값 가져오기
         let chartType = $('#chartType').val(); 		// 선택된 차트 유형 가져오기
-        let maker_idx = ${param.maker_idx}; 		// 파라미터로 받은 maker_idx를 변수에 저장
+        let maker_idx = ${maker_idx}; 				// 파라미터로 받은 maker_idx를 변수에 저장
 
         $.ajax({
-            type: 'GET',
+            type: 'post',
             url: '<c:url value="chartData"/>', 		// 차트 데이터를 가져올 URL 설정
             data: {
                 startDate,      // 시작일
@@ -176,11 +177,11 @@ $(() => {
         let startDateProject = $('#startDateProject').val(); 		// 시작일 입력값 가져오기
         let endDateProject = $('#endDateProject').val(); 			// 종료일 입력값 가져오기
         let chartTypeProject = $('#chartTypeProject').val(); 		// 선택된 차트 유형 가져오기
-        let maker_idx = ${param.maker_idx}; 						// 파라미터로 받은 maker_idx를 변수에 저장
+        let maker_idx = ${maker_idx}; 								// 파라미터로 받은 maker_idx를 변수에 저장
         let project_idx = $('#projectSelect').val(); 				// 선택된 프로젝트 번호 가져오기
 
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: '<c:url value="chartDataProject"/>', 				// 프로젝트별 차트 데이터를 가져올 URL
             data: {
                 startDateProject,   // 시작일
@@ -298,7 +299,7 @@ let updateProjectChart = (data, chartTypeProject) => {
 	    todayPaymentAmountElement.textContent = '0';
 	}
 
-    // 기간별 누적 서포터 수 업데이트
+    // 기간별누적 서포터 수 업데이트
 	let acmlSupporterCountElement = document.getElementById('acmlSupporterCount');
 	let acmlSupporterCount = acmlSupporterCounts[acmlSupporterCounts.length - 1];
 
@@ -374,7 +375,7 @@ th, td {
 						<li><a href="projectReward">리워드 설계</a></li>
 					</ul>
 				</li>
-				<li><a href="projectStatus?maker_idx=${param.maker_idx}&project_idx=${param.project_idx}" id="active-tab">프로젝트 현황</a></li>
+				<li><a href="projectStatus" id="active-tab">프로젝트 현황</a></li>
 				<li><a href="projectShipping">발송·환불 관리</a></li>
 				<li><a href="projectSettlement">수수료·정산 관리</a></li>
 			</ul>
@@ -394,7 +395,7 @@ th, td {
 					<div class="container mt-5 mb-3">
 						<div class="row justify-content-center">
 							<p class="subheading">프로젝트별 매출 분석</p>
-							<p class="projectContent"><strong>${param.project_idx}번 </strong> 프로젝트의 매출 분석 그래프 입니다.</p>
+							<p class="projectContent"><strong>${firstProjectIdx}번 </strong> 프로젝트의 매출 분석 그래프 입니다.</p>
 							
 							<div class="col-md-12 col-lg-4 d-md-block my-1">
 								<div class="card">
@@ -751,9 +752,9 @@ function getProjectList() {
 	const selectElement = document.getElementById("projectSelect");
 	
 	$.ajax({
-		method: 'get',
+		method: 'post',
 		data: {
-			maker_idx: ${param.maker_idx}
+			maker_idx: ${maker_idx}
 		},
 		url: '<c:url value="getProjectListByMakerIdx"/>',
 	  	success: function (data) {
@@ -767,7 +768,7 @@ function getProjectList() {
 		        selectElement.appendChild(option);
 		    });
 		    
-		    let selectedProjectIdx = ${param.project_idx};
+		    let selectedProjectIdx = ${firstProjectIdx};
 		    selectElement.value = selectedProjectIdx;
 		    
 	  	},

@@ -17,4 +17,7 @@ public interface MakerMapper {
 	// 메이커 페이지 수저하기 - 파일 실시간 삭제
 	int deleteMakerFile(@Param("maker_idx") int maker_idx, @Param("fileName") String fileName, @Param("fileNumber") int fileNumber);
 	
+	// 메이커 idx 조회하기
+	int selectMakerIdx(String sId);
+	
 }

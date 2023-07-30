@@ -695,10 +695,7 @@ public class ProjectController {
 	
 	// 프로젝트 현황
 	@GetMapping("projectStatus")
-	public String projectStatus(
-			@RequestParam(value = "maker_idx", required = false) Integer maker_idx, 
-			@RequestParam(value = "project_idx", required = false) Integer project_idx, 
-			HttpSession session, Model model) {
+	public String projectStatus(HttpSession session, Model model) {
 		
 		// 세션 아이디가 존재하지 않을 때 
 		String sId = (String) session.getAttribute("sId");
@@ -707,14 +704,23 @@ public class ProjectController {
 			return "fail_back";
 		}
 		
-		// 멤버, 메이커, 프로젝트 테이블을 조인하여 일치하는 데이터 조회
-	    List<ProjectVO> projects = projectService.getProjectsByMemberId(sId, maker_idx, project_idx);
-	    // 조회된 데이터가 없으면 차단
-	    if (projects.isEmpty()) {
-	        model.addAttribute("msg", "본인의 데이터만 조회할 수 있습니다.");
-	        return "fail_back";
+		int member_idx = projectService.getMemberIdx(sId);
+		int maker_idx = makerService.getMakerIdx(sId);
+		List<ProjectVO> projectList = projectService.getProjectList(member_idx);
+		if (!projectList.isEmpty()) {
+	        int firstProjectIdx = projectList.get(0).getProject_idx();
+	        model.addAttribute("firstProjectIdx", firstProjectIdx);
 	    }
-	    
+		
+		model.addAttribute("member_idx", member_idx);
+		model.addAttribute("maker_idx", maker_idx);
+		model.addAttribute("projectList", projectList);
+		
+		System.out.println("멤버idx : " + member_idx);					
+		System.out.println("메이커idx : " + maker_idx);
+		System.out.println("프로젝트idx : " + projectList.get(maker_idx).getProject_idx());
+		System.out.println("프로젝트리스트 : " + projectList);
+		
 	    // 테이블 출력 
 	    // 메이커의 전체 결제 내역 조회
 	    List<PaymentVO> pList = paymentService.getAllMakerPayment(maker_idx);
@@ -773,11 +779,13 @@ public class ProjectController {
 	}
 		
 	// 메이커의 전체 프로젝트 차트 출력
-	@GetMapping("/chartData")
+	@PostMapping("/chartData")
 	@ResponseBody
 	public ChartDataVO getChartData(
-	    @RequestParam String startDate, @RequestParam String endDate, @RequestParam("maker_idx") int maker_idx, Model model) {
-	    
+	    @RequestParam String startDate, @RequestParam String endDate, 
+	    @RequestParam("maker_idx") int maker_idx, 
+	    HttpSession session, Model model) {
+		
 		// 날짜 형식을 지정하는 DateTimeFormatter 객체 생성
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -830,7 +838,7 @@ public class ProjectController {
 	}
 	
 	// 셀렉트 박스에 프로젝트 리스트 출력
-	@GetMapping("getProjectListByMakerIdx")
+	@PostMapping("getProjectListByMakerIdx")
 	@ResponseBody
 	public List<ProjectVO> getProjectListByMakerIdx(@RequestParam int maker_idx) {
 		List<ProjectVO> pList = projectService.getProjectListByMakerIdx(maker_idx);
@@ -838,7 +846,7 @@ public class ProjectController {
 	}
 	
 	// 메이커의 프로젝트별 차트 출력
-	@GetMapping("/chartDataProject")
+	@PostMapping("/chartDataProject")
 	@ResponseBody
 	public ChartDataProjectVO chartDataProject(
 	        @RequestParam String startDateProject, @RequestParam String endDateProject,
