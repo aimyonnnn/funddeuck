@@ -1,6 +1,10 @@
 function showProjects(data) {
   var rankingList = $("#rankingList");
   rankingList.empty(); // 기존 리스트 초기화
+
+  // data 배열을 역순으로 변경
+  data.reverse();
+
   for (var i = 0; i < data.length; i++) {
     var rank = i + 1;
     var project = data[i];
@@ -13,11 +17,12 @@ function showProjects(data) {
     var listItem = $("<li>").html(
       "<span class='project-rank'>" + rank + "위</span>  " +
       "<span class='project-name'>" + project.project_subject + "</span> - " +
-      "종료일: " + endDateStr + " (" + project.project_end_date + ")");
+      "종료일: " + endDateStr);
 
     rankingList.append(listItem);
   }
 }
+
 
 // API를 통해 프로젝트 정보 가져오기
 function getProjectList() {

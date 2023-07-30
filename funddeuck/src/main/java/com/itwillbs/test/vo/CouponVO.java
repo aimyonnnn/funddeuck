@@ -4,14 +4,14 @@ import lombok.Data;
 
 /*
  * CREATE TABLE coupon(
-    coupon_idx INT PRIMARY KEY AUTO_INCREMENT COMMENT 'ÄíÆù¹øÈ£(PK)',
-    coupon_name VARCHAR(100) NOT NULL COMMENT 'ÄíÆùÀÌ¸§',
-    coupon_text VARCHAR(500) NOT NULL COMMENT 'ÄíÆù¿ëµµ',
-    coupon_num INT(20) NOT NULL COMMENT 'ÀÔ·ÂÄíÆù¹øÈ£',
-    coupon_sale INT NOT NULL COMMENT 'ÄíÆùÇÒÀÎ·ü',
-    coupon_start INT NOT NULL COMMENT 'ÄíÆù½ÃÀÛÀÏÀÚ',
-    coupon_end INT NOT NULL COMMENT 'ÄíÆù¸¸·áÀÏÀÚ',
-    conpon_use INT NOT NULL COMMENT 'ÄíÆù»ç¿ë¿©ºÎ'
+    coupon_idx INT PRIMARY KEY AUTO_INCREMENT COMMENT 'ì¿ í°ë²ˆí˜¸(PK)',
+    coupon_name VARCHAR(100) NOT NULL COMMENT 'ì¿ í°ì´ë¦„',
+    coupon_text VARCHAR(500) NOT NULL COMMENT 'ì¿ í°ì„¤ëª…',
+    coupon_num INT(20) NOT NULL COMMENT 'ìž…ë ¥ë²ˆí˜¸',
+    coupon_sale INT NOT NULL COMMENT 'í• ì¸ë¥ ',
+    coupon_start INT NOT NULL COMMENT 'ì‹œìž‘ë‚ ì§œ',
+    coupon_end INT NOT NULL COMMENT 'ì¢…ë£Œë‚ ì§œ',
+    coupon_use INT NOT NULL COMMENT 'ì¿ í°ì‚¬ìš©'
 );
  */
 @Data

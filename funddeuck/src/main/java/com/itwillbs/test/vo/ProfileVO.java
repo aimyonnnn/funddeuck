@@ -6,14 +6,14 @@ import lombok.Data;
 
 /*
  * CREATE TABLE profile(
-  profile_idx int PRIMARY KEY AUTO_INCREMENT COMMENT 'ÇÁ·ÎÆÄÀÏ ¹øÈ£(PK)',
-  member_idx int NOT NULL COMMENT 'È¸¿ø¹øÈ£(FK)',
-  profile_job1 varchar(20) NOT NULL COMMENT 'È¸»ç',
-  profile_job2 varchar(20) NOT NULL COMMENT 'Á÷Ã¥',
-  profile_school1 varchar(20) NOT NULL COMMENT 'ÇĞ±³',
-  profile_school2 varchar(20) NOT NULL COMMENT 'ÇĞ°ú',
-  profile_text varchar(100) NOT NULL COMMENT 'ÀÚ±â¼Ò°³',
-  profile_img varchar(300) NOT NULL COMMENT 'ÇÁ·ÎÇÊ»çÁø',
+  profile_idx INT PRIMARY KEY AUTO_INCREMENT COMMENT 'í”„ë¡œí•„ ë²ˆí˜¸(PK)',
+  member_idx INT NOT NULL COMMENT 'íšŒì› ë²ˆí˜¸(FK)',
+  profile_job1 VARCHAR(20) NOT NULL COMMENT 'ì§ì—…',
+  profile_job2 VARCHAR(20) NOT NULL COMMENT 'ë¶€ì—…',
+  profile_school1 VARCHAR(20) NOT NULL COMMENT 'í•™êµ',
+  profile_school2 VARCHAR(20) NOT NULL COMMENT 'ëŒ€í•™',
+  profile_text VARCHAR(100) NOT NULL COMMENT 'ìê¸°ì†Œê°œ',
+  profile_img VARCHAR(300) NOT NULL COMMENT 'í”„ë¡œí•„ ì´ë¯¸ì§€ ê²½ë¡œ',
   FOREIGN KEY (member_idx) REFERENCES members(member_idx)
  );
  */
@@ -29,5 +29,4 @@ public class ProfileVO {
 	private String profile_img;
 	//
 	private MultipartFile file;
-	
 }

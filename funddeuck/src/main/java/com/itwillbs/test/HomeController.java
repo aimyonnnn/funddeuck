@@ -1,6 +1,7 @@
 package com.itwillbs.test;
 
 import java.text.DateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -8,6 +9,8 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +27,9 @@ public class HomeController {
 
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-    private final ProjectService ProjectService;
-
     @Autowired
-    public HomeController(ProjectService ProjectService) {
-        this.ProjectService = ProjectService;
-    }
+    private ProjectService ProjectService;
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Locale locale, Model model) {
@@ -42,7 +42,7 @@ public class HomeController {
 
         List<ProjectVO> projects = ProjectService.getAllProjects();
 
-        model.addAttribute("projects", projects);
+        model.addAttribute("projectList", projects);
 
         return "main";
     }
@@ -52,5 +52,18 @@ public class HomeController {
     public List<ProjectVO> getProjectList() {
         return ProjectService.getTop10ProjectsByEndDate();
     }
+    
+    @ResponseBody
+    @GetMapping("/randomProjects")
+    public ResponseEntity<List<ProjectVO>> showRandomProjects() {
+        List<ProjectVO> allProjects = ProjectService.getAllProjects();
+
+        // 리스트를 랜덤하게 섞어서 6개만 추출
+        Collections.shuffle(allProjects);
+        List<ProjectVO> randomProjects = allProjects.subList(0, Math.min(allProjects.size(), 6));
+
+        return new ResponseEntity<>(randomProjects, HttpStatus.OK);
+    }
+
     
 }

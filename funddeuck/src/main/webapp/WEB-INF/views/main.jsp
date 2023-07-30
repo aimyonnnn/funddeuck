@@ -1,4 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <html lang="ko">
@@ -26,6 +27,26 @@
 	.container h3{
 	  margin-top: 40px;
 	}
+	
+    .project-rank {
+      font-weight: bold;
+    }
+
+    .project-name {
+      color: #ff9300;
+      font-size: 100%
+	}
+	/* 리스트 스타일 변경 */
+    #rankingList {
+      padding: 0;
+      margin: 0;
+    }
+
+    /* 리스트 아이템 기호 제거 */
+    #rankingList li {
+      list-style-type: none;
+    }
+
   </style>
   
   <script type="text/javascript">
@@ -77,43 +98,31 @@
 	<div class="container">
 	  <h3><b>오늘의 추천 프로젝트</b></h3>
 	  <p>함께 만드는 성공</p>
-	  <!-- 예시 데이터 틀 -->
-	  <div class="row">
-	    <div class="col-md-4 mb-4">
-	      <article class="card">
-	        <div class="card-thumbnail" style="background-image: url('https://cdn.wadiz.kr/wwwwadiz/green001/2023/0627/20230627223339159_223470.jpg/wadiz/resize/600/format/jpg/quality/85/');">
-	        </div>
-	        <div class="card-body">
-	          <em class="card-title">짱구공식굿즈&gt; 짱구 집콕 에디션 최초 공개! 야광 잠옷 & 식기세트 & 수납함</em>
-	          <p class="card-text">
-	            <span class="badge badge-primary">5,875원</span>
-	            캐릭터 · 굿즈
-	          </p>
-	        </div>
-	      </article>
-	    </div>
-	  </div>
-	<!-- 데이터베이스에서 가져와서 출력될 내용 -->
-	<div class="row">
-	  <c:forEach items="${projectList}" var="project" varStatus="status">
-	    <div class="col-md-4 mb-4">
-	      <article class="card">
-	        <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>
-	        <div class="card-body">
-	          <em class="card-title">${project.project_subject}</em>
-	          <p class="card-text">
-	            <span class="badge badge-primary">${project.project_target}원</span>
-	            ${project.project_category}
-	          </p>
-	        </div>
-	      </article>
-	    </div>
-	    <c:if test="${status.count % 4 == 0}"></c:if><div class="row"></div>
-	  </c:forEach>
-	</div>
-	<div class="container mt-4">
-	  <button type="button" class="btn btn-light" onclick="showRandomProjects()" ><b>자동 추천</b></button>
-	</div>
+		<div class="row" id="projectContainer">
+		    <c:forEach items="${projectList}" var="project" varStatus="status">
+		        <c:if test="${status.count <= 6}">
+		            <c:set var="reversedIndex" value="${fn:length(projectList) - status.count}" />
+		            <c:set var="reversedProject" value="${projectList[reversedIndex]}" />
+		            <div class="col-md-4 mb-4">
+		                <article class="card">
+		                    <div class="card-thumbnail" style="background-image: url('${reversedProject.project_thumnails1}');"></div>
+		                    <div class="card-body">
+		                        <em class="card-title">${reversedProject.project_subject}</em>
+		                        <p class="card-text">
+		                            <span class="badge dbadge-primary">${reversedProject.project_target}원</span>
+		                            ${reversedProject.project_category}
+		                        </p>
+		                    </div>
+		                </article>
+		            </div>
+		            <c:if test="${status.count % 3 == 0}"></c:if>
+		        </c:if>
+		    </c:forEach>
+		</div>
+
+		<div class="container mt-4">
+		<button type="button" class="btn btn-light" onclick="showRandomProjects()"><b>자동 추천</b></button>
+		</div>
 	<br>
 	      <div class="card-body">
 	      	  <h3><b>추천 순위</b></h3>

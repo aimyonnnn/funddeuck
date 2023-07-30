@@ -80,9 +80,6 @@ public interface ProjectMapper {
 	// 프로젝트 승인여부 확인하기
 	ProjectVO selectProjectApproved(
 			@Param("project_idx") int project_idx, @Param("project_approve_status") int project_approve_status);
-	
-	//
-	List<ProjectVO> selectTop10ProjectsByEndDate();
 
 	// 펀딩 프로젝트 목록 조회
 	List<ProjectVO> selectProjectList(String searchType, String searchKeyword, int startRow, int listLimit);
@@ -94,7 +91,13 @@ public interface ProjectMapper {
 	List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit);
 
 	
-	
+	//-----main page---------
+		// show all project
+		List<ProjectVO> getAllProjects();
+
+		//ranking system
+		List<ProjectVO> selectTop10ProjectsByEndDate();
+			
 
 
 	

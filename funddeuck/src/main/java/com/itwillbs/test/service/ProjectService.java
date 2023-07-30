@@ -1,6 +1,8 @@
 package com.itwillbs.test.service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,15 +99,6 @@ public class ProjectService {
 	public ProjectVO getProjectApproved(int project_idx, int project_approve_status) {
 		return mapper.selectProjectApproved(project_idx, project_approve_status);
 	}
-	
-	//
- 	public List<ProjectVO> getTop10ProjectsByEndDate() {
-        return mapper.selectTop10ProjectsByEndDate();
-    }
-	//
-	public List<ProjectVO> getAllProjects() {
-		return null;
-	}
 	// 펀딩 프로젝트 목록 조회
 	public List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit) {
 		return mapper.getProjectList(searchType, searchKeyword, startRow, listLimit);
@@ -115,5 +108,25 @@ public class ProjectService {
 		return mapper.selectProjectListCount(searchType, searchKeyword);
 	}
 	
+	//---------main page------------
+		// ranking system
+	 	public List<ProjectVO> getTop10ProjectsByEndDate() {
+	        return mapper.selectTop10ProjectsByEndDate();
+	    }
+		// show all project
+		public List<ProjectVO> getAllProjects(){
+			return mapper.getAllProjects();
+		}
+		
+		// random
+	    public List<ProjectVO> getRandomProjects() {
+	        List<ProjectVO> allProjects = mapper.getAllProjects();
+	        if (allProjects.size() > 6) {
+	            Collections.shuffle(allProjects, new Random(System.currentTimeMillis())); // 리스트를 랜덤하게 섞음
+	            return allProjects.subList(0, 6); 
+	        } else {
+	            return allProjects; 
+	        }
+	    }	
 	
 }

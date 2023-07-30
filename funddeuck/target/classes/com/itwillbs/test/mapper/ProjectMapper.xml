@@ -245,12 +245,6 @@
 				and project_approve_status = #{project_approve_status}
 	</select>
 	
-	<select id="selectTop10ProjectsByEndDate" resultType="com.itwillbs.test.vo.ProjectVO">
-	    SELECT * FROM project
-	    ORDER BY project_end_date
-	    LIMIT 10
-	</select>
-	
 	<!-- 프로젝트 탐색 -->
 	<select id="getProjectList" resultType="com.itwillbs.test.vo.ProjectVO">
 		SELECT *
@@ -307,6 +301,16 @@
 			from project
 		where
 			maker_idx = #{maker_idx}
+	</select>
+	
+	<!--  ranking system  -->
+	<select id="selectTop10ProjectsByEndDate" resultType="com.itwillbs.test.vo.ProjectVO"> 
+	SELECT * FROM project ORDER BY project_end_date LIMIT 10 
+	</select>
+	
+	<!--  show all project  -->
+	<select id="getAllProjects" resultType="com.itwillbs.test.vo.ProjectVO"> 
+	SELECT * FROM project 
 	</select>
 	
 </mapper>

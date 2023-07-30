@@ -86,7 +86,7 @@
   </div>
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light rounded fixed-top">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">Funddeuck</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -134,6 +134,9 @@
 	        	<li class="nav-item">
 		          <a class="nav-link" href="LogOut">로그아웃</a>
 		        </li>
+		        <li class="nav-item">
+		        <a class="nav-link" href="#">${sessionScope.sId}님 환영합니다.</a>
+		        </li>
 	        </c:otherwise>
         </c:choose>
       </ul>
@@ -142,6 +145,7 @@
         <input class="form-control" type="text" placeholder="프로젝트를 검색하세요!" aria-label="Search">
       </form>
     </div>
+  
   </nav>
 </div>
 

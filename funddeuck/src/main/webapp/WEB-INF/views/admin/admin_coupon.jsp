@@ -15,6 +15,15 @@
     .container h3 {
         margin-top: 40px;
     }
+     /* 만료된 쿠폰 행만 표시하기 */
+    .coupon-row {
+        display: none;
+    }
+
+    /* 만료되지 않은 쿠폰 행만 표시하기 */
+    .expired-coupon {
+        display: table-row;
+    }
 </style>
 <body>
     <section style="background-color: #f4f5f7;">
@@ -26,7 +35,7 @@
                     <a class="nav-link " aria-current="page" href="#couponForm">쿠폰 등록</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#couponControll">쿠폰 사용</a>
+                    <a class="nav-link" href="#couponControll">만료된 쿠폰</a>
                 </li>
             </ul>
 
@@ -72,10 +81,29 @@
                     <br>
                 </div>
                 <div id="couponControll">
-                    <h5><b>사용 기간 만료된 쿠폰목록</b></h5>
-                    <br>
-                    
-                </div>
+				    <h5><b>사용 기간 만료된 쿠폰목록</b></h5>
+				    <br>
+				    <table id="expiredCouponListTable">
+				            <tr class="expired-coupon">
+						        <th>쿠폰 이름</th>
+						        <th>쿠폰 용도</th>
+						        <th>쿠폰 번호</th>
+						        <th>쿠폰 할인</th>
+						        <th>쿠폰 시작</th>
+						        <th>쿠폰 만료</th>
+						    </tr>
+						    <c:forEach items="${couponList}" var="coupon">
+						        <tr class="coupon-row">
+						            <td>${coupon.coupon_name}</td>
+						            <td>${coupon.coupon_text}</td>
+						            <td>${coupon.coupon_num}</td>
+									<td>${coupon.coupon_sale}%</td>
+						            <td>${coupon.coupon_start}</td>
+						            <td>${coupon.coupon_end}</td>
+						        </tr>
+						    </c:forEach>
+						</table>
+				</div>
             </div>
         </div>
     </section>
@@ -159,7 +187,34 @@
             dateFormat: "yy-mm-dd" 
         });
     });
-</script>
+	</script>
+	<script>
+	    $(document).ready(function() {
+	        // 주어진 날짜가 지난 날짜인지 확인하는 함수
+	        function isDateInPast(dateStr) {
+	            var currentDate = new Date();
+	            var couponDate = new Date(dateStr);
+	            return couponDate < currentDate;
+	        }
+	
+	        // 만료된 쿠폰을 필터링하고 표시하는 함수
+	        function showExpiredCoupons() {
+	            $(".coupon-row").each(function() {
+	                var couponEndDate = $(this).find("td:last-child").text(); // 해당 행의 마지막 <td> 요소 값을 가져옴 ('coupon_end' 날짜)
+	                if (isDateInPast(couponEndDate)) {
+	                    $(this).addClass("expired-coupon");
+	                } else {
+	                    $(this).removeClass("expired-coupon");
+	                }
+	            });
+	        }
+	
+	        // 페이지 로드 시 만료된 쿠폰을 표시합니다.
+	        showExpiredCoupons();
+	    });
+	</script>
+
+
     <%@ include file="../Footer.jsp" %>
 </body>
 </html>
