@@ -60,8 +60,8 @@
 							  text: "비밀번호를 찾으러 가시겠습니까?",
 							  icon: 'success',
 							  showCancelButton: true,
-							  confirmButtonText: '응 갈래!',
-							  cancelButtonText: '아니 로그인 할거야',
+							  confirmButtonText: '예',
+							  cancelButtonText: '로그인 페이지 이동',
 							  reverseButtons: true
 							}).then((result) => {
 							  if (result.isConfirmed) {

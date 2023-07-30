@@ -62,11 +62,11 @@
 
 							swalWithBootstrapButtons.fire({
 							  title: '이메일에 임시 비밀번호를 전송했습니다!',
-							  text: "비밀번호를 확인하러 바로 이동하시겠습니까?",
+							  text: "비밀번호를 변경하러 바로 이동하시겠습니까?",
 							  icon: 'success',
 							  showCancelButton: true,
-							  confirmButtonText: '응 갈래!',
-							  cancelButtonText: '아니 로그인 하러 갈래!',
+							  confirmButtonText: '네',
+							  cancelButtonText: '로그인 페이지로 이동',
 							  reverseButtons: true
 							}).then((result) => {
 							  if (result.isConfirmed) {

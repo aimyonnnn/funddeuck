@@ -117,7 +117,7 @@ public class MemberController {
     		model.addAttribute("msg", "아이디가 존재하지 않습니다.");
     		return "fail_back";
     	}else if(isMember.getFalse_count()>=4) {
-    			model.addAttribute("msg", "5회 이상 틀린 아이디 입니다.\\n비밀번호찾기를 진행해주세요");
+    			model.addAttribute("msg", "5회 이상 틀린 아이디 입니다.\\n비밀번호찾기를 진행해주세요.");
     		return "fail_back";
     	} else if(passwordEncoder.matches(member.getMember_passwd(), isMember.getMember_passwd())) {
     		
