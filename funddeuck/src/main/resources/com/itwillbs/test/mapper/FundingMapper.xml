@@ -40,4 +40,19 @@
 					AND member_id = #{id}
 		
 	</select>
+	
+	<!-- 쿠폰 목록 조회 -->
+	<select id="selectCouponList">
+		SELECT *
+			FROM coupon
+	</select>
+	
+	<!-- 기존 기본배송지 0으로 변경 -->
+	<update id="updateDeliveryDefault">
+<!-- 		<selectKey resultType="" order="BEFORE"></selectKey> -->
+		UPDATE delivery
+			SET delivery_default = 0
+				WHERE delivery_default = 1
+	</update>
+	
 </mapper>

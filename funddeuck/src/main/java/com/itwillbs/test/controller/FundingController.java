@@ -97,6 +97,14 @@ public class FundingController {
 			// 기본 배송지 정보
 			model.addAttribute("deliveryDefault", deliveryDefault);
 		}
+		// 로그인한 회원의 쿠폰 정보 조회
+		// 쿠폰테이블에 회원 아이디FK 필요
+		List<CouponVO> couponList = fundingService.getCouponList();
+		System.out.println("회원이 가지고 있는 쿠폰 목록 : " + couponList);
+		if(couponList != null) {
+			model.addAttribute("couponList", couponList);
+		}
+		
 		
 		// 추가후원금액
 		model.addAttribute("addDonationAmount", addDonationAmount);
@@ -157,7 +165,10 @@ public class FundingController {
 		String id = "kim1234";
 		delivery.setMember_id(id);
 		
-		// 기본배송지 있는지 확인, 있으면 0으로 만들어줘야함
+		// 기본배송지로 설정시 기존의 기본배송지 0으로 변경
+		if(delivery.isDelivery_default()) {
+			fundingService.modifyDeliveryDefault();
+		}
 		
 		// 배송지 등록 DB 작업
 		int insertCount = fundingService.registDelivery(delivery);

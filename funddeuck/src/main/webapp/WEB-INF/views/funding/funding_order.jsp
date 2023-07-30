@@ -61,7 +61,7 @@
 							+ '<div class="row-12">'
 							+ '<span class="fs-6">[' + saveDelivery.delivery_zipcode + ']</span>&nbsp;'
 							+ '<span class="fs-6">' + saveDelivery.delivery_add + '</span>&nbsp;'
-							+ '<c:if test="${not empty'	+  aveDelivery.delivery_detailadds + '}">'
+							+ '<c:if test="${not empty'	+  saveDelivery.delivery_detailadds + '}">'
 							+ '<span class="fs-6">' + saveDelivery.delivery_detailadd + '</span>'
 							+ '</c:if>'
 							+ '</div>'
@@ -147,15 +147,42 @@
 			url: "deliveryChange",
 			data: formData,
 			success: function(delivery) {
-				consol.log(delivery);
-				if($.trim(msg) == "success") {
-					console.log("배송지 등록 완료!");
-					// 배송지란의 입력된 데이터 지우기
+				console.log(delivery);
+				if(delivery != null) {
+					console.log("배송지 변경 완료!");
+					
 					// 배송지 변경 모달창 닫힘(부트스트랩 5.3.0에서는 X)
 // 					$('#deliveryAddModal').modal('hide');
-			        // 배송지 변경 모달창 닫기 버튼 클릭 발생
+			        // 배송지 변경 모달창 닫기 버튼 클릭 
 			        $("#deliveryChangeModalClose").click();
-			     	// 배송지란의 전달받은 데이터 출력
+			        // 기존 배송지란에 있던 내용 지우기
+			        $('#deliveryContainer').html('');
+			        
+					let output = '<div class="col">'
+						+ '<div class="row-12">'
+						+ '<span class="fs-6 fw-bold">' + delivery.delivery_reciever + '</span>&nbsp;';
+					// 기본 배송지일 경우 기본배송지 뱃지 표시
+					if (delivery.delivery_default == 1) {
+						output += '<span class=" badge bg-danger text-white">기본</span>';
+					}
+					output += '</div>'
+						+ '<div class="row-12">'
+						+ '<span class="fs-6">[' + delivery.delivery_zipcode + ']</span>&nbsp;'
+						+ '<span class="fs-6">' + delivery.delivery_add + '</span>&nbsp;';
+					// 상세주소 있을 경우 출력 
+					if (delivery.delivery_detailadd) {
+						output += '<span class="fs-6">' + delivery.delivery_detailadd + '</span>';
+					}
+					output += '</div>'
+						+ '<div class="row-12">'
+						+ '<span class="fs-6">' + delivery.delivery_phone + '</span>'
+						+ '</div></div>'
+						+ '<div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">'
+						+ '<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryChangeModal">변경</button>'
+						+ '</div>';
+						
+			        // 배송지란에 변경된 배송지 출력
+			        $('#deliveryContainer').html(output);			     	
 					
 				} else {
 					console.log("배송지 등록 실패!");
@@ -477,6 +504,7 @@
 									<button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 										쿠폰을 선택해주세요.
 									</button>
+									${couponList }
 									<ul class="dropdown-menu">
 										<li><a class="dropdown-item" href="#">쿠폰1</a></li>
 										<li><a class="dropdown-item" href="#">쿠폰2</a></li>
@@ -596,8 +624,9 @@
 				<!-- 개인정보 동의, 유의사항 끝 -->
 				<!-- 후원하기 버튼 영역 -->
 				<!-- 클릭시 결제 페이지로 이동 -->
+				<!-- 체크박스 다 체크했을경우 이동가능 -->
 				<div class="row ms-2 me-2 pt-3">
-					<button class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
+					<button class="btn btn-primary fs-3" onclick="location.href='fundingResult'">이 프로젝트 후원하기</button>
 				</div>
 				<!-- 후원하기 버튼 영역 끝-->
 			</div>
