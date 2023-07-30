@@ -637,7 +637,7 @@ th, td {
 						
 							<!-- 셀렉트 박스 -->
 							<div class="d-flex flex-row justify-content-end">
-								<select id="projectSelect2" class="datepicker-button">
+								<select id="projectSelect2" class="datepicker-button" onchange="onProjectSelectChange()">
 									<option value="">선택</option>
 								</select>		
 							</div>
@@ -688,7 +688,7 @@ $(() => {
    	$.datepicker.setDefaults({ dateFormat: 'yy-mm-dd' });
    	$('.datepicker').datepicker();
 	   
-	// 프로젝트 리스트를 조회
+	// 셀렉트 박스에 프로젝트 리스트를 출력
 	getProjectList();
 	getProjectList2();
 });
@@ -775,6 +775,28 @@ $(document).ready(function() {
 	});
 });
 
+// 프로젝트별 전체 결제 내역 조회
+// 셀렉트 박스의 값이 변경되었을 때 호출되는 함수
+function onProjectSelectChange() {
+ let selectedProjectIdx = $("#projectSelect2").val();
+ $.ajax({
+     url: '<c:url value="getPaymentByProjectIdx"/>',
+     method: 'POST',
+     data: {
+     	maker_idx: ${maker_idx},
+         project_idx: selectedProjectIdx
+     },
+     dataType: 'json',
+     success: function (data) {
+     	
+         updatePaymentTable(data);
+     },
+     error: function (error) {
+         console.error(error);
+     }
+ });
+}
+
 // 결제내역 데이터를 테이블에 추가하는 함수
 function updatePaymentTable(data) {
    
@@ -791,6 +813,7 @@ function updatePaymentTable(data) {
 	}
     
     data.forEach(function(payment, index) {
+    	
     	// 결제상태 판별하기
     	let status;
         if (payment.payment_confirm === 1) {
@@ -818,8 +841,6 @@ function updatePaymentTable(data) {
         tbody.append(newRow);
     });
 }
-// ========= 
-
 </script>
 <!-- js -->
 <script src="${pageContext.request.contextPath }/resources/js/project.js"></script>

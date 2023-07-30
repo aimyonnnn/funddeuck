@@ -107,10 +107,6 @@ public class ProjectService {
 	public int getProjectListCount(String searchType, String searchKeyword) {
 		return mapper.selectProjectListCount(searchType, searchKeyword);
 	}
-	public List<ProjectVO> getPaymentByProjectIdx(int project_idx) {
-		return mapper.selectPaymentByProjectIdx(project_idx);
-	}
-	
 	
 	//---------main page------------
 		// ranking system

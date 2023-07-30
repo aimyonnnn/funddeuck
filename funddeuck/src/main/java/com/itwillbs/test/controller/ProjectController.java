@@ -716,14 +716,6 @@ public class ProjectController {
 		
 		return "project/project_status";
 	}
-	
-	// 메이커의 전체 결제 내역 조회
-	@PostMapping("getAllMakerPayment")
-	@ResponseBody
-	public List<PaymentVO> getAllMakerPayment(@RequestParam int maker_idx) {
-	    List<PaymentVO> mList = paymentService.getAllMakerPayment(maker_idx);
-		return mList;
-	}
 		
 	// 메이커의 전체 프로젝트 차트 출력
 	@PostMapping("/chartData")
@@ -793,11 +785,20 @@ public class ProjectController {
 		return pList;
 	}
 	
+	// 메이커의 전체 결제 내역 조회
+	@PostMapping("getAllMakerPayment")
+	@ResponseBody
+	public List<PaymentVO> getAllMakerPayment(@RequestParam int maker_idx) {
+	    List<PaymentVO> mList = paymentService.getAllMakerPayment(maker_idx);
+		return mList;
+	}
+	
 	// 프로젝트 리스트 출력
 	@PostMapping("getPaymentByProjectIdx")
 	@ResponseBody
-	public List<ProjectVO> getPaymentByProjectIdx(@RequestParam int project_idx) {
-		List<ProjectVO> pList = projectService.getPaymentByProjectIdx(project_idx);
+	public List<ProjectVO> getPaymentByProjectIdx(
+			@RequestParam(value = "maker_idx") int maker_idx, @RequestParam(value = "project_idx") int project_idx) {
+		List<ProjectVO> pList = paymentService.getPaymentByProjectIdx(maker_idx, project_idx);
 		return pList;
 	}
 	

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.test.mapper.PaymentMapper;
 import com.itwillbs.test.vo.PaymentVO;
+import com.itwillbs.test.vo.ProjectVO;
 
 @Service
 public class PaymentService {
@@ -100,6 +101,11 @@ public class PaymentService {
 	// 메이커의 전체 프로젝트 결제 내역 갯수 조회
 	public int getAllMakerPaymentCount(Integer maker_idx) {
 		return mapper.selectAllMakerPaymentCount(maker_idx);
+	}
+	
+	// 메이커의 프로젝트별 결제 내역 조회
+	public List<ProjectVO> getPaymentByProjectIdx(int maker_idx, int project_idx) {
+		return mapper.selectPaymentByProjectIdx(maker_idx, project_idx);
 	}
 	
 	

@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.test.vo.PaymentVO;
+import com.itwillbs.test.vo.ProjectVO;
 
 @Mapper
 public interface PaymentMapper {
@@ -73,5 +74,8 @@ public interface PaymentMapper {
 	
 	// 메이커의 전체 프로젝트 결제 내역 갯수 조회
 	int selectAllMakerPaymentCount(Integer maker_idx);
+
+	// 프로젝트 리스트 조회
+	List<ProjectVO> selectPaymentByProjectIdx(@Param("maker_idx") int maker_idx, @Param("project_idx") int project_idx);	
 	
 }

@@ -237,7 +237,7 @@
         order by p.payment_date desc
 	</select>
 	
-	<!--  -->
+	<!-- 메이커의 프로젝트별 결제 내역 조회 -->
 	<select id="selectPaymentByProjectIdx" resultType="com.itwillbs.test.vo.PaymentVO">
 		SELECT p.*, proj.project_subject, r.reward_name
         FROM payment p
