@@ -118,7 +118,7 @@
                             </a>
                         </div>
                         <div class="col-sm-12 col-md-6">
-                            <a href="" class="text-black w-100">
+                            <a href="ZimForm" class="text-black w-100">
                                 <div class="row  ms-md-2 me-md-2">
                                     <div class="col text-start my-3">
                                         <i class="bi bi-arrow-through-heart"></i> 찜하기

@@ -99,14 +99,31 @@ public class MemberService {
 		return mapper.updateFallowingAlam(maker_name, is_alam, sId);
 	}
 	
-	//팔로우 설정 
+	//팔로우 삭제
 	public int deleteFallow(String maker_name, String sId) {
 		return mapper.deleteFallow(maker_name, sId);
 	}
 	
-	//팔로우 설정
+	//팔로우 등록
 	public int insertFallow(String maker_name, String sId) {
 		return mapper.insertFallow(maker_name, sId);
+	}
+	
+	// 찜 목록 가져오기
+	public List<Map<String, Object>> getZimList(String sId) {
+		return mapper.selectZimList(sId);
+	}
+
+	public int zimAlam(int project_idx, int isAlam, String sId) {
+		return mapper.updateZimAlam(project_idx, isAlam, sId);
+	}
+
+	public int deleteZim(int project_idx, String sId) {
+		return mapper.deleteZim(project_idx, sId);
+	}
+
+	public int insertZim(int project_idx, String sId) {
+		return mapper.insertZim(project_idx, sId);
 	}
 	
 

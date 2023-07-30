@@ -178,4 +178,46 @@
 			  	, 1) 
 	</insert>
 	
+	<select id="selectZimList">
+        SELECT p.project_subject, p.project_introduce,mk.maker_name
+                ,(SELECT count(*) FROM fallowing f WHERE f.maker_idx = mk.maker_idx) AS 'follow_count'
+				, z.zim_is_alam
+				, z.project_idx
+        FROM project p JOIN maker mk
+        ON p.maker_idx = mk.maker_idx
+        JOIN zim z 
+        ON p.project_idx = z.project_idx
+        WHERE z.member_idx = (SELECT member_idx
+                            FROM members
+                            WHERE member_id = #{sId});
+	</select>
+	
+	<update id="updateZimAlam">
+		UPDATE zim
+		SET zim_is_alam = #{isAlam }
+		WHERE project_idx = #{project_idx}
+			AND	
+				member_idx = (SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+		
+	</update>
+	
+	<delete id="deleteZim">
+		DELETE FROM zim
+		WHERE project_idx = #{project_idx}
+			AND
+				member_idx = (SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+	</delete>
+	
+	<insert id="insertZim">
+		INSERT INTO zim 
+			VALUES ((SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+					, #{project_idx}
+					, 1)
+	</insert>
 </mapper>

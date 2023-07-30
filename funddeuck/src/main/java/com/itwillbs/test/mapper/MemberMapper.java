@@ -62,10 +62,19 @@ public interface MemberMapper {
 	//팔로우 알람 설정
 	int updateFallowingAlam(@Param("maker_name") String maker_name, @Param("is_alam") int is_alam,@Param("sId") String sId);
 	
-	//팔로우 설정
+	//팔로우 삭제
 	int deleteFallow(@Param("maker_name") String maker_name,@Param("sId") String sId);
 	
-	// 팔로우 설정
+	//팔로우 추가
 	int insertFallow(@Param("maker_name") String maker_name,@Param("sId") String sId);
+	
+	//찜 목록 가져오기
+	List<Map<String, Object>> selectZimList(String sId);
+
+	int updateZimAlam(@Param("project_idx") int project_idx, @Param("isAlam") int isAlam, @Param("sId") String sId);
+
+	int deleteZim(@Param("project_idx") int project_idx, @Param("sId") String sId);
+
+	int insertZim(@Param("project_idx") int project_idx, @Param("sId") String sId);
 
 }
