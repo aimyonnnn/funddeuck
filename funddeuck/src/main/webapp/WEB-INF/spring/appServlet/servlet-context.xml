@@ -37,6 +37,11 @@
 	
 	<context:component-scan base-package="com.itwillbs.test" />
 	
+	<!-- 속성값을 외부 파일에 저장 후 사용을 위한 properties 파일 등록 -->
+	<!-- webapp/resources 디렉토리가 아닌 src/main/resources 패키지 접근 시 classpath:/ -->
+	<!-- (설정 항목 중 classpath 가 가리키는 기본 위치 : src/main/resources 패키지) -->
+	<context:property-placeholder location="classpath:/config/appdata.properties"/>
+	
 	<beans:bean id="echoHandler" class="com.itwillbs.test.handler.EchoHandler" />
 	<websocket:handlers>
 	    <websocket:mapping handler="echoHandler" path="/echo-ws" />

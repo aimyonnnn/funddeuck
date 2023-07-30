@@ -196,6 +196,7 @@
 			// 해시태그 불러오기 
 	        const hashtagValue = load("project_hashtag");
 	        if (hashtagValue) {
+	            $("#tag-list").empty();
 				hashtagValue.split(",").forEach(tag => {
 				    tag = tag.trim();
 				    if (tag) {
@@ -203,6 +204,19 @@
 				    }
 				});
 			}
+		});
+		
+	    // 계좌 본인 인증 
+	    $("#btnAccountAuth").on("click", function() {
+			// 새 창에서 사용자 인증 페이지 요청
+			let requestUri = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
+					+ "response_type=code"
+					+ "&client_id=4066d795-aa6e-4720-9383-931d1f60d1a9"
+					+ "&redirect_uri=http://localhost:8089/test/callback"
+					+ "&scope=login inquiry transfer"
+					+ "&state=12345678901234567890123456789012"
+					+ "&auth_type=0";
+			window.open(requestUri, "authWindow", "width=600, height=800");
 		});
 	});
 	</script>
@@ -266,8 +280,10 @@
 						<div class="flex-container">
 					    	<div class="card">
 								<div class="card-header bg-primary text-white">
-					                <input type="radio" name="project_plan" value="1" class="card-radio" checked>
-									FUNDDEUCK 회원제(5%) (VAT 별도)
+					                <input type="radio" id="basic_plan" name="project_plan" value="1" class="card-radio" checked>
+					                <label for="basic_plan">
+										FUNDDEUCK 회원제(5%) (VAT 별도)
+					                </label>
 								</div>
 								<div class="card-body">
 									<blockquote class="blockquote mb-0">
@@ -282,9 +298,11 @@
 							</div>
 						    <div class="mx-2"></div> <!-- 가운데 마진 추가 -->
 							<div class="card">
-								<div class="card-header bg-primary text-white">
-									<input type="radio" name="project_plan" value="2" class="card-radio">
-									INFLUENCER 요금제 (3%) (VAT 별도)
+								<div class="card-header bg-success text-white">
+									<input type="radio" id="influencer_plan" name="project_plan" value="2" class="card-radio">
+									<label for="influencer_plan">
+										INFLUENCER 회원제(3%) (VAT 별도)
+									</label>
 								</div>
 								<div class="card-body">
 									<blockquote class="blockquote mb-0">
@@ -440,19 +458,20 @@
 					<div class="d-flex flex-row">
 						<select class="form-control" name="project_settlement_bank" id="bankCategory">
 							<option value="">은행 선택</option>
-							<option value="SH">신한은행</option>
-							<option value="KB">국민은행</option>
-							<option value="NH">농협은행</option>
-							<option value="WR">우리은행</option>
-							<option value="IBK">기업은행</option>
-							<option value="KEBHana">KEB하나은행</option>
-							<option value="BS">부산은행</option>
-							<option value="Kakao">카카오뱅크</option>
+							<option value="산업은행">신한은행</option>
+							<option value="신한은행">신한은행</option>
+							<option value="국민은행">국민은행</option>
+							<option value="농협은행">농협은행</option>
+							<option value="우리은행">우리은행</option>
+							<option value="기업은행">기업은행</option>
+							<option value="KEB하나은행">KEB하나은행</option>
+							<option value="부산은행">부산은행</option>
+							<option value="카카오뱅크">카카오뱅크</option>
 						</select>
 					</div>
 					<input class="form-control mt-1" type="text" name="project_settlement_account" id="bankAccount" placeholder="계좌번호 '-' 없이 숫자만 입력">
 					<input class="form-control mt-1" type="text" name="project_settlement_name" id="bankName" placeholder="예금주명"><br>
-					<button class="btn btn-primary">본인 인증</button>
+					<button class="btn btn-primary" id="btnAccountAuth">본인 인증</button>
 					</div>
 
 					<!-- 통장 사본 -->
@@ -536,7 +555,7 @@
 					</div>
 					
 					<div class="d-flex justify-content-center my-3">
-						<input type="submit" value="신청하기" class="btn btn-primary">
+						<input type="submit" value="신청하기" class="btn btn-primary" id="projectSubmit">
 					</div>
 				</form>
 				<!-- 폼 태그 끝-->
