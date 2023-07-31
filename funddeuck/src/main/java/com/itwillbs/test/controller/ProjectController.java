@@ -109,6 +109,10 @@ public class ProjectController {
 		
 		int member_idx = projectService.getMemberIdx(sId);
 		int maker_idx = makerService.getMakerIdx(sId);
+		List<ProjectVO> projectList = projectService.getProjectList(member_idx);
+		model.addAttribute("member_idx", member_idx);
+		model.addAttribute("maker_idx", maker_idx);
+		model.addAttribute("projectList", projectList);
 		
 		if(project_idx != null) {
 			model.addAttribute("project_idx", project_idx);
