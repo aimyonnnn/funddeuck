@@ -39,6 +39,7 @@ import com.itwillbs.test.handler.EchoHandler;
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.PaymentService;
+import com.itwillbs.test.service.ProjectScheduler;
 import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.vo.ChartDataProjectVO;
 import com.itwillbs.test.vo.ChartDataVO;
@@ -58,6 +59,8 @@ public class ProjectController {
 	private MakerService makerService;
 	@Autowired
 	private PaymentService paymentService;
+	@Autowired
+	private ProjectScheduler projectScheduler;
 	
 	private EchoHandler echoHandler;
 	
@@ -632,7 +635,11 @@ public class ProjectController {
 		int updateCount = paymentService.modifyShippingInfo(payment_idx, delivery_method, courier, waybill_num);
 		
 		if(updateCount > 0) { // 성공적으로 수정 시
+			// 송장번호 입력 후 일주일 후 '배송완료'로 상태변경
+			projectScheduler.modifyDeliveryStatus(payment_idx);
+			
 			List<PaymentVO> paymentList = paymentService.getPaymentList(payment_idx);
+			
 			return new ResponseEntity<>(paymentList, HttpStatus.OK);
 		} else { // 수정 실패 시
 	        String message = "송장번호 입력 실패!";

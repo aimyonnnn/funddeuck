@@ -266,6 +266,13 @@
 			WHERE payment_idx = #{payment_idx}			
 	</update>
 
+	<!-- 송장입력 후 일주일 후 '배송완료'로 상태변경 -->
+	<update id="updateDeliveryStatusPaymentList">
+		UPDATE payment
+			SET delivery_status = 3
+			WHERE payment_idx = #{payment_idx}
+	</update>
+
 	<!-- 결제목록 조회 -->
 	<select id="selectPaymentList" resultType="com.itwillbs.test.vo.PaymentVO">
 		SELECT *
