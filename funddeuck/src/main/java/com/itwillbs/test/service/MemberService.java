@@ -125,6 +125,10 @@ public class MemberService {
 	public int insertZim(int project_idx, String sId) {
 		return mapper.insertZim(project_idx, sId);
 	}
+
+	public List<ProjectVO> getProject(String sId) {
+		return mapper.selectFollowProjectList(sId);
+	}
 	
 
 

@@ -70,11 +70,17 @@ public interface MemberMapper {
 	
 	//찜 목록 가져오기
 	List<Map<String, Object>> selectZimList(String sId);
-
+	
+	// 찜 알람 설정
 	int updateZimAlam(@Param("project_idx") int project_idx, @Param("isAlam") int isAlam, @Param("sId") String sId);
 
+	// 찜 삭제
 	int deleteZim(@Param("project_idx") int project_idx, @Param("sId") String sId);
-
+	
+	// 찜 하기
 	int insertZim(@Param("project_idx") int project_idx, @Param("sId") String sId);
+	
+	//팔로우 게시판
+	List<ProjectVO> selectFollowProjectList(String sId);
 
 }

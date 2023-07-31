@@ -22,6 +22,7 @@ import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.SendMailService;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.MembersVO;
+import com.itwillbs.test.vo.ProjectVO;
 
 @Controller
 public class MemberController {
@@ -479,6 +480,22 @@ public class MemberController {
     			return "false";
     		}
     	}
+    	
+    }
+    
+    @GetMapping("FollowBoardForm")
+    public String FollowBoardForm(HttpSession session, Model model) {
+    	
+    	if(session.getAttribute("sId") == null) {
+    		model.addAttribute("msg","잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
+    	List<ProjectVO> projectList = service.getProject((String)session.getAttribute("sId"));
+    	
+    	model.addAttribute("projectList", projectList);
+    	
+    	return "member/member_following_board";
     	
     }
     

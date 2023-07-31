@@ -6,10 +6,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
+    <%@ include file="../Header.jsp" %>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="scss/mypage.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/mypage.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style type="text/css" rel="stylesheet">
         a {
@@ -19,20 +20,16 @@
             border-bottom: 1px solid lightgray;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#header").load("Header.jsp");
-            $("#footer").load("Footer.jsp");
-        });
     </script>
-
 </head>
 
-<header id="header"></header>
 
 <body>
     <hr>
     <!-- 탑 영역 -->
+    
     <!-- 백그라운드 -->
     <section style="position: relative;">
         <div class="bg-primary" style="height: 200px; width: 100%; position: absolute; top: 0; left: 0;"></div>
@@ -218,8 +215,6 @@
                 </div>
             </div>
         </div>
-        <footer id="footer" class="w-100"
-            style="position: absolute; top: 0; left:50% ; transform: translateX(-50%); margin-top: 1100px;"></footer>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
