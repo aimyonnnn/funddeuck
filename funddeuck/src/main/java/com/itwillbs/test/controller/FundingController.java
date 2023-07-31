@@ -97,10 +97,10 @@ public class FundingController {
 			// 기본 배송지 정보
 			model.addAttribute("deliveryDefault", deliveryDefault);
 		}
-		// 로그인한 회원의 쿠폰 정보 조회
-		// 쿠폰테이블에 회원 아이디FK 필요
+		// 로그인한 회원의 쿠폰 목록 중 미사용 쿠폰 목록만 조회
+		// 쿠폰테이블에 회원 아이디FK 필요 ** 
 		List<CouponVO> couponList = fundingService.getCouponList();
-		System.out.println("회원이 가지고 있는 쿠폰 목록 : " + couponList);
+		System.out.println("회원이 보유한 미사용 쿠폰 목록 : " + couponList);
 		if(couponList != null) {
 			model.addAttribute("couponList", couponList);
 		}

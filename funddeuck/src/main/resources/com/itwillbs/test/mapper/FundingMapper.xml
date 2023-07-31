@@ -45,6 +45,7 @@
 	<select id="selectCouponList">
 		SELECT *
 			FROM coupon
+				WHERE coupon_use = 0
 	</select>
 	
 	<!-- 기존 기본배송지 0으로 변경 -->

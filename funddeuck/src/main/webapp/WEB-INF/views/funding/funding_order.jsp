@@ -504,11 +504,22 @@
 									<button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 										쿠폰을 선택해주세요.
 									</button>
-									${couponList }
+									<!-- 쿠폰이 없을 경우 -->
+									<!-- 보유한 쿠폰 중 사용 가능한 쿠폰 목록만 출력 -->
+									${couponList  }
 									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">쿠폰1</a></li>
-										<li><a class="dropdown-item" href="#">쿠폰2</a></li>
-										<li><a class="dropdown-item" href="#">쿠폰3</a></li>
+										<c:choose>
+											<c:when test="${empty couponList }">
+												<span class="fs-6 text-muted">보유하신 쿠폰이 없습니다</span>
+											</c:when>
+											<c:when test="${not empty couponList }">
+												<c:forEach var="coupon" items="${couponList }">
+													<li><a class="dropdown-item" href="#">${coupon.coupon_name }</a></li>
+												
+												</c:forEach>
+											</c:when>
+										
+										</c:choose>
 									</ul>
 								</div>
 							</div>
@@ -519,9 +530,27 @@
 						</div>
 					</div>
 				</div>
-				<!--쿠폰 끝-->          
+				<!-- 쿠폰 끝 -->       
+				<!-- 추가 후원금 -->
+				<div class="row">
+					<span class="fs-4 fw-bold">추가 후원금</span>
+					<div class="row m-2 p-2 border">
+						<div class="row">
+							<div class="col">
+								<input class="form-control" type="text">
+							</div>
+							<div class="col-4">
+								<span class="fs-6 fw-bold">원</span>
+							</div>
+						</div>
+						<div class="row p-2">
+							<span class="fs-6 text-muted">후원을 더 많이 해주시면 프로젝트가 더 빨리 성공적으로 완료될 수 있습니다.</span>			
+						</div>
+					</div>
+				</div>
+				<!-- 추가 후원금 끝-->   
 			</div>
-			<!--왼쪽 영역 끝-->
+			<!-- 왼쪽 영역 끝 -->
 			<!-- 결제 확인 영역-->
 			<div class="col-lg-6 col-md-12 p-4">
 				<!-- 후원 금액 -->
