@@ -58,10 +58,9 @@ public class ProjectController {
 	private MakerService makerService;
 	@Autowired
 	private PaymentService paymentService;
-	@Autowired
-	private MemberService memberService;
 	
 	private EchoHandler echoHandler;
+	
 	@Autowired
 	public ProjectController(EchoHandler echoHandler) {
 		this.echoHandler = echoHandler;
@@ -74,21 +73,17 @@ public class ProjectController {
 	}
 	
 	// 프로젝트 승인 요청
-	@GetMapping("approvalRequest")
+	@PostMapping("approvalRequest")
 	@ResponseBody
 	public String approvalRequest(@RequestParam int project_idx, HttpServletRequest request) {
-		System.out.println("approvalRequest - " + project_idx);
 		// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경!
-		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
+		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 		// 관리자 페이지에서는 2-승인요청인것만 출력한다!
 		int updateCount = projectService.modifyStatus(project_idx);
 		if(updateCount > 0) {
 			// 관리자에게 승인 요청 toast 팝업 띄우기
 			// toast 클릭 시 관리자의 프로젝트 승인 페이지로 이동
-			String adminProjectUrl = 
-				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/funddeuck/adminProjectList";
-//				request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/test/adminProjectList";
-			
+			String adminProjectUrl = "adminProjectList";
 			String notification = 
 					"<a href='" + adminProjectUrl + "' style='text-decoration: none; color: black;'>메이커님께서 프로젝트 승인을 요청하였습니다.</a>";
 			try {
@@ -101,39 +96,9 @@ public class ProjectController {
 		return "false"; 
 	}
 	
-	// 작성중인 프로젝트로 이동
-	@GetMapping("projectUrl")
-	public ModelAndView projectUrl(HttpSession session, Model model) {
-	    String sId = (String) session.getAttribute("sId");
-	    List<MembersVO> memberList = memberService.getIdx(sId);
-	    MembersVO m = memberService.getMemberInfo(sId);
-	    
-	    if (memberList.isEmpty()) {
-	    	model.addAttribute("msg", "작업중인 프로젝트가 없습니다.");
-	    	return new ModelAndView("fail_back");
-	    }
-
-	    MembersVO member = memberList.get(0);
-	    System.out.println("출력 테스트 : " + member);
-	    int rewardIdx = member.getReward_idx();
-	    int projectIdx = member.getProject_idx();
-	    int makerIdx = member.getMaker_idx();
-
-	    if (rewardIdx != 0) {
-	        // reward_idx가 0이 아니면 projectReward로 리다이렉트
-	        return new ModelAndView("redirect:/projectReward?reward_idx=" + rewardIdx);
-	    } else if (makerIdx != 0) {
-	    	// project_idx가 0이 아니면 projectManagement로 리다이렉트
-	    	return new ModelAndView("redirect:/projectManagement?project_idx=" + projectIdx);
-	    }
-	    return new ModelAndView("redirect:/projectMaker?member_idx=" + m.getMember_idx());
-	}
-	
 	// 리워드 설계 페이지
 	@GetMapping("projectReward")
 	public String projectReward(@RequestParam(required = false) Integer reward_idx, HttpSession session, Model model) {
-		
-		// 세션 아이디가 존재하지 않을 때 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
 			model.addAttribute("msg", "잘못된 접근입니다.");
@@ -167,9 +132,7 @@ public class ProjectController {
 	@PostMapping("saveReward")
     @ResponseBody
     public String saveReward(@ModelAttribute RewardVO reward) {
-		System.out.println("saveReward");
 		int insertCount = projectService.registReward(reward);
-		System.out.println("insertCount : " + insertCount);
 		if(insertCount > 0) { return "true"; } return "false";
     }
 	
@@ -177,9 +140,7 @@ public class ProjectController {
 	@PostMapping("modifyReward")
     @ResponseBody
     public String modifyReward(@ModelAttribute RewardVO reward, @RequestParam int reward_idx, HttpSession session) {
-		System.out.println("reward_idx : " + reward_idx);
 		int updateCount = projectService.modifyReward(reward);
-		System.out.println("updateCount : " + updateCount);
 		if(updateCount > 0) { return "true"; } return "false";
     }
 	
@@ -233,15 +194,11 @@ public class ProjectController {
 	// 메이커 등록 페이지
 	@GetMapping("projectMaker")
 	public String makerInfo(HttpSession session, Model model) {
-		
-		// 세션 아이디가 존재하지 않을 때 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
 			model.addAttribute("msg", "잘못된 접근입니다.");
 			return "fail_back";
 		}
-		
-		// 메이커 등록 페이지 접속 시 세션아이디로 member_idx를 조회 후 model에 저장
 		int member_idx = projectService.getMemberIdx(sId);
 		model.addAttribute("member_idx", member_idx);
 		return "project/project_maker";
@@ -250,7 +207,6 @@ public class ProjectController {
 	// 메이커 등록 비즈니스 로직 처리
 	@PostMapping("projectMakerPro")
 	public String projectMaker(MakerVO maker, Model model, HttpSession session, HttpServletRequest request) {
-		System.out.println(maker);
 		String uploadDir = "/resources/upload"; 
 		String saveDir = session.getServletContext().getRealPath(uploadDir);
 		String subDir = "";
@@ -351,19 +307,32 @@ public class ProjectController {
 	
 	// 메이커 페이지
 	@GetMapping("makerDetail")
-	public String makerDetail(@RequestParam(required = false) Integer maker_idx, Model model) {
-		System.out.println("makerDetail : " + maker_idx);
-		MakerVO maker = makerService.getMakerInfo(maker_idx);
-		model.addAttribute("maker", maker);
+	public String makerDetail(@RequestParam(required = false) Integer maker_idx, HttpSession session, Model model) {
+		String sId = (String) session.getAttribute("sId");
+		if(sId != null) {
+			int member_idx = projectService.getMemberIdx(sId);
+			int makerIdx = makerService.getMakerIdx(sId);
+			MakerVO maker = makerService.getMakerInfo(makerIdx);
+			model.addAttribute("maker", maker);
+			model.addAttribute("member_idx", member_idx);
+		}
 		return "project/maker_detail";
 	}
 	
 	// 메이커 수정하기 페이지
 	@GetMapping("modifyMakerForm")
-	public String modifyMakerForm(@RequestParam int maker_idx, Model model) {
-		System.out.println("modifyMakerForm : " + maker_idx);
-		// 메이커 정보 조회
+	public String modifyMakerForm(@RequestParam int maker_idx, HttpSession session, Model model) {
+		String sId = (String) session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "fail_back";
+		}
+		int memberIdx = projectService.getMemberIdx(sId);
 		MakerVO maker = makerService.getMakerInfo(maker_idx);
+		if(maker == null || memberIdx != maker.getMember_idx()) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "fail_back";
+		}
 		model.addAttribute("maker", maker);
 		return "project/maker_detail_modifyForm";
 	}
@@ -681,23 +650,14 @@ public class ProjectController {
 		return "project/project_settlement";
 	}
 	
-	// 메이커 마이페이지
-	@GetMapping("mypage")
-	public String mypage() {
-		return "myPage";
-	}
-	
 	// 프로젝트 현황
 	@GetMapping("projectStatus")
 	public String projectStatus(HttpSession session, Model model) {
-		
-		// 세션 아이디가 존재하지 않을 때 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
 			model.addAttribute("msg", "잘못된 접근입니다.");
 			return "fail_back";
 		}
-		
 		int member_idx = projectService.getMemberIdx(sId);
 		int maker_idx = makerService.getMakerIdx(sId);
 		List<ProjectVO> projectList = projectService.getProjectList(member_idx);
@@ -705,15 +665,9 @@ public class ProjectController {
 	        int firstProjectIdx = projectList.get(0).getProject_idx();
 	        model.addAttribute("firstProjectIdx", firstProjectIdx);
 	    }
-		
 		model.addAttribute("member_idx", member_idx);
 		model.addAttribute("maker_idx", maker_idx);
 		model.addAttribute("projectList", projectList);
-		
-		System.out.println("멤버idx : " + member_idx);					
-		System.out.println("메이커idx : " + maker_idx);
-		System.out.println("프로젝트idx : " + projectList.get(0).getProject_idx());
-		
 		return "project/project_status";
 	}
 		

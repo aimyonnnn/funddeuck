@@ -363,7 +363,7 @@
 						// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려
 						// 관리자 페이지에서는 2-승인요청인것만 출력한다!
 						$.ajax({
-							type: "get",
+							type: "post",
 							url: "<c:url value='approvalRequest'/>",
 							data: {
 								project_idx: ${param.project_idx}
