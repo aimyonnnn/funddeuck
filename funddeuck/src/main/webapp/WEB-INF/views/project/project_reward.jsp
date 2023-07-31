@@ -75,8 +75,7 @@
 		            <!-- 폼 태그 시작 -->
 		            <form action="" class="projectContent" method="post" id="rewardForm">
 		            	<!-- 히든 처리하는 부분 -->
-<!-- 		            	<label class="form-content subheading" for="project_idx">project_idx</label> -->
-		            	<input type="text" name="project_idx" id="project_idx" value="${param.project_idx}" class="form-control" style="width:500px;">
+		            	<input type="text" name="project_idx" id="project_idx" value="${project_idx}" class="form-control" style="width:500px;">
 		            	
 			            <!-- 금액 -->
 			            <div>
@@ -193,20 +192,12 @@
 				</c:choose>
 						
 						<!-- 저장하기 & 수정하기 버튼 -->
-						<c:choose>
-							<c:when test="${empty reward.reward_idx}">
-							  	<div class="d-flex justify-content-center my-3">
-							  		<button type="button" class="btn btn-outline-primary" onclick="saveReward()">등록하기</button>
-						      	</div>
-							</c:when>
-							<c:otherwise>
-							  	<div class="d-flex justify-content-center my-3">
-							  		<button type="button" class="btn btn-outline-primary me-3" onclick="modifyReward(${reward.reward_idx})">수정하기</button>
-							  		<button type="button" class="btn btn-outline-primary" onclick="removeReward(${reward.reward_idx})">삭제하기</button>
-						      	</div>
-							</c:otherwise>
-						</c:choose>
-				      	
+						<div class="d-flex justify-content-center my-3">
+						    <button type="button" class="btn btn-outline-primary" id="saveButton" onclick="saveReward()">등록하기</button>
+						    <button type="button" class="btn btn-outline-primary me-3" id="editButton" style="display: none;" onclick="modifyReward(selectedRewardIdx)">수정하기</button>
+						    <button type="button" class="btn btn-outline-primary" id="removeButton" style="display: none;" onclick="removeReward(selectedRewardIdx)">삭제하기</button>
+						</div>
+
 		            </form>
 		          </div>
 		          <!-- 리워드 설계 끝-->
@@ -252,11 +243,14 @@
     </main>
 	
 	<script type="text/javascript">
+	// 선택된 리워드의 reward_idx 값을 저장하는 변수
+	let selectedRewardIdx; 
+	
 	// 페이지 로드될 때 리워드 갯수, 리스트 조회하기
 	$(document).ready(function() {
 		// 리워드 갯수 조회하기
 	    $.ajax({
-	        type: "GET",
+	        type: "post",
 	        url: "<c:url value='rewardCount'/>",
 	        data: {
 	            project_idx: $('#project_idx').val()
@@ -271,13 +265,12 @@
 	        },
 	        error: function (error) {
 	            console.log("리워드 갯수 조회에 실패했습니다.");
-// 	            alert("리워드 갯수 조회에 실패했습니다.");
 	        }
 	    }); // ajax
 	    
 		// 리워드 리스트 조회하기
 	    $.ajax({
-	        type: "GET",
+	        type: "post",
 	        url: "<c:url value='rewardList'/>",
 	        data: {
 	            project_idx: $('#project_idx').val()
@@ -310,7 +303,7 @@
 	                            text: "수정하기",
 	                            click: function() {
 	                                // 수정하기 버튼을 클릭하면 해당 리워드 페이지로 이동
-	                                window.location.href = 'projectReward?project_idx=${param.project_idx}&reward_idx=' + reward.reward_idx;
+	                                openRewardModifyForm(reward.reward_idx);
 	                            }
 	                        }),
 	                        $('<button>', {
@@ -351,7 +344,7 @@
 			    	
 			    	if(response.trim() == 'true') {
 				        alert("리워드 등록이 완료되었습니다!");
-// 				        location.href='projectReward';
+				        
 					// =====================================================
 					// 관리자에게 프로젝트 승인 요청하기
 					
@@ -360,13 +353,12 @@
 					if(confirmation) {
 						
 						// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경!
-						// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려
-						// 관리자 페이지에서는 2-승인요청인것만 출력한다!
+						// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 						$.ajax({
 							type: "post",
 							url: "<c:url value='approvalRequest'/>",
 							data: {
-								project_idx: ${param.project_idx}
+								project_idx: ${project_idx}
 							},
 							dataType: 'text',
 							success: data => {
@@ -397,6 +389,67 @@
 		}
     }
 	
+	// 리워드 수정 페이지 이동
+	function openRewardModifyForm(reward_idx) {
+		
+		$.ajax({
+			type: 'post',
+			url: '<c:url value="openRewardModifyForm"/>',
+			data: {
+				reward_idx: reward_idx
+			},
+			success: function(data) {
+				console.log(data);
+				
+				if (data.reward_idx) {
+	                // 수정할 리워드가 있을 때
+	                $("#saveButton").hide();
+	                $("#editButton").show();
+	                $("#removeButton").show();
+	            } else {
+	                // 새로운 리워드를 등록할 때
+	                $("#saveButton").show();
+	                $("#editButton").hide();
+	                $("#removeButton").hide();
+	            }
+				
+				// 서버로부터 받은 데이터를 사용하여 폼에 값을 채워넣는 로직
+	            $("#reward_name").val(data.reward_name);
+	            $("#reward_price").val(data.reward_price);
+	            $("#reward_category").val(data.reward_category);
+	            $("#reward_quantity").val(data.reward_quantity);
+	            $("#reward_option").val(data.reward_option);
+	            $("#reward_detail").val(data.reward_detail);
+	            
+	            // 배송여부 라디오 버튼 처리
+	            if (data.delivery_status === '배송') {
+	                $("#delivery_status1").prop("checked", true);
+	            } else if (data.delivery_status === '배송없음') {
+	                $("#delivery_status2").prop("checked", true);
+	            }
+	            
+	            $("#delivery_price").val(data.delivery_price);
+	            
+	            // 발송 시작일 선택 처리
+	            const [yearMonth, day] = data.delivery_date.split('/');
+	            $("#yearMonth").val(yearMonth);
+	            $("#day").val(day);
+	            $("#delivery_date").val(data.delivery_date);
+	            
+	            // 리워드 정보 제공 고시 처리
+	            $("#reward_info").val(data.reward_info);
+	            
+	            // 전역 변수에 선택된 리워드의 reward_idx 값을 저장
+	            selectedRewardIdx = data.reward_idx;
+				
+			},
+			error: function(){
+				console.log('ajax 요청 실패');				
+			}
+		});
+		
+	}
+			
 	// 리워드 수정하기
 	function modifyReward(reward_idx) {
 		
@@ -457,6 +510,11 @@
     }
 	
 	// 관리자 피드백
+	// 페이지 로드 후에 getNotifications 함수 호출
+	$(()=>{
+		getNotifications();
+	})
+	
 	function getNotifications() {
 		$.ajax({
 			url: '<c:url value="getNotificationByAjax"/>',
@@ -489,11 +547,6 @@
 		    }
 	  });
 	}
-	
-	$(()=>{
-		getNotifications();
-// 		setInterval(getNotifications, 5000);
-	})
 	
 	// 메시지 읽음 처리 하기
 	function markNotificationAsRead(notification_idx) {

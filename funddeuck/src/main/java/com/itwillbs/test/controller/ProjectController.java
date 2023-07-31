@@ -76,13 +76,13 @@ public class ProjectController {
 	@PostMapping("approvalRequest")
 	@ResponseBody
 	public String approvalRequest(@RequestParam int project_idx, HttpServletRequest request) {
-		// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경!
+		// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경
 		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
-		// 관리자 페이지에서는 2-승인요청인것만 출력한다!
+		// 관리자 승인 관리 페이지에서는 미승인을 제외한 나머지 상태만 출력
 		int updateCount = projectService.modifyStatus(project_idx);
 		if(updateCount > 0) {
-			// 관리자에게 승인 요청 toast 팝업 띄우기
-			// toast 클릭 시 관리자의 프로젝트 승인 페이지로 이동
+			// 관리자에게 프로젝트 승인을 요청하는 toast 팝업 띄우기
+			// toast 팝업 클릭 시 관리자의 프로젝트 승인 관리 페이지로 이동
 			String adminProjectUrl = "adminProjectList";
 			String notification = 
 					"<a href='" + adminProjectUrl + "' style='text-decoration: none; color: black;'>메이커님께서 프로젝트 승인을 요청하였습니다.</a>";
@@ -96,34 +96,23 @@ public class ProjectController {
 		return "false"; 
 	}
 	
-	// 리워드 설계 페이지
+	// 리워드 등록 페이지
 	@GetMapping("projectReward")
-	public String projectReward(@RequestParam(required = false) Integer reward_idx, HttpSession session, Model model) {
+	public String projectReward(HttpSession session, Model model,
+					@RequestParam(required = false) Integer reward_idx, 
+					@RequestParam(required = false) Integer project_idx) {
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
 			model.addAttribute("msg", "잘못된 접근입니다.");
 			return "fail_back";
 		}
 		
-		// 수정 버튼을 눌렀을 때 - reward_idx가 존재하면 리워드 수정을 위해 해당 리워드 정보 조회 후 view에 리워드 정보를 출력 
-		if (reward_idx != null) {
-			System.out.println("수정하기 버튼 클릭 시 - 리워드 번호 : " + reward_idx);
-			
-			// 리워드 작성자 판별 요청
-			// 단, 세션 아이디가 admin이 아닐 때만 수행
-			if(!sId.equals("admin")) {
-				String rewardWriter = projectService.getRewardAuthorId(reward_idx, sId); // 리워드 작성자의 아이디를 조회
-				if(!sId.equals(rewardWriter)) {
-					// 리워드 작성자가 아닌 경우
-					model.addAttribute("msg", "리워드 작성자가 아닙니다.");
-					return "fail_back";
-				} 
-			}
-			
-			// 세션 아이디가 admin이거나 리워드 작성자인 경우, 리워드 정보 조회
-			RewardVO reward = projectService.getRewardInfo(reward_idx);
-			model.addAttribute("reward", reward);
-	    }
+		int member_idx = projectService.getMemberIdx(sId);
+		int maker_idx = makerService.getMakerIdx(sId);
+		
+		if(project_idx != null) {
+			model.addAttribute("project_idx", project_idx);
+		} 
 		
 		return "project/project_reward";
 	}
@@ -134,6 +123,14 @@ public class ProjectController {
     public String saveReward(@ModelAttribute RewardVO reward) {
 		int insertCount = projectService.registReward(reward);
 		if(insertCount > 0) { return "true"; } return "false";
+    }
+	
+	// 리워드 수정 페이지로 이동
+	@PostMapping("openRewardModifyForm")
+    @ResponseBody
+    public RewardVO openRewardModifyForm(@RequestParam int reward_idx) {
+		RewardVO reward = projectService.getRewardInfo(reward_idx);
+		return reward;
     }
 	
 	// 리워드 수정하기
@@ -149,13 +146,10 @@ public class ProjectController {
 	@ResponseBody
 	public String removeReward(@RequestParam int reward_idx, HttpSession session) {
 		System.out.println("삭제하기 버튼 클릭 시 - 리워드 번호 : " + reward_idx);
-		
-		// 세션 아이디가 존재하지 않을 때 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
 			return "false";
 		}
-		
 		// 리워드 작성자 판별 요청
 		// 단, 세션 아이디가 admin이 아닐 때만 수행
 	    if(!"admin".equals(sId)) {
@@ -165,18 +159,16 @@ public class ProjectController {
 	            return "false";
 	        }
 	    }
-	    
 	    // 리워드 삭제 처리
 	    int deleteCount = projectService.removeReward(reward_idx);
 	    if (deleteCount > 0) {
 	        return "true";
 	    }
-	    
 	    return "false"; // 리워드 삭제 실패 시
 	}
 	
 	// 리워드 갯수 조회하기
-	@GetMapping("rewardCount")
+	@PostMapping("rewardCount")
 	@ResponseBody
 	public String rewardCount(@RequestParam int project_idx) {
 		int rewardCount = projectService.getRewardCount(project_idx);
@@ -184,7 +176,7 @@ public class ProjectController {
 	}
 	
 	// 리워드 리스트 조회하기
-	@GetMapping("rewardList")
+	@PostMapping("rewardList")
 	@ResponseBody
 	public List<RewardVO> rewardList(@RequestParam int project_idx) {
 	    List<RewardVO> rList = projectService.getRewardList(project_idx);
