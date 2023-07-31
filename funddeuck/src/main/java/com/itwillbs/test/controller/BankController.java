@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.test.service.BankApiService;
 import com.itwillbs.test.service.BankService;
+import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.vo.ResponseTokenVO;
 
 @Controller
@@ -22,12 +23,14 @@ public class BankController {
 	private BankService bankService;
 	@Autowired
 	private BankApiService bankApiService;
+	@Autowired
+	private ProjectService projectService;
 	
 	// 로그 출력을 위한 변수 선언
 	private static final Logger logger = LoggerFactory.getLogger(BankController.class);
 	
 	// 메이커 정산 계좌 인증
-	@GetMapping("FunddeuckCallback")
+	@GetMapping("callback")
 	public String accountAuth(@RequestParam Map<String, String> authResponse, Model model, HttpSession session) {
 		// 정보 확인
 		logger.info(authResponse.toString());
@@ -50,8 +53,13 @@ public class BankController {
 			return "bank_fail_back";
 		}
 		
+		// member_idx 조회
+		String sId = (String) session.getAttribute("sId");
+		int member_idx = projectService.getMemberIdx(sId);
+		System.out.println("member_idx : " + member_idx);
+		
 		// 토큰을 DB에 저장
-		boolean isRegistSuccess = bankService.registToken((String)session.getAttribute("sId"), responseToken);
+		boolean isRegistSuccess = bankService.registToken(member_idx, responseToken);
 		
 		if(isRegistSuccess) {
 			// 세션 객체에 엑세스토큰(access_token)과 사용자번호(user_seq_no) 저장

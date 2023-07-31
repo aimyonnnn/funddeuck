@@ -110,6 +110,7 @@
 				, #{project_thumnails3}
 				, #{project_image}
 				, #{project_introduce}
+				, #{project_semi_introduce}
 				, #{project_target}
 				, #{project_start_date}
 				, #{project_end_date}

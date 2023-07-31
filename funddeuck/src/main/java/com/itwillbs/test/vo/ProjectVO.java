@@ -18,6 +18,7 @@ CREATE TABLE project (
     project_thumnails3 varchar(100) COMMENT '프로젝트 썸네일 (3)',
     project_image varchar(100) NOT NULL COMMENT '프로젝트 내용 상세 이미지',
     project_introduce varchar(300) NOT NULL COMMENT '프로젝트 소개',
+    project_semi_introduce varchar(150) NOT NULL COMMENT '프로젝트 한 줄 소개',
     project_target int NOT NULL COMMENT '목표 금액',
     project_start_date date NOT NULL COMMENT '프로젝트 시작일',
     project_end_date date NOT NULL COMMENT '프로젝트 종료일',
@@ -47,6 +48,7 @@ public class ProjectVO {
 	private String project_thumnails3;				// 프로젝트 썸네일 (3)
 	private String project_image;					// 프로젝트 내용 상세 이미지
 	private String project_introduce;				// 프로젝트 소개
+	private String project_semi_introduce;			// 프로젝트 한 줄 소개
 	private int project_target;						// 목표 금액
 	private int project_amount;						// 프로젝트 달성 금액
 	private Date project_start_date;				// 프로젝트 시작일

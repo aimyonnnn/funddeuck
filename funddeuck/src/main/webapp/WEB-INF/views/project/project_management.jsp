@@ -387,9 +387,18 @@
 						</p>
 						<textarea class="form-control management-info" name="project_introduce" id="managementDetail" placeholder="예시 : 우리집 아이가 ○○ 인형을 좋아하는 모습을 보고 만들게 되었습니다." style="height: 300px; resize: none;"></textarea>
 					</div>
+					
+					<!-- 프로젝트 한줄 소개 -->
+					<div class="mt-4">
+						<label class="subheading" for="managementSemiDetail">프로젝트 요약</label>
+						<p class="sideDescription">
+							메인에 소개될 프로젝트를 한 줄로 소개해 주세요.<br>
+						</p>
+						<input type="text" class="form-control" name="project_semi_introduce" id="managementSemiDetail" placeholder="150자까지 작성 가능해요.">
+					</div>
 
 					<!-- 프로젝트 상세정보 이미지 -->
-					<div class="mt-4">
+					<div class="mt-5">
 						<p class="subheading">상세정보 이미지</p>
 						<p class="sideDescription">
 							· 3MB 이하의 JPG, JPEG, PNG 파일<br>
