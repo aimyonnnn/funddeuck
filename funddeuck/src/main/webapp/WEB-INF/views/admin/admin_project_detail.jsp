@@ -170,6 +170,10 @@
 					            </td>
 					        </tr>
 					        <tr>
+					            <td>프로젝트 한줄 소개</td>
+					            <td>${project.project_semi_introduce}</td>
+					        </tr>
+					        <tr>
 					            <td>프로젝트 소개</td>
 					            <td>${project.project_introduce}</td>
 					        </tr>
