@@ -98,7 +98,7 @@ public class AdminController {
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		
 		// 프로젝트 목록 조회 요청
-		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
+		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 		// project_approve_status = 2번인 프로젝트 리스트만 출력 후
 		// 관리자 페이지 내에서 승인 요청을 신청한 프로젝트의
 		// 메이커, 리워드 버튼을 클릭 시에 다시 ajax로 리스트를 요청 후에 출력한다.
@@ -125,7 +125,7 @@ public class AdminController {
 	}
 	
 	// 관리자 - 프로젝트 승인 처리
-	// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
+	// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 	@GetMapping("approveProjectStatus")
 	@ResponseBody
 	public String approveProjectStatus(
@@ -138,7 +138,8 @@ public class AdminController {
 		// toast 팝업 알림을 보내기 위해 member_id 조회하기
 		String memberId = memberService.getMemberId(member_idx);
 		
-		// 프로젝트 상태컬럼 변경하기 3-승인
+		// 프로젝트 상태컬럼을 3-승인완료로 변경하기 
+		project_approve_status = 3;
 		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
 		
 		// 1. 상태컬럼 변경 성공 시 결제url이 담긴 toast 팝업 알림 보내기
@@ -146,8 +147,8 @@ public class AdminController {
 		if(updateCount > 0) { 
 			
 			// toast 팝업 알림 보내기
-			String paymnetUrl =
-					request.getRequestURL().toString().replace(request.getRequestURI(), "") + "/funddeuck/confirmNotification?project_idx=" + project_idx;
+			String paymnetUrl = "confirmNotification?project_idx=" + project_idx;
+			
 			String notification = 
 					"<a href='" + paymnetUrl + "' style='text-decoration: none; color: black;'>프로젝트 승인이 완료되었습니다. 클릭 시 결제 페이지로 이동합니다.</a>";
 			try {
@@ -189,8 +190,13 @@ public class AdminController {
 	@GetMapping("isProjectApproved")
 	@ResponseBody
 	public String isProjectApproved(@RequestParam int project_idx, @RequestParam int project_approve_status) {
-		// 프로젝트 승인여부 확인하기
+		
+		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
+		// 2-승인요청, 4-반려 일 때는 관리자가 승인 할 수 있게 true 리턴
+		if(project_approve_status == 2 || project_approve_status == 4) return "true";
+		
 		ProjectVO project = projectService.getProjectApproved(project_idx, project_approve_status);
+		
 		// project가 null이 아니면 이미 승인처리 되었기 때문에 false 리턴
 		if(project != null) {
 			return "false";

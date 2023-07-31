@@ -127,6 +127,17 @@
 					            <td>${project.project_idx}</td>
 					        </tr>
 					        <tr>
+					            <td>프로젝트 요금제</td>
+					            <c:choose>
+					            	<c:when test="${project.project_plan eq 1}">
+					            		 <td>기본 요금제</td>
+					            	</c:when>
+					            	<c:when test="${project.project_plan eq 2}">
+					            		 <td>인플루언서 요금제</td>
+					            	</c:when>
+					            </c:choose>
+					        </tr>
+					        <tr>
 					            <td>프로젝트 카테고리</td>
 					            <td>${project.project_category}</td>
 					        </tr>
@@ -214,7 +225,20 @@
 					        </tr>
 					        <tr>
 					            <td>프로젝트 승인 상태</td>
-					            <td>${project.project_approve_status}</td>
+					            <c:choose>
+									<c:when test="${project.project_approve_status eq 2}">
+										<td>승인요청</td>
+									</c:when>
+									<c:when test="${project.project_approve_status eq 3}">
+										<td>승인완료</td>
+									</c:when>
+									<c:when test="${project.project_approve_status eq 4}">
+										<td>승인거절</td>
+									</c:when>
+									<c:when test="${project.project_approve_status eq 5}">
+										<td>결제완료</td>
+									</c:when>
+								</c:choose>
 					        </tr>
 					    </table>
 					</div>	
@@ -453,7 +477,8 @@
 	function approveProjectStatus(project_idx, project_approve_status) {
 		
 		// 프로젝트 승인여부 조회하기
-		// 이미 승인된 경우 false가 콜백으로 전달됨
+		// 승인완료, 결제완료 된 경우 false가 콜백으로 전달됨
+		// 승인요청, 반려처리 된 경우 true가 콜백으로 전달됨
     	isProjectApproved(project_idx, project_approve_status, function(isApproved) {
     		
    			if (isApproved) {

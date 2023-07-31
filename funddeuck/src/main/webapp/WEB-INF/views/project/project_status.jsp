@@ -778,22 +778,22 @@ $(document).ready(function() {
 // 프로젝트별 전체 결제 내역 조회
 // 셀렉트 박스의 값이 변경되었을 때 호출되는 함수
 function onProjectSelectChange() {
- let selectedProjectIdx = $("#projectSelect2").val();
- $.ajax({
-     url: '<c:url value="getPaymentByProjectIdx"/>',
-     method: 'POST',
-     data: {
-     	maker_idx: ${maker_idx},
-         project_idx: selectedProjectIdx
-     },
-     dataType: 'json',
-     success: function (data) {
-     	
-         updatePaymentTable(data);
-     },
-     error: function (error) {
-         console.error(error);
-     }
+	let selectedProjectIdx = $("#projectSelect2").val();
+	$.ajax({
+	    url: '<c:url value="getPaymentByProjectIdx"/>',
+	    method: 'POST',
+	    data: {
+	    	maker_idx: ${maker_idx},
+	        project_idx: selectedProjectIdx
+	    },
+	    dataType: 'json',
+	    success: function (data) {
+	    	
+	        updatePaymentTable(data);
+	    },
+	    error: function (error) {
+	        console.error(error);
+	    }
  });
 }
 

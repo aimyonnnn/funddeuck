@@ -79,7 +79,7 @@ public class ProjectController {
 	public String approvalRequest(@RequestParam int project_idx, HttpServletRequest request) {
 		System.out.println("approvalRequest - " + project_idx);
 		// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경!
-		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
+		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 		// 관리자 페이지에서는 2-승인요청인것만 출력한다!
 		int updateCount = projectService.modifyStatus(project_idx);
 		if(updateCount > 0) {

@@ -47,7 +47,6 @@ public class ProjectVO {
 	private String project_thumnails3;				// 프로젝트 썸네일 (3)
 	private String project_image;					// 프로젝트 내용 상세 이미지
 	private String project_introduce;				// 프로젝트 소개
-//	private String project_semi_introduce;			// 프로젝트 한줄소개
 	private int project_target;						// 목표 금액
 	private int project_amount;						// 프로젝트 달성 금액
 	private Date project_start_date;				// 프로젝트 시작일
