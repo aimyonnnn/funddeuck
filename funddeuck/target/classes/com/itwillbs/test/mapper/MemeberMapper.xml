@@ -143,11 +143,7 @@
     GROUP BY k.maker_idx;
 	</select>
 	
-<<<<<<< HEAD
 	<!-- 팔로우 알람 설정 -->
-=======
-	<!-- 팔로우 알람 업데이트 -->
->>>>>>> refs/heads/Member
 	<update id="updateFallowingAlam">
 		UPDATE fallowing
 		SET is_alam = #{is_alam}
@@ -160,11 +156,7 @@
 			  			   WHERE maker_name = #{maker_name}) 
 	</update>
 	
-<<<<<<< HEAD
-	<!-- 팔로우 삭제 -->
-=======
 	<!-- 팔로우 해제 -->
->>>>>>> refs/heads/Member
 	<delete id="deleteFallow">
 		DELETE FROM fallowing
 		WHERE member_idx = (SELECT member_idx
@@ -175,13 +167,8 @@
 			  			   FROM maker
 			  			   WHERE maker_name = #{maker_name}) 
 	</delete>
-<<<<<<< HEAD
 
 	<!-- 팔로우 추가 -->
-=======
-	
-	<!-- 팔로잉 -->
->>>>>>> refs/heads/Member
 	<insert id="insertFallow">
 		INSERT INTO fallowing
 		VALUES ((SELECT member_idx
