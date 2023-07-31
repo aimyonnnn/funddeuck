@@ -137,15 +137,14 @@
 					<div class="card-body">
 						<small class="card-title opacity-75">아트북 | 아르누보</small>
 						<p class="card-text fw-bold text-start">&lt;스파이더맨: 어크로스 더 유니버스&gt; 아트북+공식 굿즈</p>
-						<small class="opacity-50">상상 그 이상을 넘어서는 멀티버스의 세계 속으로!</small>
 					</div>
 						<a href="fundingDetail" class="stretched-link"></a>
 					<div class="card-footer bg-white">
 		      			<small class="fw-bold text-success">26.014%</small>&nbsp;
 		      			<small class="opacity-75">25,478,800원
 		      			<small class="fw-bold float-end">23일 남음</small></small>
-		        	<div class="progress">
-	  					<div class="progress-bar bg-success" role="progressbar" aria-label="Success example" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+		        	<div class="progress" style="height: 10px">
+	  					<div class="progress-bar bg-success" role="progressbar" aria-label="Success example" style="height:10px; width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 					</div>
 					</div>
 				</div>

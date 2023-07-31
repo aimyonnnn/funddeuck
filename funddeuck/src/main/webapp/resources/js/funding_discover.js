@@ -43,7 +43,8 @@ $(function() {
 				pageNum++;
 				loadList(searchType, searchKeyword);
 			} else {
-					alert("가져올 데이터가 더 없습니다!");
+//					alert("가져올 데이터가 더 없습니다!");
+					console.log(pageNum);
 			}
 		}
 	});
@@ -75,7 +76,7 @@ function loadList(searchType, searchKeyword) {
 									+ "<small class='opacity-50'>" + project.project_semi_introduce +"</small>"
 								+ "</div>" 
 								+ "<a href='fundingDetail' class='stretched-link'></a>"
-							+ "<div class='card-footer bg-white'>" 
+							+ "<div class='card-footer bg-white'>"
 								+ "<small class='fw-bold text-success'>"+ project.project_target/project.project_amount + "%" + "</small>&nbsp;" 
 								+ "<small class='opacity-75'>" + project.project_amount + "원"
 								+ "<small class='fw-bold float-end'>" + project.project_end_date - date + " 일 남음" + "</small></small>"
@@ -84,14 +85,13 @@ function loadList(searchType, searchKeyword) {
 							+ "</div>"
 							+ "</div>"
 						+ "</div>"	
-				$("table").append(item);
+				$("#").append(item);
 			}
 		},
 		error: function() {
 			alert("데이터 목록 요청 실패!");
 		}
 	});
-	
 }
 
 function getFormatDate(date) {
@@ -99,3 +99,4 @@ function getFormatDate(date) {
 	let formatDate = "$2-$3-$4 $5:$6";
 	return date.replace(targetDate, formatDate);
 }
+

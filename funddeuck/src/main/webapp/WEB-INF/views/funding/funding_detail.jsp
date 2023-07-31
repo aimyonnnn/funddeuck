@@ -18,8 +18,9 @@
 <!-- 결제 연동 스크립트 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<%-- <script src="${pageContext.request.contextPath }/resources/js/payment.js"></script> --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/funding_detail.css">
+<!-- 카카오 공유하기 스크립트 -->
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 </head>
 <body>
 	<br>
@@ -143,7 +144,7 @@
 				<div class="row border border-warning bg-white d-lg-none fixed-bottom">
 					<div class="col-12 col-lg-auto d-flex justify-content-center">
 						<!-- 공유 -->
-						<button class="btn btn-primary me-2">
+						<button class="btn btn-primary me-2" id="btnKakao">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
 							  <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
 							</svg>
@@ -167,7 +168,7 @@
 				<div class="row d-none d-lg-block">
 					<div class="col-12 col-lg-auto d-flex justify-content-center">
 						<!-- 공유 -->
-						<button class="btn btn-primary me-2 bg-white border border-secondary border-opacity-25 rounded-0">
+						<button class="btn btn-primary me-2 bg-white border border-secondary border-opacity-25 rounded-0" id="kakao-link-btn" onclick="javascript:kakaoShare()">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-share" viewBox="0 0 16 16">
 							  <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
 							</svg>
@@ -413,6 +414,38 @@
 		    }
 		  });
 		}
+
+	  // SDK 초기화
+	  Kakao.init('86b7cd36bb5e30664d978742e039e68a');
+	
+	  // SDK 초기화 여부 판단
+	  console.log(Kakao.isInitialized());
+	
+	  function kakaoShare() {
+	    Kakao.Link.sendDefault({
+	      objectType: 'feed',
+	      content: {
+	        title: '펀뜩 사이트를 공유합니다!',
+	        description: '펀뜩 사이트로 바로가기',
+	        imageUrl: 'https://images.unsplash.com/photo-1424593463432-4104fa2c015a?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=384&ixid=MnwxfDB8MXxyYW5kb218MHwxOTA3Mjd8fHx8fHx8MTY5MDc5MTEwMQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1306',
+	        link: {
+	          mobileWebUrl: 'http://localhost:8080/test',
+	          webUrl: 'http://localhost:8080/test',
+	        },
+	      },
+	      buttons: [
+	        {
+	          title: '웹으로 보기',
+	          link: {
+	            mobileWebUrl: 'http://localhost:8080/test',
+	            webUrl: 'http://localhost:8080/test',
+	          },
+	        },
+	      ],
+	      // 카카오톡 미설치 시 카카오톡 설치 경로이동
+	      installTalk: true,
+	    })
+	  }
 	</script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>

@@ -60,7 +60,19 @@ public class FundingController {
 	
 	// 펀딩 상세페이지 이동
 	@GetMapping ("fundingDetail")
-	public String fundingDetail() {
+	public String fundingDetail(Model model
+//			, @RequestParam int project_idx 
+//			데이터 추가 후 주석 해제
+			) {
+		
+		// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보
+//		ProjectVO project = fundingService.selectProjectInfo(project_idx);
+//		model.addAttribute(project);
+		
+		// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
+//		RewardVO reward = fundingService.selectProjectRewardInfo(project_idx);
+//		model.addAttribute(reward);
+		
 		return "funding/funding_detail";
 	}
 	
@@ -121,9 +133,17 @@ public class FundingController {
 	
 	// 결제 완료 페이지
 	@GetMapping ("fundingResult")
-	public String fundingResult(
-//			@RequestParam String merchant_uid payment 테이블 데이터 추가 시 주석 해제
+	public String fundingResult(Model model, HttpSession session
+//			, @RequestParam String merchant_uid payment 테이블 데이터 추가 시 주석 해제
 			) {
+		
+		// 세션 아이디가 존재하지 않을 때 
+//		String sId = (String) session.getAttribute("sId");
+//		if(sId == null) {
+//			model.addAttribute("msg", "잘못된 접근입니다.");
+//			return "fail_back";
+//		}
+		
 		return "funding/funding_result";
 	}	
 	
