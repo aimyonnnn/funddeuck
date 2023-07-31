@@ -78,4 +78,12 @@ public class PaymentVO {
 	private String project_subject;			// 프로젝트 이름
 	private String reward_name;				// 리워드 이름
 	// ===============================================================================
+	// 발송·환불 목록 출력 시 사용 
+	private String member_name;
+	private String delivery_date;
+	private String delivery_reciever;
+	private String delivery_phone;
+	private String delivery_zipcode;
+	private String delivery_add;
+	private String delivery_detailadd;
 }
