@@ -341,11 +341,25 @@
               </tr>
               <tr>
                 <th scope="row" width="150"><label for="resName">결제상품</label></th>
-                <td>프로젝트 요금제</td>
+                <c:choose>
+                	<c:when test="${project.project_plan eq 1}">
+               			<td>기본요금제</td>
+                	</c:when>
+					<c:otherwise>
+               			<td>인플루언서요금제</td>
+					</c:otherwise>                	
+                </c:choose>
               </tr>
               <tr>
                 <th scope="row" width="150"><label for="pay">결제금액</label></th>
-                <td>10000</td>
+               	<c:choose>
+	               	<c:when test="${project.project_plan eq 1}">
+             			<td>50000</td>
+	               	</c:when>
+					<c:otherwise>
+	              		<td>100000</td>
+					</c:otherwise>                	
+                </c:choose>
               </tr>
               <tr>
                 <th scope="row"><label for="userName">이름</label></th>

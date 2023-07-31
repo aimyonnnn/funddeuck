@@ -150,7 +150,7 @@ public class AdminController {
 			String paymnetUrl = "confirmNotification?project_idx=" + project_idx;
 			
 			String notification = 
-					"<a href='" + paymnetUrl + "' style='text-decoration: none; color: black;'>프로젝트 승인이 완료되었습니다. 클릭 시 결제 페이지로 이동합니다.</a>";
+					"<a href='" + paymnetUrl + "' style='text-decoration: none; color: black;'>[프로젝트 승인 알림] 프로젝트 승인이 완료되었습니다. 클릭 시 요금 결제 페이지로 이동합니다.</a>";
 			try {
 				echoHandler.sendNotificationToUser(memberId, notification);
 			} catch (IOException e) {
