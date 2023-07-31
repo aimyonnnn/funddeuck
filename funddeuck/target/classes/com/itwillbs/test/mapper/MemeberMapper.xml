@@ -106,12 +106,14 @@
 			WHERE member_email = #{email}
 	</select>
 	
+	<!-- 회원의 이메일 존재여부 -->
 	<select id="selectMemberInfoEmail">
 		SELECT *
 			FROM members
 			WHERE member_email = #{email}
 	</select>
 	
+	<!-- 페스워드 변경 -->
 	<update id="updatePasswd">
 		UPDATE members
 			SET member_passwd = #{passwd}
@@ -132,6 +134,7 @@
     GROUP BY k.maker_idx;
 	</select>
 	
+	<!-- 팔로우 알람 업데이트 -->
 	<update id="updateFallowingAlam">
 		UPDATE fallowing
 		SET is_alam = #{is_alam}
@@ -144,6 +147,7 @@
 			  			   WHERE maker_name = #{maker_name}) 
 	</update>
 	
+	<!-- 팔로우 해제 -->
 	<delete id="deleteFallow">
 		DELETE FROM fallowing
 		WHERE member_idx = (SELECT member_idx
@@ -155,6 +159,7 @@
 			  			   WHERE maker_name = #{maker_name}) 
 	</delete>
 	
+	<!-- 팔로잉 -->
 	<insert id="insertFallow">
 		INSERT INTO fallowing
 		VALUES ((SELECT member_idx
@@ -166,6 +171,7 @@
 			  	, 1) 
 	</insert>
 	
+	<!-- 찜 리스트 -->
 	<select id="selectZimList">
         SELECT p.project_subject, p.project_introduce,mk.maker_name
                 ,(SELECT count(*) FROM fallowing f WHERE f.maker_idx = mk.maker_idx) AS 'follow_count'
@@ -180,6 +186,7 @@
                             WHERE member_id = #{sId});
 	</select>
 	
+	<!-- 찜 알람 -->
 	<update id="updateZimAlam">
 		UPDATE zim
 		SET zim_is_alam = #{isAlam }
@@ -191,6 +198,7 @@
 		
 	</update>
 	
+	<!-- 찜 삭제 -->
 	<delete id="deleteZim">
 		DELETE FROM zim
 		WHERE project_idx = #{project_idx}
@@ -200,6 +208,7 @@
 							WHERE member_id = #{sId})
 	</delete>
 	
+	<!-- 찜하기 -->
 	<insert id="insertZim">
 		INSERT INTO zim 
 			VALUES ((SELECT member_idx
@@ -208,4 +217,16 @@
 					, #{project_idx}
 					, 1)
 	</insert>
+	
+	<!-- 팔로우의 프로잭트 리스트 -->
+	<select id="selectFollowProjectList">
+		SELECT *
+			FROM project
+			WHERE maker_idx IN ((SELECT maker_idx
+								FROM fallowing
+								WHERE member_idx = (SELECT member_idx
+													FROM members
+													WHERE member_id = #{sId})))
+			ORDER BY project_start_date DESC
+	</select>
 </mapper>

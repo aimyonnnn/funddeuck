@@ -57,26 +57,43 @@
     		});
 		}
     	
-    	function fallowingCheck(isFallow, name, num) {
+    	function fallowingCheck(isFallow, name, num, count) {
+    		
+    		let fallowCount = count;
+			
     	    $.ajax({
     	        type: "post",
     	        url: "fallowCheck",
     	        data: { is_fallow: isFallow, maker_name: name },
     	        success: function(data) {
     	        	
-//     	        	alert(data);
-    	        	
     	            if (data.trim() == 'true') {
     	                if (isFallow == 1) {
+    	                	
+    	                	fallowCount = fallowCount - 1;
+    	                	
     	                    $("#fallowing" + num).empty();
     	                    $("#fallowing" + num).append(
-    	                        '<button class="btn btn-primary" onclick="fallowingCheck(0, \'' + name + '\', ' + num + ')"><i class="bi bi-plus"></i> 팔로우</button>'
+    	                        '<button class="btn btn-primary" onclick="fallowingCheck(0, \'' + name + '\', ' + num + ', '+ fallowCount +')"><i class="bi bi-plus"></i> 팔로우</button>'
+    	                    );
+    	                    
+    	                    $("#count"+num).empty();
+    	                    $("#count"+num).append(
+    	                    	'팔로워 ' + fallowCount
     	                    );
     	                } else {
+    	                	
+    	                	fallowCount = fallowCount + 1;
+    	                	
     	                    $("#fallowing" + num).empty();
     	                    $("#fallowing" + num).append(
     	                        '<button class="btn btn-outline-primary" onclick="isAlam(1, \'' + name + '\',' + num + ')"><i class="bi bi-bell"></i></button>'
-    	                        +'<button class="ms-1 btn btn-outline-primary" onclick="fallowingCheck(1, \'' + name + '\', ' + num + ')"><i class="bi bi-check"></i> 팔로잉</button>'
+    	                        +'<button class="ms-1 btn btn-outline-primary" onclick="fallowingCheck(1, \'' + name + '\', ' + num + ', '+ fallowCount +')"><i class="bi bi-check"></i> 팔로잉</button>'
+    	                    );
+    	                    
+    	                    $("#count"+num).empty();
+    	                    $("#count"+num).append(
+    	                    	'팔로워 ' + fallowCount
     	                    );
     	                }
     	            }
@@ -102,7 +119,7 @@
                 <a href="" class="text-black"> 팔로잉 메이커 </a>
             </div>
             <div class="col col-lg-3">
-                <a href="" class="text-black"> 팔로잉 서포터 </a>
+                <a href="FollowBoardForm" class="text-black"> 팔로잉 게시판 </a>
             </div>
         </div>
         <!-- 메뉴 선택 -->
@@ -115,7 +132,7 @@
                 <div class="row">
                     ${fallow.maker_name }
                 </div>
-                <div class="row">
+                <div class="row" id="count${fallow.maker_idx }">
                     팔로워 ${fallow.follower_count }
                 </div>
             </div>
@@ -128,7 +145,7 @@
 	                	<button class="btn btn-outline-primary" onclick="isAlam(1,'${fallow.maker_name }',${fallow.maker_idx })"><i class="bi bi-bell-slash"></i></button>
 	                </c:otherwise>
                 </c:choose>
-	                <button class="btn btn-outline-primary" onclick="fallowingCheck(1,'${fallow.maker_name }',${fallow.maker_idx })"><i class="bi bi-check"></i> 팔로잉</button>
+	                <button class="btn btn-outline-primary" onclick="fallowingCheck(1,'${fallow.maker_name }',${fallow.maker_idx },${fallow.follower_count })"><i class="bi bi-check"></i> 팔로잉</button>
             </div>
         </div> 
         </c:forEach>
