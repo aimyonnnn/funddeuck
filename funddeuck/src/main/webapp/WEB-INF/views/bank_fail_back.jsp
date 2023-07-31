@@ -10,15 +10,8 @@
 	// 은행 관련 요청 작업 실패 시 전달받은 오류 메세지 출력 
 	alert("${msg}");
 	
-	if(${isForward} == "true") {
-		location.href = "";
-	} else {
-		history.back();
-	}
-	
-	
-	if(${isClose} == "true") {
-		window.close();	
+	if("${isClose}" == "true") {
+		window.close();		
 	} else {
 		history.back();
 	}
