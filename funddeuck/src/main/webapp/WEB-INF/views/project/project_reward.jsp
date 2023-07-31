@@ -8,13 +8,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!--bootstrap -->
+<!-- bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-<!-- jQuery -->
+<!-- jquery -->
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
-<!-- Font Awesome -->
+<!-- font awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<!-- CSS -->
+<!-- css -->
 <link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
 <style>
 /* 버튼과 글자 사이의 높이 간격을 줄임 */
@@ -33,145 +33,144 @@
 </style>
 </head>
 <body>
- 	<jsp:include page="../common/project_top.jsp"/>
-	<main id="main">
-    	<div class="containerCSS">
-      
-			<!-- 왼쪽 네비게이션 시작 -->
-			<aside id="aisdeLeft">
-			    <div id="projectManagement">
-					<img src="${pageContext.request.contextPath}/resources/images/managementImage.jpg" width="200px" height="150px">
-			    	${sessionScope.sId}님의 프로젝트
-			    </div>
-			    <ul id="navMenu">
-			        <li>
-			            <a href="#" class="toggleTab">
-			                &nbsp;&nbsp;&nbsp;프로젝트 관리
-			                <i class="fas fa-caret-down"></i>
-			            </a>
-			            <ul class="subMenu">
-			                <li><a href="projectMaker">메이커 정보</a></li>
-			                <li><a href="projectManagement">프로젝트 등록</a></li>
-			                <li><a href="projectReward" id="active-tab">리워드 설계</a></li>
-			            </ul>
-			        </li>
-			        <li><a href="projectStatus">프로젝트 현황</a></li>
-			        <li><a href="projectShipping">발송·환불 관리</a></li>
-			        <li><a href="projectSettlement">수수료·정산 관리</a></li>
-			    </ul>
-			</aside>
+<jsp:include page="../common/project_top.jsp"/>
+<main id="main">
+    <div class="containerCSS">
+  
+        <!-- 왼쪽 네비게이션 시작 -->
+        <aside id="aisdeLeft">
+            <div id="projectManagement">
+                <img src="${pageContext.request.contextPath}/resources/images/managementImage.jpg" width="200px" height="150px">
+                ${sessionScope.sId}님의 프로젝트
+            </div>
+            <ul id="navMenu">
+                <li>
+                    <a href="#" class="toggleTab">
+                        &nbsp;&nbsp;&nbsp;프로젝트 관리
+                        <i class="fas fa-caret-down"></i>
+                    </a>
+                    <ul class="subMenu">
+                        <li><a href="projectMaker">메이커 정보</a></li>
+                        <li><a href="projectManagement">프로젝트 등록</a></li>
+                        <li><a href="projectReward" id="active-tab">리워드 설계</a></li>
+                    </ul>
+                </li>
+                <li><a href="projectStatus">프로젝트 현황</a></li>
+                <li><a href="projectShipping">발송·환불 관리</a></li>
+                <li><a href="projectSettlement">수수료·정산 관리</a></li>
+            </ul>
+        </aside>
 
-		    <!-- 중앙 섹션 시작 -->
-		    <section id="section">
-		   		<article id="article">
-		   		<div class="mt-5">
-	      			<img src="${pageContext.request.contextPath}/resources/images/projectRewardImage.png" class="img-fluid me-auto">
-	      		</div>
-				
-		        <div class="projectArea">
-		       		<p class="projectTitle">리워드 설계</p>
-		          	<p class="projectContent">서포터들에게 제공할 리워드를 입력해 주세요.</p>
-		            
-		            <!-- 폼 태그 시작 -->
-		            <form action="" class="projectContent" method="post" id="rewardForm">
-		            
-		            	<!-- 히든 처리하는 부분 -->
-		            	<input type="text" name="project_idx" id="project_idx" value="${project_idx}" class="form-control" style="width:500px;">
-		            	
-			            <!-- 금액 -->
-			            <div>
-			            	<label class="form-content subheading" for="reward_price">금액</label>
-			           		<input class="form-control" type="text" name="reward_price" id="reward_price" placeholder="금액을 입력하세요" style="width:500px;">
-			            </div>
-		
-		                <!-- 리워드 카테고리 -->
-		                <label class="form-content subheading" for="reward_category">카테고리</label>
-		                <div class="d-flex flew-row">
-		                	<select class="form-control" name="reward_category" id="reward_category" style="width:150px;">
-			                	<option value="">-- 선택 --</option>
-			                    <option value="tech">테크/가전</option>
-			                    <option value="fassion">패션/잡화</option>
-			                    <option value="living">홈/리빙</option>
-			                    <option value="beauty">뷰티</option>
-			                    <option value="book">출판</option>
-		               		</select>
-		              </div>
-		              
-		              <!--리워드명 -->
-		              <div>
-			              <label class="form-content subheading" for="reward_name">리워드명</label>
-			              <input class="form-control" type="text" name="reward_name" id="reward_name" placeholder="예시 - 베이지 이불/베개 1개 세트" style="width:500px;">
-		              </div>
-		              
-		              <!--리워드 수량 -->
-		              <div>
-			              <label class="form-content subheading" for="reward_quantity">수량</label>
-			              <input class="form-control" type="text" name="reward_quantity" id="reward_quantity" style="width:500px;">
-		              </div>
-		              
-		              <!--리워드 옵션 -->
-		              <div>
-			              <label class="form-content subheading" for="reward_option">옵션</label>
-			              <input class="form-control" type="text" name="reward_option" id="reward_option" style="width:500px;">
-		              </div>
-		
-		              <!-- 리워드 설명 -->
-		              <label class="form-content subheading" for="reward_detail">리워드 설명</label>
-		              <textarea class="form-control reward-info" name="reward_detail" id="reward_detail" placeholder="리워드 구성과 혜택을 간결하게 설명해 주세요" style="height: 300px; resize: none;"></textarea>
-		              
-		              <!-- 배송여부 -->
-		              <div class="form-content">
-              	  		<span class="subheading">배송여부</span>
-			            <div class="form-check">
-			          		<input class="form-check-input" type="radio" name="delivery_status" id="delivery_status1" value="배송">
-			                <label class="form-check-label" for="delivery_status1">
-		                		<span>배송</span>
-			                </label>
-			            </div>
-			            <div class="form-check">
-		              		<input class="form-check-input" type="radio" name="delivery_status" id="delivery_status2" value="배송없음">
-			                <label class="form-check-label" for="delivery_status2">
-		                    	<span>배송없음</span>
-			                </label>
-	            	  	</div>
-		              </div>
-		
-		              <!-- 배송비 -->
-		              <div>
-		                <label class="form-content subheading" for="delivery_price">배송비</label>
-		                <input class="form-control" type="text" name="delivery_price" id="delivery_price" placeholder="배송비를 입력하세요" style="width:500px;">
-		              </div>
-		
-		              <!-- 발송 시작일 -->
-		              <label class="form-content subheading" for="yearMonth">발송 시작일</label>
-		              <div class="d-flex flew-row">
-		                <select class="form-control" name="yearMonth" id="yearMonth" style="width:130px;">
-		                  <option value="">-- 선택 --</option>
-		                  <option value="2023/08">2023년 8월</option>
-		                  <option value="2023/09">2023년 9월</option>
-		                  <option value="2023/10">2023년 10월</option>
-		                  <option value="2023/11">2023년 11월</option>
-		                  <option value="2023/12">2023년 12월</option>
-		                  <option value="2024/01">2024년 1월</option>
-		                  <option value="2024/02">2024년 2월</option>
-		                  <option value="2024/03">2024년 3월</option>
-		                  <option value="2024/04">2024년 4월</option>
-		                  <option value="2024/05">2024년 5월</option>
-		                </select>
-		                <select class="form-control mx-3" name="day" id="day" style="width:170px;">
-		                  <option value="">-- 선택 --</option>
-		                  <option value="/1~10">1일 ~ 10일(초)</option>
-		                  <option value="/11~20">11일 ~ 20일(중순)</option>
-		                  <option value="/21~30">21일 ~ 30일(말)</option>
-		                </select>
-		                <input type="text" name="delivery_date" id="delivery_date" class="form-control" style="width:170px;" readonly="readonly">
-		              </div>
-		
-              <!-- 리워드 정보 제공 고시 -->
-              <!-- 들여쓰기 안한게 아니라 스페이스바 누르면 뷰에 스페이스바까지 나와서 이렇게 작성한거임 -->
-              <label class="form-content subheading" for="reward_info">리워드 정보 제공 고시</label>
-				    <!-- 첫 페이지 - 기본 양식 -->
-				    <textarea class="form-control reward-info" placeholder="제품 소재, 색상, 주의사항, 품질보증기준을 작성해주세요" name="reward_info" id="reward_info" style="height: 300px; resize: none;">
+        <!-- 중앙 섹션 시작 -->
+        <section id="section">
+            <article id="article">
+                <div class="mt-5">
+                    <img src="${pageContext.request.contextPath}/resources/images/projectRewardImage.png" class="img-fluid me-auto">
+                </div>
+
+                <div class="projectArea">
+                    <p class="projectTitle">리워드 설계</p>
+                    <p class="projectContent">서포터들에게 제공할 리워드를 입력해 주세요.</p>
+
+                    <!-- 폼 태그 시작 -->
+                    <form action="" class="projectContent" method="post" id="rewardForm">
+                        <!-- 히든 처리하는 부분 -->
+                        <input type="text" name="project_idx" id="project_idx" value="${project_idx}" class="form-control" style="width:500px;">
+
+                        <!-- 금액 -->
+                        <div>
+                            <label class="form-content subheading" for="reward_price">금액</label>
+                            <input class="form-control" type="text" name="reward_price" id="reward_price" placeholder="금액을 입력하세요" style="width:500px;">
+                        </div>
+
+                        <!-- 리워드 카테고리 -->
+                        <label class="form-content subheading" for="reward_category">카테고리</label>
+                        <div class="d-flex flew-row">
+                            <select class="form-control" name="reward_category" id="reward_category" style="width:150px;">
+                                <option value="">-- 선택 --</option>
+                                <option value="tech">테크/가전</option>
+                                <option value="fashion">패션/잡화</option>
+                                <option value="living">홈/리빙</option>
+                                <option value="beauty">뷰티</option>
+                                <option value="book">출판</option>
+                            </select>
+                        </div>
+                        
+                        <!--리워드명 -->
+                        <div>
+                            <label class="form-content subheading" for="reward_name">리워드명</label>
+                            <input class="form-control" type="text" name="reward_name" id="reward_name" placeholder="예시 - 베이지 이불/베개 1개 세트" style="width:500px;">
+                        </div>
+                        
+                        <!--리워드 수량 -->
+                        <div>
+                            <label class="form-content subheading" for="reward_quantity">수량</label>
+                            <input class="form-control" type="text" name="reward_quantity" id="reward_quantity" style="width:500px;">
+                        </div>
+                        
+                        <!--리워드 옵션 -->
+                        <div>
+                            <label class="form-content subheading" for="reward_option">옵션</label>
+                            <input class="form-control" type="text" name="reward_option" id="reward_option" style="width:500px;">
+                        </div>
+                        
+                        <!-- 리워드 설명 -->
+                        <label class="form-content subheading" for="reward_detail">리워드 설명</label>
+                        <textarea class="form-control reward-info" name="reward_detail" id="reward_detail" placeholder="리워드 구성과 혜택을 간결하게 설명해 주세요" style="height: 300px; resize: none;"></textarea>
+                        
+                        <!-- 배송여부 -->
+                        <div class="form-content">
+                            <span class="subheading">배송여부</span>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="delivery_status" id="delivery_status1" value="배송">
+                                <label class="form-check-label" for="delivery_status1">
+                                    <span>배송</span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="delivery_status" id="delivery_status2" value="배송없음">
+                                <label class="form-check-label" for="delivery_status2">
+                                    <span>배송없음</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- 배송비 -->
+                        <div>
+                            <label class="form-content subheading" for="delivery_price">배송비</label>
+                            <input class="form-control" type="text" name="delivery_price" id="delivery_price" placeholder="배송비를 입력하세요" style="width:500px;">
+                        </div>
+                        
+                        <!-- 발송 시작일 -->
+                        <label class="form-content subheading" for="yearMonth">발송 시작일</label>
+                        <div class="d-flex flew-row">
+                            <select class="form-control" name="yearMonth" id="yearMonth" style="width:130px;">
+                                <option value="">-- 선택 --</option>
+                                <option value="2023/08">2023년 8월</option>
+                                <option value="2023/09">2023년 9월</option>
+                                <option value="2023/10">2023년 10월</option>
+                                <option value="2023/11">2023년 11월</option>
+                                <option value="2023/12">2023년 12월</option>
+                                <option value="2024/01">2024년 1월</option>
+                                <option value="2024/02">2024년 2월</option>
+                                <option value="2024/03">2024년 3월</option>
+                                <option value="2024/04">2024년 4월</option>
+                                <option value="2024/05">2024년 5월</option>
+                            </select>
+                            <select class="form-control mx-3" name="day" id="day" style="width:170px;">
+                                <option value="">-- 선택 --</option>
+                                <option value="/1~10">1일 ~ 10일(초)</option>
+                                <option value="/11~20">11일 ~ 20일(중순)</option>
+                                <option value="/21~30">21일 ~ 30일(말)</option>
+                            </select>
+                            <input type="text" name="delivery_date" id="delivery_date" class="form-control" style="width:170px;" readonly="readonly">
+                        </div>
+
+                        <!-- 리워드 정보 제공 고시 -->
+                        <!-- 들여쓰기 안한게 아니라 스페이스바 누르면 뷰에 스페이스바까지 나와서 이렇게 작성한거임 -->
+                        <label class="form-content subheading" for="reward_info">리워드 정보 제공 고시</label>
+                        <!-- 첫 페이지 - 기본 양식 -->
+                        <textarea class="form-control reward-info" placeholder="제품 소재, 색상, 주의사항, 품질보증기준을 작성해주세요" name="reward_info" id="reward_info" style="height: 300px; resize: none;">
 제품소재 :
 
 색상 :
@@ -181,54 +180,51 @@
 주의사항 :
 
 품질보증기준 :</textarea>
-					<!-- 저장하기 & 수정하기 버튼 -->
-					<div class="d-flex justify-content-center my-3">
-					    <button type="button" class="btn btn-outline-primary" id="saveButton" onclick="saveReward()">등록하기</button>
-					    <button type="button" class="btn btn-outline-primary me-3" id="editButton" style="display: none;" onclick="modifyReward(selectedRewardIdx)">수정하기</button>
-					    <button type="button" class="btn btn-outline-primary" id="removeButton" style="display: none;" onclick="removeReward(selectedRewardIdx)">삭제하기</button>
-					</div>
 
-		            </form>
-		          </div>
-		          <!-- 리워드 설계 끝-->
-		
-		        </article>
-				</section>
-				<!-- 중앙 섹션 끝 -->
-				
-				<!-- 오른쪽 네비게이션 -->
-				<aside id="aisdeRight">
-				
-			        <!-- 관리자 피드백 -->
-			        <div class="admin-feedback">
-			        	<div class="admin-title">
-			        		관리자 피드백
-		        		</div>
-			        	<div class="admin-content">
-			        		관리자로부터 수정, 요청사항 피드백을 받으면 이곳에 피드백 메시지가 출력됩니다.
-			        	</div>
-			            <div id="notificationContainer">
-			            	<div class="alert alert-primary" role="alert">
-								<i class="fas fa-exclamation-circle"></i><span>&nbsp;알림이 없습니다.</span>
-							</div>
-				        </div>
-				        
-				        <!--  -->
-				        <div class="admin-title mt-5">
-				        	리워드 리스트
-			        	</div>
-				        <div class="alert alert-success" role="alert" id="numRewardsAdded">
-							<span><i class="fas fa-exclamation-circle"></i>&nbsp;현재 등록된 리워드 수 : <span id="rewardCount">0</span></span>
-						</div>
-						<div id="rewardContainer">
-							<!-- 이 부분은 리워드 리스트가 출력될 컨테이너입니다. -->
-						</div>
-						
-			     	 </div>
-			     </aside>
-			     <!-- 오른쪽 네비게이션 끝 -->
-   		</div>
-    </main>
+                        <!-- 저장하기 & 수정하기 버튼 -->
+                        <div class="d-flex justify-content-center my-3">
+                            <button type="button" class="btn btn-outline-primary" id="saveButton" onclick="saveReward()">등록하기</button>
+                            <button type="button" class="btn btn-outline-primary me-3" id="editButton" style="display: none;" onclick="modifyReward(selectedRewardIdx)">수정하기</button>
+                            <button type="button" class="btn btn-outline-primary" id="removeButton" style="display: none;" onclick="removeReward(selectedRewardIdx)">삭제하기</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- 리워드 설계 끝-->
+            </article>
+        </section>
+        <!-- 중앙 섹션 끝 -->
+        
+        <!-- 오른쪽 네비게이션 -->
+        <aside id="aisdeRight">
+            <!-- 관리자 피드백 -->
+            <div class="admin-feedback">
+                <div class="admin-title">
+                    관리자 피드백
+                </div>
+                <div class="admin-content">
+                    관리자로부터 수정, 요청사항 피드백을 받으면 이곳에 피드백 메시지가 출력됩니다.
+                </div>
+                <div id="notificationContainer">
+                    <div class="alert alert-primary" role="alert">
+                        <i class="fas fa-exclamation-circle"></i><span>&nbsp;알림이 없습니다.</span>
+                    </div>
+                </div>
+                
+                <!--  -->
+                <div class="admin-title mt-5">
+                    리워드 리스트
+                </div>
+                <div class="alert alert-success" role="alert" id="numRewardsAdded">
+                    <span><i class="fas fa-exclamation-circle"></i>&nbsp;현재 등록된 리워드 수 : <span id="rewardCount">0</span></span>
+                </div>
+                <div id="rewardContainer">
+                    <!-- 이 부분은 리워드 리스트가 출력될 컨테이너입니다. -->
+                </div>
+            </div>
+        </aside>
+        <!-- 오른쪽 네비게이션 끝 -->
+    </div>
+</main>
 	
 <script type="text/javascript">
 // 선택된 리워드의 reward_idx 값을 저장하는 변수
