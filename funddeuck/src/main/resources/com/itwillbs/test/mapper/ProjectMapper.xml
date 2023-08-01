@@ -123,9 +123,10 @@
 				, #{project_settlement_account}
 				, #{project_settlement_name}
 				, #{project_settlement_image}
-				, 1
-				, #{maker_idx}
-				, NULL
+				, 1								 -- 프로젝트 승인 상태
+				, NULL							 -- 프로젝트 승인 요청 시간
+				, #{maker_idx}					 -- 메이커 번호
+				, 1								 -- 프로젝트 상태
 			)
 	</insert>
 	
@@ -313,6 +314,13 @@
 			project_approve_status = 3;
 	</select>
 	
+	<update id="updateProjectApprovalRequestTime">
+		update project
+			set
+				project_approval_request_time = #{project_approval_request_time}
+			where
+				project_idx = #{project_idx}
+	</update>
 	
 	<!--  ranking system  -->
 	<select id="selectTop10ProjectsByEndDate" resultType="com.itwillbs.test.vo.ProjectVO"> 

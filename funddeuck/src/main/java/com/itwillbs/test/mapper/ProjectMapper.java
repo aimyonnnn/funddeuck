@@ -93,14 +93,16 @@ public interface ProjectMapper {
 	// 승인완료 된 프로젝트 리스트 조회
 	List<ProjectVO> selectApprovedProjects();
 	
-	//-----main page---------
-		// show all project
-		List<ProjectVO> getAllProjects();
-
-		//ranking system
-		List<ProjectVO> selectTop10ProjectsByEndDate();
+	// 프로젝트 승인 처리 시간 저장
+	int updateProjectApprovalRequestTime(ProjectVO project);
 		
 
+		//-----main page---------
+		// show all project
+		List<ProjectVO> getAllProjects();
+		
+		//ranking system
+		List<ProjectVO> selectTop10ProjectsByEndDate();
 		
 			
 

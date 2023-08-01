@@ -111,6 +111,11 @@ public class ProjectService {
 	public List<ProjectVO> getApprovedProjects() {
 		return mapper.selectApprovedProjects();
 	}
+	// 프로젝트 승인 처리 시간 저장
+	public int modifyProjectApprovalRequestTime(ProjectVO project) {
+		return mapper.updateProjectApprovalRequestTime(project);
+	}
+	
 	
 	//---------main page------------
 		// ranking system
@@ -132,6 +137,8 @@ public class ProjectService {
 	            return allProjects; 
 	        }
 	    }
+		
+		
 		
 			
 	
