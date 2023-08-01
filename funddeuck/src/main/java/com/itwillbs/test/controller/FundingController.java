@@ -91,8 +91,6 @@ public class FundingController {
 		int project_idx = 1;
 		// 상세페이지에서 고른 리워드번호 필요(가데이터)
 		int reward_idx = 1;
-		// 상세페이지에서 전달받은 추가후원금액
-		String addDonationAmount = "10000";
 		// 회원 정보 불러오기
 		MembersVO member = memberService.getMemberInfo(id);
 		System.out.println("회원 정보 : " + member);
@@ -121,8 +119,6 @@ public class FundingController {
 		}
 		
 		
-		// 추가후원금액
-		model.addAttribute("addDonationAmount", addDonationAmount);
 		// 회원 정보
 		model.addAttribute("member", member);
 		// 프로젝트 정보

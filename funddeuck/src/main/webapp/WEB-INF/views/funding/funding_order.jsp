@@ -13,11 +13,12 @@
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
 <!-- 헤더  -->
 <jsp:include page="../common/main_header.jsp"></jsp:include>
-<!-- jQuery 라이브러리 추가 -->
 <!-- 부트스트랩 5.3.0 CSS 추가 -->
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css"> -->
 <!-- 부트스트랩 5.3.0 JS 추가 -->
 <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> -->
+<!-- jQuery 라이브러리 추가 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- funding_order.js -->
 <script src="${pageContext.request.contextPath }/resources/js/funding_order.js"></script>
 <!-- 공용 css -->
@@ -194,8 +195,9 @@
 					<span class="fs-4 fw-bold">추가 후원금</span>
 					<div class="row m-2 p-2 border">
 						<div class="row">
+							<!-- ${addDonationAmount } -->
 							<div class="col">
-								<input class="form-control" type="text">
+								<input class="form-control" type="text" id="addDonationAmountInput" placeholder="숫자만 입력">
 							</div>
 							<div class="col-4">
 								<span class="fs-6 fw-bold">원</span>
@@ -217,7 +219,7 @@
 						<span class="fs-4 fw-bold text-primary">최종 후원 금액</span>
 					</div>
 					<div class="col-4 text-end">
-						<span class="fs-4 fw-bold">xxxx원</span>
+						<span class="fs-4 fw-bold">xxxx</span><span class="fs-6 fw-bold">원</span>
 					</div>
 				</div>
 				<!-- 최종금액 외 금액들 -->
@@ -225,20 +227,20 @@
 						<div class="col-6 text-start">
 							<span class="fs-6 fw-bold">리워드 금액</span>
 						</div>
-						<div class="col-6 text-end" id="rewardPrice">
-							<span class="fs-6 fw-bold">${reward.reward_price }원</span>
+						<div class="col-6 text-end">
+							<span class="fs-6 fw-bold" id="rewardPrice">${reward.reward_price }</span><span class="fs-6 fw-bold">원</span>
 						</div>
 						<div class="col-6 text-start">
 							<span class="fs-6 fw-bold">배송비</span>
 						</div>
-						<div class="col-6 text-end" id="rewardDeliveryPrice">
-							<span class="fs-6 fw-bold">${reward.delivery_price }원</span>
+						<div class="col-6 text-end">
+							<span class="fs-6 fw-bold" id="rewardDeliveryPrice">${reward.delivery_price }</span><span class="fs-6 fw-bold">원</span>
 						</div>
 						<div class="col-6 text-start">
 							<span class="fs-6 fw-bold">추가 후원 금액</span>
 						</div>
 						<div class="col-6 text-end">
-							<span class="fs-6 fw-bold">${addDonationAmount }원</span>
+							<span class="fs-6 fw-bold" id="addDonationAmount">0</span><span class="fs-6 fw-bold">원</span>
 						</div>
 						<div class="col-6 text-start">
 							<span class="fs-6 fw-bold">쿠폰 사용</span>
@@ -595,7 +597,7 @@
 					<div class="container text-center">
 						<div class="row mb-2">
 							<div class="col">
-								<span class="fs-6">개의 배송지가 있습니다</span>
+								<span class="fs-6 fw-bold" id="deliveryCount"></span>
 							</div>
 							<div class="col text-end">
 								<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryAddModal">추가</button>

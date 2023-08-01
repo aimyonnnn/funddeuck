@@ -136,6 +136,10 @@
 					console.log(data);
 					var deliveryListElem = $('#deliveryList');
 					deliveryListElem.empty(); // 배송지 목록 삭제
+					
+		            // 배송지 갯수 출력 부분 추가
+		            $("#deliveryCount").text(data.length + "개의 배송지가 있습니다");					
+					
 					if (data.length > 0) {
 						// 반복문을 사용하여 각 데이터를 배송지 목록에 추가
 						data.forEach(function(delivery) {
@@ -296,8 +300,8 @@
 						            +   '<td>' + reward.delivery_date + '</td>'
 						            +  '</tr>'
 						            + '</table>';			
-						let output2 = '<span class="fs-6 fw-bold">' + reward.reward_price + '원</span>';
-						let output3 = '<span class="fs-6 fw-bold">' + reward.delivery_price + '원</span>';
+						let output2 = reward.reward_price;
+						let output3 = reward.delivery_price;
 			            // 출력하기
 			            $('#rewardContainer').html(output);
 			            $('#rewardPrice').html(output2);
@@ -361,5 +365,36 @@
 			couponSaleElement.innerText = selectedCoupon.value.toString() + '% 할인';
 		}
 	}	
+
+// ===========================================================
+// 추가 후원금 입력
+	$(document).ready(function() {
+	    $("#addDonationAmountInput").on('input', function (e) {
+	        // 입력된 값에서 숫자만 추출합니다.
+	        var value = $(this).val().replace(/[^0-9]/g, '');
+	
+	        // 숫자가 없는 경우는 빈 문자열로 설정합니다.
+	        if (value === '') {
+	            $(this).val('');
+	            return;
+	        }
+
+	        // 입력란에 포맷팅된 값을 설정합니다.
+	        $(this).val(Number(value).toString());
+	        
+	    });
+	    
+		// 포커스가 벗어난 경우 최종 후원금란에 출력
+		$("#addDonationAmountInput").on("blur", function() {
+		    let inputAmount = $(this).val();
+		    // 아무것도 입력안했을 경우 0 출력
+		    if (inputAmount === '') {
+				inputAmount = 0;
+			}
+		    $("#addDonationAmount").text(inputAmount);
+		});
+		
+		
+	});
 
 // ===========================================================
