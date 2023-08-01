@@ -545,6 +545,9 @@ function markNotificationAsRead(notification_idx) {
 	let confirmation = confirm("메시지를 읽음 처리 하시겠습니까?");
 	
 	if(confirmation) {
+		// 기본 동작 방지하기
+		event.preventDefault();
+		
 		console.log("알림번호 : " + notification_idx);
 		$.ajax({
 			method: 'get',
@@ -567,6 +570,20 @@ function markNotificationAsRead(notification_idx) {
 				console.log("읽음 처리 실패!");
 			}
 		})
+	} else {
+		
+		// "아니요"를 선택했을 때 메시지에 포함된 링크로 이동할지 물어보기
+        let linkConfirmation = confirm("메시지에 포함된 링크로 이동하시겠습니까?");
+        
+        if (linkConfirmation) {
+            // 메시지에 포함된 링크로 이동
+        } else {
+        	// 기본 동작 방지하기 
+            event.preventDefault();
+        	
+            // 아무 동작도 하지 않음 (현재 페이지에 머무름)
+        	location.reload();
+        }
 	}
 }
 	

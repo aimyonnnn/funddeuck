@@ -104,8 +104,8 @@ public class PaymentService {
 	}
 	
 	// 메이커의 프로젝트별 결제 내역 조회
-	public List<ProjectVO> getPaymentByProjectIdx(int maker_idx, int project_idx) {
-		return mapper.selectPaymentByProjectIdx(maker_idx, project_idx);
+	public List<ProjectVO> getPaymentByProjectIdx(int maker_idx, int project_idx, LocalDate parsedStartDate, LocalDate parsedEndDate) {
+		return mapper.selectPaymentByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate);
 	}
 	
 	

@@ -46,7 +46,7 @@ $(() => {
         }
 
         if (makerStartDate > makerEndDate) {
-            alert("시작 날짜는 끝 날짜보다 빠를 수 없습니다.");
+            alert("끝 날짜가 시작 날짜보다 빠릅니다. 올바른 날짜를 선택해주세요.");
             document.getElementById("startDate").focus();
             return;
         }
@@ -239,7 +239,7 @@ $(() => {
         }
 
         if (startDate > endDate) {
-            alert("시작 날짜는 끝 날짜보다 빠를 수 없습니다.");
+            alert("끝 날짜가 시작 날짜보다 빠릅니다. 올바른 날짜를 선택해주세요.");
             document.getElementById("startDateProject").focus();
             return;
         }
@@ -637,9 +637,12 @@ th, td {
 						
 							<!-- 셀렉트 박스 -->
 							<div class="d-flex flex-row justify-content-end">
-								<select id="projectSelect2" class="datepicker-button" onchange="onProjectSelectChange()">
+								<input type="date" class="datepicker" id="startDatePayment" placeholder="시작 날짜">
+								<input type="date" class="datepicker mx-2" id="endDatePayment" placeholder="끝 날짜">
+								<select id="projectSelect2" class="datepicker-button">
 									<option value="">선택</option>
-								</select>		
+								</select>
+								<button class="datepicker-button mx-2" id="paymentUpdateButton">조회</button>		
 							</div>
 							
 							<div class="row">
@@ -725,6 +728,7 @@ function getProjectList() {
 	});
 }
 
+// 아래 부터는 테이블 출력
 //서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
 function getProjectList2() {
 	
@@ -775,27 +779,53 @@ $(document).ready(function() {
 	});
 });
 
-// 프로젝트별 전체 결제 내역 조회
-// 셀렉트 박스의 값이 변경되었을 때 호출되는 함수
-function onProjectSelectChange() {
-	let selectedProjectIdx = $("#projectSelect2").val();
-	$.ajax({
-	    url: '<c:url value="getPaymentByProjectIdx"/>',
-	    method: 'POST',
-	    data: {
-	    	maker_idx: ${maker_idx},
-	        project_idx: selectedProjectIdx
-	    },
-	    dataType: 'json',
-	    success: function (data) {
-	    	
-	        updatePaymentTable(data);
-	    },
-	    error: function (error) {
-	        console.error(error);
-	    }
- });
-}
+// 조회 버튼 클릭 시 프로젝트별 전체 결제 내역 조회
+$(()=>{
+	$('#paymentUpdateButton').click(()=>{
+		
+	    let startDatePayment = $("#startDatePayment").val();
+	    let endDatePayment = $("#endDatePayment").val();
+	    let selectedProjectIdx2 = $("#projectSelect2").val();
+		
+	    // 유효성 검사
+        if (!startDatePayment || !endDatePayment) {
+            alert("시작 날짜와 끝 날짜를 모두 입력해주세요.");
+            return;
+        }
+
+        let startDateObj = new Date(startDatePayment);
+        let endDateObj = new Date(endDatePayment);
+
+        if (endDateObj < startDateObj) {
+            alert("끝 날짜가 시작 날짜보다 빠릅니다. 올바른 날짜를 선택해주세요.");
+            return;
+        }
+
+        if (!selectedProjectIdx2) {
+            alert("프로젝트를 선택해주세요.");
+            return;
+        }
+        
+	    $.ajax({
+	    	url: '<c:url value="getPaymentByProjectIdx"/>',
+	        method: 'POST',
+	        data: {
+	            maker_idx: ${maker_idx},
+	            project_idx: selectedProjectIdx2,
+	            startDate: startDatePayment,
+	            endDate: endDatePayment
+	        },
+	        dataType: 'json',
+	        success: function (data) {
+	            updatePaymentTable(data);
+	        },
+	        error: function (error) {
+	            console.error(error);
+	        }
+	    });
+		
+	});
+});
 
 // 결제내역 데이터를 테이블에 추가하는 함수
 function updatePaymentTable(data) {

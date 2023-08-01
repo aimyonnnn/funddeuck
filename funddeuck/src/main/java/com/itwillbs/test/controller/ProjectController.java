@@ -768,8 +768,17 @@ public class ProjectController {
 	@PostMapping("getPaymentByProjectIdx")
 	@ResponseBody
 	public List<ProjectVO> getPaymentByProjectIdx(
-			@RequestParam(value = "maker_idx") int maker_idx, @RequestParam(value = "project_idx") int project_idx) {
-		List<ProjectVO> pList = paymentService.getPaymentByProjectIdx(maker_idx, project_idx);
+			@RequestParam(value = "maker_idx") int maker_idx, @RequestParam(value = "project_idx") int project_idx,
+			@RequestParam String startDate, @RequestParam String endDate) {
+		
+		// 날짜 형식을 지정하는 DateTimeFormatter 객체 생성
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+	    // 시작일과 종료일을 파싱하여 LocalDate 객체로 변환
+	    LocalDate parsedStartDate = LocalDate.parse(startDate, formatter);
+	    LocalDate parsedEndDate = LocalDate.parse(endDate, formatter);
+		
+		List<ProjectVO> pList = paymentService.getPaymentByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate);
 		return pList;
 	}
 	
