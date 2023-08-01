@@ -19,9 +19,10 @@ public class AdminService {
 	private ProjectMapper projectMapper;
 
 	// 프로젝트 승인 상태 확인 및 업데이트하는 스케줄러
-	@Scheduled(fixedRate = 172800000) // 두 일(48시간) 마다 실행
+	@Scheduled(fixedRate = 172800000) // 48시간 마다 실행
+//	@Scheduled(fixedDelay = 60000)
 	public void checkAndUpdateProjectApprovalStatus() {
-		// 승인 요청 상태(승인 상태가 '2-승인요청')인 프로젝트 리스트 조회
+		// 승인 요청 상태(승인 상태가 '3-승인완료')인 프로젝트 리스트 조회
 		List<ProjectVO> approvalRequestedProjects = projectMapper.selectApprovedProjects();
 
 		LocalDateTime now = LocalDateTime.now();
@@ -34,6 +35,11 @@ public class AdminService {
 				if (requestDateTime.plusHours(48).isBefore(now) && isPaymentNotCompleted(project)) {
 					projectMapper.updateProjectStatus(projectIdx, 4);
 				}
+				// 테스트
+//				if (requestDateTime.plusMinutes(1).isBefore(now) && isPaymentNotCompleted(project)) {
+//	                projectMapper.updateProjectStatus(projectIdx, 4);
+//	            }
+				
 			}
 		}
 	}
