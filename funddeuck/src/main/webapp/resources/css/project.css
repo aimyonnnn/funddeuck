@@ -98,6 +98,13 @@ footer {
     margin-left: 5px;
 }
 
+/* 팝오버 */
+.bi-question-circle:hover {
+  fill: white;
+  border-radius: 50%;
+  background-color: #FF9300;
+}
+
 /* XXX님의 프로젝트 */
 #projectManagement {
 	font-size: 18px;
@@ -466,6 +473,11 @@ a.supporters svg {
 	font-weight: bold;
 	margin-top: 30px;
 	margin-bottom: 10px;
+}
+
+/* 모달 부연 설명 */
+#modalDescription {
+	font-size:12px;
 }
 
 /* ==================== 미디어쿼리 ==================== */
