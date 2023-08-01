@@ -10,7 +10,7 @@
 <!-- line-awesome icons CDN -->
 <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <!-- header include -->
-<jsp:include page="../common/main_header.jsp"></jsp:include>
+<jsp:include page="../Header.jsp"></jsp:include>
 <body>
 <br>
 <br>
@@ -68,6 +68,6 @@
 	</div>
 <br>
 <!-- footer include -->
-<jsp:include page="../common/main_footer.jsp"></jsp:include>
+<jsp:include page="../Footer.jsp"></jsp:include>
 </body>
 </html>

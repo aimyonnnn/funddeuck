@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,9 +11,8 @@
 <title>펀딩</title>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/> --%>
 <!-- header include -->
-<jsp:include page="../common/main_header.jsp"></jsp:include>
+<jsp:include page="../Header.jsp"></jsp:include>
 <!-- 결제 연동 스크립트 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -259,6 +257,9 @@
 		<h3 class="fw-bold">더욱 확장된 멀티버스가 열린다!</h3>
 		<h3 class="fw-bold">상상 그 이상을 넘어서는 멀티버스!</h3><br>
 		<h3 class="fw-bold">&lt;스파이더맨: 어크로스 더 유니버스&gt;</h3><br>
+		
+		<h3 class="fw-bold">&lt;이하 길이 테스트&gt;</h3><br>		
+		<img src="${pageContext.request.contextPath }/resources/images/fundingDetail_test_img1.jpg" width="650"><br>
 		</div>
 <!-- 		네비게이션 바 끝 -->
 			</div>
@@ -305,7 +306,7 @@
 					<span class="fs-5 fw-bold p-3 text-start">리워드 선택</span>
 				</div>
 				<!--스크롤-->
-				<div class="row" id="scrollBar">
+				<div class="row fixed-right" id="scrollBar">
 					<div class="row pb-3 d-flex text-start">
 						<div class="card">
 							<div class="card-body">
@@ -359,20 +360,17 @@
 				</c:forEach>
 				</div>
 				<!-- 리워드 선택 바 끝-->
-	
 			</div>
 		</div>
 		<!-- 메이커 프로필, 리워드 선택 바 끝-->
 	
-	
 		<div class="row">
-	
 		</div>
 	</div>
 	<!--내용 영역 끝--> 
 
-	<!-- 부트스트랩 -->
 	<script type="text/javascript">
+// 아임포트 결제 스크립트 ---------------------------------------------
 	function request_pay() {
 		
 		var IMP = window.IMP;
@@ -414,7 +412,10 @@
 		    }
 		  });
 		}
+// --------------------------------------------------------------------
 
+// 카카오톡 공유하기 스크립트 -----------------------------------------
+	
 	  // SDK 초기화
 	  Kakao.init('86b7cd36bb5e30664d978742e039e68a');
 	
@@ -446,7 +447,10 @@
 	      installTalk: true,
 	    })
 	  }
-	</script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+// --------------------------------------------------------------------
+</script>
+<jsp:include page="../Footer.jsp"></jsp:include>
+<!-- 부트스트랩 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>

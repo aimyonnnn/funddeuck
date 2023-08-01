@@ -4,8 +4,8 @@
 리워드 선택 영역 반응
 */
 .card:hover {
-   box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
-   border-color: green;
+	box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+	border-color: green;
 }
 
 #scrollBar {
@@ -17,4 +17,5 @@
     transition: all .2s;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    position: sticky;
 }

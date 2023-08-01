@@ -78,7 +78,10 @@ public class FundingController {
 	
 	// 펀딩 주문페이지 이동
 	@GetMapping ("fundingOrder")
-	public String fundingOrder(Model model) {
+	public String fundingOrder(Model model
+//			, @RequestParam int project_idx, @RequestParam int reward_idx
+			// 데이터 추가 후 주석 푸시면 됩니다!
+			) {
 //		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, @RequestParam String addDonationAmount, HttpSession session) {
 		// session에 저장되어있는 회원아이디 가져오기
 //		String id = (String)session.getAttribute("sId");

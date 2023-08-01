@@ -99,7 +99,7 @@
           <a class="nav-link" href="#">오픈예정</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">펀딩+</a>
+          <a class="nav-link" href="fundingDiscover">펀딩+</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">고객센터</a>
