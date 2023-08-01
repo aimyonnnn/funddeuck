@@ -112,8 +112,8 @@ public class ProjectService {
 		return mapper.selectApprovedProjects();
 	}
 	// 프로젝트 승인 처리 시간 저장
-	public int modifyProjectApprovalRequestTime(ProjectVO project) {
-		return mapper.updateProjectApprovalRequestTime(project);
+	public void modifyProjectApprovalRequestTime(ProjectVO project) {
+		mapper.updateProjectApprovalRequestTime(project);
 	}
 	
 	

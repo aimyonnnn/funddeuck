@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.itwillbs.test.handler.EchoHandler;
+import com.itwillbs.test.service.AdminService;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.NotificationService;
 import com.itwillbs.test.service.PaymentService;
@@ -56,7 +57,8 @@ public class AdminController {
 	public AdminController(EchoHandler echoHandler) {
 		this.echoHandler = echoHandler;
 	}
-	
+	@Autowired
+	public AdminService adminService;
 	
 	// 관리자 메인
 	@GetMapping("admin")
@@ -145,7 +147,7 @@ public class AdminController {
 		
 		ProjectVO project = projectService.getProjectInfo(project_idx);
         project.setProject_approval_request_time(LocalDateTime.now());
-        int updateApprovalCount = projectService.modifyProjectApprovalRequestTime(project);
+        projectService.modifyProjectApprovalRequestTime(project);
 		
 		// 1. 상태컬럼 변경 성공 시 결제url이 담긴 toast 팝업 알림 보내기
 		// 2. 결제url이 담긴 메시지 보내기
@@ -166,6 +168,10 @@ public class AdminController {
 			// 메세지함에서 해당 url 클릭 시 결제 페이지로 이동함
 			int insertCount = notificationService.registNotification(memberId, notification);
 			if(insertCount > 0) { // 메시지 보내기 성공 시
+				
+				// 프로젝트 승인 상태를 48시간 후에 체크하는 작업 예약
+				adminService.scheduleCheckApproval(project_idx);
+				
 				return "true";
 			}
 			

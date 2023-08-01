@@ -1,50 +1,35 @@
 package com.itwillbs.test.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.test.mapper.ProjectMapper;
 import com.itwillbs.test.vo.ProjectVO;
 
 @Service
-@EnableScheduling
 public class AdminService {
 
 	@Autowired
 	private ProjectMapper projectMapper;
+	
+	private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-	// 프로젝트 승인 상태 확인 및 업데이트하는 스케줄러
-	@Scheduled(fixedRate = 172800000) // 48시간 마다 실행
-//	@Scheduled(fixedDelay = 60000)
-	public void checkAndUpdateProjectApprovalStatus() {
-		// 승인 요청 상태(승인 상태가 '3-승인완료')인 프로젝트 리스트 조회
-		List<ProjectVO> approvalRequestedProjects = projectMapper.selectApprovedProjects();
-
-		LocalDateTime now = LocalDateTime.now();
-
-		for (ProjectVO project : approvalRequestedProjects) {
-			int projectIdx = project.getProject_idx();
-			LocalDateTime requestDateTime = project.getProject_approval_request_time();
-			if (requestDateTime != null) {
-				// 승인 요청 시간으로부터 48시간이 지났고, 결제가 완료되지 않은 경우 프로젝트 승인 상태를 '4-승인거절'로 업데이트
-				if (requestDateTime.plusHours(48).isBefore(now) && isPaymentNotCompleted(project)) {
-					projectMapper.updateProjectStatus(projectIdx, 4);
-				}
-				// 테스트
-//				if (requestDateTime.plusMinutes(1).isBefore(now) && isPaymentNotCompleted(project)) {
-//	                projectMapper.updateProjectStatus(projectIdx, 4);
-//	            }
-				
+	// 프로젝트 승인 상태를 48시간 후에 체크하여 업데이트
+	public void scheduleCheckApproval(int project_idx) {
+		executorService.schedule(() -> {
+			ProjectVO project = projectMapper.selectProject(project_idx);
+			if (project != null && project.getProject_approve_status() != 5) {
+				projectMapper.updateProjectStatus(project_idx, 4); // 프로젝트 상태를 4-승인거절로 변경
 			}
-		}
+		}, 48, TimeUnit.HOURS);
 	}
 	
-	private boolean isPaymentNotCompleted(ProjectVO project) {
-		return project.getProject_approve_status() != 5;
+	// 기존 스케줄러 취소
+	public void cancelScheduledTask() {
+		executorService.shutdown();
 	}
 }
