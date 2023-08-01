@@ -219,7 +219,7 @@
 						<span class="fs-4 fw-bold text-primary">최종 후원 금액</span>
 					</div>
 					<div class="col-4 text-end">
-						<span class="fs-4 fw-bold">xxxx</span><span class="fs-6 fw-bold">원</span>
+						<span class="fs-4 fw-bold" id="totalPrice">${reward.reward_price + reward.delivery_price}</span><span class="fs-6 fw-bold">원</span>
 					</div>
 				</div>
 				<!-- 최종금액 외 금액들 -->

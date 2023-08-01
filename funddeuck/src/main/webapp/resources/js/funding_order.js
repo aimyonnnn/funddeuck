@@ -307,6 +307,7 @@
 			            $('#rewardPrice').html(output2);
 			            $('#rewardDeliveryPrice').html(output3);
 						updateCouponSale();
+						updateTotalPrice();
 					},
 					error: function(xhr, status, error) {
 						 console.error("Error:", error);
@@ -370,15 +371,20 @@
 			couponSaleElement.innerText = '';
 			// 쿠폰 사용 금액 0 으로 출력
 			couponPriceElement.innerText = 0;
+			updateTotalPrice();
 		} else {
 			// 쿠폰 사용금액 계산
+			alert("할인율 : " + selectedCoupon.value);
 			let discountPercentage = parseFloat(selectedCoupon.value);
-			let discountedPrice = (rewardPrice * (1 - discountPercentage / 100));
+			alert("discountPercentage : " + discountPercentage);
+			let discountedPrice = rewardPrice * (1 - discountPercentage / 100) / 10;
+			alert("discountedPrice : " + discountedPrice);
 			// 할인율 출력
 			couponSaleElement.innerText = selectedCoupon.value.toString() + '% 할인';
 			// 쿠폰 사용 금액 출력
 			minusElement.innerText = '-';
 			couponPriceElement.innerText = discountedPrice.toString();
+			updateTotalPrice();
 		}
 	}	
 
@@ -408,9 +414,22 @@
 				inputAmount = 0;
 			}
 		    $("#addDonationAmount").text(inputAmount);
+		    updateTotalPrice();
 		});
+		
 		
 		
 	});
 
+// ===========================================================
+// 최종 후원금액 출력
+	function updateTotalPrice() {
+	    let rewardPrice = parseFloat(document.getElementById("rewardPrice").innerText);
+	    let deliveryPrice = parseFloat(document.getElementById("rewardDeliveryPrice").innerText);
+	    let couponPrice = parseFloat(document.getElementById("couponPrice").innerText);
+	    let addDonationAmount = parseFloat(document.getElementById("addDonationAmount").innerText);
+	
+	    let totalPrice = rewardPrice + deliveryPrice + addDonationAmount - couponPrice;
+	    document.getElementById("totalPrice").innerText = totalPrice;
+	}
 // ===========================================================
