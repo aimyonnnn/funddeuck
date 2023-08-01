@@ -93,7 +93,7 @@
 </head>
 <body>
   <footer>
-    <img src="logo.png" alt="로고" class="footer-logo">
+<!--     <img src="logo.png" alt="로고" class="footer-logo"> -->
     <ul class="footer-links" style="font-size: 110%; text-align: center;" >
       <li><a href="#">홈</a></li>
       <li><a href="#">서비스</a></li>

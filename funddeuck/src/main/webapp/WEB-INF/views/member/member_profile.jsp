@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +24,10 @@
                     <div class="row g-0">
                         <h3 class="profile-heading">프로필 정보 설정</h3>
 						<div class="col-md-4 gradient-custom text-center text-white" style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+						   <div class="circle-image">
 						    <img src="${pageContext.request.contextPath}/resources/upload/${profile.profile_img}" alt="프로필 사진을 업로드 해주세요" style="max-height: 100px;">
+						   </div>
+						   <br>
 						    <form action="updateProfileImage" method="post" enctype="multipart/form-data">
 						        <input type="hidden" name="member_idx" value="${profile.member_idx}" />
 						        <div class="custom-file">
@@ -39,7 +43,8 @@
                             <div class="card-body p-4">
 							<form id="profileForm">
                                 <hr class="mt-0 mb-4">
-							    <input type="text" name="member_idx" value="${profile.member_idx}" />
+							    <input type="text" name="member_idx" value="<c:out value='${sessionScope.sIdx}' />" />
+							    
                                     <h6>회사 / 직책</h6>
                                 <div class="row pt-1">
                                     <div class="col-6 mb-3">
@@ -81,8 +86,8 @@
                     </div>
                 </div>
             </div>
-            <div class="button-container">
-                <button id="saveButton" class="btn btn-primary">저장</button>
+            <div class="button-container">            
+                <button id="saveButton" class="btn btn-primary">수정</button>
                 <button id="cancelButton" class="btn btn-primary">취소</button>
             </div>
         </div>

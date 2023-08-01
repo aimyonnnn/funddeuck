@@ -7,7 +7,7 @@ import com.itwillbs.test.vo.ProfileVO;
 @Mapper
 public interface ProfileMapper {
 
-    ProfileVO getProfileByMemberId(int member_idx);
+    ProfileVO getProfileByMemberId(int memberIdx);
 
     void updateProfile(ProfileVO profileVO);
 

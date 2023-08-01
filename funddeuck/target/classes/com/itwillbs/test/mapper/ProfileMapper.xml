@@ -14,7 +14,10 @@
     </resultMap>
 
     <select id="getProfileByMemberId" resultMap="profileResultMap">
-        SELECT * FROM profile WHERE member_idx = #{member_idx}
+        SELECT p.*
+        FROM profile p
+        JOIN members m ON m.member_idx = p.member_idx
+        WHERE m.member_idx = #{member_idx}
     </select>
 
     <update id="updateProfile" parameterType="com.itwillbs.test.vo.ProfileVO">
@@ -26,13 +29,11 @@
             profile_text = #{profile_text}
         WHERE member_idx = #{member_idx}
     </update>
-    
+
     <update id="updateProfileImage" parameterType="com.itwillbs.test.vo.ProfileVO">
-    	UPDATE profile
-        SET 
-        	profile_img = #{profile_img}
-        WHERE
-        	member_idx = #{member_idx}
+        UPDATE profile
+        SET profile_img = #{profile_img}
+        WHERE member_idx = #{member_idx}
     </update>
 
 </mapper>

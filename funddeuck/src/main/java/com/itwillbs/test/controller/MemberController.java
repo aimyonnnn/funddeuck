@@ -124,7 +124,8 @@ public class MemberController {
     		
     		isMember.setFalse_count(0);
     		service.updateFailCount(isMember);
-    		session.setAttribute("sId", member.getMember_id());
+    		session.setAttribute("sId", isMember.getMember_id());
+    		session.setAttribute("sIdx", isMember.getMember_idx());
     		return "redirect:/";
     	}
     	isMember.setFalse_count(isMember.getFalse_count()+1);

@@ -82,7 +82,7 @@
 <div class="container">
   <!-- 배너 -->
   <div class="banner">
-    <img src="banner_image.jpg" alt="Banner Image">
+<!--     <img src="banner_image.jpg" alt="Banner Image"> -->
   </div>
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light rounded fixed-top">
