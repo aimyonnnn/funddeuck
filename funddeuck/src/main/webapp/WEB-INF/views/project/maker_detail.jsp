@@ -69,10 +69,12 @@
 				
 				<%-- maker 테이블의 member_idx와 세션아이디로 조회한 member_idx가 같을 때 수정하기 버튼 출력 --%>
 				<c:if test="${sessionScope.sId != null && (maker.member_idx eq member_idx)}">
-					<div class="d-flex justify-content-end">
-						<button class="btn btn-outline-primary"
-						onclick="location.href='modifyMakerForm?maker_idx=${maker.maker_idx}'">수정하기</button>
-					</div>
+				    <div class="d-flex justify-content-end">
+				        <form action="modifyMakerForm" method="post">
+				            <input type="hidden" name="maker_idx" value="${maker.maker_idx}" />
+				            <button type="submit" class="btn btn-outline-primary">수정하기</button>
+				        </form>
+				    </div>
 				</c:if>
 				
 				<!-- Follow -->

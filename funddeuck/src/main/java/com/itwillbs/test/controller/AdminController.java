@@ -125,7 +125,7 @@ public class AdminController {
 	}
 	
 	// 관리자 - 프로젝트 승인 처리
-	// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-반려 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
+	// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 	@GetMapping("approveProjectStatus")
 	@ResponseBody
 	public String approveProjectStatus(
@@ -147,7 +147,7 @@ public class AdminController {
 		if(updateCount > 0) { 
 			
 			// toast 팝업 알림 보내기
-			String paymnetUrl = "confirmNotification?project_idx=" + project_idx;
+			String paymnetUrl = "projectPlanPayment?project_idx=" + project_idx;
 			
 			String notification = 
 					"<a href='" + paymnetUrl + "' style='text-decoration: none; color: black;'>[프로젝트 승인 알림] 프로젝트 승인이 완료되었습니다. 클릭 시 요금 결제 페이지로 이동합니다.</a>";
