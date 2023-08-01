@@ -26,66 +26,6 @@
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
 <script type="text/javascript">
 
-	// 배송지 신규 등록을 위한 ajax 요청 (기본 배송지로 등록)
-	$(document).on("click", "#deliveryNewAdd", function() {
-		
-		// 폼 데이터 가져오기
-		var formData = $("#deliveryNewAddModal form").serialize();
-		console.log(formData);
-		// ajax 요청
-		$.ajax({
-			type: "POST",
-			url: "deliveryNewAdd",
-			data: formData,
-			success: function(saveDelivery) {
-				if(saveDelivery != null) {
-					console.log("배송지 신규 등록 완료!");
-					// 배송지 추가 모달창의 입력된 데이터 지우기
-					$("#deliveryNewAddModal input").val("");
-					// 배송지 추가 모달창 닫힘(부트스트랩 5.3.0에서는 X)
-	//					$('#deliveryAddModal').modal('hide');
-			        // 배송지 추가 모달창 닫기 버튼 클릭 발생
-			        $("#deliveryNewAddModalClose").click();
-			        
-			        console.log(saveDelivery);
-			        // 기존 배송지란에 있던 내용 지우기
-			        $('#deliveryContainer').html('');
-			        
-			        let output = '<div class="col">'
-							+ '<div class="row-12">'
-							+ '<span class="fs-6 fw-bold">' + saveDelivery.delivery_reciever + '</span>&nbsp;'
-							+ '<span class=" badge bg-danger text-white">기본</span>'	
-							+ '</div>'
-							+ '<div class="row-12">'
-							+ '<span class="fs-6">[' + saveDelivery.delivery_zipcode + ']</span>&nbsp;'
-							+ '<span class="fs-6">' + saveDelivery.delivery_add + '</span>&nbsp;'
-							+ '<c:if test="${not empty'	+  saveDelivery.delivery_detailadds + '}">'
-							+ '<span class="fs-6">' + saveDelivery.delivery_detailadd + '</span>'
-							+ '</c:if>'
-							+ '</div>'
-							+ '<div class="row-12">'
-							+ '<span class="fs-6">' + saveDelivery.delivery_phone + '</span>'
-							+ '</div></div>'
-							+ '<div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">'
-							+ '<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryChangeModal">변경</button>'
-							+ '</div>';
-						
-			        // 배송지란에 등록된 기본배송지 출력
-			        $('#deliveryContainer').html(output);
-			        	
-			        
-					
-				} else {
-					console.log("배송지 신규 등록 실패!");
-				}
-			},
-			error: function (xhr, status, error) {
-				console.error("오류 발생!" , error);
-			}
-		});
-		
-			
-	});
 
 	// 배송지 등록을 위한 ajax 요청 (기본 배송지 O)
 	$(document).on("click", "#deliveryAdd", function() {
@@ -719,11 +659,11 @@
 						<div class="container text-start">
 							<div class="row p-1">
 								<span class="fs-5 fw-bold">받는 사람</span>
-								<input type="text" class="form-control"  name="delivery_reciever">
+								<input type="text" class="form-control" name="delivery_reciever">
 							</div>
 							<div class="row p-1">
 								<span class="fs-5 fw-bold">받는 사람 연락처</span>
-								<input type="text" class="form-control"  name="delivery_phone">
+								<input type="text" class="form-control delivery_phone" name="delivery_phone">
 							</div>
 							<div class="row p-1">
 								<div class="col">
@@ -769,50 +709,50 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header d-flex justify-content-center">
-					<h5 class="modal-title">배송지 등록</h5>
+					<h5 class="modal-title">배송지 신규 등록</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deliveryAddModalClose"></button>
 				</div>
-				<div class="modal-body">
-					<!-- 배송지 등록 작업 요청 -->
-					<form action="deliveryNewAdd" method="post">
-						<div class="container text-start">
-							<div class="row p-1">
-								<span class="fs-5 fw-bold">받는 사람</span>
-								<input type="text" class="form-control"  name="delivery_reciever">
-							</div>
-							<div class="row p-1">
-								<span class="fs-5 fw-bold">받는 사람 연락처</span>
-								<input type="text" class="form-control"  name="delivery_phone">
-							</div>
-							<div class="row p-1">
-								<div class="col">
-									<span class="fs-5 fw-bold text-start">주소</span>
-									&nbsp;&nbsp;
-									<button type="button" class="btn btn-primary " onclick="findPostcode(wrap2)">찾기</button>
+				<form action="deliveryNewAdd" method="post">
+					<div class="modal-body">
+						<!-- 배송지 등록 작업 요청 -->
+							<div class="container text-start">
+								<div class="row p-1">
+									<span class="fs-5 fw-bold">받는 사람</span>
+									<input type="text" class="form-control" name="delivery_reciever" pattern="[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]+" placeholder="한글 또는 영어만 입력 가능" required>
+								</div>
+								<div class="row p-1">
+									<span class="fs-5 fw-bold">받는 사람 연락처</span>
+									<input type="text" class="form-control delivery_phone" name="delivery_phone" placeholder="하이픈('-')제외 숫자만 입력" maxlength="13" required>
+								</div>
+								<div class="row p-1">
+									<div class="col">
+										<span class="fs-5 fw-bold text-start">주소</span>
+										&nbsp;&nbsp;
+										<button type="button" class="btn btn-primary " onclick="findPostcode(wrap2)">찾기</button>
+									</div>
+								</div>
+								<div class="row p-2">
+									<span class="fs-6">우편번호</span>
+									<input type="text" class="form-control" id="postcode2" name="delivery_zipcode" placeholder="우편번호" onfocus="findPostcode(wrap2)" required>
+									<span class="fs-6">도로명 주소</span>
+									<input type="text" class="form-control" id="address2"  name="delivery_add" placeholder="주소" onfocus="findPostcode(wrap2)" required><br>
+									<span class="fs-6">상세주소</span>
+									<input type="text" class="form-control" id="detailAddress2" name="delivery_detailadd" placeholder="상세주소">
+									<span class="fs-6">참고항목</span>
+									<input type="text" class="form-control" id="extraAddress2" placeholder="참고항목">
+									<!-- 주소찾기 영역 -->
+									<div id="wrap2" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
+										<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+									</div>							
+									<!-- 주소찾기 영역 끝 -->
 								</div>
 							</div>
-							<div class="row p-2">
-								<span class="fs-6">우편번호</span>
-								<input type="text" class="form-control" id="postcode2" name="delivery_zipcode" placeholder="우편번호">
-								<span class="fs-6">도로명 주소</span>
-								<input type="text" class="form-control" id="address2"  name="delivery_add" placeholder="주소"><br>
-								<span class="fs-6">상세주소</span>
-								<input type="text" class="form-control" id="detailAddress2" name="delivery_detailadd" placeholder="상세주소">
-								<span class="fs-6">참고항목</span>
-								<input type="text" class="form-control" id="extraAddress2" placeholder="참고항목">
-								<!-- 주소찾기 영역 -->
-								<div id="wrap2" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
-									<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
-								</div>							
-								<!-- 주소찾기 영역 끝 -->
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary" id="deliveryNewAdd">등록</button>
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="deliveryNewAddModalClose">닫기</button>
-				</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">등록</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="deliveryNewAddModalClose">닫기</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>	
