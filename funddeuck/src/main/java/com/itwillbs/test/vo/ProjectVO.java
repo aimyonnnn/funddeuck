@@ -18,8 +18,8 @@ CREATE TABLE project (
     project_thumnails2 varchar(100) COMMENT '프로젝트 썸네일 (2)',
     project_thumnails3 varchar(100) COMMENT '프로젝트 썸네일 (3)',
     project_image varchar(100) NOT NULL COMMENT '프로젝트 내용 상세 이미지',
+    project_semi_introduce varchar(150) NOT NULL COMMENT '프로젝트 한줄 소개',
     project_introduce varchar(300) NOT NULL COMMENT '프로젝트 소개',
-    project_semi_introduce varchar(150) NOT NULL COMMENT '프로젝트 한 줄 소개',
     project_target int NOT NULL COMMENT '목표 금액',
     project_start_date date NOT NULL COMMENT '프로젝트 시작일',
     project_end_date date NOT NULL COMMENT '프로젝트 종료일',
@@ -32,9 +32,10 @@ CREATE TABLE project (
     project_settlement_account varchar(30) NOT NULL COMMENT '정산받을 계좌번호',
     project_settlement_name varchar(50) NOT NULL COMMENT '예금주명',
     project_settlement_image varchar(100) NOT NULL COMMENT '통장사본 이미지',
-    project_approve_status int NOT NULL COMMENT '프로젝트 승인 상태',
+    project_approve_status int NOT NULL COMMENT '프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)',
+  	project_approval_request_time DATETIME COMMENT '프로젝트 승인 요청 시간',
     maker_idx int NOT NULL COMMENT '메이커 번호',
-    project_status int NOT NULL COMMENT '프로젝트 상태 1-진행중 2-진행완료 3-정산신청 4-정산완료',
+	project_status int NOT NULL COMMENT '프로젝트 상태 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료',
     FOREIGN KEY (maker_idx) references maker(maker_idx)
 );
 */
@@ -67,7 +68,7 @@ public class ProjectVO {
 	private int project_approve_status;						// 프로젝트 승인 상태
 	private LocalDateTime project_approval_request_time;    // 프로젝트 승인 요청 시간 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 	private int maker_idx;									// 메이커 번호
-	private int project_status;								// 프로젝트 상태 1-진행중 2-진행완료 3-정산신청 4-정산완료
+	private int project_status;								// 프로젝트 상태 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료
 	
 	private MultipartFile file1;							// 프로젝트 썸네일 (1)
  	private MultipartFile file2;							// 프로젝트 썸네일 (2)
