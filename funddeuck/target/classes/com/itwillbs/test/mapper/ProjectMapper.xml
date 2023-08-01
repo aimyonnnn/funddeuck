@@ -125,6 +125,7 @@
 				, #{project_settlement_image}
 				, 1
 				, #{maker_idx}
+				, NULL
 			)
 	</insert>
 	

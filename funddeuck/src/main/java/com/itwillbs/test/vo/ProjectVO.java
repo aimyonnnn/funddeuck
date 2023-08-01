@@ -33,6 +33,7 @@ CREATE TABLE project (
     project_settlement_image varchar(100) NOT NULL COMMENT '통장사본 이미지',
     project_approve_status int NOT NULL COMMENT '프로젝트 승인 상태',
     maker_idx int NOT NULL COMMENT '메이커 번호',
+    project_status int NOT NULL COMMENT '프로젝트 상태 1-진행중 2-진행완료 3-정산신청 4-정산완료',
     FOREIGN KEY (maker_idx) references maker(maker_idx)
 );
 */
@@ -64,6 +65,7 @@ public class ProjectVO {
 	private String project_settlement_image;		// 통장사본 이미지
 	private int project_approve_status;				// 프로젝트 승인 상태
 	private int maker_idx;							// 메이커 번호
+	private int project_status;						// 프로젝트 상태 1-진행중 2-진행완료 3-정산신청 4-정산완료
 	
 	private MultipartFile file1;					// 프로젝트 썸네일 (1)
  	private MultipartFile file2;					// 프로젝트 썸네일 (2)

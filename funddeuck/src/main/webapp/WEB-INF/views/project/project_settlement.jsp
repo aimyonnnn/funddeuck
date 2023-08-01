@@ -54,6 +54,21 @@
 					<div class="projectArea">
 						<p class="projectTitle">수수료·정산 관리</p>
 						<p class="projectContent">수수료 및 정산 관리 영역입니다.</p>
+						
+						<!-- 현재 진행중인 프로젝트 -->
+						<div>
+							<p class="subheading">현재 진행중인 프로젝트</p>
+							<table class="table table-bordered">
+								<tr>
+									<th></th>
+								</tr>
+							</table>
+						</div>
+						
+						<!-- 진행완료된 프로젝트 -->
+						<div>
+							<p class="subheading">진행 완료된 프로젝트</p>
+						</div>
 					</div>
 				</article>
 			</section>
