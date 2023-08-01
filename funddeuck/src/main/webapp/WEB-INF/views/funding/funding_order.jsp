@@ -9,19 +9,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>펀딩</title>
-<!-- 헤더  -->
-<jsp:include page="../common/main_header.jsp"></jsp:include>
 <!-- 부트스트랩 -->
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
+<!-- 헤더  -->
+<jsp:include page="../common/main_header.jsp"></jsp:include>
 <!-- jQuery 라이브러리 추가 -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- 부트스트랩 5.3.0 CSS 추가 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css"> -->
 <!-- 부트스트랩 5.3.0 JS 추가 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> -->
+<!-- funding_order.js -->
+<script src="${pageContext.request.contextPath }/resources/js/funding_order.js"></script>
 <!-- 공용 css -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 
@@ -353,10 +351,20 @@
 		
 	});
 	
-	
+	// 쿠폰 할인율 출력 
 
-	
-	
+	function updateCouponSale() {
+		const selectElement = document.getElementById('couponSelect');
+		const selectedIndex = selectElement.selectedIndex;
+		const selectedCoupon = selectElement.options[selectedIndex];
+		const couponSaleElement = document.getElementById('couponSale');
+		
+		if (!selectedCoupon || selectedCoupon.value === "") {
+			couponSaleElement.innerText = "" ;
+		} else {
+			couponSaleElement.innerText = selectedCoupon.value.toString() + '% 할인';
+		}
+	}	
 	
 </script>
 
@@ -500,32 +508,27 @@
 						<div class="col-8">
 							<!-- 드롭다운으로 가지고있는 쿠폰 선택 -->
 							<div class="row">
-								<div class="dropdown">
-									<button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-										쿠폰을 선택해주세요.
-									</button>
-									<!-- 쿠폰이 없을 경우 -->
-									<!-- 보유한 쿠폰 중 사용 가능한 쿠폰 목록만 출력 -->
-									${couponList  }
-									<ul class="dropdown-menu">
-										<c:choose>
-											<c:when test="${empty couponList }">
-												<span class="fs-6 text-muted">보유하신 쿠폰이 없습니다</span>
-											</c:when>
-											<c:when test="${not empty couponList }">
-												<c:forEach var="coupon" items="${couponList }">
-													<li><a class="dropdown-item" href="#">${coupon.coupon_name }</a></li>
-												
-												</c:forEach>
-											</c:when>
-										
-										</c:choose>
-									</ul>
-								</div>
+								<!-- 쿠폰이 없을 경우 -->
+								<!-- 보유한 쿠폰 중 사용 가능한 쿠폰 목록만 출력 -->
+								<select class="form-select" id="couponSelect" onchange="updateCouponSale()">
+									<option value="">쿠폰을 선택해주세요.</option>
+									<c:choose>
+										<c:when test="${empty couponList }">
+											<option class="fs-6 text-muted" disabled>보유하신 쿠폰이 없습니다</option>
+										</c:when>
+										<c:when test="${not empty couponList }">
+											<c:forEach var="coupon" items="${couponList }">
+												<option value="${coupon.coupon_sale }">${coupon.coupon_name }</option>
+											</c:forEach>
+										</c:when>
+									</c:choose>
+								</select>							
+							
+							
 							</div>
 							<!-- 쿠폰 선택시 할인금액 출력 -->
 							<div class="row p-2">
-								<span class="fs-6 fw-bold">10,000원 할인</span>			
+								<span class="fs-6 fw-bold" id="couponSale"></span>			
 							</div>
 						</div>
 					</div>
