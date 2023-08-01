@@ -15,17 +15,17 @@
     <link rel="stylesheet" type="text/css" href="../resources/css/member_profile.css" />
 </head>
 <body>
-<section style="background-color: #f4f5f7;">
-    <div style="height: 50px;"></div>
-    <div class="container py-5">
-        <div class="row d-flex justify-content-center align-items-center">
-            <div class="col col-lg-6 mb-4 mb-lg-0">
-                <div class="card mb-3" style="border-radius: .5rem;">
-                    <div class="row g-0">
-                        <h3 class="profile-heading">프로필 정보 설정</h3>
-						<div class="col-md-4 gradient-custom text-center text-white" style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-						  <div class="circle-image">
-						    <img src="<c:choose>
+			<section style="background-color: #f4f5f7;">
+			    <div style="height: 50px;"></div>
+			    <div class="container py-5">
+			        <div class="row d-flex justify-content-center align-items-center">
+			            <div class="col col-lg-6 mb-4 mb-lg-0">
+			                <div class="card mb-3" style="border-radius: .5rem;">
+			                    <div class="row g-0">
+			                        <h3 class="profile-heading">프로필 정보 설정</h3>
+									<div class="col-md-4 gradient-custom text-center text-white" style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+									  <div class="circle-image">
+									    <img src="<c:choose>
 						                 <c:when test="${not empty profile.profile_img}">
 						                     ${pageContext.request.contextPath}/resources/upload/${profile.profile_img}
 						                 </c:when>
@@ -52,7 +52,7 @@
                             <div class="card-body p-4">
 							<form id="profileForm">
                                 <hr class="mt-0 mb-4">
-							    <input type="text" name="member_idx" value="${sessionScope.sIdx}" />
+							    <input type="hidden" name="member_idx" value="${sessionScope.sIdx}" />
 							    
                                     <h6>회사 / 직책</h6>
                                 <div class="row pt-1">
