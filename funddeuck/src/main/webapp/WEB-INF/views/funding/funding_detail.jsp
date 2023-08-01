@@ -28,10 +28,10 @@
 	<div class="container text-center">
 		<!-- 해시태그 -->
 		<div class="col">
-			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="#" role="button">아트북</a>
+			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="#" role="button">${project.project_hashtag }</a>
 			<br><br>
 			<div class="col">
-				<p class="fs-2 fw-bolder">&lt;스파이더맨: 어크로스 더 유니버스&gt; 아트북+공식 굿즈</p>
+				<p class="fs-2 fw-bolder">${project.project_subject }</p>
 			</div>
 		</div>
 		<!-- 펀딩이름 -->
@@ -76,9 +76,9 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<span class="fs-2">2,259,000</span>&nbsp;
+						<span class="fs-2">${project.project_amount }</span>&nbsp;
 						<small>원</small>&nbsp;
-						<span class="fs-5 fw-bold">112%</span>
+						<span class="fs-5 fw-bold">${project.project_amount/project.project_target * 100 }%</span>
 					</div>
 				</div>
 				<br>
@@ -87,8 +87,18 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<span class="fs-2">24</span>&nbsp;
-				  		<small>일</small>&nbsp;&nbsp;
+						<c:choose>
+							<c:when test="${project.project_end_date < now() }">
+								<span class="fs-2">
+								<fmt:parseDate value="${project.project_end_date - now()}" var="dateValue" pattern="dd"/>
+								</span>&nbsp;
+					  			<small>일</small>&nbsp;&nbsp;
+							</c:when>
+							<c:otherwise>
+								<span class="fs-2">0</span>&nbsp;
+					  			<small>일</small>&nbsp;&nbsp;
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 				<br>
@@ -109,7 +119,7 @@
 					<tr>
 				 		<th><small>목표금액</small></th>
 				 		<td>&nbsp;&nbsp;&nbsp;</td>
-				    	<td><small>2,000,000원</small></td>
+				    	<td><small>${project.project_target }원</small></td>
 				 	</tr>
 				</table>
 				<div class="row">
@@ -124,14 +134,30 @@
 				 	<tr>
 				   		<th><small>펀딩 기간</small></th>
 				   		<td>&nbsp;&nbsp;&nbsp;</td>
-				   		<td><small>2023.07.12~ 2023.08.17</small>
-				   		<span class="badge text-danger text-bg-danger bg-opacity-10">24일 남음</span>
+				   		<td><small>
+				   		<fmt:parseDate value="${project.project_start_date}" var="startDate" pattern="yyyy.MM.dd"/>
+				   		~
+				   		<fmt:parseDate value="${project.project_end_date}" var="endDate" pattern="yyyy.MM.dd"/>
+				   		</small>
+				   		<span class="badge text-danger text-bg-danger bg-opacity-10">
+				   			<c:choose>
+								<c:when test="${project.project_end_date < now() }">				
+									<fmt:parseDate value="${project.project_end_date - now()}" var="dateValue" pattern="dd"/>
+								</c:when>
+								<c:otherwise>
+								0
+								</c:otherwise>
+						</c:choose>
+				   		일 남음
+				   		</span>
 				   		</td>
 				 	</tr>
 				 	<tr>
 						<th><small>결제</small></th>
 						<td>&nbsp;&nbsp;&nbsp;</td>
-						<td><small>목표 금액 달성시 2023.07.xx일에 결제 진행</small></td>
+						<td><small>목표 금액 달성시 
+						<fmt:parseDate value="${project.project_end_date}" var="endDate" pattern="yyyy.MM.dd"/>
+						일에 결제 진행</small></td>
 				 	</tr>
 				</table>
 				<br>
@@ -158,7 +184,7 @@
 <!-- 							  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/> -->
 <!-- 							</svg> -->
 						</button>
-						<button class="btn btn-primary me-2" onclick="request_pay()">이 프로젝트 후원하기</button>
+						<button class="btn btn-primary me-2" onclick="focusOnReward()">이	 프로젝트 후원하기</button>
 					</div>
 				</div>
 				<!-- 공유, 좋아요, 후원하기 버튼 -->
@@ -184,7 +210,7 @@
 <!-- 							</svg> -->
 							<small class="text-secondary"><br>343</small>
 						</button>
-						<button class="btn btn-primary me-8 bg-success" onclick="request_pay()"><span class="text-center text-white fw-bold">이 프로젝트 후원하기</span></button>
+						<button class="btn btn-primary me-8 bg-success" onclick="focusOnReward()"><span class="text-center text-white fw-bold">이 프로젝트 후원하기</span></button>
 					</div>
 				</div>
 				<!--공유, 좋아요, 후원하기 버튼 끝-->
@@ -207,15 +233,14 @@
 					</div>
 					<!-- 메이커명-->
 					<div class="col text-start p-2">
-						<span class="fs-5 fw-bold p-3">xxx메이커</span>
-						<span class="fs-6 text-muted">xx시간 전 로그인</span>
+						<span class="fs-5 fw-bold p-3">${project.project_representative_name }</span>
 					</div>
 				</div>
 				<!-- 팔로우, 1:1문의 버튼-->
 				<div class="row">
 					<div class="col d-flex justify-content-center">
-						<button class="btn btn-primary me-2">팔로우</button>
-						<button class="btn btn-primary me-2">1:1문의</button>
+						<button class="btn btn-primary me-2" onclick="#">팔로우</button>
+						<button class="btn btn-primary me-2" onclick="#">1:1문의</button>
 					</div>
 				</div>
       			<!-- 팔로우, 1:1문의 버튼 끝-->
@@ -269,7 +294,7 @@
 				<!--메이커 프로필 영역-->
 				<div class="row p-3 border border-secondary-subtle shadow-sm">
 					<div class="row">
-						<span class="text-dark text-decoration-none fw-bold text-start pb-1" onclick="location.href='#'" style="cursor:pointer;">(주)XX북스
+						<span class="text-dark text-decoration-none fw-bold text-start pb-1" onclick="location.href='#'" style="cursor:pointer;">${project.project_representative_name }
 						<button class="btn btn-outline-success rounded-0 btn-sm btn float-end">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
 						<path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
@@ -282,11 +307,9 @@
 						<!-- 프로필 클릭시 메이커 새탭 이동-->
 							<a href="#" target="_blank">
 								<img src="https://cdn-icons-png.flaticon.com/512/3135/3135707.png" class="rounded-circle" alt="..." width="40px" height="40px"></a>
-							<small class="opacity-75">마지막 로그인</small>
-							<span><small class="fw-bold fw-bold">10시간 전</small></span>
 						</div>
 						<br>
-						<small class="text-start pb-3">필요한 것이 있다면 1:1 대화를 요청해주세요! -XX북스</small>
+						<small class="text-start pb-3">${project.project_semi_introduce }</small>
 						<!-- 메이커명-->
 					</div>
 					<!-- 팔로우, 1:1문의 버튼-->
@@ -303,7 +326,7 @@
 				<!--메이커 프로필 영역 끝-->
 				<!-- 리워드 선택 바-->
 				<div class="row">
-					<span class="fs-5 fw-bold p-3 text-start">리워드 선택</span>
+					<span class="fs-5 fw-bold p-3 text-start" id="rewardSelect">리워드 선택</span>
 				</div>
 				<!--스크롤-->
 				<div class="row fixed-right" id="scrollBar">
@@ -448,6 +471,11 @@
 	    })
 	  }
 // --------------------------------------------------------------------
+
+// 후원하기 버튼 클릭 시 리워드 선택 영역으로 화면 이동
+function focusOnReward(){
+	document.getElementById('rewardSelect').scrollIntoView();
+}
 </script>
 <jsp:include page="../Footer.jsp"></jsp:include>
 <!-- 부트스트랩 -->
