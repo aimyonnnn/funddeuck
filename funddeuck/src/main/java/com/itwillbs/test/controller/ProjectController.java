@@ -75,7 +75,7 @@ public class ProjectController {
 		return "project/project_main";
 	}
 	
-	// 프로젝트 요금제 결제
+	// 프로젝트 요금제 결제하기 페이지로 이동
 	@GetMapping("projectPlanPayment")
 	public String projectPlanPayment(@RequestParam(required = true) Integer project_idx, HttpSession session, Model model) {
 		String sId = (String) session.getAttribute("sId");
@@ -84,16 +84,14 @@ public class ProjectController {
 			return "fail_back";
 		}
 		// 프로젝트 승인 상태 확인
-	    ProjectVO project = projectService.getProjectInfo(project_idx);
-	    if (project == null || project.getProject_approve_status() != 3) {
-	        model.addAttribute("msg", "승인된 프로젝트만 결제 페이지에 접근할 수 있습니다.");
-	        return "fail_back";
-	    }
-	    // 이미 결제한 프로젝트인지 확인
-	    if (project == null || project.getProject_approve_status() == 5) {
-	        model.addAttribute("msg", "이미 결제를 완료한 프로젝트입니다.");
-	        return "fail_back";
-	    }
+		ProjectVO project = projectService.getProjectInfo(project_idx);
+		if (project == null || project.getProject_approve_status() == 5) {
+		    model.addAttribute("msg", "이미 결제를 완료한 프로젝트입니다.");
+		    return "fail_back";
+		} else if (project.getProject_approve_status() != 3) {
+		    model.addAttribute("msg", "승인된 프로젝트만 결제 페이지에 접근할 수 있습니다.");
+		    return "fail_back";
+		}
 	    model.addAttribute("project", project);
 		return "project/project_plan_payment";
 	}

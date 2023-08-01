@@ -186,11 +186,16 @@ function createOrderNum() {
 
 // 결제 모달창 자동으로 실행
 $(document).ready(function () {
-	let projectStatus = ${project.project_approve_status};
-	if (projectStatus === 3) {
-	    $('#orderModal').modal('show');
-	}
+    let projectStatus = ${project.project_approve_status};
+    if (projectStatus === 3) {
+        $('#orderModal').modal('show');
+    }
+
+    $('#orderModal .btn-close').on('click', function () {
+        history.back();
+    });
 });
+
 </script>
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

@@ -107,6 +107,10 @@ public class ProjectService {
 	public int getProjectListCount(String searchType, String searchKeyword) {
 		return mapper.selectProjectListCount(searchType, searchKeyword);
 	}
+	// 승인완료 된 프로젝트 리스트 조회
+	public List<ProjectVO> getApprovedProjects() {
+		return mapper.selectApprovedProjects();
+	}
 	
 	//---------main page------------
 		// ranking system
@@ -128,6 +132,7 @@ public class ProjectService {
 	            return allProjects; 
 	        }
 	    }
+		
 			
 	
 }

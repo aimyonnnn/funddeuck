@@ -90,12 +90,16 @@ public interface ProjectMapper {
 	// 펀딩 프로젝트 탐색
 	List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit);
 	
+	// 승인완료 된 프로젝트 리스트 조회
+	List<ProjectVO> selectApprovedProjects();
+	
 	//-----main page---------
 		// show all project
 		List<ProjectVO> getAllProjects();
 
 		//ranking system
 		List<ProjectVO> selectTop10ProjectsByEndDate();
+		
 
 		
 			
