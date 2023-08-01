@@ -156,32 +156,32 @@ let updateChart = (data, chartType) => {
     });
     
  	// 텍스트 업데이트 작업 시작
- 	// 누적 결제 금액 업데이트
-    let acmlPaymentAmountElementMaker = document.getElementById('acmlPaymentAmountMaker');
-    let acmlPaymentAmountMaker = acmlPaymentAmounts[acmlPaymentAmounts.length - 1];
-
-    if (acmlPaymentAmountMaker !== undefined) {
-        acmlPaymentAmountElementMaker.textContent = acmlPaymentAmountMaker;
-    } else {
-        acmlPaymentAmountElementMaker.textContent = '0';
-    }
-
+	// 누적 결제 금액 업데이트
+	let makerAcmlPaymentElem = document.getElementById('acmlPaymentAmountMaker');
+	let makerAcmlPayment = acmlPaymentAmounts[acmlPaymentAmounts.length - 1];
+	
+	if (makerAcmlPayment !== undefined) {
+	    makerAcmlPaymentElem.textContent = makerAcmlPayment;
+	} else {
+	    makerAcmlPaymentElem.textContent = '0';
+	}
+	
 	// 일별 평균 결제 금액 업데이트
-    let todayPaymentAmountElementMaker = document.getElementById('todayPaymentAmountMaker');
-    let totalDays = dailyPaymentAmounts.length;
-    let totalPaymentAmount = dailyPaymentAmounts.reduce((acc, amount) => acc + amount, 0);
-    let todayPaymentAmountMaker = totalDays > 0 ? Math.round(totalPaymentAmount / totalDays) : 0;
-    todayPaymentAmountElementMaker.textContent = todayPaymentAmountMaker;
-
-    // 누적 서포터 수 업데이트
-    let acmlSupporterCountElementMaker = document.getElementById('acmlSupporterCountMaker');
-    let acmlSupporterCountMaker = acmlSupporterCounts[acmlSupporterCounts.length - 1];
-
-    if (acmlSupporterCountMaker !== undefined) {
-        acmlSupporterCountElementMaker.textContent = acmlSupporterCountMaker;
-    } else {
-        acmlSupporterCountElementMaker.textContent = '0';
-    }
+	let makerTodayPaymentElem = document.getElementById('todayPaymentAmountMaker');
+	let makerTotalDays = dailyPaymentAmounts.length;
+	let makerTotalPayment = dailyPaymentAmounts.reduce((acc, amount) => acc + amount, 0);
+	let makerTodayPayment = makerTotalDays > 0 ? Math.round(makerTotalPayment / makerTotalDays) : 0;
+	makerTodayPaymentElem.textContent = makerTodayPayment;
+	
+	// 누적 서포터 수 업데이트
+	let makerAcmlSupporterElem = document.getElementById('acmlSupporterCountMaker');
+	let makerAcmlSupporter = acmlSupporterCounts[acmlSupporterCounts.length - 1];
+	
+	if (makerAcmlSupporter !== undefined) {
+	    makerAcmlSupporterElem.textContent = makerAcmlSupporter;
+	} else {
+	    makerAcmlSupporterElem.textContent = '0';
+	}
     
 };
 // 페이지 로드시에 차트 출력하기
@@ -361,32 +361,33 @@ let updateProjectChart = (data, chartTypeProject) => {
     });
     
     // 텍스트 업데이트 작업 시작
-    // 프로젝트 페이지의 기간별 누적 결제 금액 업데이트
-	let acmlPaymentAmountElementProject = document.getElementById('acmlPaymentAmount');
-	let acmlPaymentAmountProject = acmlPaymentAmounts[acmlPaymentAmounts.length - 1];
+	// 기간별 누적 결제 금액 업데이트
+	let projectAcmlPaymentElem = document.getElementById('acmlPaymentAmount');
+	let projectAcmlPayment = acmlPaymentAmounts[acmlPaymentAmounts.length - 1];
 	
-	if (acmlPaymentAmountProject !== undefined) {
-	    acmlPaymentAmountElementProject.textContent = acmlPaymentAmountProject;
+	if (projectAcmlPayment !== undefined) {
+	    projectAcmlPaymentElem.textContent = projectAcmlPayment;
 	} else {
-	    acmlPaymentAmountElementProject.textContent = '0';
+	    projectAcmlPaymentElem.textContent = '0';
+	}
+	
+	// 일별 평균 결제 금액 업데이트
+	let projectTodayPaymentElem = document.getElementById('todayPaymentAmount');
+	let projectTotalDays = dailyPaymentAmounts.length;
+	let projectTotalPayment = dailyPaymentAmounts.reduce((acc, amount) => acc + amount, 0);
+	let projectTodayPayment = projectTotalDays > 0 ? Math.round(projectTotalPayment / projectTotalDays) : 0;
+	projectTodayPaymentElem.textContent = projectTodayPayment;
+	
+	// 기간별 누적 서포터 수 업데이트
+	let projectAcmlSupporterElem = document.getElementById('acmlSupporterCount');
+	let projectAcmlSupporter = acmlSupporterCounts[acmlSupporterCounts.length - 1];
+	
+	if (projectAcmlSupporter !== undefined) {
+	    projectAcmlSupporterElem.textContent = projectAcmlSupporter;
+	} else {
+	    projectAcmlSupporterElem.textContent = '0';
 	}
 
-	// 프로젝트 페이지의 일별 평균 결제 금액 업데이트
-	let todayPaymentAmountElementProject = document.getElementById('todayPaymentAmount');
-	let totalDaysProject = dailyPaymentAmounts.length;
-	let totalPaymentAmountProject = dailyPaymentAmounts.reduce((acc, amount) => acc + amount, 0);
-	let todayPaymentAmountProject = totalDaysProject > 0 ? Math.round(totalPaymentAmountProject / totalDaysProject) : 0;
-	todayPaymentAmountElementProject.textContent = todayPaymentAmountProject;
-
-	// 프로젝트 페이지의 기간별 누적 서포터 수 업데이트
-	let acmlSupporterCountElementProject = document.getElementById('acmlSupporterCount');
-	let acmlSupporterCountProject = acmlSupporterCounts[acmlSupporterCounts.length - 1];
-
-	if (acmlSupporterCountProject !== undefined) {
-	    acmlSupporterCountElementProject.textContent = acmlSupporterCountProject;
-	} else {
-	    acmlSupporterCountElementProject.textContent = '0';
-	}
     
 };
 // 페이지 로드시에 차트 출력하기
@@ -666,7 +667,7 @@ th, td {
 								
 								</tbody>
 								</table>
-								<!--  -->
+								<!-- 결제 테이블 -->
 								
 								</div>
 							</div>
