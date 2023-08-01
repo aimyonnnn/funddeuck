@@ -79,7 +79,7 @@ public class AdminService {
 				// 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회
 				MembersVO member = memberService.getMemberInfoByProjectIdx(project_idx);
 				String memberPhone = member.getMember_phone();
-				String message = "[Funddeuck] 프로젝트 완성을 서둘러주세요! 지금 바로 프로젝트를 등록하고 후원을 받아보세요";
+				String message = "[Funddeuck] 프로젝트 완성을 서둘러주세요! 지금 바로 프로젝트를 등록하고 후원을 받아보세요!";
 				
 				try {
 					String isSendMessage = sendPhoneMessageService.SendMessage(memberPhone, message, project_idx);

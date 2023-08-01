@@ -64,6 +64,8 @@ public class ProjectController {
 	private ProjectScheduler projectScheduler;
 	@Autowired
 	private AdminService adminService;
+	@Autowired
+	private MemberService memberService;
 	
 	private EchoHandler echoHandler;
 	
@@ -223,6 +225,15 @@ public class ProjectController {
 	// 메이커 등록 비즈니스 로직 처리
 	@PostMapping("projectMakerPro")
 	public String projectMaker(MakerVO maker, Model model, HttpSession session, HttpServletRequest request) {
+		
+		// 메이커는 계정 당 1개만 만들 수 있게 제한하기 => 프로젝트 등록 페이지로 이동시키기
+		if(makerService.getMakerIdx(memberService.getMemberId(maker.getMember_idx())) > 0) {
+			String targetURL = "projectManagement?maker_idx=" + makerService.getMakerIdx(memberService.getMemberId(maker.getMember_idx()));
+			model.addAttribute("msg", "메이커는 계정 당 1개만 만들 수 있습니다. \\n프로젝트 등록 페이지로 이동합니다.");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
+		}
+		
 		String uploadDir = "/resources/upload"; 
 		String saveDir = session.getServletContext().getRealPath(uploadDir);
 		String subDir = "";
