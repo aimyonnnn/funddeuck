@@ -36,4 +36,12 @@
         WHERE member_idx = #{member_idx}
     </update>
 
+	 <insert id="insertProfile" parameterType="com.itwillbs.test.vo.ProfileVO">
+        INSERT INTO profile (
+            member_idx, profile_job1, profile_job2, profile_school1, profile_school2, profile_text
+        ) VALUES (
+            #{member_idx}, #{profile_job1}, #{profile_job2}, #{profile_school1}, #{profile_school2}, #{profile_text}
+        )
+    </insert>
+
 </mapper>

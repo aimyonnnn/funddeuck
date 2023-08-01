@@ -12,5 +12,7 @@ public interface ProfileMapper {
     void updateProfile(ProfileVO profileVO);
 
 	int updateProfileImage(ProfileVO profile);
+
+	void insertProfile(ProfileVO profileVO);
 }
 
