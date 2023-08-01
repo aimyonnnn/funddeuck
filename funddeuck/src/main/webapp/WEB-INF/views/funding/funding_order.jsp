@@ -237,16 +237,16 @@
 							<span class="fs-6 fw-bold" id="rewardDeliveryPrice">${reward.delivery_price }</span><span class="fs-6 fw-bold">원</span>
 						</div>
 						<div class="col-6 text-start">
+							<span class="fs-6 fw-bold">쿠폰 사용</span>
+						</div>
+						<div class="col-6 text-end">
+							<span class="fs-6 fw-bold" id="minus"></span><span class="fs-6 fw-bold" id="couponPrice">0</span><span class="fs-6 fw-bold">원</span>
+						</div>
+						<div class="col-6 text-start">
 							<span class="fs-6 fw-bold">추가 후원 금액</span>
 						</div>
 						<div class="col-6 text-end">
 							<span class="fs-6 fw-bold" id="addDonationAmount">0</span><span class="fs-6 fw-bold">원</span>
-						</div>
-						<div class="col-6 text-start">
-							<span class="fs-6 fw-bold">쿠폰 사용</span>
-						</div>
-						<div class="col-6 text-end">
-							<span class="fs-6 fw-bold">-xxxx원</span>
 						</div>
 				</div>
 				<!-- 후원 금액 끝-->

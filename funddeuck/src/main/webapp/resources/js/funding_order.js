@@ -306,7 +306,7 @@
 			            $('#rewardContainer').html(output);
 			            $('#rewardPrice').html(output2);
 			            $('#rewardDeliveryPrice').html(output3);
-						
+						updateCouponSale();
 					},
 					error: function(xhr, status, error) {
 						 console.error("Error:", error);
@@ -352,17 +352,33 @@
 
 // ===========================================================
 // 쿠폰 선택시 할인율 출력
+// 최종 후원 금액에 쿠폰 사용 금액 출력
 
 	function updateCouponSale() {
-		const selectElement = document.getElementById('couponSelect');
-		const selectedIndex = selectElement.selectedIndex;
-		const selectedCoupon = selectElement.options[selectedIndex];
-		const couponSaleElement = document.getElementById('couponSale');
+		let selectElement = document.getElementById('couponSelect');
+		let selectedIndex = selectElement.selectedIndex;
+		let selectedCoupon = selectElement.options[selectedIndex];
+		let couponSaleElement = document.getElementById('couponSale');
 		
-		if (!selectedCoupon || selectedCoupon.value === "") {
-			couponSaleElement.innerText = "" ;
+		// 리워드 가격
+		let rewardPrice = parseFloat(document.getElementById('rewardPrice').innerText);
+		// 쿠폰 사용금액 출력 위한 변수
+		let couponPriceElement = document.getElementById('couponPrice');	
+		// 마이너스 기호 출력 위한 변수
+		let minusElement = document.getElementById('minus');	
+		if (!selectedCoupon || selectedCoupon.value === "") { // 쿠폰 미선택시
+			couponSaleElement.innerText = '';
+			// 쿠폰 사용 금액 0 으로 출력
+			couponPriceElement.innerText = 0;
 		} else {
+			// 쿠폰 사용금액 계산
+			let discountPercentage = parseFloat(selectedCoupon.value);
+			let discountedPrice = (rewardPrice * (1 - discountPercentage / 100));
+			// 할인율 출력
 			couponSaleElement.innerText = selectedCoupon.value.toString() + '% 할인';
+			// 쿠폰 사용 금액 출력
+			minusElement.innerText = '-';
+			couponPriceElement.innerText = discountedPrice.toString();
 		}
 	}	
 
