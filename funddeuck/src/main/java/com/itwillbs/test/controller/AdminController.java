@@ -83,11 +83,10 @@ public class AdminController {
 	@PostMapping("sendPhoneMessage")
 	@ResponseBody 
 	public String checkPhone(
-			@RequestParam String memberPhone,
-			@RequestParam String message,
-			@RequestParam String memberIdx,
-			@RequestParam int projectIdx) throws CoolsmsException {
-		return sendPhoneMessageService.SendMessage(memberPhone, message, memberIdx, projectIdx);
+			@RequestParam String memberPhone, @RequestParam String message,
+			@RequestParam String memberIdx,	@RequestParam int projectIdx) throws CoolsmsException {
+		message = "[Funddeuck] 프로젝트 승인이 완료되었습니다. 프로젝트 요금 결제를 진행해주세요!";
+		return sendPhoneMessageService.SendMessage(memberPhone, message, projectIdx);
 	}
 	
 	// 프로젝트 승인관리 페이지

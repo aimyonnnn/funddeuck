@@ -216,7 +216,7 @@ window.addEventListener('load', function() {
 	                            <h2>
 	                                <span id="acmlPaymentAmount"></span>원
 	                            </h2>
-	                            <small><a style="color: red;">7일 동안 누적된</a> 결제금액 입니다.</small>
+	                            <small>해당 기간의 누적 결제금액 입니다.</small>
 	                        </div>
 	                        <div class="card-chart danger">
 	                            <span class="las la-chart-line" style="color: rgba(255, 99, 132, 1);"></span>
@@ -230,12 +230,12 @@ window.addEventListener('load', function() {
 	                        <div class="card-into">
 	                            <div class="card-head">
 	                                <span>DAY PAYMENT</span>
-	                                <small>일별 결제금액</small>
+	                                <small>일별 평균 결제금액</small>
 	                            </div>
 	                            <h2>
 	                                <span id="todayPaymentAmount"></span>원
 	                            </h2>
-	                            <small><a style="color: red;">지난 일주일간</a> 일별 결제금액 입니다.</small>
+	                            <small>해당 기간의 평균 결제금액 입니다.</small>
 	                        </div>
 	                        <div class="card-chart success">
 	                            <span class="las la-chart-line" style="color: rgb(135, 206, 235);"></span>
@@ -254,7 +254,7 @@ window.addEventListener('load', function() {
 	                            <h2>
 	                                <span id="acmlSupporterCount"></span>명
 	                            </h2>
-	                            <small><a style="color: red;">7일 동안 등록된</a> 총 서포터 수입니다.</small>
+	                            <small>해당 기간의 누적 서포터 수입니다.</small>
 	                        </div>
 	                        <div class="card-chart yellow">
 	                            <span class="las la-chart-line" style="color: rgba(153, 102, 255, 0.2);"></span>

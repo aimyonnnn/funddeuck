@@ -130,6 +130,11 @@ public class MemberService {
 		return mapper.selectFollowProjectList(sId);
 	}
 	
+	// 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회
+	public MembersVO getMemberInfoByProjectIdx(int project_idx) {
+		return mapper.selectMemberInfoByProjectIdx(project_idx);
+	}
+	
 
 
 }

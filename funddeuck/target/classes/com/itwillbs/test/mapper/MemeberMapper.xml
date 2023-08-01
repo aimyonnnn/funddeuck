@@ -238,4 +238,17 @@
 													WHERE member_id = #{sId})))
 			ORDER BY project_start_date DESC
 	</select>
+	
+	<!-- 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회 -->
+	<select id="selectMemberInfoByProjectIdx">
+		SELECT *
+		FROM members
+		WHERE member_idx = (
+		    SELECT member_idx
+		    FROM maker
+		    JOIN project ON maker.maker_idx = project.maker_idx
+		    WHERE project.project_idx = #{project_idx}
+		);
+	</select>
+	
 </mapper>

@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.itwillbs.test.handler.EchoHandler;
+import com.itwillbs.test.service.AdminService;
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.PaymentService;
@@ -61,6 +62,8 @@ public class ProjectController {
 	private PaymentService paymentService;
 	@Autowired
 	private ProjectScheduler projectScheduler;
+	@Autowired
+	private AdminService adminService;
 	
 	private EchoHandler echoHandler;
 	
@@ -567,6 +570,10 @@ public class ProjectController {
 			System.out.println("프로젝트 등록 성공 시 프로젝트 번호 조회 : " + project.getProject_idx());
 			model.addAttribute("msg", "프로젝트 등록에 성공하였습니다. 리워드 설계 페이지로 이동합니다.");
 			model.addAttribute("targetURL", targetURL);
+			
+			// 프로젝트 등록만 하고 3일 동안 프로젝트 승인요청을 하지 않았을 때 프로젝트 등록을 완료해달라는 문자 메시지 보내기 
+			adminService.sendProjectReminder(project.getProject_idx());
+			
 			return "success_forward";
 		} else { // 실패 시
 			model.addAttribute("msg", "프로젝트 등록 실패!");

@@ -82,5 +82,8 @@ public interface MemberMapper {
 	
 	//팔로우 게시판
 	List<ProjectVO> selectFollowProjectList(String sId);
+	
+	// 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회
+	MembersVO selectMemberInfoByProjectIdx(int project_idx);
 
 }
