@@ -212,27 +212,30 @@ public class ProjectController {
 	// 메이커 등록 페이지
 	@GetMapping("projectMaker")
 	public String makerInfo(HttpSession session, Model model) {
-		String sId = (String) session.getAttribute("sId");
-		if(sId == null) {
-			model.addAttribute("msg", "잘못된 접근입니다.");
-			return "fail_back";
-		}
-		int member_idx = projectService.getMemberIdx(sId);
-		model.addAttribute("member_idx", member_idx);
-		return "project/project_maker";
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) {
+	        model.addAttribute("msg", "잘못된 접근입니다.");
+	        return "fail_back";
+	    }
+
+	    int member_idx = projectService.getMemberIdx(sId);
+	    Integer maker_idx = makerService.getMakerIdx(sId);
+	    
+	    if (maker_idx != null && maker_idx > 0) {
+	        String targetURL = "projectManagement?maker_idx=" + makerService.getMakerIdx(memberService.getMemberId(member_idx));
+	        model.addAttribute("msg", "메이커는 계정 당 1개만 만들 수 있습니다. \\n프로젝트 등록 페이지로 이동합니다.");
+	        model.addAttribute("targetURL", targetURL);
+	        return "success_forward";
+	    } else {
+	    	model.addAttribute("member_idx", member_idx);
+	    	return "project/project_maker";
+	    }
+
 	}
 	
 	// 메이커 등록 비즈니스 로직 처리
 	@PostMapping("projectMakerPro")
 	public String projectMaker(MakerVO maker, Model model, HttpSession session, HttpServletRequest request) {
-		
-		// 메이커는 계정 당 1개만 만들 수 있게 제한하기 => 프로젝트 등록 페이지로 이동시키기
-		if(makerService.getMakerIdx(memberService.getMemberId(maker.getMember_idx())) > 0) {
-			String targetURL = "projectManagement?maker_idx=" + makerService.getMakerIdx(memberService.getMemberId(maker.getMember_idx()));
-			model.addAttribute("msg", "메이커는 계정 당 1개만 만들 수 있습니다. \\n프로젝트 등록 페이지로 이동합니다.");
-			model.addAttribute("targetURL", targetURL);
-			return "success_forward";
-		}
 		
 		String uploadDir = "/resources/upload"; 
 		String saveDir = session.getServletContext().getRealPath(uploadDir);
@@ -335,15 +338,39 @@ public class ProjectController {
 	// 메이커 페이지
 	@GetMapping("makerDetail")
 	public String makerDetail(@RequestParam(required = false) Integer maker_idx, HttpSession session, Model model) {
-		String sId = (String) session.getAttribute("sId");
-		if(sId != null) {
-			int member_idx = projectService.getMemberIdx(sId);
-			int makerIdx = makerService.getMakerIdx(sId);
-			MakerVO maker = makerService.getMakerInfo(makerIdx);
-			model.addAttribute("maker", maker);
-			model.addAttribute("member_idx", member_idx);
-		}
-		return "project/maker_detail";
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId != null) {
+	        int member_idx = projectService.getMemberIdx(sId);
+	        Integer loggedInMakerIdx = makerService.getMakerIdx(sId); // Integer로 변경
+
+	        // 본인의 메이커인지 여부를 체크
+	        boolean isMyMaker = loggedInMakerIdx != null && maker_idx != null && loggedInMakerIdx.equals(maker_idx);
+
+	        // 메이커 정보를 가져오고, 해당 정보가 없는 경우 예외 처리
+	        MakerVO maker = makerService.getMakerInfo(isMyMaker ? loggedInMakerIdx : maker_idx);
+	        if (maker == null) {
+	            model.addAttribute("msg", "메이커 정보를 찾을 수 없습니다.");
+	            return "fail_back";
+	        }
+
+	        model.addAttribute("maker", maker);
+	        model.addAttribute("member_idx", member_idx);
+	        model.addAttribute("isMyMaker", isMyMaker); // 본인의 메이커인지 여부를 모델에 추가
+	    } else {
+	    	
+	    	// 로그인 안했을 때 파라미터에 maker_idx가 없는 경우
+	    	if (maker_idx == null) { 
+	             model.addAttribute("msg", "잘못된 접근입니다.");
+	             return "fail_back";
+	             
+            // 로그인 안했을 때 파라미터에 maker_idx가 있는 경우, 메이커 정보 조회 후 모델에 저장     
+	        } else {
+	        	MakerVO maker = makerService.getMakerInfo(maker_idx);
+	        	model.addAttribute("maker", maker);
+	        }
+	    	
+	    }
+	    return "project/maker_detail";
 	}
 	
 	// 메이커 수정하기 페이지
@@ -688,23 +715,38 @@ public class ProjectController {
 	// 프로젝트 현황
 	@GetMapping("projectStatus")
 	public String projectStatus(HttpSession session, Model model) {
-		String sId = (String) session.getAttribute("sId");
-		if(sId == null) {
-			model.addAttribute("msg", "잘못된 접근입니다.");
-			return "fail_back";
-		}
-		int member_idx = projectService.getMemberIdx(sId);
-		int maker_idx = makerService.getMakerIdx(sId);
-		List<ProjectVO> projectList = projectService.getProjectList(member_idx);
-		if (!projectList.isEmpty()) {
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) {
+	        model.addAttribute("msg", "잘못된 접근입니다.");
+	        return "fail_back";
+	    }
+
+	    Integer member_idx = projectService.getMemberIdx(sId);
+	    Integer maker_idx = makerService.getMakerIdx(sId);
+
+	    if (member_idx == null) {
+	        model.addAttribute("msg", "멤버 정보를 찾을 수 없습니다.");
+	        return "fail_back";
+	    }
+	    
+	    if (maker_idx == null) {
+	        model.addAttribute("msg", "메이커 정보를 찾을 수 없습니다. 메이커 등록을 먼저 해주세요.");
+	        return "fail_back";
+	    }
+
+	    List<ProjectVO> projectList = projectService.getProjectList(member_idx);
+	    if (!projectList.isEmpty()) {
 	        int firstProjectIdx = projectList.get(0).getProject_idx();
 	        model.addAttribute("firstProjectIdx", firstProjectIdx);
 	    }
-		model.addAttribute("member_idx", member_idx);
-		model.addAttribute("maker_idx", maker_idx);
-		model.addAttribute("projectList", projectList);
-		return "project/project_status";
+
+	    model.addAttribute("member_idx", member_idx);
+	    model.addAttribute("maker_idx", maker_idx);
+	    model.addAttribute("projectList", projectList);
+	    
+	    return "project/project_status";
 	}
+
 		
 	// 메이커의 전체 프로젝트 차트 출력
 	@PostMapping("/chartData")

@@ -51,7 +51,7 @@ public class ProjectService {
 		return mapper.selectRewardAuthorId(reward_idx, sId);
 	}
 	// 메이커 등록 페이지 접속 시
-	public int getMemberIdx(String sId) {
+	public Integer getMemberIdx(String sId) {
 		return mapper.selectMemberIdx(sId);
 	}
 	// 프로젝트 등록하기

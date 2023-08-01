@@ -37,7 +37,7 @@ public interface ProjectMapper {
 	String selectRewardAuthorId(@Param("reward_idx") Integer reward_idx, @Param("sId") String sId);
 	
 	// 메이커 등록 페이지 접속 시
-	int selectMemberIdx(String sId);
+	Integer selectMemberIdx(String sId);
 
 	// 프로젝트 등록하기
 	int insertProject(ProjectVO project);

@@ -25,7 +25,7 @@ public class MakerService {
 		return mapper.deleteMakerFile(maker_idx, fileName, fileNumber);
 	}
 	// 메이커 idx 조회하기
-	public int getMakerIdx(String sId) {
+	public Integer getMakerIdx(String sId) {
 		return mapper.selectMakerIdx(sId);
 	}
 	

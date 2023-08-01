@@ -18,6 +18,6 @@ public interface MakerMapper {
 	int deleteMakerFile(@Param("maker_idx") int maker_idx, @Param("fileName") String fileName, @Param("fileNumber") int fileNumber);
 	
 	// 메이커 idx 조회하기
-	int selectMakerIdx(String sId);
+	Integer selectMakerIdx(String sId);
 	
 }

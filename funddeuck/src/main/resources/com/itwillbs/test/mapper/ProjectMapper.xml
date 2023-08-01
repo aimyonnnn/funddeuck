@@ -149,7 +149,7 @@
 	</select>
 	
 	<!-- 메이커 등록 페이지 접속 시 -->
-	<select id="selectMemberIdx" resultType="int">
+	<select id="selectMemberIdx">
 		select member_idx
 			from members
 				where member_id = #{sId}
