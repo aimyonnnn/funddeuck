@@ -115,6 +115,14 @@ public class ProjectService {
 	public void modifyProjectApprovalRequestTime(ProjectVO project) {
 		mapper.updateProjectApprovalRequestTime(project);
 	}
+	// 전체 프로젝트 리스트 조회
+	public List<ProjectVO> getAllProject(String searchKeyword, String searchType, int startRow, int listLimit) {
+		return mapper.selectAllProject(searchKeyword, searchType, startRow, listLimit);
+	}
+	// 전체 프로젝트 갯수 조회
+	public int getAllProjectCount(String searchKeyword, String searchType) {
+		return mapper.selectAllProjectCount(searchKeyword, searchType);
+	}
 	
 	
 	//---------main page------------
@@ -137,6 +145,8 @@ public class ProjectService {
 	            return allProjects; 
 	        }
 	    }
+		
+		
 		
 		
 		

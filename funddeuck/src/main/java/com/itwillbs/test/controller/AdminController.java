@@ -67,9 +67,39 @@ public class AdminController {
 	}
 	
 	// 프로젝트 관리
-	@GetMapping("projectControl")
-	public String projectControl() {
-		return "admin/admin_project_control";
+	@GetMapping("adminProjectManagement")
+	public String projectControl(
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword,
+			@RequestParam(defaultValue = "1") int pageNum,			
+			Model model) {
+		
+		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		
+		// 프로젝트 목록 조회 요청
+		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
+		List<ProjectVO> pList = projectService.getAllProject(searchKeyword, searchType, startRow, listLimit);
+		
+		// 페이징 처리를 위한 계산 작업
+		// 1. 전체 게시물 수 조회 요청
+		int listCount = projectService.getAllProjectCount(searchKeyword, searchType);
+		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+		int pageListLimit = 10;
+		// 3. 전체 페이지 목록 갯수 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 4. 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5. 끝 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {	endPage = maxPage; }
+		
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("pList", pList);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		return "admin/admin_project_management";
 	}
 	
 	// 결제 관리
@@ -82,9 +112,8 @@ public class AdminController {
 	// 프로젝트 상태컬럼 3-승인완료
 	@PostMapping("sendPhoneMessage")
 	@ResponseBody 
-	public String checkPhone(
-			@RequestParam String memberPhone, @RequestParam String message,
-			@RequestParam String memberIdx,	@RequestParam int projectIdx) throws CoolsmsException {
+	public String checkPhone(@RequestParam String memberPhone, @RequestParam String message,
+							@RequestParam String memberIdx,	@RequestParam int projectIdx) throws CoolsmsException {
 		message = "[Funddeuck] 프로젝트 승인이 완료되었습니다. 프로젝트 요금 결제를 진행해주세요!";
 		return sendPhoneMessageService.SendMessage(memberPhone, message, projectIdx);
 	}

@@ -95,7 +95,15 @@ public interface ProjectMapper {
 	
 	// 프로젝트 승인 처리 시간 저장
 	int updateProjectApprovalRequestTime(ProjectVO project);
-		
+	
+	// 전체 프로젝트 리스트 조회
+	List<ProjectVO> selectAllProject(
+			@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType,  
+			@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+	
+	// 전체 프로젝트 갯수 조회
+	int selectAllProjectCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType);		
+	
 
 		//-----main page---------
 		// show all project
@@ -103,6 +111,8 @@ public interface ProjectMapper {
 		
 		//ranking system
 		List<ProjectVO> selectTop10ProjectsByEndDate();
+		
+		
 		
 			
 
