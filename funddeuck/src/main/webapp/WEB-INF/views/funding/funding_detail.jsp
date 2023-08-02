@@ -19,6 +19,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/funding_detail.css">
 <!-- 카카오 공유하기 스크립트 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<!-- 공용 css -->
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 </head>
 <body>
 	<br>
@@ -125,7 +127,8 @@
 				<div class="row">
 					<div class="col">
 						<div class="progress">
-							<div class="progress-bar bg-success" role="progressbar" aria-label="Example with label" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">112%</div>
+							<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Example with label" 
+							aria-valuenow="${project.project_amount/project.project_target * 100 }" aria-valuemin="0" aria-valuemax="100">${project.project_amount/project.project_target * 100 }%</div>
 						</div>
 					</div>
 				</div>
@@ -184,7 +187,7 @@
 <!-- 							  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/> -->
 <!-- 							</svg> -->
 						</button>
-						<button class="btn btn-primary me-2" onclick="focusOnReward()">이	 프로젝트 후원하기</button>
+						<button class="btn btn-primary me-2" onclick="focusOnReward()">이 프로젝트 후원하기</button>
 					</div>
 				</div>
 				<!-- 공유, 좋아요, 후원하기 버튼 -->
@@ -277,14 +280,10 @@
 		</div>	
 		<br>
 		<div class="container text-left fw-bold">
-		<img src="${pageContext.request.contextPath }/resources/images/fundingDetail_test_img1.jpg" width="650"><br>
-		<br>
-		<h3 class="fw-bold">더욱 확장된 멀티버스가 열린다!</h3>
-		<h3 class="fw-bold">상상 그 이상을 넘어서는 멀티버스!</h3><br>
-		<h3 class="fw-bold">&lt;스파이더맨: 어크로스 더 유니버스&gt;</h3><br>
-		
-		<h3 class="fw-bold">&lt;이하 길이 테스트&gt;</h3><br>		
-		<img src="${pageContext.request.contextPath }/resources/images/fundingDetail_test_img1.jpg" width="650"><br>
+			<section id="articleContentArea">
+				${project.project_image }
+				${project.introduce }
+			</section>
 		</div>
 <!-- 		네비게이션 바 끝 -->
 			</div>
@@ -338,10 +337,10 @@
 							</div>
 							<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
 							<div>&nbsp;</div>
-							<a href="#" class="stretched-link"></a>
+							<a href="fundingOrder?project_idx=${project.project_idx }&reward_idx=0" class="stretched-link"></a>
 						</div>
 					</div>
-				<c:forEach begin="1" end="6" step="1">
+				<c:forEach begin="1" end="5" step="1">
 					<div class="row pb-3 d-flex text-start">
 						<div class="card">
 							<div class="card-body">
@@ -349,34 +348,16 @@
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
 								<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
 								</svg>
-								<small>27명이 선택</small>
+								<small>${reward.reward_quantity - reward.reward_residual_quantity }명이 선택</small>
 								<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button">
-								155개 남음</a>
+								${reward.reward_residual_quantity }개 남음</a>
 								</span><br>
-								<span class="fs-4 card-title fw-bold">27,000원 +</span><br>
-								<small class="card-text opacity-75">한정판 다이어리 + 스티커 세트</small>
+								<span class="fs-4 card-title fw-bold">${reward.reward_price }원 +</span><br>
+								<small class="card-text opacity-75">${reward.reward_name }</small><br>
+								<small class="card-text opacity-75">${reward.reward_detail }</small>
 								<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
 								<div>&nbsp;</div>
-								<a href="#" class="stretched-link"></a>
-							</div>
-						</div>
-					</div>
-					<div class="row pb-3 d-flex text-start">
-						<div class="card">
-							<div class="card-body">
-								<span class="card-subtitle mb-2 text-muted">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-								<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-								</svg>
-								<small>1829명이 선택</small>
-								<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button">
-								27개 남음</a>
-								</span><br>
-								<span class="fs-4 card-title fw-bold">43,000원 +</span><br>
-								<small class="card-text opacity-75">&lt;스파이더맨: 어크로스 더 유니버스&gt;아트북</small>
-								<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
-								<div>&nbsp;</div>
-								<a href="#" class="stretched-link"></a>
+								<a href="fundingOrder?project_idx=${project.project_idx }&reward_idx=${reward.reward_idx }" class="stretched-link"></a>
 							</div>
 						</div>
 					</div>
@@ -475,6 +456,12 @@
 // 후원하기 버튼 클릭 시 리워드 선택 영역으로 화면 이동
 function focusOnReward(){
 	document.getElementById('rewardSelect').scrollIntoView();
+}
+
+// 진행 바 값 가져오기
+window.onload = function(){
+	var percentData = '<c:out value="${project.project_amount/project.project_target * 100 }"/>';
+	var a = document.getElementById('progressbar').style.width = percentData + "%";
 }
 </script>
 <jsp:include page="../Footer.jsp"></jsp:include>

@@ -31,6 +31,9 @@ public interface FundingMapper {
 	ProjectVO selectProjectInfo(int project_idx);
 
 	// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
-	RewardVO selectProjectRewardInfo(int project_idx);
+	List<RewardVO> selectProjectRewardInfo(int project_idx);
+
+	// 펀딩 프로젝트 목록 탐색
+	List<ProjectVO> selectProjectListDiscover(String category, String status, String index);
 	
 }

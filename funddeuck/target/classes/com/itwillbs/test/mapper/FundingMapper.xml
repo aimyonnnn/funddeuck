@@ -69,5 +69,29 @@
 				FROM reward
 					WHERE project_idx = #{project_idx}
 	</select>
+	
+	<!-- 펀딩 프로젝트 목록 탐색 -->
+	<select id="selectProjectListDiscover">
+			SELECT *
+				FROM project
+				<if test="!category.equals('')">
+					WHERE
+				<choose>
+					<when test="searchType.equals('subject')">
+						project LIKE CONCAT('%', #{searchKeyword} ,'%')
+					</when>
+					<when test="searchType.equals('content')">
+						board_content LIKE CONCAT('%', #{searchKeyword} ,'%')
+					</when>
+					<when test="searchType.equals('subject_content')">
+						board_subject LIKE CONCAT('%', #{searchKeyword} ,'%') 
+						OR board_content LIKE CONCAT('%', #{searchKeyword} ,'%') 
+					</when>
+					<when test="searchType.equals('name')">
+						board_name LIKE CONCAT('%', #{searchKeyword} ,'%')
+					</when>
+				</choose>
+				</if>
+	</select>
 		
 </mapper>

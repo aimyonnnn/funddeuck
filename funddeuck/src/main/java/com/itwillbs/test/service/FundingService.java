@@ -52,8 +52,13 @@ public class FundingService {
 	}
 
 	// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
-	public RewardVO selectProjectRewardInfo(int project_idx) {
+	public List<RewardVO> selectProjectRewardInfo(int project_idx) {
 		return mapper.selectProjectRewardInfo(project_idx);
+	}
+
+	// 펀딩 프로젝트 목록 탐색
+	public List<ProjectVO> getProjectListDiscover(String category, String status, String index) {
+		return mapper.selectProjectListDiscover(category, status, index);
 	}
 
 }

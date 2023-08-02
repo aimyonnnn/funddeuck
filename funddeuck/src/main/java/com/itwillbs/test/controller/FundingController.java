@@ -25,44 +25,22 @@ public class FundingController {
 	
 	// 펀딩 탐색 페이지
 	@GetMapping("fundingDiscover")
-	public String fundingDiscover() {
+	public String fundingDiscover(
+			@RequestParam(defaultValue = "") String category,
+			@RequestParam(defaultValue = "") String status,
+			@RequestParam(defaultValue = "") String index,
+			Model model) {
+		
+		List<ProjectVO> projectList = fundingService.getProjectListDiscover(category, status, index);
+		model.addAttribute("projectList", projectList);
+		
 		return "funding/funding_discover";
 	}
-	
-	// 펀딩 리스트 조회
-	@ResponseBody
-	@GetMapping("fundingDiscoverList")
-	public String fundingDiscoverList(
-			@RequestParam(defaultValue = "") String searchType, 
-			@RequestParam(defaultValue = "") String searchKeyword, 
-			@RequestParam(defaultValue = "1") int pageNum, 
-			Model model,
-			HttpServletResponse response) {
-
-
-	int listLimit = 12; // 한 페이지에서 표시할 목록 갯수 지정
-	int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
-
-	List<ProjectVO> projectList = projectService.getProjectList(searchType, searchKeyword, startRow, listLimit);
-	
-	System.out.println(projectList);
-	// 페이징 처리를 위한 계산 작업
-	int listCount = projectService.getProjectListCount(searchType, searchKeyword);
-	int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
-	
-	JSONObject jsonObject = new JSONObject();
-	
-	jsonObject.put("projectList", projectList);
-	jsonObject.put("maxPage", maxPage);
-
-		return jsonObject.toString();		
-	}	
 	
 	// 펀딩 상세페이지 이동
 	@GetMapping ("fundingDetail")
 	public String fundingDetail(Model model
 //			, @RequestParam int project_idx 
-//			데이터 추가 후 주석 해제
 			) {
 		
 		// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보
@@ -70,7 +48,7 @@ public class FundingController {
 //		model.addAttribute(project);
 		
 		// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
-//		RewardVO reward = fundingService.selectProjectRewardInfo(project_idx);
+//		List<RewardVO> reward = fundingService.selectProjectRewardInfo(project_idx);
 //		model.addAttribute(reward);
 		
 		return "funding/funding_detail";
@@ -79,9 +57,10 @@ public class FundingController {
 	// 펀딩 주문페이지 이동
 	@GetMapping ("fundingOrder")
 	public String fundingOrder(Model model
-//			, @RequestParam int project_idx, @RequestParam int reward_idx
+//			, @RequestParam int project_idx, @RequestParam int reward_idx			
 			// 데이터 추가 후 주석 푸시면 됩니다!
 			) {
+		
 //		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, @RequestParam String addDonationAmount, HttpSession session) {
 		// session에 저장되어있는 회원아이디 가져오기
 //		String id = (String)session.getAttribute("sId");
