@@ -82,5 +82,12 @@ public interface MemberMapper {
 	
 	//팔로우 게시판
 	List<ProjectVO> selectFollowProjectList(String sId);
+	
+	//배달 완료 채크
+	int updateDeleveryComplete(int payment_idx);
+	
+	//리뷰 작성
+	int insertRevewRegistration(@Param("payment_idx") int payment_idx, @Param("context") String context, @Param("starRating") int starRating, @Param("saveFileName")String saveFileName);
+	
 
 }

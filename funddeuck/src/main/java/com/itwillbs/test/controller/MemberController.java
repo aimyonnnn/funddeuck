@@ -1,5 +1,12 @@
 package com.itwillbs.test.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,16 +15,21 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.test.handler.MyPasswordEncoder;
+import com.itwillbs.test.service.FundingService;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.SendMailService;
 import com.itwillbs.test.vo.MakerVO;
@@ -27,6 +39,9 @@ import com.itwillbs.test.vo.ProjectVO;
 @Controller
 public class MemberController {
 
+	@Autowired
+	FundingService fundingservice;
+	
     @Autowired
     private MemberService service;
     
@@ -34,7 +49,13 @@ public class MemberController {
     private SendMailService mailService;
     
     @GetMapping("memberMypage")
-    public String myPage() {
+    public String myPage(HttpSession session, Model model) {
+    	
+    	if(session.getAttribute("sId") == null) {
+    		model.addAttribute("msg","잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
         return "member/myPage"; 
     }
     
@@ -371,6 +392,7 @@ public class MemberController {
     	
     }
     
+    // 팔로잉 페이지 이동
     @GetMapping("FallowingForm")
     public String FallowingForm(HttpSession session, Model model) {
     	
@@ -427,6 +449,7 @@ public class MemberController {
     	}
     }
     
+    // 찜 페이지 이동
     @GetMapping("ZimForm")
     public String ZimForm(HttpSession session, Model model) {
     	
@@ -442,6 +465,7 @@ public class MemberController {
     	return "member/member_zim";
     }
     
+    // 찜 알람 설정
     @PostMapping("zimAlam")
     @ResponseBody
     public String zimAlam(HttpSession session, @RequestParam int isAlam, @RequestParam int project_idx) {
@@ -459,6 +483,7 @@ public class MemberController {
     	
     }
     
+    // 찜하는지 여부
     @PostMapping("isZim")
     @ResponseBody
     public String isZim(HttpSession session, @RequestParam int is_zim, @RequestParam int project_idx) {
@@ -483,6 +508,7 @@ public class MemberController {
     	
     }
     
+    // 팔로우의 활동 페이지로 이동
     @GetMapping("FollowBoardForm")
     public String FollowBoardForm(HttpSession session, Model model) {
     	
@@ -498,6 +524,179 @@ public class MemberController {
     	return "member/member_following_board";
     	
     }
+    
+    @GetMapping("MemberFunDing")
+    public String MemberFunDing (HttpSession session, Model model) {
+    	
+    	if(session.getAttribute("sId") == null) {
+    		model.addAttribute("msg","잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
+    	
+    	return "member/member_funding";
+    	
+    }
+    
+    @PostMapping("FunDingModal")
+    @ResponseBody
+    public Map<String,Object> FunDingModal(@RequestParam int payment_idx) {
+    	
+    	Map<String,Object> map =fundingservice.getMemberModalFunding(payment_idx);
+    	
+    	
+    	
+    	return map;
+    	
+    }
+    
+    // 페이징 처리
+    @PostMapping("MemberFundingPageing")
+    @ResponseBody
+    public String MemberFundingPageing(@RequestParam(defaultValue = "1") int pageNum, HttpSession session, @RequestParam(defaultValue = "0") int payment_confirm) {
+    	
+    	System.out.println(pageNum + ", " +payment_confirm);
+    	
+    	
+		int listLimit = 5;// 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit;
+		
+		System.out.println("pageNum : " + pageNum + " listLimit : " + listLimit + " startRow : " + startRow + " payment_confirm : " + payment_confirm);
+    	
+    	List<Map<String, Object>> map = fundingservice.getMemberFunDing((String)session.getAttribute("sId"),payment_confirm, startRow, listLimit);
+    	
+    	int listCount = fundingservice.getMemberFunDingCount((String)session.getAttribute("sId"),payment_confirm);
+    	
+    	int pageListLimit = 5;
+    	
+    	int maxPage = listCount/listLimit + (listCount%listLimit > 0 ? 1 : 0);
+    	
+    	int startPage = (pageNum - 1 ) / pageListLimit * pageListLimit + 1;
+    	
+    	int endPage = startPage + pageListLimit - 1 ;
+    	
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		Map<String, Integer> pageInfo = new HashMap<String, Integer>();
+    	
+		pageInfo.put("startPage", startPage);
+		pageInfo.put("endPage", endPage);
+		pageInfo.put("maxPage", maxPage);
+		
+    	JSONObject jsonObject = new JSONObject();
+		jsonObject.put("map", map);
+		jsonObject.put("pageInfo", pageInfo);
+    	
+    	return jsonObject.toString();
+    	
+    }
+    
+    //배송 완료 처리
+    @PostMapping("deleveryComplete")
+    @ResponseBody
+    public String deleveryComplete(@RequestParam int payment_idx) {
+    	
+    	int updateCount = service.ModifyDeleveryComplete(payment_idx);
+    	
+    	if(updateCount > 0) {
+    		return "true";
+    	} else {
+    		return "false";
+    	}
+    	
+    }
+    
+    @PostMapping(value = "cancellationRequest", consumes = "multipart/form-data")
+    @ResponseBody
+    public String cancellationRequest(@RequestPart("file") MultipartFile file,
+    	    @RequestParam("context") String context,
+    	    @RequestParam("cancel_idx") int cancel_idx ,HttpSession session) {
+    	
+		String uploadDir = "/resources/upload";
+		String saveDir = session.getServletContext().getRealPath(uploadDir);
+		String subDir = ""; // 서브디렉토리(날짜 구분)
+		
+		try {
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			subDir = sdf.format(date);
+			saveDir += "/" + subDir;
+			Path path = Paths.get(saveDir);
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String uuid = UUID.randomUUID().toString();
+		
+		String fileName = uuid.substring(0,8) + "_" + file.getOriginalFilename();
+		
+		String saveFileName = subDir + "/" + fileName;
+		
+    	int updateCount = fundingservice.requestMemberCancellation(cancel_idx, context, saveFileName) ;
+    	
+    	if(updateCount > 0) {
+    		try {
+				file.transferTo(new File(saveDir,fileName));
+			} catch (IllegalStateException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		return "true";
+    	}
+    			
+    	return "false";
+    	
+    }
+    
+    @PostMapping(value = "reivewRegistration", consumes = "multipart/form-data")
+    @ResponseBody
+    public String reivewRegistration(@RequestPart("file") MultipartFile file,
+    	    @RequestParam("context") String context,
+    	    @RequestParam("payment_idx") int payment_idx,
+    	    @RequestParam("starRating") int starRating,
+    	    HttpSession session) {
+    	
+		String uploadDir = "/resources/upload";
+		String saveDir = session.getServletContext().getRealPath(uploadDir);
+		String subDir = ""; // 서브디렉토리(날짜 구분)
+		
+		try {
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			subDir = sdf.format(date);
+			saveDir += "/" + subDir;
+			Path path = Paths.get(saveDir);
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String uuid = UUID.randomUUID().toString();
+		
+		String fileName = uuid.substring(0,8) + "_" + file.getOriginalFilename();
+		
+		String saveFileName = subDir + "/" + fileName;
+		
+    	int insertCount = service.reivewRegistration(payment_idx, context, starRating, saveFileName) ;
+    	
+    	if(insertCount > 0) {
+    		try {
+				file.transferTo(new File(saveDir,fileName));
+			} catch (IllegalStateException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		return "true";
+    	}
+    			
+    	return "false";
+    	
+    	
+    }
+    
     
     
  // 랜덤 코드 생성

@@ -135,7 +135,7 @@
 		          <a class="nav-link" href="LogOut">로그아웃</a>
 		        </li>
 		        <li class="nav-item">
-		        <a class="nav-link" href="#">${sessionScope.sId}님 환영합니다.</a>
+		        <a class="nav-link" href="memberMypage">${sessionScope.sId}님 환영합니다.</a>
 		        </li>
 	        </c:otherwise>
         </c:choose>

@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/mypage.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <title>Document</title>
+    <%@ include file="../Header.jsp" %>
     <style type="text/css">
         .text-black {
             text-decoration: none;
@@ -63,8 +64,6 @@
         
         function zim(is_zim,project_idx) {
 			
-        	alert(is_zim+ ", " +project_idx);
-        	
         	$.ajax({
         		type:"post",
         		url:"isZim",
@@ -103,7 +102,7 @@
     <!-- cupon 페이지 시작 -->
     <div class="row" style="margin-top: 100px;">
     <div class="col"></div>
-    <div class="col-12 col-md-8 col-lg-6 bg-light mt-5">
+    <div class="col-12 col-md-8 col-lg-6 mt-5">
         <div class="row">
             <h2><b>찜만 모았어요</b></h2>
         </div>
@@ -126,11 +125,11 @@
     <c:forEach items="${zimList }" var="zim">
 	    <div class="row">
 	        <div class="col"></div>
-		    <div class="col-12 col-sm-8 col-lg-6 bg-light">
+		    <div class="col-12 col-sm-8 col-lg-6 m-3" style="border: 1px solid #eeeeee;">
 		    	<div class="row align-items-center">
 			    	<div class="col">
-				        <div class="row mt-5 align-items-start">
-				            <div class="row my-3 align-items-start">
+				        <div class="row">
+				            <div class="row my-3">
 				                <div class="col-1 me-3 h5 text-primary">
 				                    <img class="center" style="width: 30px; height: 30px; border-radius: 50%;">
 				                </div>
@@ -172,6 +171,8 @@
 	    <div class="col"></div>
 	</div>
 </c:forEach>
+
+<%@ include file="../Footer.jsp" %>
 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"

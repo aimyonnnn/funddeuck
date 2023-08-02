@@ -70,7 +70,7 @@
                         <div class="col-sm-12 col-md">
                             <div class="row me-md-3" style="border: 1px solid lightgray; border-radius: 7px;">
                                 <div class="col" style="border-right: solid 1px lightgray;">
-                                    <a href="" class="text-black">
+                                    <a href="MemberFunDing" class="text-black">
                                         <div class="row">
                                             <div class="col text-start m-3">
                                                 펀딩
