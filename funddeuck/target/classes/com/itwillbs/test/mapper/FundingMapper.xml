@@ -170,17 +170,4 @@
 	    WHERE payment_idx = #{payment_idx}
 	</update>
 	
-		<!-- 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보 -->
-	<select id="selectProjectInfo" resultType="com.itwillbs.test.vo.ProjectVO"> 
-			SELECT *
-				FROM project
-					WHERE project_idx = #{project_idx}
-	</select>
-	
-	<!-- 프로젝트 상세 페이지 이동 시 조회할 리워드 정보 -->
-	<select id="selectProjectRewardInfo" resultType="com.itwillbs.test.vo.RewardVO"> 
-			SELECT *
-				FROM reward
-					WHERE project_idx = #{project_idx}
-	</select>
 </mapper>
