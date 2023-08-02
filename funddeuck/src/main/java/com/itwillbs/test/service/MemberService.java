@@ -141,7 +141,17 @@ public class MemberService {
 	
 	// 리뷰작성 시 리뷰 등록
 	public int reivewRegistration(int payment_idx, String context, int starRating, String saveFileName) {
-		return mapper.insertRevewRegistration(payment_idx, context, starRating, saveFileName);
+			return mapper.insertRevewRegistration(payment_idx, context, starRating, saveFileName);
+	}
+	
+	// 리뷰 리스트 가져오기
+	public List<Map<String, Object>> getMemberReviewList(String sId, int startRow, int listLimit) {
+		return mapper.selectMemberReviewList(sId, startRow, listLimit);
+	}
+	
+	//리뷰 카운트
+	public int getMemberReveiwListCount(String sId) {
+		return mapper.selectMemberReviewListCount(sId);
 	}
 	
 	

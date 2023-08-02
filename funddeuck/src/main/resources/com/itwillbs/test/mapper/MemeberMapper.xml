@@ -246,6 +246,7 @@
 		WHERE payment_idx = #{payment_idx}
 	</update>
 	
+	<!-- 리뷰작성 -->
 	<insert id="insertRevewRegistration">
 		INSERT INTO review
 			VALUES(
@@ -253,7 +254,39 @@
 				#{payment_idx},
 				#{context},
 				#{starRating},
-				#{saveFileName}
+				#{saveFileName},
+				1
 			)
 	</insert>
+	
+	
+	<!-- 리뷰 리스트 컬럼 -->
+	<select id="selectMemberReviewList">
+		SELECT review_idx
+		, pro.project_subject
+		, rew.reward_name, rev.review_content
+		, rev.starRating
+		, rev.saveFileName 
+			FROM review rev 
+			JOIN payment pay
+				ON pay.payment_idx = rev.review_idx
+			JOIN project pro
+				ON pro.project_idx = pay.project_idx
+			JOIN reward rew
+				ON rew.reward_idx = pay.reward_idx
+			WHERE pay.member_idx = (SELECT member_idx
+									FROM members
+									WHERE member_id = #{sId});
+		LIMIT #{startRow},#{listLimit}
+	</select>
+	<!-- 리뷰 갯수 -->
+	<select id="selectMemberReviewListCount">
+			SELECT COUNT(rev.review_idx)
+				FROM review rev 
+				JOIN payment pay
+					ON pay.payment_idx = rev.review_idx
+				WHERE pay.member_idx = (SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId});
+	</select>
 </mapper>
