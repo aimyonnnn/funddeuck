@@ -208,6 +208,7 @@
 		
 	    // 계좌 본인 인증 
 	    $("#btnAccountAuth").on("click", function() {
+	    	
 			// 새 창에서 사용자 인증 페이지 요청
 			let requestUri = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
 					+ "response_type=code"
@@ -467,7 +468,7 @@
 					<div class="d-flex flex-row">
 						<select class="form-control" name="project_settlement_bank" id="bankCategory">
 							<option value="">은행 선택</option>
-							<option value="산업은행">신한은행</option>
+							<option value="산업은행">산업은행</option>
 							<option value="신한은행">신한은행</option>
 							<option value="국민은행">국민은행</option>
 							<option value="농협은행">농협은행</option>
@@ -481,6 +482,7 @@
 					<input class="form-control mt-1" type="text" name="project_settlement_account" id="bankAccount" placeholder="계좌번호 '-' 없이 숫자만 입력">
 					<input class="form-control mt-1" type="text" name="project_settlement_name" id="bankName" placeholder="예금주명"><br>
 					<button class="btn btn-primary" id="btnAccountAuth">본인 인증</button>
+					<input type="hidden" name="token_idx" id="token_idx" value="">
 					</div>
 
 					<!-- 통장 사본 -->

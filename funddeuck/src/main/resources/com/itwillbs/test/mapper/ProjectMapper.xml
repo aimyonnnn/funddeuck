@@ -124,9 +124,10 @@
 				, #{project_settlement_name}
 				, #{project_settlement_image}
 				, 1								 -- 프로젝트 승인 상태
+				, 1						         -- 프로젝트 상태
 				, NULL							 -- 프로젝트 승인 요청 시간
 				, #{maker_idx}					 -- 메이커 번호
-				, 1						         -- 프로젝트 상태
+				, #{token_idx}					 -- 프로젝트 계좌 인증에 사용될 토큰 번호
 			)
 	</insert>
 	

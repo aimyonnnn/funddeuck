@@ -33,11 +33,14 @@ CREATE TABLE project (
     project_settlement_name varchar(50) NOT NULL COMMENT '예금주명',
     project_settlement_image varchar(100) NOT NULL COMMENT '통장사본 이미지',
     project_approve_status int NOT NULL COMMENT '프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)',
-  	project_approval_request_time DATETIME COMMENT '프로젝트 승인 요청 시간',
+    project_status int NOT NULL COMMENT '프로젝트 상태 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료',
+	project_approval_request_time DATETIME COMMENT '프로젝트 승인 요청 시간',
     maker_idx int NOT NULL COMMENT '메이커 번호',
-	project_status int NOT NULL COMMENT '프로젝트 상태 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료',
-    FOREIGN KEY (maker_idx) references maker(maker_idx)
+	token_idx int NOT NULL COMMENT '프로젝트 인증에 사용될 토큰 번호',
+    FOREIGN KEY (maker_idx) REFERENCES maker(maker_idx) ON DELETE CASCADE,
+	FOREIGN KEY (token_idx) references token(token_idx) ON DELETE CASCADE
 );
+
 */
 
 @Data
@@ -67,8 +70,9 @@ public class ProjectVO {
 	private String project_settlement_image;				// 통장사본 이미지
 	private int project_approve_status;						// 프로젝트 승인 상태
 	private LocalDateTime project_approval_request_time;    // 프로젝트 승인 요청 시간 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
+	private int project_status;								// 프로젝트 상태 프로젝트 상태 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료
+	private int token_idx;									// 프로젝트 계좌 인증에 사용될 토큰 번호
 	private int maker_idx;									// 메이커 번호
-	private int project_status;								// 프로젝트 상태 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료
 	
 	private MultipartFile file1;							// 프로젝트 썸네일 (1)
  	private MultipartFile file2;							// 프로젝트 썸네일 (2)

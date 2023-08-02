@@ -497,11 +497,11 @@ public class ProjectController {
 	public String projectManagement(HttpSession session, Model model) {
 		
 		// 세션 아이디가 존재하지 않을 때 
-//			String sId = (String) session.getAttribute("sId");
-//			if(sId == null) {
-//				model.addAttribute("msg", "잘못된 접근입니다.");
-//				return "fail_back";
-//			}
+		String sId = (String) session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "fail_back";
+		}
 		
 		return "project/project_management";
 	}
