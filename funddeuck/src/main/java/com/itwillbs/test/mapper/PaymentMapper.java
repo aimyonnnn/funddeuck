@@ -78,9 +78,16 @@ public interface PaymentMapper {
 	// 프로젝트 리스트 조회
 	List<ProjectVO> selectPaymentByProjectIdx(
 			@Param("maker_idx") int maker_idx, @Param("project_idx") int project_idx,
-			@Param("parsedStartDate") LocalDate parsedStartDate, @Param("parsedEndDate") LocalDate parsedEndDate);
+			@Param("parsedStartDate") LocalDate parsedStartDate, @Param("parsedEndDate") LocalDate parsedEndDate, 
+			@Param("startRow") int startRow, @Param("listLimit") int listLimit);
 
 	// 송장번호 입력 후 일주일 후 '배송완료'로 상태변경
-	int updateDeliveryStatusPaymentList(int payment_idx);	
+	int updateDeliveryStatusPaymentList(int payment_idx);
+	
+	// 갯수 조회
+	int selectTotalCountByProjectIdx(
+			@Param("maker_idx") int maker_idx, @Param("project_idx") int project_idx,
+			@Param("parsedStartDate") LocalDate parsedStartDate, @Param("parsedEndDate") LocalDate parsedEndDate
+			);	
 	
 }

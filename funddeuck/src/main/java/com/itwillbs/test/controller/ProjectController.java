@@ -827,9 +827,10 @@ public class ProjectController {
 	// 프로젝트 리스트 출력
 	@PostMapping("getPaymentByProjectIdx")
 	@ResponseBody
-	public List<ProjectVO> getPaymentByProjectIdx(
+	public Map<String, Object> getPaymentByProjectIdx(
 			@RequestParam(value = "maker_idx") int maker_idx, @RequestParam(value = "project_idx") int project_idx,
-			@RequestParam String startDate, @RequestParam String endDate) {
+			@RequestParam String startDate, @RequestParam String endDate,
+			@RequestParam int startRow, @RequestParam int listLimit) {
 		
 		// 날짜 형식을 지정하는 DateTimeFormatter 객체 생성
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -838,8 +839,19 @@ public class ProjectController {
 	    LocalDate parsedStartDate = LocalDate.parse(startDate, formatter);
 	    LocalDate parsedEndDate = LocalDate.parse(endDate, formatter);
 		
-		List<ProjectVO> pList = paymentService.getPaymentByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate);
-		return pList;
+		List<ProjectVO> pList = paymentService.getPaymentByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate, startRow, listLimit);
+		int totalCount = paymentService.getTotalCountByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate);
+		int totalPages = (int) Math.ceil((double) totalCount / listLimit); // 총 페이지 수 계산
+
+	    System.out.println("데이터 출력 테스트 : " + pList);
+	    System.out.println("데이터 출력 테스트 : " + totalCount);
+
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("data", pList);
+	    result.put("totalCount", totalCount);
+	    result.put("totalPages", totalPages); // totalPages 값을 추가
+	    
+	    return result;
 	}
 	
 	// 메이커의 프로젝트별 차트 출력

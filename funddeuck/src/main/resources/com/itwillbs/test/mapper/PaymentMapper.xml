@@ -248,6 +248,17 @@
         	  AND proj.project_idx = #{project_idx}
         	  AND DATE(payment_date) BETWEEN #{parsedStartDate} AND #{parsedEndDate}
         order by p.payment_date desc
+       	LIMIT #{startRow}, #{listLimit}
+	</select>
+	
+	<!-- 갯수 조회 -->
+	<select id="selectTotalCountByProjectIdx">
+	 	SELECT COUNT(*) AS totalCount
+	    FROM payment p
+	    INNER JOIN project proj ON p.project_idx = proj.project_idx
+	    WHERE proj.maker_idx = #{maker_idx}
+	          AND proj.project_idx = #{project_idx}
+	          AND DATE(payment_date) BETWEEN #{parsedStartDate} AND #{parsedEndDate}
 	</select>
 	
 	<!-- 발송입력 - 모달창 리스트 조회 -->

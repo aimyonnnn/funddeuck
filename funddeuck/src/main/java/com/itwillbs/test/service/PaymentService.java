@@ -105,8 +105,13 @@ public class PaymentService {
 	}
 	
 	// 메이커의 프로젝트별 결제 내역 조회
-	public List<ProjectVO> getPaymentByProjectIdx(int maker_idx, int project_idx, LocalDate parsedStartDate, LocalDate parsedEndDate) {
-		return mapper.selectPaymentByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate);
+	public List<ProjectVO> getPaymentByProjectIdx(int maker_idx, int project_idx, LocalDate parsedStartDate, LocalDate parsedEndDate, int startRow, int listLimit) {
+		return mapper.selectPaymentByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate, startRow, listLimit);
+	}
+	
+	// 갯수 조회
+	public int getTotalCountByProjectIdx(int maker_idx, int project_idx, LocalDate parsedStartDate, LocalDate parsedEndDate) {
+		return mapper.selectTotalCountByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate);
 	}
 	
 	

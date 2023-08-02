@@ -664,19 +664,28 @@ th, td {
 									</tr>
 								</thead>
 								<tbody id="paymentTableBody">
-								
+									<!-- 여기다가 출력함 -->
 								</tbody>
 								</table>
 								<!-- 결제 테이블 -->
-								
 								</div>
 							</div>
-							<!--  -->
 							
+								<!-- 페이징 버튼 -->
+								<div class="d-flex justify-content-center">
+									<div id="pagingButtons">
+										
+									</div>
+								</div>
+								<!-- 페이징 버튼 -->
+								
 						</div>
+						
+						
 					</div>	
 					<!--  -->
 					
+													
 				</div>
 			</article>
 		</section>
@@ -729,8 +738,8 @@ function getProjectList() {
 	});
 }
 
-// 아래 부터는 테이블 출력
-//서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
+// ===============================================================================================================
+// 서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
 function getProjectList2() {
 	
     let selectElement = document.getElementById("projectSelect2");
@@ -761,122 +770,196 @@ function getProjectList2() {
         }
     });
 }
+// ===============================================================================================================
+	
+// 페이징 처리
+let currentPage = 1;
+let totalCount = 0;
+const listLimit = 10; // 페이지당 데이터 수
 
-// 메이커 전체 결제 내역 조회
-// $(document).ready(function() {
-// 	$.ajax({
-// 	    url: '<c:url value="getAllMakerPayment"/>',
-// 	    method: 'post',
-// 	    data: {
-// 	    	maker_idx: ${maker_idx}
-// 	    },
-// 	    dataType: 'json',
-// 	    success: function(data) {
-// 	        updatePaymentTable(data);
-// 	    },
-// 	    error: function(error) {
-// 	        console.error(error);
-// 	    }
-// 	});
-// });
+// 총 페이지 수를 계산하는 함수
+function calculateTotalPages(totalCount, listLimit) {
+  	return Math.ceil(totalCount / listLimit);
+}
 
-// 조회 버튼 클릭 시 프로젝트별 전체 결제 내역 조회
-$(()=>{
-	$('#paymentUpdateButton').click(()=>{
+// 날짜 형식 변환 함수
+function formatDate(timestamp) {
+  	let date = new Date(timestamp);
+  	let year = date.getFullYear();
+	let month = ('0' + (date.getMonth() + 1)).slice(-2);	// 날짜 객체에서 월을 가져오고 1을 더한 후 문자열로 변환 후 뒤에서 2개의 문자를 추출
+  	let day = ('0' + date.getDate()).slice(-2);
+  	return year + '-' + month + '-' + day;
+}
+
+// 테이블 데이터 채우기 함수
+function fillTable(data) {
+	
+	let tbody = $('#paymentTableBody');
+	tbody.empty();
+
+	data.forEach(function (payment, index) {
 		
-	    let startDatePayment = $("#startDatePayment").val();
-	    let endDatePayment = $("#endDatePayment").val();
-	    let selectedProjectIdx2 = $("#projectSelect2").val();
+		let status;
 		
-	    // 유효성 검사
-        if (!startDatePayment || !endDatePayment) {
-            alert("시작 날짜와 끝 날짜를 모두 입력해주세요.");
-            return;
-        }
+	  	if (payment.payment_confirm === 1) {
+	    	status = "예약완료";
+	  	} else if (payment.payment_confirm === 2) {
+	    	status = "결제완료";
+	  	} else if (payment.payment_confirm === 3) {
+	    	status = "반환신청";
+	  	} else if (payment.payment_confirm === 4) {
+	    	status = "반환완료";
+	  	} else if (payment.payment_confirm === 5) {
+	    	status = "반환거절";
+	  	} else {
+	    	status = "없음";
+ 		}
 
-        let startDateObj = new Date(startDatePayment);
-        let endDateObj = new Date(endDatePayment);
-
-        if (endDateObj < startDateObj) {
-            alert("끝 날짜가 시작 날짜보다 빠릅니다. 올바른 날짜를 선택해주세요.");
-            return;
-        }
-
-        if (!selectedProjectIdx2) {
-            alert("프로젝트를 선택해주세요.");
-            return;
-        }
-        
-	    $.ajax({
-	    	url: '<c:url value="getPaymentByProjectIdx"/>',
-	        method: 'POST',
-	        data: {
-	            maker_idx: ${maker_idx},
-	            project_idx: selectedProjectIdx2,
-	            startDate: startDatePayment,
-	            endDate: endDatePayment
-	        },
-	        dataType: 'json',
-	        success: function (data) {
-	            updatePaymentTable(data);
-	        },
-	        error: function (error) {
-	            console.error(error);
-	        }
-	    });
-		
+		let formattedDate = formatDate(payment.payment_date);
+		let newRow =
+		    "<tr>" +
+			    "<td class='text-center'>" + payment.payment_idx + "</td>" +
+			    "<td class='text-center'>" + payment.project_subject + "</td>" +
+			    "<td class='text-center'>" + payment.reward_name + "</td>" +
+			    "<td class='text-center'>" + payment.payment_quantity + "</td>" +
+			    "<td class='text-center'>" + payment.total_amount + "</td>" +
+			    "<td class='text-center'>" + formattedDate + "</td>" +
+			    "<td class='text-center'>" + status + "</td>" +
+			    "<td class='text-center'><button class='btn btn-outline-primary btn-sm'>상세보기</button></td>" +
+		    "</tr>";
+		tbody.append(newRow);
 	});
+}
+
+// ajax로 데이터 가져오는 함수
+function fetchPaginatedData(page) {
+	let startDatePayment = $("#startDatePayment").val();
+	let endDatePayment = $("#endDatePayment").val();
+	let selectedProjectIdx2 = $("#projectSelect2").val();
+
+  	$.ajax({
+	    url: '<c:url value="getPaymentByProjectIdx"/>',
+	    method: 'POST',
+	    data: {
+	    	
+			maker_idx: ${maker_idx},
+			project_idx: selectedProjectIdx2,
+			startDate: startDatePayment,
+			endDate: endDatePayment,
+			startRow: (page - 1) * listLimit,
+			listLimit: listLimit
+	      
+	    },
+	    dataType: 'json',
+	    success: function (data) {
+	    	
+	    	
+	      	totalCount = data.totalCount;
+	      	let totalPages = calculateTotalPages(totalCount, listLimit);
+	      	currentPage = page;
+
+	      	// 결제내역 데이터를 테이블에 추가
+	      	fillTable(data.data);
+	
+	     	// 페이징 버튼 생성 및 이벤트 처리
+	      	let pagingButtons = $("#pagingButtons");
+	      	pagingButtons.empty();
+	
+	      	let navUl = $("<ul></ul>").addClass("pagination");
+	
+	      	// 맨 앞으로 가는 버튼
+	      	let firstButton = $("<li></li>").addClass("page-item");
+	      	let firstLink = $("<button></button>").addClass("page-link").html("&laquo;");
+	      	firstButton.addClass(currentPage === 1 ? "disabled" : ""); // 현재 페이지가 첫 페이지면 비활성화
+	      	firstButton.append(firstLink);
+	      	firstLink.click(function (event) {
+	      		
+		      	event.preventDefault(); // 링크 동작 방지
+		      	fetchPaginatedData(1);
+		      	
+	      	});
+	      	navUl.append(firstButton);
+
+	      	// 페이지 버튼들
+	      	for (let i = 1; i <= totalPages; i++) {
+	      		
+		      	let button = $("<li></li>").addClass("page-item");
+		        let link = $("<button></button>").addClass("page-link").text(i);
+		        
+		        if (i === currentPage) {
+		        	button.addClass("active");
+		        }
+		        
+	       		button.append(link);
+	        	link.click(function (event) {
+	        		
+		          	event.preventDefault(); // 링크 동작 방지
+		          	fetchPaginatedData(i);
+	          
+	        	});
+		        navUl.append(button);
+	      	}
+
+	      // 맨 뒤로 가는 버튼
+	      let lastButton = $("<li></li>").addClass("page-item");
+	      let lastLink = $("<button></button>").addClass("page-link").html("&raquo;");
+	      lastButton.addClass(currentPage === totalPages ? "disabled" : ""); // 현재 페이지가 마지막 페이지면 비활성화
+	      lastButton.append(lastLink);
+	      lastLink.click(function (event) {
+	    	  
+			event.preventDefault(); // 링크 동작 방지
+	      	fetchPaginatedData(totalPages);
+	        
+	      });
+	      navUl.append(lastButton);
+	      pagingButtons.append(navUl);
+	
+	      // 이전 페이지로 이동하는 버튼 활성화/비활성화 처리
+	      $("#prevPageButton").prop("disabled", currentPage === 1);
+	
+	      // 다음 페이지로 이동하는 버튼 활성화/비활성화 처리
+	      $("#nextPageButton").prop("disabled", currentPage === totalPages);
+	      
+	      
+	    },
+	    error: function (error) {
+	      console.error(error);
+	    }
+  	});
+}
+
+// 조회 버튼 클릭 시 자료 조회와 페이징 처리 호출
+$('#paymentUpdateButton').click(function () {
+	fetchPaginatedData(1); // 첫 페이지 데이터 조회
 });
 
-// 결제내역 데이터를 테이블에 추가하는 함수
-function updatePaymentTable(data) {
-   
-    let tbody = $('#paymentTableBody');
-    tbody.empty();
-    
-    // 날짜 변환
-    function formatDate(timestamp) {
-		  let date = new Date(timestamp);
-		  let year = date.getFullYear();
-		  let month = ('0' + (date.getMonth() + 1)).slice(-2);
-		  let day = ('0' + date.getDate()).slice(-2);
-		  return year + '-' + month + '-' + day;
+// 이전 페이지로 이동하는 버튼 클릭 이벤트 핸들러
+$("#prevPageButton").click(function () {
+	if (currentPage > 1) {
+		fetchPaginatedData(currentPage - 1);
 	}
-    
-    data.forEach(function(payment, index) {
-    	
-    	// 결제상태 판별하기
-    	let status;
-        if (payment.payment_confirm === 1) {
-            status = "결제완료";
-        } else if (payment.payment_confirm === 2) {
-            status = "취소요청";
-        } else if (payment.payment_confirm === 3) {
-            status = "취소완료";
-        } else {
-            status = "없음";
-        }
-    	
-    	let formattedDate = formatDate(payment.payment_date); // 주문 날짜 변환
-	   	let newRow = 
-		   	    "<tr>" +
-			   	    "<td class='text-center'>" + payment.payment_idx + "</td>" +
-			   	    "<td class='text-center'>" + payment.project_subject + "</td>" +
-			   	    "<td class='text-center'>" + payment.reward_name + "</td>" +
-			   	    "<td class='text-center'>" + payment.payment_quantity + "</td>" +
-			   	    "<td class='text-center'>" + payment.total_amount + "</td>" +
-			   	    "<td class='text-center'>" + formattedDate + "</td>" +
-			   	    "<td class='text-center'>" + status + "</td>" +
-			   	    "<td class='text-center'><button class='btn btn-outline-primary btn-sm'>상세보기</button></td>" +
-		   	    "</tr>";
-        tbody.append(newRow);
-    });
-}
-// 페이지 로드 후에 지난 7일간 결제내역을 조회
+});
+
+// 다음 페이지로 이동하는 버튼 클릭 이벤트 핸들러
+$("#nextPageButton").click(function () {
+	let totalPages = calculateTotalPages(totalCount, listLimit);
+	if (currentPage < totalPages) {
+		fetchPaginatedData(currentPage + 1);
+	}
+});
+
+// 초기 데이터 가져오기
+$(document).ready(function () {
+	fetchPaginatedData(1); // 첫 페이지 데이터 조회
+});
+
+// ===============================================================================================================
+// 페이지가 완전히 로드되었을 때 해당 함수를 실행
 window.addEventListener('load', function() {
-    const todayPayment = new Date();                        // 현재 날짜를 생성
-    const sevenDaysAgoPayment = new Date(todayPayment);            // 새로운 날짜 객체 생성    
-    sevenDaysAgoPayment.setDate(todayPayment.getDate() - 7);       // 7일 전의 날짜로 설정
+	
+    const todayPayment = new Date();                        	   		// 현재 날짜를 생성
+    const sevenDaysAgoPayment = new Date(todayPayment);            		// 새로운 날짜 객체 생성    
+    sevenDaysAgoPayment.setDate(todayPayment.getDate() - 7);       		// 7일 전의 날짜로 설정
     
     // 시작 날짜 입력란에 7일 전 날짜 설정
     document.getElementById("startDatePayment").valueAsDate = sevenDaysAgoPayment;
@@ -892,6 +975,11 @@ window.addEventListener('load', function() {
         document.getElementById("paymentUpdateButton").click();
     }, 1000); 
 });
+
+//
+
+
+
 </script>
 <!-- js -->
 <script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
