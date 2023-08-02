@@ -763,22 +763,22 @@ function getProjectList2() {
 }
 
 // 메이커 전체 결제 내역 조회
-$(document).ready(function() {
-	$.ajax({
-	    url: '<c:url value="getAllMakerPayment"/>',
-	    method: 'post',
-	    data: {
-	    	maker_idx: ${maker_idx}
-	    },
-	    dataType: 'json',
-	    success: function(data) {
-	        updatePaymentTable(data);
-	    },
-	    error: function(error) {
-	        console.error(error);
-	    }
-	});
-});
+// $(document).ready(function() {
+// 	$.ajax({
+// 	    url: '<c:url value="getAllMakerPayment"/>',
+// 	    method: 'post',
+// 	    data: {
+// 	    	maker_idx: ${maker_idx}
+// 	    },
+// 	    dataType: 'json',
+// 	    success: function(data) {
+// 	        updatePaymentTable(data);
+// 	    },
+// 	    error: function(error) {
+// 	        console.error(error);
+// 	    }
+// 	});
+// });
 
 // 조회 버튼 클릭 시 프로젝트별 전체 결제 내역 조회
 $(()=>{
@@ -872,6 +872,26 @@ function updatePaymentTable(data) {
         tbody.append(newRow);
     });
 }
+// 페이지 로드 후에 지난 7일간 결제내역을 조회
+window.addEventListener('load', function() {
+    const todayPayment = new Date();                        // 현재 날짜를 생성
+    const sevenDaysAgoPayment = new Date(todayPayment);            // 새로운 날짜 객체 생성    
+    sevenDaysAgoPayment.setDate(todayPayment.getDate() - 7);       // 7일 전의 날짜로 설정
+    
+    // 시작 날짜 입력란에 7일 전 날짜 설정
+    document.getElementById("startDatePayment").valueAsDate = sevenDaysAgoPayment;
+    
+    // 끝 날짜 입력란에 오늘 날짜 설정
+    document.getElementById("endDatePayment").valueAsDate = todayPayment;
+    
+    // 프로젝트 선택 박스 초기화 (선택 사항이기 때문에 원하는 대로 설정)
+    // document.getElementById("projectSelect2").value = "";
+    
+    // 페이지 로드 후 자동으로 조회 버튼 클릭 (1초 후에 실행하도록 설정)
+    setTimeout(function () {
+        document.getElementById("paymentUpdateButton").click();
+    }, 1000); 
+});
 </script>
 <!-- js -->
 <script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
