@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.test.mapper.ProjectMapper">
+	
+	<!-- 리워드 등록하기 -->
+	<insert id="insertReward">
+		insert
+			into reward
+				values(
+					null
+					, #{project_idx}
+					, #{reward_price}
+					, #{reward_category}
+					, #{reward_name}
+					, #{reward_quantity}
+					, #{reward_option}
+					, #{reward_detail}
+					, #{delivery_status}
+					, #{delivery_price}
+					, #{delivery_date}
+					, #{reward_info}
+				)
+	</insert>
+	
+	<!-- 메이커 등록하기 -->
+	<insert id="insertMaker" useGeneratedKeys="true" keyProperty="maker_idx">
+		insert
+			into maker
+				values(
+					null
+					, #{member_idx}
+					, #{maker_file1}
+					, #{individual_biz_num}
+					, #{individual_biz_name}
+					, #{maker_file2}
+					, #{corporate_biz_num}
+					, #{corporate_biz_name}
+					, #{maker_file3}
+					, #{maker_file4}
+					, #{maker_file5}
+					, #{maker_name}
+					, #{maker_intro}
+					, #{maker_email}
+					, #{maker_tel}
+					, #{maker_url}
+				)
+	</insert>
+	
+	<!-- 리워드 갯수 조회하기 -->
+	<select id="selectRewardCount" resultType="int">
+		SELECT count(*)
+	        FROM project p
+		        INNER JOIN reward r ON p.project_idx = r.project_idx
+			        WHERE p.project_idx = #{project_idx}
+	</select>
+	
+	<!-- 리워드 리스트 조회하기 -->
+	<select id="selectRewardList" resultType="com.itwillbs.test.vo.RewardVO">
+		SELECT r.*
+	        FROM project p
+		        INNER JOIN reward r ON p.project_idx = r.project_idx
+			        WHERE p.project_idx = #{project_idx}
+	</select>
+	
+	<!-- 리워드 조회하기 -->
+	<select id="selectRewardInfo" resultType="com.itwillbs.test.vo.RewardVO">
+		select *
+			from reward
+				where
+					reward_idx = #{reward_idx}
+	</select>
+	
+	<!-- 리워드 수정하기 -->
+	<update id="updateReward">
+		update reward
+			set
+				reward_price = #{reward_price}
+				, reward_category = #{reward_category}
+				, reward_name = #{reward_name}
+				, reward_quantity = #{reward_quantity}
+				, reward_option = #{reward_option}
+				, reward_detail = #{reward_detail}
+				, delivery_status = #{delivery_status}
+				, delivery_price = #{delivery_price}
+				, delivery_date = #{delivery_date}
+				, reward_info = #{reward_info}
+			where
+				reward_idx = #{reward_idx}
+	</update>
+	
+	<!-- 리워드 삭제하기 -->
+	<delete id="deleteReward">
+		delete
+			from reward
+				where
+					reward_idx = #{reward_idx}
+	</delete>
+	
+	<!-- 프로젝트 등록하기 -->
+	<insert id="insertProject" useGeneratedKeys="true" keyProperty="project_idx">
+		INSERT 
+			INTO project
+			VALUES (
+				NULL
+				, #{project_plan}
+				, #{project_category}
+				, #{project_subject}
+				, #{project_thumnails1}
+				, #{project_thumnails2}
+				, #{project_thumnails3}
+				, #{project_image}
+				, #{project_introduce}
+				, #{project_semi_introduce}
+				, #{project_target}
+				, #{project_start_date}
+				, #{project_end_date}
+				, #{project_hashtag}
+				, #{project_representative_name}
+				, #{project_representative_email}
+				, #{project_representative_birth}
+				, #{project_tax_email}
+				, #{project_settlement_bank}
+				, #{project_settlement_account}
+				, #{project_settlement_name}
+				, #{project_settlement_image}
+				, 1								 -- 프로젝트 승인 상태
+				, 1						         -- 프로젝트 상태
+				, NULL							 -- 프로젝트 승인 요청 시간
+				, #{maker_idx}					 -- 메이커 번호
+				, #{token_idx}					 -- 프로젝트 계좌 인증에 사용될 토큰 번호
+			)
+	</insert>
+	
+	<!-- 프로젝트 조회하기 -->
+	<select id="selectProject" resultType="com.itwillbs.test.vo.ProjectVO">
+		SELECT *
+			FROM project
+				WHERE project_idx = #{project_idx}
+	</select>
+	
+	<!-- 리워드 작성자 판별 -->
+	<select id="selectRewardAuthorId" resultType="string">
+		SELECT mem.member_id
+			FROM reward r
+				JOIN project p ON r.project_idx = p.project_idx
+				JOIN maker m ON p.maker_idx = m.maker_idx
+				JOIN members mem ON m.member_idx = mem.member_idx
+					WHERE r.reward_idx = #{reward_idx}
+					AND mem.member_idx = (SELECT member_idx FROM members WHERE member_id = #{sId});
+	</select>
+	
+	<!-- 메이커 등록 페이지 접속 시 -->
+	<select id="selectMemberIdx">
+		select member_idx
+			from members
+				where member_id = #{sId}
+	</select>
+	
+	<!-- 프로젝트 승인 요청 -->
+	<!-- project_approve_status = 2 -->
+	<update id="updateStatus">
+		update project
+			set
+				project_approve_status = 2
+			where
+				project_idx = #{project_idx}		
+	</update>
+	
+	<!-- project_approve_status != 1 리스트 조회 -->
+	<select id="selectAllRequestProject">
+		select *
+			from project -- 동적 SQL문 작성 필요
+		where
+		<!-- 검색타입이 널스트링이 아닐 때 -->
+		<if test="!searchKeyword.equals('')">
+			<!-- 검색타입에 따른 where절 조건 대상 변경 -->
+			<choose>
+				<when test="searchType.equals('subject')">
+					project_subject like '%${searchKeyword}%'
+						and
+				</when>
+				<when test="searchType.equals('name')">
+					project_representative_name like '%${searchKeyword}%'
+						and
+				</when>					
+			</choose>
+		</if>
+			project_approve_status != 1
+		order by
+			project_idx desc			
+		limit
+			#{startRow}
+			, #{listLimit}
+	</select>
+	
+	<!-- project_approve_status != 1 리스트 갯수 조회 -->
+	<select id="selectAllRequestProjectCount">
+		select count(*)
+		from
+			project
+		where
+			project_approve_status != 1
+	</select>
+	
+	<!-- maker_idx 조회하기 -->
+	<select id="selectMakerIdx">
+		select maker_idx
+			from project
+				where
+					project_idx = #{project_idx}
+	</select>
+	
+	<!-- 프로젝트 상태컬럼 변경 -->
+	<update id="updateProjectStatus">
+		update project
+			set
+				project_approve_status = #{project_approve_status}
+			where
+				project_idx = #{project_idx}
+	</update>
+	
+	<!-- 메이커 조회 -->
+	<select id="selectMakerInfo" resultType="com.itwillbs.test.vo.MakerVO">
+		select *
+			from maker
+				where
+					maker_idx = #{makerIdx}
+	</select>
+	
+	<!-- 프로젝트 리스트 조회 -->
+	<select id="selectProjectList" resultType="com.itwillbs.test.vo.ProjectVO">
+		SELECT *
+			FROM project
+			WHERE maker_idx 
+			IN (
+				SELECT maker_idx 
+				FROM maker 
+				WHERE member_idx = #{member_idx}
+			)
+	</select>
+	
+	<!-- 프로젝트 승인여부 확인하기  -->
+	<select id="selectProjectApproved">
+		select *
+			from
+				project
+			where
+				project_idx = #{project_idx}
+				and project_approve_status = #{project_approve_status}
+	</select>
+	
+	<!-- 프로젝트 탐색 -->
+	<select id="getProjectList" resultType="com.itwillbs.test.vo.ProjectVO">
+		SELECT *
+			FROM project
+	</select>
+	
+	<!-- 프로젝트 수 조회  -->
+	<select id="selectProjectListCount" resultType="int">
+		SELECT COUNT(*)
+			FROM project
+	</select>
+
+	<!-- 프로젝트 추천순 조회 -->
+	<select id="selectProjectFavorScore" resultType="java.util.Map">
+		SELECT *
+			FROM project
+				ORDER BY project_favor DESC
+	</select>
+	
+	<!-- 프로젝트 공유순 조회 -->
+	<select id="selectProjectSharingScore" resultType="java.util.Map">
+		SELECT *
+			FROM project
+				ORDER BY project_sharingCount DESC	
+	</select>
+	
+	<!-- 프로젝트 모집금액순 조회 -->
+	<select id="selectProjectAmountScore" resultType="java.util.Map">
+		SELECT *
+			FROM project
+				ORDER BY project_now_amount DESC	
+	</select>
+	
+	<!-- 프로젝트 최신순 조회 -->
+	<select id="selectNewProject" resultType="java.util.Map">
+		SELECT *
+			FROM project
+				ORDER BY project_start_date DESC	
+	</select>
+	
+	<!-- 멤버, 메이커, 프로젝트 테이블을 조인하여 일치하는 데이터 조회 -->
+	<select id="selectProjectsByMemberId">
+		SELECT p.* FROM project p
+	    INNER JOIN maker m ON p.maker_idx = m.maker_idx
+	    INNER JOIN members mb ON m.member_idx = mb.member_idx
+	   	WHERE mb.member_id = #{sId}
+	   	AND m.maker_idx = #{maker_idx}
+	   	AND p.project_idx = #{project_idx}
+	</select>
+	
+	<!-- 메이커 번호로 프로젝트 리스트 조회 -->
+	<select id="selectProjectListByMakerIdx">
+		select *
+			from project
+		where
+			maker_idx = #{maker_idx}
+	</select>
+	
+	<!-- 승인완료 된 프로젝트 리스트 조회 -->
+	<select id="selectApprovedProjects">
+		select *
+			from project
+		where
+			project_approve_status = 3;
+	</select>
+	
+	<!-- 프로젝트 승인 처리 시간 저장 -->
+	<update id="updateProjectApprovalRequestTime">
+		update project
+			set
+				project_approval_request_time = #{project_approval_request_time}
+			where
+				project_idx = #{project_idx}
+	</update>
+	
+	<!-- 전체 프로젝트 리스트 조회 -->
+	<select id="selectAllProject">
+		select *
+			from project -- 동적 SQL문 작성 필요
+		<!-- 검색타입이 널스트링이 아닐 때 -->
+		<if test="!searchKeyword.equals('')">
+		where
+			<!-- 검색타입에 따른 where절 조건 대상 변경 -->
+			<choose>
+				<when test="searchType.equals('subject')">
+					project_subject like '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('name')">
+					project_representative_name like '%${searchKeyword}%'
+				</when>					
+			</choose>
+		</if>
+		order by
+			project_idx desc			
+		limit
+			#{startRow}
+			, #{listLimit}
+	</select>
+	
+	<!-- 전체 프로젝트 갯수 조회 -->
+	<select id="selectAllProjectCount">
+		select count(*)
+			from project
+		<if test="!searchKeyword.equals('')">
+		where
+			<choose>
+				<when test="searchType.equals('subject')">
+					project_subject like '%${searchKeyword}%'
+				</when>				
+				<when test="searchType.equals('name')">
+					project_representative_name like '%${searchKeyword}%'
+				</when>				
+			</choose>
+		</if>
+	</select>
+	
+	<!--  ranking system  -->
+	<select id="selectTop10ProjectsByEndDate" resultType="com.itwillbs.test.vo.ProjectVO"> 
+	SELECT * FROM project ORDER BY project_end_date LIMIT 10 
+	</select>
+	
+	<!--  show all project  -->
+	<select id="getAllProjects" resultType="com.itwillbs.test.vo.ProjectVO"> 
+			SELECT *
+				FROM project 
+	</select>
+	
+</mapper>
+	
+	

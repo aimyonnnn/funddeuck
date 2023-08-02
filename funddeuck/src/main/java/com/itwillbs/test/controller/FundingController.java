@@ -29,14 +29,12 @@ public class FundingController {
 	
 	// 펀딩 탐색 페이지
 	@GetMapping("fundingDiscover")
-	public String fundingDiscover(
-			@RequestParam(defaultValue = "") String category,
-			@RequestParam(defaultValue = "") String status,
-			@RequestParam(defaultValue = "") String index,
-			Model model) {
+	public String fundingDiscover(Model model) {
 		
-		List<ProjectVO> projectList = fundingService.getProjectListDiscover(category, status, index);
-		model.addAttribute("projectList", projectList);
+		List<ProjectVO> project = projectService.getAllProjects();
+		model.addAttribute("project", project);
+		
+		// 프로젝트 현재 펀딩 금액 조회
 		
 		return "funding/funding_discover";
 	}
@@ -56,6 +54,12 @@ public class FundingController {
 //		model.addAttribute(reward);
 		
 		return "funding/funding_detail";
+	}
+	
+	// 펀딩 탐색 페이지 리스트
+	@GetMapping("fundingDiscoverList")
+	public String fundingDiscoverList() {
+		return "";
 	}
 	
 	// 펀딩 주문페이지 이동

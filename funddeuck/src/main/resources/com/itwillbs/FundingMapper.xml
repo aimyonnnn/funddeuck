@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.test.mapper.FundingMapper">
+	<!-- 배송지 등록 insert -->
+	<insert id="insertDelivery">
+		INSERT INTO delivery
+			VALUES (
+				null 
+				, #{member_id}
+				, #{delivery_reciever}
+				, #{delivery_phone}
+				, #{delivery_zipcode}
+				, #{delivery_add}
+				, #{delivery_detailadd}
+				, #{delivery_default}
+			)
+	
+	</insert>
+	
+	<!-- 배송지 목록 조회 -->
+	<select id="selectDeliveryList" resultType="com.itwillbs.test.vo.DeliveryVO">
+		SELECT * 
+			FROM delivery 
+				WHERE member_id = #{id}
+	</select>
+	
+	<!-- 기본 배송지 조회 -->
+	<select id="selectDeliveryDefault">
+		SELECT * 
+			FROM delivery
+				WHERE delivery_default = 1 
+					AND member_id = #{id}
+	</select>
+	
+	<!-- 선택한 배송지 조회 -->
+	<select id="selectDelivery">
+		SELECT * 
+			FROM delivery
+				WHERE delivery_idx = #{delivery_idx}
+					AND member_id = #{id}
+		
+	</select>
+	
+	<!-- 쿠폰 목록 조회 -->
+	<select id="selectCouponList">
+		SELECT *
+			FROM coupon
+				WHERE coupon_use = 0
+	</select>
+	
+	<!-- 기존 기본배송지 0으로 변경 -->
+	<update id="updateDeliveryDefault">
+<!-- 		<selectKey resultType="" order="BEFORE"></selectKey> -->
+		UPDATE delivery
+			SET delivery_default = 0
+				WHERE delivery_default = 1
+	</update>
+	
+	<!-- 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보 -->
+	<select id="selectProjectInfo" resultType="com.itwillbs.test.vo.ProjectVO"> 
+			SELECT *
+				FROM project
+					WHERE project_idx = #{project_idx}
+	</select>
+	
+	<!-- 프로젝트 상세 페이지 이동 시 조회할 리워드 정보 -->
+	<select id="selectProjectRewardInfo" resultType="com.itwillbs.test.vo.RewardVO"> 
+			SELECT *
+				FROM reward
+					WHERE project_idx = #{project_idx}
+	</select>
+	
+</mapper>

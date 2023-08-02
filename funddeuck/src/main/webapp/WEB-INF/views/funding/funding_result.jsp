@@ -24,7 +24,7 @@
 			<p class="fs-2 fw-bolder">결제가 완료되었습니다</p><br>
 			<div class="grid gap-3">
 				<div class="row">
-					<img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" class="d-block w-25 float-start" alt="...">
+					<img src="${project.project_thumnails1 }" class="d-block w-25 float-start" alt="...">
 					  <div class="col-md-6 row-gap-10">
 					  	<table class="text-start">
 					  		<tr>
