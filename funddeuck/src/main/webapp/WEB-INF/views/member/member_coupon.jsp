@@ -30,6 +30,7 @@
 
 	<div class="card-body p-4" id="tabContentContainer">
 		<div id="coupon">
+			<input type="text" name="member_idx" value="${sessionScope.sIdx}" />
 			<h5><b>현재 사용가능 쿠폰</b></h5>
 			<br>
 			<p><a href="#" onclick="showCouponInput()">⊕ 쿠폰 등록하기</a></p>
@@ -45,6 +46,7 @@
 			</ol>
 		</div>
 		<div id="couponHistory">
+			<input type="hidden" name="member_idx" value="${sessionScope.sIdx}" />
 	        <h5><b>사용 쿠폰 이용내역</b></h5>
 	        <br>
 	        <div id="couponUseDiv">
