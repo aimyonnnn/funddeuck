@@ -58,11 +58,11 @@
 					      var status = refundStatus[i].payment_confirm;
 					      var count = refundStatus[i].count;
 
-					      if (status == 2) { // 펀딩금 반환 신청 시
+					      if (status == 3) { // 펀딩금 반환 신청 시
 					        $(".table .text-primary:eq(1)").next().text(count);
-					      } else if (status == 3) { // 반환 완료 시
+					      } else if (status == 4) { // 반환 완료 시
 					        $(".table .tableTag:eq(4)").next().text(count);
-					      } else if (status == 4) { // 거절 시
+					      } else if (status == 5) { // 거절 시
 					        $(".table .tableTag:eq(5)").next().text(count);
 					      }
 					    }
@@ -149,11 +149,11 @@
 			    	                        + "</td>" +
 			    	                        "<td>" +
 			    	                        	(function() {
-			    	                        		if(row.payment_confirm == 2) { // 펀딩금 반환 신청 시
+			    	                        		if(row.payment_confirm == 3) { // 펀딩금 반환 신청 시
 					    	                            return "<button class='btn btn-outline-danger' id='tableButton' data-bs-toggle='modal' data-bs-target='#refundModal'>신청</button>";
-			    	                        		} else if(row.payment_confirm == 3) { // 반환 완료 시
+			    	                        		} else if(row.payment_confirm == 4) { // 반환 완료 시
 			    	                        			return "완료";
-			    	                        		} else if(row.payment_confirm == 4) { // 반환 거절 시 
+			    	                        		} else if(row.payment_confirm == 5) { // 반환 거절 시 
 			    	                        			return "거절";
 			    	                        		} else { // 반환 신청 없을 시
 			    	                        			return "";
@@ -364,9 +364,9 @@
 										<li><a class="dropdown-item shipping-filter-item" href="#" data-filter="2" href="#">배송중</a></li>
 										<li><a class="dropdown-item shipping-filter-item" href="#" data-filter="3">배송 완료</a></li>
 										<li><hr class="dropdown-divider"></li>
-										<li><a class="dropdown-item shipping-filter-item" href="#" data-type="2">펀딩금 반환 신청</a></li>
-										<li><a class="dropdown-item shipping-filter-item" href="#" data-type="3">펀딩금 반환 신청 완료</a></li>
-										<li><a class="dropdown-item shipping-filter-item" href="#" data-type="4">펀딩금 반환 신청 거절</a></li>
+										<li><a class="dropdown-item shipping-filter-item" href="#" data-type="3">펀딩금 반환 신청</a></li>
+										<li><a class="dropdown-item shipping-filter-item" href="#" data-type="4">펀딩금 반환 신청 완료</a></li>
+										<li><a class="dropdown-item shipping-filter-item" href="#" data-type="5">펀딩금 반환 신청 거절</a></li>
 									</ul>
 								</div>
 							</div>
