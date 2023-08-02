@@ -12,15 +12,48 @@
         SELECT * FROM coupon
     </select>
     
-        <!-- 만료된 쿠폰 목록 조회(admin) --> 
+    <!-- 만료된 쿠폰 목록 조회(admin) --> 
 	<select id="getExpiredCoupons" resultType="com.itwillbs.test.vo.CouponVO">
 	    SELECT * FROM coupon WHERE coupon_end &lt; NOW() AND coupon_use = 0
 	</select>
+    
     <!-- 쿠폰 사용 상태 업데이트(admin) -->
     <update id="updateCoupon" parameterType="com.itwillbs.test.vo.CouponVO">
         UPDATE coupon
         SET coupon_use = #{coupon_use}
         WHERE coupon_idx = #{coupon_idx}
     </update>
+
+	<!-- ============================================================================== -->
+    
+        <resultMap id="couponResultMap" type="com.itwillbs.test.vo.CouponVO">
+        <id property="coupon_idx" column="coupon_idx" />
+        <result property="member_idx" column="member_idx" />
+        <result property="coupon_name" column="coupon_name" />
+        <result property="coupon_text" column="coupon_text" />
+        <result property="coupon_num" column="coupon_num" />
+        <result property="coupon_sale" column="coupon_sale" />
+        <result property="coupon_start" column="coupon_start" />
+        <result property="coupon_end" column="coupon_end" />
+        <result property="coupon_use" column="coupon_use" />
+    	</resultMap>
+
+	<!-- 쿠폰 조회(member) 및 idx 변화 -->
+    <select id="getCouponInfoByNumber" resultMap="couponResultMap">
+        SELECT * FROM coupon WHERE coupon_num = #{couponNumber}
+    </select>
+    
+    <select id="getCouponsByMemberAndStatus" resultType="com.itwillbs.test.vo.CouponVO">
+    SELECT *
+    FROM coupon
+    WHERE member_idx = #{memberIdx} AND coupon_use = #{couponUse}
+	</select>
+    
+    <!-- 이미 사용한 쿠폰 조회(member) -->
+    <select id="getUsedCoupons" resultType="com.itwillbs.test.vo.CouponVO">
+    SELECT *
+    FROM coupon
+    WHERE coupon_use = 1 AND member_idx = #{memberIdx}
+    </select>
     
 </mapper>

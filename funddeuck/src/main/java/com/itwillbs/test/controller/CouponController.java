@@ -7,11 +7,13 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.test.service.CouponService;
@@ -69,7 +71,41 @@ public class CouponController {
         return "admin/expired_coupons";
     }
 
+    //-------------------------------------------------------------------------------------
+    
+    @GetMapping("member/coupon")
+    public String memberCoupon(HttpSession session, Model model) {
+    	Integer memberIdx = (Integer) session.getAttribute("sIdx");
+    
+        if (memberIdx == null ) {
+            return "redirect:/";
+        }	
 
+        List<CouponVO> couponList = couponService.getCouponsByMemberAndStatus(memberIdx, 0);
+        List<CouponVO> usedCoupons = couponService.getUsedCoupons(memberIdx);
+
+        model.addAttribute("couponList", couponList);
+        model.addAttribute("usedCoupons", usedCoupons);
+
+    	return "member/member_coupon";	
+    }
+    
+    @PostMapping("/member/coupon-info")
+    @ResponseBody
+    public ResponseEntity<CouponVO> getCouponInfo(@RequestParam("couponNumber") String couponNumber, HttpSession session) {
+        CouponVO couponInfo = couponService.getCouponInfoByNumber(couponNumber);
+
+        if (couponInfo != null) {
+            Integer memberIdx = (Integer) session.getAttribute("sIdx");
+            if (memberIdx != null) {
+                couponInfo.setMember_idx(memberIdx); 
+                couponService.registerCoupon(couponInfo); 
+            }
+            return ResponseEntity.ok(couponInfo);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
     
     
 }

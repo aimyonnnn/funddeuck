@@ -164,7 +164,6 @@
 			</if>
 	</select>
 	
-	<!-- 환불 신청 -->
 	<update id="requestMemberCancellcation">
 		UPDATE payment
 	    SET cancel_context = #{context}, cancel_img = #{saveFileName}, payment_confirm = 3

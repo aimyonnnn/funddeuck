@@ -33,5 +33,20 @@ public class CouponService {
 
     public List<CouponVO> getExpiredCoupons(LocalDateTime now) {
         return couponMapper.getExpiredCoupons(now);
-    }    
+    }
+
+    //-----------------------------------------------------------------------------------------
+    
+	public CouponVO getCouponInfoByNumber(String couponNumber) {
+        return couponMapper.getCouponInfoByNumber(couponNumber);
+	} 
+	
+	public List<CouponVO> getCouponsByMemberAndStatus(int memberIdx, int couponUse) {
+	    return couponMapper.getCouponsByMemberAndStatus(memberIdx, couponUse);
+	}
+
+    public List<CouponVO> getUsedCoupons(int memberIdx) {
+        return couponMapper.getUsedCoupons(memberIdx);
+    }
+
 }
