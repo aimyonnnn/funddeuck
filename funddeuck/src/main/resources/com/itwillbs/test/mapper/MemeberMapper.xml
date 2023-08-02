@@ -251,4 +251,22 @@
 		);
 	</select>
 	
+	
+	<!-- 회원이 배송완료 버튼을 눌렀을 때 업데이트됨 -->
+	<update id="updateDeleveryComplete">
+		UPDATE payment
+		SET delivery_status = 3
+		WHERE payment_idx = #{payment_idx}
+	</update>
+	
+	<insert id="insertRevewRegistration">
+		INSERT INTO review
+			VALUES(
+				NULL,
+				#{payment_idx},
+				#{context},
+				#{starRating},
+				#{saveFileName}
+			)
+	</insert>
 </mapper>

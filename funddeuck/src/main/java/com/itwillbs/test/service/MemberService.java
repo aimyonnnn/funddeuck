@@ -113,22 +113,37 @@ public class MemberService {
 	public List<Map<String, Object>> getZimList(String sId) {
 		return mapper.selectZimList(sId);
 	}
-
+	
+	//찜 알람 설정
 	public int zimAlam(int project_idx, int isAlam, String sId) {
 		return mapper.updateZimAlam(project_idx, isAlam, sId);
 	}
-
+	
+	//찜 삭제
 	public int deleteZim(int project_idx, String sId) {
 		return mapper.deleteZim(project_idx, sId);
 	}
 
+	// 찜등록
 	public int insertZim(int project_idx, String sId) {
 		return mapper.insertZim(project_idx, sId);
 	}
 
+	// 팔로우의 최근 프로젝트 가져오기
 	public List<ProjectVO> getProject(String sId) {
 		return mapper.selectFollowProjectList(sId);
 	}
+
+	//배송이 완료 변경 버튼(회원만)
+	public int ModifyDeleveryComplete(int payment_idx) {
+		return mapper.updateDeleveryComplete(payment_idx);
+	}
+	
+	// 리뷰작성 시 리뷰 등록
+	public int reivewRegistration(int payment_idx, String context, int starRating, String saveFileName) {
+		return mapper.insertRevewRegistration(payment_idx, context, starRating, saveFileName);
+	}
+	
 	
 	// 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회
 	public MembersVO getMemberInfoByProjectIdx(int project_idx) {

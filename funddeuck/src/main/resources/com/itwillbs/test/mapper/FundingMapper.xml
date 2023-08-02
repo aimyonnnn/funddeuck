@@ -45,7 +45,6 @@
 	<select id="selectCouponList">
 		SELECT *
 			FROM coupon
-				WHERE coupon_use = 0
 	</select>
 	
 	<!-- 기존 기본배송지 0으로 변경 -->
@@ -94,4 +93,80 @@
 				</if>
 	</select>
 		
+	<!-- 멤버가 한 펀딩 리스트를 뽑음 -->
+	<select id="selectMemberFunDing">
+		SELECT pay.payment_idx
+		, pro.project_subject
+		, pay.payment_quantity
+		, pay.total_amount
+		, pay.delivery_status
+		, re.reward_name
+		, re.reward_detail
+		, re.reward_option
+		, pay.payment_date
+		, del.delivery_add
+		, del.delivery_detailadd
+		, pay.waybill_num
+		, pay.payment_confirm
+		, pay.waybill_num
+		, rev.review_idx
+		FROM payment pay 
+		JOIN project pro ON pay.project_idx = pro.project_idx
+		JOIN reward re ON re.reward_idx = pay.reward_idx
+		JOIN delivery del ON del.delivery_idx = pay.delivery_idx
+		LEFT JOIN review rev ON pay.payment_idx = rev.payment_idx
+		WHERE pay.member_idx = (SELECT member_idx
+								FROM members
+								WHERE member_id = #{sId })
+			<if test='payment_confirm != 0'>
+			AND payment_confirm = #{payment_confirm}
+			</if>
+	ORDER BY pay.payment_idx DESC
+	LIMIT
+		#{startRow}, #{listLimit}
+	</select>
+	
+	<!-- 모달 창에 띄울 펀딩 1개의 내용 -->
+	<select id="selectModalFunding">
+		SELECT pay.payment_idx
+			, pro.project_subject
+			, pay.payment_quantity
+			, pay.total_amount
+			, pay.delivery_status
+			, re.reward_name
+			, re.reward_detail
+			, re.reward_option
+			, pay.payment_date
+			, del.delivery_add
+			, del.delivery_detailadd
+			, pay.waybill_num
+			, pay.payment_confirm
+			, rev.review_idx
+			FROM payment pay JOIN project pro
+				ON pay.project_idx = pro.project_idx
+				JOIN reward re
+					ON re.reward_idx = pay.reward_idx
+				JOIN delivery del
+					ON del.delivery_idx = pay.delivery_idx
+				LEFT JOIN review rev ON pay.payment_idx = rev.payment_idx
+				WHERE pay.payment_idx = #{payment_idx}
+	</select>
+	
+		<!-- 페이징 처리를 위한 갯수 받는 구문 -->
+	<select id="selectMemberFunDingCoung" resultType="int">
+		SELECT count(payment_idx)
+		FROM payment
+			WHERE member_idx = (SELECT member_idx
+								FROM members
+								WHERE member_id = #{sId })
+			<if test='payment_confirm != 0'>
+				AND payment_confirm = #{payment_confirm}
+			</if>
+	</select>
+	
+	<update id="requestMemberCancellcation">
+		UPDATE payment
+	    SET cancel_context = #{context}, cancel_img = #{saveFileName}, payment_confirm = 3
+	    WHERE payment_idx = #{payment_idx}
+	</update>
 </mapper>

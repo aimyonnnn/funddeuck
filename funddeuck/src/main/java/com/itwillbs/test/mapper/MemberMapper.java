@@ -85,5 +85,12 @@ public interface MemberMapper {
 	
 	// 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회
 	MembersVO selectMemberInfoByProjectIdx(int project_idx);
+	
+	//배달 완료 채크
+	int updateDeleveryComplete(int payment_idx);
+	
+	//리뷰 작성
+	int insertRevewRegistration(@Param("payment_idx") int payment_idx, @Param("context") String context, @Param("starRating") int starRating, @Param("saveFileName")String saveFileName);
+	
 
 }

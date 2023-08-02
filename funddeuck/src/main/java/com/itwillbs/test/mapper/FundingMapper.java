@@ -26,6 +26,17 @@ public interface FundingMapper {
 	
 	// 기존의 기본 배송지 설정 변경
 	void updateDeliveryDefault();
+	// 멤버가 한 펀딩 리스트 가져오기
+	List<Map<String, Object>> selectMemberFunDing(@Param("sId") String sId, @Param("payment_confirm") int payment_confirm , @Param("startRow") int startRow, @Param("listLimit") int listLimit);
+	
+	//모달창에 띄울 내용 가져오기
+	Map<String, Object> selectModalFunding(int payment_idx);
+	
+	// 멤버가 한 펀딩의 카운트(페이징 처리)
+	int selectMemberFunDingCoung(@Param("sId") String sId, @Param("payment_confirm") int payment_confirm);
+	
+	// 펀딩 취소 신청
+	int requestMemberCancellcation(@Param("payment_idx") int cancel_idx,@Param("context") String context,@Param("saveFileName") String saveFileName);
 	
 	// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보
 	ProjectVO selectProjectInfo(int project_idx);
