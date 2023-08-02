@@ -123,7 +123,10 @@ public class ProjectService {
 	public int getAllProjectCount(String searchKeyword, String searchType) {
 		return mapper.selectAllProjectCount(searchKeyword, searchType);
 	}
-	
+	// 프로젝트 리스트 조회
+	public List<ProjectVO> getAllProjectByMakerIdx(int maker_idx) {
+		return mapper.selectAllProjectByMakerIdx(maker_idx);
+	}
 	
 	//---------main page------------
 		// ranking system
@@ -145,6 +148,7 @@ public class ProjectService {
 	            return allProjects; 
 	        }
 	    }
+		
 		
 		
 		

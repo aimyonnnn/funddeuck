@@ -254,7 +254,7 @@ $(() => {
         
         var selectedProjectIdx = document.getElementById("projectSelect").value; 	// 셀렉트 박스에서 선택된 값을 가져오기
         var selectedText = $('#projectSelect option:selected').text();				// 셀렉트 박스에서 선택된 옵션의 표시 텍스트를 가져오기
-        $("#selectedProjectIdx").text(selectedProjectIdx + "번 " + selectedText);	// selectedProjectIdx 요소의 내용을 업데이트 하기
+        $("#selectedProjectIdx").text(selectedText);								// selectedProjectIdx 요소의 내용을 업데이트 하기
     	
         let startDateProject = $('#startDateProject').val(); 						// 시작일 입력값 가져오기
         let endDateProject = $('#endDateProject').val(); 							// 종료일 입력값 가져오기
@@ -468,8 +468,7 @@ th, td {
 				<!--  -->
 				<div class="projectArea">
 					<p class="projectTitle">프로젝트 현황</p>
-					<p class="projectContent mb-4">프로젝트 진행 상황을 실시간으로 한 번에 볼 수
-						있습니다.</p>
+					<p class="projectContent mb-4">프로젝트 진행 상황을 한 눈에 파악할 수 있습니다.</p>
 					
 					<!-- 프로젝트 차트 -->
 					<div class="container mt-5 mb-3">
@@ -633,8 +632,8 @@ th, td {
 					<!-- 전체 결제 내역 조회 -->
 					<div class="container mt-5 mb-3">
 						<div class="row justify-content-center">
-							<p class="subheading">전체 결제 내역 조회</p>
-							<p class="projectContent">결제 내역을 실시간으로 조회 할 수 있습니다.</p>
+							<p class="subheading">프로젝트별 결제 내역 조회</p>
+							<p class="projectContent">기간별로 결제 내역을 조회 할 수 있습니다.</p>
 						
 							<!-- 셀렉트 박스 -->
 							<div class="d-flex flex-row justify-content-end">
@@ -649,53 +648,87 @@ th, td {
 							<div class="row">
 								<div class="d-flex justify-content-center">
 								
-								<!-- 결제 테이블 -->
-								<table class="table" style="font-size: 15px">
-								<thead>
-									<tr>
-										<th class="text-center" style="width: 3%;">번호</th>
-										<th class="text-center" style="width: 13%;">프로젝트명</th>
-										<th class="text-center" style="width: 13%;">리워드명</th>
-										<th class="text-center" style="width: 3%;">수량</th>
-										<th class="text-center" style="width: 6%;">결제금액</th>
-										<th class="text-center" style="width: 7%;">주문날짜</th>
-										<th class="text-center" style="width: 5%;">상태</th>
-										<th class="text-center" style="width: 7%;">상세보기</th>
-									</tr>
-								</thead>
-								<tbody id="paymentTableBody">
-									<!-- 여기다가 출력함 -->
-								</tbody>
-								</table>
-								<!-- 결제 테이블 -->
+									<!-- 결제 테이블 -->
+									<table class="table" style="font-size: 15px">
+									<thead>
+										<tr>
+											<th class="text-center" style="width: 3%;">번호</th>
+											<th class="text-center" style="width: 13%;">프로젝트명</th>
+											<th class="text-center" style="width: 13%;">리워드명</th>
+											<th class="text-center" style="width: 3%;">수량</th>
+											<th class="text-center" style="width: 6%;">결제금액</th>
+											<th class="text-center" style="width: 7%;">주문날짜</th>
+											<th class="text-center" style="width: 5%;">상태</th>
+											<th class="text-center" style="width: 7%;">상세보기</th>
+										</tr>
+									</thead>
+									<tbody id="paymentTableBody">
+										<!-- 여기다가 출력함 -->
+									</tbody>
+									</table>
 								</div>
 							</div>
-							
-								<!-- 페이징 버튼 -->
-								<div class="d-flex justify-content-center">
-									<div id="pagingButtons">
-										
-									</div>
+							<!-- 페이징 버튼 -->
+							<div class="d-flex justify-content-center">
+								<div id="pagingButtons">
 								</div>
-								<!-- 페이징 버튼 -->
-								
+							</div>
+							<!-- 페이징 버튼 -->
 						</div>
-						
-						
 					</div>	
-					<!--  -->
 					
+					<!-- 전체 결제 내역 조회 -->
+					<div class="container mt-5 mb-3">
+						<div class="row justify-content-center">
+							<p class="subheading">리워드 정보 조회</p>
+							<p class="projectContent">프로젝트별 리워드 재고를 파악할 수 있습니다.</p>
+
+							<!-- 셀렉트 박스 -->
+							<div class="d-flex flex-row justify-content-end">
+								<select id="projectSelect3" class="datepicker-button">
+									<option value="">선택</option>
+								</select>
+								<button class="datepicker-button mx-2" id="rewardUpdateButton">조회</button>		
+							</div>
+							
+							<div class="row">
+								<div class="d-flex justify-content-center">
+								
+									<!-- 결제 테이블 -->
+									<table class="table" style="font-size: 15px">
+									<thead>
+										<tr>
+											<th class="text-center" style="width: 10%;">프로젝트명</th>
+											<th class="text-center" style="width: 20;">리워드명</th>
+											<th class="text-center" style="width: 10;">리워드 옵션</th>
+											<th class="text-center" style="width: 10;">전체 리워드수</th>
+											<th class="text-center" style="width: 10%;">남은 리워드수</th>
+											<th class="text-center" style="width: 7%;">상세보기</th>
+										</tr>
+									</thead>
+									<tbody id="rewardTableBody">
+										
+									</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				<!-- 하단 여백 주기 -->
+				<div style="height: 300px; width: 100%"></div>
 													
 				</div>
 			</article>
 		</section>
 		<!-- 중앙 섹션 끝 -->
-
+		
+		
 	</div>
 </main>
 
 <script>
-// 페이지 로드 후에 호출해야 하는 함수 모음
+// 페이지 로드 후에 호출해야 하는 함수
 $(() => {
 	// datepicker
    	$.datepicker.setDefaults({ dateFormat: 'yy-mm-dd' });
@@ -704,6 +737,7 @@ $(() => {
 	// 셀렉트 박스에 프로젝트 리스트를 출력
 	getProjectList();
 	getProjectList2();
+	getProjectList3();
 });
 
 // 서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
@@ -738,11 +772,42 @@ function getProjectList() {
 	});
 }
 
-// ===============================================================================================================
 // 서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
 function getProjectList2() {
 	
     let selectElement = document.getElementById("projectSelect2");
+    
+    $.ajax({
+        method: 'post',
+        data: {
+            maker_idx: ${maker_idx}
+        },
+        url: '<c:url value="getProjectListByMakerIdx"/>',
+        success: function (data) {
+
+            console.log(data);
+
+            data.forEach((project) => {
+                let option = document.createElement("option");
+                option.value = project.project_idx;
+                option.textContent = project.project_subject;
+                selectElement.appendChild(option);
+            });
+
+            let selectedProjectIdx = ${firstProjectIdx};
+            selectElement.value = selectedProjectIdx;
+
+        },
+        error: function (error) {
+            console.error(error);
+        }
+    });
+}
+
+//서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
+function getProjectList3() {
+	
+    let selectElement = document.getElementById("projectSelect3");
     
     $.ajax({
         method: 'post',
@@ -833,6 +898,7 @@ function fillTable(data) {
 
 // ajax로 데이터 가져오는 함수
 function fetchPaginatedData(page) {
+	
 	let startDatePayment = $("#startDatePayment").val();
 	let endDatePayment = $("#endDatePayment").val();
 	let selectedProjectIdx2 = $("#projectSelect2").val();
@@ -869,7 +935,7 @@ function fetchPaginatedData(page) {
 	
 	      	// 맨 앞으로 가는 버튼
 	      	let firstButton = $("<li></li>").addClass("page-item");
-	      	let firstLink = $("<button></button>").addClass("page-link").html("&laquo;");
+	      	let firstLink = $("<button></button>").addClass("page-link").html("&laquo;").css("color", "black");
 	      	firstButton.addClass(currentPage === 1 ? "disabled" : ""); // 현재 페이지가 첫 페이지면 비활성화
 	      	firstButton.append(firstLink);
 	      	firstLink.click(function (event) {
@@ -884,10 +950,11 @@ function fetchPaginatedData(page) {
 	      	for (let i = 1; i <= totalPages; i++) {
 	      		
 		      	let button = $("<li></li>").addClass("page-item");
-		        let link = $("<button></button>").addClass("page-link").text(i);
+		        let link = $("<button></button>").addClass("page-link text-dark").text(i);
 		        
 		        if (i === currentPage) {
-		        	button.addClass("active");
+// 		        	button.addClass("active");
+
 		        }
 		        
 	       		button.append(link);
@@ -900,25 +967,25 @@ function fetchPaginatedData(page) {
 		        navUl.append(button);
 	      	}
 
-	      // 맨 뒤로 가는 버튼
-	      let lastButton = $("<li></li>").addClass("page-item");
-	      let lastLink = $("<button></button>").addClass("page-link").html("&raquo;");
-	      lastButton.addClass(currentPage === totalPages ? "disabled" : ""); // 현재 페이지가 마지막 페이지면 비활성화
-	      lastButton.append(lastLink);
-	      lastLink.click(function (event) {
+	      	// 맨 뒤로 가는 버튼
+	      	let lastButton = $("<li></li>").addClass("page-item");
+	      	let lastLink = $("<button></button>").addClass("page-link").html("&raquo;").css("color", "black");
+	      	lastButton.addClass(currentPage === totalPages ? "disabled" : ""); // 현재 페이지가 마지막 페이지면 비활성화
+     	 	lastButton.append(lastLink);
+	      	lastLink.click(function (event) {
 	    	  
 			event.preventDefault(); // 링크 동작 방지
 	      	fetchPaginatedData(totalPages);
 	        
-	      });
-	      navUl.append(lastButton);
-	      pagingButtons.append(navUl);
+	      	});
+	      	navUl.append(lastButton);
+	      	pagingButtons.append(navUl);
 	
-	      // 이전 페이지로 이동하는 버튼 활성화/비활성화 처리
-	      $("#prevPageButton").prop("disabled", currentPage === 1);
+	      	// 이전 페이지로 이동하는 버튼 활성화/비활성화 처리
+	      	$("#prevPageButton").prop("disabled", currentPage === 1);
 	
-	      // 다음 페이지로 이동하는 버튼 활성화/비활성화 처리
-	      $("#nextPageButton").prop("disabled", currentPage === totalPages);
+	      	// 다음 페이지로 이동하는 버튼 활성화/비활성화 처리
+	      	$("#nextPageButton").prop("disabled", currentPage === totalPages);
 	      
 	      
 	    },
@@ -954,6 +1021,7 @@ $(document).ready(function () {
 });
 
 // ===============================================================================================================
+	
 // 페이지가 완전히 로드되었을 때 해당 함수를 실행
 window.addEventListener('load', function() {
 	
@@ -976,8 +1044,60 @@ window.addEventListener('load', function() {
     }, 1000); 
 });
 
-//
+//===============================================================================================================
 
+// 프로젝트별 리워드 정보 조회
+$(()=> {
+		
+	$('#rewardUpdateButton').click(()=>{
+		
+		let selectedProjectIdx3 = $("#projectSelect3").val();
+		
+		$.ajax({
+			method: 'post',
+			url: '<c:url value="getRewardInfo"/>',
+			data: {
+				project_idx: selectedProjectIdx3,
+				maker_idx: ${maker_idx}
+			},
+			success: function(data) {
+				
+				console.log(data);
+				
+				let tbody = $('#rewardTableBody');
+				tbody.empty();
+				
+				data.forEach(function(payment, index) {
+					
+					let projectName = $('#projectSelect3 option:selected').text();
+					
+					let newRow = 
+						"<tr>" + 
+							"<td class='text-center'>" + projectName + "</td>" +
+							"<td class='text-center'>" + payment.reward_name + "</td>" + 
+							"<td class='text-center'>" + payment.reward_option + "</td>" + 
+							"<td class='text-center'>" + payment.reward_quantity + "</td>" + 
+							"<td class='text-center'>" + payment.remaining_quantity + "</td>" + 
+							"<td class='text-center'><button class='btn btn-outline-primary btn-sm'>상세보기</button></td>" + 
+						"</tr>";
+						
+					tbody.append(newRow);
+					
+				});
+				
+			},
+			error: function() {
+				console.log('ajax 요청이 실패하였습니다.');
+			}
+		});
+	});
+	
+	// 페이지 로드 후 1초 후에 실행
+	setTimeout(() => {
+		$('#rewardUpdateButton').click();
+	}, 1000);
+	
+});
 
 
 </script>

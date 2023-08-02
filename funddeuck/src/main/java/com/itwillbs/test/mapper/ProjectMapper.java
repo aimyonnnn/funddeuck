@@ -104,13 +104,21 @@ public interface ProjectMapper {
 	// 전체 프로젝트 갯수 조회
 	int selectAllProjectCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType);		
 	
-
+	// 프로젝트 리스트 조회 
+	List<ProjectVO> selectAllProjectByMakerIdx(int maker_idx);
+			
+	
+	
+	
+	
 		//-----main page---------
 		// show all project
 		List<ProjectVO> getAllProjects();
 		
 		//ranking system
 		List<ProjectVO> selectTop10ProjectsByEndDate();
+		
+		
 		
 		
 		

@@ -114,5 +114,10 @@ public class PaymentService {
 		return mapper.selectTotalCountByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate);
 	}
 	
+	// 리워드 조회
+	public List<PaymentVO> getRemainingQuantities(int project_idx) {
+		return mapper.selectRemainingQuantities(project_idx);
+	}
+	
 	
 }

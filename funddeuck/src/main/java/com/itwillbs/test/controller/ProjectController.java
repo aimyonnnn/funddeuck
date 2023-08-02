@@ -723,6 +723,7 @@ public class ProjectController {
 
 	    Integer member_idx = projectService.getMemberIdx(sId);
 	    Integer maker_idx = makerService.getMakerIdx(sId);
+	    
 
 	    if (member_idx == null) {
 	        model.addAttribute("msg", "멤버 정보를 찾을 수 없습니다.");
@@ -839,19 +840,24 @@ public class ProjectController {
 	    LocalDate parsedStartDate = LocalDate.parse(startDate, formatter);
 	    LocalDate parsedEndDate = LocalDate.parse(endDate, formatter);
 		
-		List<ProjectVO> pList = paymentService.getPaymentByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate, startRow, listLimit);
+		List<ProjectVO> data = paymentService.getPaymentByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate, startRow, listLimit);
 		int totalCount = paymentService.getTotalCountByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate);
 		int totalPages = (int) Math.ceil((double) totalCount / listLimit); // 총 페이지 수 계산
 
-	    System.out.println("데이터 출력 테스트 : " + pList);
-	    System.out.println("데이터 출력 테스트 : " + totalCount);
-
 	    Map<String, Object> result = new HashMap<>();
-	    result.put("data", pList);
+	    result.put("data", data);
 	    result.put("totalCount", totalCount);
-	    result.put("totalPages", totalPages); // totalPages 값을 추가
+	    result.put("totalPages", totalPages);
 	    
 	    return result;
+	}
+	
+	// 프로젝트의 리워드 정보 조회
+	@PostMapping("getRewardInfo")
+	@ResponseBody
+	public List<PaymentVO> getRewardInfo(@RequestParam int maker_idx, @RequestParam int project_idx) {
+		List<PaymentVO> pList = paymentService.getRemainingQuantities(project_idx);
+		return pList;
 	}
 	
 	// 메이커의 프로젝트별 차트 출력

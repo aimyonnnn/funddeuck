@@ -88,6 +88,9 @@ public interface PaymentMapper {
 	int selectTotalCountByProjectIdx(
 			@Param("maker_idx") int maker_idx, @Param("project_idx") int project_idx,
 			@Param("parsedStartDate") LocalDate parsedStartDate, @Param("parsedEndDate") LocalDate parsedEndDate
-			);	
+			);
+
+	// 리워드 조회
+	List<PaymentVO> selectRemainingQuantities(int project_idx);	
 	
 }

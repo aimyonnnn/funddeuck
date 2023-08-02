@@ -292,4 +292,24 @@
 			FROM payment
 			WHERE payment_idx = #{payment_idx}
 	</select>
+	
+	<select id="selectRemainingQuantities" resultType="com.itwillbs.test.vo.PaymentVO">
+		 SELECT
+			p.project_idx,
+		    r.reward_idx,
+		    r.reward_name,	
+		    r.reward_option,
+		    r.reward_quantity, 
+	        r.reward_quantity - IFNULL(SUM(p.payment_quantity), 0) AS remaining_quantity
+	    FROM 
+	        reward r
+	    LEFT JOIN 
+	        payment p ON r.reward_idx = p.reward_idx
+	        AND p.payment_confirm = 1 					-- 예약완료
+	    WHERE 
+	        r.project_idx = #{project_idx}
+	    GROUP BY 
+	        r.reward_idx, r.reward_option, r.reward_quantity;
+	</select>
+	
 </mapper>
