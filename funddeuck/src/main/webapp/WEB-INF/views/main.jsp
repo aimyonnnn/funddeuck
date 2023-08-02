@@ -47,6 +47,24 @@
       list-style-type: none;
     }
 
+	.carousel-item img {
+    max-width: 100%;
+    height: auto;
+	}
+	
+	.navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        background-color: #fff; /* 네비게이션 바의 배경색을 설정해 주세요 */
+    }
+  
+    .carousel {
+        margin-top: 70px; /* 네비게이션 바의 높이에 맞춰서 간격을 설정하세요 */
+    }
+	
   </style>
   
   <script type="text/javascript">
@@ -64,24 +82,18 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="https://source.unsplash.com/WLUHO9A_xik/1306x384.391" class="d-block w-100" alt="...">
+                <img src="./resources/images/banner1.png" class="d-block w-100 h-auto" alt="...">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="https://source.unsplash.com/collection/190727/1306x384.391" class="d-block w-100" alt="...">
+                <img src="./resources/images/banner2.png" class="d-block w-100 h-auto" alt="...">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>Second slide label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="https://source.unsplash.com/collection/190727/1306x384.391" class="d-block w-100" alt="...">
+                <img src="./resources/images/banner3.png" class="d-block w-100 h-auto" alt="...">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>Third slide label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
                 </div>
             </div>
         </div>
@@ -120,44 +132,50 @@
 		    </c:forEach>
 		</div>
 
-		<div class="container mt-4">
-		<button type="button" class="btn btn-light" onclick="showRandomProjects()"><b>자동 추천</b></button>
+		<div class="container mt-4 d-flex justify-content-end">
+		    <button type="button" class="btn btn-light" onclick="showRandomProjects()"><b>랜덤 추천</b></button>
 		</div>
+
 	<br>
 	      <div class="card-body">
 	      	  <h3><b>추천 순위</b></h3>
 			  <p>곧 끝나는 프로젝트를 확인하세요!</p>
 	        <ul id="rankingList" class="card-text"></ul>
 	      </div>
+	      
+	<br>
+		  <div class="card-body">
+	      	  <h3><b>오픈 예정 프로젝트</b></h3>
+			  <p>주목하세요! 오픈할 프로젝트</p>
+	      </div>
+	      		<div class="row" id="projectContainer">
+		    <c:forEach items="${projectList}" var="project" varStatus="status">
+		        <c:if test="${status.count <= 6}">
+		            <c:set var="reversedIndex" value="${fn:length(projectList) - status.count}" />
+		            <c:set var="reversedProject" value="${projectList[reversedIndex]}" />
+		            <div class="col-md-4 mb-4">
+		                <article class="card">
+		                    <div class="card-thumbnail" style="background-image: url('${reversedProject.project_thumnails1}');"></div>
+		                    <div class="card-body">
+		                        <em class="card-title">${reversedProject.project_subject}</em>
+		                        <p class="card-text">
+		                            <span class="badge dbadge-primary">${reversedProject.project_target}원</span>
+		                            ${reversedProject.project_category}
+		                        </p>
+		                    </div>
+		                </article>
+		            </div>
+		            <c:if test="${status.count % 3 == 0}"></c:if>
+		        </c:if>
+		    </c:forEach>
+		</div>
+		
+		<div class="container mt-4 d-flex justify-content-end">
+		    <button type="button" class="btn btn-light" onclick="()"><b>자동 추천</b></button>
+		</div>
+		
 	</div>
 
-		    <hr>
-		   	<br>
-    <div>
-        <div class="container">
-            <h2>오픈 예정 프로젝트</h2>
-            <p>주목하세요! 곧 오픈할 프로젝트</p>
-            <div class="card-deck">
-                <c:forEach var="open_project" items="${open_projects}">
-                    <div class="card">
-                        <img src="/resources/images/beautycut${open_project.op_num}.jpg" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">${open_project.op_name}</h5>
-                            <p class="card-text">${open_project.op_intro}</p>
-                            <p class="card-text"><small class="text-muted">${open_project.op_date}</small></p>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12 text-end">
-            <button class="btn btn-primary" id="prev-btn">이전</button>
-            <button class="btn btn-primary" id="next-btn">다음</button>
-        </div>
-    </div>
-    <hr>
 
   
     <script src="resources/js/showRandomProjects.js"></script>

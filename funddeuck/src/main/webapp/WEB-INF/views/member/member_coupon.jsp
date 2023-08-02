@@ -108,7 +108,7 @@
 				<li>프로젝트가 실패하거나 결제 예약 취소를 한 경우, 쿠폰은 반환 됩니다.</li>
 			</ol>
 		</div>
-		<div id="couponHistory">
+		<div id="couponHistory" style="display: none;">
 			<input type="hidden" name="member_idx" value="${sessionScope.sIdx}" />
 				<h5><b>${sessionScope.sId}님이 사용한 쿠폰</b></h5>
 				<br>
@@ -136,12 +136,14 @@
 				</table>
 	        </div>			
 				<br>
+				<div id="couponHistoryMessage" style="display: none;">
 				<h5><b>지난 쿠폰 내역 안내</b></h5>
 				<ol>
 					<li>3개월 이내에 사용했거나 만료된 쿠폰에 한하여 노출됩니다.</li>
 					<li>프로젝트가 실패하거나 결제취소를 한 경우, 쿠폰은 반환됩니다.</li>
 					<li>결제 실패일 경우, 쿠폰이 반환되지 않고 소멸됩니다.</li>
 				</ol>
+				</div>
 			</div>
 		</div>
 
@@ -157,7 +159,13 @@
 				var tabId = $(this).attr("href");
 				$(".card-body > div").hide();
 				$(tabId).show();
-
+	            if (tabId === "#coupon") {
+	                $("#couponInfoDiv").show();
+	                $("#couponHistoryMessage").hide();
+	            } else if (tabId === "#couponHistory") {
+	                $("#couponInfoDiv").hide();
+	                $("#couponHistoryMessage").show();
+	            }
 				return false;
 			});
 		});

@@ -55,11 +55,11 @@
 
   .dropdown-menu-container {
     display: flex;
-    margin-right: 30px; /* Add a 30px gap between the two dropdown menus */
+    margin-right: 30px; 
   }
 
   .dropdown-menu-item {
-    margin-left: 10px; /* Adjust the spacing between each dropdown menu item */
+    margin-left: 10px; 
     position: relative;
   }
 
@@ -131,7 +131,7 @@
 	  <br>
 	  © 2023 웹사이트. 모든 저작권은 보유합니다.
 	  <br><br>
-	  <p>일부 상품의 경우 펀뜨은 통신판매중개자이며 통신판매 당사자가 아닙니다.
+	  <p>일부 상품의 경우 펀뜩은 통신판매중개자이며 통신판매 당사자가 아닙니다.
 	  <br>해당되는 상품의 경우 상품, 상품정보, 거래에 관한 의무와 책임은 판매자에게 있으므로, 각 상품 페이지에서 구체적인 내용을 확인하시기 바랍니다.</p>
 	</div>
   </footer>

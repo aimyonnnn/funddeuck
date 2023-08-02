@@ -81,9 +81,6 @@
 <body>
 <div class="container">
   <!-- 배너 -->
-  <div class="banner">
-<!--     <img src="banner_image.jpg" alt="Banner Image"> -->
-  </div>
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light rounded fixed-top">
     <a class="navbar-brand" href="#">Funddeuck</a>
@@ -95,7 +92,7 @@
 
       <!-- 데스크 -->
       <ul class="navbar-nav left">
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="#">오픈예정</a>
         </li>
         <li class="nav-item">
@@ -105,11 +102,7 @@
           <a class="nav-link" href="#">고객센터</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">자유게시판</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">펀딩제시</a></li>
-            <li><a class="dropdown-item" href="#">커뮤니티</a></li>
-          </ul>
+          <a class="nav-link" href="#">커뮤니티</a>
         </li>
       </ul>
 
@@ -128,14 +121,14 @@
 		        </li>
 	        </c:when>
 	        <c:otherwise>
-	        	<li class="nav-item">
-		          <a class="nav-link" href="#">프로젝트 생성</a>
+		        <li class="nav-item">
+		        <a class="nav-link" href="memberMypage"><b>${sessionScope.sId}님 환영합니다.</b></a>
 		        </li>
 	        	<li class="nav-item">
 		          <a class="nav-link" href="LogOut">로그아웃</a>
 		        </li>
-		        <li class="nav-item">
-		        <a class="nav-link" href="memberMypage">${sessionScope.sId}님 환영합니다.</a>
+	        	<li class="nav-item">
+		          <a class="nav-link" href="#">프로젝트 생성</a>
 		        </li>
 	        </c:otherwise>
         </c:choose>
