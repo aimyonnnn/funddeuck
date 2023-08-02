@@ -22,6 +22,10 @@ public class FundingController {
 	private MemberService memberService;
 	@Autowired
 	private FundingService fundingService;
+	@Autowired
+	private PaymentService paymentService;
+	@Autowired
+	private DeliveryService deliveryService;
 	
 	// 펀딩 탐색 페이지
 	@GetMapping("fundingDiscover")
@@ -112,8 +116,19 @@ public class FundingController {
 	// 결제 완료 페이지
 	@GetMapping ("fundingResult")
 	public String fundingResult(Model model, HttpSession session
-//			, @RequestParam String merchant_uid payment 테이블 데이터 추가 시 주석 해제
+			, @RequestParam int member_idx
+			, @RequestParam int payment_idx
+			, @RequestParam int delivery_idx
+//			 테이블 데이터 추가 시 주석 해제
 			) {
+
+		// 결제 정보 조회
+		List<PaymentVO> payment = paymentService.getPaymentList(payment_idx);
+		model.addAttribute(payment);
+		
+		// 주문 정보 조회
+		List<DeliveryVO> delivery = deliveryService.getDeliveryList(payment_idx);
+		model.addAttribute(delivery);
 		
 		// 세션 아이디가 존재하지 않을 때 
 //		String sId = (String) session.getAttribute("sId");
@@ -121,6 +136,7 @@ public class FundingController {
 //			model.addAttribute("msg", "잘못된 접근입니다.");
 //			return "fail_back";
 //		}
+		
 		
 		return "funding/funding_result";
 	}	

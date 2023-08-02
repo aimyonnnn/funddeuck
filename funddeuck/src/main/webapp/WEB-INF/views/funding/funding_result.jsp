@@ -30,32 +30,32 @@
 					  		<tr>
 					  			<th><span class="fs-5 fw-bold">주문번호</span></th>
 					  			<td>&nbsp;&nbsp;</td>
-					  			<td><span class="fs-5">123456789</span></td>
+					  			<td><span class="fs-5">${payment.payment_idx }</span></td>
 					  		</tr>
 					  		<tr>
 					  			<th><span class="fs-5 fw-bold">주문자</span></th>
 					  			<td>&nbsp;&nbsp;</td>
-					  			<td><span class="fs-5">홍길동</span></td>
+					  			<td><span class="fs-5">${delivery.member_id }</span></td>
 					  		</tr>
 					  		<tr>
 					  			<th><span class="fs-5 fw-bold">수취인</span></th>
 					  			<td>&nbsp;&nbsp;</td>
-					  			<td><span class="fs-5">홍길동</span></td>
+					  			<td><span class="fs-5">${delivery.delivery_reciever }</span></td>
 					  		</tr>
 					  		<tr>
 					  			<th><span class="fs-5 fw-bold">수취인 연락처</span></th>
 					  			<td>&nbsp;&nbsp;</td>
-					  			<td><span class="fs-5">010-1234-5678</span></td>
+					  			<td><span class="fs-5">${delivery.delivery_phone }</span></td>
 					  		</tr>
 					  		<tr>
 					  			<th><span class="fs-5 fw-bold">배송지 주소</span></th>
 					  			<td>&nbsp;&nbsp;</td>
-					  			<td><span class="fs-5">부산광역시 부산진구 동천로 109 삼한골든게이트 7층</span></td>
+					  			<td><span class="fs-5">${delivery.delivery_add }</span></td>
 					  		</tr>
 					  		<tr>
 					  			<th><span class="fs-5 fw-bold">결제금액</span></th>
 					  			<td>&nbsp;&nbsp;</td>
-					  			<td><span class="fs-5">30,000원</span></td>
+					  			<td><span class="fs-5">${payment.total_amount }원</span></td>
 					  		</tr>
 					  	</table>
 					  </div>
