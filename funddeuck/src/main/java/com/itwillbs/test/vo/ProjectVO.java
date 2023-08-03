@@ -18,9 +18,10 @@ CREATE TABLE project (
     project_thumnails2 varchar(100) COMMENT '프로젝트 썸네일 (2)',
     project_thumnails3 varchar(100) COMMENT '프로젝트 썸네일 (3)',
     project_image varchar(100) NOT NULL COMMENT '프로젝트 내용 상세 이미지',
-    project_semi_introduce varchar(150) NOT NULL COMMENT '프로젝트 한줄 소개',
     project_introduce varchar(300) NOT NULL COMMENT '프로젝트 소개',
+    project_semi_introduce varchar(150) NOT NULL COMMENT '프로젝트 한줄 소개',
     project_target int NOT NULL COMMENT '목표 금액',
+	project_cumulative_amount int COMMENT '누적 금액',
     project_start_date date NOT NULL COMMENT '프로젝트 시작일',
     project_end_date date NOT NULL COMMENT '프로젝트 종료일',
     project_hashtag varchar(20) NOT NULL COMMENT '검색용 태그',
@@ -56,6 +57,7 @@ public class ProjectVO {
 	private String project_introduce;						// 프로젝트 소개
 	private String project_semi_introduce;					// 프로젝트 한 줄 소개
 	private int project_target;								// 목표 금액
+	private int project_cumulative_amount;					// 누적 금액
 	private int project_amount;								// 프로젝트 달성 금액
 	private Date project_start_date;						// 프로젝트 시작일
 	private Date project_end_date;							// 프로젝트 종료일

@@ -429,7 +429,26 @@ public class ProjectController {
 	
 	// 수수료·정산 관리
 	@GetMapping("projectSettlement")
-	public String projectSettlement() {
+	public String projectSettlement(HttpSession session, Model model) {
+		
+		String sId = (String) session.getAttribute("sId");
+	    if (sId == null) {
+	        model.addAttribute("msg", "잘못된 접근입니다.");
+	        return "fail_back";
+	    }
+	
+	    Integer maker_idx = makerService.getMakerIdx(sId);
+	    
+	    if (maker_idx == null) {
+	        model.addAttribute("msg", "메이커 정보를 찾을 수 없습니다. 메이커 등록을 먼저 해주세요.");
+	        return "fail_back";
+	    }
+		
+		// 진행중인 프로젝트 조회
+		List<ProjectVO> projectList = projectService.getAllProjectByMakerIdx(maker_idx);
+		
+		model.addAttribute("projectList", projectList);
+		
 		return "project/project_settlement";
 	}
 	

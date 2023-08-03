@@ -112,6 +112,7 @@
 				, #{project_introduce}
 				, #{project_semi_introduce}
 				, #{project_target}
+				, NULL							-- 프로젝트 누적금액
 				, #{project_start_date}
 				, #{project_end_date}
 				, #{project_hashtag}
