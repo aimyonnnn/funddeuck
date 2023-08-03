@@ -5,6 +5,11 @@ function showProjects(data) {
   // data 배열을 역순으로 변경
   data.reverse();
 
+  var table = $("<table class='table project-table'></table>");
+
+  var headers = $("<tr><th>순위</th><th>프로젝트 이름</th><th>펀딩 종료일</th></tr>");
+  table.append(headers);
+
   for (var i = 0; i < data.length; i++) {
     var rank = i + 1;
     var project = data[i];
@@ -13,14 +18,18 @@ function showProjects(data) {
     var endDate = new Date(project.project_end_date);
     var endDateStr = endDate.toISOString().slice(0, 10);
 
-    // 리스트 아이템 생성
-    var listItem = $("<li>").html(
-      "<span class='project-rank'>" + rank + "위</span>  " +
-      "<span class='project-name'>" + project.project_subject + "</span> - " +
-      "종료일: " + endDateStr);
+    var row = $(`
+      <tr>
+        <td>${rank}위</td>
+        <td class="project-name">${project.project_subject}</td>
+        <td class="project-end-date">${endDateStr}</td>
+      </tr>
+    `);
 
-    rankingList.append(listItem);
+    table.append(row);
   }
+
+  rankingList.append(table);
 }
 
 

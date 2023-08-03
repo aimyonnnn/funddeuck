@@ -13,8 +13,7 @@
   	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 	<link rel="stylesheet" type="text/css" href="resources/css/mypage.css" />
 	<link rel="stylesheet" type="text/css" href="resources/css/moreProject.css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     .card-thumbnail {
       width: 100%;
@@ -58,11 +57,11 @@
         left: 0;
         width: 100%;
         z-index: 9999;
-        background-color: #fff; /* 네비게이션 바의 배경색을 설정해 주세요 */
+        background-color: #fff; 
     }
   
     .carousel {
-        margin-top: 70px; /* 네비게이션 바의 높이에 맞춰서 간격을 설정하세요 */
+        margin-top: 70px; 
     }
 	
   </style>
@@ -112,7 +111,7 @@
 	  <p>함께 만드는 성공</p>
 		<div class="row" id="projectContainer">
 		    <c:forEach items="${projectList}" var="project" varStatus="status">
-		        <c:if test="${status.count <= 6}">
+		        <c:if test="${status.count <= 6 && project.project_status == 2}">
 		            <c:set var="reversedIndex" value="${fn:length(projectList) - status.count}" />
 		            <c:set var="reversedProject" value="${projectList[reversedIndex]}" />
 		            <div class="col-md-4 mb-4">
@@ -125,6 +124,7 @@
 		                            ${reversedProject.project_category}
 		                        </p>
 		                    </div>
+		                    <p style="text-align: center;"><b>지금 참여하기></b></p>
 		                </article>
 		            </div>
 		            <c:if test="${status.count % 3 == 0}"></c:if>
@@ -132,51 +132,65 @@
 		    </c:forEach>
 		</div>
 
+
 		<div class="container mt-4 d-flex justify-content-end">
-		    <button type="button" class="btn btn-light" onclick="showRandomProjects()"><b>랜덤 추천</b></button>
+		    <button type="button" class="btn btn-light" onclick="showRandomProjects()"><b>추천받아볼까요?</b></button>
 		</div>
 
 	<br>
-	      <div class="card-body">
-	      	  <h3><b>추천 순위</b></h3>
-			  <p>곧 끝나는 프로젝트를 확인하세요!</p>
-	        <ul id="rankingList" class="card-text"></ul>
-	      </div>
-	      
-	<br>
-		  <div class="card-body">
-	      	  <h3><b>오픈 예정 프로젝트</b></h3>
-			  <p>주목하세요! 오픈할 프로젝트</p>
-	      </div>
-	      		<div class="row" id="projectContainer">
-		    <c:forEach items="${projectList}" var="project" varStatus="status">
-		        <c:if test="${status.count <= 6}">
-		            <c:set var="reversedIndex" value="${fn:length(projectList) - status.count}" />
-		            <c:set var="reversedProject" value="${projectList[reversedIndex]}" />
-		            <div class="col-md-4 mb-4">
-		                <article class="card">
-		                    <div class="card-thumbnail" style="background-image: url('${reversedProject.project_thumnails1}');"></div>
-		                    <div class="card-body">
-		                        <em class="card-title">${reversedProject.project_subject}</em>
-		                        <p class="card-text">
-		                            <span class="badge dbadge-primary">${reversedProject.project_target}원</span>
-		                            ${reversedProject.project_category}
-		                        </p>
-		                    </div>
-		                </article>
-		            </div>
-		            <c:if test="${status.count % 3 == 0}"></c:if>
-		        </c:if>
-		    </c:forEach>
+		<div class="container">
+		  <div class="row">
+		        <h3><b>트랜드</b></h3>
+		    <div class="col-md-6">
+		      <div class="card-body">
+		        <p><b>이제는 끝날 <span class="highlight">#마감</span> 프로젝트</b></p>
+		        <ul id="rankingList" class="card-text"></ul>
+		      </div>
+		    </div>
+		    <div class="col-md-6">
+		      <div class="card-body">
+		        <p><b>오늘 가장 많은 <span class="highlight">#후원금액</span> 프로젝트</b><p>
+		        <ul id="totalAmountList" class="card-text"></ul>
+		      </div>
+		    </div>
+		  </div>
 		</div>
-		
-		<div class="container mt-4 d-flex justify-content-end">
-		    <button type="button" class="btn btn-light" onclick="()"><b>자동 추천</b></button>
-		</div>
-		
+
+ 
 	</div>
+	<br>
+	<div class="container">
+	      <h3><b>오픈 예정 프로젝트</b></h3>
+		  <p>주목하세요! 오픈할 프로젝트</p>
+		<div class="row" id="projectContainer">
+			    <c:forEach items="${projectList}" var="project" varStatus="status">
+			        <c:if test="${status.count <= 6 && project.project_status == 1}">
+			            <c:set var="reversedIndex" value="${fn:length(projectList) - status.count}" />
+			            <c:set var="reversedProject" value="${projectList[reversedIndex]}" />
+			            <div class="col-md-4 mb-4">
+			                <article class="card">
+			                    <div class="card-thumbnail" style="background-image: url('${reversedProject.project_thumnails1}');"></div>
+			                    <div class="card-body">
+			                        <em class="card-title">${reversedProject.project_subject}</em>
+			                        <p class="card-text">
+			                            <span class="badge dbadge-primary">${reversedProject.project_target}원</span>
+			                            ${reversedProject.project_category}
+			                        </p>
+			                    </div>
+		                    <p style="text-align: center;"><b>지금 참여하기></b></p>
+			                </article>
+			            </div>
+			            <c:if test="${status.count % 3 == 0}"></c:if>
+			        </c:if>
+			    </c:forEach>
+		</div>
 
 
+		<div class="container mt-4 d-flex justify-content-end">
+		    <button type="button" class="btn btn-light" onclick="moreShow()"><b>더 많은 프로젝트 보기</b></button>
+		</div>
+	</div>
+	<br>
   
     <script src="resources/js/showRandomProjects.js"></script>
   	<script src="resources/js/rankingList.js"></script>

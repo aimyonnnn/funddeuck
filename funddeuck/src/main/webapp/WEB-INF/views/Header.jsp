@@ -5,17 +5,10 @@
 <html>
 <head>
     <title>Header</title>
-    <!-- 제이쿼리 -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- 합쳐지고 최소화된 최신 CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
-    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
     <style>
       .navbar-nav.left,
-      .navbar-brand,
-      .form-inline {
+      .navbar-brand{
         display: flex;
         align-items: center; 
         margin-right: auto; 
@@ -27,14 +20,6 @@
         align-items: center; 
         margin-left: auto; 
         padding-right: 70px; 
-      }
-
-      .navbar {
-        justify-content: space-between; 
-      }
-
-      .form-inline .form-control {
-        width: 500px; 
       }
 
       @media (max-width: 767px) {
@@ -76,7 +61,20 @@
         }
       }
       
+     .form-inline .form-control {
+        width: 500px;
+        min-width: 500px;
+        max-width: 500px;
+    }
+    
+   .navbar {
+    justify-content: space-between;
+    position: relative;
+    left: 0; 
+  	}
+      
     </style>
+    <link rel="stylesheet" type="text/css" href="./resources/css/mypage.css" />	
 </head>
 <body>
 <div class="container">

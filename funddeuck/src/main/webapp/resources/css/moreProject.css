@@ -132,3 +132,35 @@
             box-shadow: 0 0 0 0 rgba(90, 153, 212, 0);
         }
     }
+    
+  .project-table {
+    width: 100%;
+    font-size: 16px;
+  }
+  .project-table th,
+  .project-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  .project-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .project-name {
+    color: #007bff;
+  }
+  .project-end-date {
+    color: #999;
+  }
+  
+ .highlight {
+    color: #ff9300;
+  }
+  .card-body {
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
