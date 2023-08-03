@@ -213,7 +213,8 @@
 				<div class="row">
 					<span class="fs-4 fw-bold">결제 수단</span>
 					<div class="row m-2 p-2 border">
-						<div class="row">
+						<div class="row" id="paymentMethodForm">
+							<c:if test="${not empty token_idx}">${token_idx }</c:if>
 							
 							<input class="btn btn-primary" type="button" value="계좌인증" id="btnAccountAuth">
 						</div>

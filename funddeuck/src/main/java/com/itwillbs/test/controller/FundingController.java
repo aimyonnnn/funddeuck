@@ -72,6 +72,7 @@ public class FundingController {
 		
 		String sId = (String)session.getAttribute("sId");
 		// 미로그인 또는 주문하던 회원이 아닐경우 ****
+		// 이전페이지? 아니면 로그인화면으로?
     	if(session.getAttribute("sId") == null) {
     		model.addAttribute("msg","잘못된 접근입니다.");
     		return "fail_back";

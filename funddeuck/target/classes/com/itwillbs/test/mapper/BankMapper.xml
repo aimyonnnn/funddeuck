@@ -16,4 +16,12 @@
 				, #{token.user_seq_no}
 			);
 	</insert>
+	
+	<!-- 토큰 정보 조회 -->
+	<select id="selectToken" resultType="com.itwillbs.test.vo.ResponseTokenVO">
+		SELECT * 
+			FROM token
+				WHERE member_idx = #{member_idx}
+			
+	</select>
 </mapper>

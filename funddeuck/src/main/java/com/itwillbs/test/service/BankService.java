@@ -19,4 +19,10 @@ public class BankService {
 			return false;
 		}
 	}
+	
+	// 토큰 정보 조회
+	public ResponseTokenVO getTokenInfo(int member_idx) {
+		return mapper.selectToken(member_idx);
+	}
+	
 }

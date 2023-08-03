@@ -374,11 +374,8 @@
 			updateTotalPrice();
 		} else {
 			// 쿠폰 사용금액 계산
-			alert("할인율 : " + selectedCoupon.value);
 			let discountPercentage = parseFloat(selectedCoupon.value);
-			alert("discountPercentage : " + discountPercentage);
 			let discountedPrice = rewardPrice * (1 - discountPercentage / 100) / 10;
-			alert("discountedPrice : " + discountedPrice);
 			// 할인율 출력
 			couponSaleElement.innerText = selectedCoupon.value.toString() + '% 할인';
 			// 쿠폰 사용 금액 출력
