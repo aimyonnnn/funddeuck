@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,29 +48,30 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-6">
-							<!-- 만족도 -->
-							<a class="star-rating"> <svg
-									xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-									fill="currentColor" class="bi bi-star-fill"
-									viewBox="0 0 16 16">
-		            				<path
-										d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-		          				</svg>만족도:&nbsp;<span>4.0</span>
-							</a> <br>
-							<!-- 서포터 수 -->
-							<a class="supporters"> <svg
-									xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-									fill="currentColor" class="bi bi-person-plus-fill"
-									viewBox="0 0 16 16">
-		           					<path
-										d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-		            				<path fill-rule="evenodd"
-										d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
-		          				</svg>서포터:&nbsp;<span>19명</span>
-							</a>
-						</div>
-						<div
-							class="col-sm-6 d-flex justify-content-end align-items-center">
+						
+							<div>
+								<!-- 만족도 -->
+								<a class="star-rating"> <svg
+										xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+										fill="currentColor" class="bi bi-star-fill"
+										viewBox="0 0 16 16">
+			            				<path
+											d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+			          				</svg>만족도:&nbsp;<span>4.0</span>
+								</a> <br>
+								<!-- 서포터 수 -->
+								<a class="supporters"> <svg
+										xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+										fill="currentColor" class="bi bi-person-plus-fill"
+										viewBox="0 0 16 16">
+			           					<path
+											d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+			            				<path fill-rule="evenodd"
+											d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+			          				</svg>서포터:&nbsp;<span>19명</span>
+								</a>
+							</div>
+							
 						</div>
 					</div>
 				</div>
@@ -79,7 +81,7 @@
 				    <div class="d-flex justify-content-end">
 				        <form action="modifyMakerForm" method="post">
 				            <input type="hidden" name="maker_idx" value="${maker.maker_idx}" />
-				            <button type="submit" class="btn btn-outline-primary">수정하기</button>
+				            <button type="submit" class="btn btn-outline-primary">메이커 페이지 수정하기</button>
 				        </form>
 				    </div>
 				</c:if>
@@ -87,7 +89,7 @@
 				<!-- 팔로우 -->
 				<div class="text-center my-2">
 					<button class="btn btn-primary w-100">
-						+ Follow<span>239</span>
+						+Follow<span></span>
 					</button>
 				</div>
 
@@ -108,12 +110,15 @@
 							<div class="container">
 								<div class="row">
 									<div class="card col-md-6 col-lg-12">
-									  <img src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file4}"
-											 alt="프로젝트 사진을 업로드 해주세요" class="img-fluid maker-img mt-2">
+									  <img src="${pageContext.request.contextPath}/resources/upload/${pList.project_image}"
+											 alt="project_image를 업로드 해주세요. 후원하기 클릭 시 상세페이지로 이동합니다." class="img-fluid maker-img mt-2">
 									  <div class="card-body">
 									    <div class="card-text makerSubject">${pList.project_subject}</div>
 									    <div class="card-text">${pList.project_semi_introduce}</div>
-									    <div><button type="button" class="btn btn-outline-primary w-100 mt-2">프로젝트 후원하기</button></div>
+									    <div>
+									    	<button type="button" class="btn btn-outline-primary w-100 mt-2"
+									    	onclick="location.href='fundingDetail?project_idx=${pList.project_idx}'">프로젝트 후원하기</button>
+									    </div>
 									  </div>
 									</div>
 								</div>
@@ -124,26 +129,61 @@
 				
 				<!-- 공지사항 -->
 				<div class="content-area" id="tab2">
-					<table class="table text-center">
-						<tr>
-							<th style="width: 50%">제목</th>
-							<th style="width: 10%">등록일자</th>
-						</tr>
-						<c:forEach var="mList" items="${mList}">
-						<tr>
-							<td>${mList.maker_board_subject}</td>
-							<td>${mList.maker_board_regdate}</td>
-						</tr>
-						</c:forEach>
-					</table>
+				    <div class="accordion" id="accordionExample">
+				        <c:forEach var="mList" items="${mList}">
+				            <div class="accordion-item">
+				                <h2 class="accordion-header" id="heading${mList.maker_board_idx}">
+				                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+				                        data-bs-target="#collapse${mList.maker_board_idx}" aria-expanded="true"
+				                        aria-controls="collapse${mList.maker_board_idx}">
+				                        ${mList.maker_board_subject}
+				                    </button>
+				                </h2>
+				                <div id="collapse${mList.maker_board_idx}" class="accordion-collapse collapse show"
+				                    aria-labelledby="heading${mList.maker_board_idx}" data-bs-parent="#accordionExample">
+				                    <div class="accordion-body">
+				                        <table class="table text-center">
+				                            <tr>
+				                                <td style="width: 20%">작성내용</td>
+				                                <td style="width: 80%">${mList.maker_board_content}</td>
+				                            </tr>
+				                            <tr>
+				                                <td>작성일자</td>
+				                                <td><fmt:formatDate value="${mList.maker_board_regdate}" pattern="yy-MM-dd HH:mm" /></td>
+				                            </tr>
+				                            <tr>
+				                                <td>첨부파일</td>
+				                                <td>
+				                                    <c:choose>
+				                                        <c:when test="${not empty mList.maker_board_file1}">
+				                                            <a href="${pageContext.request.contextPath}/resources/upload/${mList.maker_board_file1}" download="${fn:split(mList.maker_board_file1, '_')[1]}">
+				                                                ${fn:split(mList.maker_board_file1, '_')[1]}
+				                                            </a>
+				                                        </c:when>
+				                                        <c:otherwise>
+				                                            첨부파일 없음
+				                                        </c:otherwise>
+				                                    </c:choose>
+				                                </td>
+				                            </tr>
+				                        </table>
+				                    </div>
+				                </div>
+				            </div>
+				        </c:forEach>
+				    </div>
 				</div>
-				
+
 				<!-- 메이커 정보 -->
 				<div class="content-area" id="tab3">
 					<table class="table text-center">
 						<tr>
 							<th>상호명</th>
 							<td>${maker.maker_name}</td>
+						</tr>
+						<tr>
+							<th>메이커 소개</th>
+							<td>${maker.maker_intro}</td>
 						</tr>
 						<tr>
 							<th>이메일</th>

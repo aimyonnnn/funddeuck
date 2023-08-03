@@ -1278,7 +1278,7 @@ function showRewardDetails(reward_idx) {
 		        </tr>
 		        <tr>
 		          <td colspan='2'>
-	         	  	<textarea rows='5' cols='50'>${'${data.reward_info}'}</textarea>
+	         	  	<textarea rows='5' cols='50' read readonly="readonly">${'${data.reward_info}'}</textarea>
 		          </td>
 		        </tr>
 	        </table>`;
