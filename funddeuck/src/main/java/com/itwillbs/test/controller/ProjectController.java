@@ -862,6 +862,14 @@ public class ProjectController {
 		return pList;
 	}
 	
+	// 결제정보 상세 조회
+	@PostMapping("getPaymentDetail")
+	@ResponseBody
+	public PaymentVO getPaymentDetail(@RequestParam int payment_idx) {
+		PaymentVO payment = paymentService.getPaymentDetail(payment_idx);
+		return payment;
+	}
+	
 	// 메이커의 프로젝트별 차트 출력
 	@PostMapping("/chartDataProject")
 	@ResponseBody

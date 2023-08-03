@@ -312,4 +312,12 @@
 	        r.project_idx, r.reward_idx, r.reward_option, r.reward_quantity;
 	</select>
 	
+	<!-- 결제내역 조회 -->
+	<select id="selectPaymentDetail">
+		select *
+			from payment
+		where
+			payment_idx = #{payment_idx}
+	</select>
+	
 </mapper>

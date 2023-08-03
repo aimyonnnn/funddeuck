@@ -698,11 +698,12 @@ th, td {
 									<table class="table" style="font-size: 15px">
 									<thead>
 										<tr>
-											<th class="text-center" style="width: 10%;">프로젝트명</th>
+											<th class="text-center" style="width: 15%;">프로젝트명</th>
 											<th class="text-center" style="width: 20;">리워드명</th>
 											<th class="text-center" style="width: 10;">리워드 옵션</th>
 											<th class="text-center" style="width: 10;">전체 리워드수</th>
-											<th class="text-center" style="width: 10%;">남은 리워드수</th>
+											<th class="text-center" style="width: 10%;">재고</th>
+											<th class="text-center" style="width: 10%;">판매</th>
 											<th class="text-center" style="width: 7%;">상세보기</th>
 										</tr>
 									</thead>
@@ -722,6 +723,8 @@ th, td {
 			</article>
 		</section>
 		<!-- 중앙 섹션 끝 -->
+				
+		
 		
 		
 	</div>
@@ -882,16 +885,16 @@ function fillTable(data) {
 
 		let formattedDate = formatDate(payment.payment_date);
 		let newRow =
-		    "<tr>" +
-			    "<td class='text-center'>" + payment.payment_idx + "</td>" +
-			    "<td class='text-center'>" + payment.project_subject + "</td>" +
-			    "<td class='text-center'>" + payment.reward_name + "</td>" +
-			    "<td class='text-center'>" + payment.payment_quantity + "</td>" +
-			    "<td class='text-center'>" + payment.total_amount + "</td>" +
-			    "<td class='text-center'>" + formattedDate + "</td>" +
-			    "<td class='text-center'>" + status + "</td>" +
-			    "<td class='text-center'><button class='btn btn-outline-primary btn-sm'>상세보기</button></td>" +
-		    "</tr>";
+	    "<tr>" +
+		    "<td class='text-center'>" + payment.payment_idx + "</td>" +
+		    "<td class='text-center'>" + payment.project_subject + "</td>" +
+		    "<td class='text-center'>" + payment.reward_name + "</td>" +
+		    "<td class='text-center'>" + payment.payment_quantity + "</td>" +
+		    "<td class='text-center'>" + payment.total_amount + "</td>" +
+		    "<td class='text-center'>" + formattedDate + "</td>" +
+		    "<td class='text-center'>" + status + "</td>" +
+		    "<td class='text-center'><button class='btn btn-outline-primary btn-sm' data-bs-toggle='modal' data-bs-target='#staticBackdrop' onClick='showPaymentDetails(" + payment.payment_idx + ")'>상세보기</button></td>" +
+	    "</tr>";
 		tbody.append(newRow);
 	});
 }
@@ -1078,6 +1081,7 @@ $(()=> {
 							"<td class='text-center'>" + payment.reward_option + "</td>" + 
 							"<td class='text-center'>" + payment.reward_quantity + "</td>" + 
 							"<td class='text-center'>" + payment.remaining_quantity + "</td>" + 
+							"<td class='text-center'>" + payment.sales_quantity + "</td>" + 
 							"<td class='text-center'><button class='btn btn-outline-primary btn-sm'>상세보기</button></td>" + 
 						"</tr>";
 						
@@ -1099,8 +1103,126 @@ $(()=> {
 	
 });
 
+// 결제내역 상세보기 클릭 시 결제내역을 조회
+function showPaymentDetails(payment_idx) {
 
+	$.ajax({
+		
+	    method: 'post',
+	    url: '<c:url value="getPaymentDetail"/>',
+	    data: {
+	      payment_idx: payment_idx
+	    },
+	    dataType: 'json',
+	    success: data => {
+	    	
+      	console.log(data);
+
+	    let modalBody = $('#paymentDetail');
+	    modalBody.empty();
+
+      	let tableHtml = `
+      	
+    	<table class='table text-center'>
+	        <tr>
+	          <td>주문번호</td>
+	          <td>${'${data.payment_idx}'}</td>
+	        </tr>
+	        <tr>
+	          <td>회원번호</td>
+	          <td>${'${data.member_idx}'}</td>
+	        </tr>
+	        <tr>
+	          <td>프로젝트번호</td>
+	          <td>${'${data.project_idx}'}</td>
+	        </tr>
+	        <tr>
+	          <td>이메일</td>
+	          <td>${'${data.member_email}'}</td>
+	        </tr>
+	        <tr>
+	          <td>연락처</td>
+	          <td>${'${data.member_phone}'}</td>
+	        </tr>
+	        <tr>
+	          <td>리워드금액</td>
+	          <td>${'${data.reward_amount}'}</td>
+	        </tr>
+	        <tr>
+	          <td>추가후원금</td>
+	          <td>${'${data.additional_amount}'}</td>
+	        </tr>
+	        <tr>
+	          <td>쿠폰금액</td>
+	          <td>${'${data.use_coupon_amount}'}</td>
+	        </tr>
+	        <tr>
+	          <td>최종결제금액</td>
+	          <td>${'${data.total_amount}'}</td>
+	        </tr>
+	        <tr>
+	          <td>주문날짜</td>
+	          <td>${'${data.payment_date}'}</td>
+	        </tr>
+	        <tr>
+	          <td>주문수량</td>
+	          <td>${'${data.payment_quantity}'}</td>
+	        </tr>
+	        <tr>
+	          <td>결제승인여부</td>
+	          <td>${'${data.payment_confirm}'}</td>
+	        </tr>
+	        <tr>
+	          <td>결제수단</td>
+	          <td>${'${data.payment_method}'}</td>
+	        </tr>
+	        <tr>
+	          <td>환급받을은행명</td>
+	          <td>${'${data.refund_bank}'}</td>
+	        </tr>
+	        <tr>
+	          <td>배송방법</td>
+	          <td>${'${data.delivery_method}'}</td>
+	        </tr>
+	        <tr>
+	          <td>택배사</td>
+	          <td>${'${data.courier}'}</td>
+	        </tr>
+	        <tr>
+	          <td>운송장번호</td>
+	          <td>${'${data.waybill_num}'}</td>
+	        </tr>
+	        <tr>
+	          <td>배송상황</td>
+	          <td>${'${data.delivery_status}'}</td>
+	        </tr>
+        </table>`;
+        
+      	modalBody.html(tableHtml);
+   		}
+  	});
+}
+
+// 리워드 정보 조회
 </script>
+
+
+<!-- 결제내역 조회 모달 -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">결제내역 상세조회</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="paymentDetail">
+      <!-- 데이터 출력 -->
+      </div>
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+    </div>
+  </div>
+</div>
+
 <!-- js -->
 <script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
 <!-- bootstrap -->

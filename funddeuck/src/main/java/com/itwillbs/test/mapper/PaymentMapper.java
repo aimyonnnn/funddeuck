@@ -93,4 +93,6 @@ public interface PaymentMapper {
 	// 리워드 조회
 	List<PaymentVO> selectRemainingQuantities(int project_idx);	
 	
+	// 결제내역 조회
+	PaymentVO selectPaymentDetail(int payment_idx);	
 }

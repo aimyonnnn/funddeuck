@@ -119,5 +119,9 @@ public class PaymentService {
 		return mapper.selectRemainingQuantities(project_idx);
 	}
 	
+	// 결제내역 조회
+	public PaymentVO getPaymentDetail(int payment_idx) {
+		return mapper.selectPaymentDetail(payment_idx);
+	}
 	
 }
