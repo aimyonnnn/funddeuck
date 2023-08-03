@@ -21,6 +21,7 @@
 					maker_file5 = #{maker_file5} ,      -- 메이커 로고
 				</if>
 				maker_name = #{maker_name} ,	  		-- 메이커 이름		
+				maker_intro = #{maker_intro} ,	  		-- 메이커 소개		
 				maker_email = #{maker_email} ,    		-- 메이커 이메일
 				maker_tel = #{maker_tel} ,  	 		-- 메이커 전화번호
 				maker_url = #{maker_url}		 		-- 메이커 홈페이지
@@ -57,6 +58,22 @@
 			    FROM members
 			    WHERE member_id = #{sId}
 			);
+	</select>
+	
+	<!-- 공지사항 삭제하기 -->
+	<delete id="deleteMakerBoard">
+		delete
+			from maker_board
+		where
+			maker_board_idx = #{maker_board_idx}
+	</delete>
+	
+	<!-- 공지사항 조회하기 -->
+	<select id="selectMakerBoardInfo">
+		select *
+			from maker_board
+		where
+			maker_board_idx = #{maker_board_idx}
 	</select>
 	
 </mapper>

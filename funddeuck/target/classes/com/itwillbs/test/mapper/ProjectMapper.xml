@@ -383,7 +383,7 @@
 				null
 				, #{maker_idx}
 				, #{maker_board_subject}
-				, #{maker_baord_content}
+				, #{maker_board_content}
 				, now()
 				, #{maker_board_file1}
 				)
@@ -396,6 +396,8 @@
 				maker_board
 			where
 				maker_idx = #{maker_idx} 
+			order by
+				maker_board_regdate desc	
 	</select>
 	
 	

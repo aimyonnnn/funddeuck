@@ -3,6 +3,7 @@ package com.itwillbs.test.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
 
 @Mapper
@@ -19,5 +20,11 @@ public interface MakerMapper {
 	
 	// 메이커 idx 조회하기
 	Integer selectMakerIdx(String sId);
+	
+	// 공지사항 삭제하기
+	int deleteMakerBoard(int maker_board_idx);
+	
+	// 공지사항 조회하기
+	MakerBoardVO selectMakerBoardInfo(int maker_board_idx);
 	
 }

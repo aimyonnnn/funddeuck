@@ -66,6 +66,14 @@ public class AdminController {
 		return "admin/admin_main";
 	}
 	
+	// 메이커 디테일 페이지 공지사항 관리
+	@GetMapping("adminMakerManagement")
+	public String adminMakerManagement(HttpSession session, Model model) {
+		
+		
+		return "admin/admin_maker_management";
+	}
+	
 	// 프로젝트 관리
 	@GetMapping("adminProjectManagement")
 	public String projectControl(

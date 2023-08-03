@@ -170,6 +170,25 @@ public class MakerController {
 	@GetMapping("makerDetail")
 	public String makerDetail(@RequestParam(required = false) Integer maker_idx, HttpSession session, Model model) {
 	    String sId = (String) session.getAttribute("sId");
+	    MakerVO maker = null;
+
+	    if (maker_idx != null) {
+	        // 주어진 maker_idx에 해당하는 메이커 정보를 가져옵니다.
+	        maker = makerService.getMakerInfo(maker_idx);
+
+	        if (maker == null) {
+	            model.addAttribute("msg", "메이커 정보를 찾을 수 없습니다.");
+	            return "fail_back";
+	        }
+
+	        // 프로젝트 리스트 조회
+	        List<ProjectVO> pList = projectService.getAllProjectByMakerIdx(maker_idx);
+	        model.addAttribute("pList", pList);
+	        // 메이커 공지사항 리스트 조회
+	        List<MakerBoardVO> mList = projectService.getMakerBoardList(maker_idx);
+	        model.addAttribute("mList", mList);
+	    }
+
 	    if (sId != null) {
 	        int member_idx = projectService.getMemberIdx(sId);
 	        Integer loggedInMakerIdx = makerService.getMakerIdx(sId); // Integer로 변경
@@ -177,41 +196,35 @@ public class MakerController {
 	        // 본인의 메이커인지 여부를 체크
 	        boolean isMyMaker = loggedInMakerIdx != null && maker_idx != null && loggedInMakerIdx.equals(maker_idx);
 
-	        // 메이커 정보를 가져오고, 해당 정보가 없는 경우 예외 처리
-	        MakerVO maker = makerService.getMakerInfo(isMyMaker ? loggedInMakerIdx : maker_idx);
-	        if (maker == null) {
-	            model.addAttribute("msg", "메이커 정보를 찾을 수 없습니다.");
-	            return "fail_back";
+	        if (isMyMaker && maker == null) {
+	            // 로그인한 사용자의 메이커 정보를 가져옵니다. 이미 가져왔다면 다시 가져오지 않습니다.
+	            maker = makerService.getMakerInfo(loggedInMakerIdx);
+
+	            if (maker == null) {
+	                model.addAttribute("msg", "메이커 정보를 찾을 수 없습니다.");
+	                return "fail_back";
+	            }
+
+	            // 로그인한 사용자의 프로젝트 리스트 조회
+	            List<ProjectVO> pList = projectService.getAllProjectByMakerIdx(loggedInMakerIdx);
+	            model.addAttribute("pList", pList);
+	            // 로그인한 사용자의 메이커 공지사항 리스트 조회
+	            List<MakerBoardVO> mList = projectService.getMakerBoardList(loggedInMakerIdx);
+	            model.addAttribute("mList", mList);
 	        }
-	        
-	        // 프로젝트 리스트 조회
-	        List<ProjectVO> pList = projectService.getAllProjectByMakerIdx(maker_idx);
-	        model.addAttribute("pList", pList);
-	        // 메이커 공지사항 리스트 조회
-	        List<MakerBoardVO> mList = projectService.getMakerBoardList(maker_idx);
-	        model.addAttribute("mList", mList);
-	        
-	        model.addAttribute("maker", maker);
+
 	        model.addAttribute("member_idx", member_idx);
 	        model.addAttribute("isMyMaker", isMyMaker); // 본인의 메이커인지 여부를 모델에 추가
-	        
-	    } else {
-	    	
-	    	// 로그인 안했을 때 파라미터에 maker_idx가 없는 경우
-	    	if (maker_idx == null) { 
-	             model.addAttribute("msg", "잘못된 접근입니다.");
-	             return "fail_back";
-	             
-            // 로그인 안했을 때 파라미터에 maker_idx가 있는 경우, 메이커 정보 조회 후 모델에 저장     
-	        } else {
-	        	MakerVO maker = makerService.getMakerInfo(maker_idx);
-	        	model.addAttribute("maker", maker);
-	        	
-	        }
-	    	
 	    }
+
+	    // maker 정보가 있다면 모델에 추가합니다.
+	    if (maker != null) {
+	        model.addAttribute("maker", maker);
+	    }
+
 	    return "project/maker_detail";
 	}
+
 	
 	// 메이커 수정하기 페이지
 	@PostMapping("modifyMakerForm")
@@ -221,13 +234,19 @@ public class MakerController {
 			model.addAttribute("msg", "잘못된 접근입니다.");
 			return "fail_back";
 		}
+		
 		int memberIdx = projectService.getMemberIdx(sId);
 		MakerVO maker = makerService.getMakerInfo(maker_idx);
+		List<MakerBoardVO> mList = projectService.getMakerBoardList(maker_idx);
+		
 		if(maker == null || memberIdx != maker.getMember_idx()) {
 			model.addAttribute("msg", "잘못된 접근입니다.");
 			return "fail_back";
 		}
+		
 		model.addAttribute("maker", maker);
+		model.addAttribute("mList", mList);
+		
 		return "project/maker_detail_modifyForm";
 	}
 	
@@ -381,9 +400,22 @@ public class MakerController {
 		}
 	}
 	
+	// MakerDeatil - 공지사항 삭제하기
+	@PostMapping("deleteMakerBoard")
+	@ResponseBody
+	public String deleteMakerBoard(@RequestParam int maker_board_idx) {
+		int deleteCount = makerService.removeMakerBoard(maker_board_idx);
+		if(deleteCount > 0) return "true";
+		return "false";
+	}
 	
-	
-	
+	// MakerDeatil - 공지사항 조회하기
+	@PostMapping("getMakerBoardInfo")
+	@ResponseBody
+	public MakerBoardVO getMakerBoardInfo(@RequestParam int maker_board_idx) {
+		MakerBoardVO makerBoard = makerService.getMakerBoardInfo(maker_board_idx);
+		return makerBoard;
+	}
 	
 	
 }
