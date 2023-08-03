@@ -34,7 +34,7 @@ public class FundingController {
 	public String fundingDiscover(Model model,
 			@RequestParam(defaultValue = "all") String category,
 			@RequestParam(defaultValue = "all") String status,
-			@RequestParam(defaultValue = "index") String index
+			@RequestParam(defaultValue = "newest") String index
 			) {
 		
 		// 프로젝트 리스트 조회(탐색 페이지)
@@ -42,6 +42,7 @@ public class FundingController {
 		model.addAttribute("project", project);
 		
 		// 프로젝트 현재 펀딩 금액 조회
+		
 		
 		return "funding/funding_discover";
 	}

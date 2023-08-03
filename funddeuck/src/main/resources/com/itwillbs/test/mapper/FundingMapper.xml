@@ -168,7 +168,7 @@
 	<select id="selectFundingList" resultType="com.itwillbs.test.vo.ProjectVO">
 		SELECT *
 			FROM project
-			<!-- 카테고리를 선택했을 경우, 아니면 생략 -->
+			<!-- 카테고리 선택 시 실행할 구문, 미선택시 실행x -->
 			<if test="!category.equals('all')">
 				WHERE
 				<choose>
@@ -198,6 +198,45 @@
 					</when>
 				</choose>
 			</if>
+				<!-- 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료' -->
+				<if test="!status.equals('all') and !category.equals('all')">
+					AND
+					<choose>
+						<when test="status.equals('active')">
+							project_status = 2
+						</when>
+						<when test="status.equals('end')">
+							project_status IN (3, 4, 5)
+						</when>
+					</choose>
+				</if>
+				<!-- 카테고리 선택시 실행 -->
+				<!-- 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료' -->
+				<if test="!status.equals('all') and category.equals('all')">
+					WHERE
+					<choose>
+						<when test="status.equals('active')">
+							project_status = 2
+						</when>
+						<when test="status.equals('end')">
+							project_status IN (3, 4, 5)
+						</when>
+					</choose>
+				</if>
+				<if test="!index.equals('newest')">
+					ORDER BY
+					<choose>
+						<when test="index.equals('lastMin')">
+							project_end_date DESC
+						</when>
+						<when test="index.equals('amount')">
+							project_amount DESC
+						</when>
+						<when test="index.equals('target')">
+							project_target DESC
+						</when>
+					</choose>
+				</if>
 	</select>
 	
 </mapper>
