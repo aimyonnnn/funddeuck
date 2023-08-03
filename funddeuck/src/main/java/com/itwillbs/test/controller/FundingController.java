@@ -31,9 +31,14 @@ public class FundingController {
 	
 	// 펀딩 탐색 페이지
 	@GetMapping("fundingDiscover")
-	public String fundingDiscover(Model model) {
+	public String fundingDiscover(Model model,
+			@RequestParam(defaultValue = "all") String category,
+			@RequestParam(defaultValue = "all") String status,
+			@RequestParam(defaultValue = "index") String index
+			) {
 		
-		List<ProjectVO> project = projectService.getAllProjects();
+		// 프로젝트 리스트 조회(탐색 페이지)
+		List<ProjectVO> project = fundingService.getFundingList(category, status, index);
 		model.addAttribute("project", project);
 		
 		// 프로젝트 현재 펀딩 금액 조회
@@ -44,24 +49,18 @@ public class FundingController {
 	// 펀딩 상세페이지 이동
 	@GetMapping ("fundingDetail")
 	public String fundingDetail(Model model
-//			, @RequestParam int project_idx 
+			, @RequestParam int project_idx 
 			) {
 		
 		// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보
-//		ProjectVO project = fundingService.selectProjectInfo(project_idx);
-//		model.addAttribute(project);
+		ProjectVO project = fundingService.selectProjectInfo(project_idx);
+		model.addAttribute("project", project);
 		
 		// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
 //		List<RewardVO> reward = fundingService.selectProjectRewardInfo(project_idx);
 //		model.addAttribute(reward);
 		
 		return "funding/funding_detail";
-	}
-	
-	// 펀딩 탐색 페이지 리스트
-	@GetMapping("fundingDiscoverList")
-	public String fundingDiscoverList() {
-		return "";
 	}
 	
 	// 펀딩 주문페이지 이동

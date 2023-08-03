@@ -37,9 +37,13 @@ public interface FundingMapper {
 	int requestMemberCancellcation(@Param("payment_idx") int cancel_idx,@Param("context") String context,@Param("saveFileName") String saveFileName);
 	
 	// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보
-	ProjectVO selectProjectInfo(int project_idx);
+	ProjectVO selectProjectInfo(@Param("project_idx") int project_idx);
 
 	// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
 	List<RewardVO> selectProjectRewardInfo(int project_idx);
+	
+	// 프로젝트 리스트 조회(탐색 페이지)
+	List<ProjectVO> selectFundingList(@Param("category") String category,@Param("status") String status,@Param("index") String index);
+	
 	
 }

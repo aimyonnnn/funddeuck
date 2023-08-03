@@ -2,6 +2,7 @@ package com.itwillbs.test.service;
 
 import java.util.*;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
@@ -68,5 +69,10 @@ public class FundingService {
 	// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
 	public List<RewardVO> selectProjectRewardInfo(int project_idx) {
 		return mapper.selectProjectRewardInfo(project_idx);
+	}
+	
+	// 프로젝트 리스트 조회(탐색 페이지)
+	public List<ProjectVO> getFundingList(@Param("category") String category,@Param("status") String status,@Param("index") String index) {
+		return mapper.selectFundingList(category, status, index);
 	}
 }

@@ -452,7 +452,8 @@ public class MemberController {
     
     // 찜 페이지 이동
     @GetMapping("ZimForm")
-    public String ZimForm(HttpSession session, Model model) {
+    public String ZimForm(HttpSession session, Model model
+    		) {
     	
     	if(session.getAttribute("sId") == null) {
     		model.addAttribute("msg","잘못된 접근입니다.");
