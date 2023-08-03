@@ -508,7 +508,7 @@ public class ProjectController {
 		
 	// 프로젝트 등록 비즈니스 로직 처리
 	@PostMapping("projectManagementPro")
-	public String projectManagementPro(ProjectVO project, Model model, HttpSession session, HttpServletRequest request) {
+	public String projectManagementPro(@RequestParam("token_idx") int token_idx, ProjectVO project, Model model, HttpSession session, HttpServletRequest request) {
 		
 		// 이미지 파일 업로드 
 		String uploadDir = "/resources/upload";
@@ -573,7 +573,9 @@ public class ProjectController {
 		// 해시태그 값 처리
 		String project_hashtag = request.getParameter("project_hashtag");
 		project.setProject_hashtag(project_hashtag);
-		System.out.println("해시태그: " + project.getProject_hashtag());
+		project.setToken_idx(token_idx); // 토큰번호 숫자로 변환
+		
+		System.out.println("프로젝트 토큰 확인***** : " + request.getParameter("token_idx"));
 		
 		int insertCount = projectService.registProject(project);
 		

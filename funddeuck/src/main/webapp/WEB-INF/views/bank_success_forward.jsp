@@ -10,8 +10,7 @@
 	alert("${msg}, ${isClose}");
 	
 	if("${isClose}" == "true") {
-		// 부모창의 페이지를 지정한 페이지(targetURL)로 포워딩 시키고, 자식창 닫기
-		window.opener.location.href = "${targetURL}";
+        window.opener.document.getElementById('token_idx').value = ${token_idx}; // 부모 창의 token_idx input 값을 업데이트함
 		window.close();		
 	} else {
 		history.back();

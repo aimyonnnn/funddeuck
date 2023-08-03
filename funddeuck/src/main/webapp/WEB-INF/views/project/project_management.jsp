@@ -151,6 +151,7 @@
 			"#projectCategory",
 			"#projectSubject",
 			"#managementDetail",
+			"#managementSemiDetail",
 			"#targetAmount",
 			"#projectStartDate",
 			"#projectEndDate",
@@ -219,6 +220,10 @@
 					+ "&auth_type=0";
 			window.open(requestUri, "authWindow", "width=600, height=800");
 		});
+	    
+	    
+	    
+	    
 	});
 	</script>
 </head>
@@ -273,7 +278,7 @@
 				<form id="project-form" action="projectManagementPro" class="projectContent" method="post" enctype="multipart/form-data">
 					<!-- 히든 처리하는 부분 -->
 	            	<!-- 마이페이지, 메이커 등록에서 넘어올 때 파라미터로 받아와야함 -->
-	            	<input type="text" name="maker_idx" id="maker_idx" value="${param.maker_idx}" class="form-control" style="width:500px;">
+	            	<input type="hidden" name="maker_idx" id="maker_idx" value="${param.maker_idx}" class="form-control" style="width:500px;">
 					<!-- 기본 요금제 -->
 					<div class="mt-4">
 						<p class="subheading">기본 요금제</p>

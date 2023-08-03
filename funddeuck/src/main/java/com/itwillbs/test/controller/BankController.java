@@ -65,9 +65,10 @@ public class BankController {
 			// 세션 객체에 엑세스토큰(access_token)과 사용자번호(user_seq_no) 저장
 			session.setAttribute("access_token", responseToken.getAccess_token());
 			session.setAttribute("user_seq_no", responseToken.getUser_seq_no());
+			
 
 			model.addAttribute("msg", "계좌인증 완료!");
-			model.addAttribute("targetURL", "projectManagement");
+			model.addAttribute("token_idx", responseToken.getToken_idx());
 			model.addAttribute("isClose", true);
 			
 			return "bank_success_forward";
