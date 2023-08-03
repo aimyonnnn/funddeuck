@@ -15,6 +15,22 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
+	<style>
+		.table-center {
+		  margin: auto;
+		  width: 70%;
+		}
+		
+		.table-center tr td {
+		  text-align: center;
+		  vertical-align: middle;
+		}
+		
+		.table-center thead tr th {
+		  text-align: center;
+		  vertical-align: middle;
+		}
+    </style>
 	<script>
 	$(document).ready(function(){
 		// 팝오버 활성화
@@ -74,28 +90,41 @@
 								</svg>
 							</p>
 							<div class="table-responsive">
-								<table class="table table-bordered text-center">
-									<thead class="table-light">
-										<tr>
-											<th colspan="2">프로젝트명</th>
-											<th>진행률</th>
-											<th>상태</th>
-											<th>상세보기</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>
-												이미지용
-											</td>
-											<td>프로젝트명</td>
-											<td>30%</td>
-											<td>진행중</td>
-											<td>
-												<button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settlementModal">확인</button>
-											</td>
-										</tr>
-									</tbody>
+								<table class="table table-bordered text-center table-center">
+									<c:forEach var="projectList" items="${projectList }">
+										<c:if test="${projectList.project_status eq 1 or projectList.project_status eq 2}">
+											<thead class="table-light">
+												<tr>
+													<th colspan="2">프로젝트명</th>
+													<th>진행률</th>
+													<th>상태</th>
+													<th>상세보기</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+														<img class="project-img" src="${pageContext.request.contextPath }/resources/upload/${projectList.project_thumnails1 }">
+													</td>
+													<td>${projectList.project_subject }</td>
+													<td>30%</td>
+													<td>
+														<c:choose>
+															<c:when test="${projectList.project_status eq 1 }">
+																미진행
+															</c:when>
+															<c:when test="${projectList.project_status eq 2 }">
+																진행중
+															</c:when>
+														</c:choose>
+													</td>
+													<td>
+														<button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settlementModal">확인</button>
+													</td>
+												</tr>
+											</c:if>
+										</tbody>
+									</c:forEach>
 								</table>
 							</div>
 						</div>
@@ -110,32 +139,47 @@
 								</svg>
 							</p>
 							<div class="table-responsive">
-								<table class="table table-bordered text-center">
-									<thead class="table-light">
-										<tr>
-											<th colspan="2">프로젝트명</th>
-											<th>진행률</th>
-											<th>상태</th>
-											<th>상세보기</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>
-												이미지용
-											</td>
-											<td>프로젝트명</td>
-											<td>30%</td>
-											<td>진행중</td>
-											<td>
-												<button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settlementModal">확인</button>
-											</td>
-										</tr>
-									</tbody>
+								<table class="table table-bordered text-center table-center">
+									<c:forEach var="projectList" items="${projectList }">
+										<c:if test="${projectList.project_status ge 3}">
+											<thead class="table-light">
+												<tr>
+													<th colspan="2">프로젝트명</th>
+													<th>진행률</th>
+													<th>상태</th>
+													<th>상세보기</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+														<img class="project-img" src="${pageContext.request.contextPath }/resources/upload/${projectList.project_thumnails1 }">
+													</td>
+													<td>${projectList.project_subject }</td>
+													<td>30%</td>
+													<td>
+														<c:choose>
+															<c:when test="${projectList.project_status eq 3 }">
+																	진행완료
+																</c:when>
+																<c:when test="${projectList.project_status eq 4 }">
+																	정산신청
+																</c:when>
+																<c:when test="${projectList.project_status eq 5 }">
+																	정산완료
+																</c:when>
+														</c:choose>
+													</td>
+													<td>
+														<button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settlementModal">확인</button>
+													</td>
+												</tr>
+											</tbody>
+										</c:if>
+									</c:forEach>
 								</table>
 							</div>
 						</div>
-						
 					</div>
 				</article>
 			</section>
