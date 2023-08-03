@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -23,12 +24,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.itwillbs.test.service.ProfileService;
 import com.itwillbs.test.vo.ProfileVO;
 
 @Controller
-//@RequestMapping("/member")
+@RequestMapping("/member")
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -40,27 +42,41 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public String showProfilePage(Model model, HttpSession session) {
-    	
-    	session.setAttribute("member_idx", 1);
-    	
-        Integer memberIdx = (Integer) session.getAttribute("member_idx");
+
+        Integer memberIdx = (Integer) session.getAttribute("sIdx");
         if (memberIdx == null) {
-            return "member/member_profile"; 
+            return "redirect:/"; 
         }
 
         ProfileVO profile = profileService.getProfileByMemberId(memberIdx.intValue());
+        System.out.println("Session attribute sIdx: " + memberIdx);
         model.addAttribute("profile", profile);
         return "member/member_profile";
     }
-
-
-    @PostMapping("/saveProfile")
+    
+    @PostMapping("/insert")
     @ResponseBody
-    public ResponseEntity<String> saveProfile(@ModelAttribute ProfileVO profileVO){
+    	public ModelAndView insertProfile(@ModelAttribute ProfileVO profileVO) {
+    	System.out.println("테스트 : " + profileVO);
+    		
+    	profileService.insertProfile(profileVO);
 
-            profileService.updateProfile(profileVO);
-            return ResponseEntity.ok("수정완료되었습니다.");
+        ModelAndView mv = new ModelAndView("redirect:/");
+        return mv;
     }
+
+    @PostMapping("/profile")
+    @ResponseBody
+    public ResponseEntity<String> updateProfile(@ModelAttribute ProfileVO profileVO) {
+        try {
+            profileService.updateProfile(profileVO);
+            return ResponseEntity.ok("프로필이 저장되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("프로필 저장에 실패했습니다.");
+        }
+    }
+
     	
     @PostMapping("updateProfileImage")
     public String updateProfileImage(ProfileVO profile, HttpSession session, Model model) {

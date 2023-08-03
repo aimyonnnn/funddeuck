@@ -30,7 +30,7 @@
 				<span>MENU</span>
 			</div>
 			<ul>
-				<li><a href="projectControl"> <span class="las la-history"></span>
+				<li><a href="adminProjectManagement"> <span class="las la-history"></span>
 						프로젝트 관리
 				</a></li>
 				<li><a href="adminProjectList"> <span class="las la-store"></span>

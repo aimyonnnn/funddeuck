@@ -123,8 +123,11 @@
 				, #{project_settlement_account}
 				, #{project_settlement_name}
 				, #{project_settlement_image}
-				, 1
-				, #{maker_idx}
+				, 1								 -- 프로젝트 승인 상태
+				, 1						         -- 프로젝트 상태
+				, NULL							 -- 프로젝트 승인 요청 시간
+				, #{maker_idx}					 -- 메이커 번호
+				, #{token_idx}			 -- 프로젝트 계좌 인증에 사용될 토큰 번호
 			)
 	</insert>
 	
@@ -147,7 +150,7 @@
 	</select>
 	
 	<!-- 메이커 등록 페이지 접속 시 -->
-	<select id="selectMemberIdx" resultType="int">
+	<select id="selectMemberIdx">
 		select member_idx
 			from members
 				where member_id = #{sId}
@@ -303,6 +306,74 @@
 		where
 			maker_idx = #{maker_idx}
 	</select>
+	
+	<!-- 승인완료 된 프로젝트 리스트 조회 -->
+	<select id="selectApprovedProjects">
+		select *
+			from project
+		where
+			project_approve_status = 3;
+	</select>
+	
+	<!-- 프로젝트 승인 처리 시간 저장 -->
+	<update id="updateProjectApprovalRequestTime">
+		update project
+			set
+				project_approval_request_time = #{project_approval_request_time}
+			where
+				project_idx = #{project_idx}
+	</update>
+	
+	<!-- 전체 프로젝트 리스트 조회 -->
+	<select id="selectAllProject">
+		select *
+			from project -- 동적 SQL문 작성 필요
+		<!-- 검색타입이 널스트링이 아닐 때 -->
+		<if test="!searchKeyword.equals('')">
+		where
+			<!-- 검색타입에 따른 where절 조건 대상 변경 -->
+			<choose>
+				<when test="searchType.equals('subject')">
+					project_subject like '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('name')">
+					project_representative_name like '%${searchKeyword}%'
+				</when>					
+			</choose>
+		</if>
+		order by
+			project_idx desc			
+		limit
+			#{startRow}
+			, #{listLimit}
+	</select>
+	
+	<!-- 전체 프로젝트 갯수 조회 -->
+	<select id="selectAllProjectCount">
+		select count(*)
+			from project
+		<if test="!searchKeyword.equals('')">
+		where
+			<choose>
+				<when test="searchType.equals('subject')">
+					project_subject like '%${searchKeyword}%'
+				</when>				
+				<when test="searchType.equals('name')">
+					project_representative_name like '%${searchKeyword}%'
+				</when>				
+			</choose>
+		</if>
+	</select>
+	
+	<!-- 프로젝트 리스트 조회 -->
+	<select id="selectAllProjectByMakerIdx">
+		select *
+		from
+			project
+		where
+			maker_idx = #{maker_idx} 
+	</select>
+	
 	
 	<!--  ranking system  -->
 	<select id="selectTop10ProjectsByEndDate" resultType="com.itwillbs.test.vo.ProjectVO"> 

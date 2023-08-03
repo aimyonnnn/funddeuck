@@ -2,22 +2,32 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>펀딩</title>
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 <!-- line-awesome icons CDN -->
 <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <!-- fundingDiscover page CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/funding_discover.css">
 <!-- header include -->
-<jsp:include page="../common/main_header.jsp"></jsp:include>
+<jsp:include page="../Header.jsp"></jsp:include>
 <!-- fundingDiscover page JS -->
 <script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
+<!-- 공용 css -->
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 </head>
 <body>
 <form action="fundingDiscoverList">
+	<%-- pageNum 파라미터 가져와서 저장(없을 경우 기본값 1로 설정) --%>
+	<c:set var="pageNum" value="1" />
+	<c:if test="${not empty param.pageNum }">
+		<c:set var="pageNum" value="${param.pageNum }" />
+	</c:if>
 <!-- 상단 이동 버튼 -->
 	<button type="button" class="btn btn-dark position-fixed bottom-0 end-0" id="go-top">
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-up-square-fill" viewBox="0 0 16 16">
@@ -113,9 +123,9 @@
 	<br>
 	<div class="col float-end" >
 		<select class="text-dark-emphasis fw-bold" name="selectBox">
-			<option class="text-dark-emphasis fw-bold" value="selectedAll" selected="selected">전체</option>
-			<option class="text-dark-emphasis fw-bold" value="selectedActive">진행중</option>
-			<option class="text-dark-emphasis fw-bold" value="selectedEnd">종료된</option>
+			<option class="text-dark-emphasis fw-bold" value="selectedAll" <c:if test="${param.searchType eq 'all' }">selected</c:if>>전체</option>
+			<option class="text-dark-emphasis fw-bold" value="selectedActive" <c:if test="${param.searchType eq 'active' }">selected</c:if>>진행중</option>
+			<option class="text-dark-emphasis fw-bold" value="selectedEnd" <c:if test="${param.searchType eq 'end' }">selected</c:if>>종료된</option>
 		</select>
 		<a class="text-decoration-none text-dark-emphasis fw-bold border-info border-bottom border-2" href="">추천순</a>&nbsp;
 		<a class="text-decoration-none text-dark-emphasis fw-bold" href="">인기순</a>&nbsp;
@@ -125,31 +135,43 @@
 	<br>
 <!-- 프로젝트 리스트 영역 -->
 	<div class="col with .gy-5 gutters">
-	<input type="submit" value="JSON 타입 객체 리턴 확인용 버튼">
-		<small class="text-danger">679</small><small>개의 프로젝트가 있습니다.</small>
+		<small class="text-danger">${project.size() }</small><small>개의 프로젝트가 있습니다.</small>
 		<div class="row row-cols-3 row-cols-sm-4 g-3">
 		<!-- 페이징 처리 -->
-		<c:forEach begin="1" end="9" step="1">
-			<div class="col">
+		<c:forEach items="${project}" var="project" varStatus="status">
+<%-- 		<c:if test="${status.count <= 8}"> --%>
+			<div class="col" id="projectListArea">
 				<div class="card h-100 w-100 p-3 border-0">
 					<img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" 
 					class="card-img-top object-fit-contain" alt="..." >
 					<div class="card-body">
-						<small class="card-title opacity-75">아트북 | 아르누보</small>
-						<p class="card-text fw-bold text-start">&lt;스파이더맨: 어크로스 더 유니버스&gt; 아트북+공식 굿즈</p>
-						<small class="opacity-50">상상 그 이상을 넘어서는 멀티버스의 세계 속으로!</small>
+						<small class="card-title opacity-75">${project.project_hashtag } | ${project.project_representative_name }</small>
+						<p class="card-text fw-bold text-start">${project.project_subject }</p>
+						<small class="card-title opacity-75">${project.project_semi_introduce }</small>
 					</div>
-						<a href="fundingDetail" class="stretched-link"></a>
+						<a href="fundingDetail?project_idx=${project.project_idx }" class="stretched-link"></a>
 					<div class="card-footer bg-white">
-		      			<small class="fw-bold text-success">26.014%</small>&nbsp;
-		      			<small class="opacity-75">25,478,800원
-		      			<small class="fw-bold float-end">23일 남음</small></small>
-		        	<div class="progress">
-	  					<div class="progress-bar bg-success" role="progressbar" aria-label="Success example" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+		      			<small class="fw-bold text-success">
+		      			<fmt:formatNumber type="number" maxFractionDigits="0"  value="${project.project_amount/project.project_target * 100 }" />%
+		      			</small>&nbsp;
+		      			<small class="opacity-75"><fmt:formatNumber value="${total.total }" pattern="#,###" />원
+		      			<small class="fw-bold float-end">
+			      			<fmt:parseDate value="${project.project_end_date }" var="projectEndDate" pattern="yyyy-MM-dd"/>
+							<fmt:parseNumber value="${projectEndDate.time / (1000*60*60*24)}" integerOnly="true" var="endDate"></fmt:parseNumber>
+							<fmt:parseDate value="${project.project_start_date }" var="projectStartDate" pattern="yyyy-MM-dd"/>
+							<fmt:parseNumber value="${projectStartDate.time / (1000*60*60*24)}" integerOnly="true" var="strDate"></fmt:parseNumber>
+							${endDate - strDate }
+			      			일 남음
+			      		</small></small>
+		        	<div class="progress" style="height: 10px">
+	  					<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example" 
+	  					style="height:10px; width: ${project.project_amount/project.project_target * 100}%" 
+	  					aria-valuenow="${project.project_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div>
 					</div>
 					</div>
 				</div>
 			</div>
+<%-- 		</c:if> --%>
 		</c:forEach>
 		</div>
 	</div>

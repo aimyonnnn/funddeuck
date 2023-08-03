@@ -17,8 +17,8 @@ public class ProfileService {
         this.profileMapper = profileMapper;
     }
 
-    public ProfileVO getProfileByMemberId(int member_idx) {
-        return profileMapper.getProfileByMemberId(member_idx);
+    public ProfileVO getProfileByMemberId(int memberIdx) {
+        return profileMapper.getProfileByMemberId(memberIdx);
     }
 
     public void updateProfile(ProfileVO profileVO) {
@@ -28,4 +28,8 @@ public class ProfileService {
 	public int modifyProfileImage(ProfileVO profile) {
 		return profileMapper.updateProfileImage(profile);
 	}
+	
+	public void insertProfile(ProfileVO profileVO) {
+        profileMapper.insertProfile(profileVO);
+    }
 }

@@ -22,64 +22,69 @@ public class FundingController {
 	private MemberService memberService;
 	@Autowired
 	private FundingService fundingService;
+	@Autowired
+	private PaymentService paymentService;
+	@Autowired
+	private DeliveryService deliveryService;
+	@Autowired
+	private CouponService couponService;
 	
 	// 펀딩 탐색 페이지
 	@GetMapping("fundingDiscover")
-	public String fundingDiscover() {
+	public String fundingDiscover(Model model) {
+		
+		List<ProjectVO> project = projectService.getAllProjects();
+		model.addAttribute("project", project);
+		
+		// 프로젝트 현재 펀딩 금액 조회
+		
 		return "funding/funding_discover";
 	}
 	
-	// 펀딩 리스트 조회
-	@ResponseBody
-	@GetMapping("fundingDiscoverList")
-	public String fundingDiscoverList(
-			@RequestParam(defaultValue = "") String searchType, 
-			@RequestParam(defaultValue = "") String searchKeyword, 
-			@RequestParam(defaultValue = "1") int pageNum, 
-			Model model,
-			HttpServletResponse response) {
-
-
-	int listLimit = 12; // 한 페이지에서 표시할 목록 갯수 지정
-	int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
-
-	List<ProjectVO> projectList = projectService.getProjectList(searchType, searchKeyword, startRow, listLimit);
-	
-	System.out.println(projectList);
-	// 페이징 처리를 위한 계산 작업
-	int listCount = projectService.getProjectListCount(searchType, searchKeyword);
-	int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
-	
-	JSONObject jsonObject = new JSONObject();
-	
-	jsonObject.put("projectList", projectList);
-	jsonObject.put("maxPage", maxPage);
-
-		return jsonObject.toString();		
-	}	
-	
 	// 펀딩 상세페이지 이동
 	@GetMapping ("fundingDetail")
-	public String fundingDetail() {
+	public String fundingDetail(Model model
+//			, @RequestParam int project_idx 
+			) {
+		
+		// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보
+//		ProjectVO project = fundingService.selectProjectInfo(project_idx);
+//		model.addAttribute(project);
+		
+		// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
+//		List<RewardVO> reward = fundingService.selectProjectRewardInfo(project_idx);
+//		model.addAttribute(reward);
+		
 		return "funding/funding_detail";
+	}
+	
+	// 펀딩 탐색 페이지 리스트
+	@GetMapping("fundingDiscoverList")
+	public String fundingDiscoverList() {
+		return "";
 	}
 	
 	// 펀딩 주문페이지 이동
 	@GetMapping ("fundingOrder")
-	public String fundingOrder(Model model) {
-//		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, @RequestParam String addDonationAmount, HttpSession session) {
-		// session에 저장되어있는 회원아이디 가져오기
-//		String id = (String)session.getAttribute("sId");
-		// 아이디(가데이터)
-		String id = "kim1234";
-		// 프로젝트 번호(가데이터)
-		int project_idx = 1;
-		// 상세페이지에서 고른 리워드번호 필요(가데이터)
-		int reward_idx = 1;
-		// 상세페이지에서 전달받은 추가후원금액
-		String addDonationAmount = "10000";
+		// 파라미터 전달, 주석 풀 부분
+//		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, HttpSession session, Model model) {
+		public String fundingOrder(HttpSession session, Model model) {
+		
+		String sId = (String)session.getAttribute("sId");
+		// 미로그인 또는 주문하던 회원이 아닐경우 ****
+    	if(session.getAttribute("sId") == null) {
+    		model.addAttribute("msg","잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
+    	//------------------------------ 프로젝트, 리워드 가데이터
+    	int project_idx = 1;
+    	int reward_idx = 1;
+    	//------------------------------ 프로젝트, 리워드 가데이터
+    	
+    	
 		// 회원 정보 불러오기
-		MembersVO member = memberService.getMemberInfo(id);
+		MembersVO member = memberService.getMemberInfo(sId);
 		System.out.println("회원 정보 : " + member);
 		// 프로젝트 정보 불러오기
 		ProjectVO project = projectService.getProjectInfo(project_idx);
@@ -91,23 +96,23 @@ public class FundingController {
 		List<RewardVO> rewardList = projectService.getRewardList(project_idx);
 		System.out.println(rewardList);
 		// 로그인한 회원의 기본 배송지가 있는지 확인해서 있으면 전달
-		DeliveryVO deliveryDefault = fundingService.getDeliveryDefault(id);
+		DeliveryVO deliveryDefault = fundingService.getDeliveryDefault(sId);
 		System.out.println("기본 배송지 정보 : " + deliveryDefault);
 		if(deliveryDefault != null) {
 			// 기본 배송지 정보
 			model.addAttribute("deliveryDefault", deliveryDefault);
 		}
-		// 로그인한 회원의 쿠폰 정보 조회
-		// 쿠폰테이블에 회원 아이디FK 필요
-		List<CouponVO> couponList = fundingService.getCouponList();
-		System.out.println("회원이 가지고 있는 쿠폰 목록 : " + couponList);
+		
+		// member_idx 조회
+		int member_idx = projectService.getMemberIdx(sId);
+		// 회원의 쿠폰 목록 중 미사용 쿠폰 목록만 조회
+		List<CouponVO> couponList = couponService.getCouponsByMemberAndStatus(member_idx, 0);
+		System.out.println("회원이 보유한 미사용 쿠폰 목록 : " + couponList);
 		if(couponList != null) {
 			model.addAttribute("couponList", couponList);
 		}
 		
 		
-		// 추가후원금액
-		model.addAttribute("addDonationAmount", addDonationAmount);
 		// 회원 정보
 		model.addAttribute("member", member);
 		// 프로젝트 정보
@@ -121,9 +126,29 @@ public class FundingController {
 	
 	// 결제 완료 페이지
 	@GetMapping ("fundingResult")
-	public String fundingResult(
-//			@RequestParam String merchant_uid payment 테이블 데이터 추가 시 주석 해제
+	public String fundingResult(Model model, HttpSession session
+			, @RequestParam int member_idx
+			, @RequestParam int payment_idx
+			, @RequestParam int delivery_idx
+//			 테이블 데이터 추가 시 주석 해제
 			) {
+
+		// 결제 정보 조회
+		List<PaymentVO> payment = paymentService.getPaymentList(payment_idx);
+		model.addAttribute(payment);
+		
+		// 주문 정보 조회
+		List<DeliveryVO> delivery = deliveryService.getDeliveryList(payment_idx);
+		model.addAttribute(delivery);
+		
+		// 세션 아이디가 존재하지 않을 때 
+//		String sId = (String) session.getAttribute("sId");
+//		if(sId == null) {
+//			model.addAttribute("msg", "잘못된 접근입니다.");
+//			return "fail_back";
+//		}
+		
+		
 		return "funding/funding_result";
 	}	
 	

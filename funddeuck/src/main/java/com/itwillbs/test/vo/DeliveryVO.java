@@ -15,11 +15,13 @@ CREATE TABLE delivery (
   	delivery_detailadd VARCHAR(500) NOT NULL COMMENT '수취인상세주소',
   	delivery_default BOOLEAN NOT NULL DEFAULT 0 COMMENT '기본배송지여부(0: 아니오, 1: 예)',
  	FOREIGN KEY (member_id) REFERENCES members(member_id)    
+ 	FOREIGN KEY (payment_idx) REFERENCES payment(payment_idx)    
 );
 */
 @Data
 public class DeliveryVO {
 	private int delivery_idx;
+	private int payment_idx;
 	private String member_id;
 	private String delivery_reciever;
 	private String delivery_phone;

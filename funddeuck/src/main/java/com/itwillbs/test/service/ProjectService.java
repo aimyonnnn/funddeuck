@@ -51,7 +51,7 @@ public class ProjectService {
 		return mapper.selectRewardAuthorId(reward_idx, sId);
 	}
 	// 메이커 등록 페이지 접속 시
-	public int getMemberIdx(String sId) {
+	public Integer getMemberIdx(String sId) {
 		return mapper.selectMemberIdx(sId);
 	}
 	// 프로젝트 등록하기
@@ -107,6 +107,26 @@ public class ProjectService {
 	public int getProjectListCount(String searchType, String searchKeyword) {
 		return mapper.selectProjectListCount(searchType, searchKeyword);
 	}
+	// 승인완료 된 프로젝트 리스트 조회
+	public List<ProjectVO> getApprovedProjects() {
+		return mapper.selectApprovedProjects();
+	}
+	// 프로젝트 승인 처리 시간 저장
+	public void modifyProjectApprovalRequestTime(ProjectVO project) {
+		mapper.updateProjectApprovalRequestTime(project);
+	}
+	// 전체 프로젝트 리스트 조회
+	public List<ProjectVO> getAllProject(String searchKeyword, String searchType, int startRow, int listLimit) {
+		return mapper.selectAllProject(searchKeyword, searchType, startRow, listLimit);
+	}
+	// 전체 프로젝트 갯수 조회
+	public int getAllProjectCount(String searchKeyword, String searchType) {
+		return mapper.selectAllProjectCount(searchKeyword, searchType);
+	}
+	// 프로젝트 리스트 조회
+	public List<ProjectVO> getAllProjectByMakerIdx(int maker_idx) {
+		return mapper.selectAllProjectByMakerIdx(maker_idx);
+	}
 	
 	//---------main page------------
 		// ranking system
@@ -128,6 +148,12 @@ public class ProjectService {
 	            return allProjects; 
 	        }
 	    }
+		
+		
+		
+		
+		
+		
 			
 	
 }

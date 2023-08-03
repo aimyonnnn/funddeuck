@@ -46,7 +46,7 @@ $(() => {
         }
 
         if (makerStartDate > makerEndDate) {
-            alert("시작 날짜는 끝 날짜보다 빠를 수 없습니다.");
+            alert("끝 날짜가 시작 날짜보다 빠릅니다. 올바른 날짜를 선택해주세요.");
             document.getElementById("startDate").focus();
             return;
         }
@@ -156,32 +156,32 @@ let updateChart = (data, chartType) => {
     });
     
  	// 텍스트 업데이트 작업 시작
- 	// 누적 결제 금액 업데이트
-    let acmlPaymentAmountElementMaker = document.getElementById('acmlPaymentAmountMaker');
-    let acmlPaymentAmountMaker = acmlPaymentAmounts[acmlPaymentAmounts.length - 1];
-
-    if (acmlPaymentAmountMaker !== undefined) {
-        acmlPaymentAmountElementMaker.textContent = acmlPaymentAmountMaker;
-    } else {
-        acmlPaymentAmountElementMaker.textContent = '0';
-    }
-
+	// 누적 결제 금액 업데이트
+	let makerAcmlPaymentElem = document.getElementById('acmlPaymentAmountMaker');
+	let makerAcmlPayment = acmlPaymentAmounts[acmlPaymentAmounts.length - 1];
+	
+	if (makerAcmlPayment !== undefined) {
+	    makerAcmlPaymentElem.textContent = makerAcmlPayment;
+	} else {
+	    makerAcmlPaymentElem.textContent = '0';
+	}
+	
 	// 일별 평균 결제 금액 업데이트
-    let todayPaymentAmountElementMaker = document.getElementById('todayPaymentAmountMaker');
-    let totalDays = dailyPaymentAmounts.length;
-    let totalPaymentAmount = dailyPaymentAmounts.reduce((acc, amount) => acc + amount, 0);
-    let todayPaymentAmountMaker = totalDays > 0 ? Math.round(totalPaymentAmount / totalDays) : 0;
-    todayPaymentAmountElementMaker.textContent = todayPaymentAmountMaker;
-
-    // 누적 서포터 수 업데이트
-    let acmlSupporterCountElementMaker = document.getElementById('acmlSupporterCountMaker');
-    let acmlSupporterCountMaker = acmlSupporterCounts[acmlSupporterCounts.length - 1];
-
-    if (acmlSupporterCountMaker !== undefined) {
-        acmlSupporterCountElementMaker.textContent = acmlSupporterCountMaker;
-    } else {
-        acmlSupporterCountElementMaker.textContent = '0';
-    }
+	let makerTodayPaymentElem = document.getElementById('todayPaymentAmountMaker');
+	let makerTotalDays = dailyPaymentAmounts.length;
+	let makerTotalPayment = dailyPaymentAmounts.reduce((acc, amount) => acc + amount, 0);
+	let makerTodayPayment = makerTotalDays > 0 ? Math.round(makerTotalPayment / makerTotalDays) : 0;
+	makerTodayPaymentElem.textContent = makerTodayPayment;
+	
+	// 누적 서포터 수 업데이트
+	let makerAcmlSupporterElem = document.getElementById('acmlSupporterCountMaker');
+	let makerAcmlSupporter = acmlSupporterCounts[acmlSupporterCounts.length - 1];
+	
+	if (makerAcmlSupporter !== undefined) {
+	    makerAcmlSupporterElem.textContent = makerAcmlSupporter;
+	} else {
+	    makerAcmlSupporterElem.textContent = '0';
+	}
     
 };
 // 페이지 로드시에 차트 출력하기
@@ -239,7 +239,7 @@ $(() => {
         }
 
         if (startDate > endDate) {
-            alert("시작 날짜는 끝 날짜보다 빠를 수 없습니다.");
+            alert("끝 날짜가 시작 날짜보다 빠릅니다. 올바른 날짜를 선택해주세요.");
             document.getElementById("startDateProject").focus();
             return;
         }
@@ -254,7 +254,7 @@ $(() => {
         
         var selectedProjectIdx = document.getElementById("projectSelect").value; 	// 셀렉트 박스에서 선택된 값을 가져오기
         var selectedText = $('#projectSelect option:selected').text();				// 셀렉트 박스에서 선택된 옵션의 표시 텍스트를 가져오기
-        $("#selectedProjectIdx").text(selectedProjectIdx + "번 " + selectedText);	// selectedProjectIdx 요소의 내용을 업데이트 하기
+        $("#selectedProjectIdx").text(selectedText);								// selectedProjectIdx 요소의 내용을 업데이트 하기
     	
         let startDateProject = $('#startDateProject').val(); 						// 시작일 입력값 가져오기
         let endDateProject = $('#endDateProject').val(); 							// 종료일 입력값 가져오기
@@ -361,32 +361,33 @@ let updateProjectChart = (data, chartTypeProject) => {
     });
     
     // 텍스트 업데이트 작업 시작
-    // 프로젝트 페이지의 기간별 누적 결제 금액 업데이트
-	let acmlPaymentAmountElementProject = document.getElementById('acmlPaymentAmount');
-	let acmlPaymentAmountProject = acmlPaymentAmounts[acmlPaymentAmounts.length - 1];
+	// 기간별 누적 결제 금액 업데이트
+	let projectAcmlPaymentElem = document.getElementById('acmlPaymentAmount');
+	let projectAcmlPayment = acmlPaymentAmounts[acmlPaymentAmounts.length - 1];
 	
-	if (acmlPaymentAmountProject !== undefined) {
-	    acmlPaymentAmountElementProject.textContent = acmlPaymentAmountProject;
+	if (projectAcmlPayment !== undefined) {
+	    projectAcmlPaymentElem.textContent = projectAcmlPayment;
 	} else {
-	    acmlPaymentAmountElementProject.textContent = '0';
+	    projectAcmlPaymentElem.textContent = '0';
+	}
+	
+	// 일별 평균 결제 금액 업데이트
+	let projectTodayPaymentElem = document.getElementById('todayPaymentAmount');
+	let projectTotalDays = dailyPaymentAmounts.length;
+	let projectTotalPayment = dailyPaymentAmounts.reduce((acc, amount) => acc + amount, 0);
+	let projectTodayPayment = projectTotalDays > 0 ? Math.round(projectTotalPayment / projectTotalDays) : 0;
+	projectTodayPaymentElem.textContent = projectTodayPayment;
+	
+	// 기간별 누적 서포터 수 업데이트
+	let projectAcmlSupporterElem = document.getElementById('acmlSupporterCount');
+	let projectAcmlSupporter = acmlSupporterCounts[acmlSupporterCounts.length - 1];
+	
+	if (projectAcmlSupporter !== undefined) {
+	    projectAcmlSupporterElem.textContent = projectAcmlSupporter;
+	} else {
+	    projectAcmlSupporterElem.textContent = '0';
 	}
 
-	// 프로젝트 페이지의 일별 평균 결제 금액 업데이트
-	let todayPaymentAmountElementProject = document.getElementById('todayPaymentAmount');
-	let totalDaysProject = dailyPaymentAmounts.length;
-	let totalPaymentAmountProject = dailyPaymentAmounts.reduce((acc, amount) => acc + amount, 0);
-	let todayPaymentAmountProject = totalDaysProject > 0 ? Math.round(totalPaymentAmountProject / totalDaysProject) : 0;
-	todayPaymentAmountElementProject.textContent = todayPaymentAmountProject;
-
-	// 프로젝트 페이지의 기간별 누적 서포터 수 업데이트
-	let acmlSupporterCountElementProject = document.getElementById('acmlSupporterCount');
-	let acmlSupporterCountProject = acmlSupporterCounts[acmlSupporterCounts.length - 1];
-
-	if (acmlSupporterCountProject !== undefined) {
-	    acmlSupporterCountElementProject.textContent = acmlSupporterCountProject;
-	} else {
-	    acmlSupporterCountElementProject.textContent = '0';
-	}
     
 };
 // 페이지 로드시에 차트 출력하기
@@ -467,8 +468,7 @@ th, td {
 				<!--  -->
 				<div class="projectArea">
 					<p class="projectTitle">프로젝트 현황</p>
-					<p class="projectContent mb-4">프로젝트 진행 상황을 실시간으로 한 번에 볼 수
-						있습니다.</p>
+					<p class="projectContent mb-4">프로젝트 진행 상황을 한 눈에 파악할 수 있습니다.</p>
 					
 					<!-- 프로젝트 차트 -->
 					<div class="container mt-5 mb-3">
@@ -632,57 +632,106 @@ th, td {
 					<!-- 전체 결제 내역 조회 -->
 					<div class="container mt-5 mb-3">
 						<div class="row justify-content-center">
-							<p class="subheading">전체 결제 내역 조회</p>
-							<p class="projectContent">결제 내역을 실시간으로 조회 할 수 있습니다.</p>
+							<p class="subheading">프로젝트별 결제 내역 조회</p>
+							<p class="projectContent">기간별로 결제 내역을 조회 할 수 있습니다.</p>
 						
 							<!-- 셀렉트 박스 -->
 							<div class="d-flex flex-row justify-content-end">
-								<select id="projectSelect2" class="datepicker-button" onchange="onProjectSelectChange()">
+								<input type="date" class="datepicker" id="startDatePayment" placeholder="시작 날짜">
+								<input type="date" class="datepicker mx-2" id="endDatePayment" placeholder="끝 날짜">
+								<select id="projectSelect2" class="datepicker-button">
 									<option value="">선택</option>
-								</select>		
+								</select>
+								<button class="datepicker-button mx-2" id="paymentUpdateButton">조회</button>		
 							</div>
 							
 							<div class="row">
 								<div class="d-flex justify-content-center">
 								
-								<!-- 결제 테이블 -->
-								<table class="table" style="font-size: 15px">
-								<thead>
-									<tr>
-										<th class="text-center" style="width: 3%;">번호</th>
-										<th class="text-center" style="width: 13%;">프로젝트명</th>
-										<th class="text-center" style="width: 13%;">리워드명</th>
-										<th class="text-center" style="width: 3%;">수량</th>
-										<th class="text-center" style="width: 6%;">결제금액</th>
-										<th class="text-center" style="width: 7%;">주문날짜</th>
-										<th class="text-center" style="width: 5%;">상태</th>
-										<th class="text-center" style="width: 7%;">상세보기</th>
-									</tr>
-								</thead>
-								<tbody id="paymentTableBody">
-								
-								</tbody>
-								</table>
-								<!--  -->
-								
+									<!-- 결제 테이블 -->
+									<table class="table" style="font-size: 15px">
+									<thead>
+										<tr>
+											<th class="text-center" style="width: 3%;">번호</th>
+											<th class="text-center" style="width: 13%;">프로젝트명</th>
+											<th class="text-center" style="width: 13%;">리워드명</th>
+											<th class="text-center" style="width: 3%;">수량</th>
+											<th class="text-center" style="width: 6%;">결제금액</th>
+											<th class="text-center" style="width: 7%;">주문날짜</th>
+											<th class="text-center" style="width: 5%;">상태</th>
+											<th class="text-center" style="width: 7%;">상세보기</th>
+										</tr>
+									</thead>
+									<tbody id="paymentTableBody">
+										<!-- 여기다가 출력함 -->
+									</tbody>
+									</table>
 								</div>
 							</div>
-							<!--  -->
-							
+							<!-- 페이징 버튼 -->
+							<div class="d-flex justify-content-center">
+								<div id="pagingButtons">
+								</div>
+							</div>
+							<!-- 페이징 버튼 -->
 						</div>
 					</div>	
-					<!--  -->
 					
+					<!-- 전체 결제 내역 조회 -->
+					<div class="container mt-5 mb-3">
+						<div class="row justify-content-center">
+							<p class="subheading">리워드 정보 조회</p>
+							<p class="projectContent">프로젝트별 리워드 재고를 파악할 수 있습니다.</p>
+
+							<!-- 셀렉트 박스 -->
+							<div class="d-flex flex-row justify-content-end">
+								<select id="projectSelect3" class="datepicker-button">
+									<option value="">선택</option>
+								</select>
+								<button class="datepicker-button mx-2" id="rewardUpdateButton">조회</button>		
+							</div>
+							
+							<div class="row">
+								<div class="d-flex justify-content-center">
+								
+									<!-- 결제 테이블 -->
+									<table class="table" style="font-size: 15px">
+									<thead>
+										<tr>
+											<th class="text-center" style="width: 15%;">프로젝트명</th>
+											<th class="text-center" style="width: 20;">리워드명</th>
+											<th class="text-center" style="width: 10;">리워드 옵션</th>
+											<th class="text-center" style="width: 10;">전체 리워드수</th>
+											<th class="text-center" style="width: 10%;">재고</th>
+											<th class="text-center" style="width: 10%;">판매</th>
+											<th class="text-center" style="width: 7%;">상세보기</th>
+										</tr>
+									</thead>
+									<tbody id="rewardTableBody">
+										
+									</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				<!-- 하단 여백 주기 -->
+				<div style="height: 300px; width: 100%"></div>
+													
 				</div>
 			</article>
 		</section>
 		<!-- 중앙 섹션 끝 -->
-
+				
+		
+		
+		
 	</div>
 </main>
 
 <script>
-// 페이지 로드 후에 호출해야 하는 함수 모음
+// 페이지 로드 후에 호출해야 하는 함수
 $(() => {
 	// datepicker
    	$.datepicker.setDefaults({ dateFormat: 'yy-mm-dd' });
@@ -691,6 +740,7 @@ $(() => {
 	// 셀렉트 박스에 프로젝트 리스트를 출력
 	getProjectList();
 	getProjectList2();
+	getProjectList3();
 });
 
 // 서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
@@ -725,7 +775,7 @@ function getProjectList() {
 	});
 }
 
-//서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
+// 서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
 function getProjectList2() {
 	
     let selectElement = document.getElementById("projectSelect2");
@@ -757,91 +807,422 @@ function getProjectList2() {
     });
 }
 
-// 메이커 전체 결제 내역 조회
-$(document).ready(function() {
-	$.ajax({
-	    url: '<c:url value="getAllMakerPayment"/>',
-	    method: 'post',
-	    data: {
-	    	maker_idx: ${maker_idx}
-	    },
-	    dataType: 'json',
-	    success: function(data) {
-	        updatePaymentTable(data);
-	    },
-	    error: function(error) {
-	        console.error(error);
-	    }
-	});
-});
+//서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
+function getProjectList3() {
+	
+    let selectElement = document.getElementById("projectSelect3");
+    
+    $.ajax({
+        method: 'post',
+        data: {
+            maker_idx: ${maker_idx}
+        },
+        url: '<c:url value="getProjectListByMakerIdx"/>',
+        success: function (data) {
 
-// 프로젝트별 전체 결제 내역 조회
-// 셀렉트 박스의 값이 변경되었을 때 호출되는 함수
-function onProjectSelectChange() {
-	let selectedProjectIdx = $("#projectSelect2").val();
-	$.ajax({
+            console.log(data);
+
+            data.forEach((project) => {
+                let option = document.createElement("option");
+                option.value = project.project_idx;
+                option.textContent = project.project_subject;
+                selectElement.appendChild(option);
+            });
+
+            let selectedProjectIdx = ${firstProjectIdx};
+            selectElement.value = selectedProjectIdx;
+
+        },
+        error: function (error) {
+            console.error(error);
+        }
+    });
+}
+// ===============================================================================================================
+	
+// 페이징 처리
+let currentPage = 1;
+let totalCount = 0;
+const listLimit = 10; // 페이지당 데이터 수
+
+// 총 페이지 수를 계산하는 함수
+function calculateTotalPages(totalCount, listLimit) {
+  	return Math.ceil(totalCount / listLimit);
+}
+
+// 날짜 형식 변환 함수
+function formatDate(timestamp) {
+  	let date = new Date(timestamp);
+  	let year = date.getFullYear();
+	let month = ('0' + (date.getMonth() + 1)).slice(-2);	// 날짜 객체에서 월을 가져오고 1을 더한 후 문자열로 변환 후 뒤에서 2개의 문자를 추출
+  	let day = ('0' + date.getDate()).slice(-2);
+  	return year + '-' + month + '-' + day;
+}
+
+// 테이블 데이터 채우기 함수
+function fillTable(data) {
+	
+	let tbody = $('#paymentTableBody');
+	tbody.empty();
+
+	data.forEach(function (payment, index) {
+		
+		let status;
+		
+	  	if (payment.payment_confirm === 1) {
+	    	status = "예약완료";
+	  	} else if (payment.payment_confirm === 2) {
+	    	status = "결제완료";
+	  	} else if (payment.payment_confirm === 3) {
+	    	status = "반환신청";
+	  	} else if (payment.payment_confirm === 4) {
+	    	status = "반환완료";
+	  	} else if (payment.payment_confirm === 5) {
+	    	status = "반환거절";
+	  	} else {
+	    	status = "없음";
+ 		}
+
+		let formattedDate = formatDate(payment.payment_date);
+		let newRow =
+	    "<tr>" +
+		    "<td class='text-center'>" + payment.payment_idx + "</td>" +
+		    "<td class='text-center'>" + payment.project_subject + "</td>" +
+		    "<td class='text-center'>" + payment.reward_name + "</td>" +
+		    "<td class='text-center'>" + payment.payment_quantity + "</td>" +
+		    "<td class='text-center'>" + payment.total_amount + "</td>" +
+		    "<td class='text-center'>" + formattedDate + "</td>" +
+		    "<td class='text-center'>" + status + "</td>" +
+		    "<td class='text-center'><button class='btn btn-outline-primary btn-sm' data-bs-toggle='modal' data-bs-target='#staticBackdrop' onClick='showPaymentDetails(" + payment.payment_idx + ")'>상세보기</button></td>" +
+	    "</tr>";
+		tbody.append(newRow);
+	});
+}
+
+// ajax로 데이터 가져오는 함수
+function fetchPaginatedData(page) {
+	
+	let startDatePayment = $("#startDatePayment").val();
+	let endDatePayment = $("#endDatePayment").val();
+	let selectedProjectIdx2 = $("#projectSelect2").val();
+
+  	$.ajax({
 	    url: '<c:url value="getPaymentByProjectIdx"/>',
 	    method: 'POST',
 	    data: {
-	    	maker_idx: ${maker_idx},
-	        project_idx: selectedProjectIdx
+	    	
+			maker_idx: ${maker_idx},
+			project_idx: selectedProjectIdx2,
+			startDate: startDatePayment,
+			endDate: endDatePayment,
+			startRow: (page - 1) * listLimit,
+			listLimit: listLimit
+	      
 	    },
 	    dataType: 'json',
 	    success: function (data) {
 	    	
-	        updatePaymentTable(data);
+	    	
+	      	totalCount = data.totalCount;
+	      	let totalPages = calculateTotalPages(totalCount, listLimit);
+	      	currentPage = page;
+
+	      	// 결제내역 데이터를 테이블에 추가
+	      	fillTable(data.data);
+	
+	     	// 페이징 버튼 생성 및 이벤트 처리
+	      	let pagingButtons = $("#pagingButtons");
+	      	pagingButtons.empty();
+	
+	      	let navUl = $("<ul></ul>").addClass("pagination");
+	
+	      	// 맨 앞으로 가는 버튼
+	      	let firstButton = $("<li></li>").addClass("page-item");
+	      	let firstLink = $("<button></button>").addClass("page-link").html("&laquo;").css("color", "black");
+	      	firstButton.addClass(currentPage === 1 ? "disabled" : ""); // 현재 페이지가 첫 페이지면 비활성화
+	      	firstButton.append(firstLink);
+	      	firstLink.click(function (event) {
+	      		
+		      	event.preventDefault(); // 링크 동작 방지
+		      	fetchPaginatedData(1);
+		      	
+	      	});
+	      	navUl.append(firstButton);
+
+	      	// 페이지 버튼들
+	      	for (let i = 1; i <= totalPages; i++) {
+	      		
+		      	let button = $("<li></li>").addClass("page-item");
+		        let link = $("<button></button>").addClass("page-link text-dark").text(i);
+		        
+		        if (i === currentPage) {
+// 		        	button.addClass("active");
+
+		        }
+		        
+	       		button.append(link);
+	        	link.click(function (event) {
+	        		
+		          	event.preventDefault(); // 링크 동작 방지
+		          	fetchPaginatedData(i);
+	          
+	        	});
+		        navUl.append(button);
+	      	}
+
+	      	// 맨 뒤로 가는 버튼
+	      	let lastButton = $("<li></li>").addClass("page-item");
+	      	let lastLink = $("<button></button>").addClass("page-link").html("&raquo;").css("color", "black");
+	      	lastButton.addClass(currentPage === totalPages ? "disabled" : ""); // 현재 페이지가 마지막 페이지면 비활성화
+     	 	lastButton.append(lastLink);
+	      	lastLink.click(function (event) {
+	    	  
+			event.preventDefault(); // 링크 동작 방지
+	      	fetchPaginatedData(totalPages);
+	        
+	      	});
+	      	navUl.append(lastButton);
+	      	pagingButtons.append(navUl);
+	
+	      	// 이전 페이지로 이동하는 버튼 활성화/비활성화 처리
+	      	$("#prevPageButton").prop("disabled", currentPage === 1);
+	
+	      	// 다음 페이지로 이동하는 버튼 활성화/비활성화 처리
+	      	$("#nextPageButton").prop("disabled", currentPage === totalPages);
+	      
+	      
 	    },
 	    error: function (error) {
-	        console.error(error);
+	      console.error(error);
 	    }
- });
+  	});
 }
 
-// 결제내역 데이터를 테이블에 추가하는 함수
-function updatePaymentTable(data) {
-   
-    let tbody = $('#paymentTableBody');
-    tbody.empty();
-    
-    // 날짜 변환
-    function formatDate(timestamp) {
-		  let date = new Date(timestamp);
-		  let year = date.getFullYear();
-		  let month = ('0' + (date.getMonth() + 1)).slice(-2);
-		  let day = ('0' + date.getDate()).slice(-2);
-		  return year + '-' + month + '-' + day;
+// 조회 버튼 클릭 시 자료 조회와 페이징 처리 호출
+$('#paymentUpdateButton').click(function () {
+	fetchPaginatedData(1); // 첫 페이지 데이터 조회
+});
+
+// 이전 페이지로 이동하는 버튼 클릭 이벤트 핸들러
+$("#prevPageButton").click(function () {
+	if (currentPage > 1) {
+		fetchPaginatedData(currentPage - 1);
 	}
+});
+
+// 다음 페이지로 이동하는 버튼 클릭 이벤트 핸들러
+$("#nextPageButton").click(function () {
+	let totalPages = calculateTotalPages(totalCount, listLimit);
+	if (currentPage < totalPages) {
+		fetchPaginatedData(currentPage + 1);
+	}
+});
+
+// 초기 데이터 가져오기
+$(document).ready(function () {
+	fetchPaginatedData(1); // 첫 페이지 데이터 조회
+});
+
+// ===============================================================================================================
+	
+// 페이지가 완전히 로드되었을 때 해당 함수를 실행
+window.addEventListener('load', function() {
+	
+    const todayPayment = new Date();                        	   		// 현재 날짜를 생성
+    const sevenDaysAgoPayment = new Date(todayPayment);            		// 새로운 날짜 객체 생성    
+    sevenDaysAgoPayment.setDate(todayPayment.getDate() - 7);       		// 7일 전의 날짜로 설정
     
-    data.forEach(function(payment, index) {
-    	
-    	// 결제상태 판별하기
-    	let status;
-        if (payment.payment_confirm === 1) {
-            status = "결제완료";
-        } else if (payment.payment_confirm === 2) {
-            status = "취소요청";
-        } else if (payment.payment_confirm === 3) {
-            status = "취소완료";
-        } else {
-            status = "없음";
-        }
-    	
-    	let formattedDate = formatDate(payment.payment_date); // 주문 날짜 변환
-	   	let newRow = 
-		   	    "<tr>" +
-			   	    "<td class='text-center'>" + payment.payment_idx + "</td>" +
-			   	    "<td class='text-center'>" + payment.project_subject + "</td>" +
-			   	    "<td class='text-center'>" + payment.reward_name + "</td>" +
-			   	    "<td class='text-center'>" + payment.payment_quantity + "</td>" +
-			   	    "<td class='text-center'>" + payment.total_amount + "</td>" +
-			   	    "<td class='text-center'>" + formattedDate + "</td>" +
-			   	    "<td class='text-center'>" + status + "</td>" +
-			   	    "<td class='text-center'><button class='btn btn-outline-primary btn-sm'>상세보기</button></td>" +
-		   	    "</tr>";
-        tbody.append(newRow);
-    });
+    // 시작 날짜 입력란에 7일 전 날짜 설정
+    document.getElementById("startDatePayment").valueAsDate = sevenDaysAgoPayment;
+    
+    // 끝 날짜 입력란에 오늘 날짜 설정
+    document.getElementById("endDatePayment").valueAsDate = todayPayment;
+    
+    // 프로젝트 선택 박스 초기화 (선택 사항이기 때문에 원하는 대로 설정)
+    // document.getElementById("projectSelect2").value = "";
+    
+    // 페이지 로드 후 자동으로 조회 버튼 클릭 (1초 후에 실행하도록 설정)
+    setTimeout(function () {
+        document.getElementById("paymentUpdateButton").click();
+    }, 1000); 
+});
+
+//===============================================================================================================
+
+// 프로젝트별 리워드 정보 조회
+$(()=> {
+		
+	$('#rewardUpdateButton').click(()=>{
+		
+		let selectedProjectIdx3 = $("#projectSelect3").val();
+		
+		$.ajax({
+			method: 'post',
+			url: '<c:url value="getRewardInfo"/>',
+			data: {
+				project_idx: selectedProjectIdx3,
+				maker_idx: ${maker_idx}
+			},
+			success: function(data) {
+				
+				console.log(data);
+				
+				let tbody = $('#rewardTableBody');
+				tbody.empty();
+				
+				data.forEach(function(payment, index) {
+					
+					let projectName = $('#projectSelect3 option:selected').text();
+					
+					let newRow = 
+						"<tr>" + 
+							"<td class='text-center'>" + projectName + "</td>" +
+							"<td class='text-center'>" + payment.reward_name + "</td>" + 
+							"<td class='text-center'>" + payment.reward_option + "</td>" + 
+							"<td class='text-center'>" + payment.reward_quantity + "</td>" + 
+							"<td class='text-center'>" + payment.remaining_quantity + "</td>" + 
+							"<td class='text-center'>" + payment.sales_quantity + "</td>" + 
+							"<td class='text-center'><button class='btn btn-outline-primary btn-sm'>상세보기</button></td>" + 
+						"</tr>";
+						
+					tbody.append(newRow);
+					
+				});
+				
+			},
+			error: function() {
+				console.log('ajax 요청이 실패하였습니다.');
+			}
+		});
+	});
+	
+	// 페이지 로드 후 1초 후에 실행
+	setTimeout(() => {
+		$('#rewardUpdateButton').click();
+	}, 1000);
+	
+});
+
+// 결제내역 상세보기 클릭 시 결제내역을 조회
+function showPaymentDetails(payment_idx) {
+
+	$.ajax({
+		
+	    method: 'post',
+	    url: '<c:url value="getPaymentDetail"/>',
+	    data: {
+	      payment_idx: payment_idx
+	    },
+	    dataType: 'json',
+	    success: data => {
+	    	
+      	console.log(data);
+
+	    let modalBody = $('#paymentDetail');
+	    modalBody.empty();
+
+      	let tableHtml = `
+      	
+    	<table class='table text-center'>
+	        <tr>
+	          <td>주문번호</td>
+	          <td>${'${data.payment_idx}'}</td>
+	        </tr>
+	        <tr>
+	          <td>회원번호</td>
+	          <td>${'${data.member_idx}'}</td>
+	        </tr>
+	        <tr>
+	          <td>프로젝트번호</td>
+	          <td>${'${data.project_idx}'}</td>
+	        </tr>
+	        <tr>
+	          <td>이메일</td>
+	          <td>${'${data.member_email}'}</td>
+	        </tr>
+	        <tr>
+	          <td>연락처</td>
+	          <td>${'${data.member_phone}'}</td>
+	        </tr>
+	        <tr>
+	          <td>리워드금액</td>
+	          <td>${'${data.reward_amount}'}</td>
+	        </tr>
+	        <tr>
+	          <td>추가후원금</td>
+	          <td>${'${data.additional_amount}'}</td>
+	        </tr>
+	        <tr>
+	          <td>쿠폰금액</td>
+	          <td>${'${data.use_coupon_amount}'}</td>
+	        </tr>
+	        <tr>
+	          <td>최종결제금액</td>
+	          <td>${'${data.total_amount}'}</td>
+	        </tr>
+	        <tr>
+	          <td>주문날짜</td>
+	          <td>${'${data.payment_date}'}</td>
+	        </tr>
+	        <tr>
+	          <td>주문수량</td>
+	          <td>${'${data.payment_quantity}'}</td>
+	        </tr>
+	        <tr>
+	          <td>결제승인여부</td>
+	          <td>${'${data.payment_confirm}'}</td>
+	        </tr>
+	        <tr>
+	          <td>결제수단</td>
+	          <td>${'${data.payment_method}'}</td>
+	        </tr>
+	        <tr>
+	          <td>환급받을은행명</td>
+	          <td>${'${data.refund_bank}'}</td>
+	        </tr>
+	        <tr>
+	          <td>배송방법</td>
+	          <td>${'${data.delivery_method}'}</td>
+	        </tr>
+	        <tr>
+	          <td>택배사</td>
+	          <td>${'${data.courier}'}</td>
+	        </tr>
+	        <tr>
+	          <td>운송장번호</td>
+	          <td>${'${data.waybill_num}'}</td>
+	        </tr>
+	        <tr>
+	          <td>배송상황</td>
+	          <td>${'${data.delivery_status}'}</td>
+	        </tr>
+        </table>`;
+        
+      	modalBody.html(tableHtml);
+   		}
+  	});
 }
+
+// 리워드 정보 조회
 </script>
+
+
+<!-- 결제내역 조회 모달 -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">결제내역 상세조회</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="paymentDetail">
+      <!-- 데이터 출력 -->
+      </div>
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+    </div>
+  </div>
+</div>
+
 <!-- js -->
 <script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
 <!-- bootstrap -->

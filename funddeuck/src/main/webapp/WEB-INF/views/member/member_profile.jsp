@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,32 +15,45 @@
     <link rel="stylesheet" type="text/css" href="../resources/css/member_profile.css" />
 </head>
 <body>
-<section style="background-color: #f4f5f7;">
-    <div style="height: 50px;"></div>
-    <div class="container py-5">
-        <div class="row d-flex justify-content-center align-items-center">
-            <div class="col col-lg-6 mb-4 mb-lg-0">
-                <div class="card mb-3" style="border-radius: .5rem;">
-                    <div class="row g-0">
-                        <h3 class="profile-heading">프로필 정보 설정</h3>
-						<div class="col-md-4 gradient-custom text-center text-white" style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-						    <img src="${pageContext.request.contextPath}/resources/upload/${profile.profile_img}" alt="프로필 사진을 업로드 해주세요" style="max-height: 100px;">
-						    <form action="updateProfileImage" method="post" enctype="multipart/form-data">
-						        <input type="hidden" name="member_idx" value="${profile.member_idx}" />
-						        <div class="custom-file">
-						            <input type="file" class="custom-file-input" name="file"  value="바꾸기" id="customFile">
-						            <label class="custom-file-label" for="customFile"></label>
-						        </div>
-						        <button type="submit" class="btn btn-primary mt-3">사진 저장</button>
-						    </form>
+			<section style="background-color: #f4f5f7;">
+			    <div style="height: 50px;"></div>
+			    <div class="container py-5">
+			        <div class="row d-flex justify-content-center align-items-center">
+			            <div class="col col-lg-6 mb-4 mb-lg-0">
+			                <div class="card mb-3" style="border-radius: .5rem;">
+			                    <div class="row g-0">
+			                        <h3 class="profile-heading">프로필 정보 설정</h3>
+									<div class="col-md-4 gradient-custom text-center text-white" style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+									  <div class="circle-image">
+									    <img src="<c:choose>
+						                 <c:when test="${not empty profile.profile_img}">
+						                     ${pageContext.request.contextPath}/resources/upload/${profile.profile_img}
+						                 </c:when>
+						                 <c:otherwise>
+						                     https://cdn.pixabay.com/photo/2017/04/20/01/46/focus-2244304_1280.png
+						                 </c:otherwise>
+						             </c:choose>"
+						         alt="프로필 사진을 업로드 해주세요" style="max-height: 100px;">
+						  </div>
+						  <br>
+						  <form action="updateProfileImage" method="post" enctype="multipart/form-data">
+						      <input type="hidden" name="member_idx" value="${profile.member_idx}" />
+						      <div class="custom-file">
+						          <input type="file" class="custom-file-input" name="file"  value="바꾸기" id="customFile">
+						          <label class="custom-file-label" for="customFile"></label>
+						      </div>
+						      <button type="submit" class="btn btn-primary mt-3">사진 저장</button>
+						  </form>
 						</div>
+
 
 
                         <div class="col-md-8">
                             <div class="card-body p-4">
 							<form id="profileForm">
                                 <hr class="mt-0 mb-4">
-							    <input type="text" name="member_idx" value="${profile.member_idx}" />
+							    <input type="hidden" name="member_idx" value="${sessionScope.sIdx}" />
+							    
                                     <h6>회사 / 직책</h6>
                                 <div class="row pt-1">
                                     <div class="col-6 mb-3">
@@ -82,7 +96,8 @@
                 </div>
             </div>
             <div class="button-container">
-                <button id="saveButton" class="btn btn-primary">저장</button>
+            	<button id="joinButton" class="btn btn-primary">등록</button>            
+                <button id="saveButton" class="btn btn-primary">수정</button>
                 <button id="cancelButton" class="btn btn-primary">취소</button>
             </div>
         </div>
@@ -95,6 +110,13 @@
     $(document).ready(function () {
         $("#saveButton").on("click", function () {
             console.log("수정");
+            
+            console.log($("input[name='profile_job1']").val());
+            console.log($("input[name='profile_job2']").val());
+            console.log($("input[name='profile_school1']").val());
+            console.log($("input[name='profile_school2']").val());
+            console.log($("input[name='profile_text']").val());
+            console.log($("input[name='member_idx']").val());
 
             var formData = new FormData();
             formData.append('profile_job1', $("input[name='profile_job1']").val());
@@ -122,6 +144,44 @@
             });
         });
 
+        $("#joinButton").on("click", function () {
+            
+        	var sIdx = '${sessionScope.sIdx}';
+        	
+        	console.log("등록");
+            console.log($("input[name='profile_job1']").val());
+            console.log($("input[name='profile_job2']").val());
+            console.log($("input[name='profile_school1']").val());
+            console.log($("input[name='profile_school2']").val());
+            console.log($("input[name='profile_text']").val());
+            console.log(sIdx);
+
+
+            var formData = new FormData();
+            formData.append('profile_job1', $("input[name='profile_job1']").val());
+            formData.append('profile_job2', $("input[name='profile_job2']").val());
+            formData.append('profile_school1', $("input[name='profile_school1']").val());
+            formData.append('profile_school2', $("input[name='profile_school2']").val());
+            formData.append('profile_text', $("textarea[name='profile_text']").val());
+            formData.append('member_idx', sIdx);
+
+            $.ajax({
+                type: "POST",
+                url: '<c:url value="/member/insert"/>', 
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log("실행");
+                    alert("프로필이 저장되었습니다.");
+                    location.reload();
+                },
+                error: function () {
+                    alert("저장에 실패했습니다. 다시 시도해주세요.");
+                }
+            });
+        });
+        
         $("#cancelButton").on("click", function () {
             var formInputs = $("#profileForm :input");
             formInputs.each(function () {
@@ -131,7 +191,9 @@
                 }
             });
         });
-        });
+        
+        
+   });
         
 
 </script>

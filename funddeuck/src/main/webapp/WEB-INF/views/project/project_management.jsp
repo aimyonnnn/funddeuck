@@ -151,6 +151,7 @@
 			"#projectCategory",
 			"#projectSubject",
 			"#managementDetail",
+			"#managementSemiDetail",
 			"#targetAmount",
 			"#projectStartDate",
 			"#projectEndDate",
@@ -208,6 +209,7 @@
 		
 	    // 계좌 본인 인증 
 	    $("#btnAccountAuth").on("click", function() {
+	    	
 			// 새 창에서 사용자 인증 페이지 요청
 			let requestUri = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
 					+ "response_type=code"
@@ -218,6 +220,10 @@
 					+ "&auth_type=0";
 			window.open(requestUri, "authWindow", "width=600, height=800");
 		});
+	    
+	    
+	    
+	    
 	});
 	</script>
 </head>
@@ -272,7 +278,7 @@
 				<form id="project-form" action="projectManagementPro" class="projectContent" method="post" enctype="multipart/form-data">
 					<!-- 히든 처리하는 부분 -->
 	            	<!-- 마이페이지, 메이커 등록에서 넘어올 때 파라미터로 받아와야함 -->
-	            	<input type="text" name="maker_idx" id="maker_idx" value="${param.maker_idx}" class="form-control" style="width:500px;">
+	            	<input type="hidden" name="maker_idx" id="maker_idx" value="${param.maker_idx}" class="form-control" style="width:500px;">
 					<!-- 기본 요금제 -->
 					<div class="mt-4">
 						<p class="subheading">기본 요금제</p>
@@ -383,7 +389,7 @@
 						<p class="sideDescription">
 							준비하고 계신 리워드의 특별한 점을 작성해 주세요.<br>
 							기존 제품 ・ 서비스 ・ 콘텐츠를 개선했다면 어떤 점이 달라졌는지 작성해 주세요.<br>
-							위에 입력된 정보를 바탕으로 AI로 자동 입력도 가능해요. 
+							위에 입력 된 정보를 바탕으로 AI로 자동 입력도 가능해요. 
 						</p>
 						<textarea class="form-control management-info" name="project_introduce" id="managementDetail" placeholder="예시 : 우리집 아이가 ○○ 인형을 좋아하는 모습을 보고 만들게 되었습니다." style="height: 300px; resize: none;"></textarea>
 					</div>
@@ -467,7 +473,7 @@
 					<div class="d-flex flex-row">
 						<select class="form-control" name="project_settlement_bank" id="bankCategory">
 							<option value="">은행 선택</option>
-							<option value="산업은행">신한은행</option>
+							<option value="산업은행">산업은행</option>
 							<option value="신한은행">신한은행</option>
 							<option value="국민은행">국민은행</option>
 							<option value="농협은행">농협은행</option>
@@ -481,6 +487,7 @@
 					<input class="form-control mt-1" type="text" name="project_settlement_account" id="bankAccount" placeholder="계좌번호 '-' 없이 숫자만 입력">
 					<input class="form-control mt-1" type="text" name="project_settlement_name" id="bankName" placeholder="예금주명"><br>
 					<button class="btn btn-primary" id="btnAccountAuth">본인 인증</button>
+					<input type="hidden" name="token_idx" id="token_idx" value="">
 					</div>
 
 					<!-- 통장 사본 -->

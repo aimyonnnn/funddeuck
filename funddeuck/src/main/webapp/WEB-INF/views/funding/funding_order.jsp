@@ -9,356 +9,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>펀딩</title>
-<!-- 헤더  -->
-<jsp:include page="../common/main_header.jsp"></jsp:include>
 <!-- 부트스트랩 -->
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
+<!-- 헤더  -->
+<jsp:include page="../common/main_header.jsp"></jsp:include>
+<!-- 부트스트랩 5.3.0 CSS 추가 -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css"> -->
+<!-- 부트스트랩 5.3.0 JS 추가 -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> -->
 <!-- jQuery 라이브러리 추가 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- 부트스트랩 5.3.0 CSS 추가 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
-<!-- 부트스트랩 5.3.0 JS 추가 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-
+<!-- funding_order.js -->
+<script src="${pageContext.request.contextPath }/resources/js/funding_order.js"></script>
 <!-- 공용 css -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
-
-<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
-<script type="text/javascript">
-
-	// 배송지 신규 등록을 위한 ajax 요청 (기본 배송지로 등록)
-	$(document).on("click", "#deliveryNewAdd", function() {
-		
-		// 폼 데이터 가져오기
-		var formData = $("#deliveryNewAddModal form").serialize();
-		console.log(formData);
-		// ajax 요청
-		$.ajax({
-			type: "POST",
-			url: "deliveryNewAdd",
-			data: formData,
-			success: function(saveDelivery) {
-				if(saveDelivery != null) {
-					console.log("배송지 신규 등록 완료!");
-					// 배송지 추가 모달창의 입력된 데이터 지우기
-					$("#deliveryNewAddModal input").val("");
-					// 배송지 추가 모달창 닫힘(부트스트랩 5.3.0에서는 X)
-	//					$('#deliveryAddModal').modal('hide');
-			        // 배송지 추가 모달창 닫기 버튼 클릭 발생
-			        $("#deliveryNewAddModalClose").click();
-			        
-			        console.log(saveDelivery);
-			        // 기존 배송지란에 있던 내용 지우기
-			        $('#deliveryContainer').html('');
-			        
-			        let output = '<div class="col">'
-							+ '<div class="row-12">'
-							+ '<span class="fs-6 fw-bold">' + saveDelivery.delivery_reciever + '</span>&nbsp;'
-							+ '<span class=" badge bg-danger text-white">기본</span>'	
-							+ '</div>'
-							+ '<div class="row-12">'
-							+ '<span class="fs-6">[' + saveDelivery.delivery_zipcode + ']</span>&nbsp;'
-							+ '<span class="fs-6">' + saveDelivery.delivery_add + '</span>&nbsp;'
-							+ '<c:if test="${not empty'	+  saveDelivery.delivery_detailadds + '}">'
-							+ '<span class="fs-6">' + saveDelivery.delivery_detailadd + '</span>'
-							+ '</c:if>'
-							+ '</div>'
-							+ '<div class="row-12">'
-							+ '<span class="fs-6">' + saveDelivery.delivery_phone + '</span>'
-							+ '</div></div>'
-							+ '<div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">'
-							+ '<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryChangeModal">변경</button>'
-							+ '</div>';
-						
-			        // 배송지란에 등록된 기본배송지 출력
-			        $('#deliveryContainer').html(output);
-			        	
-			        
-					
-				} else {
-					console.log("배송지 신규 등록 실패!");
-				}
-			},
-			error: function (xhr, status, error) {
-				console.error("오류 발생!" , error);
-			}
-		});
-		
-			
-	});
-
-	// 배송지 등록을 위한 ajax 요청 (기본 배송지 O)
-	$(document).on("click", "#deliveryAdd", function() {
-        $("#deliveryChangeModalClose").click();
-		
-		// 폼 데이터 가져오기
-		var formData = $("#deliveryAddModal form").serialize();
-		console.log(formData);
-		// ajax 요청
-		$.ajax({
-			type: "POST",
-			url: "deliveryAdd",
-			data: formData,
-			success: function(msg) {
-				if($.trim(msg) == "success") {
-					console.log("배송지 등록 완료!");
-					// 배송지 추가 모달창의 입력된 데이터 지우기
-					$("#deliveryAddModal input").val("");
-					// 배송지 추가 모달창 닫힘(부트스트랩 5.3.0에서는 X)
-// 					$('#deliveryAddModal').modal('hide');
-			        // 배송지 추가 모달창 닫기 버튼 클릭 발생
-			        $("#deliveryAddModalClose").click();
-					
-					// 배송지 변경 모달창 열림
-					$("#deliveryChangeModal").modal("show");
-				} else {
-					console.log("배송지 등록 실패!");
-				}
-			},
-			error: function (xhr, status, error) {
-				console.error("오류 발생!" , error);
-			}
-		});
-		
-			
-	});
-	
-	
-	// 배송지 변경 모달창에서 선택된 배송지의 번호를 hidden에 전달
-	$(document).ready(function() {
-	    // 라디오 버튼이 선택되었을 때, 값을 #deliver_idx 인 hidden input에 전달하기 위한 이벤트 리스너
-	    $(document).on('change', 'input[type="radio"].radio-input', function() {
-	        var selectedValue = $(this).val();
-	        $('#changeDelivery_idx').val(selectedValue);
-	    });
-	});
-	
-	// 배송지 변경 출력을 위한 ajax 요청
-	$(document).on("click", "#deliveryChange", function() {
-		
-		// 폼 데이터 가져오기
-		var formData = $("#deliveryChangeModal form").serialize();
-		console.log(formData);
-		// ajax 요청
-		$.ajax({
-			type: "POST",
-			url: "deliveryChange",
-			data: formData,
-			success: function(delivery) {
-				console.log(delivery);
-				if(delivery != null) {
-					console.log("배송지 변경 완료!");
-					
-					// 배송지 변경 모달창 닫힘(부트스트랩 5.3.0에서는 X)
-// 					$('#deliveryAddModal').modal('hide');
-			        // 배송지 변경 모달창 닫기 버튼 클릭 
-			        $("#deliveryChangeModalClose").click();
-			        // 기존 배송지란에 있던 내용 지우기
-			        $('#deliveryContainer').html('');
-			        
-					let output = '<div class="col">'
-						+ '<div class="row-12">'
-						+ '<span class="fs-6 fw-bold">' + delivery.delivery_reciever + '</span>&nbsp;';
-					// 기본 배송지일 경우 기본배송지 뱃지 표시
-					if (delivery.delivery_default == 1) {
-						output += '<span class=" badge bg-danger text-white">기본</span>';
-					}
-					output += '</div>'
-						+ '<div class="row-12">'
-						+ '<span class="fs-6">[' + delivery.delivery_zipcode + ']</span>&nbsp;'
-						+ '<span class="fs-6">' + delivery.delivery_add + '</span>&nbsp;';
-					// 상세주소 있을 경우 출력 
-					if (delivery.delivery_detailadd) {
-						output += '<span class="fs-6">' + delivery.delivery_detailadd + '</span>';
-					}
-					output += '</div>'
-						+ '<div class="row-12">'
-						+ '<span class="fs-6">' + delivery.delivery_phone + '</span>'
-						+ '</div></div>'
-						+ '<div class="col-lg-2 col-sm-12 d-flex justify-content-center align-self-center">'
-						+ '<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryChangeModal">변경</button>'
-						+ '</div>';
-						
-			        // 배송지란에 변경된 배송지 출력
-			        $('#deliveryContainer').html(output);			     	
-					
-				} else {
-					console.log("배송지 등록 실패!");
-				}
-			},
-			error: function (xhr, status, error) {
-				console.error("오류 발생!" , error);
-			}
-		});
-		
-			
-	});
-
-	
-	// 리워드 변경 요청 ajax
-	$(document).ready(function() {
-		// 리워드 변경 모달창
-		// 리워드 변경 버튼 클릭시 라디오박스에 해당하는 리워드 번호 전달하는 ajax
-		$("#rewardChange").on("click", function()  {
-			// 체크된 라디오 박스
-			let checkedRadio = $('input[name="rewardCheck"]:checked');
-			
-			// 체크된 라디오 버튼 있는지 확인
-			if(checkedRadio.length > 0) {
-				// 선택한 라디오 버튼의 상위 row 요소 선택
-				let rewardRow = checkedRadio.closest('.row');
-				// 리워드 번호 가져오기
-				let reward_idx = rewardRow.find('input[type="hidden"]').val();
-				
-				// ajax 요청 컨트롤러 전달
-				$.ajax({
-					type: "POST",
-					url: "rewardChange",
-					data: {reward_idx: reward_idx},
-					success: function(reward) {
-						// 전달받은 RewardVO 출력
-						console.log(reward);
-						// 리워드 변경 모달창 닫기
-						$("#rewardListModalClose").click();
-						// 기존 HTML 지우기
-						$('#rewardContainer').html('');
-						$('#rewardPrice').html('');
-						$('#rewardDeliveryPrice').html('');
-						
-						
-						
-						// HTML 출력할 내용
-						// hidden 값으로 리워드번호 전달
-						let output = '<input type="hidden" value="' + reward.reward_idx + '"name="reward_idx">'
-						            + '<table class="table table-borderless" style="table-layout: fixed">'
-						            +  '<tr>'
-						            +   '<th>리워드 구성</th>'   
-						            +   '<td>'
-						            +     reward.reward_name + '<br>'
-						            +     reward.reward_option
-						            +   '</td>'
-						            +  '</tr>' 
-						            +  '<tr>'
-						            +   '<th>리워드 금액</th>'
-						            +   '<td>' + reward.reward_price + '원</td>'
-						            +  '</tr>'
-						            +  '<tr>'
-						            +   '<th>배송비</th>'
-						            +   '<td>' + reward.delivery_price + '원</td>'
-						            +  '</tr>'
-						            +  '<tr>'
-						            +   '<th>발송 시작일</th>'
-						            +   '<td>' + reward.delivery_date + '</td>'
-						            +  '</tr>'
-						            + '</table>';			
-						let output2 = '<span class="fs-6 fw-bold">' + reward.reward_price + '원</span>';
-						let output3 = '<span class="fs-6 fw-bold">' + reward.delivery_price + '원</span>';
-			            // 출력하기
-			            $('#rewardContainer').html(output);
-			            $('#rewardPrice').html(output2);
-			            $('#rewardDeliveryPrice').html(output3);
-						
-					},
-					error: function(xhr, status, error) {
-						 console.error("Error:", error);
-					}
-					
-				});
-				
-			} else {
-				alert("리워드를 선택하세요");
-			}
-		});
-		// 리워드 변경 모달창 끝
-		// 배송지 목록을 가져오는 ajax 요청
-	    $('#deliveryChangeModal').on('show.bs.modal', function(event) {
-	        var modal = $(this);
-	        $.ajax({
-	            type: "GET",
-	            url: "getDeliveryList",
-	            dataType: "json",
-	            success: function(data) {
-					console.log(data);
-					var deliveryListElem = $('#deliveryList');
-					deliveryListElem.empty(); // 배송지 목록 삭제
-					if (data.length > 0) {
-						// 반복문을 사용하여 각 데이터를 배송지 목록에 추가
-						data.forEach(function(delivery) {
-							var html = '';
-							
-							html += '<div class="row border">';
-							html += '<div class="form-check col-1 d-flex justify-content-center align-self-center">';
-							html += '<input class="form-check-input radio-input" type="radio" name="deliveryGroup" value="'+ delivery.delivery_idx + '">';
-							html += '</div>';
-							html += '<div class="col text-start">';
-							html += '<span class="fs-6 fw-bold">' + delivery.delivery_reciever + '</span>';
-							// 기본 배송지 있을 경우 기본 뱃지 표시 
-						    if (delivery.delivery_default == 1) {
-						        html += '&nbsp;<span class="badge bg-danger text-white">기본</span>';
-						    }
-							
-							html += '<br>';
-							html += '<span class="fs-6">' + delivery.delivery_phone + '</span>';
-							html += '<br>';
-							html += '<span class="fs-6t">[' + delivery.delivery_zipcode + ']' 
-								+ delivery.delivery_add + '&nbsp;&nbsp;' + delivery.delivery_detailadd + '</span>' ;
-							html += '</div>';
-							html += '</div>';
-							deliveryListElem.append(html);
-						});
-					}
-	            	
-	            },
-	            error: function(xhr, status, error) {
-	                console.log(error);
-	            }
-	        });
-	    });
-	    
-	    // 배송지 추가 모달 열릴때 배송지 변경 모달 닫힘
-	    $("#deliveryAddModal").on("show.bs.modal", function() {
-	    	$("#deliveryChangeModalClose").click();
-	    });
-	    
-	});	
-	
-	$(document).ready(function() {
-		// 열기 버튼 클릭시 후원 유의사항 출력
-		$("#notesOpen").on("click", function() {
-			// 열기 버튼 숨김
-			$('#notesOpen').hide();
-			// notesContainer
-			// 후원 유의사항
-			let output = '<p>'
-				+ '펀딩은 일반 쇼핑과 달리 메이커에게 투자하고, 투자의 보상으로 제품이나 서비스를 받는 구조입니다.<br>'
-				+ '따라서 단숨 변심으로 인한 환불은 신청하실 수 없습니다.'
-				+ '</p>';
-			$('#notesContainer').html(output);
-			
-			// 닫기 버튼 보임
-			$('#notesClose').show();
-		});
-		// 닫기 버튼 클릭시 후원 유의사항 지우기
-		$("#notesClose").on("click", function() {
-			// 열기 버튼 숨김
-			$('#notesClose').hide();
-			// notesContainer
-			$('#notesContainer').html('');
-			
-			// 닫기 버튼 보임
-			$('#notesOpen').show();
-		});
-		
-	});
-	
-	
-
-	
-	
-	
-</script>
 
 </head>
 <body>
@@ -500,28 +164,64 @@
 						<div class="col-8">
 							<!-- 드롭다운으로 가지고있는 쿠폰 선택 -->
 							<div class="row">
-								<div class="dropdown">
-									<button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-										쿠폰을 선택해주세요.
-									</button>
-									${couponList }
-									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">쿠폰1</a></li>
-										<li><a class="dropdown-item" href="#">쿠폰2</a></li>
-										<li><a class="dropdown-item" href="#">쿠폰3</a></li>
-									</ul>
-								</div>
+								<!-- 쿠폰이 없을 경우 -->
+								<!-- 보유한 쿠폰 중 사용 가능한 쿠폰 목록만 출력 -->
+								<select class="form-select" id="couponSelect" onchange="updateCouponSale()">
+									<option value="">쿠폰을 선택해주세요.</option>
+									<c:choose>
+										<c:when test="${empty couponList }">
+											<option class="fs-6 text-muted" disabled>보유하신 쿠폰이 없습니다</option>
+										</c:when>
+										<c:when test="${not empty couponList }">
+											<c:forEach var="coupon" items="${couponList }">
+												<option value="${coupon.coupon_sale }">${coupon.coupon_name }</option>
+											</c:forEach>
+										</c:when>
+									</c:choose>
+								</select>							
+							
+							
 							</div>
 							<!-- 쿠폰 선택시 할인금액 출력 -->
 							<div class="row p-2">
-								<span class="fs-6 fw-bold">10,000원 할인</span>			
+								<span class="fs-6 fw-bold" id="couponSale"></span>			
 							</div>
 						</div>
 					</div>
 				</div>
-				<!--쿠폰 끝-->          
+				<!-- 쿠폰 끝 -->       
+				<!-- 추가 후원금 -->
+				<div class="row">
+					<span class="fs-4 fw-bold">추가 후원금</span>
+					<div class="row m-2 p-2 border">
+						<div class="row">
+							<!-- ${addDonationAmount } -->
+							<div class="col">
+								<input class="form-control" type="text" id="addDonationAmountInput" placeholder="숫자만 입력">
+							</div>
+							<div class="col-4">
+								<span class="fs-6 fw-bold">원</span>
+							</div>
+						</div>
+						<div class="row p-2">
+							<span class="fs-6 text-muted">후원을 더 많이 해주시면 프로젝트가 더 빨리 성공적으로 완료될 수 있습니다.</span>			
+						</div>
+					</div>
+				</div>
+				<!-- 추가 후원금 끝-->   
+				<!-- 결제 수단 선택 -->
+				<div class="row">
+					<span class="fs-4 fw-bold">결제 수단</span>
+					<div class="row m-2 p-2 border">
+						<div class="row">
+							
+							<input class="btn btn-primary" type="button" value="계좌인증" id="btnAccountAuth">
+						</div>
+					</div>
+				</div>
+				<!-- 결제 수단 선택 끝-->   
 			</div>
-			<!--왼쪽 영역 끝-->
+			<!-- 왼쪽 영역 끝 -->
 			<!-- 결제 확인 영역-->
 			<div class="col-lg-6 col-md-12 p-4">
 				<!-- 후원 금액 -->
@@ -530,7 +230,7 @@
 						<span class="fs-4 fw-bold text-primary">최종 후원 금액</span>
 					</div>
 					<div class="col-4 text-end">
-						<span class="fs-4 fw-bold">xxxx원</span>
+						<span class="fs-4 fw-bold" id="totalPrice">${reward.reward_price + reward.delivery_price}</span><span class="fs-6 fw-bold">원</span>
 					</div>
 				</div>
 				<!-- 최종금액 외 금액들 -->
@@ -538,26 +238,26 @@
 						<div class="col-6 text-start">
 							<span class="fs-6 fw-bold">리워드 금액</span>
 						</div>
-						<div class="col-6 text-end" id="rewardPrice">
-							<span class="fs-6 fw-bold">${reward.reward_price }원</span>
+						<div class="col-6 text-end">
+							<span class="fs-6 fw-bold" id="rewardPrice">${reward.reward_price }</span><span class="fs-6 fw-bold">원</span>
 						</div>
 						<div class="col-6 text-start">
 							<span class="fs-6 fw-bold">배송비</span>
 						</div>
-						<div class="col-6 text-end" id="rewardDeliveryPrice">
-							<span class="fs-6 fw-bold">${reward.delivery_price }원</span>
-						</div>
-						<div class="col-6 text-start">
-							<span class="fs-6 fw-bold">추가 후원 금액</span>
-						</div>
 						<div class="col-6 text-end">
-							<span class="fs-6 fw-bold">${addDonationAmount }원</span>
+							<span class="fs-6 fw-bold" id="rewardDeliveryPrice">${reward.delivery_price }</span><span class="fs-6 fw-bold">원</span>
 						</div>
 						<div class="col-6 text-start">
 							<span class="fs-6 fw-bold">쿠폰 사용</span>
 						</div>
 						<div class="col-6 text-end">
-							<span class="fs-6 fw-bold">-xxxx원</span>
+							<span class="fs-6 fw-bold" id="minus"></span><span class="fs-6 fw-bold" id="couponPrice">0</span><span class="fs-6 fw-bold">원</span>
+						</div>
+						<div class="col-6 text-start">
+							<span class="fs-6 fw-bold">추가 후원 금액</span>
+						</div>
+						<div class="col-6 text-end">
+							<span class="fs-6 fw-bold" id="addDonationAmount">0</span><span class="fs-6 fw-bold">원</span>
 						</div>
 				</div>
 				<!-- 후원 금액 끝-->
@@ -681,52 +381,52 @@
 					<h5 class="modal-title">배송지 추가</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deliveryAddModalClose"></button>
 				</div>
-				<div class="modal-body">
-					<!-- 배송지 추가 작업 요청 -->
-					<form action="deliveryAdd" method="post">
-						<div class="container text-start">
-							<div class="row p-1">
-								<span class="fs-5 fw-bold">받는 사람</span>
-								<input type="text" class="form-control"  name="delivery_reciever">
-							</div>
-							<div class="row p-1">
-								<span class="fs-5 fw-bold">받는 사람 연락처</span>
-								<input type="text" class="form-control"  name="delivery_phone">
-							</div>
-							<div class="row p-1">
-								<div class="col">
-									<span class="fs-5 fw-bold text-start">주소</span>
-									&nbsp;&nbsp;
-									<button type="button" class="btn btn-primary " onclick="findPostcode(wrap)">찾기</button>
+				<form action="deliveryAdd" method="post">
+					<div class="modal-body">
+						<!-- 배송지 추가 작업 요청 -->
+							<div class="container text-start">
+								<div class="row p-1">
+									<span class="fs-5 fw-bold">받는 사람</span>
+									<input type="text" class="form-control" name="delivery_reciever" pattern="[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]+" placeholder="한글 또는 영어만 입력 가능" required>
+								</div>
+								<div class="row p-1">
+									<span class="fs-5 fw-bold">받는 사람 연락처</span>
+									<input type="text" class="form-control delivery_phone" name="delivery_phone" placeholder="하이픈('-')제외 숫자만 입력" maxlength="13" required>
+								</div>
+								<div class="row p-1">
+									<div class="col">
+										<span class="fs-5 fw-bold text-start">주소</span>
+										&nbsp;&nbsp;
+										<button type="button" class="btn btn-primary " onclick="findPostcode(wrap)">찾기</button>
+									</div>
+								</div>
+								<div class="row p-2">
+									<span class="fs-6">우편번호</span>
+									<input type="text" class="form-control" id="postcode" name="delivery_zipcode" placeholder="우편번호" onfocus="findPostcode(wrap)" required>
+									<span class="fs-6">도로명 주소</span>
+									<input type="text" class="form-control" id="address"  name="delivery_add" placeholder="주소" onfocus="findPostcode(wrap)" required><br>
+									<span class="fs-6">상세주소</span>
+									<input type="text" class="form-control" id="detailAddress" name="delivery_detailadd" placeholder="상세주소">
+									<span class="fs-6">참고항목</span>
+									<input type="text" class="form-control" id="extraAddress" placeholder="참고항목">
+									<!-- 주소찾기 영역 -->
+									<div id="wrap" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
+										<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+									</div>							
+									<!-- 주소찾기 영역 끝 -->
+								
+									<div class="form-check text-start ms-3 mt-2"> 
+										<input class="form-check-input text-start" type="checkbox" value="1" name="delivery_default" id="deliveryDefaultCheck">
+										<label class="form-check-label" for="deliveryDefaultCheck"><span class="fs-6">기본 배송지 설정</span></label>
+									</div>
 								</div>
 							</div>
-							<div class="row p-2">
-								<span class="fs-6">우편번호</span>
-								<input type="text" class="form-control" id="postcode" name="delivery_zipcode" placeholder="우편번호">
-								<span class="fs-6">도로명 주소</span>
-								<input type="text" class="form-control" id="address"  name="delivery_add" placeholder="주소"><br>
-								<span class="fs-6">상세주소</span>
-								<input type="text" class="form-control" id="detailAddress" name="delivery_detailadd" placeholder="상세주소">
-								<span class="fs-6">참고항목</span>
-								<input type="text" class="form-control" id="extraAddress" placeholder="참고항목">
-								<!-- 주소찾기 영역 -->
-								<div id="wrap" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
-									<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
-								</div>							
-								<!-- 주소찾기 영역 끝 -->
-							
-								<div class="form-check text-start ms-3 mt-2"> 
-									<input class="form-check-input text-start" type="checkbox" value="1" name="delivery_default" id="deliveryDefaultCheck">
-									<label class="form-check-label" for="deliveryDefaultCheck">기본 배송지 설정</label>
-								</div>
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary" id="deliveryAdd">추가</button>
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="deliveryAddModalClose">닫기</button>
-				</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary" id="deliveryAdd">추가</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="deliveryAddModalClose">닫기</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>	
@@ -737,50 +437,50 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header d-flex justify-content-center">
-					<h5 class="modal-title">배송지 등록</h5>
+					<h5 class="modal-title">배송지 신규 등록</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="deliveryAddModalClose"></button>
 				</div>
-				<div class="modal-body">
-					<!-- 배송지 등록 작업 요청 -->
-					<form action="deliveryNewAdd" method="post">
-						<div class="container text-start">
-							<div class="row p-1">
-								<span class="fs-5 fw-bold">받는 사람</span>
-								<input type="text" class="form-control"  name="delivery_reciever">
-							</div>
-							<div class="row p-1">
-								<span class="fs-5 fw-bold">받는 사람 연락처</span>
-								<input type="text" class="form-control"  name="delivery_phone">
-							</div>
-							<div class="row p-1">
-								<div class="col">
-									<span class="fs-5 fw-bold text-start">주소</span>
-									&nbsp;&nbsp;
-									<button type="button" class="btn btn-primary " onclick="findPostcode(wrap2)">찾기</button>
+				<form action="deliveryNewAdd" method="post">
+					<div class="modal-body">
+						<!-- 배송지 등록 작업 요청 -->
+							<div class="container text-start">
+								<div class="row p-1">
+									<span class="fs-5 fw-bold">받는 사람</span>
+									<input type="text" class="form-control" name="delivery_reciever" pattern="[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]+" placeholder="한글 또는 영어만 입력 가능" required>
+								</div>
+								<div class="row p-1">
+									<span class="fs-5 fw-bold">받는 사람 연락처</span>
+									<input type="text" class="form-control delivery_phone" name="delivery_phone" placeholder="하이픈('-')제외 숫자만 입력" maxlength="13" required>
+								</div>
+								<div class="row p-1">
+									<div class="col">
+										<span class="fs-5 fw-bold text-start">주소</span>
+										&nbsp;&nbsp;
+										<button type="button" class="btn btn-primary " onclick="findPostcode(wrap2)">찾기</button>
+									</div>
+								</div>
+								<div class="row p-2">
+									<span class="fs-6">우편번호</span>
+									<input type="text" class="form-control" id="postcode2" name="delivery_zipcode" placeholder="우편번호" onfocus="findPostcode(wrap2)" required>
+									<span class="fs-6">도로명 주소</span>
+									<input type="text" class="form-control" id="address2"  name="delivery_add" placeholder="주소" onfocus="findPostcode(wrap2)" required><br>
+									<span class="fs-6">상세주소</span>
+									<input type="text" class="form-control" id="detailAddress2" name="delivery_detailadd" placeholder="상세주소">
+									<span class="fs-6">참고항목</span>
+									<input type="text" class="form-control" id="extraAddress2" placeholder="참고항목">
+									<!-- 주소찾기 영역 -->
+									<div id="wrap2" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
+										<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
+									</div>							
+									<!-- 주소찾기 영역 끝 -->
 								</div>
 							</div>
-							<div class="row p-2">
-								<span class="fs-6">우편번호</span>
-								<input type="text" class="form-control" id="postcode2" name="delivery_zipcode" placeholder="우편번호">
-								<span class="fs-6">도로명 주소</span>
-								<input type="text" class="form-control" id="address2"  name="delivery_add" placeholder="주소"><br>
-								<span class="fs-6">상세주소</span>
-								<input type="text" class="form-control" id="detailAddress2" name="delivery_detailadd" placeholder="상세주소">
-								<span class="fs-6">참고항목</span>
-								<input type="text" class="form-control" id="extraAddress2" placeholder="참고항목">
-								<!-- 주소찾기 영역 -->
-								<div id="wrap2" style="display:none;border:1px solid;width:500px;height:300px;margin:5px 0;position:relative">
-									<img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnFoldWrap" style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" onclick="foldDaumPostcode()" alt="접기 버튼">
-								</div>							
-								<!-- 주소찾기 영역 끝 -->
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary" id="deliveryNewAdd">등록</button>
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="deliveryNewAddModalClose">닫기</button>
-				</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">등록</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="deliveryNewAddModalClose">닫기</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>	
@@ -908,7 +608,7 @@
 					<div class="container text-center">
 						<div class="row mb-2">
 							<div class="col">
-								<span class="fs-6">개의 배송지가 있습니다</span>
+								<span class="fs-6 fw-bold" id="deliveryCount"></span>
 							</div>
 							<div class="col text-end">
 								<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deliveryAddModal">추가</button>

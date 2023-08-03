@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.test.mapper.PaymentMapper;
+import com.itwillbs.test.vo.DeliveryVO;
 import com.itwillbs.test.vo.PaymentVO;
 import com.itwillbs.test.vo.ProjectVO;
 
@@ -104,9 +105,23 @@ public class PaymentService {
 	}
 	
 	// 메이커의 프로젝트별 결제 내역 조회
-	public List<ProjectVO> getPaymentByProjectIdx(int maker_idx, int project_idx) {
-		return mapper.selectPaymentByProjectIdx(maker_idx, project_idx);
+	public List<ProjectVO> getPaymentByProjectIdx(int maker_idx, int project_idx, LocalDate parsedStartDate, LocalDate parsedEndDate, int startRow, int listLimit) {
+		return mapper.selectPaymentByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate, startRow, listLimit);
 	}
 	
+	// 갯수 조회
+	public int getTotalCountByProjectIdx(int maker_idx, int project_idx, LocalDate parsedStartDate, LocalDate parsedEndDate) {
+		return mapper.selectTotalCountByProjectIdx(maker_idx, project_idx, parsedStartDate, parsedEndDate);
+	}
+	
+	// 리워드 조회
+	public List<PaymentVO> getRemainingQuantities(int project_idx) {
+		return mapper.selectRemainingQuantities(project_idx);
+	}
+	
+	// 결제내역 조회
+	public PaymentVO getPaymentDetail(int payment_idx) {
+		return mapper.selectPaymentDetail(payment_idx);
+	}
 	
 }

@@ -37,7 +37,7 @@ public interface ProjectMapper {
 	String selectRewardAuthorId(@Param("reward_idx") Integer reward_idx, @Param("sId") String sId);
 	
 	// 메이커 등록 페이지 접속 시
-	int selectMemberIdx(String sId);
+	Integer selectMemberIdx(String sId);
 
 	// 프로젝트 등록하기
 	int insertProject(ProjectVO project);
@@ -90,13 +90,37 @@ public interface ProjectMapper {
 	// 펀딩 프로젝트 탐색
 	List<ProjectVO> getProjectList(String searchType, String searchKeyword, int startRow, int listLimit);
 	
-	//-----main page---------
+	// 승인완료 된 프로젝트 리스트 조회
+	List<ProjectVO> selectApprovedProjects();
+	
+	// 프로젝트 승인 처리 시간 저장
+	int updateProjectApprovalRequestTime(ProjectVO project);
+	
+	// 전체 프로젝트 리스트 조회
+	List<ProjectVO> selectAllProject(
+			@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType,  
+			@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+	
+	// 전체 프로젝트 갯수 조회
+	int selectAllProjectCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType);		
+	
+	// 프로젝트 리스트 조회 
+	List<ProjectVO> selectAllProjectByMakerIdx(int maker_idx);
+			
+	
+	
+	
+	
+		//-----main page---------
 		// show all project
 		List<ProjectVO> getAllProjects();
-
+		
 		//ranking system
 		List<ProjectVO> selectTop10ProjectsByEndDate();
-
+		
+		
+		
+		
 		
 			
 

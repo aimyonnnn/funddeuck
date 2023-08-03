@@ -140,7 +140,6 @@
                 <p class="subheading" for="maker_img">메이커 이미지&로고</p>
                 <p class="sideDescription">
                   · 3MB 이하의 JPG, JPEG, PNG 파일<br>
-                  · 텍스트나 로고는 넣을 수 없어요.
                 </p>
                 <!-- maker_img, maker_logo -->
                 <input type="file" name="file4" class="mb-2"><br>

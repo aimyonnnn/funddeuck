@@ -5,33 +5,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<!-- bootstrap -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <!-- jQuery -->
-	<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
-    <!-- CSS -->
-    <link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
-    <style>
-	    table {
-	        width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
-	        table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
-	    }
-	    th, td {
-	        width: 10%; /* 각 셀의 너비를 20%로 설정 */
-	    }
-		.hover-effect:hover {
-		 	text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */
-		}
-	</style>
+<meta charset="UTF-8">
+<!-- bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<!-- jㅂuery -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
+<!-- css -->
+<link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
+<style>
+table {
+    width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
+    table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
+}
+th, td {
+    width: 10%; /* 각 셀의 너비를 20%로 설정 */
+}
+.hover-effect:hover {
+ 	text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */
+}
+</style>
 </head>
 <body>
-	<jsp:include page="../common/admin_top.jsp"/>
-	<!-- pageNum 파라미터 가져와서 저장(기본값 1로 지정함) -->
-	<c:set var="pageNum" value="1"/>
-	<c:if test="${not empty param.pageNum }">
-		<c:set var="pageNum" value="${param.pageNum }" />
-	</c:if>
+<jsp:include page="../common/admin_top.jsp"/>
+<c:set var="pageNum" value="1"/>
+<c:if test="${not empty param.pageNum }">
+	<c:set var="pageNum" value="${param.pageNum }" />
+</c:if>
+<div class="container">
+	<h2 class="fst-italic fw-bold mt-5">보낸 메세지함</h2>
+</div>
 	
 	<div class="container my-5">
 		<!-- 검색 버튼 -->

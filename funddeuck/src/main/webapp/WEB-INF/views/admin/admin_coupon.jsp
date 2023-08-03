@@ -17,12 +17,26 @@
     }
      /* 만료된 쿠폰 행만 표시하기 */
     .coupon-row {
-        display: none;
-    }
-
-    /* 만료되지 않은 쿠폰 행만 표시하기 */
-    .expired-coupon {
         display: table-row;
+    }
+    
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+    
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold; 
+    }
+    
+    p input {
+        margin-bottom: 10px;
     }
 </style>
 <body>
@@ -48,15 +62,17 @@
                             <p>
                                 쿠폰 이름 : <input type="text" name="coupon_name" placeholder="쿠폰 이름을 입력하세요." style="width: 300px"><br>
                                 쿠폰 용도 : <input type="text" name="coupon_text" placeholder="쿠폰 용도를 입력하세요." style="width: 300px"><br>
-                                쿠폰 번호 : <button type="button" onclick="generateCouponNumber()">번호 생성</button><span id="couponNumber"></span><br>
+                                쿠폰 번호 : <button type="button" class="btn btn-primary" onclick="generateCouponNumber()">번호 생성</button><span id="couponNumber"></span><br>
                                 쿠폰 할인 : <input type="text" name="coupon_sale" placeholder="할인률을 입력하세요." style="width: 300px"> %<br>
                                 쿠폰 시작 : <input type="text" name="coupon_start" id="coupon_start" placeholder="시작 날짜를 선택하세요." style="width: 300px"><br>
                                 쿠폰 만료 : <input type="text" name="coupon_end" id="coupon_end" placeholder="만료 날짜를 선택하세요." style="width: 300px">
                             </p>
-                            <button type="button" onclick="registerCoupon()">등록</button>
+                    		<input type="hidden" name="member_idx" value="${sessionScope.sIdx}" />
+							<button type="button" class="btn btn-primary" onclick="registerCoupon()">새로운 쿠폰 발행</button>
                         </form>
                         <br>
                         <h5><b>등록된 쿠폰 목록</b></h5>
+                        <br>
 						<table id="couponListTable">
 						    <tr>
 						        <th>쿠폰 이름</th>
@@ -81,7 +97,9 @@
                     <br>
                 </div>
                 <div id="couponControll">
+					<input type="hidden" name="member_idx" value="${sessionScope.sId}" />
 				    <h5><b>사용 기간 만료된 쿠폰목록</b></h5>
+    				<button type="button" class="btn btn-primary" onclick="processExpiredCoupons()">쿠폰 만료 처리</button>
 				    <br>
 				    <table id="expiredCouponListTable">
 				            <tr class="expired-coupon">
@@ -99,10 +117,14 @@
 						            <td>${coupon.coupon_num}</td>
 									<td>${coupon.coupon_sale}%</td>
 						            <td>${coupon.coupon_start}</td>
-						            <td>${coupon.coupon_end}</td>
+						            <td style="background-color: yellow; font-weight: bold;">${coupon.coupon_end}</td>
 						        </tr>
 						    </c:forEach>
 						</table>
+						    <!-- 쿠폰 목록이 없을 때 메시지 출력 -->
+						    <c:if test="${empty couponList}">
+						        <p>발행된 쿠폰이 없습니다.</p>
+						    </c:if>
 				</div>
             </div>
         </div>
@@ -138,7 +160,8 @@
         }
 
         function registerCoupon() {
-            // 쿠폰 정보 수집
+            // 쿠폰 정보 수집            
+            var couponIdx = $('input[name="member_idx"]').val();
             var couponName = $('input[name="coupon_name"]').val();
             var couponText = $('input[name="coupon_text"]').val();
             var couponNum = parseInt($("#couponNumber").text());
@@ -147,6 +170,7 @@
             var couponEnd = $('input[name="coupon_end"]').val();
 
             var couponData = {
+            	member_idx: couponIdx,
                 coupon_name: couponName,
                 coupon_text: couponText,
                 coupon_num: couponNum,
@@ -188,31 +212,54 @@
         });
     });
 	</script>
+	
 	<script>
-	    $(document).ready(function() {
-	        // 주어진 날짜가 지난 날짜인지 확인하는 함수
-	        function isDateInPast(dateStr) {
-	            var currentDate = new Date();
-	            var couponDate = new Date(dateStr);
-	            return couponDate < currentDate;
-	        }
+	var addedCouponNumbers = new Set();
 	
-	        // 만료된 쿠폰을 필터링하고 표시하는 함수
-	        function showExpiredCoupons() {
-	            $(".coupon-row").each(function() {
-	                var couponEndDate = $(this).find("td:last-child").text(); // 해당 행의 마지막 <td> 요소 값을 가져옴 ('coupon_end' 날짜)
-	                if (isDateInPast(couponEndDate)) {
-	                    $(this).addClass("expired-coupon");
-	                } else {
-	                    $(this).removeClass("expired-coupon");
+	function processExpiredCoupons() {
+	    $.ajax({
+	        type: 'POST',
+	        url: '${pageContext.request.contextPath}/admin/processExpiredCoupons',
+	        success: function (data) {
+	            if (data.length === 0) {
+	                alert("더이상 만료 처리할 쿠폰이 없습니다.");
+	            } else {
+	                var tableBody = $("#expiredCouponListTable tbody");
+	                var hasAddedRows = false; 
+	                $(".coupon-row").hide();
+	
+	                $.each(data, function (index, coupon) {
+	                    if (coupon.coupon_use === 1 && !addedCouponNumbers.has(coupon.coupon_num)) {
+	                        var newRow = '<tr class="coupon-row">' +
+	                            '<td>' + coupon.coupon_name + '</td>' +
+	                            '<td>' + coupon.coupon_text + '</td>' +
+	                            '<td>' + coupon.coupon_num + '</td>' +
+	                            '<td>' + coupon.coupon_sale + '%</td>' +
+	                            '<td>' + coupon.coupon_start + '</td>' +
+	                            '<td style="background-color: yellow; font-weight: bold;">' + coupon.coupon_end + '</td>' +
+	                            '</tr>';
+	                        tableBody.append(newRow);
+	
+	                        addedCouponNumbers.add(coupon.coupon_num);
+	                        hasAddedRows = true;
+	                    }
+	                });
+	
+	                if (!hasAddedRows) {
+	                    tableBody.append('<tr><td colspan="6">처리할 쿠폰이 없습니다.</td></tr>');
 	                }
-	            });
-	        }
 	
-	        // 페이지 로드 시 만료된 쿠폰을 표시합니다.
-	        showExpiredCoupons();
+	                alert("만료된 쿠폰을 처리했습니다.");
+	            }
+	        },
+	        error: function (error) {
+	            console.error(error);
+	            alert('쿠폰 처리 실패: ' + error.message);
+	        }
 	    });
+	}
 	</script>
+
 
 
     <%@ include file="../Footer.jsp" %>

@@ -1,5 +1,6 @@
 package com.itwillbs.test.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,23 +11,42 @@ import com.itwillbs.test.vo.CouponVO;
 
 @Service
 public class CouponService {
-
-    @Autowired
+	
+	@Autowired
     private CouponMapper couponMapper;
 
-    public List<CouponVO> getCouponsByNumAndUse(String couponNum, int couponUse) {
-        return couponMapper.getCouponsByNumAndUse(couponNum, couponUse);
+    public void registerCoupon(CouponVO couponVO) {
+        couponMapper.insertCoupon(couponVO);
+    }
+    
+    public List<CouponVO> getCouponList() {
+        return couponMapper.getCouponList();
     }
 
-    public List<CouponVO> getUsedCoupons() {
-        return couponMapper.getCouponsByUse(1);
+    public List<CouponVO> getExpiredCoupons() {
+        return couponMapper.getExpiredCoupons();
     }
 
-	public void saveCoupon(CouponVO couponVO) {
-		couponMapper.saveCoupon(couponVO);
-	}
+    public void updateCoupon(CouponVO couponVO) {
+        couponMapper.updateCoupon(couponVO);
+    }
+
+    public List<CouponVO> getExpiredCoupons(LocalDateTime now) {
+        return couponMapper.getExpiredCoupons(now);
+    }
+
+    //-----------------------------------------------------------------------------------------
+    
+	public CouponVO getCouponInfoByNumber(String couponNumber) {
+        return couponMapper.getCouponInfoByNumber(couponNumber);
+	} 
 	
-    public List<CouponVO> getAllCoupons() {
-        return couponMapper.getAllCoupons();
+	public List<CouponVO> getCouponsByMemberAndStatus(int memberIdx, int couponUse) {
+	    return couponMapper.getCouponsByMemberAndStatus(memberIdx, couponUse);
+	}
+
+    public List<CouponVO> getUsedCoupons(int memberIdx) {
+        return couponMapper.getUsedCoupons(memberIdx);
     }
+
 }

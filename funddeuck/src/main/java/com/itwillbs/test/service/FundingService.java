@@ -17,23 +17,22 @@ public class FundingService {
 	public int registDelivery(DeliveryVO delivery) {
 		return mapper.insertDelivery(delivery);
 	}
+	
 	// 배송지 목록 조회
 	public List<DeliveryVO> getDeliveryList(String id) {
 		return mapper.selectDeliveryList(id);
 	}
+	
 	// 기본 배송지 조회
 	public DeliveryVO getDeliveryDefault(String id) {
 		return mapper.selectDeliveryDefault(id);
 	}
+	
 	// 선택한 배송지 조회
 	public DeliveryVO getDeliveryInfo(String id, int changeDelivery_idx) {
 		return mapper.selectDelivery(id, changeDelivery_idx);
 	}
-	// 쿠폰 목록 조회 
-	// 회원 id 추가 해야함
-	public List<CouponVO> getCouponList() {
-		return mapper.selectCouponList();
-	}
+	
 	
 	// 기존의 기본 배송지 설정 변경
 	public void modifyDeliveryDefault() {
@@ -61,4 +60,13 @@ public class FundingService {
 		return mapper.requestMemberCancellcation(cancel_idx, context, saveFileName);
 	}
 	
+	// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보
+	public ProjectVO selectProjectInfo(int project_idx) {
+		return mapper.selectProjectInfo(project_idx);
+	}
+
+	// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
+	public List<RewardVO> selectProjectRewardInfo(int project_idx) {
+		return mapper.selectProjectRewardInfo(project_idx);
+	}
 }

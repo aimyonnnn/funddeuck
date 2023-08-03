@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,14 +11,16 @@
 <title>펀딩</title>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-<%-- <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/> --%>
 <!-- header include -->
-<jsp:include page="../common/main_header.jsp"></jsp:include>
+<jsp:include page="../Header.jsp"></jsp:include>
 <!-- 결제 연동 스크립트 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<%-- <script src="${pageContext.request.contextPath }/resources/js/payment.js"></script> --%>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/funding_detail.css">
+<!-- 카카오 공유하기 스크립트 -->
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<!-- 공용 css -->
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 </head>
 <body>
 	<br>
@@ -29,10 +30,10 @@
 	<div class="container text-center">
 		<!-- 해시태그 -->
 		<div class="col">
-			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="#" role="button">아트북</a>
+			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="#" role="button">${project.project_hashtag }</a>
 			<br><br>
 			<div class="col">
-				<p class="fs-2 fw-bolder">&lt;스파이더맨: 어크로스 더 유니버스&gt; 아트북+공식 굿즈</p>
+				<p class="fs-2 fw-bolder">${project.project_subject }</p>
 			</div>
 		</div>
 		<!-- 펀딩이름 -->
@@ -77,9 +78,9 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<span class="fs-2">2,259,000</span>&nbsp;
+						<span class="fs-2">${project.project_amount }</span>&nbsp;
 						<small>원</small>&nbsp;
-						<span class="fs-5 fw-bold">112%</span>
+						<span class="fs-5 fw-bold">${project.project_amount/project.project_target * 100 }%</span>
 					</div>
 				</div>
 				<br>
@@ -88,8 +89,18 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<span class="fs-2">24</span>&nbsp;
-				  		<small>일</small>&nbsp;&nbsp;
+						<c:choose>
+							<c:when test="${project.project_end_date < now() }">
+								<span class="fs-2">
+								<fmt:parseDate value="${project.project_end_date - now()}" var="dateValue" pattern="dd"/>
+								</span>&nbsp;
+					  			<small>일</small>&nbsp;&nbsp;
+							</c:when>
+							<c:otherwise>
+								<span class="fs-2">0</span>&nbsp;
+					  			<small>일</small>&nbsp;&nbsp;
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 				<br>
@@ -110,13 +121,14 @@
 					<tr>
 				 		<th><small>목표금액</small></th>
 				 		<td>&nbsp;&nbsp;&nbsp;</td>
-				    	<td><small>2,000,000원</small></td>
+				    	<td><small>${project.project_target }원</small></td>
 				 	</tr>
 				</table>
 				<div class="row">
 					<div class="col">
 						<div class="progress">
-							<div class="progress-bar bg-success" role="progressbar" aria-label="Example with label" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">112%</div>
+							<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Example with label" 
+							aria-valuenow="${project.project_amount/project.project_target * 100 }" aria-valuemin="0" aria-valuemax="100">${project.project_amount/project.project_target * 100 }%</div>
 						</div>
 					</div>
 				</div>
@@ -125,14 +137,30 @@
 				 	<tr>
 				   		<th><small>펀딩 기간</small></th>
 				   		<td>&nbsp;&nbsp;&nbsp;</td>
-				   		<td><small>2023.07.12~ 2023.08.17</small>
-				   		<span class="badge text-danger text-bg-danger bg-opacity-10">24일 남음</span>
+				   		<td><small>
+				   		<fmt:parseDate value="${project.project_start_date}" var="startDate" pattern="yyyy.MM.dd"/>
+				   		~
+				   		<fmt:parseDate value="${project.project_end_date}" var="endDate" pattern="yyyy.MM.dd"/>
+				   		</small>
+				   		<span class="badge text-danger text-bg-danger bg-opacity-10">
+				   			<c:choose>
+								<c:when test="${project.project_end_date < now() }">				
+									<fmt:parseDate value="${project.project_end_date - now()}" var="dateValue" pattern="dd"/>
+								</c:when>
+								<c:otherwise>
+								0
+								</c:otherwise>
+						</c:choose>
+				   		일 남음
+				   		</span>
 				   		</td>
 				 	</tr>
 				 	<tr>
 						<th><small>결제</small></th>
 						<td>&nbsp;&nbsp;&nbsp;</td>
-						<td><small>목표 금액 달성시 2023.07.xx일에 결제 진행</small></td>
+						<td><small>목표 금액 달성시 
+						<fmt:parseDate value="${project.project_end_date}" var="endDate" pattern="yyyy.MM.dd"/>
+						일에 결제 진행</small></td>
 				 	</tr>
 				</table>
 				<br>
@@ -143,7 +171,7 @@
 				<div class="row border border-warning bg-white d-lg-none fixed-bottom">
 					<div class="col-12 col-lg-auto d-flex justify-content-center">
 						<!-- 공유 -->
-						<button class="btn btn-primary me-2">
+						<button class="btn btn-primary me-2" id="btnKakao">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
 							  <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
 							</svg>
@@ -159,7 +187,7 @@
 <!-- 							  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/> -->
 <!-- 							</svg> -->
 						</button>
-						<button class="btn btn-primary me-2" onclick="request_pay()">이 프로젝트 후원하기</button>
+						<button class="btn btn-primary me-2" onclick="focusOnReward()">이 프로젝트 후원하기</button>
 					</div>
 				</div>
 				<!-- 공유, 좋아요, 후원하기 버튼 -->
@@ -167,7 +195,7 @@
 				<div class="row d-none d-lg-block">
 					<div class="col-12 col-lg-auto d-flex justify-content-center">
 						<!-- 공유 -->
-						<button class="btn btn-primary me-2 bg-white border border-secondary border-opacity-25 rounded-0">
+						<button class="btn btn-primary me-2 bg-white border border-secondary border-opacity-25 rounded-0" id="kakao-link-btn" onclick="javascript:kakaoShare()">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-share" viewBox="0 0 16 16">
 							  <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
 							</svg>
@@ -185,7 +213,7 @@
 <!-- 							</svg> -->
 							<small class="text-secondary"><br>343</small>
 						</button>
-						<button class="btn btn-primary me-8 bg-success" onclick="request_pay()"><span class="text-center text-white fw-bold">이 프로젝트 후원하기</span></button>
+						<button class="btn btn-primary me-8 bg-success" onclick="focusOnReward()"><span class="text-center text-white fw-bold">이 프로젝트 후원하기</span></button>
 					</div>
 				</div>
 				<!--공유, 좋아요, 후원하기 버튼 끝-->
@@ -208,15 +236,14 @@
 					</div>
 					<!-- 메이커명-->
 					<div class="col text-start p-2">
-						<span class="fs-5 fw-bold p-3">xxx메이커</span>
-						<span class="fs-6 text-muted">xx시간 전 로그인</span>
+						<span class="fs-5 fw-bold p-3">${project.project_representative_name }</span>
 					</div>
 				</div>
 				<!-- 팔로우, 1:1문의 버튼-->
 				<div class="row">
 					<div class="col d-flex justify-content-center">
-						<button class="btn btn-primary me-2">팔로우</button>
-						<button class="btn btn-primary me-2">1:1문의</button>
+						<button class="btn btn-primary me-2" onclick="#">팔로우</button>
+						<button class="btn btn-primary me-2" onclick="#">1:1문의</button>
 					</div>
 				</div>
       			<!-- 팔로우, 1:1문의 버튼 끝-->
@@ -253,11 +280,10 @@
 		</div>	
 		<br>
 		<div class="container text-left fw-bold">
-		<img src="${pageContext.request.contextPath }/resources/images/fundingDetail_test_img1.jpg" width="650"><br>
-		<br>
-		<h3 class="fw-bold">더욱 확장된 멀티버스가 열린다!</h3>
-		<h3 class="fw-bold">상상 그 이상을 넘어서는 멀티버스!</h3><br>
-		<h3 class="fw-bold">&lt;스파이더맨: 어크로스 더 유니버스&gt;</h3><br>
+			<section id="articleContentArea">
+				${project.project_image }
+				${project.introduce }
+			</section>
 		</div>
 <!-- 		네비게이션 바 끝 -->
 			</div>
@@ -267,7 +293,7 @@
 				<!--메이커 프로필 영역-->
 				<div class="row p-3 border border-secondary-subtle shadow-sm">
 					<div class="row">
-						<span class="text-dark text-decoration-none fw-bold text-start pb-1" onclick="location.href='#'" style="cursor:pointer;">(주)XX북스
+						<span class="text-dark text-decoration-none fw-bold text-start pb-1" onclick="location.href='#'" style="cursor:pointer;">${project.project_representative_name }
 						<button class="btn btn-outline-success rounded-0 btn-sm btn float-end">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
 						<path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
@@ -280,11 +306,9 @@
 						<!-- 프로필 클릭시 메이커 새탭 이동-->
 							<a href="#" target="_blank">
 								<img src="https://cdn-icons-png.flaticon.com/512/3135/3135707.png" class="rounded-circle" alt="..." width="40px" height="40px"></a>
-							<small class="opacity-75">마지막 로그인</small>
-							<span><small class="fw-bold fw-bold">10시간 전</small></span>
 						</div>
 						<br>
-						<small class="text-start pb-3">필요한 것이 있다면 1:1 대화를 요청해주세요! -XX북스</small>
+						<small class="text-start pb-3">${project.project_semi_introduce }</small>
 						<!-- 메이커명-->
 					</div>
 					<!-- 팔로우, 1:1문의 버튼-->
@@ -301,10 +325,10 @@
 				<!--메이커 프로필 영역 끝-->
 				<!-- 리워드 선택 바-->
 				<div class="row">
-					<span class="fs-5 fw-bold p-3 text-start">리워드 선택</span>
+					<span class="fs-5 fw-bold p-3 text-start" id="rewardSelect">리워드 선택</span>
 				</div>
 				<!--스크롤-->
-				<div class="row" id="scrollBar">
+				<div class="row fixed-right" id="scrollBar">
 					<div class="row pb-3 d-flex text-start">
 						<div class="card">
 							<div class="card-body">
@@ -313,10 +337,10 @@
 							</div>
 							<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
 							<div>&nbsp;</div>
-							<a href="#" class="stretched-link"></a>
+							<a href="fundingOrder?project_idx=${project.project_idx }&reward_idx=0" class="stretched-link"></a>
 						</div>
 					</div>
-				<c:forEach begin="1" end="6" step="1">
+				<c:forEach begin="1" end="5" step="1">
 					<div class="row pb-3 d-flex text-start">
 						<div class="card">
 							<div class="card-body">
@@ -324,54 +348,33 @@
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
 								<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
 								</svg>
-								<small>27명이 선택</small>
+								<small>${reward.reward_quantity - reward.reward_residual_quantity }명이 선택</small>
 								<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button">
-								155개 남음</a>
+								${reward.reward_residual_quantity }개 남음</a>
 								</span><br>
-								<span class="fs-4 card-title fw-bold">27,000원 +</span><br>
-								<small class="card-text opacity-75">한정판 다이어리 + 스티커 세트</small>
+								<span class="fs-4 card-title fw-bold">${reward.reward_price }원 +</span><br>
+								<small class="card-text opacity-75">${reward.reward_name }</small><br>
+								<small class="card-text opacity-75">${reward.reward_detail }</small>
 								<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
 								<div>&nbsp;</div>
-								<a href="#" class="stretched-link"></a>
-							</div>
-						</div>
-					</div>
-					<div class="row pb-3 d-flex text-start">
-						<div class="card">
-							<div class="card-body">
-								<span class="card-subtitle mb-2 text-muted">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-								<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-								</svg>
-								<small>1829명이 선택</small>
-								<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button">
-								27개 남음</a>
-								</span><br>
-								<span class="fs-4 card-title fw-bold">43,000원 +</span><br>
-								<small class="card-text opacity-75">&lt;스파이더맨: 어크로스 더 유니버스&gt;아트북</small>
-								<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
-								<div>&nbsp;</div>
-								<a href="#" class="stretched-link"></a>
+								<a href="fundingOrder?project_idx=${project.project_idx }&reward_idx=${reward.reward_idx }" class="stretched-link"></a>
 							</div>
 						</div>
 					</div>
 				</c:forEach>
 				</div>
 				<!-- 리워드 선택 바 끝-->
-	
 			</div>
 		</div>
 		<!-- 메이커 프로필, 리워드 선택 바 끝-->
 	
-	
 		<div class="row">
-	
 		</div>
 	</div>
 	<!--내용 영역 끝--> 
 
-	<!-- 부트스트랩 -->
 	<script type="text/javascript">
+// 아임포트 결제 스크립트 ---------------------------------------------
 	function request_pay() {
 		
 		var IMP = window.IMP;
@@ -413,7 +416,56 @@
 		    }
 		  });
 		}
-	</script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+// --------------------------------------------------------------------
+
+// 카카오톡 공유하기 스크립트 -----------------------------------------
+	
+	  // SDK 초기화
+	  Kakao.init('86b7cd36bb5e30664d978742e039e68a');
+	
+	  // SDK 초기화 여부 판단
+	  console.log(Kakao.isInitialized());
+	
+	  function kakaoShare() {
+	    Kakao.Link.sendDefault({
+	      objectType: 'feed',
+	      content: {
+	        title: '펀뜩 사이트를 공유합니다!',
+	        description: '펀뜩 사이트로 바로가기',
+	        imageUrl: 'https://images.unsplash.com/photo-1424593463432-4104fa2c015a?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=384&ixid=MnwxfDB8MXxyYW5kb218MHwxOTA3Mjd8fHx8fHx8MTY5MDc5MTEwMQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1306',
+	        link: {
+	          mobileWebUrl: 'http://localhost:8080/test',
+	          webUrl: 'http://localhost:8080/test',
+	        },
+	      },
+	      buttons: [
+	        {
+	          title: '웹으로 보기',
+	          link: {
+	            mobileWebUrl: 'http://localhost:8080/test',
+	            webUrl: 'http://localhost:8080/test',
+	          },
+	        },
+	      ],
+	      // 카카오톡 미설치 시 카카오톡 설치 경로이동
+	      installTalk: true,
+	    })
+	  }
+// --------------------------------------------------------------------
+
+// 후원하기 버튼 클릭 시 리워드 선택 영역으로 화면 이동
+function focusOnReward(){
+	document.getElementById('rewardSelect').scrollIntoView();
+}
+
+// 진행 바 값 가져오기
+window.onload = function(){
+	var percentData = '<c:out value="${project.project_amount/project.project_target * 100 }"/>';
+	var a = document.getElementById('progressbar').style.width = percentData + "%";
+}
+</script>
+<jsp:include page="../Footer.jsp"></jsp:include>
+<!-- 부트스트랩 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>
