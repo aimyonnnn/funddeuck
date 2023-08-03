@@ -33,12 +33,6 @@ public class FundingService {
 		return mapper.selectDelivery(id, changeDelivery_idx);
 	}
 	
-	// 쿠폰 목록 조회 
-	
-	// 회원 id 추가 해야함
-	public List<CouponVO> getCouponList() {
-		return mapper.selectCouponList();
-	}
 	
 	// 기존의 기본 배송지 설정 변경
 	public void modifyDeliveryDefault() {

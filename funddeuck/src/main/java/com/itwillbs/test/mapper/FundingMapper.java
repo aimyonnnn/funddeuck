@@ -21,11 +21,9 @@ public interface FundingMapper {
 	// 변경한 배송지 조회
 	DeliveryVO selectDelivery(@Param(value = "id") String id,@Param(value = "delivery_idx") int changeDelivery_idx);
 	
-	// 쿠폰 목록 조회
-	List<CouponVO> selectCouponList();
-	
 	// 기존의 기본 배송지 설정 변경
 	void updateDeliveryDefault();
+	
 	// 멤버가 한 펀딩 리스트 가져오기
 	List<Map<String, Object>> selectMemberFunDing(@Param("sId") String sId, @Param("payment_confirm") int payment_confirm , @Param("startRow") int startRow, @Param("listLimit") int listLimit);
 	

@@ -41,13 +41,6 @@
 		
 	</select>
 	
-	<!-- 쿠폰 목록 조회 -->
-	<select id="selectCouponList">
-		SELECT *
-			FROM coupon
-				WHERE coupon_use = 0
-	</select>
-	
 	<!-- 기존 기본배송지 0으로 변경 -->
 	<update id="updateDeliveryDefault">
 <!-- 		<selectKey resultType="" order="BEFORE"></selectKey> -->

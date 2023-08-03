@@ -26,6 +26,8 @@ public class FundingController {
 	private PaymentService paymentService;
 	@Autowired
 	private DeliveryService deliveryService;
+	@Autowired
+	private CouponService couponService;
 	
 	// 펀딩 탐색 페이지
 	@GetMapping("fundingDiscover")
@@ -64,22 +66,25 @@ public class FundingController {
 	
 	// 펀딩 주문페이지 이동
 	@GetMapping ("fundingOrder")
-	public String fundingOrder(Model model
-//			, @RequestParam int project_idx, @RequestParam int reward_idx			
-			// 데이터 추가 후 주석 푸시면 됩니다!
-			) {
+		// 파라미터 전달, 주석 풀 부분
+//		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, HttpSession session, Model model) {
+		public String fundingOrder(HttpSession session, Model model) {
 		
-//		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, @RequestParam String addDonationAmount, HttpSession session) {
-		// session에 저장되어있는 회원아이디 가져오기
-//		String id = (String)session.getAttribute("sId");
-		// 아이디(가데이터)
-		String id = "kim1234";
-		// 프로젝트 번호(가데이터)
-		int project_idx = 1;
-		// 상세페이지에서 고른 리워드번호 필요(가데이터)
-		int reward_idx = 1;
+		String sId = (String)session.getAttribute("sId");
+		// 미로그인 또는 주문하던 회원이 아닐경우 ****
+    	if(session.getAttribute("sId") == null) {
+    		model.addAttribute("msg","잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
+    	//------------------------------ 프로젝트, 리워드 가데이터
+    	int project_idx = 1;
+    	int reward_idx = 1;
+    	//------------------------------ 프로젝트, 리워드 가데이터
+    	
+    	
 		// 회원 정보 불러오기
-		MembersVO member = memberService.getMemberInfo(id);
+		MembersVO member = memberService.getMemberInfo(sId);
 		System.out.println("회원 정보 : " + member);
 		// 프로젝트 정보 불러오기
 		ProjectVO project = projectService.getProjectInfo(project_idx);
@@ -91,15 +96,17 @@ public class FundingController {
 		List<RewardVO> rewardList = projectService.getRewardList(project_idx);
 		System.out.println(rewardList);
 		// 로그인한 회원의 기본 배송지가 있는지 확인해서 있으면 전달
-		DeliveryVO deliveryDefault = fundingService.getDeliveryDefault(id);
+		DeliveryVO deliveryDefault = fundingService.getDeliveryDefault(sId);
 		System.out.println("기본 배송지 정보 : " + deliveryDefault);
 		if(deliveryDefault != null) {
 			// 기본 배송지 정보
 			model.addAttribute("deliveryDefault", deliveryDefault);
 		}
-		// 로그인한 회원의 쿠폰 목록 중 미사용 쿠폰 목록만 조회
-		// 쿠폰테이블에 회원 아이디FK 필요 ** 
-		List<CouponVO> couponList = fundingService.getCouponList();
+		
+		// member_idx 조회
+		int member_idx = projectService.getMemberIdx(sId);
+		// 회원의 쿠폰 목록 중 미사용 쿠폰 목록만 조회
+		List<CouponVO> couponList = couponService.getCouponsByMemberAndStatus(member_idx, 0);
 		System.out.println("회원이 보유한 미사용 쿠폰 목록 : " + couponList);
 		if(couponList != null) {
 			model.addAttribute("couponList", couponList);
