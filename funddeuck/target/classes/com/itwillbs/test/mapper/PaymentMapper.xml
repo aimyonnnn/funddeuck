@@ -295,7 +295,7 @@
 	
 	<select id="selectRemainingQuantities" resultType="com.itwillbs.test.vo.PaymentVO">
 		 SELECT
-			p.project_idx,
+			r.project_idx,
 		    r.reward_idx,
 		    r.reward_name,	
 		    r.reward_option,
@@ -309,7 +309,7 @@
 	    WHERE 
 	        r.project_idx = #{project_idx}
 	    GROUP BY 
-	        r.reward_idx, r.reward_option, r.reward_quantity;
+	        r.project_idx, r.reward_idx, r.reward_option, r.reward_quantity;
 	</select>
 	
 </mapper>
