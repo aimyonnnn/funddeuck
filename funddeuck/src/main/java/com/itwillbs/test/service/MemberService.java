@@ -160,6 +160,11 @@ public class MemberService {
 		return mapper.selectMemberInfoByProjectIdx(project_idx);
 	}
 	
+	// 리뷰 삭제
+	public int deleteMemberReview(int num) {
+		return mapper.deleteUpdateMemberReview(num);
+	}
+	
 
 
 }

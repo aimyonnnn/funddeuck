@@ -405,6 +405,7 @@ public class MemberController {
     	
     	List<Map<String,Object>> fallowList = service.getfallowList((String)session.getAttribute("sId"));
     	
+    	
     	model.addAttribute("fallowList", fallowList);
     	
     	
@@ -712,6 +713,7 @@ public class MemberController {
     	return "member/member_review";
     }
     
+    //리뷰 페이징 처리
     @PostMapping("MemberReveiwList")
     @ResponseBody
     public String MemberReveiwList(@RequestParam int pageNum, HttpSession session) {
@@ -719,6 +721,8 @@ public class MemberController {
 		int listLimit = 5;// 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit;
     	
+		System.out.println((String)session.getAttribute("sId"));
+		
     	List<Map<String, Object>> ReveiwList = service.getMemberReviewList((String)session.getAttribute("sId"),startRow,listLimit);
     	
     	int listCount = service.getMemberReveiwListCount((String)session.getAttribute("sId"));
@@ -732,6 +736,20 @@ public class MemberController {
     		
     	
     	return jsonObject.toString();
+    }
+    
+    //리뷰 삭제
+    @PostMapping("reviewMemberDelete")
+    @ResponseBody
+    public String reviewMemberDelete(@RequestParam int num) {
+    	
+    	int updateCount = service.deleteMemberReview(num);
+    	
+    	if(updateCount > 0) {
+    		return "true";
+    	} else {
+    		return "false";
+    	}
     }
     
  // 랜덤 코드 생성
