@@ -475,6 +475,11 @@ a.supporters svg {
 	margin-bottom: 10px;
 }
 
+.makerSubject {
+	font-size: 23px;
+	font-weight: bold;
+}
+
 /* 모달 부연 설명 */
 #modalDescription {
 	font-size:12px;

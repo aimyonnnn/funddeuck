@@ -35,40 +35,6 @@
 
 			<!-- 메이커명 -->
 			<div class="my-4">
-				<h4>
-					<b>${maker.maker_name}</b>
-				</h4>
-				<p>${maker.maker_name}입니다. 성공적인 펀딩을 위해 최선을 다하겠습니다.</p>
-
-				<div class="container">
-					<div class="row">
-						<div class="col-sm-6">
-							<!-- 만족도 -->
-							<a class="star-rating"> <svg
-									xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-									fill="currentColor" class="bi bi-star-fill"
-									viewBox="0 0 16 16">
-		            				<path
-										d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-		          </svg>만족도:&nbsp;<span>4.0</span>
-							</a> <br>
-							<!-- 서포터 수 -->
-							<a class="supporters"> <svg
-									xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-									fill="currentColor" class="bi bi-person-plus-fill"
-									viewBox="0 0 16 16">
-		            				<path
-										d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-		            				<path fill-rule="evenodd"
-										d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
-		          </svg>서포터:&nbsp;<span>19명</span>
-							</a>
-						</div>
-						<div
-							class="col-sm-6 d-flex justify-content-end align-items-center">
-						</div>
-					</div>
-				</div>
 
 				<!-- Follow -->
 				<div class="text-center my-2">
@@ -79,15 +45,15 @@
 
 				<!-- Tab -->
 				<div class="tab-buttons text-center">
-					<button class="btn btn-outline-primary tab-button w-100 active"
-						data-tab="tab1">프로젝트</button>
 					<button class="btn btn-outline-primary tab-button w-100"
-						data-tab="tab2">메이커정보</button>
+						data-tab="tab1">공지사항 작성하기</button>
+					<button class="btn btn-outline-primary tab-button w-100 active"
+						data-tab="tab2">메이커정보 수정하기</button>
 				</div>
 
 				<!-- 프로젝트 리스트 출력 -->
 				<div class="content-area" id="tab1">
-					<p>메이커의 프로젝트 리스트를 출력</p>
+					
 				</div>
 				<!-- 메이커 정보 -->
 				<div class="content-area" id="tab2">
@@ -160,27 +126,6 @@
 									</c:otherwise>
 								</c:choose>
 							</tr>
-							
-							<c:choose>
-								<c:when test="${not empty maker.corporate_biz_num or not empty maker.individual_biz_num}">
-									<tr>
-										<th>사업자등록번호</th>
-										<c:if test="${not empty maker.corporate_biz_num}">
-											<td>${maker.corporate_biz_num}</td>
-										</c:if>
-										<c:if test="${not empty maker.individual_biz_num}">
-											<td>${maker.individual_biz_num}</td>
-										</c:if>
-									</tr>
-								</c:when>
-								<c:otherwise>
-									<tr>
-										<th>사업자등록번호</th>
-										<td>120-88-00767</td>
-									</tr>
-								</c:otherwise>
-							</c:choose>
-							
 						</table>
 						<div class="d-flex justify-content-center">
 							<input type="submit" value="수정하기" class="btn btn-outline-primary">
@@ -194,9 +139,9 @@
 </div>
 
 <script>
-// 탭 버튼 클릭 시
+// 페이지 로드 후에 tab2에 active
 $(document).ready(function() {
-	$("#tab1").addClass("active");
+	$("#tab2").addClass("active");
 	$(".tab-button").click(function() {
 		var tabId = $(this).data("tab");
 		$(".content-area").removeClass("active");

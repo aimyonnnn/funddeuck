@@ -5,18 +5,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Maker</title>
-	<!-- bootstrap -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-	<!-- jquery -->
-	<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
-	<!-- font awesome -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-	<!-- css -->
-	<link href="${pageContext.request.contextPath}/resources/css/project.css" rel="styleSheet" type="text/css">
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maker</title>
+<!-- bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<!-- jquery -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
+<!-- font awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<!-- css -->
+<link href="${pageContext.request.contextPath}/resources/css/project.css" rel="styleSheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
+<style>
+.maker-img {
+  max-height: 200px; /* 원하는 높이 값으로 변경 */
+  object-fit: cover; /* 이미지가 캐러셀 영역에 꽉 차도록 조절 */
+}
+</style>
 </head>
 <body>
 <jsp:include page="../Header.jsp"></jsp:include>
@@ -35,6 +41,7 @@
 				<h4>
 					<b>${maker.maker_name}</b>
 				</h4>
+				<!-- 메이커 소개 -->
 				<p>${maker.maker_intro}</p>
 
 				<div class="container">
@@ -47,7 +54,7 @@
 									viewBox="0 0 16 16">
 		            				<path
 										d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-		          </svg>만족도:&nbsp;<span>4.0</span>
+		          				</svg>만족도:&nbsp;<span>4.0</span>
 							</a> <br>
 							<!-- 서포터 수 -->
 							<a class="supporters"> <svg
@@ -58,7 +65,7 @@
 										d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
 		            				<path fill-rule="evenodd"
 										d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
-		          </svg>서포터:&nbsp;<span>19명</span>
+		          				</svg>서포터:&nbsp;<span>19명</span>
 							</a>
 						</div>
 						<div
@@ -72,6 +79,7 @@
 				    <div class="d-flex justify-content-end">
 				        <form action="modifyMakerForm" method="post">
 				            <input type="hidden" name="maker_idx" value="${maker.maker_idx}" />
+				            <button type="submit" class="btn btn-outline-primary mx-2">글 작성하기</button>
 				            <button type="submit" class="btn btn-outline-primary">수정하기</button>
 				        </form>
 				    </div>
@@ -92,10 +100,28 @@
 						data-tab="tab2">메이커정보</button>
 				</div>
 
-				<!-- 프로젝트 리스트 출력 -->
+				<!-- 메이커의 프로젝트 리스트 출력 -->
 				<div class="content-area" id="tab1">
-					<p>메이커의 프로젝트 리스트를 출력</p>
+					<div>
+						<c:forEach var="pList" items="${pList}">
+							<div class="container">
+								<div class="row">
+									<div class="card col-md-6 col-lg-12">
+									  <img src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file4}"
+											 alt="프로젝트 사진을 업로드 해주세요" class="img-fluid maker-img mt-2">
+									  <div class="card-body">
+									    <div class="card-text makerSubject">${pList.project_subject}</div>
+									    <div class="card-text">${pList.project_semi_introduce}</div>
+									    <div class="card-text">${pList.project_introduce}</div>
+									    <div><button type="button" class="btn btn-outline-primary w-100 mt-2">프로젝트 후원하기</button></div>
+									  </div>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</div>
 				</div>
+				
 				<!-- 메이커 정보 -->
 				<div class="content-area" id="tab2">
 					<table class="table text-center">
