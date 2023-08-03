@@ -263,12 +263,14 @@
 	
 	<!-- 발송입력 - 모달창 리스트 조회 -->
 	<select id="selectShippingModalList" resultType="com.itwillbs.test.vo.PaymentVO">
-		SELECT *
-			FROM payment p
-		    JOIN reward r ON p.reward_idx = r.reward_idx
-		    JOIN delivery d ON p.delivery_idx = d.delivery_idx
-		    WHERE payment_idx = #{payment_idx}
+	    SELECT *
+	        FROM payment p
+	        JOIN members m ON p.member_idx = m.member_idx
+	        JOIN reward r ON p.reward_idx = r.reward_idx
+	        JOIN delivery d ON p.delivery_idx = d.delivery_idx
+	        WHERE payment_idx = #{payment_idx}
 	</select>
+
 
 	<!-- 송장입력 후 발송 업데이트 -->
 	<update id="updateShippingInfo">

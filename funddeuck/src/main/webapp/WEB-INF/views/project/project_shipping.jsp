@@ -150,14 +150,14 @@
 			    	                        "<td>" +
 			    	                        	(function() {
 			    	                        		if(row.payment_confirm == 3) { // 펀딩금 반환 신청 시
-					    	                            return "<button class='btn btn-outline-danger' id='tableButton' data-bs-toggle='modal' data-bs-target='#refundModal'>신청</button>";
+					    	                            return "<button class='btn btn-outline-danger' id='refundButton' data-id="+ row.payment_idx +" data-bs-toggle='modal' data-bs-target='#refundModal'>신청</button>";
 			    	                        		} else if(row.payment_confirm == 4) { // 반환 완료 시
 			    	                        			return "완료";
 			    	                        		} else if(row.payment_confirm == 5) { // 반환 거절 시 
 			    	                        			return "거절";
 			    	                        		} else { // 반환 신청 없을 시
 			    	                        			return "";
-			    	                        		}
+			    	                        		}cc
 			    	                        	})()
 			    	                        + "</td>" +
 			    	                     "</tr>";
@@ -225,6 +225,80 @@
 				}
 			});
 			
+		});
+		
+		// 반환입력 - 모달창
+		$(document).on("click", "#refundButton", function(event) {
+			var payment_idx = $(this).data("id");
+// 		    $('.shippingForm input[name="payment_idx"]').val(payment_idx); // 폼 hidden에 payment_idx 값 주기
+			
+			$.ajax({
+				url: "shippingModalList",
+				method: "POST",
+				data: {payment_idx: payment_idx},
+				dataType: "json",
+				success: function(data) {
+					var data = data[0];
+		            
+		            var tableBodyHtml = 
+						  '<tr>' +
+						    '<th scope="row" class="col-3 bg-light">펀딩번호</th>' +
+						    '<td class="col-9">' + data.payment_idx + '</td>' +
+						  '</tr>' +
+						  '<tr>' +
+						    '<th scope="row" class="col-3 bg-light">서포터명</th>' +
+						    '<td class="col-9">' + data.member_name + '</td>' +
+						  '</tr>' +
+						  '<tr>' +
+						    '<th scope="row" class="col-3 bg-light">리워드명</th>' +
+						    '<td class="col-9">' + data.reward_name + '</td>' +
+						  '</tr>' +
+						  '<tr>' +
+						    '<th scope="row" class="col-3 bg-light">주문수량</th>' +
+						    '<td class="col-9">' + data.payment_quantity + '개</td>' +
+						  '</tr>' +
+						  '<tr>' +
+						    '<th scope="row" class="col-3 bg-light">금액</th>' +
+						    '<td class="col-9">' + data.total_amount + '원</td>' +
+						  '</tr>' +
+						  '<tr>' +
+						    '<th scope="row" class="col-3 bg-light">결제수단</th>' +
+						    '<td class="col-9">' + (data.payment_method == 1 ? '카드결제' : '계좌이체') + '</td>' +
+						  '</tr>' +
+						  '<tr>' +
+						    '<th scope="row" class="col-3 bg-light">환불은행</th>' +
+						    '<td class="col-9">' + data.refund_bank + '</td>' +
+						  '</tr>' +
+						  '<tr>' +
+						    '<th scope="row" class="col-3 bg-light">환불계좌</th>' +
+						    '<td class="col-9">' + data.refund_accountnum + '</td>' +
+						  '</tr>' +
+						  '<tr>';
+
+						// 테이블 바디에 추가
+						$("#refundModal .refundModalTbody").html(tableBodyHtml);
+						
+						$("#refund-reason").text(data.cancel_context);
+						if (data.cancel_img) { // 이미지 파일이 있다면 
+							var fileName = data.cancel_img.split("_")[1];
+							var fileURL = "/resources/upload/" + data.cancel_img;
+							
+							$("#refund-document")
+							    .attr("href", fileURL)
+							    .attr("download", data.cancel_img)
+							    .text(fileName);
+						} else {
+						    $("#refund-document").text("").removeAttr("href").removeAttr("download");
+						}
+
+
+
+					
+				},
+				error: function() {
+					alert("모달 요청에 오류가 발생했습니다!");
+				}
+			});
 		});
 		
 		$('.shippingForm').on("submit", submitForm); // 발송입력 모달창 폼 제출
@@ -465,27 +539,19 @@
 				<div class="modal-body">
 					<p>서포터가 펀딩금 반환을 요청한 내역을 확인하고 승인 또는 거절 처리하세요.</p>
 					<div>
-						<p>
-							<span class="fw-bold">펀딩번호: </span>1111
-						</p>
-						<p>
-							<span class="fw-bold">서포터명: </span>진국이
-						</p>
-					</div>
-					<div>
-						<p class="modalTitle">[100개 한정] 오픈런(1달 플랜+보틀 증정)</p>
-					  	<p>·주문수량: 3개</p>
-					  	<p>·금액: 150,000원</p>
-					</div>
-					<div>
+						<table class="table table-bordered table-inverse">
+							<tbody class="refundModalTbody">
+							</tbody>
+						</table>
+						<div class="border-top my-3"></div>
 						<p class="modalTitle">펀딩금 반환 신청 사유</p>
 					  	<p>
 					  		<span class="fw-bold">사유</span><br>
-					  		기능·성능 상 치명적인 초기 결함
+					  		<span id="refund-reason"></span>
 					  	</p>
 					  	<p>
 					  		<span class="fw-bold">증빙 서류</span><br>
-					  		<a href="#">미작동 이미지.jpg</a>
+					  		<a href="#" id="refund-document"></a>
 					  	</p>
 					</div>
 				</div>

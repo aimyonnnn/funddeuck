@@ -92,4 +92,6 @@ public class PaymentVO {
 	private String delivery_zipcode;
 	private String delivery_add;
 	private String delivery_detailadd;
+	private String cancel_context;
+	private String cancel_img;
 }
