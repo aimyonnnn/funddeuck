@@ -893,7 +893,7 @@ function fillTable(data) {
 		    "<td class='text-center'>" + payment.total_amount + "</td>" +
 		    "<td class='text-center'>" + formattedDate + "</td>" +
 		    "<td class='text-center'>" + status + "</td>" +
-		    "<td class='text-center'><button class='btn btn-outline-primary btn-sm' data-bs-toggle='modal' data-bs-target='#staticBackdrop' onClick='showPaymentDetails(" + payment.payment_idx + ")'>상세보기</button></td>" +
+		    "<td class='text-center'><button class='btn btn-outline-primary btn-sm' data-bs-toggle='modal' data-bs-target='#paymentDetailBackdrop' onClick='showPaymentDetails(" + payment.payment_idx + ")'>상세보기</button></td>" +
 	    "</tr>";
 		tbody.append(newRow);
 	});
@@ -1075,15 +1075,15 @@ $(()=> {
 					let projectName = $('#projectSelect3 option:selected').text();
 					
 					let newRow = 
-						"<tr>" + 
-							"<td class='text-center'>" + projectName + "</td>" +
-							"<td class='text-center'>" + payment.reward_name + "</td>" + 
-							"<td class='text-center'>" + payment.reward_option + "</td>" + 
-							"<td class='text-center'>" + payment.reward_quantity + "</td>" + 
-							"<td class='text-center'>" + payment.remaining_quantity + "</td>" + 
-							"<td class='text-center'>" + payment.sales_quantity + "</td>" + 
-							"<td class='text-center'><button class='btn btn-outline-primary btn-sm'>상세보기</button></td>" + 
-						"</tr>";
+						  "<tr>" + 
+						    "<td class='text-center'>" + projectName + "</td>" +
+						    "<td class='text-center'>" + payment.reward_name + "</td>" + 
+						    "<td class='text-center'>" + payment.reward_option + "</td>" + 
+						    "<td class='text-center'>" + payment.reward_quantity + "</td>" + 
+						    "<td class='text-center'>" + payment.remaining_quantity + "</td>" + 
+						    "<td class='text-center'>" + payment.sales_quantity + "</td>" + 
+						    "<td class='text-center'><button class='btn btn-outline-primary btn-sm' data-bs-toggle='modal' data-bs-target='#rewardDetailBackdrop' onClick='showRewardDetails(" + payment.reward_idx + ")'>상세보기</button></td>" + 
+						  "</tr>";
 						
 					tbody.append(newRow);
 					
@@ -1204,15 +1204,114 @@ function showPaymentDetails(payment_idx) {
 }
 
 // 리워드 정보 조회
+function showRewardDetails(reward_idx) {
+	
+	$.ajax({
+			
+		    method: 'post',
+		    url: '<c:url value="getRewardDetail"/>',
+		    data: {
+		    	reward_idx: reward_idx
+		    },
+		    dataType: 'json',
+		    success: data => {
+		    	
+	      	console.log(data);
+	
+		    let modalBody2 = $('#rewardDetail');
+		    modalBody2.empty();
+	
+	      	let tableHtml2 = `
+	      	
+	    	<table class='table text-center'>
+		        <tr>
+		          <td>프로젝트 번호</td>
+		          <td>${'${data.project_idx}'}</td>
+		        </tr>
+		        <tr>
+		          <td>리워드 번호</td>
+		          <td>${'${data.reward_idx}'}</td>
+		        </tr>
+		        <tr>
+		          <td>리워드 가격</td>
+		          <td>${'${data.reward_price}'}</td>
+		        </tr>
+		        <tr>
+		          <td>리워드 카테고리</td>
+		          <td>${'${data.reward_category}'}</td>
+		        </tr>
+		        <tr>
+		          <td>리워드명</td>
+		          <td>${'${data.reward_name}'}</td>
+		        </tr>
+		        <tr>
+		          <td>리워드 수량</td>
+		          <td>${'${data.reward_quantity}'}</td>
+		        </tr>
+		        <tr>
+		          <td>리워드 금액</td>
+		          <td>${'${data.reward_amount}'}</td>
+		        </tr>
+		        <tr>
+		          <td>리워드 옵션</td>
+		          <td>${'${data.reward_option}'}</td>
+		        </tr>
+		        <tr>
+		          <td>리워드 설명</td>
+		          <td>${'${data.reward_detail}'}</td>
+		        </tr>
+		        <tr>
+		          <td>배송여부</td>
+		          <td>${'${data.delivery_status}'}</td>
+		        </tr>
+		        <tr>
+		          <td>배송비</td>
+		          <td>${'${data.delivery_price}'}</td>
+		        </tr>
+		        <tr>
+		          <td>발송시작일</td>
+		          <td>${'${data.delivery_date}'}</td>
+		        </tr>
+		        <tr>
+		          <td>결제승인여부</td>
+		          <td>${'${data.payment_confirm}'}</td>
+		        </tr>
+		        <tr>
+		          <td colspan='2'>
+	         	  	<textarea rows='5' cols='50'>${'${data.reward_info}'}</textarea>
+		          </td>
+		        </tr>
+	        </table>`;
+	        
+	      	modalBody2.html(tableHtml2);
+	   		}
+	  	});	
+}
+
 </script>
 
-
-<!-- 결제내역 조회 모달 -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- 리워드 정보 조회 모달 -->
+<div class="modal fade" id="rewardDetailBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="rewardStaticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">결제내역 상세조회</h5>
+        <h5 class="modal-title" id="rewardStaticBackdropLabel">리워드 상세조회</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="rewardDetail">
+      <!-- 데이터 출력 -->
+      </div>
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 결제내역 조회 모달 -->
+<div class="modal fade" id="paymentDetailBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="paymentStaticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="paymentStaticBackdropLabel">결제내역 상세조회</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="paymentDetail">

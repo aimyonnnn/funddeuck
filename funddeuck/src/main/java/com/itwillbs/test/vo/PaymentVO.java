@@ -81,6 +81,7 @@ public class PaymentVO {
 	private String reward_option;					// 리워드 옵션
 	private int reward_quantity;					// 리워드 수량
 	private int remaining_quantity;					// 리워드 남은수량
+	private int sales_quantity;						// 리워드 판매수량
 	
 	// ===============================================================================
 	// 발송·환불 목록 출력 시 사용 

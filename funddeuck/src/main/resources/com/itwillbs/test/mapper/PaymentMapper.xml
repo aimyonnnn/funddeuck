@@ -300,7 +300,8 @@
 		    r.reward_name,	
 		    r.reward_option,
 		    r.reward_quantity, 
-	        r.reward_quantity - IFNULL(SUM(p.payment_quantity), 0) AS remaining_quantity
+	        r.reward_quantity - IFNULL(SUM(p.payment_quantity), 0) as remaining_quantity,
+    	    r.reward_quantity - (r.reward_quantity - IFNULL(SUM(p.payment_quantity), 0)) as sales_quantity
 	    FROM 
 	        reward r
 	    LEFT JOIN 

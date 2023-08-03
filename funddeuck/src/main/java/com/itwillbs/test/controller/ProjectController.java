@@ -870,6 +870,14 @@ public class ProjectController {
 		return payment;
 	}
 	
+	// 리워드 상세 조회
+	@PostMapping("getRewardDetail")
+	@ResponseBody
+	public RewardVO getRewardDetail(@RequestParam int reward_idx) {
+		RewardVO reward = projectService.getRewardInfo(reward_idx);
+		return reward;
+	}
+	
 	// 메이커의 프로젝트별 차트 출력
 	@PostMapping("/chartDataProject")
 	@ResponseBody
