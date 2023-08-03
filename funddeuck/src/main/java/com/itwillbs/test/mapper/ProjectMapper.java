@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.ProjectVO;
 import com.itwillbs.test.vo.RewardVO;
@@ -107,19 +108,17 @@ public interface ProjectMapper {
 	// 프로젝트 리스트 조회 
 	List<ProjectVO> selectAllProjectByMakerIdx(int maker_idx);
 			
+	// 메이커 게시판 공지사항 작성하기
+	int insertMakerBoard(MakerBoardVO makerBoard);
 	
+	// 메이커 공지사항 리스트 조회
+	List<MakerBoardVO> selectMakerBoardList(Integer maker_idx);
 	
+	// show all project
+	List<ProjectVO> getAllProjects();
 	
-	
-		//-----main page---------
-		// show all project
-		List<ProjectVO> getAllProjects();
-		
-		//ranking system
-		List<ProjectVO> selectTop10ProjectsByEndDate();
-		
-		
-		
+	//ranking system
+	List<ProjectVO> selectTop10ProjectsByEndDate();
 		
 		
 			

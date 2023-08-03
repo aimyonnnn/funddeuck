@@ -128,7 +128,7 @@
 				, 1						         -- 프로젝트 상태
 				, NULL							 -- 프로젝트 승인 요청 시간
 				, #{maker_idx}					 -- 메이커 번호
-				, 2			 -- 프로젝트 계좌 인증에 사용될 토큰 번호
+				, #{token_idx}			 		 -- 프로젝트 계좌 인증에 사용될 토큰 번호
 			)
 	</insert>
 	
@@ -373,6 +373,29 @@
 			project
 		where
 			maker_idx = #{maker_idx} 
+	</select>
+	
+	<!--  메이커 게시판 공지사항 작성하기 -->
+	<insert id="insertMakerBoard">
+		insert into
+			maker_board
+				values (
+				null
+				, #{maker_idx}
+				, #{maker_board_subject}
+				, #{maker_baord_content}
+				, now()
+				, #{maker_board_file1}
+				)
+	</insert>
+	
+	<!-- 메이커 공지사항 리스트 조회 -->
+	<select id="selectMakerBoardList" resultType="com.itwillbs.test.vo.MakerBoardVO">
+		select *
+			from
+				maker_board
+			where
+				maker_idx = #{maker_idx} 
 	</select>
 	
 	

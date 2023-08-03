@@ -30,13 +30,13 @@
 	<div class="row">
 		<div class="col">
 
-			<!-- 메이커 이미지 출력 -->
+			<!-- 메이커 이미지 -->
 			<div class="d-flex justify-content-center my-2">
 				<img
 					src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file4}"
 					alt="메이커 사진을 업로드 해주세요" class="img-fluid" style="max-height: 400px;">
 			</div>
-			<!-- 메이커명 -->
+			
 			<div class="my-4">
 				<h4>
 					<b>${maker.maker_name}</b>
@@ -79,25 +79,26 @@
 				    <div class="d-flex justify-content-end">
 				        <form action="modifyMakerForm" method="post">
 				            <input type="hidden" name="maker_idx" value="${maker.maker_idx}" />
-				            <button type="submit" class="btn btn-outline-primary mx-2">글 작성하기</button>
 				            <button type="submit" class="btn btn-outline-primary">수정하기</button>
 				        </form>
 				    </div>
 				</c:if>
 				
-				<!-- Follow -->
+				<!-- 팔로우 -->
 				<div class="text-center my-2">
 					<button class="btn btn-primary w-100">
 						+ Follow<span>239</span>
 					</button>
 				</div>
 
-				<!-- Tab -->
+				<!-- 탭 -->
 				<div class="tab-buttons text-center">
 					<button class="btn btn-outline-primary tab-button w-100 active"
 						data-tab="tab1">프로젝트</button>
 					<button class="btn btn-outline-primary tab-button w-100"
-						data-tab="tab2">메이커정보</button>
+						data-tab="tab2">공지사항</button>
+					<button class="btn btn-outline-primary tab-button w-100"
+						data-tab="tab3">메이커정보</button>
 				</div>
 
 				<!-- 메이커의 프로젝트 리스트 출력 -->
@@ -112,7 +113,6 @@
 									  <div class="card-body">
 									    <div class="card-text makerSubject">${pList.project_subject}</div>
 									    <div class="card-text">${pList.project_semi_introduce}</div>
-									    <div class="card-text">${pList.project_introduce}</div>
 									    <div><button type="button" class="btn btn-outline-primary w-100 mt-2">프로젝트 후원하기</button></div>
 									  </div>
 									</div>
@@ -122,8 +122,24 @@
 					</div>
 				</div>
 				
-				<!-- 메이커 정보 -->
+				<!-- 공지사항 -->
 				<div class="content-area" id="tab2">
+					<table class="table text-center">
+						<tr>
+							<th style="width: 50%">제목</th>
+							<th style="width: 10%">등록일자</th>
+						</tr>
+						<c:forEach var="mList" items="${mList}">
+						<tr>
+							<td>${mList.maker_board_subject}</td>
+							<td>${mList.maker_board_regdate}</td>
+						</tr>
+						</c:forEach>
+					</table>
+				</div>
+				
+				<!-- 메이커 정보 -->
+				<div class="content-area" id="tab3">
 					<table class="table text-center">
 						<tr>
 							<th>상호명</th>
@@ -170,26 +186,44 @@
 <script>
 // 탭 버튼 클릭 시
 $(document).ready(function() {
+	
 	$("#tab1").addClass("active");
 	$(".tab-button").click(function() {
+		
 		var tabId = $(this).data("tab");
 		$(".content-area").removeClass("active");
 		$("#" + tabId).addClass("active");
+		
 	});
+	
 });
+
 // 탭 버튼 클릭시 active 효과
 $(document).ready(function() {
+	
 	// 버튼1 클릭 시
 	$(".tab-button[data-tab='tab1']").click(function() {
-		$(".tab-button[data-tab='tab2']").removeClass("active");
 		$(".tab-button[data-tab='tab1']").addClass("active");
+	  	$(".tab-button[data-tab='tab2']").removeClass("active");
+	  	$(".tab-button[data-tab='tab3']").removeClass("active");
 	});
+	
 	// 버튼2 클릭 시
 	$(".tab-button[data-tab='tab2']").click(function() {
-		$(".tab-button[data-tab='tab1']").removeClass("active");
-		$(".tab-button[data-tab='tab2']").addClass("active");
+	  	$(".tab-button[data-tab='tab1']").removeClass("active");
+	  	$(".tab-button[data-tab='tab2']").addClass("active");
+	  	$(".tab-button[data-tab='tab3']").removeClass("active");
 	});
+	
+	// 버튼3 클릭 시
+	$(".tab-button[data-tab='tab3']").click(function() {
+	  	$(".tab-button[data-tab='tab1']").removeClass("active");
+	 	$(".tab-button[data-tab='tab2']").removeClass("active");
+	 	$(".tab-button[data-tab='tab3']").addClass("active");
+	});
+	
 });
+
 // 수정하기 버튼 클릭 시 메이커 수정하기 폼으로 이동
 function redirectToModifyMakerForm(makerIdx) {
 	var newUrl = 'modifyMakerForm?maker_idx=' + makerIdx;
