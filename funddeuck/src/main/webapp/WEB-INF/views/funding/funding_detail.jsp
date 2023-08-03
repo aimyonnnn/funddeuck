@@ -30,7 +30,7 @@
 	<div class="container text-center">
 		<!-- 해시태그 -->
 		<div class="col">
-			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="#" role="button">${project.project_hashtag }</a>
+			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="" role="button" style="pointer-events: none; ">${project.project_hashtag }</a>
 			<br><br>
 			<div class="col">
 				<p class="fs-2 fw-bolder">${project.project_subject }</p>
@@ -89,18 +89,14 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<c:choose>
-							<c:when test="${project.project_end_date < now() }">
-								<span class="fs-2">
-								<fmt:parseDate value="${project.project_end_date - now()}" var="dateValue" pattern="dd"/>
-								</span>&nbsp;
-					  			<small>일</small>&nbsp;&nbsp;
-							</c:when>
-							<c:otherwise>
-								<span class="fs-2">0</span>&nbsp;
-					  			<small>일</small>&nbsp;&nbsp;
-							</c:otherwise>
-						</c:choose>
+						<span class="fs-2">
+							<fmt:parseDate value="${project.project_end_date }" var="projectEndDate" pattern="yyyy-MM-dd"/>
+							<fmt:parseNumber value="${projectEndDate.time / (1000*60*60*24)}" integerOnly="true" var="endDate"></fmt:parseNumber>
+							<fmt:parseDate value="${project.project_start_date }" var="projectStartDate" pattern="yyyy-MM-dd"/>
+							<fmt:parseNumber value="${projectStartDate.time / (1000*60*60*24)}" integerOnly="true" var="strDate"></fmt:parseNumber>
+							${endDate - strDate }
+						</span>&nbsp;
+			  			<small>일</small>&nbsp;&nbsp;
 					</div>
 				</div>
 				<br>
@@ -121,7 +117,8 @@
 					<tr>
 				 		<th><small>목표금액</small></th>
 				 		<td>&nbsp;&nbsp;&nbsp;</td>
-				    	<td><small>${project.project_target }원</small></td>
+				    	<td><small>
+				    	<fmt:formatNumber value="${project.project_target }" pattern="#,###" />원</small></td>
 				 	</tr>
 				</table>
 				<div class="row">
@@ -138,20 +135,12 @@
 				   		<th><small>펀딩 기간</small></th>
 				   		<td>&nbsp;&nbsp;&nbsp;</td>
 				   		<td><small>
-				   		<fmt:parseDate value="${project.project_start_date}" var="startDate" pattern="yyyy.MM.dd"/>
+				   		${project.project_start_date }
 				   		~
-				   		<fmt:parseDate value="${project.project_end_date}" var="endDate" pattern="yyyy.MM.dd"/>
+				   		${project.project_end_date }
 				   		</small>
 				   		<span class="badge text-danger text-bg-danger bg-opacity-10">
-				   			<c:choose>
-								<c:when test="${project.project_end_date < now() }">				
-									<fmt:parseDate value="${project.project_end_date - now()}" var="dateValue" pattern="dd"/>
-								</c:when>
-								<c:otherwise>
-								0
-								</c:otherwise>
-						</c:choose>
-				   		일 남음
+				   		${endDate - strDate } 일 남음
 				   		</span>
 				   		</td>
 				 	</tr>
@@ -159,8 +148,7 @@
 						<th><small>결제</small></th>
 						<td>&nbsp;&nbsp;&nbsp;</td>
 						<td><small>목표 금액 달성시 
-						<fmt:parseDate value="${project.project_end_date}" var="endDate" pattern="yyyy.MM.dd"/>
-						일에 결제 진행</small></td>
+						${project.project_end_date }에 결제 진행</small></td>
 				 	</tr>
 				</table>
 				<br>
@@ -199,10 +187,10 @@
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-share" viewBox="0 0 16 16">
 							  <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
 							</svg>
-							<small class="text-secondary"><br>16</small>
+							<small class="text-secondary"><br>공유</small>
 						</button>
 						<!-- 좋아요 -->
-						<button class="btn btn-primary me-2 bg-white border border-secondary border-opacity-25 rounded-0">
+						<button class="btn btn-primary me-2 bg-white border border-secondary border-opacity-25 rounded-0" onclick="location.href='ZimForm'">
 							<!-- 빈 하트 -->
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-heart" viewBox="0 0 16 16">
 							  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
@@ -211,9 +199,9 @@
 <!-- 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"> -->
 <!-- 							  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/> -->
 <!-- 							</svg> -->
-							<small class="text-secondary"><br>343</small>
+							<small class="text-secondary"><br>찜</small>
 						</button>
-						<button class="btn btn-primary me-8 bg-success" onclick="focusOnReward()"><span class="text-center text-white fw-bold">이 프로젝트 후원하기</span></button>
+						<button class="btn btn-success me-8" onclick="focusOnReward()"><span class="text-center text-white fw-bold">이 프로젝트 후원하기</span></button>
 					</div>
 				</div>
 				<!--공유, 좋아요, 후원하기 버튼 끝-->
@@ -261,11 +249,10 @@
 			<!-- 바뀌는 페이지 -->
 			<div class="col">
 <!-- 		네비게이션 바 -->
-<!-- 		color: inherit; 사용시 a태그 파란색 사라짐 -->
 		<div class="container text-center">
 		  <ul class="nav nav-tabs bg-white">
 		    <li class="nav-item border-dark border-bottom border-4">
-		      <a class="text-dark nav-link active text-decoration-none border border-0 fw-bold" aria-current="page" href="#">프로젝트 계획</a>
+		      <a class="text-dark nav-link active text-decoration-none border border-0 fw-bold" aria-current="page" href="#">프로젝트 소개</a>
 		    </li>
 		    <li class="nav-item border border-0">
 		      <a class="text-dark nav-link text-decoration-none border border-0 fw-bold text-opacity-50" href="#">업데이트</a>
@@ -273,19 +260,19 @@
 		    <li class="nav-item border border-0">
 		      <a class="text-dark nav-link text-decoration-none border border-0 fw-bold text-opacity-50" href="#">커뮤니티</a>
 		    </li>
-		    <li class="nav-item border border-0">
-		      <a class="text-dark nav-link text-decoration-none border border-0 fw-bold text-opacity-50" href="#">추천</a>
-		    </li>
 		  </ul>
 		</div>	
 		<br>
-		<div class="container text-left fw-bold">
-			<section id="articleContentArea">
-				${project.project_image }
-				${project.introduce }
-			</section>
-		</div>
 <!-- 		네비게이션 바 끝 -->
+		<div class="container text-center">
+			<div class="row">
+				<div class="col">
+					<article>
+						<p class="text-justify">${project.project_introduce }</p>
+					</article>
+				</div>
+			</div>
+		</div>
 			</div>
 			<!-- 메이커 프로필, 리워드 선택 바-->
 			<!-- 화면 클때 -->
@@ -464,6 +451,7 @@ window.onload = function(){
 	var a = document.getElementById('progressbar').style.width = percentData + "%";
 }
 </script>
+<br>
 <jsp:include page="../Footer.jsp"></jsp:include>
 <!-- 부트스트랩 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
