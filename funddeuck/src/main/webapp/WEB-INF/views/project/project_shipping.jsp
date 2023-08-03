@@ -66,6 +66,9 @@
 					        $(".table .tableTag:eq(5)").next().text(count);
 					      }
 					    }
+					    
+					    // 목록 인원수 출력
+					    $('.list-count').text('| 총 ' + data.listCount + '명');
 			    },
 				error: function() {
 					// Ajax 요청에 실패한 경우 처리
@@ -86,6 +89,7 @@
 			    var selectedDrop = $(this).text();
 			    $('#list-btn').text(selectedDrop);
 			    
+			    var all = $(this).data('all'); // 전체 목록
 			    var filter = $(this).data('filter'); // 배송 상태
 			    var type = $(this).data('type'); // 환불 상태
 			    $.ajax({
@@ -94,7 +98,8 @@
 			    	data: {
 			    		project_idx: project_idx,
 			    		filter: filter,
-			    		type: type
+			    		type: type,
+			    		all: all
 			    	},
 			    	dataType: "json",
 			    	success: function(data) {
@@ -428,12 +433,14 @@
 
 						<!-- 목록 -->
 						<div>
-							<div class="shippingSubheading">목록 <span class="sideDescription text-primary">| 총 829명</span>
+							<div class="shippingSubheading">목록 <span class="sideDescription text-primary list-count"></span>
 								<div class="dropdown">
 									<button type="button" class="btn dropdown-toggle btn-sm" id="list-btn" data-bs-toggle="dropdown" aria-expanded="false">
-										발송·배송 전체 관리
+										발송·배송 관리 선택
 									</button>
 									<ul class="dropdown-menu" aria-labelledby="list-btn">
+										<li><a class="dropdown-item shipping-filter-item" href="#" data-all="1">전체</a></li>
+										<li><hr class="dropdown-divider"></li>
 										<li><a class="dropdown-item shipping-filter-item" href="#" data-filter="1">미발송</a></li>
 										<li><a class="dropdown-item shipping-filter-item" href="#" data-filter="2" href="#">배송중</a></li>
 										<li><a class="dropdown-item shipping-filter-item" href="#" data-filter="3">배송 완료</a></li>

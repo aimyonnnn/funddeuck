@@ -79,6 +79,16 @@ public class PaymentService {
 		return mapper.selectRefundAllList(project_idx, type);
 	}
 	
+	// 전체 목록 조회
+	public List<PaymentVO> getAllList(int project_idx) {
+		return mapper.selectAllList(project_idx);
+	}
+	
+	// 목록 인원수 조회
+	public int getPaymentListCount(int project_idx) {
+		return mapper.selectPaymentListCount(project_idx);
+	}
+	
 	// 발송입력 - 모달창 리스트 조회
 	public List<PaymentVO> getShippingModalList(int payment_idx) {
 		return mapper.selectShippingModalList(payment_idx);

@@ -59,7 +59,13 @@ public interface PaymentMapper {
 
 	// payment_confirm(환불승인여부)가 있을 때 목록 조회
 	List<PaymentVO> selectRefundAllList(@Param("project_idx") int project_idx, @Param("type") String type);
-
+	
+	// 전체 목록 조회
+	List<PaymentVO> selectAllList(int project_idx);
+	
+	// 목록 인원수 조회
+	int selectPaymentListCount(int project_idx);
+	
 	// 발송입력 - 모달창 리스트 조회
 	List<PaymentVO> selectShippingModalList(int payment_idx);
 
@@ -95,5 +101,5 @@ public interface PaymentMapper {
 	
 	// 결제내역 조회
 	PaymentVO selectPaymentDetail(int payment_idx);
-	
+
 }

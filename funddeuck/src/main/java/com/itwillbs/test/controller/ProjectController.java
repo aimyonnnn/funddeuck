@@ -344,14 +344,16 @@ public class ProjectController {
 	@GetMapping("projectShipping")
 	public String projectShipping(HttpSession session, Model model) {
 		
+		// 세션 아이디가 존재하지 않을 때 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "");
+			model.addAttribute("msg", "잘못된 접근입니다.");
 			return "fail_back";
 		}
 		
 		int member_idx = projectService.getMemberIdx(sId);
 		
+		// 프로젝트 리스트 출력
 		List<ProjectVO> projectList = projectService.getProjectList(member_idx);
 		model.addAttribute("projectList", projectList);
 		
@@ -370,8 +372,12 @@ public class ProjectController {
 		// 환불승인여부 조회
 		List<Map<String, Object>> refundStatus = paymentService.getRefundList(project_idx);
 		
+		// 목록 인원수 조회
+		int listCount = paymentService.getPaymentListCount(project_idx);
+		
 		data.put("deliveryStatus", deliveryStatus);
 		data.put("refundStatus", refundStatus);
+		data.put("listCount", listCount);
 		
 		return data;
 	}
@@ -381,7 +387,8 @@ public class ProjectController {
 	@PostMapping("shippingList")
 	public List<PaymentVO> shippingList(@RequestParam int project_idx, 
 										@RequestParam(value="filter", required = false) String filter, 
-										@RequestParam(value="type", required = false) String type) {
+										@RequestParam(value="type", required = false) String type,
+										@RequestParam(value="all", required = false) String all) {
 		List<PaymentVO> data = new ArrayList<>();
 		
 		if(filter != null) { // delivery_status(배송상황)가 있을 때 목록 조회
@@ -390,6 +397,9 @@ public class ProjectController {
 		} else if(type != null) { // payment_confirm(환불승인여부)가 있을 때 목록 조회
 			List<PaymentVO> refundAllList = paymentService.getRefundAllList(project_idx, type);
 			data.addAll(refundAllList); 
+		} else if(all != null) { // 전체 목록 조회
+			List<PaymentVO> allList = paymentService.getAllList(project_idx);
+			data.addAll(allList); 
 		}
 		
 		return data;
