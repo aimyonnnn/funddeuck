@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.ProjectService;
+import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.ProjectVO;
 
@@ -37,6 +38,7 @@ public class MakerController {
 	private ProjectService projectService;
 	@Autowired
 	private MemberService memberService;
+	
 	
 	// 메이커 등록 페이지
 	@GetMapping("projectMaker")
@@ -174,10 +176,6 @@ public class MakerController {
 
 	        // 본인의 메이커인지 여부를 체크
 	        boolean isMyMaker = loggedInMakerIdx != null && maker_idx != null && loggedInMakerIdx.equals(maker_idx);
-	        
-	        // 메이커로 프로젝트 리스트 조회
-	        List<ProjectVO> pList = projectService.getAllProjectByMakerIdx(maker_idx);
-	        model.addAttribute("pList", pList);
 
 	        // 메이커 정보를 가져오고, 해당 정보가 없는 경우 예외 처리
 	        MakerVO maker = makerService.getMakerInfo(isMyMaker ? loggedInMakerIdx : maker_idx);
@@ -186,9 +184,17 @@ public class MakerController {
 	            return "fail_back";
 	        }
 	        
+	        // 프로젝트 리스트 조회
+	        List<ProjectVO> pList = projectService.getAllProjectByMakerIdx(maker_idx);
+	        model.addAttribute("pList", pList);
+	        // 메이커 공지사항 리스트 조회
+	        List<MakerBoardVO> mList = projectService.getMakerBoardList(maker_idx);
+	        model.addAttribute("mList", mList);
+	        
 	        model.addAttribute("maker", maker);
 	        model.addAttribute("member_idx", member_idx);
 	        model.addAttribute("isMyMaker", isMyMaker); // 본인의 메이커인지 여부를 모델에 추가
+	        
 	    } else {
 	    	
 	    	// 로그인 안했을 때 파라미터에 maker_idx가 없는 경우
@@ -200,6 +206,7 @@ public class MakerController {
 	        } else {
 	        	MakerVO maker = makerService.getMakerInfo(maker_idx);
 	        	model.addAttribute("maker", maker);
+	        	
 	        }
 	    	
 	    }
@@ -323,7 +330,57 @@ public class MakerController {
 	    } else {
 	        return "fail";
 	    }
-	} // deleteFile
+	}
+	
+	// MakerDeatil - 공지사항 작성하기
+	@PostMapping("makerBoardWritePro")
+	public String makerBoardWritePro(MakerBoardVO makerBoard, Model model, HttpSession session, HttpServletRequest request) {
+		String uploadDir = "/resources/upload"; 
+		String saveDir = session.getServletContext().getRealPath(uploadDir);
+		String subDir = "";
+		
+		try {
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			subDir = sdf.format(date);
+			saveDir += "/" + subDir;
+			Path path = Paths.get(saveDir);
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		MultipartFile mFile1 = makerBoard.getFile1();
+		String uuid = UUID.randomUUID().toString();
+		makerBoard.setMaker_board_file1("");
+		String fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
+		
+		if(!mFile1.getOriginalFilename().equals("")) {
+			makerBoard.setMaker_board_file1(subDir + "/" + fileName1);
+		}
+		System.out.println("실제 업로드 파일명1 : " + makerBoard.getMaker_board_file1());
+		// -----------------------------------------------------------------------------------
+		int insertCount = projectService.registMakerBoard(makerBoard);
+		if(insertCount > 0) { // 성공
+			try {
+				if(!mFile1.getOriginalFilename().equals("")) {
+					mFile1.transferTo(new File(saveDir, fileName1));
+				}
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String targetURL = "makerDetail?maker_idx=" + makerBoard.getMaker_idx();
+			model.addAttribute("msg", "공지사항 작성이 성공적으로 완료되었습니다!");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
+		} else { // 실패
+			model.addAttribute("msg", "공지사항 작성이 실패하였습니다.");
+			return "fail_back";
+		}
+	}
+	
 	
 	
 	

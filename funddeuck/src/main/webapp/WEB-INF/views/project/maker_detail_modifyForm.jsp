@@ -51,9 +51,35 @@
 						data-tab="tab2">메이커정보 수정하기</button>
 				</div>
 
-				<!-- 프로젝트 리스트 출력 -->
+				<!-- 공지사항 작성하기 -->
 				<div class="content-area" id="tab1">
-					
+				<!-- 폼 태그 -->
+				<form action="makerBoardWritePro" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="maker_idx" value="${maker.maker_idx}">
+					<table class="table text-center">
+						<tr>
+							<th>제목</th>
+							<td><input type="text" name="maker_board_subject" id="maker_board_subject" class="form-control"></td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td>
+								<textarea cols="10" rows="10" name="maker_baord_content" id="maker_baord_content" class="form-control"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<th>첨부파일</th>
+							<td><input type="file" name="file1"></td>
+						</tr>
+					</table>
+					<div class="d-flex justify-content-center">
+						<input type="submit" value="글 등록하기" class="btn btn-outline-primary">
+					</div>
+				</form>
+				<!-- 폼 태그 -->
+
+				<!-- ======================================================================================================= -->
+
 				</div>
 				<!-- 메이커 정보 -->
 				<div class="content-area" id="tab2">
@@ -139,28 +165,38 @@
 </div>
 
 <script>
-// 페이지 로드 후에 tab2에 active
+
+//탭 버튼 클릭 시
 $(document).ready(function() {
+	
 	$("#tab2").addClass("active");
 	$(".tab-button").click(function() {
+		
 		var tabId = $(this).data("tab");
 		$(".content-area").removeClass("active");
 		$("#" + tabId).addClass("active");
+		
 	});
+	
 });
+
 // 탭 버튼 클릭시 active 효과
 $(document).ready(function() {
+	
 	// 버튼1 클릭 시
 	$(".tab-button[data-tab='tab1']").click(function() {
 		$(".tab-button[data-tab='tab2']").removeClass("active");
 		$(".tab-button[data-tab='tab1']").addClass("active");
 	});
+	
 	// 버튼2 클릭 시
 	$(".tab-button[data-tab='tab2']").click(function() {
 		$(".tab-button[data-tab='tab1']").removeClass("active");
 		$(".tab-button[data-tab='tab2']").addClass("active");
 	});
+	
 });
+
 // 파일 실시간 삭제
 function deleteFile(maker_idx, fileName, fileNumber) {
 	

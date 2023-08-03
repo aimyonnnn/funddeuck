@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.test.mapper.ProjectMapper;
+import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.ProjectVO;
 import com.itwillbs.test.vo.RewardVO;
@@ -128,28 +129,37 @@ public class ProjectService {
 		return mapper.selectAllProjectByMakerIdx(maker_idx);
 	}
 	
-	//---------main page------------
-		// ranking system
-	 	public List<ProjectVO> getTop10ProjectsByEndDate() {
-	        return mapper.selectTop10ProjectsByEndDate();
-	    }
-		// show all project
-		public List<ProjectVO> getAllProjects(){
-			return mapper.getAllProjects();
-		}
-		
-		// random
-	    public List<ProjectVO> getRandomProjects() {
-	        List<ProjectVO> allProjects = mapper.getAllProjects();
-	        if (allProjects.size() > 6) {
-	            Collections.shuffle(allProjects, new Random(System.currentTimeMillis())); // 리스트를 랜덤하게 섞음
-	            return allProjects.subList(0, 6); 
-	        } else {
-	            return allProjects; 
-	        }
-	    }
-		
-		
+	// 메이커 게시판 공지사항 작성하기
+    public int registMakerBoard(MakerBoardVO makerBoard) {
+		return mapper.insertMakerBoard(makerBoard);
+	}
+	
+    // 메이커 공지사항 리스트 조회
+    public List<MakerBoardVO> getMakerBoardList(Integer maker_idx) {
+    	return mapper.selectMakerBoardList(maker_idx);
+    }
+    
+	// ranking system
+ 	public List<ProjectVO> getTop10ProjectsByEndDate() {
+        return mapper.selectTop10ProjectsByEndDate();
+    }
+ 	
+	// show all project
+	public List<ProjectVO> getAllProjects(){
+		return mapper.getAllProjects();
+	}
+	
+	// random
+    public List<ProjectVO> getRandomProjects() {
+        List<ProjectVO> allProjects = mapper.getAllProjects();
+        if (allProjects.size() > 6) {
+            Collections.shuffle(allProjects, new Random(System.currentTimeMillis())); // 리스트를 랜덤하게 섞음
+            return allProjects.subList(0, 6); 
+        } else {
+            return allProjects; 
+        }
+    }
+    
 		
 		
 		
