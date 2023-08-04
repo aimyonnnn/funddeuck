@@ -36,15 +36,18 @@ public class NotificationController {
 	@ResponseBody
 	public String saveNotify(
 			@RequestParam("target") String target,
+			@RequestParam("subject") String subject,
             @RequestParam("content") String content,
             @RequestParam("type") String type,
             @RequestParam("url") String url) {
+		
+		System.out.println("출력 테스트 : " + subject);
 		
 	    // 메시지를 받는 회원 아이디가 존재하는지 판별해야함
 		// 파라미터 - 회원 아이디(target)
 		MembersVO member = memberService.isCorrectMember(target);
 		if(member != null) {
-			int insertCount = service.registNotification(target, content);
+			int insertCount = service.registNotification(target, subject, content);
 			if(insertCount > 0) { return "true"; } return "false";
 		} 
 		return "false";

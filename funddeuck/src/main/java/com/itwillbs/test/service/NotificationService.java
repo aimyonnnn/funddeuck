@@ -15,8 +15,8 @@ public class NotificationService {
 	private NotificationMapper mapper;
 	
 	// 저장
-	public int registNotification(String target, String content) {
-		return mapper.insertNotification(target, content);
+	public int registNotification(String target, String subject, String content) {
+		return mapper.insertNotification(target, subject, content);
 	}
 	// 갯수 조회
 	public int getNotificationCount(String member_id) {

@@ -200,14 +200,14 @@ public class AdminController {
 			
 			// 결제url이 담긴 메시지 보내기
 			// 메세지함에서 해당 url 클릭 시 결제 페이지로 이동함
-			int insertCount = notificationService.registNotification(memberId, notification);
-			if(insertCount > 0) { // 메시지 보내기 성공 시
-				
-				// 프로젝트 승인 상태를 48시간 후에 체크하는 작업 예약
-				adminService.scheduleCheckApproval(project_idx, memberId);
-				
-				return "true";
-			}
+//			int insertCount = notificationService.registNotification(memberId, notification);
+//			if(insertCount > 0) { // 메시지 보내기 성공 시
+//				
+//				// 프로젝트 승인 상태를 48시간 후에 체크하는 작업 예약
+//				adminService.scheduleCheckApproval(project_idx, memberId);
+//				
+//				return "true";
+//			}
 			
 		} 
 		return "false";

@@ -59,10 +59,10 @@ public class AdminService {
 					e.printStackTrace();
 				}
 				
-				int insertCount = notificationService.registNotification(target, notification);
-				if(insertCount > 0) {
-					logger.info("■■■■■ 프로젝트 거절 메시지 발송 성공");
-				}
+//				int insertCount = notificationService.registNotification(target, notification);
+//				if(insertCount > 0) {
+//					logger.info("■■■■■ 프로젝트 거절 메시지 발송 성공");
+//				}
 			}
 //		}, 48, TimeUnit.HOURS);
 			// 테스트용

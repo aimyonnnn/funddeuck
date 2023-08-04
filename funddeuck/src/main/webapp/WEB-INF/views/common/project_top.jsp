@@ -126,11 +126,15 @@ function exit() {
 <script type="text/javascript">
 $(() => {
     $('#notifySendBtn').click(function(e) {
+    	
         let modal = $('.modal-content').has(e.target);
         let type = 'message';
-        let target = modal.find('.modal-body input').val();
+        let target = modal.find('.modal-body input[id="notifyId"]').val();
+        let subject = modal.find('.modal-body input[id="message-subject"]').val();
         let content = modal.find('.modal-body textarea').val();
         let url = '<c:url value="confirmNotification"/>';
+        
+        console.log(subject);
 
         // db저장을 위한 ajax요청	
         $.ajax({
@@ -138,6 +142,7 @@ $(() => {
             url: '<c:url value="saveNotification"/>',
             data: {
                 target: target,
+                subject: subject,
                 content: content,
                 type: type,
                 url: url
@@ -168,7 +173,7 @@ $(() => {
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="pointModalLabel">관리자 피드백</h5>
+                <h5 class="modal-title" id="notifyModalLabel">관리자 피드백</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -176,6 +181,10 @@ $(() => {
                     <div class="mb-3">
                         <label for="notifyId" class="form-label">받는 사람</label>
                         <input type="text" class="form-control mb-2" id="notifyId" placeholder="메이커 아이디를 입력해주세요">
+                        
+                        <label for="message-subject" class="form-label">제목</label>
+                        <input type="text" class="form-control mb-2" id="message-subject" placeholder="제목을 입력해주세요">
+                        
                         <label for="message-text" class="form-label">내용</label>
                         <textarea class="form-control" id="message-text" cols="10" rows="5" placeholder="메이커에게 전달할 피드백 메시지를 작성해주세요"></textarea>
                     </div>
