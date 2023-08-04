@@ -55,12 +55,19 @@
 	
 	</insert>	
 	
-	<!-- 계좌 정보 조회 -->
+	<!-- 계좌 정보 조회(핀테크이용번호 일치 여부 확인) -->
 	<select id="selectBankAccount" resultType="com.itwillbs.test.vo.BankAccountVO">
 		SELECT *
 			FROM bankAccount
 				WHERE member_idx = #{member_idx}
 					AND fintech_use_num = #{bankAccount.fintech_use_num}
+	</select>
+	
+	<!-- 계좌 정보 조회 -->
+	<select id="selectBankAccountInfo" resultType="com.itwillbs.test.vo.BankAccountVO">
+		SELECT *
+			FROM bankAccount
+				WHERE member_idx = #{member_idx}
 	</select>
 	
 	

@@ -211,7 +211,7 @@ public class BankController {
 				}
 				logger.info("●●●●● 제일 최근 조회서비스 동의 계좌: " + mostRecentBankAccount);
 				
-				// 계좌정보 있는지 조회
+				// 핀테크이용번호가 일치하는 계좌정보 있는지 조회
 				BankAccountVO bankAccount = bankService.getBankAccount(member_idx, mostRecentBankAccount);
 				
 				boolean isRegistAccountSuccess = false;

@@ -215,18 +215,18 @@
 					<div class="row m-2 p-2 border">
 					<!-- 계좌있을경우 가져오기 -->
 						<div class="row" id="paymentMethodForm">
-							<c:if test="${not empty token }">
+							<c:if test="${not empty bankAccount }">
 								<div class="col-12">
 									<span class="fs-6 fw-bold">은행명</span>&nbsp;&nbsp;
-									<span class="fs-6">${token.bank_name}</span>
+									<span class="fs-6">${bankAccount.bank_name}</span>
 								</div>
 								<div class="col-12">
 									<span class="fs-6 fw-bold">예금주명</span>&nbsp;&nbsp;
-									<span class="fs-6">${token.account_holder_name}</span>
+									<span class="fs-6">${bankAccount.account_holder_name}</span>
 								</div>
 								<div class="col-12">
 									<span class="fs-6 fw-bold">계좌번호</span>&nbsp;&nbsp;
-									<span class="fs-6">${token.account_num_masked}</span>
+									<span class="fs-6">${bankAccount.account_num_masked}</span>
 								</div>								
 							</c:if>
 							<input class="btn btn-primary" type="button" value="계좌인증" id="btnAccountAuth">

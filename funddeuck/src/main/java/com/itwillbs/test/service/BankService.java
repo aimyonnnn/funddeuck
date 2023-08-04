@@ -50,9 +50,14 @@ public class BankService {
 		}
 	}
 	
-	// 계좌 정보 조회
+	// 계좌 정보 조회(핀테크이용번호 일치 여부 확인)
 	public BankAccountVO getBankAccount(int member_idx, BankAccountVO mostRecentBankAccount) {
 		return mapper.selectBankAccount(member_idx, mostRecentBankAccount);
+	}
+	
+	// 계좌 정보 조회
+	public BankAccountVO getBankAccountInfo(int member_idx) {
+		return mapper.selectBankAccountInfo(member_idx);
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.*;
 import javax.servlet.http.*;
 
 import org.json.JSONObject;
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
@@ -28,6 +29,13 @@ public class FundingController {
 	private DeliveryService deliveryService;
 	@Autowired
 	private CouponService couponService;
+	@Autowired
+	private BankService bankService;
+	@Autowired
+	private BankApiService bankApiService;
+	
+	// 로그 출력을 위한 변수 선언
+	private static final Logger logger = LoggerFactory.getLogger(FundingController.class);
 	
 	// 펀딩 탐색 페이지
 	@GetMapping("fundingDiscover")
@@ -140,7 +148,7 @@ public class FundingController {
 		}
 		
 		// member_idx 조회
-		int member_idx = projectService.getMemberIdx(sId);
+		int member_idx = member.getMember_idx();
 		// 회원의 쿠폰 목록 중 미사용 쿠폰 목록만 조회
 		List<CouponVO> couponList = couponService.getCouponsByMemberAndStatus(member_idx, 0);
 		System.out.println("회원이 보유한 미사용 쿠폰 목록 : " + couponList);
@@ -148,7 +156,38 @@ public class FundingController {
 			model.addAttribute("couponList", couponList);
 		}
 		
-		
+		// 회원의 계좌정보 조회
+		BankAccountVO bankAccount = bankService.getBankAccountInfo(member_idx);
+		System.out.println("bankAccount : " + bankAccount);
+		if(bankAccount != null) {
+			// DB에 저장된 회원의 토큰정보 확인
+			ResponseTokenVO token = bankService.getTokenInfo(member_idx);
+			if(token != null) { // 토큰의 정보가 있다면 => 계좌 조회
+				// 엑세스토큰과 사용자번호 저장
+				String access_token = token.getAccess_token();
+				logger.info("●●●●● userInfo : " + access_token);
+				String user_seq_no = token.getUser_seq_no();
+				logger.info("●●●●● userInfo : " + user_seq_no);
+				// 핀테크 이용자 정보 조회(API)
+				ResponseUserInfoVO userInfo = bankApiService.requestUserInfo(access_token, user_seq_no); 
+				logger.info("●●●●● userInfo : " + userInfo);
+				
+				String fintech_use_num = bankAccount.getFintech_use_num();
+				// userInfo 중 핀테크이용번호가 일치하는 정보 조회
+				List<BankAccountVO> bankAccountList = userInfo.getRes_list();
+				for(BankAccountVO account : bankAccountList) {
+					if (account.getFintech_use_num().equals(fintech_use_num)) {
+						bankAccount = account;
+					}
+				}
+				System.out.println("bankAccount : " +bankAccount);
+				
+				
+			}
+			// 계좌 정보
+			model.addAttribute("bankAccount", bankAccount);
+			
+		}
 		// 회원 정보
 		model.addAttribute("member", member);
 		// 프로젝트 정보
