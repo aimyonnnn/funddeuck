@@ -400,15 +400,22 @@
 				maker_board_regdate desc	
 	</select>
 	
-	
 	<!--  ranking system  -->
 	<select id="selectTop10ProjectsByEndDate" resultType="com.itwillbs.test.vo.ProjectVO"> 
-	SELECT * FROM project ORDER BY project_end_date LIMIT 10 
+		SELECT * FROM project ORDER BY project_end_date LIMIT 10 
 	</select>
 	
 	<!--  show all project  -->
 	<select id="getAllProjects" resultType="com.itwillbs.test.vo.ProjectVO"> 
-	SELECT * FROM project 
+		SELECT * FROM project 
+	</select>
+	
+	<!-- 프로젝트 승인상태 조회 -->
+	<select id="selectProjectStatus">
+		select project_approve_status
+			from project
+		where
+			project_approve_status = 2
 	</select>
 	
 </mapper>

@@ -119,6 +119,9 @@ public interface ProjectMapper {
 	
 	//ranking system
 	List<ProjectVO> selectTop10ProjectsByEndDate();
+	
+	// 프로젝트 승인상태 조회
+	int selectProjectStatus(int project_idx);
 		
 		
 			

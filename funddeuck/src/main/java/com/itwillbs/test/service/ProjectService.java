@@ -134,31 +134,36 @@ public class ProjectService {
 		return mapper.insertMakerBoard(makerBoard);
 	}
 	
+    // ranking system
+    public List<ProjectVO> getTop10ProjectsByEndDate() {
+    	return mapper.selectTop10ProjectsByEndDate();
+    }
+    
+    // show all project
+    public List<ProjectVO> getAllProjects(){
+    	return mapper.getAllProjects();
+    }
+    
+    // random
+    public List<ProjectVO> getRandomProjects() {
+    	List<ProjectVO> allProjects = mapper.getAllProjects();
+    	if (allProjects.size() > 6) {
+    		Collections.shuffle(allProjects, new Random(System.currentTimeMillis())); // 리스트를 랜덤하게 섞음
+    		return allProjects.subList(0, 6); 
+    	} else {
+    		return allProjects; 
+    	}
+    }
+    
     // 메이커 공지사항 리스트 조회
     public List<MakerBoardVO> getMakerBoardList(Integer maker_idx) {
     	return mapper.selectMakerBoardList(maker_idx);
     }
     
-	// ranking system
- 	public List<ProjectVO> getTop10ProjectsByEndDate() {
-        return mapper.selectTop10ProjectsByEndDate();
-    }
- 	
-	// show all project
-	public List<ProjectVO> getAllProjects(){
-		return mapper.getAllProjects();
+    // 프로젝트 승인상태 조회
+	public int getProjectStatus(int project_idx) {
+		return mapper.selectProjectStatus(project_idx);
 	}
-	
-	// random
-    public List<ProjectVO> getRandomProjects() {
-        List<ProjectVO> allProjects = mapper.getAllProjects();
-        if (allProjects.size() > 6) {
-            Collections.shuffle(allProjects, new Random(System.currentTimeMillis())); // 리스트를 랜덤하게 섞음
-            return allProjects.subList(0, 6); 
-        } else {
-            return allProjects; 
-        }
-    }
     
 		
 		

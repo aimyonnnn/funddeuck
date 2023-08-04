@@ -189,6 +189,9 @@
                         </div>
                     </form>
                 </div>
+                
+                <div style="width: 100%; height: 10px;"></div>
+                
                 <!-- 리워드 설계 끝-->
             </article>
         </section>
@@ -196,6 +199,7 @@
         
         <!-- 오른쪽 네비게이션 -->
         <aside id="aisdeRight">
+        
             <!-- 관리자 피드백 -->
             <div class="admin-feedback">
                 <div class="admin-title">
@@ -210,7 +214,7 @@
                     </div>
                 </div>
                 
-                <!--  -->
+                <!-- 리워드 리스트  -->
                 <div class="admin-title mt-5">
                     리워드 리스트
                 </div>
@@ -220,6 +224,19 @@
                 <div id="rewardContainer">
                     <!-- 이 부분은 리워드 리스트가 출력될 컨테이너입니다. -->
                 </div>
+                
+                <!-- 프로젝트 승인요청 버튼 -->
+                 <div class="admin-title mt-5">
+                    프로젝트 승인요청
+                 </div> 
+                 <div class="admin-content">
+                   	리워드 등록까지 완료해야 관리자에게 프로젝트 승인요청을 할 수 있습니다.
+                   	<div class="alert alert-danger mt-2" role="alert">
+                   		 <i class="fas fa-exclamation-circle"></i>&nbsp;<button class="btn btn-outline-danger btn-sm" 
+                   		 onclick="projectApprovalRequestBtn()">프로젝트 승인요청 하기</button>
+					</div>
+                 </div>
+                
             </div>
         </aside>
         <!-- 오른쪽 네비게이션 끝 -->
@@ -339,7 +356,7 @@ function saveReward() {
 				// =====================================================
 					
 				// 관리자에게 프로젝트 승인 요청하기
-				let confirmation = confirm('관리자에게 프로젝트 승인 요청을 하시겠습니까?');
+				let confirmation = confirm('프로젝트 승인 요청을 하시겠습니까?');
 	
 				if(confirmation) {
 					
@@ -357,7 +374,7 @@ function saveReward() {
 							if(data.trim() == 'true') {
 								alert('승인 요청이 완료되었습니다.');
 							} else {
-								alert('승인 요청에 실패하였습니다.');
+								alert('리워드 등록까지 완료해야 프로젝트 승인요청을 할 수 있습니다.');
 							}
 							
 						},
@@ -381,6 +398,38 @@ function saveReward() {
 		    }
 		}); // ajax
 	}
+}
+
+// 프로젝트 승인요청 하기 클릭 시
+function projectApprovalRequestBtn(){
+	
+	if(confirm('프로젝트 승인 요청을 하시겠습니까?')) {
+		
+		$.ajax({
+			type: "post",
+			url: "<c:url value='approvalRequest'/>",
+			data: {
+				project_idx: ${project_idx}
+			},
+			dataType: 'text',
+			success: data => {
+				
+				if(data.trim() == 'true') {
+					alert('승인 요청이 완료되었습니다.');
+				} else if(data.trim() == 'false') {
+					alert('리워드 등록까지 완료해야 프로젝트 승인요청을 할 수 있습니다.');
+				} else {
+					alert('이미 승인요청이 완료된 프로젝트 입니다. 승인 완료까지 최대 3일이 소요됩니다.');
+				}
+				
+			},
+			error: () => {
+				console.log('ajax 요청이 실패하였습니다.')
+			}
+		});
+		
+	}
+	
 }
 	
 // 리워드 수정 페이지 이동
