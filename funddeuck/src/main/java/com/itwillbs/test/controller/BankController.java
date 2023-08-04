@@ -56,27 +56,80 @@ public class BankController {
 		// member_idx 조회
 		String sId = (String) session.getAttribute("sId");
 		int member_idx = projectService.getMemberIdx(sId);
-		System.out.println("member_idx : " + member_idx);
 		
-		// 토큰을 DB에 저장
-		boolean isRegistSuccess = bankService.registToken(member_idx, responseToken);
+		// DB에 저장된 토큰 정보 확인
+		ResponseTokenVO existingToken = bankService.getTokenInfo(member_idx);
 		
-		if(isRegistSuccess) {
+		boolean isRegistSuccess = false;
+		boolean isUpdateSuccess = false;
+		
+		// 저장된 토큰이 없거나 만료된 경우 새로운 토큰을 저장하고, 이미 저장된 토큰이 있다면 업데이트
+		if (existingToken == null) {
+			// 토큰을 DB에 저장
+			isRegistSuccess = bankService.registToken(member_idx, responseToken);
+		} else {
+			// 토큰을 DB에 업데이트
+			isUpdateSuccess = bankService.updateTokenInfo(member_idx, responseToken);
+		}
+		
+		if(isRegistSuccess || isUpdateSuccess) {
 			// 세션 객체에 엑세스토큰(access_token)과 사용자번호(user_seq_no) 저장
 			session.setAttribute("access_token", responseToken.getAccess_token());
 			session.setAttribute("user_seq_no", responseToken.getUser_seq_no());
 			
-
 			model.addAttribute("msg", "계좌인증 완료!");
-			model.addAttribute("token_idx", responseToken.getToken_idx());
-			model.addAttribute("isClose", true);
 			
-			return "bank_success_forward";
+			// 계좌인증 완료 후 해당 회원의 토큰정보조회
+			ResponseTokenVO token = bankService.getTokenInfo(member_idx);
+			logger.info("●●●●● token : " + token);
+			if(token != null) { // 토큰 정보 존재시
+				// 엑세스토큰과 사용자번호 저장
+				String access_token = token.getAccess_token();
+				logger.info("●●●●● userInfo : " + access_token);
+				String user_seq_no = token.getUser_seq_no();
+				logger.info("●●●●● userInfo : " + user_seq_no);
+				// 핀테크 이용자 정보 조회
+				ResponseUserInfoVO userInfo = bankApiService.requestUserInfo(access_token, user_seq_no); 
+				logger.info("●●●●● userInfo : " + userInfo);
+				System.out.println(userInfo);
+				// BankAccountVO 중에 조회서비스 동의일시(inquiry_agree_dtime)가 제일 최근인 계좌 가져오기
+				List<BankAccountVO> bankAccountList = userInfo.getRes_list();
+				BankAccountVO mostRecentBankAccount = null;
+				for(BankAccountVO bankAccount : bankAccountList) {
+					
+				    // mostRecentBankAccount 변수 초기화
+				    if (mostRecentBankAccount == null) {
+				        mostRecentBankAccount = bankAccount;
+				    } else {
+				        // 가장 최근의 조회서비스 동의일시를 찾기 위해 inquiry_agree_dtime 비교
+				        Date mostRecentDateTime = mostRecentBankAccount.getInquiry_agree_dtime();
+				        Date currentDateTime = bankAccount.getInquiry_agree_dtime();
+
+				        if (currentDateTime.after(mostRecentDateTime)) {
+				            mostRecentBankAccount = bankAccount;
+				        }
+				    }
+				}
+			
+				model.addAttribute("mostRecentBankAccount", mostRecentBankAccount);
+				// 토큰 idx 전달 => 필요 ?
+				model.addAttribute("token_idx", responseToken.getToken_idx());
+				model.addAttribute("isClose", true);
+				
+				return "bank_success_forward";
+			} else {
+				model.addAttribute("msg", "오류 발생! 다시 인증하세요!");
+				model.addAttribute("isClose", true);
+				
+				return "bank_fail_back";
+			}
+			
 		} else {
-			model.addAttribute("msg", "토큰 등록 오류 발생! 다시 인증하세요!");
-			model.addAttribute("isClose", true);
-			
-			return "bank_fail_back";
+		model.addAttribute("msg", "오류 발생! 다시 인증하세요!");
+		model.addAttribute("isClose", true);
+		
+		return "bank_fail_back";
+		
 		}
 	}
 	
@@ -167,7 +220,6 @@ public class BankController {
 				model.addAttribute("isClose", true);
 				
 				return "bank_fail_back";
-				
 			}
 			
 		} else {

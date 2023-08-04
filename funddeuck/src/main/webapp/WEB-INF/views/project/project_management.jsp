@@ -470,23 +470,9 @@
 						· 입금이 가능한 계좌인지 확인 후 입력해 주세요.<br>
 						· 저축성 예금 계좌, 외화 예금 계좌, CMA 계좌, 평생 계좌번호(휴대전화 번호) 등은 입금이 불가합니다.
 					</p>
-					<div class="d-flex flex-row">
-						<select class="form-control" name="project_settlement_bank" id="bankCategory">
-							<option value="">은행 선택</option>
-							<option value="산업은행">산업은행</option>
-							<option value="신한은행">신한은행</option>
-							<option value="국민은행">국민은행</option>
-							<option value="농협은행">농협은행</option>
-							<option value="우리은행">우리은행</option>
-							<option value="기업은행">기업은행</option>
-							<option value="KEB하나은행">KEB하나은행</option>
-							<option value="부산은행">부산은행</option>
-							<option value="카카오뱅크">카카오뱅크</option>
-						</select>
-					</div>
-					<input class="form-control mt-1" type="text" name="project_settlement_account" id="bankAccount" placeholder="계좌번호 '-' 없이 숫자만 입력">
-					<input class="form-control mt-1" type="text" name="project_settlement_name" id="bankName" placeholder="예금주명"><br>
-					<button class="btn btn-primary" id="btnAccountAuth">본인 인증</button>
+					<span id="accountAuth">
+						<button class="btn btn-primary" id="btnAccountAuth">본인 인증</button>
+					</span>
 					<input type="hidden" name="token_idx" id="token_idx" value="">
 					</div>
 

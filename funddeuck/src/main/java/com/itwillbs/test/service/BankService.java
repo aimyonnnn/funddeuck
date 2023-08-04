@@ -1,5 +1,8 @@
 package com.itwillbs.test.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,19 @@ public class BankService {
 	// 토큰 정보 조회
 	public ResponseTokenVO getTokenInfo(int member_idx) {
 		return mapper.selectToken(member_idx);
+	}
+
+	// 토큰 갱신
+	public boolean updateTokenInfo(int member_idx, ResponseTokenVO token) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("member_idx", member_idx);
+		paramMap.put("token", token);
+		
+		if(mapper.updateToken(member_idx, token) > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 }

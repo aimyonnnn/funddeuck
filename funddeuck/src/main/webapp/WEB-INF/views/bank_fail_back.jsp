@@ -13,7 +13,7 @@
 	if("${isClose}" == "true") {
 		window.close();		
 	} else {
-		history.back();
+		window.close();	
 	}
 </script>
 </head>

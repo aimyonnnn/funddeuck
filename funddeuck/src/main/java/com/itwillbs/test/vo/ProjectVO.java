@@ -32,6 +32,7 @@ CREATE TABLE project (
     project_settlement_bank varchar(20) NOT NULL COMMENT '정산받을 은행',
     project_settlement_account varchar(30) NOT NULL COMMENT '정산받을 계좌번호',
     project_settlement_name varchar(50) NOT NULL COMMENT '예금주명',
+    project_fintech_use_num varchar(50) NOT NULL COMMENT '핀테크이용번호',
     project_settlement_image varchar(100) NOT NULL COMMENT '통장사본 이미지',
     project_approve_status int NOT NULL COMMENT '프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)',
     project_status int NOT NULL COMMENT '프로젝트 상태 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료',
@@ -69,6 +70,7 @@ public class ProjectVO {
 	private String project_settlement_bank;					// 정산받을 은행
 	private String project_settlement_account;				// 정산받을 계좌번호
 	private String project_settlement_name;					// 예금주명
+	private String project_fintech_use_num;					// 프로젝트 핀테크 이용번호
 	private String project_settlement_image;				// 통장사본 이미지
 	private int project_approve_status;						// 프로젝트 승인 상태
 	private LocalDateTime project_approval_request_time;    // 프로젝트 승인 요청 시간 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)

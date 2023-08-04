@@ -24,4 +24,19 @@
 				WHERE member_idx = #{member_idx}
 			
 	</select>
+	
+	<!-- 토큰 정보 업데이트 -->
+	<update id="updateToken" parameterType="map">
+		UPDATE token
+		SET
+			token_idx = #{token.token_idx},
+			access_token = #{token.access_token},
+			token_type = #{token.token_type},
+			expires_in = #{token.expires_in},
+			refresh_token = #{token.refresh_token},
+			scope = #{token.scope},
+			user_seq_no = #{token.user_seq_no} 
+		WHERE 
+			member_idx = #{member_idx} 
+	</update>
 </mapper>

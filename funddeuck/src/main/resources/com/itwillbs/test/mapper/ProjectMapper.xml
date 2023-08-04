@@ -123,6 +123,7 @@
 				, #{project_settlement_bank}
 				, #{project_settlement_account}
 				, #{project_settlement_name}
+				, #{project_fintech_use_num}	 -- 프로젝트 핀테크 이용번호
 				, #{project_settlement_image}
 				, 1								 -- 프로젝트 승인 상태
 				, 1						         -- 프로젝트 상태

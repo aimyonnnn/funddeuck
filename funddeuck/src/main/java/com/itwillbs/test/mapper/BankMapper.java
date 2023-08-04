@@ -14,4 +14,8 @@ public interface BankMapper {
 	// 토큰 정보 조회
 	ResponseTokenVO selectToken(int member_idx);
 
+	// 재인증 시 토큰 정보를 업데이트
+	Integer updateToken(@Param("member_idx") int member_idx, @Param("token") ResponseTokenVO token);
+
+
 }
