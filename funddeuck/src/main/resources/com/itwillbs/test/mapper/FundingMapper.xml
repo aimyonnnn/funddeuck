@@ -265,7 +265,6 @@
 				, #{project_community_content} -- project_community_content
 				, now()                        -- project_community_regdate
 			)
-				
 	</insert>
 		
 </mapper>

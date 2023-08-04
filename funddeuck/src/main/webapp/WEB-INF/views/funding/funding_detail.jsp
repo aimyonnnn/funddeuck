@@ -80,9 +80,9 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<span class="fs-2">${project.project_amount }</span>&nbsp;
+						<span class="fs-2">${project.project_cumulative_amount }</span>&nbsp;
 						<small>원</small>&nbsp;
-						<span class="fs-5 fw-bold">${project.project_amount/project.project_target * 100 }%</span>
+						<span class="fs-5 fw-bold">${project.project_cumulative_amount/project.project_target * 100 }%</span>
 					</div>
 				</div>
 				<br>
@@ -127,7 +127,7 @@
 					<div class="col">
 						<div class="progress">
 							<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Example with label" 
-							aria-valuenow="${project.project_amount/project.project_target * 100 }" aria-valuemin="0" aria-valuemax="100">${project.project_amount/project.project_target * 100 }%</div>
+							aria-valuenow="${project.project_cumulative_amount/project.project_target * 100 }" aria-valuemin="0" aria-valuemax="100">${project.project_cumulative_amount/project.project_target * 100 }%</div>
 						</div>
 					</div>
 				</div>
@@ -542,7 +542,7 @@ function focusOnReward(){
 
 // 진행 바 값 가져오기
 window.onload = function(){
-	var percentData = '<c:out value="${project.project_amount/project.project_target * 100 }"/>';
+	var percentData = '<c:out value="${project.project_cumulative_amount/project.project_target * 100 }"/>';
 	var a = document.getElementById('progressbar').style.width = percentData + "%";
 	var location = document.querySelector("#focusArea").offsetTop;
 	var category = document.getElementById("categoryVal").value;

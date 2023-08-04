@@ -194,9 +194,9 @@
 						<a href="fundingDetail?project_idx=${project.project_idx }" class="stretched-link"></a>
 					<div class="card-footer bg-white">
 		      			<small class="fw-bold text-success">
-		      			<fmt:formatNumber type="number" maxFractionDigits="0"  value="${project.project_amount/project.project_target * 100 }" />%
+		      			<fmt:formatNumber type="number" maxFractionDigits="0"  value="${project.project_cumulative_amount/project.project_target * 100 }" />%
 		      			</small>&nbsp;
-		      			<small class="opacity-75"><fmt:formatNumber value="${project.project_amount }" pattern="#,###" />원
+		      			<small class="opacity-75"><fmt:formatNumber value="${project.project_cumulative_amount }" pattern="#,###" />원
 		      			<small class="fw-bold float-end">
 			      			<fmt:parseDate value="${project.project_end_date }" var="projectEndDate" pattern="yyyy-MM-dd"/>
 							<fmt:parseNumber value="${projectEndDate.time / (1000*60*60*24)}" integerOnly="true" var="endDate"></fmt:parseNumber>
@@ -207,8 +207,8 @@
 			      		</small></small>
 		        	<div class="progress" style="height: 10px">
 	  					<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example" 
-	  					style="height:10px; width: ${project.project_amount/project.project_target * 100}%" 
-	  					aria-valuenow="${project.project_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div>
+	  					style="height:10px; width: ${project.project_cumulative_amount/project.project_target * 100}%" 
+	  					aria-valuenow="${project.project_cumulative_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div>
 					</div>
 					</div>
 				</div>
@@ -272,6 +272,13 @@ function closeLoading() {
 	  $('#mask, #loadingImg').hide();
 	  $('#mask, #loadingImg').remove(); 
 	}
+	
+//진행 바 값 가져오기
+window.onload = function(){
+	
+	var percentData = "<c:out value='${project.project_cumulative_amount/project.project_target * 100 }'/>";
+	var a = document.getElementById('progressbar').style.width = percentData + "%";
+}
 </script>
 </body>
 </html>
