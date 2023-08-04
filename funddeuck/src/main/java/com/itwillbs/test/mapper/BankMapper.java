@@ -3,7 +3,7 @@ package com.itwillbs.test.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.itwillbs.test.vo.ResponseTokenVO;
+import com.itwillbs.test.vo.*;
 
 @Mapper
 public interface BankMapper {
@@ -16,6 +16,10 @@ public interface BankMapper {
 
 	// 재인증 시 토큰 정보를 업데이트
 	Integer updateToken(@Param("member_idx") int member_idx, @Param("token") ResponseTokenVO token);
-
-
+	
+	// 계좌 정보 저장
+	int insertBankAccount(@Param("member_idx") int member_idx, @Param("bankAccount") BankAccountVO mostRecentBankAccount);
+	
+	// 계좌 정보 조회
+	BankAccountVO selectBankAccount(@Param("member_idx") int member_idx, @Param("bankAccount") BankAccountVO mostRecentBankAccount);
 }

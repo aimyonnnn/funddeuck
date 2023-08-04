@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.test.mapper.BankMapper;
-import com.itwillbs.test.vo.ResponseTokenVO;
+import com.itwillbs.test.vo.*;
 
 @Service
 public class BankService {
@@ -39,6 +39,20 @@ public class BankService {
 		} else {
 			return false;
 		}
+	}
+	
+	// 계좌 정보 저장
+	public boolean registBankAccount(int member_idx, BankAccountVO mostRecentBankAccount) {
+		if(mapper.insertBankAccount(member_idx, mostRecentBankAccount) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	// 계좌 정보 조회
+	public BankAccountVO getBankAccount(int member_idx, BankAccountVO mostRecentBankAccount) {
+		return mapper.selectBankAccount(member_idx, mostRecentBankAccount);
 	}
 	
 }

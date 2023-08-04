@@ -213,9 +213,22 @@
 				<div class="row">
 					<span class="fs-4 fw-bold">결제 수단</span>
 					<div class="row m-2 p-2 border">
+					<!-- 계좌있을경우 가져오기 -->
 						<div class="row" id="paymentMethodForm">
-							<c:if test="${not empty token_idx}">${token_idx }</c:if>
-							
+							<c:if test="${not empty token }">
+								<div class="col-12">
+									<span class="fs-6 fw-bold">은행명</span>&nbsp;&nbsp;
+									<span class="fs-6">${token.bank_name}</span>
+								</div>
+								<div class="col-12">
+									<span class="fs-6 fw-bold">예금주명</span>&nbsp;&nbsp;
+									<span class="fs-6">${token.account_holder_name}</span>
+								</div>
+								<div class="col-12">
+									<span class="fs-6 fw-bold">계좌번호</span>&nbsp;&nbsp;
+									<span class="fs-6">${token.account_num_masked}</span>
+								</div>								
+							</c:if>
 							<input class="btn btn-primary" type="button" value="계좌인증" id="btnAccountAuth">
 						</div>
 					</div>

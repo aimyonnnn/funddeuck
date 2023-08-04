@@ -7,6 +7,8 @@ import lombok.*;
 // 사용자 계좌 1개의 정보 관리하는 클래스 정의
 @Data
 public class BankAccountVO {
+	private int bankAccount_idx; 
+	private int member_idx;
 	private String fintech_use_num; // 핀테크이용번호
 	private String account_alias; // 계좌별명
 	private String bank_code_std; // 출금기관표준코드

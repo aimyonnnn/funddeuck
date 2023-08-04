@@ -29,7 +29,6 @@
 	<update id="updateToken" parameterType="map">
 		UPDATE token
 		SET
-			token_idx = #{token.token_idx},
 			access_token = #{token.access_token},
 			token_type = #{token.token_type},
 			expires_in = #{token.expires_in},
@@ -39,4 +38,30 @@
 		WHERE 
 			member_idx = #{member_idx} 
 	</update>
+	
+	
+	<!-- 계좌 정보 저장 -->
+	<insert id="insertBankAccount">
+		INSERT 
+			INTO bankAccount
+			VALUES (
+				NULL
+				, #{member_idx}
+				, #{bankAccount.fintech_use_num}
+				, #{bankAccount.account_holder_name}
+				, #{bankAccount.bank_name}
+				, #{bankAccount.account_num_masked}
+			)
+	
+	</insert>	
+	
+	<!-- 계좌 정보 조회 -->
+	<select id="selectBankAccount" resultType="com.itwillbs.test.vo.BankAccountVO">
+		SELECT *
+			FROM bankAccount
+				WHERE member_idx = #{member_idx}
+					AND fintech_use_num = #{bankAccount.fintech_use_num}
+	</select>
+	
+	
 </mapper>
