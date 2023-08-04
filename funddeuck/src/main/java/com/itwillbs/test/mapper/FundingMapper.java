@@ -45,5 +45,13 @@ public interface FundingMapper {
 	// 프로젝트 리스트 조회(탐색 페이지)
 	List<ProjectVO> selectFundingList(@Param("category") String category,@Param("status") String status,@Param("index") String index);
 	
+	// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 게시판 정보
+	List<MakerBoardVO> selectMakerBoardInfo(int project_idx);
+
+	// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 커뮤니티 게시물 정보
+	List<ProjectCommunityVO> selectProjectCommunityInfo(int project_idx);
+	
+	// 프로젝트 상세 페이지에서 의견 남기기
+	int insertComment(ProjectCommunityVO projectCommunity);
 	
 }

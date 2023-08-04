@@ -75,4 +75,19 @@ public class FundingService {
 	public List<ProjectVO> getFundingList(@Param("category") String category,@Param("status") String status,@Param("index") String index) {
 		return mapper.selectFundingList(category, status, index);
 	}
+	
+	// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 게시판 정보
+	public List<MakerBoardVO> getMakerBoardInfo(int project_idx) {
+		return mapper.selectMakerBoardInfo(project_idx);
+	}
+
+	// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 커뮤니티 게시물 정보
+	public List<ProjectCommunityVO> getProjectCommunityInfo(int project_idx) {
+		return mapper.selectProjectCommunityInfo(project_idx);
+	}
+	
+	// 프로젝트 상세 페이지에서 의견 남기기
+	public int registComment(ProjectCommunityVO projectCommunity) {
+		return mapper.insertComment(projectCommunity);
+	}
 }

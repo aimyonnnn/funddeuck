@@ -238,5 +238,34 @@
 					</choose>
 				</if>
 	</select>
+
+	<!-- 프로젝트 상세 페이지 이동 시 조회할 프로젝트 게시판 정보 -->
+	<select id="selectMakerBoardInfo" resultType="com.itwillbs.test.vo.MakerBoardVO">
+		SELECT *
+			FROM maker_board
+				WHERE project_idx = #{project_idx}
+	</select>
 	
+	<!-- 프로젝트 상세 페이지 이동 시 조회할 프로젝트 커뮤니티 게시물 정보 -->
+	<select id="selectProjectCommunityInfo" resultType="com.itwillbs.test.vo.ProjectCommunityVO">
+		SELECT *
+			FROM project_community
+				WHERE project_idx = #{project_idx}
+	</select>
+	
+	<!-- 프로젝트 상세 페이지에서 의견 남기기 -->
+	<insert id="insertComment">
+		INSERT 
+			INTO project_community
+			VALUES (
+				null						   -- project_community_idx
+				, #{project_idx}  			   -- project_idx
+				, #{member_id}    			   -- member_id
+				, #{project_community_subject} -- project_community_subject
+				, #{project_community_content} -- project_community_content
+				, now()                        -- project_community_regdate
+			)
+				
+	</insert>
+		
 </mapper>

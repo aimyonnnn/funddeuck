@@ -50,7 +50,8 @@ public class FundingController {
 	// 펀딩 상세페이지 이동
 	@GetMapping ("fundingDetail")
 	public String fundingDetail(Model model
-			, @RequestParam int project_idx 
+			, @RequestParam int project_idx
+			, @RequestParam(defaultValue = "introduce") String category
 			) {
 		
 		// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보
@@ -61,7 +62,41 @@ public class FundingController {
 //		List<RewardVO> reward = fundingService.selectProjectRewardInfo(project_idx);
 //		model.addAttribute(reward);
 		
+		// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 게시판 정보
+		List<MakerBoardVO> makerBoard = fundingService.getMakerBoardInfo(project_idx);
+		model.addAttribute("makerBoard", makerBoard);
+		
+		// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 커뮤니티 게시물 정보
+		List<ProjectCommunityVO> ProjectCommunity = fundingService.getProjectCommunityInfo(project_idx);
+		model.addAttribute("ProjectCommunity", ProjectCommunity);
+		
 		return "funding/funding_detail";
+	}
+	
+	// 프로젝트 상세 페이지에서 의견 남기기
+	@PostMapping("commentWritePro")
+	public String commentWrite(ProjectCommunityVO ProjectCommunity, HttpSession session, HttpServletRequest request, Model model) {
+		
+//		String sId = (String)session.getAttribute("sId");
+//		// 미로그인시
+//    	if(sId == null) {
+//    		model.addAttribute("msg","잘못된 접근입니다.");
+//    		return "fail_back";
+//    	}
+    	
+    	int insertCount = fundingService.registComment(ProjectCommunity);
+    	
+    	// 의견 작성 결과 판별
+    	if(insertCount > 0) {
+    		
+    		// 작성 성공 시"의견이 등록되었습니다" 출력 후 이전 페이지로(실패 아님)
+    		model.addAttribute("msg", "의견이 등록되었습니다.");
+    		return "fail_back";
+    	} else {
+    		
+    		model.addAttribute("msg", "오류 발생!");
+    		return "fail_back";
+    	}
 	}
 	
 	// 펀딩 주문페이지 이동

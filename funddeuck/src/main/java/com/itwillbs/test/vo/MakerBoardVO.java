@@ -24,13 +24,13 @@ create table maker_board (
 
 @Data
 public class MakerBoardVO {
-	private int maker_board_idx;
-	private int maker_idx;
-	private int project_idx;
-	private String maker_board_subject;
-	private String maker_board_content;
-	private Timestamp maker_board_regdate;
-	private String maker_board_file1;
+	private int maker_board_idx;                 // '메이커 게시판 번호'
+	private int maker_idx;                       // '메이커 번호'
+	private int project_idx;                     // '프로젝트 번호'
+	private String maker_board_subject;          // '게시판 제목'
+	private String maker_board_content;          // '게시판 내용'
+	private Timestamp maker_board_regdate;       // '게시판 등록일자'
+	private String maker_board_file1;            // '게시판 첨부파일'
 	// 주의! 폼에서 전달받는 실제 파일 자체를 다룰 MultipartFile 타입 변수 선언도 필요
 	// => 이 때, 멤버변수명은 input type="file" 태그의 name 속성명(파라미터명)과 동일해야함
 	private MultipartFile file1;

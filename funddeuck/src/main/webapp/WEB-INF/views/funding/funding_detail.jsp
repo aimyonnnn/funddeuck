@@ -23,6 +23,8 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 </head>
 <body>
+<!-- 요청 파라미터 값 저장 -->
+<input type="hidden" value="${param.category }" id="categoryVal">
 	<br>
 	<hr>
 	<br>
@@ -180,7 +182,7 @@
 				</div>
 				<!-- 공유, 좋아요, 후원하기 버튼 -->
 				<!-- 화면크기 lg 일 때-->
-				<div class="row d-none d-lg-block">
+				<div class="row d-none d-lg-block" id="focusArea">
 					<div class="col-12 col-lg-auto d-flex justify-content-center">
 						<!-- 공유 -->
 						<button class="btn btn-primary me-2 bg-white border border-secondary border-opacity-25 rounded-0" id="kakao-link-btn" onclick="javascript:kakaoShare()">
@@ -251,14 +253,20 @@
 <!-- 		네비게이션 바 -->
 		<div class="container text-center">
 		  <ul class="nav nav-tabs bg-white">
-		    <li class="nav-item border-dark border-bottom border-4">
-		      <a class="text-dark nav-link active text-decoration-none border border-0 fw-bold" aria-current="page" href="#">프로젝트 소개</a>
+		    <li class="nav-item 
+				<c:if test="${param.category eq 'introduce' or param.category eq null}">border-dark border-bottom border-4</c:if>">
+				<a class="text-dark nav-link text-decoration-none border border-0 fw-bold
+				<c:if test="${param.category ne 'introduce'}">text-opacity-50</c:if>" aria-current="page" href="fundingDetail?project_idx=${param.project_idx }&category=introduce">프로젝트 소개</a>
 		    </li>
-		    <li class="nav-item border border-0">
-		      <a class="text-dark nav-link text-decoration-none border border-0 fw-bold text-opacity-50" href="#">업데이트</a>
+		    <li class="nav-item 
+				<c:if test="${param.category eq 'update'}">border-dark border-bottom border-4</c:if>">
+				<a class="text-dark nav-link text-decoration-none border border-0 fw-bold
+				<c:if test="${param.category ne 'update'}">text-opacity-50</c:if>" href="fundingDetail?project_idx=${param.project_idx }&category=update">업데이트</a>
 		    </li>
-		    <li class="nav-item border border-0">
-		      <a class="text-dark nav-link text-decoration-none border border-0 fw-bold text-opacity-50" href="#">커뮤니티</a>
+		    <li class="nav-item 
+				<c:if test="${param.category eq 'community'}">border-dark border-bottom border-4</c:if>">
+				<a class="text-dark nav-link text-decoration-none border border-0 fw-bold 
+				<c:if test="${param.category ne 'community'}">text-opacity-50</c:if>" href="fundingDetail?project_idx=${param.project_idx }&category=community">커뮤니티</a>
 		    </li>
 		  </ul>
 		</div>	
@@ -266,11 +274,102 @@
 <!-- 		네비게이션 바 끝 -->
 		<div class="container text-center">
 			<div class="row">
+				<!-- 카테고리 - 프로젝트 소개 선택 시 출력 -->
+				<c:if test="${param.category eq 'introduce' or param.category eq null}">
 				<div class="col">
 					<article>
 						<p class="text-justify">${project.project_introduce }</p>
 					</article>
 				</div>
+				</c:if>
+				<!-- 카테고리 - 업데이트 선택 시 게시물이 있을 경우 출력  -->
+				<c:if test="${param.category eq 'update' && not empty makerBoard}">
+					<div class="accordion">
+						<c:forEach items="${makerBoard }" var="makerBoard" varStatus="status">
+						<div class="accordion-item">
+							<h2 class="accordion-header">
+								<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${makerBoard.maker_board_idx }" aria-expanded="false" aria-controls="collapse${makerBoard.maker_board_idx }">
+							<span class="text-dark text-decoration-none">
+								<fmt:formatDate value="${makerBoard.maker_board_regdate }" pattern="yyyy.MM.dd"/>
+							</span>&nbsp;&nbsp;&nbsp;
+								<span class="text-dark text-decoration-none fw-bold">${makerBoard.maker_board_subject }</span>
+								</button>
+							</h2>
+							<div id="collapse${makerBoard.maker_board_idx }" class="accordion-collapse collapse show">
+								<div class="accordion-body">
+									<p class="text-start">${makerBoard.maker_board_content }</p>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+					</div>
+				</c:if>
+				<!-- 카테고리 - 업데이트 선택 시 게시물이 없을 경우 "게시물이 없습니다" 출력 -->
+				<c:if test="${param.category eq 'update' && empty makerBoard}">
+				<div class="col">
+					<article>
+						<h3>
+						<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+						<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg>
+						게시물이 없습니다</h3>
+					</article>
+				</div>
+				</c:if>
+				<!-- 카테고리 - 커뮤니티 선택 시 게시물 작성 폼 추가 -->
+				<!-- 미 로그인시 -->
+				<c:if test="${param.category eq 'community' && empty sessionScope.sId}">
+					<span class="fs-5 fw-bold text-start">응원 · 의견 · 체험리뷰<span class="fs-5 fw-bold text-start text-info">${ProjectCommunity.size() }</span></span><br>
+					<small class="text-start opacity-75">회원님들이 남긴 의견입니다.</small>
+					<div>&nbsp;</div>
+						<div class="mb-3">
+							<textarea class="form-control" disabled readonly placeholder="로그인 하셔야 의견을 작성하실 수 있습니다." rows="3"></textarea>
+						</div>
+					<div>&nbsp;</div>
+					<div>&nbsp;</div>
+				</c:if>
+				<!-- 로그인시 -->
+				<c:if test="${param.category eq 'community' && not empty sessionScope.sId}">
+					<form action="commentWritePro" method="post" name="commentWrite">
+					<input type="hidden" name="member_id" value="작성테스트">
+					<input type="hidden" name="project_idx" value="${param.project_idx }">
+					<span class="fs-5 fw-bold text-start">응원 · 의견 · 체험리뷰<span class="fs-5 fw-bold text-start text-info">${ProjectCommunity.size() }</span></span><br>
+					<small class="text-start opacity-75">회원님들이 남긴 의견입니다.</small>
+					<div>&nbsp;</div>
+						<div class="mb-3">
+  							<textarea name="project_community_subject" class="form-control" aria-label="With textarea" placeholder="제목을 작성해주세요." rows="1"></textarea><br>
+  							<textarea name="project_community_content" class="form-control" aria-label="With textarea" placeholder="의견을 작성해주세요." rows="3"></textarea>
+						</div>
+					<div>&nbsp;</div>
+					<!-- 게시물 작성 버튼 -->
+						<div class="col-lg-12 col-sm-12">
+							<button type="submit" class="btn btn-outline-info float-end" >의견 남기기</button>
+						</div>
+					</form>
+					<div>&nbsp;</div>
+				</c:if>
+				<!-- 카테고리 - 커뮤니티 선택 시 게시물이 있을 경우 리스트 출력  -->
+				<c:if test="${param.category eq 'community' && not empty ProjectCommunity}">
+					<c:forEach items="${ProjectCommunity }" var="ProjectCommunity" varStatus="status">
+						<div class="card border border-0 mb-3">
+							<div class="card-header text-start">${ProjectCommunity.member_id }</div>
+							<div class="card-body">
+							<h5 class="card-title text-start">${ProjectCommunity.project_community_subject }</h5>
+							<p class="card-text text-start">${ProjectCommunity.project_community_content }</p>
+							</div>
+						</div>
+					</c:forEach>
+				</c:if>
+				<!-- 카테고리 - 커뮤니티 선택 시 게시물이 없을 경우 "게시물이 없습니다" 출력 -->
+				<c:if test="${param.category eq 'community' && empty ProjectCommunity}">
+				<div class="col">
+					<article>
+						<h3>
+						<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+						<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg>
+						게시물이 없습니다</h3>
+					</article>
+				</div>
+				</c:if>
 			</div>
 		</div>
 			</div>
@@ -410,9 +509,6 @@
 	  // SDK 초기화
 	  Kakao.init('86b7cd36bb5e30664d978742e039e68a');
 	
-	  // SDK 초기화 여부 판단
-	  console.log(Kakao.isInitialized());
-	
 	  function kakaoShare() {
 	    Kakao.Link.sendDefault({
 	      objectType: 'feed',
@@ -439,7 +535,6 @@
 	    })
 	  }
 // --------------------------------------------------------------------
-
 // 후원하기 버튼 클릭 시 리워드 선택 영역으로 화면 이동
 function focusOnReward(){
 	document.getElementById('rewardSelect').scrollIntoView();
@@ -449,7 +544,15 @@ function focusOnReward(){
 window.onload = function(){
 	var percentData = '<c:out value="${project.project_amount/project.project_target * 100 }"/>';
 	var a = document.getElementById('progressbar').style.width = percentData + "%";
+	var location = document.querySelector("#focusArea").offsetTop;
+	var category = document.getElementById("categoryVal").value;
+	
+	// 카테고리 선택 시 자동 포커스 이동
+	if(category != ""){
+		window.scrollTo({top:location, behavior:'instant'});
+	}
 }
+
 </script>
 <br>
 <jsp:include page="../Footer.jsp"></jsp:include>

@@ -233,6 +233,7 @@ function chageLangSelect(){
     location.href = "fundingDiscover?category=" + category + "&status=" + status + "&index=" + index;
 }
 
+// 페이지 로딩 스크립트
 $(function() {
 
 	Loading();	
@@ -266,6 +267,7 @@ function Loading() {
     $('#loadingImg').show();
 }
 
+// 페이지 로딩 종료
 function closeLoading() {
 	  $('#mask, #loadingImg').hide();
 	  $('#mask, #loadingImg').remove(); 
