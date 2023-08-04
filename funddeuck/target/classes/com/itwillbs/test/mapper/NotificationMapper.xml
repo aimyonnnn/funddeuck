@@ -109,6 +109,10 @@
 			<if test="!searchKeyword.equals('')">
 				<!-- 2. 검색타입(searchType)에 따른 WHERE 절 조건 대상 변경 -->
 				<choose>
+					<when test="searchType.equals('subject')">
+						notification_subject LIKE '%${searchKeyword}%'
+							and
+					</when>
 					<when test="searchType.equals('content')">
 						notification_content LIKE '%${searchKeyword}%'
 							and
@@ -129,12 +133,26 @@
   			from notification -- 동적 SQL문
 		WHERE
 			<if test="!searchKeyword.equals('')">
-				<if test="searchType.equals('content')">
-					notification_content LIKE '%${searchKeyword}%'
-						and
-				</if>
+				<choose>
+					<when test="searchType.equals('subject')">
+						notification_subject LIKE '%${searchKeyword}%'
+							and
+					</when>
+					<when test="searchType.equals('content')">
+						notification_content LIKE '%${searchKeyword}%'
+							and
+					</when>
+				</choose>
 			</if>
 				member_id = #{sId}
+  	</select>
+  	
+  	<!-- 메시지 정보 조회 -->
+  	<select id="selectNotificationInfo">
+  		select *
+  			from notification
+  		where
+  			notification_idx = #{notification_idx}
   	</select>
   	
 </mapper>

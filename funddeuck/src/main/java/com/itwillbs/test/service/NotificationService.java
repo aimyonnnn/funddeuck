@@ -58,5 +58,9 @@ public class NotificationService {
 	public int getTotalListCountById(String searchType, String searchKeyword, String sId) {
 		return mapper.selectTotalListCountById(searchType, searchKeyword, sId);
 	}
+	// 메시지 정보 조회
+	public NotificationVO getNotificationInfo(int notification_idx) {
+		return mapper.selectNotificationInfo(notification_idx);
+	}
 	
 }

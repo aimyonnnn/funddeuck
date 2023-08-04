@@ -64,4 +64,7 @@ public interface NotificationMapper {
 			@Param("sId") String sId
 			);
 	
+	// 메시지 정보 조회
+	NotificationVO selectNotificationInfo(int notification_idx);
+	
 }

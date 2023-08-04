@@ -49,20 +49,22 @@ public class AdminService {
 				projectMapper.updateProjectStatus(project_idx, 4); // 프로젝트 상태를 4-승인거절로 변경
 				
 				// 메이커에게 승인이 거절 되었다는 toast 알림 보내기
-				String url = "confirmNotification";
+				String url = "projectReward?project_idx="+project_idx;
 				String target = memberId;
-				String notification = 
-						"<a href='" + url + "' style='text-decoration: none; color: black;'>[프로젝트 거절 알림] 프로젝트 승인이 거절되었습니다. 프로젝트 승인신청을 다시 해주세요.</a>";
+				String subject = "[프로젝트 거절 알림] 프로젝트 승인이 거절되었습니다.";
+				String content = 
+						"<a style='text-decoration: none; color: black;'>프로젝트 요금제 결제를 진행하지 않아 프로젝트 승인이 거절되었습니다. 리워드 등록 페이지에서 프로젝트 승인신청을 다시 해주세요.<a href='" + url + "'> 재승인 하러가기</a></a>";
+				
 				try {
-					echoHandler.sendNotificationToUser(target, notification);
+					echoHandler.sendNotificationToUser(target, content);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				
-//				int insertCount = notificationService.registNotification(target, notification);
-//				if(insertCount > 0) {
-//					logger.info("■■■■■ 프로젝트 거절 메시지 발송 성공");
-//				}
+				int insertCount = notificationService.registNotification(target, subject, content);
+				if(insertCount > 0) {
+					logger.info("■■■■■ 프로젝트 거절 메시지 발송 성공");
+				}
 			}
 //		}, 48, TimeUnit.HOURS);
 			// 테스트용

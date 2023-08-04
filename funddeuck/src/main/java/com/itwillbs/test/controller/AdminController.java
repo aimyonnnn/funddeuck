@@ -188,26 +188,27 @@ public class AdminController {
 		if(updateCount > 0) { 
 			
 			// toast 팝업 알림 보내기
-			String paymnetUrl = "projectPlanPayment?project_idx=" + project_idx;
+			String url = "projectPlanPayment?project_idx=" + project_idx;
+			String subject = "[프로젝트 승인 알림] 프로젝트 승인이 완료되었습니다.";
+			String content = 
+					"<a href='" + url + "'>결제하기</a><a style='text-decoration: none; color: black;'> 링크 클릭 시 요금 결제 페이지로 이동합니다.<br>48시간 안에 결제를 진행하지 않으면 프로젝트가 승인거절 처리 됩니다.</a>";
 			
-			String notification = 
-					"<a href='" + paymnetUrl + "' style='text-decoration: none; color: black;'>[프로젝트 승인 알림] 프로젝트 승인이 완료되었습니다. 48시간 안에 결제를 진행해주세요. 클릭 시 요금 결제 페이지로 이동합니다.</a>";
 			try {
-				echoHandler.sendNotificationToUser(memberId, notification);
+				echoHandler.sendNotificationToUser(memberId, content);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
 			// 결제url이 담긴 메시지 보내기
 			// 메세지함에서 해당 url 클릭 시 결제 페이지로 이동함
-//			int insertCount = notificationService.registNotification(memberId, notification);
-//			if(insertCount > 0) { // 메시지 보내기 성공 시
-//				
-//				// 프로젝트 승인 상태를 48시간 후에 체크하는 작업 예약
-//				adminService.scheduleCheckApproval(project_idx, memberId);
-//				
-//				return "true";
-//			}
+			int insertCount = notificationService.registNotification(memberId, subject, content);
+			if(insertCount > 0) { // 메시지 보내기 성공 시
+				
+				// 프로젝트 승인 상태를 48시간 후에 체크하는 작업 예약
+				adminService.scheduleCheckApproval(project_idx, memberId);
+				
+				return "true";
+			}
 			
 		} 
 		return "false";

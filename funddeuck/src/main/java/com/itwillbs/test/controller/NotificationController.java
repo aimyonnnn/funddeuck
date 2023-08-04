@@ -158,6 +158,15 @@ public class NotificationController {
 		if(deleteCount > 0) { return "true"; } return "false";
 	}
 	
+	// 메시지 정보 조회
+	@PostMapping("getNotificationInfo")
+	@ResponseBody
+	public NotificationVO getNotificationInfo(@RequestParam int notification_idx) {
+		NotificationVO notice = service.getNotificationInfo(notification_idx);
+		return notice;
+	}
+	
+	
 	
 }
 

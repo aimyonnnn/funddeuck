@@ -6,9 +6,9 @@
 <!-- css -->
 <link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
-<!-- jQuery -->
+<!-- jquery -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
-<!-- sockJS -->
+<!-- sockjs -->
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <!-- sweetalert -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
@@ -18,11 +18,14 @@
 var socket = null;
 var member_id = "${sessionScope.sId}";
 
-// 페이지 로딩시 자동으로 호출
-$( () => { getNotificationCount(); });
+// 페이지 로드 후 실행하는 함수 모음
+$(() => {
+	getNotificationCount(); // 알림 갯수 조회하기 
+});
 
 // 알림 갯수 조회하기
 function getNotificationCount() {
+	
     $.ajax({
         type: "get",
         url: "<c:url value='getNotificationCount'/>",
@@ -31,41 +34,45 @@ function getNotificationCount() {
         },
         dataType: "text",
         success: function(data) {   
+        	
        	 	let notificationCount = parseInt(data);
-            if (!isNaN(notificationCount)) {
+       	 	
+            if (!isNaN(notificationCount)) {	// 주어진 값이 숫자가 아니라면 true를 리턴
+            	
                 $("#newNotificationCount").text(notificationCount);
+                
             }
+            
         },
         error: function() {
         }
     });
 }
 	
-$(document).ready(function(){
+$(document).ready(function() {
+	
 	// socket = new SockJS("http://localhost:8080/mvc_board/echo-ws");
     var contextPath = "${pageContext.request.contextPath}";
     var socketUrl = contextPath + "/echo-ws";
     socket = new SockJS(socketUrl);
+    
     // 데이터를 전달 받았을때 
-    socket.onmessage = onMessage; // toast 생성
+    socket.onmessage = onMessage; 	// toast 생성
+    
 });
 
 // toast생성 및 추가
-var toastCount = 0; // 알림 카운트 변수
+var toastCount = 0; 	// 알림 카운트 변수
 	
 //toast 생성 및 추가
 function onMessage(evt) {
 	
-	// 알림을 전달 받았을 때 알림 갯수 조회하는 함수 호출
-	getNotificationCount();
-	
-	// 관리자 피드백 메시지 업데이트
-	getNotifications();
+	getNotificationCount(); 	// 알림을 전달 받았을 때 알림 갯수 조회하는 함수 호출
+// 	getNotifications(); 		// 관리자 피드백 메시지 업데이트
 	
 	var data = evt.data;
 	
-    // 고유한 ID 생성
-    var toastId = 'toast-' + toastCount;
+    var toastId = 'toast-' + toastCount;  	// 고유한 ID 생성
     toastCount++;
     
 	// toast
@@ -80,15 +87,56 @@ function onMessage(evt) {
 	
 	// 알림 닫기 버튼 클릭 시 제거
 	$("#" + toastId + " .btn-close").click(function () {
+		
 		$("#" + toastId).toast('hide');
+		
 	});
+	
+	// 리스트 업데이트 하기
+	updateList();
+	
 }
 	
 // 나가기
 function exit() {
+	
 	let exit = confirm("정말 나가시겠습니까?");
 	if(exit) { location.href = "./"; }
+	
 }
+
+// 현재 페이지의 경로를 가져오는 함수
+function getCurrentPage() {
+	// window.location.pathname에서 현재 페이지의 경로를 가져옴
+	var path = window.location.pathname;
+	
+	// 경로에서 마지막 '/' 이후의 문자열을 추출하여 현재 페이지의 이름 추출
+	// 예시: /projectList -> projectList, /notificationList -> notificationList
+	var currentPage = path.substring(path.lastIndexOf('/') + 1);
+	
+	// 테스트
+// 	alert(currentPage);
+	
+	// 페이지 이름을 리턴
+	return currentPage;
+}
+
+// 리스트 업데이트 함수 정의
+function updateList() {
+    // 현재 페이지에 따라 요청 파라미터 설정
+    var currentPage = getCurrentPage();
+
+    if (currentPage === 'confirmNotification') {
+    	
+        location.reload();
+        
+    } else if (currentPage === 'projectReward') {
+    	
+    	getNotifications();
+    }
+    
+}
+
 </script>
 	
 <div id="msgStack"></div>
@@ -125,74 +173,111 @@ function exit() {
 
 <script type="text/javascript">
 $(() => {
+	
     $('#notifySendBtn').click(function(e) {
     	
-        let modal = $('.modal-content').has(e.target);
+   	  	e.preventDefault();
+
+   	  	if ($('#message_subject').val() === '') {
+			alert('제목을 입력해주세요');
+	   	    $('#message_subject').focus();
+	   	    return;
+   	  	}
+
+   	  	if ($('#message_receiver').val() === '') {
+	   	    alert('아이디를 입력해주세요');
+	   	    $('#message_receiver').focus();
+	   	    return;
+   	  	}
+
+   	  	if ($('#message_content').val() === '') {
+	   	    alert('내용을 입력해주세요');
+	  	    $('#message_content').focus();
+	   	    return;
+   	  	}
+    	
+        let modal = $('.modal-content').has(e.target);	// 클릭 이벤트(e)의 target이 속한 모달창을 찾기
         let type = 'message';
-        let target = modal.find('.modal-body input[id="notifyId"]').val();
-        let subject = modal.find('.modal-body input[id="message-subject"]').val();
+        let target = modal.find('.modal-body input[id="message_receiver"]').val();
+        let subject = modal.find('.modal-body input[id="message_subject"]').val();
         let content = modal.find('.modal-body textarea').val();
         let url = '<c:url value="confirmNotification"/>';
-        
-        console.log(subject);
 
-        // db저장을 위한 ajax요청	
+       	// 메시지 DB 저장하기
         $.ajax({
             type: 'post',
             url: '<c:url value="saveNotification"/>',
             data: {
+            	
                 target: target,
                 subject: subject,
                 content: content,
                 type: type,
                 url: url
+                
             },
             dataType: 'text',
             success: function(data) {
+            	
                 console.log(data);
+                
                 if (data == 'true') { 
+                	
                     alert('메시지가 발송 되었습니다!');
                     socket.send(type + "," + target + "," + content + "," + url);
+                    
+                 	// 메시지 보내기 입력창 비우기
+                    modal.find('.modal-body textarea').val('');
+                    modal.find('.modal-body input').val('');
+                    
                 } else {
+                	
                     alert('존재하지 않는 회원입니다.');
+                    modal.find('.modal-body input[id="message_receiver"]').focus();
+                    
                 } 
+                
             },
             error: function() {
                 alert("메시지 발송 실패!");
             }
         });
-        // 메시지 입력창 비우기
-        modal.find('.modal-body textarea').val('');
-        modal.find('.modal-body input').val('');
+        
     });
 });
 </script>	
-	
 <!-- 메시지 모달창 -->
 <div class="modal fade" id="notifyModal" tabindex="-1" aria-labelledby="notifyModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="notifyModalLabel">관리자 피드백</h5>
+                <h5 class="modal-title" id="notifyModalLabel">메시지 보내기</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="notifyId" class="form-label">받는 사람</label>
-                        <input type="text" class="form-control mb-2" id="notifyId" placeholder="메이커 아이디를 입력해주세요">
-                        
-                        <label for="message-subject" class="form-label">제목</label>
-                        <input type="text" class="form-control mb-2" id="message-subject" placeholder="제목을 입력해주세요">
-                        
-                        <label for="message-text" class="form-label">내용</label>
-                        <textarea class="form-control" id="message-text" cols="10" rows="5" placeholder="메이커에게 전달할 피드백 메시지를 작성해주세요"></textarea>
-                    </div>
+                <form id="sendMessageForm">
+                   	<table class="table">
+						<tr>
+							<td class="text-center" style="width:15%">제목</td>
+							<td style="width:85%">
+								<input type="text" class="form-control" id="message_subject" placeholder="제목을 입력해주세요">
+							</td>
+						</tr>
+						<tr>
+							<td class="text-center">아이디</td>
+							<td>
+								<input type="text" class="form-control" id="message_receiver" placeholder="아이디를 입력해주세요">
+							</td>
+						</tr>
+						<tr>
+							<td class="text-center">내용</td>
+							<td>
+								<textarea class="form-control" id="message_content" cols="10" rows="7" placeholder="내용을 작성해주세요"></textarea>
+							</td>
+						</tr>
+					</table>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button id="notifySendBtn" type="button" class="btn btn-outline-primary">전송</button>
-                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">닫기</button>
+	                <button type="button" class="btn btn-primary w-100" id="notifySendBtn">메시지 전송하기</button>
             </div>
         </div>
     </div>
