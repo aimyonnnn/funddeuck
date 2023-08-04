@@ -124,13 +124,13 @@
 				dataType:"json",
 				success: function(data) {
 					maxPage = data.maxPage
-					console.log(maxPage);
+					console.log(data);
 					
 					for(let review of data.ReveiwList){
 						$("#reviewListArea").append(
 						'<div class="col-12 col-xxl-3 col-sm-6 col-lg-4">'
 				        +    '<div class="card" style="width: 18rem;">'
-				        +      '<img src="${pageContext.request.contextPath}/resources/upload/'+review.savefilename +'" class="card-img-top">'
+				        +      '<img src="${pageContext.request.contextPath}/resources/upload/'+review.saveFileName +'" class="card-img-top">'
 				        +      '<div class="card-body">'
 				        +        '<h5 class="card-title box">'+ review.project_subject +'</h5>'
 				        +        '<p class="card-text h6 box1">'+review.reward_name+'</p>'

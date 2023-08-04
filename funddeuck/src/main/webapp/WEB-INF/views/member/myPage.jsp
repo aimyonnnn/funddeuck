@@ -126,6 +126,18 @@
                                 </div>
                             </a>
                         </div>
+                        <div class="col-sm-12 col-md-6">
+                            <a href="reviewListPage" class="text-black w-100">
+                                <div class="row me-md-2">
+                                    <div class="col text-start my-3">
+                                       <i class="bi bi-pencil-square"></i> 리뷰
+                                    </div>
+                                    <div class="col text-end my-3">
+                                        <i class="bi bi-arrow-return-right"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                     <div class="row mt-5 mx-3 border-1">
                         <div class="col-12">

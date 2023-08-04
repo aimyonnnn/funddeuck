@@ -100,6 +100,8 @@ public interface MemberMapper {
 	
 	//리뷰 삭제
 	int deleteUpdateMemberReview(int num);
+
+	String getMakerMemberId(int maker_idx);
 	
 
 }

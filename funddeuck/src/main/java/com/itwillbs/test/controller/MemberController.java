@@ -707,9 +707,11 @@ public class MemberController {
     //리뷰리스트로 이동
     @GetMapping("reviewListPage")
     public String reviewListPage(HttpSession session, Model model) {
+    	
     	if(session.getAttribute("sId") == null) {
     		model.addAttribute("msg", "잘못된 접근입니다.");
     	}
+    	
     	return "member/member_review";
     }
     

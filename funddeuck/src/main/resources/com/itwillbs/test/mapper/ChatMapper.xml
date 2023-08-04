@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.test.mapper.ChatMapper">
+
+<select id="selectChatRoom">
+	SELECT *
+	FROM chatroom
+	WHERE member_id = #{member_id} 
+		AND maker_member_id = #{maker_member_id}
+</select>
+<insert id="insertChatRoom">
+	INSERT INTO chatroom 
+		VALUES (
+			#{room_id}
+			, #{member_id}
+			, #{maker_member_id}
+		);
+</insert>
+
+<insert id="insertChat">
+	INSERT INTO chat
+		VALUES(
+			NULL
+			,#{room_id}
+			,#{sender}
+			,#{receiver}
+			,#{content}
+		);
+</insert>
+
+<select id="selectmemberChatList">
+	SELECT *
+	FROM chat
+	WHERE room_id = #{room_id}
+</select>
+
+</mapper>

@@ -164,6 +164,10 @@ public class MemberService {
 	public int deleteMemberReview(int num) {
 		return mapper.deleteUpdateMemberReview(num);
 	}
+
+	public String getMakerMemberId(int maker_idx) {
+		return mapper.getMakerMemberId(maker_idx);
+	}
 	
 
 

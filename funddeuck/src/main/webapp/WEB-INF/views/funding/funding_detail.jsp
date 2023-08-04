@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,9 +23,11 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 </head>
 <body>
+<c:set var="currentTime" value="<%= new java.util.Date() %>" />  
 	<br>
 	<hr>
 	<br>
+	${project }
 	<!-- 상단 영역 -->
 	<div class="container text-center">
 		<!-- 해시태그 -->
@@ -37,7 +39,7 @@
 			</div>
 		</div>
 		<!-- 펀딩이름 -->
-	
+
 		<!-- 이미지, 펀딩 진행상태, 기본정보-->
 		<div class="row p-5">
 			<!--펀딩 이미지 슬라이드-->
@@ -90,7 +92,7 @@
 				<div class="row">
 					<div class="col">
 						<c:choose>
-							<c:when test="${project.project_end_date < now() }">
+							<c:when test="${project.project_end_date < currentTime }">
 								<span class="fs-2">
 								<fmt:parseDate value="${project.project_end_date - now()}" var="dateValue" pattern="dd"/>
 								</span>&nbsp;
@@ -138,13 +140,13 @@
 				   		<th><small>펀딩 기간</small></th>
 				   		<td>&nbsp;&nbsp;&nbsp;</td>
 				   		<td><small>
-				   		<fmt:parseDate value="${project.project_start_date}" var="startDate" pattern="yyyy.MM.dd"/>
+				   		<fmt:parseDate value="${project.project_start_date}" var="startDate" pattern="yyyy-MM-dd"/>
 				   		~
-				   		<fmt:parseDate value="${project.project_end_date}" var="endDate" pattern="yyyy.MM.dd"/>
+				   		<fmt:parseDate value="${project.project_end_date}" var="endDate" pattern="yyyy-MM-dd"/>
 				   		</small>
 				   		<span class="badge text-danger text-bg-danger bg-opacity-10">
 				   			<c:choose>
-								<c:when test="${project.project_end_date < now() }">				
+								<c:when test="${project.project_end_date < currentTime }">				
 									<fmt:parseDate value="${project.project_end_date - now()}" var="dateValue" pattern="dd"/>
 								</c:when>
 								<c:otherwise>
@@ -159,7 +161,7 @@
 						<th><small>결제</small></th>
 						<td>&nbsp;&nbsp;&nbsp;</td>
 						<td><small>목표 금액 달성시 
-						<fmt:parseDate value="${project.project_end_date}" var="endDate" pattern="yyyy.MM.dd"/>
+						<fmt:parseDate value="${project.project_end_date}" var="endDate" pattern="yyyy-MM-dd"/>
 						일에 결제 진행</small></td>
 				 	</tr>
 				</table>
@@ -282,7 +284,7 @@
 		<div class="container text-left fw-bold">
 			<section id="articleContentArea">
 				${project.project_image }
-				${project.introduce }
+<%-- 				${project.introduce } --%>
 			</section>
 		</div>
 <!-- 		네비게이션 바 끝 -->
@@ -313,7 +315,7 @@
 					</div>
 					<!-- 팔로우, 1:1문의 버튼-->
 					<div class="row">
-						<button class="btn btn-outline-success me-2 rounded-0 btn-block">
+						<button class="btn btn-outline-success me-2 rounded-0 btn-block" id="projectInquiry">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
 						<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
 						<path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
@@ -463,6 +465,40 @@ window.onload = function(){
 	var percentData = '<c:out value="${project.project_amount/project.project_target * 100 }"/>';
 	var a = document.getElementById('progressbar').style.width = percentData + "%";
 }
+
+// 웹 소켓 채팅방
+	$("#projectInquiry").click(function() {
+		
+		let maker_idx = ${project.maker_idx};
+		let member = '<%= session.getAttribute("sId") %>';
+		
+		if(member == "null"){
+			alert("로그인 후 문의가 가능합니다!");
+		return false;
+		}
+		
+		$.ajax({
+			type:"post",
+			url:"createRoom",
+			dataType:"json",
+			data: {maker_idx: maker_idx},
+			success: function (data) {
+				console.log(data);
+				
+				if (window.name !== 'newWindow') {
+					  sessionStorage.setItem('origin', true);
+					} else {
+					  sessionStorage.setItem('new', true);
+					}
+				
+				window.open("chat?room_id="+data.room_id + "=" +data.maker_member_id , "_blank", "width=500, height=800");
+			},
+		   error : function(request, status, error) {
+		        console.log(error)
+		    }
+		});				
+	});
+
 </script>
 <jsp:include page="../Footer.jsp"></jsp:include>
 <!-- 부트스트랩 -->

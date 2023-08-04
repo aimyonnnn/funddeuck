@@ -278,7 +278,8 @@
 	<select id="selectMemberReviewList">
 		SELECT review_idx
 		, pro.project_subject
-		, rew.reward_name, rev.review_content
+		, rew.reward_name
+		, rev.review_content
 		, rev.starRating
 		, rev.saveFileName 
 			FROM review rev 
@@ -291,9 +292,8 @@
 			WHERE pay.member_idx = (SELECT member_idx
 									FROM members
 									WHERE member_id = #{sId}) 
-				AND review_status = 1
+				AND rev.review_status = 1
 		LIMIT #{startRow}, #{listLimit}
-		
 	</select>
 	<!-- 리뷰 갯수 -->
 	<select id="selectMemberReviewListCount">
@@ -304,13 +304,21 @@
 				WHERE pay.member_idx = (SELECT member_idx
 							FROM members
 							WHERE member_id = #{sId}) 
-							AND review_status = 1;
+							AND rev.review_status = 1;
 	</select>
-	
 	<!-- 리뷰 삭제 -->
 	<update id="deleteUpdateMemberReview">
 		update review
 		set review_status = 2
 		where review_idx = #{num}
 	</update>
+	
+	<!-- 메이커의 멤버 id 가져오기 -->
+	<select id="getMakerMemberId" resultType="String">
+		SELECT member_id
+		FROM members
+		WHERE member_idx = (SELECT member_idx
+							FROM maker
+							WHERE maker_idx = #{maker_idx})
+	</select>
 </mapper>
