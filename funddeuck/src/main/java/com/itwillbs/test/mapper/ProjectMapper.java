@@ -121,7 +121,7 @@ public interface ProjectMapper {
 	List<ProjectVO> selectTop10ProjectsByEndDate();
 	
 	// 프로젝트 승인상태 조회
-	int selectProjectStatus(int project_idx);
+	Integer selectProjectStatus(int project_idx);
 		
 		
 			

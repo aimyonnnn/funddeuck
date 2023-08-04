@@ -118,8 +118,8 @@ public class ProjectController {
 		}
 		
 		// 이미 승인요청을 한 경우 already 리턴
-		int projectStatus = projectService.getProjectStatus(project_idx);
-		if(projectStatus == 2) {
+		Integer projectStatus = projectService.getProjectStatus(project_idx);
+		if(projectStatus != null && projectStatus == 2) {
 			return "already";
 		}
 		

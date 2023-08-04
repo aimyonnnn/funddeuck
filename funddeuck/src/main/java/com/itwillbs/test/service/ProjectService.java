@@ -161,7 +161,7 @@ public class ProjectService {
     }
     
     // 프로젝트 승인상태 조회
-	public int getProjectStatus(int project_idx) {
+	public Integer getProjectStatus(int project_idx) {
 		return mapper.selectProjectStatus(project_idx);
 	}
     
