@@ -41,9 +41,6 @@ public class FundingController {
 		List<ProjectVO> project = fundingService.getFundingList(category, status, index);
 		model.addAttribute("project", project);
 		
-		// 프로젝트 현재 펀딩 금액 조회
-		
-		
 		return "funding/funding_discover";
 	}
 	
