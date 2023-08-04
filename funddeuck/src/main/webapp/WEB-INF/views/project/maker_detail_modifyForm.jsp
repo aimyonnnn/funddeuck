@@ -49,8 +49,18 @@
 				<!-- 공지사항 작성하기 -->
 				<div class="content-area" id="tab1">
 					<form action="makerBoardWritePro" method="post" enctype="multipart/form-data">
+					   	<!-- hidden 필드 추가 -->
+        				<input type="hidden" id="project_idx" name="project_idx" value="">
 						<input type="hidden" name="maker_idx" value="${maker.maker_idx}">
 						<table class="table">
+							<tr class="text-center">
+								<th>프로젝트</th>
+								<td>
+									<select id="projectSelect" class="form-select">
+										<option value="">선택</option>
+									</select>
+								</td>
+							</tr>
 							<tr class="text-center">
 								<th>제목</th>
 								<td><input type="text" name="maker_board_subject" id="maker_board_subject" class="form-control"></td>
@@ -382,6 +392,51 @@ function deleteMakerBoard(maker_board_idx) {
 		
 	}
 }
+
+//서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
+function getProjectList() {
+	
+	let selectElement = document.getElementById("projectSelect");
+	
+		$.ajax({
+			method: 'post',
+			data: {
+				maker_idx: ${maker_idx}
+			},
+			url: '<c:url value="getProjectListByMakerIdx"/>',
+		  	success: function (data) {
+		  		
+		  		console.log(data);
+		  		
+		  		data.forEach((project) => {
+			        let option = document.createElement("option");
+			        option.value = project.project_idx;
+			        option.textContent = project.project_subject;
+			        selectElement.appendChild(option);
+			    });
+			    
+		  		// 프로젝트 선택 값이 변경될 때 이벤트 처리
+	            selectElement.addEventListener("change", function () {				// #projectSelect에 이벤트 리스너 등록
+	                let selectedValue = selectElement.value;						// 셀렉트박스에 선택된 값을 변수에 저장하고
+	                let hiddenField = document.getElementById("project_idx");		// id가 project_idx인 값을 선택 후
+	                hiddenField.value = selectedValue;								// 셀렉트박스에 선택된 값을 히든필드에 저장한다!
+	            });
+			    
+		  	},
+		  	error: function (error) {
+		    console.error(error);
+		  }
+	  });
+		
+}
+
+// 페이지 로드 호 getProjectList 실행하기
+// 셀렉트박스에 프로젝트 리스트를 출력
+$(() => {
+		
+	getProjectList();	
+	
+});
 </script>
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

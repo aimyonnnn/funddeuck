@@ -246,6 +246,7 @@ public class MakerController {
 		
 		model.addAttribute("maker", maker);
 		model.addAttribute("mList", mList);
+		model.addAttribute("maker_idx", maker_idx);
 		
 		return "project/maker_detail_modifyForm";
 	}

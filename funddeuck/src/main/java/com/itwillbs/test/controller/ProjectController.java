@@ -105,6 +105,7 @@ public class ProjectController {
 	@PostMapping("approvalRequest")
 	@ResponseBody
 	public String approvalRequest(@RequestParam int project_idx, HttpServletRequest request) {
+		System.out.println("approvalRequest");
 		// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경
 		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 		// 관리자 승인 관리 페이지에서는 미승인을 제외한 나머지 상태만 출력

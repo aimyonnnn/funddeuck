@@ -16,6 +16,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <!-- css -->
 <link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
+<!-- sweetalert -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <style>
 /* 버튼과 글자 사이의 높이 간격을 줄임 */
 .alert button {
@@ -180,10 +183,15 @@
 주의사항 :
 
 품질보증기준 :</textarea>
-
+						
+						<div class="alert alert-danger mt-3 text-center" role="alert">
+		                	<i class="fas fa-exclamation-circle"></i>&nbsp;리워드 등록까지 완료해야 프로젝트 승인요청을 할 수 있습니다.
+						</div>
+						
                         <!-- 저장하기 & 수정하기 버튼 -->
                         <div class="d-flex justify-content-center my-3">
-                            <button type="button" class="btn btn-outline-primary" id="saveButton" onclick="saveReward()">등록하기</button>
+                            <button type="button" class="btn btn-outline-primary" id="saveButton" onclick="saveReward()">리워드 등록하기</button>
+                            <button type="button" class="btn btn-outline-danger mx-3" onclick="projectApprovalRequestBtn()">프로젝트 승인요청 하기</button>
                             <button type="button" class="btn btn-outline-primary me-3" id="editButton" style="display: none;" onclick="modifyReward(selectedRewardIdx)">수정하기</button>
                             <button type="button" class="btn btn-outline-primary" id="removeButton" style="display: none;" onclick="removeReward(selectedRewardIdx)">삭제하기</button>
                         </div>
@@ -224,18 +232,6 @@
                 <div id="rewardContainer">
                     <!-- 이 부분은 리워드 리스트가 출력될 컨테이너입니다. -->
                 </div>
-                
-                <!-- 프로젝트 승인요청 버튼 -->
-                 <div class="admin-title mt-5">
-                    프로젝트 승인요청
-                 </div> 
-                 <div class="admin-content">
-                   	리워드 등록까지 완료해야 관리자에게 프로젝트 승인요청을 할 수 있습니다.
-                   	<div class="alert alert-danger mt-2" role="alert">
-                   		 <i class="fas fa-exclamation-circle"></i>&nbsp;<button class="btn btn-outline-danger btn-sm" 
-                   		 onclick="projectApprovalRequestBtn()">프로젝트 승인요청 하기</button>
-					</div>
-                 </div>
                 
             </div>
         </aside>
@@ -337,99 +333,105 @@ $(document).ready(function() {
     });
 }); // ready
 	
-// 리워드 등록하기
+//리워드 등록하기
 function saveReward() {
 	
-	let confirmation = confirm('리워드를 등록 하시겠습니까?')
-	
-	if(confirmation) {
-		$.ajax({
-		    type: "POST",
-		    url: "<c:url value='saveReward'/>",
-		    data: $("#rewardForm").serialize(),
-		    dataType: "text",
-		    success: function (response) {
-		    	
-		    	if(response.trim() == 'true') {
-			        alert("리워드 등록이 완료되었습니다!");
-			        
-				// =====================================================
+	Swal.fire({
+		title: '리워드 등록하기',
+		text: '리워드를 등록 하시겠습니까?',
+		icon: 'question',
+		showCancelButton: true,
+		confirmButtonText: '예',
+		cancelButtonText: '아니오'
+	})
+	.then((result) => {
+		
+		if(result.isConfirmed) {
+			
+			$.ajax({
+				type: "POST",
+				url: "<c:url value='saveReward'/>",
+				data: $("#rewardForm").serialize(),
+				dataType: "text",
+				success: function (response) {
 					
-				// 관리자에게 프로젝트 승인 요청하기
-				let confirmation = confirm('프로젝트 승인 요청을 하시겠습니까?');
-	
-				if(confirmation) {
+					if(response.trim() == 'true') {
+						
+						Swal.fire({
+							icon: 'success',
+							title: '리워드 등록 완료.',
+							text: '리워드 등록이 완료되었습니다!'
+						}).then(function(){
+							location.reload();
+						});
+					}
 					
-					// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경!
-					// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
-					$.ajax({
-						type: "post",
-						url: "<c:url value='approvalRequest'/>",
-						data: {
-							project_idx: ${project_idx}
-						},
-						dataType: 'text',
-						success: data => {
-							
-							if(data.trim() == 'true') {
-								alert('승인 요청이 완료되었습니다.');
-							} else {
-								alert('리워드 등록까지 완료해야 프로젝트 승인요청을 할 수 있습니다.');
-							}
-							
-						},
-						error: () => {
-							console.log('ajax 요청이 실패하였습니다.')
-						}
-					});
+				},
+				error: function (error) {
+					console.log("리워드 데이터 저장에 실패했습니다.");
 				}
-				
-				location.reload();
-				
-				// =====================================================
-					
-		    	} else {
-		    		alert("모든 항목을 입력해주세요.");
-		    	}
-		    },
-		    error: function (error) {
-		        console.error(error);
-		        alert("리워드 데이터 저장에 실패했습니다.");
-		    }
-		}); // ajax
-	}
+			}); // ajax
+		} // if
+	});
 }
 
 // 프로젝트 승인요청 하기 클릭 시
 function projectApprovalRequestBtn(){
 	
-	if(confirm('프로젝트 승인 요청을 하시겠습니까?')) {
+	Swal.fire({
+		title: '프로젝트 승인요청',
+		text: '프로젝트 승인요청을 하시겠습니까?',
+		icon: 'question',
+		showCancelButton: true,
+		confirmButtonText: '예',
+		cancelButtonText: '아니오'
+	})
+	.then((result) => {
 		
-		$.ajax({
-			type: "post",
-			url: "<c:url value='approvalRequest'/>",
-			data: {
-				project_idx: ${project_idx}
-			},
-			dataType: 'text',
-			success: data => {
-				
-				if(data.trim() == 'true') {
-					alert('승인 요청이 완료되었습니다.');
-				} else if(data.trim() == 'false') {
-					alert('리워드 등록까지 완료해야 프로젝트 승인요청을 할 수 있습니다.');
-				} else {
-					alert('이미 승인요청이 완료된 프로젝트 입니다. 승인 완료까지 최대 3일이 소요됩니다.');
+		if(result.isConfirmed) {
+		
+			$.ajax({
+				type: "post",
+				url: "<c:url value='approvalRequest'/>",
+				data: {
+					project_idx: ${project_idx}
+				},
+				dataType: 'text',
+				success: data => {
+					
+					if (data.trim() == 'true') {
+					    Swal.fire({
+					        icon: 'success',
+					        title: '프로젝트 승인요청 완료!',
+					        text: '프로젝트 승인 요청이 완료되었습니다!',
+					    }).then(function () {
+					        location.reload();
+					    });
+					} else if (data.trim() == 'false') {
+					    Swal.fire({
+					        icon: 'error',
+					        title: '프로젝트 승인요청 실패',
+					        text: '리워드 등록까지 완료해야 프로젝트 승인요청을 할 수 있습니다.',
+					    }).then(function () {
+					        location.reload();
+					    });
+					} else {
+					    Swal.fire({
+					        icon: 'error',
+					        title: '프로젝트 승인요청 실패',
+					        text: '이미 승인요청이 완료된 프로젝트 입니다. 승인완료까지 최대 3일이 소요됩니다.',
+					    }).then(function () {
+					        location.reload();
+					    });
+					}
+
+				},
+				error: () => {
+					console.log('ajax 요청이 실패하였습니다.');
 				}
-				
-			},
-			error: () => {
-				console.log('ajax 요청이 실패하였습니다.')
-			}
-		});
-		
-	}
-	
+			});
+		}	
+	});
 }
 	
 // 리워드 수정 페이지 이동
@@ -496,59 +498,100 @@ function openRewardModifyForm(reward_idx) {
 // 리워드 수정하기
 function modifyReward(reward_idx) {
 	
-	let confirmation = confirm('리워드를 수정 하시겠습니까?')
+	Swal.fire({
+		title: '리워드 수정하기',
+		text: '리워드를 수정하시겠습니까?',
+		icon: 'question',
+		showCancelButton: true,
+		confirmButtonText: '예',
+		cancelButtonText: '아니오'
+	})
+	.then((result) => {
+		
+		if(result.isConfirmed) {
 	
-	if(confirmation) {
-		$.ajax({
-		    type: "POST",
-		    url: "<c:url value='modifyReward'/>",
-	        data: $("#rewardForm").serialize() + "&reward_idx=" + reward_idx,
-		    dataType: "text",
-		    success: function (response) {
-		    	
-		    	if(response.trim() == 'true') {
-			        alert("성공적으로 수정되었습니다!");
-			        location.reload();
-		    	} else {
-		    		alert("수정에 실패했습니다.");
-		    	}
-		    },
-		    error: function (error) {
-		        console.error(error);
-		        alert("수정에 실패했습니다.");
-		    }
-		}); // ajax
-	}
+			$.ajax({
+			    type: "POST",
+			    url: "<c:url value='modifyReward'/>",
+		        data: $("#rewardForm").serialize() + "&reward_idx=" + reward_idx,
+			    dataType: "text",
+			    success: function (data) {
+			    	
+			    	
+			    	if (data.trim() == 'true') {
+					    Swal.fire({
+					        icon: 'success',
+					        title: '리워드 수정완료!',
+					        text: '리워드가 성공적으로 수정되었습니다!',
+					    }).then(function () {
+					        location.reload();
+					    });
+					} else {
+					    Swal.fire({
+					        icon: 'error',
+					        title: '리워드 수정실패',
+					        text: '리워드 수정에 실패하였습니다.',
+					    });
+					}
+			    	
+			    },
+			    error: function (error) {
+			        console.error(error);
+			        console.log("수정에 실패했습니다.");
+			    }
+			}); // ajax
+		}
+	});	
 }
 	
 // 리워드 삭제하기
 function removeReward(reward_idx) {
 	
-	let confirmation = confirm('리워드를 삭제 하시겠습니까?')
-	
-	if(confirmation) {
-		$.ajax({
-		    type: "POST",
-		    url: "<c:url value='removeReward'/>",
-	        data: {
-	        	reward_idx: reward_idx	
-	        },
-		    dataType: "text",
-		    success: function (response) {
-		    	
-		    	if(response.trim() == 'true') {
-			        alert("성공적으로 삭제되었습니다!");
-			        location.href='projectReward?project_idx=${project_idx}';
-		    	} else {
-		            alert("삭제 권한이 없습니다. 리워드 작성자만 삭제할 수 있습니다.");
-		    	}
-		    },
-		    error: function (error) {
-		        console.error(error);
-		        alert("삭제에 실패했습니다.");
-		    }
-		});
-	}
+	Swal.fire({
+		title: '리워드 삭제하기',
+		text: '리워드를 삭제하시겠습니까?',
+		icon: 'question',
+		showCancelButton: true,
+		confirmButtonText: '예',
+		cancelButtonText: '아니오'
+	})
+	.then((result) => {
+		
+		if(result.isConfirmed) {
+			
+			$.ajax({
+			    type: "POST",
+			    url: "<c:url value='removeReward'/>",
+		        data: {
+		        	reward_idx: reward_idx	
+		        },
+			    dataType: "text",
+			    success: function (data) {
+			    	
+			    	if (data.trim() == 'true') {
+					    Swal.fire({
+					        icon: 'success',
+					        title: '리워드 삭제완료!',
+					        text: '리워드가 성공적으로 삭제되었습니다!',
+					    }).then(function () {
+					    	location.href='projectReward?project_idx=${project_idx}';
+					    });
+					} else {
+					    Swal.fire({
+					        icon: 'error',
+					        title: '리워드 삭제실패',
+					        text: '리워드 삭제에 실패하였습니다.',
+					    });
+					}
+			    	
+			    },
+			    error: function (error) {
+			        console.error(error);
+			        alert("삭제에 실패했습니다.");
+			    }
+			});
+		}
+	});	
 }
 	
 // 관리자 피드백
@@ -558,10 +601,12 @@ $(()=>{
 })
 
 function getNotifications() {
+	
     $.ajax({
         url: '<c:url value="getNotificationByAjax"/>',
         method: 'get',
         success: function(response) {
+        	
             var notifications = response;
             var notificationContainer = $('#notificationContainer');
             notificationContainer.empty();
@@ -626,6 +671,7 @@ function markNotificationAsRead(notification_idx) {
         
         if (linkConfirmation) {
             // 메시지에 포함된 링크로 이동
+            
         } else {
         	// 기본 동작 방지하기 
             event.preventDefault();

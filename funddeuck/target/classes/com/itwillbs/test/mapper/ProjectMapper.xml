@@ -382,6 +382,7 @@
 				values (
 				null
 				, #{maker_idx}
+				, #{project_idx}
 				, #{maker_board_subject}
 				, #{maker_board_content}
 				, now()

@@ -12,11 +12,13 @@ import lombok.Data;
 create table maker_board (
 	maker_board_idx int not null primary key auto_increment comment '메이커 게시판 번호',
 	maker_idx int not null comment '메이커 번호',
+	project_idx int not null comment '프로젝트 번호',
 	maker_board_subject varchar(255) not null comment '게시판 제목',
 	maker_board_content varchar(1000) not null comment '게시판 내용',
 	maker_board_regdate timestamp not null comment '게시판 등록일자',
 	maker_board_file1 varchar(255) comment '게시판 첨부파일',
-	foreign key (maker_idx) references maker(maker_idx) ON DELETE CASCADE
+	foreign key (maker_idx) references maker(maker_idx) ON DELETE CASCADE,
+	foreign key (project_idx) references project(project_idx) ON DELETE CASCADE
 );
  */
 
@@ -24,6 +26,7 @@ create table maker_board (
 public class MakerBoardVO {
 	private int maker_board_idx;
 	private int maker_idx;
+	private int project_idx;
 	private String maker_board_subject;
 	private String maker_board_content;
 	private Timestamp maker_board_regdate;
