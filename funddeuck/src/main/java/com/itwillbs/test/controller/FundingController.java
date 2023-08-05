@@ -78,8 +78,8 @@ public class FundingController {
 		model.addAttribute("project", project);
 		
 		// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
-//		List<RewardVO> reward = fundingService.selectProjectRewardInfo(project_idx);
-//		model.addAttribute(reward);
+		List<RewardVO> reward = fundingService.selectProjectRewardInfo(project_idx);
+		model.addAttribute(reward);
 		
 		// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 게시판 정보
 		List<MakerBoardVO> makerBoard = fundingService.getMakerBoardInfo(project_idx);
@@ -123,6 +123,9 @@ public class FundingController {
 		// 파라미터 전달, 주석 풀 부분
 //		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, HttpSession session, Model model) {
 		public String fundingOrder(HttpSession session, Model model) {
+		
+		// 보희씨 주문 페이지로 project_idx, reward_idx 파라미터 넘어가게 해 두었고, 기본 후원(1000원) 선택 시
+		// reward_idx 값 0으로 넘어가게 해 두었습니다. 해당 값 0인지 체크하는것 필요!(0이면 리워드 없이 결제)
 		
 		String sId = (String)session.getAttribute("sId");
 		// 미로그인 또는 주문하던 회원이 아닐경우 ****
