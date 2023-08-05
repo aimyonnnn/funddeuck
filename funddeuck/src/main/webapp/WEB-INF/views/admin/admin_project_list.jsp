@@ -29,22 +29,33 @@
 	</style>
 </head>
 <body>
-<jsp:include page="../common/admin_top.jsp"/>
-<!-- pageNum 파라미터 가져와서 저장(기본값 1로 지정함) -->
+<!-- 페이징 처리를 위한 pageNum 셋팅 -->
 <c:set var="pageNum" value="1"/>
 <c:if test="${not empty param.pageNum }">
 	<c:set var="pageNum" value="${param.pageNum }" />
 </c:if>
+
+<!-- sidebar -->
+<input type="checkbox" name="" id="sidebar-toggle">
+<jsp:include page="../common/admin_side.jsp"/>
+
+<!-- top -->
+<div class="main-content">
+<jsp:include page="../common/admin_top.jsp"/>
+
+	<div class="container">
+		<h2 class="fw-bold mt-5">프로젝트 승인관리</h2>
+	</div>
 	
 	<div class="container my-5">
 		<!-- 검색 버튼 -->
-		<div class="d-flex flex-row justify-content-center my-3">
+		<div class="d-flex flex-row justify-content-center my-5">
 			<!-- form 태그 시작 -->
 			<form action="adminProjectList" class="d-flex flex-row justify-content-end">
 				<!-- 셀렉트 박스 -->
 				<select class="form-select form-select-sm me-2" name="searchType" id="searchType" style="width: 100px;">
-					<option value="subject" <c:if test="${param.searchType eq 'subject'}">selected</c:if>>제목</option>
-					<option value="name" <c:if test="${param.searchType eq 'name'}">selected</c:if>>이름</option>
+					<option value="subject" <c:if test="${param.searchType eq 'subject'}">selected</c:if>>프로젝트</option>
+					<option value="name" <c:if test="${param.searchType eq 'name'}">selected</c:if>>대표자</option>
 				</select>
 				<!-- 검색타입, 검색어 -->
 				<div class="input-group">
@@ -57,20 +68,6 @@
 		</div>
 		<!-- 검색 버튼 -->
 		
-		<!-- 셀렉트 박스 -->
-		<div class="container mt-5">
-			<div class="d-flex justify-content-end row mb-3">
-			    <div class="col-md-2">
-			        <select class="form-select" id="filterStatus" onchange="filterNotifications()">
-			            <option value="">전체</option>
-			            <option value="승인요청">승인요청</option>
-			            <option value="승인완료">승인완료</option>
-			            <option value="승인거절">승인거절</option>
-			        </select>
-			    </div>
-			</div>
-		</div>
-			
 		<div class="row">
 			<div class="d-flex justify-content-center">
 				
@@ -211,6 +208,7 @@
 	        </ul>
 	    </nav>
 	</div>
+</div>
 	<!-- 페이징 처리 -->
 	
 	<script type="text/javascript">

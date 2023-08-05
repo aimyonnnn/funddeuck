@@ -98,9 +98,7 @@
 					<button class="btn btn-outline-primary tab-button w-100 active"
 						data-tab="tab1">프로젝트</button>
 					<button class="btn btn-outline-primary tab-button w-100"
-						data-tab="tab2">공지사항</button>
-					<button class="btn btn-outline-primary tab-button w-100"
-						data-tab="tab3">메이커정보</button>
+						data-tab="tab2">메이커정보</button>
 				</div>
 
 				<!-- 메이커의 프로젝트 리스트 출력 -->
@@ -127,55 +125,8 @@
 					</div>
 				</div>
 				
-				<!-- 공지사항 -->
-				<div class="content-area" id="tab2">
-				    <div class="accordion" id="accordionExample">
-				        <c:forEach var="mList" items="${mList}">
-				            <div class="accordion-item">
-				                <h2 class="accordion-header" id="heading${mList.maker_board_idx}">
-				                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-				                        data-bs-target="#collapse${mList.maker_board_idx}" aria-expanded="true"
-				                        aria-controls="collapse${mList.maker_board_idx}">
-				                        ${mList.maker_board_subject}
-				                    </button>
-				                </h2>
-				                <div id="collapse${mList.maker_board_idx}" class="accordion-collapse collapse show"
-				                    aria-labelledby="heading${mList.maker_board_idx}" data-bs-parent="#accordionExample">
-				                    <div class="accordion-body">
-				                        <table class="table text-center">
-				                            <tr>
-				                                <td style="width: 20%">작성내용</td>
-				                                <td style="width: 80%">${mList.maker_board_content}</td>
-				                            </tr>
-				                            <tr>
-				                                <td>작성일자</td>
-				                                <td><fmt:formatDate value="${mList.maker_board_regdate}" pattern="yy-MM-dd HH:mm" /></td>
-				                            </tr>
-				                            <tr>
-				                                <td>첨부파일</td>
-				                                <td>
-				                                    <c:choose>
-				                                        <c:when test="${not empty mList.maker_board_file1}">
-				                                            <a href="${pageContext.request.contextPath}/resources/upload/${mList.maker_board_file1}" download="${fn:split(mList.maker_board_file1, '_')[1]}">
-				                                                ${fn:split(mList.maker_board_file1, '_')[1]}
-				                                            </a>
-				                                        </c:when>
-				                                        <c:otherwise>
-				                                            첨부파일 없음
-				                                        </c:otherwise>
-				                                    </c:choose>
-				                                </td>
-				                            </tr>
-				                        </table>
-				                    </div>
-				                </div>
-				            </div>
-				        </c:forEach>
-				    </div>
-				</div>
-
 				<!-- 메이커 정보 -->
-				<div class="content-area" id="tab3">
+				<div class="content-area" id="tab2">
 					<table class="table text-center">
 						<tr>
 							<th>상호명</th>
@@ -245,21 +196,12 @@ $(document).ready(function() {
 	$(".tab-button[data-tab='tab1']").click(function() {
 		$(".tab-button[data-tab='tab1']").addClass("active");
 	  	$(".tab-button[data-tab='tab2']").removeClass("active");
-	  	$(".tab-button[data-tab='tab3']").removeClass("active");
 	});
 	
 	// 버튼2 클릭 시
 	$(".tab-button[data-tab='tab2']").click(function() {
 	  	$(".tab-button[data-tab='tab1']").removeClass("active");
 	  	$(".tab-button[data-tab='tab2']").addClass("active");
-	  	$(".tab-button[data-tab='tab3']").removeClass("active");
-	});
-	
-	// 버튼3 클릭 시
-	$(".tab-button[data-tab='tab3']").click(function() {
-	  	$(".tab-button[data-tab='tab1']").removeClass("active");
-	 	$(".tab-button[data-tab='tab2']").removeClass("active");
-	 	$(".tab-button[data-tab='tab3']").addClass("active");
 	});
 	
 });

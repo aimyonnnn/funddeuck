@@ -23,6 +23,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.itwillbs.test.handler.EchoHandler;
 import com.itwillbs.test.service.AdminService;
+import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.NotificationService;
 import com.itwillbs.test.service.PaymentService;
@@ -51,6 +52,8 @@ public class AdminController {
 	private MemberService memberService;
 	@Autowired
 	private SendPhoneMessageService sendPhoneMessageService;
+	@Autowired
+	private MakerService makerService;
 	
 	private EchoHandler echoHandler;
 	@Autowired
@@ -66,10 +69,47 @@ public class AdminController {
 		return "admin/admin_main";
 	}
 	
-	// 메이커 디테일 페이지 공지사항 관리
-	@GetMapping("adminMakerManagement")
-	public String adminMakerManagement(HttpSession session, Model model) {
+	// 메이커 상세정보 관리
+	@GetMapping("adminMakerDetail")
+	public String adminMakerDetail(@RequestParam(required = true) int maker_idx ,HttpSession session, Model model) {
 		
+		
+		
+		return "admin/admin_maker_detail";
+	}
+	
+	
+	// 메이커 관리
+	@GetMapping("adminMakerManagement")
+	public String adminMakerManagement(
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword,
+			@RequestParam(defaultValue = "1") int pageNum,
+			HttpSession session, Model model) {
+		
+		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		
+		// 프로젝트 목록 조회 요청
+		List<MakerVO> mList = makerService.getAllMakerList(searchKeyword, searchType, startRow, listLimit);
+		
+		// 페이징 처리를 위한 계산 작업
+		// 1. 전체 게시물 수 조회 요청
+		int listCount = makerService.getAllMakerListCount(searchKeyword, searchType);
+		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+		int pageListLimit = 10;
+		// 3. 전체 페이지 목록 갯수 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 4. 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5. 끝 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {	endPage = maxPage; }
+		
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("mList", mList);
+		model.addAttribute("pageInfo", pageInfo);
 		
 		return "admin/admin_maker_management";
 	}

@@ -18,7 +18,7 @@ CREATE TABLE maker (
     maker_file4 VARCHAR(255) NOT NULL COMMENT '메이커 사진',
     maker_file5 VARCHAR(255) NOT NULL COMMENT '메이커 로고',
     maker_name VARCHAR(255) NOT NULL COMMENT '메이커 이름',
-    maker_INTro VARCHAR(255) NOT NULL COMMENT '메이커 소개',
+    maker_intro VARCHAR(255) NOT NULL COMMENT '메이커 소개',
     maker_email VARCHAR(255) NOT NULL COMMENT '메이커 이메일',
     maker_tel VARCHAR(255) NOT NULL COMMENT '메이커 전화번호',
     maker_url VARCHAR(255) NOT NULL COMMENT '메이커 홈페이지',
@@ -30,9 +30,9 @@ CREATE TABLE maker (
 public class MakerVO {
     private int maker_idx;                  // 메이커 번호
     private int member_idx;                 // 회원 번호
-    private String individual_biz_num;     // 메이커 유형 - 개인사업자 등록번호
+    private String individual_biz_num;     	// 메이커 유형 - 개인사업자 등록번호
     private String individual_biz_name;     // 메이커 유형 - 개인사업자명
-    private String corporate_biz_num;      // 메이커 유형 - 법인사업자 등록번호
+    private String corporate_biz_num;      	// 메이커 유형 - 법인사업자 등록번호
     private String corporate_biz_name;      // 메이커 유형 - 법인사업자명
     private String maker_name;              // 메이커 이름
     private String maker_intro;				// 메이커 소개
@@ -46,7 +46,7 @@ public class MakerVO {
     private String maker_file3;             // 메이커 유형 - 법인사업자 등록증
     private String maker_file4;       		// 메이커 사진
     private String maker_file5;       		// 메이커 로고
- // input type="file" 태그의 name 속성명(파라미터명)과 동일해야함
+    // input type="file" 태그의 name 속성명(파라미터명)과 동일해야함
  	private MultipartFile file1;			// 메이커 유형 - 개인신분증
  	private MultipartFile file2;			// 메이커 유형 - 개인사업자 등록증
  	private MultipartFile file3;			// 메이커 유형 - 법인사업자 등록증

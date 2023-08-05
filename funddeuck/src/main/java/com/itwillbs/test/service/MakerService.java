@@ -1,5 +1,7 @@
 package com.itwillbs.test.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,14 @@ public class MakerService {
 	// 공지사항 조회하기
 	public MakerBoardVO getMakerBoardInfo(int maker_board_idx) {
 		return mapper.selectMakerBoardInfo(maker_board_idx);
+	}
+	// 전체 메이커 조회
+	public List<MakerVO> getAllMakerList(String searchKeyword, String searchType, int startRow, int listLimit) {
+		return mapper.selectAllMakerList(searchKeyword, searchType, startRow, listLimit);
+	}
+	// 전체 메이커 갯수 조회
+	public int getAllMakerListCount(String searchKeyword, String searchType) {
+		return mapper.selectAllMakerListCount(searchKeyword, searchType);
 	}
 	
 }

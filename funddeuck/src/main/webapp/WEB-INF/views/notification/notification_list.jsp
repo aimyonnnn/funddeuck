@@ -19,8 +19,13 @@ table {
     width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
     table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
 }
+/* 각 셀의 너비를 20%로 설정 */
 th, td {
-    width: 10%; /* 각 셀의 너비를 20%로 설정 */
+    width: 10%; 
+}
+/* 마우스 올리면 커서 보이게 하기 */
+td a:hover {
+    cursor: pointer;
 }
 .hover-effect:hover {
  	text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */

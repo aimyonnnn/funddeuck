@@ -45,17 +45,17 @@ th, td {
 
 	<div class="container my-5">
 	<div class="container">
-		<h2 class="fw-bold mt-5">전체 프로젝트 관리</h2>
+		<h2 class="fw-bold mt-5">메이커 관리</h2>
 	</div>
 
 	<!-- 검색 버튼 -->
 	<div class="d-flex flex-row justify-content-center my-5">
 		<!-- form 태그 시작 -->
-		<form action="adminProjectManagement" class="d-flex flex-row justify-content-end">
+		<form action="adminMakerManagement" class="d-flex flex-row justify-content-end">
 			<!-- 셀렉트 박스 -->
 			<select class="form-select form-select-sm me-2" name="searchType" id="searchType" style="width: 100px;">
-				<option value="subject" <c:if test="${param.searchType eq 'subject'}">selected</c:if>>프로젝트</option>
-				<option value="name" <c:if test="${param.searchType eq 'name'}">selected</c:if>>대표자</option>
+				<option value="name" <c:if test="${param.searchType eq 'name'}">selected</c:if>>메이커</option>
+				<option value="email" <c:if test="${param.searchType eq 'email'}">selected</c:if>>이메일</option>
 			</select>
 			<!-- 검색타입, 검색어 -->
 			<div class="input-group">
@@ -74,54 +74,45 @@ th, td {
 			<table class="table">
 				<tr>
 					<th class="text-center" style="width: 5%;">번호</th>
-					<th class="text-center" style="width: 5%;">카테고리</th>
-					<th class="text-center" style="width: 20%;">프로젝트 이름</th>
-					<th class="text-center" style="width: 10%;">대표자 이름</th>
-					<th class="text-center" style="width: 5%;">요금제</th>
-					<th class="text-center" style="width: 5%;">목표금액</th>
-					<th class="text-center" style="width: 10%;">기간</th>
-					<th class="text-center" style="width: 5%;">상태</th>
-					<th class="text-center" style="width: 5%;">상세보기</th>
+					<th class="text-center" style="width: 7%;">유형</th>
+					<th class="text-center" style="width: 15%;">메이커명</th>
+					<th class="text-center" style="width: 7%;">이메일</th>
+					<th class="text-center" style="width: 7%;">전화번호</th>
+					<th class="text-center" style="width: 5%;">등급</th>
+					<th class="text-center" style="width: 5%;">정보수정</th>
 				</tr>
 				
-				<c:forEach var="pList" items="${pList}">
+				<c:forEach var="mList" items="${mList}">
 					<tr>
-						<td class="text-center" style="width: 5%;">${pList.project_idx}</td>
-						<td class="text-center" style="width: 5%;">${pList.project_category}</td>
-						<td class="text-center" style="width: 20%;">
-							<a href="adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}" style="text-decoration: none; color: black;">
-								${pList.project_subject}
+						<td class="text-center">${mList.maker_idx}</td>
+						<td class="text-center">
+							<c:choose>
+								<c:when test="${not empty maker_file1}">
+									개인
+								</c:when>
+								<c:when test="${not empty maker_file2}">
+									개인사업자
+								</c:when>
+								<c:otherwise>
+									법인사업자
+								</c:otherwise>
+							</c:choose>
+						</td>
+						<td class="text-center">
+							<a href="adminProjectDetail?maker_idx=${mList.maker_idx}&pageNum=${pageNum}" style="text-decoration: none; color: black;">
+								${mList.maker_name}
 							</a> 
 						</td>
-						<td class="text-center" style="width: 20%;">${pList.project_representative_name}</td>
-						<td class="text-center" style="width: 5%;">${pList.project_plan}</td>
-						<td class="text-center" style="width: 5%;">${pList.project_target}</td>
-						<td class="text-center" style="width: 10%;">
-   							<fmt:formatDate value="${pList.project_start_date}" pattern="yy/MM/dd" />~<fmt:formatDate value="${pList.project_end_date}" pattern="yy/MM/dd" />
-						</td>
-						<c:choose>
-							<c:when test="${pList.project_approve_status eq 1}">
-								<td class="text-center" style="width: 5%;">미승인</td>
-							</c:when>
-							<c:when test="${pList.project_approve_status eq 2}">
-								<td class="text-center text-danger" style="width: 5%;">승인요청</td>
-							</c:when>
-							<c:when test="${pList.project_approve_status eq 3}">
-								<td class="text-center text-success" style="width: 5%;">승인완료</td>
-							</c:when>
-							<c:when test="${pList.project_approve_status eq 5}">
-								<td class="text-center" style="width: 5%;">결제완료</td>
-							</c:when>
-							<c:otherwise>
-								<td class="text-center" style="width: 5%;">승인거절</td>
-							</c:otherwise>
-						</c:choose>
-						<td class="text-center" style="width: 5%;">
+						<td class="text-center">${mList.maker_email}</td>
+						<td class="text-center">${mList.maker_tel}</td>
+						<td class="text-center">${mList.maker_grade}</td>
+						<td class="text-center">
 							<button class="btn btn-outline-primary btn-sm" 
-							onclick="location.href='adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}'">상세보기</button>
+							onclick="location.href='adminMakerDetail?maker_idx=${mList.maker_idx}&pageNum=${pageNum}'">상세보기</button>
 						</td>
 					</tr>
 				</c:forEach>
+				
 			</table>
 	
 			</div>
@@ -138,14 +129,14 @@ th, td {
 	                	<c:choose>
 	                		<c:when test="${not empty param.searchType and not empty param.searchKeyword}">
 			                    <li class="page-item">
-			                        <a class="page-link" aria-label="Previous" href="adminProjectManagement?pageNum=${pageNum - 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">
+			                        <a class="page-link" aria-label="Previous" href="adminMakerManagement?pageNum=${pageNum - 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">
 			                            <span aria-hidden="true">&laquo;</span>
 			                        </a>
 			                    </li>
 	                		</c:when>
 	                		<c:otherwise>
 			                    <li class="page-item">
-			                        <a class="page-link" aria-label="Previous" href="adminProjectManagement?pageNum=${pageNum - 1}">
+			                        <a class="page-link" aria-label="Previous" href="adminMakerManagement?pageNum=${pageNum - 1}">
 			                            <span aria-hidden="true">&laquo;</span>
 			                        </a>
 			                    </li>
@@ -172,10 +163,10 @@ th, td {
 	                        <%-- 검색 키워드가 있을 때와 없을 때를 구분하여 페이지 이동 URL 생성 --%>
 	                        <c:choose>
 	                            <c:when test="${not empty param.searchType and not empty param.searchKeyword}">
-	                                <li class="page-item"><a class="page-link" href="adminProjectManagement?pageNum=${i}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">${i}</a></li>
+	                                <li class="page-item"><a class="page-link" href="adminMakerManagement?pageNum=${i}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">${i}</a></li>
 	                            </c:when>
 	                            <c:otherwise>
-	                                <li class="page-item"><a class="page-link" href="adminProjectManagement?pageNum=${i}">${i}</a></li>
+	                                <li class="page-item"><a class="page-link" href="adminMakerManagement?pageNum=${i}">${i}</a></li>
 	                            </c:otherwise>
 	                        </c:choose>
 	                    </c:otherwise>
@@ -188,14 +179,14 @@ th, td {
 	                	<c:choose>
 	                		<c:when test="${not empty param.searchType and not empty param.searchKeyword}">
 			                    <li class="page-item">
-			                        <a class="page-link" aria-label="Next" href="adminProjectManagement?pageNum=${pageNum + 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">
+			                        <a class="page-link" aria-label="Next" href="adminMakerManagement?pageNum=${pageNum + 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">
 			                            <span aria-hidden="true">&raquo;</span>
 			                        </a>
 			                    </li>
 	                		</c:when>
 	                		<c:otherwise>
 			                    <li class="page-item">
-			                        <a class="page-link" aria-label="Next" href="adminProjectManagement?pageNum=${pageNum + 1}">
+			                        <a class="page-link" aria-label="Next" href="adminMakerManagement?pageNum=${pageNum + 1}">
 			                            <span aria-hidden="true">&raquo;</span>
 			                        </a>
 			                    </li>

@@ -362,7 +362,17 @@ function saveReward() {
 							title: '리워드 등록 완료.',
 							text: '리워드 등록이 완료되었습니다!'
 						}).then(function(){
-							location.reload();
+							
+							Swal.fire({
+								icon: 'question',
+								title: '리워드 연속 등록',
+								text: '리워드 등록을 연속해서 하시겠습니까?'
+							}).then(function(){
+								
+						    	location.reload();
+						        
+							});
+							
 						});
 					}
 					

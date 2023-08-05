@@ -1,5 +1,7 @@
 package com.itwillbs.test.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,5 +28,13 @@ public interface MakerMapper {
 	
 	// 공지사항 조회하기
 	MakerBoardVO selectMakerBoardInfo(int maker_board_idx);
+	
+	// 전체 메이커 조회
+	List<MakerVO> selectAllMakerList(
+			@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType,
+			@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+	
+	// 전체 메이커 갯수 조회
+	int selectAllMakerListCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType);
 	
 }
