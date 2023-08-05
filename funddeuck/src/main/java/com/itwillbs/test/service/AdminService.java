@@ -53,10 +53,10 @@ public class AdminService {
 				String target = memberId;
 				String subject = "[프로젝트 거절 알림] 프로젝트 승인이 거절되었습니다.";
 				String content = 
-						"<a style='text-decoration: none; color: black;'>프로젝트 요금제 결제를 진행하지 않아 프로젝트 승인이 거절되었습니다. 리워드 등록 페이지에서 프로젝트 승인신청을 다시 해주세요.<a href='" + url + "'> 재승인 하러가기</a></a>";
+						"<a style='text-decoration: none; color: black;'>프로젝트 요금제 결제를 진행하지 않아 프로젝트 승인이 거절되었습니다. 리워드 등록 페이지에서 프로젝트 승인신청을 다시 해주세요.<a href='" + url + "'> 프로젝트 재승인 하러가기</a></a>";
 				
 				try {
-					echoHandler.sendNotificationToUser(target, content);
+					echoHandler.sendNotificationToUser(target, subject);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

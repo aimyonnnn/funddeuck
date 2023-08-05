@@ -43,7 +43,8 @@ th, td {
 <div class="main-content">
 <jsp:include page="../common/admin_top.jsp"/>
 
-	<div class="container my-5">
+<div class="container my-5">
+
 	<div class="container">
 		<h2 class="fw-bold mt-5">메이커 관리</h2>
 	</div>

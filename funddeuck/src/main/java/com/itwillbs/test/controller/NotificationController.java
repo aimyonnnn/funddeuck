@@ -74,20 +74,6 @@ public class NotificationController {
 		System.out.println("검색타입 : " + searchType);
 		System.out.println("검색어 : " + searchKeyword);
 		// -------------------------------------------------------------------------
-		// 프로젝트 상태컬럼이 3-승인인 경우에만 결제 모달창 자동 실행
-		System.out.println("프로젝트 번호 출력 테스트 : " + project_idx);
-	    if (project_idx != null && project_idx > 0) {
-	        ProjectVO project = projectService.getProjectInfo(project_idx);
-	        if (project != null && project.getProject_approve_status() == 3) {
-	        	// 세션 아이디로 member 조회하기(결제 시 구매자 전화번호 필요함)
-	        	MembersVO member = memberService.getMemberInfo(sId);
-	        	model.addAttribute("member", member);
-	            // 프로젝트 상태가 3-승인인 경우, 결제하기 모달창을 자동으로 실행하도록 설정
-	            model.addAttribute("orderModal", true);
-	            model.addAttribute("project", project);
-	        }
-	    }
-		// -------------------------------------------------------------------------
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호

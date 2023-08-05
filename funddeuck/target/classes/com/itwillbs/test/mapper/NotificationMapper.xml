@@ -60,7 +60,7 @@
   				order by notification_regdate desc
   	</select>
   	
-  	<!-- 전체 메시지 조회 - 관리자 -->
+  	<!-- 관리자 - 전체 메시지 조회 -->
   	<select id="selectTotalList" resultType="com.itwillbs.test.vo.NotificationVO">
   		select *
   			from notification -- 동적 SQL문
@@ -70,6 +70,9 @@
 				WHERE
 				<!-- 2. 검색타입(searchType)에 따른 WHERE 절 조건 대상 변경 -->
 				<choose>
+					<when test="searchType.equals('subject')">
+						notification_subject LIKE '%${searchKeyword}%'
+					</when>
 					<when test="searchType.equals('content')">
 						notification_content LIKE '%${searchKeyword}%'
 					</when>
@@ -85,11 +88,24 @@
 				, #{listLimit}
   	</select>
   	
-  	<!-- 전체 메시지 갯수 조회 -->
+  	<!-- 관리자 - 전체 메시지 갯수 조회-->
   	<select id="selectNotificationListCount" resultType="int">
   		select count(*)
-  			from
-  				notification 
+			from notification
+		<if test="!searchKeyword.equals('')">
+		where
+			<choose>
+				<when test="searchType.equals('subject')">
+					notification_subject LIKE '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('content')">
+					notification_content LIKE '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('name')">
+					member_id LIKE '%${searchKeyword}%'
+				</when>
+			</choose>
+		</if>
   	</select>
   	
   	<!-- 삭제 처리 -->

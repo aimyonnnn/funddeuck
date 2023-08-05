@@ -12,8 +12,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
 <!-- css -->
 <link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
-<!-- iamport -->
-<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <style>
 table {
     width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
@@ -248,14 +246,20 @@ function markAllAsRead(member_id) {
 </script>
 </head>
 <body>
+
 <jsp:include page="../common/project_top.jsp"/>
-<!-- pageNum 파라미터 가져와서 저장(기본값 1로 지정함) -->
+
 <c:set var="pageNum" value="1"/>
 <c:if test="${not empty param.pageNum }">
 	<c:set var="pageNum" value="${param.pageNum }" />
 </c:if>
 	
 <div class="container my-5">
+
+	<div class="container">
+		<h2 class="fw-bold mt-5">받은 메시지함</h2>
+	</div>
+	
 	<!-- 검색 버튼 -->
 	<div class="d-flex flex-row justify-content-center my-3">
 		<!-- 폼 태그 -->
@@ -434,6 +438,7 @@ function markAllAsRead(member_id) {
     </div>
   </div>
 </div>
+
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>

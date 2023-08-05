@@ -20,6 +20,7 @@ public class EchoHandler extends TextWebSocketHandler{
 	// 클라이언트가 서버로 연결되었을 때
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+		System.out.println("afterConnectionEstablished");
 	    String senderId = getMemberId(session);
 	    if (senderId != null) {
 	        log(senderId + " 연결됨");
@@ -34,27 +35,38 @@ public class EchoHandler extends TextWebSocketHandler{
 	    System.out.println("handleTextMessage");
 	    String senderId = getMemberId(session);
 	    String msg = message.getPayload();
+	    
 	    if (msg != null) {
+	    	
 	        String[] strs = msg.split(",");
 	        log(strs.toString());
-	        if (strs != null && strs.length == 4) {
+	        
+	        if (strs != null && strs.length == 5) {
+	        	
 	            String type = strs[0];
 	            String target = strs[1];
-	            String content = strs[2];
-	            String url = strs[3];
+	            String subject = strs[2];
+	            String content = strs[3];
+	            String url = strs[4];
+	            
 	            WebSocketSession targetSession = users.get(target);
+	            
 	            if(type.equals("message")) {
+	            	System.out.println("여기까지옴");
 	            	if(targetSession != null) {
 	            		type = "메시지가 도착했어요!";
-	            		TextMessage tmpMsg = new TextMessage("<a target='_blank' href='" + url + "'>[<b>" + type + "</b>] " + content + "</a>");
+	            		TextMessage tmpMsg = new TextMessage("<a target='_blank' href='" + url + "'>[<b>" + type + "</b>] " + subject + "</a>");
 	            		targetSession.sendMessage(tmpMsg);
 	            	}
+	            	
 	            } else if(type.equals("notification")) {
+	            	
 	            	if(targetSession != null) {
 	            		type = "알림이 도착했어요!";
-	            		TextMessage tmpMsg = new TextMessage("<a target='_blank' href='" + url + "'>[<b>" + type + "</b>] " + content + "</a>");
+	            		TextMessage tmpMsg = new TextMessage("<a target='_blank' href='" + url + "'>[<b>" + type + "</b>] " + subject + "</a>");
 	            		targetSession.sendMessage(tmpMsg);
 	            	}
+	            	
 	            }
 	        }
 	    }
@@ -90,6 +102,7 @@ public class EchoHandler extends TextWebSocketHandler{
 	
 	// 접속한 유저의 세션을 조회하여 ID를 얻기
 	private String getMemberId(WebSocketSession session) {
+		System.out.println("getMemberId");
 	    Map<String, Object> httpSession = session.getAttributes();
 	    String sId = (String) httpSession.get("sId");
 	    return sId == null ? null : sId;
@@ -108,6 +121,7 @@ public class EchoHandler extends TextWebSocketHandler{
 	
 	// 전체 회원
 	public void sendNotificationToAllUsers(String notification) throws IOException {
+		System.out.println("sendNotificationToAllUsers");
 	    for (WebSocketSession session : users.values()) {
 	        TextMessage message = new TextMessage(notification);
 	        session.sendMessage(message);

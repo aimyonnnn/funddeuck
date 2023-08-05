@@ -68,7 +68,6 @@ var toastCount = 0; 	// 알림 카운트 변수
 function onMessage(evt) {
 	
 	getNotificationCount(); 	// 알림을 전달 받았을 때 알림 갯수 조회하는 함수 호출
-// 	getNotifications(); 		// 관리자 피드백 메시지 업데이트
 	
 	var data = evt.data;
 	
@@ -126,11 +125,13 @@ function updateList() {
     // 현재 페이지에 따라 요청 파라미터 설정
     var currentPage = getCurrentPage();
 
-    if (currentPage === 'confirmNotification') {
+    if (currentPage === 'confirmNotification') {		// 받은 메시지함
     	
-        location.reload();
+    	setTimeout(function() {
+		    location.reload();
+		}, 3000);
         
-    } else if (currentPage === 'projectReward') {
+    } else if (currentPage === 'projectReward') {		// 리워드 등록
     	
     	getNotifications();
     }
@@ -209,10 +210,10 @@ $(() => {
             url: '<c:url value="saveNotification"/>',
             data: {
             	
+                type: type,
                 target: target,
                 subject: subject,
                 content: content,
-                type: type,
                 url: url
                 
             },
@@ -224,7 +225,7 @@ $(() => {
                 if (data == 'true') { 
                 	
                     alert('메시지가 발송 되었습니다!');
-                    socket.send(type + "," + target + "," + content + "," + url);
+                    socket.send(type + "," + target + "," + subject + "," + content + "," + url);
                     
                  	// 메시지 보내기 입력창 비우기
                     modal.find('.modal-body textarea').val('');

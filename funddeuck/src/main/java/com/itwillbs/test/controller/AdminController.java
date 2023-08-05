@@ -360,7 +360,7 @@ public class AdminController {
 					"<a href='" + url + "'>결제하기</a><a style='text-decoration: none; color: black;'> 링크 클릭 시 요금 결제 페이지로 이동합니다.<br>48시간 안에 결제를 진행하지 않으면 프로젝트가 승인거절 처리 됩니다.</a>";
 			
 			try {
-				echoHandler.sendNotificationToUser(memberId, content);
+				echoHandler.sendNotificationToUser(memberId, subject);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -441,10 +441,9 @@ public class AdminController {
 		return "admin/admin_project_detail";
 	}
 	
-	// 관리자 메시지함
-	// 관리가 발송한 메시지 리스트를 출력
-	@GetMapping("adminMessage")
-	public String adminMessage(
+	// 보낸 메시지함 - 관리자가 발송한 메시지 리스트를 출력
+	@GetMapping("adminSentNotification")
+	public String adminSentNotification(
 			@RequestParam(defaultValue = "") String searchType, 
 			@RequestParam(defaultValue = "") String searchKeyword, 
 			@RequestParam(defaultValue = "1") int pageNum, 
@@ -478,7 +477,47 @@ public class AdminController {
 		model.addAttribute("nList", nList);
 		model.addAttribute("pageInfo", pageInfo);
 		
-		return "admin/admin_notification_list";
+		return "admin/admin_sent_notification_list";
+	}
+	
+	// 받은 메시지함 - 관리자가 받은 메시지 리스트를 출력
+	@GetMapping("adminReceivedNotification")
+	public String adminReceivedNotification(
+			@RequestParam(defaultValue = "") String searchType, 
+			@RequestParam(defaultValue = "") String searchKeyword, 
+			@RequestParam(defaultValue = "1") int pageNum, 
+			HttpSession session, Model model) {
+		String sId = (String) session.getAttribute("sId");
+		// -------------------------------------------------------------------------
+		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		// -------------------------------------------------------------------------
+		// notificationService - getTotalList() 메서드 호출하여 게시물 목록 조회 요청
+		List<NotificationVO> nList = notificationService.getTotalListById(searchType, searchKeyword, sId, startRow, listLimit);
+		// -------------------------------------------------------------------------
+		// 한 페이지에서 표시할 페이지 목록(번호) 계산
+		// 1. notificationService - getNotificationListCount() 메서드를 호출하여
+		int listCount = notificationService.getTotalListCountById(searchType, searchKeyword, sId);
+		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+		int pageListLimit = 10;
+		// 3. 전체 페이지 목록 갯수 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 4. 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5. 끝 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		// 6. 만약, 끝 페이지 번호(endPage)가 전체(최대) 페이지 번호(maxPage) 보다
+		//	  클 경우 끝 페이지 번호를 최대 페이지 번호로 교체
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		// 페이징 처리 정보를 저장할 PageInfoVO 객체에 계산된 데이터 저장
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("nList", nList);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		return "admin/admin_received_notification_list";
 	}
 	
 	// 데이터 분석 
