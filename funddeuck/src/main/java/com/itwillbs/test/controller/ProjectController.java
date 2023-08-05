@@ -102,27 +102,36 @@ public class ProjectController {
 	}
 		
 	// 프로젝트 승인 요청
+	// project_approve_status = 2
 	@PostMapping("approvalRequest")
 	@ResponseBody
 	public String approvalRequest(@RequestParam int project_idx, HttpServletRequest request) {
 		System.out.println("approvalRequest");
-		// 파라미터로 전달받은 project_idx로 project_approve_status 상태를 2-승인요청으로 변경
 		// 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 		// 관리자 승인 관리 페이지에서는 미승인을 제외한 나머지 상태만 출력
-		
 		// 리워드까지 등록된 상태여야 관리자에게 프로젝트 승인요청을 할 수 있음
 		// 프로젝트 번호로 리워드가 조회되지 않으면 false 리턴
 		List<RewardVO> reward = projectService.getRewardList(project_idx);
-		if(reward == null) {
+		if(reward == null || reward.isEmpty()) {
 			return "false";
 		}
 		
-		// 이미 승인요청을 한 경우 already 리턴
-		Integer projectStatus = projectService.getProjectStatus(project_idx);
-		if(projectStatus != null && projectStatus == 2) {
-			return "already";
+		// 프로젝트 승인 상태 판별하기
+		// 1-미승인, 4-승인거절 상태일때만 승인요청 가능
+		Integer projectApproveStatus = projectService.getProjectStatus(project_idx);
+		if(projectApproveStatus == 2) {
+			return "2";
+		} else if (projectApproveStatus == 3) {
+			return "3";
+		} else if (projectApproveStatus == 5) {
+			return "5";
 		}
 		
+		System.out.println("프로젝트 승인 요청 출력 테스트 : " + projectApproveStatus);
+		
+		// 프로젝트 승인요청 상태로 변경하기
+		// project_approve_status = 2
+		// project_approval_request_time = now() 
 		int updateCount = projectService.modifyStatus(project_idx);
 		if(updateCount > 0) {
 			// 관리자에게 프로젝트 승인을 요청하는 toast 팝업 띄우기

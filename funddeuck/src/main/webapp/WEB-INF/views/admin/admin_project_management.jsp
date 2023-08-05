@@ -76,9 +76,9 @@ th, td {
 					<th class="text-center" style="width: 5%;">번호</th>
 					<th class="text-center" style="width: 5%;">카테고리</th>
 					<th class="text-center" style="width: 20%;">프로젝트 이름</th>
-					<th class="text-center" style="width: 10%;">대표자 이름</th>
+					<th class="text-center" style="width: 5%;">대표자</th>
 					<th class="text-center" style="width: 5%;">요금제</th>
-					<th class="text-center" style="width: 5%;">목표금액</th>
+					<th class="text-center" style="width: 7%;">목표금액</th>
 					<th class="text-center" style="width: 10%;">기간</th>
 					<th class="text-center" style="width: 5%;">상태</th>
 					<th class="text-center" style="width: 5%;">상세보기</th>

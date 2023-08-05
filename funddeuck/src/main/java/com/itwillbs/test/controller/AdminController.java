@@ -296,7 +296,7 @@ public class AdminController {
 		return sendPhoneMessageService.SendMessage(memberPhone, message, projectIdx);
 	}
 	
-	// 프로젝트 승인관리 페이지
+	// 프로젝트 승인 관리 페이지
 	@GetMapping("adminProjectList")
 	public String adminProject(
 			@RequestParam(defaultValue = "") String searchType,
@@ -347,10 +347,6 @@ public class AdminController {
 		// 프로젝트 상태컬럼을 3-승인완료로 변경하기 
 		project_approve_status = 3;
 		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
-		
-		ProjectVO project = projectService.getProjectInfo(project_idx);
-        project.setProject_approval_request_time(LocalDateTime.now());
-        projectService.modifyProjectApprovalRequestTime(project);
 		
 		// 1. 상태컬럼 변경 성공 시 결제url이 담긴 toast 팝업 알림 보내기
 		// 2. 결제url이 담긴 메시지 보내기

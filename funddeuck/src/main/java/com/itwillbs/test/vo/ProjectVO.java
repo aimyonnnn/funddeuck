@@ -1,6 +1,7 @@
 package com.itwillbs.test.vo;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -75,7 +76,7 @@ public class ProjectVO {
 	private String project_fintech_use_num;					// 프로젝트 핀테크 이용번호
 	private String project_settlement_image;				// 통장사본 이미지
 	private int project_approve_status;						// 프로젝트 승인 상태
-	private LocalDateTime project_approval_request_time;    // 프로젝트 승인 요청 시간 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
+	private Timestamp project_approval_request_time;    	// 프로젝트 승인 요청 시간 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 	private int project_status;								// 프로젝트 상태 프로젝트 상태 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료
 	private int maker_idx;									// 메이커 번호
 	private int token_idx;									// 프로젝트 계좌 인증에 사용될 토큰 번호

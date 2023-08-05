@@ -161,12 +161,12 @@
 				where member_id = #{sId}
 	</select>
 	
-	<!-- 프로젝트 승인 요청 -->
-	<!-- project_approve_status = 2 -->
+	<!-- 프로젝트 승인 요청 - project_approve_status = 2 -->
 	<update id="updateStatus">
 		update project
 			set
 				project_approve_status = 2
+				, project_approval_request_time = now()				
 			where
 				project_idx = #{project_idx}		
 	</update>
@@ -192,7 +192,7 @@
 		</if>
 			project_approve_status != 1
 		order by
-			project_idx desc			
+			project_approval_request_time asc	-- 승인 요청 시간
 		limit
 			#{startRow}
 			, #{listLimit}
@@ -420,7 +420,7 @@
 		select project_approve_status
 			from project
 		where
-			project_approve_status = 2
+			project_idx = #{project_idx}
 	</select>
 	
 </mapper>

@@ -5,28 +5,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<!-- bootstrap -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <!-- jquery -->
-	<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
-    <!-- css -->
-    <link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
-    <!-- sweetalert -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-    <style>
-	    table {
-	        width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
-	        table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
-	    }
-	    th, td {
-	        width: 10%; /* 각 셀의 너비를 20%로 설정 */
-	    }
-		.hover-effect:hover {
-		 	text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */
-		}
-	</style>
+<meta charset="UTF-8">
+<!-- bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<!-- jquery -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
+<!-- css -->
+<link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
+<!-- sweetalert -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+<style>
+table {
+    width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
+    table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
+}
+th, td {
+    width: 10%; /* 각 셀의 너비를 20%로 설정 */
+}
+.hover-effect:hover {
+ 	text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */
+}
+</style>
 </head>
 <body>
 <!-- 페이징 처리를 위한 pageNum 셋팅 -->
@@ -73,13 +73,12 @@
 				
 				<table class="table">
 					<tr>
-						<th class="text-center" style="width: 5%;">프로젝트 번호</th>
-						<th class="text-center" style="width: 20%;">프로젝트 이름</th>
-						<th class="text-center" style="width: 10%;">대표자 이름</th>
-						 <!-- 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려 -->
+						<th class="text-center" style="width: 7%;">프로젝트 번호</th>
+						<th class="text-center" style="width: 15%;">프로젝트 이름</th>
+						<th class="text-center" style="width: 7%;">대표자</th>
 						<th class="text-center" style="width: 5%;">상태</th>
+						<th class="text-center" style="width: 7%;">요청시간</th>
 						<th class="text-center" style="width: 5%;">상세보기</th>
-						<th class="text-center" style="width: 5%;">반려처리</th>
 					</tr>
 					
 					<c:forEach var="pList" items="${pList}">
@@ -109,11 +108,11 @@
 								</c:otherwise>
 							</c:choose>
 							<td class="text-center" style="width: 5%;">
-								<button class="btn btn-outline-primary btn-sm" 
-								onclick="location.href='adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}'">상세보기</button>
+								<fmt:formatDate value="${pList.project_approval_request_time}" pattern="yy-MM-dd HH:mm"/>
 							</td>
 							<td class="text-center" style="width: 5%;">
-								<input type="checkbox" class="form-check-input" onclick="rejectProjectStatus(${pList.project_idx}, 4)"/>
+								<button class="btn btn-outline-primary btn-sm" 
+								onclick="location.href='adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}'">상세보기</button>
 							</td>
 						</tr>
 					</c:forEach>

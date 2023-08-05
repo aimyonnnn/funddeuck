@@ -425,11 +425,27 @@ function projectApprovalRequestBtn(){
 					    }).then(function () {
 					        location.reload();
 					    });
-					} else {
+					} else if (data.trim() == '2') {
 					    Swal.fire({
 					        icon: 'error',
 					        title: '프로젝트 승인요청 실패',
-					        text: '이미 승인요청이 완료된 프로젝트 입니다. 승인완료까지 최대 3일이 소요됩니다.',
+					        text: '이미 승인요청된 프로젝트 입니다. 승인완료까지 최대 3일이 소요됩니다.',
+					    }).then(function () {
+					        location.reload();
+					    });
+					} else if (data.trim() == '3') {
+					    Swal.fire({
+					        icon: 'error',
+					        title: '프로젝트 승인요청 실패',
+					        text: '이미 승인완료된 프로젝트 입니다. 프로젝트 요금 결제를 진행해주세요.',
+					    }).then(function () {
+					        location.reload();
+					    });
+					} else if (data.trim() == '5') {
+					    Swal.fire({
+					        icon: 'error',
+					        title: '프로젝트 승인요청 실패',
+					        text: '이미 결제완료된 프로젝트 입니다. 새로운 프로젝트를 생성해주세요.',
 					    }).then(function () {
 					        location.reload();
 					    });
@@ -437,7 +453,7 @@ function projectApprovalRequestBtn(){
 
 				},
 				error: () => {
-					console.log('ajax 요청이 실패하였습니다.');
+					console.log('프로젝트 승인요청 ajax 실패');
 				}
 			});
 		}	
