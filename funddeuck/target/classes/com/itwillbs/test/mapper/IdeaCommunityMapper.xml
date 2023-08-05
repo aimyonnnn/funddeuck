@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.test.mapper.IdeaCommunityMapper">
+    <insert id="insertIdea" parameterType="com.itwillbs.test.vo.IdeaCommunityVO">
+        INSERT INTO idea (title, member_idx, description)
+        VALUES (#{title}, #{member_idx}, #{description})
+    </insert>
+
+    <select id="getAllCardsData" resultType="com.itwillbs.test.vo.IdeaCommunityVO">
+        SELECT * FROM idea;
+    </select>
+</mapper>

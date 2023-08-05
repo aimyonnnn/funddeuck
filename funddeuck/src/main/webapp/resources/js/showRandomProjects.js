@@ -21,8 +21,13 @@ function showRandomProjects() {
                             <div class="card-body">
                                 <em class="card-title"><b>${project.project_subject || ''}</b></em>
                                 <p class="card-text">
-                                    <span class="badge dbadge-primary">${project.project_target || '0'}원</span>
-                                    ${project.project_category || ''}
+						        	<div class="progress" style="height: 10px">
+					  					<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example" 
+					  					style="height:10px; width: ${project.project_amount/project.project_target * 100}%" 
+					  					aria-valuenow="${project.project_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100">
+					  					</div>
+								    </div>
+				                     ${project.project_category || ''}
                                 </p>
                             </div>
                             <p style="text-align: center;"><b>지금 참여하기></b></p>
