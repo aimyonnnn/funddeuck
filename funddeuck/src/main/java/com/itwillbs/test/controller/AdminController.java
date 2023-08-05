@@ -1,11 +1,18 @@
 package com.itwillbs.test.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,12 +24,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.itwillbs.test.handler.EchoHandler;
 import com.itwillbs.test.service.AdminService;
+import com.itwillbs.test.service.MakerBoardService;
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.NotificationService;
@@ -30,6 +39,7 @@ import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.service.SendPhoneMessageService;
 import com.itwillbs.test.vo.ChartDataVO;
+import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.NotificationVO;
 import com.itwillbs.test.vo.PageInfoVO;
@@ -54,6 +64,8 @@ public class AdminController {
 	private SendPhoneMessageService sendPhoneMessageService;
 	@Autowired
 	private MakerService makerService;
+	@Autowired
+	private MakerBoardService makerBoardService;
 	
 	private EchoHandler echoHandler;
 	@Autowired
@@ -69,17 +81,135 @@ public class AdminController {
 		return "admin/admin_main";
 	}
 	
-	// 메이커 상세정보 관리
+	// 메이커 정보 변경 페이지 - 메이커 관리 상세보기 클릭 시
 	@GetMapping("adminMakerDetail")
-	public String adminMakerDetail(@RequestParam(required = true) int maker_idx ,HttpSession session, Model model) {
+	public String adminMakerDetail(@RequestParam(required = true) Integer maker_idx ,HttpSession session, Model model) {
 		
+		MakerVO maker = makerService.getMakerInfo(maker_idx);
+		List<MakerBoardVO> mList = makerBoardService.getAllMakerBoardList(maker_idx);
 		
+		model.addAttribute("maker", maker);
+		model.addAttribute("mList", mList);
 		
 		return "admin/admin_maker_detail";
 	}
 	
+	// 메이커 정보 변경 비즈니스 로직 처리
+	@PostMapping("adminModifyMaker")
+	public String adminModifyMaker(
+			@RequestParam(defaultValue = "1") int pageNum,
+			MakerVO maker, HttpSession session, Model model) {
+		
+		System.out.println("modifyMaker");
+		String uploadDir = "/resources/upload";
+		String saveDir = session.getServletContext().getRealPath(uploadDir);
+		String subDir = "";
+		
+		try {
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			subDir = sdf.format(date);
+			saveDir += "/" + subDir;
+			Path path = Paths.get(saveDir);
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// 파일 업로드 폴더 경로 출력
+		System.out.println("실제 업로드 폴더 경로: " + saveDir);
+		
+		MultipartFile mFile1 = maker.getFile1();
+		MultipartFile mFile2 = maker.getFile2();
+		MultipartFile mFile3 = maker.getFile3();
+		MultipartFile mFile4 = maker.getFile4();
+		MultipartFile mFile5 = maker.getFile5();
+		
+		String uuid = UUID.randomUUID().toString();
+		maker.setMaker_file1("");
+		maker.setMaker_file2("");
+		maker.setMaker_file3("");
+		maker.setMaker_file4("");
+		maker.setMaker_file5("");
+		
+		String fileName1 = null;
+		String fileName2 = null;
+		String fileName3 = null;
+		String fileName4 = null;
+		String fileName5 = null;
+
+		if (mFile1 != null && !mFile1.getOriginalFilename().equals("")) {
+		    fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
+		    maker.setMaker_file1(subDir + "/" + fileName1);
+		}
+
+		if (mFile2 != null && !mFile2.getOriginalFilename().equals("")) {
+		    fileName2 = uuid.substring(0, 8) + "_" + mFile2.getOriginalFilename();
+		    maker.setMaker_file2(subDir + "/" + fileName2);
+		}
+
+		if (mFile3 != null && !mFile3.getOriginalFilename().equals("")) {
+			fileName3 = uuid.substring(0, 8) + "_" + mFile3.getOriginalFilename();
+			maker.setMaker_file3(subDir + "/" + fileName3);
+		}
+		
+		if (mFile4 != null && !mFile4.getOriginalFilename().equals("")) {
+			fileName4 = uuid.substring(0, 8) + "_" + mFile4.getOriginalFilename();
+			maker.setMaker_file4(subDir + "/" + fileName4);
+		}
+		
+		if (mFile5 != null && !mFile5.getOriginalFilename().equals("")) {
+			fileName5 = uuid.substring(0, 8) + "_" + mFile5.getOriginalFilename();
+			maker.setMaker_file5(subDir + "/" + fileName5);
+		}
+		
+		System.out.println("실제 업로드 파일명1 : " + maker.getMaker_file1());
+		System.out.println("실제 업로드 파일명2 : " + maker.getMaker_file2());
+		System.out.println("실제 업로드 파일명3 : " + maker.getMaker_file3());
+		System.out.println("실제 업로드 파일명4 : " + maker.getMaker_file4());
+		System.out.println("실제 업로드 파일명5 : " + maker.getMaker_file5());
+		
+		// -----------------------------------------------------------------------------------
+		
+		int updateCount = makerService.ModifyMakerByAdmin(maker);
+		
+		if(updateCount > 0) {
+			// 파일 업로드 처리
+			try {
+			    if (fileName1 != null) {
+			        mFile1.transferTo(new File(saveDir, fileName1));
+			    }
+			    if (fileName2 != null) {
+			        mFile2.transferTo(new File(saveDir, fileName2));
+			    }
+			    if (fileName3 != null) {
+			    	mFile3.transferTo(new File(saveDir, fileName3));
+			    }
+			    if (fileName4 != null) {
+			    	mFile4.transferTo(new File(saveDir, fileName4));
+			    }
+			    if (fileName5 != null) {
+			    	mFile5.transferTo(new File(saveDir, fileName5));
+			    }
+			} catch (IllegalStateException e) {
+			    e.printStackTrace();
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
+			
+			// 메이커 정보 변경 성공 시
+			String targetURL = "adminMakerDetail?maker_idx=" + maker.getMaker_idx() + "&pageNum=" + pageNum;
+			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다.");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
+			
+		} else {
+			model.addAttribute("msg", "메이커 정보 수정에 실패하였습니다.");
+			return "fail_back";
+		}
+	}
 	
-	// 메이커 관리
+	// 메이커 관리 페이지
 	@GetMapping("adminMakerManagement")
 	public String adminMakerManagement(
 			@RequestParam(defaultValue = "") String searchType,

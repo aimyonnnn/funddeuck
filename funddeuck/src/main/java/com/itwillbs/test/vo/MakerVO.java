@@ -39,7 +39,7 @@ public class MakerVO {
     private String maker_email;             // 메이커 이메일
     private String maker_tel;               // 메이커 전화번호
     private String maker_url;               // 메이커 홈페이지
-    private String maker_grade;				// 메이커 등급
+    private int maker_grade;				// 메이커 등급
     // 사진
     private String maker_file1;             // 메이커 유형 - 개인신분증
     private String maker_file2;             // 메이커 유형 - 개인사업자 등록증

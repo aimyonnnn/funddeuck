@@ -148,25 +148,22 @@
 							<th>홈페이지</th>
 							<td>${maker.maker_url}</td>
 						</tr>
-						<c:choose>
-							<c:when test="${not empty maker.corporate_biz_num or not empty maker.individual_biz_num}">
-								<tr>
-									<th>사업자등록번호</th>
-									<c:if test="${not empty maker.corporate_biz_num}">
+						<tr>
+							<th>사업자등록번호</th>
+							<c:choose>
+								<c:when test="${not empty maker.corporate_biz_num or not empty maker.individual_biz_num}">
+									<c:if test="${not empty maker.corporate_biz_num && empty maker.individual_biz_num}">
 										<td>${maker.corporate_biz_num}</td>
 									</c:if>
-									<c:if test="${not empty maker.individual_biz_num}">
+									<c:if test="${empty maker.corporate_biz_num && not empty maker.individual_biz_num}">
 										<td>${maker.individual_biz_num}</td>
 									</c:if>
-								</tr>
-							</c:when>
-							<c:otherwise>
-								<tr>
-									<th>사업자등록번호</th>
-									<td>120-88-00767</td>
-								</tr>
-							</c:otherwise>
-						</c:choose>
+								</c:when>
+								<c:otherwise>
+										<td>사업자등록번호 없음</td>
+								</c:otherwise>
+							</c:choose>
+						</tr>
 					</table>
 				</div>
 			</div>

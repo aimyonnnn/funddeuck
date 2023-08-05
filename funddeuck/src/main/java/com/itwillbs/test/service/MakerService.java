@@ -47,5 +47,9 @@ public class MakerService {
 	public int getAllMakerListCount(String searchKeyword, String searchType) {
 		return mapper.selectAllMakerListCount(searchKeyword, searchType);
 	}
+	// 관리자 - 메이커 정보 수정
+	public int ModifyMakerByAdmin(MakerVO maker) {
+		return mapper.updateMakerByAdmin(maker);
+	}
 	
 }

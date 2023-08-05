@@ -10,7 +10,7 @@
 					maker_idx = #{maker_idx}
 	</select>
 	
-	<!-- 메이커 페이지 수정하기 -->
+	<!-- 메이커 페이지 메이커 정보 수정 -->
 	<update id="updateMaker">
 		update maker
 			set
@@ -29,11 +29,53 @@
 				maker_idx = #{maker_idx}	
 	</update>
 	
+	<!-- 관리자 - 메이커 정보 수정 -->
+	<update id="updateMakerByAdmin">
+		update maker
+			set
+				<if test="!maker_file1.equals('')">
+					maker_file1 = #{maker_file1} ,      			-- 개인신분증
+				</if>
+				<if test="!maker_file2.equals('')">
+					maker_file2 = #{maker_file2} ,      			-- 개인사업자등록증
+				</if>
+				<if test="!maker_file3.equals('')">
+					maker_file3 = #{maker_file3} ,      			-- 법인사업자등록증
+				</if>
+				<if test="!maker_file4.equals('')">
+					maker_file4 = #{maker_file4} ,      			-- 메이커 사진
+				</if>
+				<if test="!maker_file5.equals('')">
+					maker_file5 = #{maker_file5} ,      			-- 메이커 로고
+				</if>
+				individual_biz_num = #{individual_biz_num},			-- 개인사업자 등록번호
+				individual_biz_name = #{individual_biz_name},		-- 개인사업자명
+				corporate_biz_num = #{corporate_biz_num},			-- 법인사업자 등록번호
+				corporate_biz_name = #{corporate_biz_name},			-- 법인사업자명
+				maker_name = #{maker_name},	  						-- 메이커 이름		
+				maker_intro = #{maker_intro},	  					-- 메이커 소개		
+				maker_email = #{maker_email},    					-- 메이커 이메일
+				maker_tel = #{maker_tel},  	 						-- 메이커 전화번호
+				maker_url = #{maker_url},	 		    			-- 메이커 홈페이지
+				maker_grade = #{maker_grade}		 				-- 메이커 등급
+			where
+				maker_idx = #{maker_idx}	
+	</update>
+	
 	<!-- 메이커 페이지 수정하기 - 파일 실시간 삭제 -->
 	<delete id="deleteMakerFile">
 		update maker
 		  set
 		    <choose>
+		      <when test="fileNumber == 1">
+		        maker_file1 = ''
+		      </when>
+		      <when test="fileNumber == 2">
+		        maker_file2 = ''
+		      </when>
+		      <when test="fileNumber == 3">
+		        maker_file3 = ''
+		      </when>
 		      <when test="fileNumber == 4">
 		        maker_file4 = ''
 		      </when>
@@ -44,7 +86,10 @@
 		  where
 		    maker_idx = #{maker_idx}
 		    and (
-		      (#{fileNumber} = 4 and maker_file4 != '')
+		      (#{fileNumber} = 1 and maker_file1 != '')
+		      or (#{fileNumber} = 2 and maker_file2 != '')
+		      or (#{fileNumber} = 3 and maker_file3 != '')
+		      or (#{fileNumber} = 4 and maker_file4 != '')
 		      or (#{fileNumber} = 5 and maker_file5 != '')
 		    )
 	</delete>

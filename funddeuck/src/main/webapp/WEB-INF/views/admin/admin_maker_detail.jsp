@@ -38,666 +38,388 @@ th, td {
 <div class="main-content">
 <jsp:include page="../common/admin_top.jsp"/>
 
-	<div class="container">
-		<h2 class="fw-bold mt-5">프로젝트 상세보기</h2>
-	</div>
-
-	<!--  -->
-	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-lg-11">
-
-				<div class="container mb-5">
-					<div class="d-flex justify-content-end mb-1">
-						<button class="btn btn-outline-primary btn-sm"
-							id="feedbackMessage">수정사항 전달하기</button>
-						<button class="btn btn-outline-primary btn-sm mx-2"
-							onclick="approveProjectStatus(${project.project_idx}, ${project.project_approve_status})">승인처리</button>
-						<button class="btn btn-outline-primary btn-sm"
-							onclick="rejectProjectStatus(${project.project_idx}, 4)">반려처리</button>
-					</div>
-				</div>
-
-				<!-- container -->
-				<div class="container">
-
-					<table class="table">
+<div class="container">
+	<h2 class="fw-bold mt-5">메이커 정보 변경</h2>
+</div>
+		
+<div class="container mt-2" style="max-width: 800px;">
+	<div class="row">
+		<div class="col">
+	
+			<div class="tab-buttons text-center">
+				<button class="btn btn-outline-primary tab-button w-100 active" data-tab="tab1">메이커 정보변경</button>
+				<button class="btn btn-outline-primary tab-button w-100 " data-tab="tab2">공지사항 관리</button>
+			</div>
+				
+			<!-- 메이커 정보수정 -->
+			<div class="content-area" id="tab1">
+				<!-- 폼 태그 -->
+				<form action="adminModifyMaker" method="post" id="modifyForm"
+					enctype="multipart/form-data">
+					<input type="hidden" name="pageNum" value="${param.pageNum}">
+					<input type="hidden" name="maker_idx" value="${maker.maker_idx}">
+					<table class="table text-center">
 						<tr>
-							<td class="align-middle text-center">프로젝트 이름</td>
-							<td>${project.project_subject}</td>
-							<td class="align-middle text-center">승인상태</td>
+							<th style="width: 30%">메이커 이름</th>
+							<td style="width: 70%"><input type="text" name="maker_name" class="form-control"
+								value="${maker.maker_name}"></td>
+						</tr>
+						<tr>
+							<th>메이커 소개</th>
+							<td><input type="text" name="maker_intro" class="form-control"
+								value="${maker.maker_intro}"></td>
+						</tr>
+						<tr>
+							<th>이메일</th>
+							<td><input type="text" name="maker_email" class="form-control"
+								value="${maker.maker_email}"></td>
+						</tr>
+						<tr>
+							<th>전화번호</th>
+							<td><input type="text" name="maker_tel" class="form-control"
+								value="${maker.maker_tel}"></td>
+						</tr>
+						<tr>
+							<th>홈페이지</th>
+							<td><input type="text" name="maker_url" class="form-control"
+								value="${maker.maker_url}"></td>
+						</tr>
+						<tr>
+							<th>메이커 등급</th>
+							<td><input type="text" name="maker_grade" class="form-control"
+								value="${maker.maker_grade}"></td>
+						</tr>
+						
+						<tr>
+							<th>사업자등록번호(개인)</th>
+							<td><input type="text" name="individual_biz_num" class="form-control"
+								value="${maker.individual_biz_num}"></td>
+						</tr>
+						
+						<tr>
+							<th>개인사업자명</th>
+							<td><input type="text" name="individual_biz_name" class="form-control"
+								value="${maker.individual_biz_name}"></td>
+						</tr>
+							
+						<tr>
+							<th>사업자등록번호(법인)</th>
+							<td><input type="text" name="corporate_biz_num" class="form-control"
+								value="${maker.corporate_biz_num}"></td>
+						</tr>
+						
+						<tr>
+							<th>법인사업자명</th>
+							<td><input type="text" name="corporate_biz_name" class="form-control"
+								value="${maker.corporate_biz_name}"></td>
+						</tr>
+							
+						<%-- 파일이 존재할 경우 파일명과 삭제버튼 표시하고, 아니면 파일 등록 버튼 표시 --%>
+						
+						<tr>
+							<th>메이커 사진</th>
 							<c:choose>
-								<c:when test="${project.project_approve_status eq 2}">
-									<td class="text-danger">승인요청</td>
-								</c:when>
-								<c:when test="${project.project_approve_status eq 3}">
-									<td class="text-success">승인완료</td>
-								</c:when>
-								<c:when test="${project.project_approve_status eq 5}">
-									<td>결제완료</td>
+								<c:when test="${empty maker.maker_file4}">
+									<td style="text-align: left;">
+										<div class="d-flex justify-content-between">
+											<input type="file" name="file4" onchange="checkFileInput('file4')">
+											<button type="button" id="resetBtn4" onclick="resetFileInput('file4')" class="btn btn-outline-danger btn-sm me-1" style="display: none;">선택해제</button>
+										</div>
+									</td>
 								</c:when>
 								<c:otherwise>
-									<td>승인거절</td>
+									<td style="text-align: left;">
+										<div class="d-flex justify-content-between">
+											${fn:split(maker.maker_file4, '_')[1] }
+											<input type="button" value="파일삭제" class="btn btn-outline-danger btn-sm me-1"
+											onclick="deleteFile('${maker.maker_idx}', '${maker.maker_file4}', 4)">
+										</div>
+									</td>
+								</c:otherwise>										
+							</c:choose>
+						</tr>
+						
+						<tr>
+							<th>메이커 로고</th>
+							<c:choose>
+								<c:when test="${empty maker.maker_file5}">
+									<td style="text-align: left;">
+										<div class="d-flex justify-content-between">
+											<input type="file" name="file5" onchange="checkFileInput('file5')">
+											<button type="button" id="resetBtn5" onclick="resetFileInput('file5')" class="btn btn-outline-danger btn-sm me-1" style="display: none;">선택해제</button>
+										</div>
+									</td>
+								</c:when>
+								<c:otherwise>
+									<td style="text-align: left;">
+										<div class="d-flex justify-content-between">
+											${fn:split(maker.maker_file5,'_')[1]}
+											<input type="button" value="파일삭제" class="btn btn-outline-danger btn-sm me-1"
+											onclick="deleteFile('${maker.maker_idx}', '${maker.maker_file5}', 5)" >
+										</div>
+									</td>
 								</c:otherwise>
 							</c:choose>
 						</tr>
+						
 						<tr>
-							<td class="align-middle text-center">대표자 이름</td>
-							<td>${project.project_representative_name}</td>
-							<td class="align-middle text-center">프로젝트 번호</td>
-							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${project.project_idx}</td>
+							<th>개인신분증</th>
+							<c:choose>
+								<c:when test="${empty maker.maker_file1}">
+									<td style="text-align: left;">
+										<div class="d-flex justify-content-between">
+											<input type="file" name="file1" onchange="checkFileInput('file1')">
+											<button type="button" id="resetBtn5" onclick="resetFileInput('file1')" class="btn btn-outline-danger btn-sm me-1" style="display: none;">선택해제</button>
+										</div>
+									</td>
+								</c:when>
+								<c:otherwise>
+									<td style="text-align: left;">
+										<div class="d-flex justify-content-between">
+											${fn:split(maker.maker_file1,'_')[1]}
+											<input type="button" value="파일삭제" class="btn btn-outline-danger btn-sm me-1"
+											onclick="deleteFile('${maker.maker_idx}', '${maker.maker_file1}', 1)" >
+										</div>
+									</td>
+								</c:otherwise>
+							</c:choose>
 						</tr>
+						
+						<tr>
+							<th>사업자등록증(개인)</th>
+							<c:choose>
+								<c:when test="${empty maker.maker_file2}">
+									<td style="text-align: left;">
+										<div class="d-flex justify-content-between">
+											<input type="file" name="file2" onchange="checkFileInput('file2')">
+											<button type="button" id="resetBtn5" onclick="resetFileInput('file2')" class="btn btn-outline-danger btn-sm me-1" style="display: none;">선택해제</button>
+										</div>
+									</td>
+								</c:when>
+								<c:otherwise>
+									<td style="text-align: left;">
+										<div class="d-flex justify-content-between">
+											${fn:split(maker.maker_file2,'_')[1]}
+											<input type="button" value="파일삭제" class="btn btn-outline-danger btn-sm me-1"
+											onclick="deleteFile('${maker.maker_idx}', '${maker.maker_file2}', 2)" >
+										</div>
+									</td>
+								</c:otherwise>
+							</c:choose>
+						</tr>
+						
+						
+						<tr>
+							<th>사업자등록증(법인)</th>
+							<c:choose>
+								<c:when test="${empty maker.maker_file3}">
+									<td style="text-align: left;">
+										<div class="d-flex justify-content-between">	
+											<input type="file" name="file3" onchange="checkFileInput('file3')">
+											<button type="button" id="resetBtn5" onclick="resetFileInput('file3')" class="btn btn-outline-danger btn-sm me-1" style="display: none;">선택해제</button>
+										</div>
+									</td>
+								</c:when>
+								<c:otherwise>
+									<td style="text-align: left;">
+										<div class="d-flex justify-content-between">
+											${fn:split(maker.maker_file3,'_')[1]}
+											<input type="button" value="파일삭제" class="btn btn-outline-danger btn-sm me-1"
+											onclick="deleteFile('${maker.maker_idx}', '${maker.maker_file3}', 3)" >
+										</div>
+									</td>
+								</c:otherwise>
+							</c:choose>
+						</tr>
+						
 					</table>
-
-					<!-- 탭 버튼 -->
-					<div class="tab-buttons text-center mt-5">
-						<button class="btn btn-outline-primary tab-button w-100"
-							data-tab="tab1">프로젝트</button>
-						<button class="btn btn-outline-primary tab-button w-100"
-							data-tab="tab2">리워드</button>
-						<button class="btn btn-outline-primary tab-button w-100"
-							data-tab="tab3">메이커</button>
+					<div class="d-flex justify-content-center">
+						<input type="submit" value="수정하기" class="btn btn-outline-primary">
 					</div>
-					<div class="content-area sideDescription" id="tab1">
-						<div class="container">
-							<table class="table text-center">
-								<tr>
-									<th>제목</th>
-									<th>내용</th>
-								</tr>
-								<tr>
-									<td>프로젝트 번호</td>
-									<td>${project.project_idx}</td>
-								</tr>
-								<tr>
-									<td>프로젝트 요금제</td>
-									<c:choose>
-										<c:when test="${project.project_plan eq 1}">
-											<td>기본 요금제</td>
-										</c:when>
-										<c:when test="${project.project_plan eq 2}">
-											<td>인플루언서 요금제</td>
-										</c:when>
-									</c:choose>
-								</tr>
-								<tr>
-									<td>프로젝트 카테고리</td>
-									<td>${project.project_category}</td>
-								</tr>
-								<tr>
-									<td>프로젝트 제목</td>
-									<td>${project.project_subject}</td>
-								</tr>
-								<tr>
-									<td>프로젝트 썸네일 (1)</td>
-									<td><img
-										src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}"
-										alt="첨부파일 없음"></td>
-								</tr>
-								<tr>
-									<td>프로젝트 썸네일 (2)</td>
-									<td><img
-										src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails2}"
-										alt="첨부파일 없음"></td>
-								</tr>
-								<tr>
-									<td>프로젝트 썸네일 (3)</td>
-									<td><img
-										src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails3}"
-										alt="첨부파일 없음"></td>
-								</tr>
-								<tr>
-									<td>프로젝트 내용 상세 이미지</td>
-									<td><img
-										src="${pageContext.request.contextPath}/resources/upload/${project.project_image}"
-										alt="첨부파일 없음"></td>
-								</tr>
-								<tr>
-									<td>프로젝트 소개</td>
-									<td>${project.project_introduce}</td>
-								</tr>
-								<tr>
-									<td>프로젝트 한줄 소개</td>
-									<td>${project.project_semi_introduce}</td>
-								</tr>
-								<tr>
-									<td>목표 금액</td>
-									<td>${project.project_target}</td>
-								</tr>
-								<tr>
-									<td>누적 금액</td>
-									<td>${project.project_cumulative_amount}</td>
-								</tr>
-								<tr>
-									<td>프로젝트 달성 금액</td>
-									<td>${project.project_amount}</td>
-								</tr>
-								<tr>
-									<td>프로젝트 시작일</td>
-									<td>${project.project_start_date}</td>
-								</tr>
-								<tr>
-									<td>프로젝트 종료일</td>
-									<td>${project.project_end_date}</td>
-								</tr>
-								<tr>
-									<td>검색용 태그</td>
-									<td>${project.project_hashtag}</td>
-								</tr>
-								<tr>
-									<td>대표자명</td>
-									<td>${project.project_representative_name}</td>
-								</tr>
-								<tr>
-									<td>대표 이메일</td>
-									<td>${project.project_representative_email}</td>
-								</tr>
-								<tr>
-									<td>대표 주민등록번호</td>
-									<td>${project.project_representative_birth}</td>
-								</tr>
-								<tr>
-									<td>세금계산서 발행 이메일</td>
-									<td>${project.project_tax_email}</td>
-								</tr>
-								<tr>
-									<td>정산받을 은행</td>
-									<td>${project.project_settlement_bank}</td>
-								</tr>
-								<tr>
-									<td>정산받을 계좌번호</td>
-									<td>${project.project_settlement_account}</td>
-								</tr>
-								<tr>
-									<td>예금주명</td>
-									<td>${project.project_settlement_name}</td>
-								</tr>
-								<tr>
-									<td>핀테크 이용번호</td>
-									<td>${project.project_fintech_use_num}</td>
-								</tr>
-								<tr>
-									<td>통장사본 이미지</td>
-									<td><img
-										src="${pageContext.request.contextPath}/resources/upload/${project.project_settlement_image}"
-										alt="첨부파일 없음"></td>
-								</tr>
-								<tr>
-									<td>프로젝트 승인 상태</td>
-									<c:choose>
-										<c:when test="${project.project_approve_status eq 2}">
-											<td>승인요청</td>
-										</c:when>
-										<c:when test="${project.project_approve_status eq 3}">
-											<td>승인완료</td>
-										</c:when>
-										<c:when test="${project.project_approve_status eq 4}">
-											<td>승인거절</td>
-										</c:when>
-										<c:when test="${project.project_approve_status eq 5}">
-											<td>결제완료</td>
-										</c:when>
-										<c:otherwise>
-											<td>미승인</td>
-										</c:otherwise>
-									</c:choose>
-								</tr>
-								<tr>
-								<tr>
-									<td>프로젝트 승인 요청 시간</td>
-									<c:choose>
-										<c:when test="${not empty project.project_approval_request_time}">
-											<td>${project.project_approval_request_time}</td>
-										</c:when>
-										<c:otherwise>
-											<td>승인 요청 전 입니다</td>
-										</c:otherwise>
-									</c:choose>
-								</tr>
-								<tr>
-									<td>프로젝트 상태</td>
-									<c:choose>
-										<c:when test="${project.project_status eq 1}">
-											<td>미진행</td>
-										</c:when>
-										<c:when test="${project.project_status eq 2}">
-											<td>진행중</td>
-										</c:when>
-										<c:when test="${project.project_status eq 3}">
-											<td>진행완료</td>
-										</c:when>
-										<c:when test="${project.project_status eq 4}">
-											<td>정산신청</td>
-										</c:when>
-										<c:when test="${project.project_status eq 5}">
-											<td>정산완료</td>
-										</c:when>
-									</c:choose>
-								</tr>
-							</table>
-						</div>
-					</div>
-
-					<div class="content-area sideDescription" id="tab2">
-						<div class="container">
-							<table class="table text-center">
-								<tr>
-									<th>제목</th>
-									<th>내용</th>
-								</tr>
-								<c:forEach var="rList" items="${rList}">
-									<tr>
-										<td>리워드 번호</td>
-										<td>${rList.reward_idx}</td>
-									</tr>
-									<tr>
-										<td>프로젝트 번호</td>
-										<td>${rList.project_idx}</td>
-									</tr>
-									<tr>
-										<td>리워드 가격</td>
-										<td>${rList.reward_price}</td>
-									</tr>
-									<tr>
-										<td>리워드 카테고리</td>
-										<td>${rList.reward_category}</td>
-									</tr>
-									<tr>
-										<td>리워드명</td>
-										<td>${rList.reward_name}</td>
-									</tr>
-									<tr>
-										<td>리워드 수량</td>
-										<td>${rList.reward_quantity}</td>
-									</tr>
-									<tr>
-										<td>리워드 옵션</td>
-										<td>${rList.reward_option}</td>
-									</tr>
-									<tr>
-										<td>리워드 설명</td>
-										<td>${rList.reward_detail}</td>
-									</tr>
-									<tr>
-										<td>배송여부</td>
-										<td>${rList.delivery_status}</td>
-									</tr>
-									<tr>
-										<td>배송비</td>
-										<td>${rList.delivery_price}</td>
-									</tr>
-									<tr>
-										<td>발송 시작일</td>
-										<td>${rList.delivery_date}</td>
-									</tr>
-									<tr>
-										<td>리워드 정보 제공 고시</td>
-										<td>${rList.reward_info}</td>
-									</tr>
-								</c:forEach>
-							</table>
-						</div>
-					</div>
-
-					<div class="content-area sideDescription" id="tab3">
-						<div class="container">
-							<table class="table text-center">
-								<tr>
-									<th>제목</th>
-									<th>내용</th>
-								</tr>
-								<tr>
-									<td>메이커 번호</td>
-									<td>${maker.maker_idx}</td>
-								</tr>
-								<tr>
-									<td>회원번호</td>
-									<td>${maker.member_idx}</td>
-								</tr>
-								<tr>
-									<td>메이커 유형-개인신분증</td>
-									<td><img
-										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file1}"
-										alt="첨부파일 없음"></td>
-								</tr>
-								<tr>
-									<td>메이커 유형-개인사업자등록번호</td>
-									<td>${maker.individual_biz_num}</td>
-								</tr>
-								<tr>
-									<td>메이커 유형-개인사업자명</td>
-									<td>${maker.individual_biz_name}</td>
-								</tr>
-								<tr>
-									<td>메이커 유형-개인사업자등록증</td>
-									<td><img
-										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file2}"
-										alt="첨부파일 없음"></td>
-								</tr>
-								<tr>
-									<td>메이커 유형-법인사업자등록번호</td>
-									<td>${maker.corporate_biz_num}</td>
-								</tr>
-								<tr>
-									<td>메이커 유형-법인사업자명</td>
-									<td>${maker.corporate_biz_name}</td>
-								</tr>
-								<tr>
-									<td>메이커 유형-법인사업자등록증</td>
-									<td><img
-										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file3}"
-										alt="첨부파일 없음"></td>
-								</tr>
-								<tr>
-									<td>메이커 사진</td>
-									<td><img
-										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file4}"
-										alt="첨부파일 없음"></td>
-								</tr>
-								<tr>
-									<td>메이커 로고</td>
-									<td><img
-										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file5}"
-										alt="첨부파일 없음"></td>
-								</tr>
-								<tr>
-									<td>메이커 이름</td>
-									<td>${maker.maker_name}</td>
-								</tr>
-								<tr>
-									<td>메이커 소개</td>
-									<td>${maker.maker_intro}</td>
-								</tr>
-								<tr>
-									<td>메이커 이메일</td>
-									<td>${maker.maker_email}</td>
-								</tr>
-								<tr>
-									<td>메이커 전화번호</td>
-									<td>${maker.maker_tel}</td>
-								</tr>
-								<tr>
-									<td>메이커 홈페이지</td>
-									<td>${maker.maker_url}</td>
-								</tr>
-								<tr>
-									<td>메이커 등급</td>
-									<td>${maker.maker_grade}</td>
-								</tr>
-							</table>
-						</div>
-					</div>
-
-					<!-- 하단 버튼 -->
-					<div class="d-flex justify-content-center my-3">
-						<input type="button" value="목록"
-							class="btn btn-outline-primary btn-sm"
-<%-- 							onclick="location.href='adminProjectList?pageNum=${param.pageNum}'"> --%>
-							onclick="history.back()">
-					</div>
-
+				</form>
+				<!-- 폼 태그 -->
+			</div>
+			
+			<!-- 공지사항 리스트 -->
+			<div class="content-area" id="tab2">
+				<div class="accordion" id="accordionExample">
+				
+				    <c:forEach var="mList" items="${mList}">
+				        <div class="accordion-item">
+				            <h2 class="accordion-header" id="heading${mList.maker_board_idx}">
+				                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+				                    data-bs-target="#collapse${mList.maker_board_idx}" aria-expanded="true"
+				                    aria-controls="collapse${mList.maker_board_idx}">
+				                    ${mList.maker_board_subject}
+				                </button>	
+				            </h2>
+				            <div id="collapse${mList.maker_board_idx}" class="accordion-collapse collapse show"
+				                aria-labelledby="heading${mList.maker_board_idx}" data-bs-parent="#accordionExample">
+				                <div class="accordion-body">
+				                	<table class="table text-center">
+				                		<tr>
+				                			<td style="width: 20%">작성내용</td>
+				                			<td style="width: 80%">${mList.maker_board_content}</td>
+				                		</tr>
+				                		<tr>
+				                			<td>작성일자</td>
+				                			<td><fmt:formatDate value="${mList.maker_board_regdate}" pattern="yy-MM-dd HH:mm" /></td>
+				                		</tr>
+				                		<tr>
+				                			<td>첨부파일</td>
+				                			<td>
+				                				<c:choose>
+				                					<c:when test="${not empty mList.maker_board_file1}">
+						                				<a href="${pageContext.request.contextPath}/resources/upload/${mList.maker_board_file1}" download="${fn:split(mList.maker_board_file1, '_')[1]}">
+											                ${fn:split(mList.maker_board_file1, '_')[1]}
+											            </a>
+				                					</c:when>
+				                					<c:otherwise>
+				                						첨부파일 없음
+				                					</c:otherwise>
+				                				</c:choose>
+				                			</td>
+				                		</tr>
+				                		<tr>
+				                			<td colspan="2" class="text-center">
+					                			<input type="button" value="삭제하기" class="btn btn-outline-danger btn-sm"
+												onclick="deleteMakerBoard(${mList.maker_board_idx})">
+				                			</td>
+				                		<tr>
+				                	</table>
+				                </div>
+				            </div>
+				        </div>
+				    </c:forEach>
+				    
 				</div>
-				<!-- container -->
-
+			</div>
+			
+				
 			</div>
 		</div>
 	</div>
 </div>
 
-<!-- 모달창 -->
-<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="imageModalLabel">이미지 보기</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <img src="" alt="이미지" id="modalImage" style="max-width: 100%;">
-            </div>
-        </div>
-    </div>
-</div>
-	
 <script>
-// 이미지 클릭 시 모달 창에 이미지 보여주기
-$(document).ready(function () {
-    $("tr td img").click(function () {
-        var src = $(this).attr("src");
-        $("#modalImage").attr("src", src);
-        $("#imageModal").modal("show");
-    });
-});
-    
-// 이미지 크기를 50px x 50px로 조절
-$(document).ready(function () {
-    $("tr td img").css({
-        "width": "50px",
-        "height": "50px"
-    });
-    $("tr td img").attr("title", "클릭 시 이미지를 크게 볼 수 있습니다");
-});
- 	
+//탭 버튼 클릭 시
 $(document).ready(function() {
-	// 아이디 입력 필드 찾기
-	let notifyIdInput = $('#notifyId');
 	
-	// memberId 값을 가져와서 입력 필드의 value로 설정하고 readonly로 만들기
-	let memberIdValue = '${memberId}';
-	notifyIdInput.val(memberIdValue);
-	notifyIdInput.prop('readonly', true);
+	$("#tab1").addClass("active");
+	$(".tab-button").click(function() {
+		
+		var tabId = $(this).data("tab");
+		$(".content-area").removeClass("active");
+		$("#" + tabId).addClass("active");
+		
+	});
+	
 });
 
-// 피드백 메시지 버튼을 클릭했을 때의 동작 정의
-$('#feedbackMessage').click(function() {
-	// Message 버튼을 가져와서 클릭 이벤트 실행
-	let messageButton = $('[data-bs-target="#notifyModal"]');
-	messageButton.click();
+// 탭 버튼 클릭시 active 효과
+$(document).ready(function() {
+	
+	// 버튼1 클릭 시
+	$(".tab-button[data-tab='tab1']").click(function() {
+		$(".tab-button[data-tab='tab1']").addClass("active");
+	  	$(".tab-button[data-tab='tab2']").removeClass("active");
+	});
+	
+	// 버튼2 클릭 시
+	$(".tab-button[data-tab='tab2']").click(function() {
+	  	$(".tab-button[data-tab='tab1']").removeClass("active");
+	  	$(".tab-button[data-tab='tab2']").addClass("active");
+	});
+	
 });
-</script>
+
+// 파일 실시간 삭제
+function deleteFile(maker_idx, fileName, fileNumber) {
 	
-<script type="text/javascript">
-$(document).ready(function () {
-       // 탭 1을 기본으로 활성화
-       $("#tab1").addClass("active");
-       $(".tab-button[data-tab='tab1']").addClass("active"); // 기본 탭 버튼에도 active 클래스 추가
-
-       $(".tab-button").click(function (e) {
-           e.preventDefault(); // form 태그와의 충돌 방지
-           var tabId = $(this).data("tab");
-           $(".content-area").removeClass("active");
-           $("#" + tabId).addClass("active");
-
-           // 탭 버튼에도 active 클래스 추가 (활성화된 탭 표시)
-           $(".tab-button").removeClass("active");
-           $(this).addClass("active");
-       });
-})
-
-// 프로젝트 승인 처리
-function approveProjectStatus(project_idx, project_approve_status) {
-	
-	// 프로젝트 승인여부 조회하기
-	// 승인완료, 결제완료 된 경우 false가 콜백으로 전달됨
-	// 승인요청, 반려처리 된 경우 true가 콜백으로 전달됨
-   	isProjectApproved(project_idx, project_approve_status, function(isApproved) {
-   		
-  			if (isApproved) {
-  				
-			Swal.fire({
-				title: '프로젝트 상태 변경',
-				text: '프로젝트 승인 처리를 하시겠습니까?',
-				icon: 'question',
-				showCancelButton: true,
-				confirmButtonText: '예',
-				cancelButtonText: '아니오'
-			}).then((result) => {
+	if(confirm('파일을 삭제 하시겠습니까?')) {
+		
+		$.ajax({
+			type: 'post',
+			url: "<c:url value='deleteFile'/>",
+			data: {
+				maker_idx: maker_idx,
+				fileName: fileName,
+				fileNumber: fileNumber
+			},
+			success: function(result){
 				
-				if (result.isConfirmed) {
-					
-					$.ajax({
-						method: 'get',
-						url: "<c:url value='approveProjectStatus'/>",
-						data: {
-							member_idx: ${maker.member_idx},
-							project_idx: project_idx,
-							project_approve_status: project_approve_status
-						},
-						success: function(data) {
-							if (data.trim() == 'true') {
-								Swal.fire({
-									icon: 'success',
-									title: '프로젝트 승인처리 완료.',
-									text: '프로젝트 상태가 성공적으로 변경되었습니다.'
-								}).then(function() {
-									let memberPhone = "${memberPhone}";
-									let message = "프로젝트 승인이 완료되었습니다.";
-									sendNotificationMessage(memberPhone, message);
-								});
-							} else {
-								Swal.fire({
-									icon: 'error',
-									title: '프로젝트 승인처리 실패.',
-									text: '프로젝트 상태 변경에 실패하였습니다.'
-								});
-							}
-						},
-						error: function() {
-							console.log('ajax 요청이 실패하였습니다!');	
-						}
-					});
+				if(result.trim() === 'success') {
+					// 파일 삭제 성공 시
+					alert('파일이 삭제되었습니다.');
+					location.reload();
 				} else {
-					// 취소 선택 시 체크박스 해제
-					$('input[type=checkbox]').prop('checked', false);
-					
+					alert('파일 삭제 실패!');
 				}
-			});
-			
-		} else {
-			
-			if(project_approve_status == 5) {
-				Swal.fire({
-					icon: 'error',
-					title: '이미 결제가 완료된 프로젝트!',
-					text: '이미 결제완료된 프로젝트 입니다.'
-				})
-			} else if (project_approve_status == 3){
-				Swal.fire({
-					icon: 'error',
-					title: '이미 승인이 완료된 프로젝트!',
-					text: '이미 승인처리된 프로젝트 입니다.'
-				})
+			},
+			error: function (error) {
+				console.log(error);
 			}
-	    }
-	});
-} // function 
-  	
-// 문자 보내기
-function sendNotificationMessage(memberPhone, message) {
-	
-	$.ajax({
-	    method: 'post',
-	    url: "<c:url value='/sendPhoneMessage'/>",
-	    data: {
-	    	memberPhone: memberPhone,
-		    message: message,
-		    projectIdx: ${project.project_idx},
-		    memberIdx: ${maker.member_idx}
-	    },
-	    success: function(data) {
-	    	
-	    	if(data.trim() == 'true') {
-		    	Swal.fire({
-					icon: 'success',
-					title: '알림문자 발송 완료.',
-					text: '알림문자가 성공적으로 전송되었습니다.'
-				}).then(function() {
-			    	location.reload();
-				});
-	    	}
-	    },
-	    error: function() {
-	      Swal.fire({
-	    	 icon: 'error',
-	    	 title: '알림문자 발송 실패',
-	    	 text: '알림문자 전송에 실패하였습니다.'
-	      });
-	    }
-  });
+		});
+	}
 }
 
-// 프로젝트 반려 처리
-function rejectProjectStatus(project_idx, project_approve_status) {
+// 개별 파일 첨부 입력 필드 초기화 함수
+function resetFileInput(inputName) {
+	let fileInput = $('input[name="' + inputName + '"]');
+	fileInput.val(null);
+	alert('파일이 삭제되었습니다.');
+	fileInput.next().hide(); // "지우기" 버튼 숨김
+}
+
+// 파일 첨부 입력 필드 상태 감지 함수
+function checkFileInput() {
+	let fileInputs = $('input[type="file"]');
 	
-	Swal.fire({
-		title: '프로젝트 상태 변경',
-		text: '프로젝트 반려 처리를 하시겠습니까?',
-		icon: 'question',
-		showCancelButton: true,
-		confirmButtonText: '예',
-		cancelButtonText: '아니오'
-	})
-	.then((result) => {
+	fileInputs.each(function() {
 		
-		if (result.isConfirmed) {
-		
-			$.ajax({
-				method: 'get',
-				url: "<c:url value='rejectProjectStatus'/>",
-				data: {
-					project_idx: project_idx,
-					project_approve_status: project_approve_status
-				},
-				success: function(data){
-					
-					if(data.trim() == 'true') {
-						Swal.fire({
-						      icon: 'success',
-						      title: '프로젝트 반려처리 완료.',
-						      text: '프로젝트 상태가 성공적으로 변경되었습니다.',
-					    }).then(function(){
-						    location.reload();
-					    });
-					} else {
-						Swal.fire({
-						      icon: 'error',
-						      title: '프로젝트 반려처리 실패.',
-						      text: '프로젝트 상태 변경에 실패하였습니다.',
-					    });
-					}
-					
-				},
-				error: function(){
-					console.log('ajax 요청이 실패하였습니다!');	
-				}
-			});
-		} else {
-			// 취소 선택 시 체크박스 해제
-			$('input[type=checkbox]').prop('checked', false);
-		}
+	   	if (this.files.length > 0) {
+	     	$(this).next().show(); // "지우기" 버튼 표시
+	   	} else {
+	     	$(this).next().hide(); // "지우기" 버튼 숨김
+	  	}
+	   	
 	});
 }
 
-// 프로젝트 승인여부 조회하기
-function isProjectApproved(project_idx, project_approve_status, callback) {
+// 페이지 로드 시 파일 첨부 입력 필드 상태 감지 함수 호출
+$(document).ready(function() {
+	checkFileInput();
+});
+
+// 공지사항 게시글 삭제하기
+function deleteMakerBoard(maker_board_idx) {
 	
-	$.ajax({
-		method: 'get',
-		url: '<c:url value="isProjectApproved"/>',
-		data: {
-			project_idx: project_idx,
-			project_approve_status: project_approve_status
-		},
-		success: function(data) {
-			
-			if(data.trim() == 'false') {
-                callback(false); // 이미 승인된 경우 false를 콜백으로 전달
-			} else {
-				callback(true); // 승인되지 않았을 경우 true를 콜백으로 전달
+	if(confirm('공지사항을 삭제하시겠습니까?')) {
+		
+		$.ajax({
+			method: 'post',
+			url: "<c:url value='deleteMakerBoard'/>",
+			data: { 
+				maker_board_idx: maker_board_idx
+			},
+			success: function(data) {
+				
+				console.log(data);
+				
+				if(data.trim() == 'true') {
+					
+					alert("공지사항이 성공적으로 삭제되었습니다.");
+					location.reload();
+					
+				}
+				
+			},
+			error: function(){
+				console.log('공지사항 삭제에 실패하였습니다.');
 			}
-			
-		}
-	});
+		});
+		
+	}
 }
 </script>
 <!-- bootstrap -->

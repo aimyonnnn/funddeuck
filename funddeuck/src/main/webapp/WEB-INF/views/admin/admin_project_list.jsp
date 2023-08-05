@@ -44,7 +44,7 @@
 <jsp:include page="../common/admin_top.jsp"/>
 
 	<div class="container">
-		<h2 class="fw-bold mt-5">프로젝트 승인관리</h2>
+		<h2 class="fw-bold mt-5">프로젝트 승인 관리</h2>
 	</div>
 	
 	<div class="container my-5">

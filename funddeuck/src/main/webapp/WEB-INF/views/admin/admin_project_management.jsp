@@ -45,7 +45,7 @@ th, td {
 
 	<div class="container my-5">
 	<div class="container">
-		<h2 class="fw-bold mt-5">전체 프로젝트 관리</h2>
+		<h2 class="fw-bold mt-5">프로젝트 관리</h2>
 	</div>
 
 	<!-- 검색 버튼 -->
