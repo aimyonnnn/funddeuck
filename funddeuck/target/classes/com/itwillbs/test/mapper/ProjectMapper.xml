@@ -43,6 +43,7 @@
 					, #{maker_email}
 					, #{maker_tel}
 					, #{maker_url}
+					, 1
 				)
 	</insert>
 	

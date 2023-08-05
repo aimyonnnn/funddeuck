@@ -18,11 +18,12 @@ CREATE TABLE maker (
     maker_file4 VARCHAR(255) NOT NULL COMMENT '메이커 사진',
     maker_file5 VARCHAR(255) NOT NULL COMMENT '메이커 로고',
     maker_name VARCHAR(255) NOT NULL COMMENT '메이커 이름',
-    maker_intro VARCHAR(255) NOT NULL COMMENT '메이커 소개',
+    maker_INTro VARCHAR(255) NOT NULL COMMENT '메이커 소개',
     maker_email VARCHAR(255) NOT NULL COMMENT '메이커 이메일',
     maker_tel VARCHAR(255) NOT NULL COMMENT '메이커 전화번호',
     maker_url VARCHAR(255) NOT NULL COMMENT '메이커 홈페이지',
-	foreign key (member_idx) references members(member_idx)    
+    maker_grade INT NOT NULL DEFAULT 1 COMMENT '메이커 등급',
+    foreign key (member_idx) references members(member_idx) ON DELETE CASCADE
 );
 */
 @Data
@@ -38,6 +39,7 @@ public class MakerVO {
     private String maker_email;             // 메이커 이메일
     private String maker_tel;               // 메이커 전화번호
     private String maker_url;               // 메이커 홈페이지
+    private String maker_grade;				// 메이커 등급
     // 사진
     private String maker_file1;             // 메이커 유형 - 개인신분증
     private String maker_file2;             // 메이커 유형 - 개인사업자 등록증
