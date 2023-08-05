@@ -339,4 +339,11 @@
 			payment_idx = #{payment_idx}
 	</select>
 	
+	<!-- 정산내역 조회 -->
+<!-- 	<select id="selectSettlementList" resultType="com.itwillbs.test.vo.PaymentVO"> -->
+<!-- 		SELECT  -->
+<!-- 			FROM payment p -->
+<!-- 			WHERE project_idx = #{project_idx} -->
+<!-- 	</select> -->
+	
 </mapper>

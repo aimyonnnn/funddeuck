@@ -15,22 +15,6 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
-	<style>
-		.table-center {
-		  margin: auto;
-		  width: 70%;
-		}
-		
-		.table-center tr td {
-		  text-align: center;
-		  vertical-align: middle;
-		}
-		
-		.table-center thead tr th {
-		  text-align: center;
-		  vertical-align: middle;
-		}
-    </style>
 	<script>
 	$(document).ready(function(){
 		// 팝오버 활성화
@@ -38,6 +22,23 @@
         var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
           return new bootstrap.Popover(popoverTriggerEl)
         });
+		
+		$(document).on("click", "#settlementModal" function(event){
+			var project_idx = $(this).data("project-idx");
+			
+			$.ajax({
+				url: "settlementList",
+				method: "GET",
+				data: {project_idx: project_idx},
+				dataType: "json",
+				success: function(data) {
+					
+				},
+				error: function() {
+					
+				}
+			});
+		});
       });
 	</script>
 </head>
@@ -107,7 +108,7 @@
 														<img class="project-img" src="${pageContext.request.contextPath }/resources/upload/${projectList.project_thumnails1 }">
 													</td>
 													<td>${projectList.project_subject }</td>
-													<td>30%</td>
+													<td><fmt:formatNumber value="${projectList.project_cumulative_amount/projectList.project_target * 100}" pattern="#"/>%</td>
 													<td>
 														<c:choose>
 															<c:when test="${projectList.project_status eq 1 }">
@@ -156,7 +157,7 @@
 														<img class="project-img" src="${pageContext.request.contextPath }/resources/upload/${projectList.project_thumnails1 }">
 													</td>
 													<td>${projectList.project_subject }</td>
-													<td>30%</td>
+													<td><fmt:formatNumber value="${projectList.project_cumulative_amount/projectList.project_target * 100}" pattern="#"/>%</td>
 													<td>
 														<c:choose>
 															<c:when test="${projectList.project_status eq 3 }">
@@ -171,7 +172,7 @@
 														</c:choose>
 													</td>
 													<td>
-														<button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settlementModal">확인</button>
+														<button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settlementModal" data-project-idx="${projectList.project_idx}">확인</button>
 													</td>
 												</tr>
 											</tbody>

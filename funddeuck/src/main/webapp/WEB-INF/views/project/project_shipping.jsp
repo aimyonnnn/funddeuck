@@ -129,7 +129,7 @@
 			    	                        "<td>" + row.total_amount + "원</td>" +
 			    	                        "<td>" + row.reward_name + "</td>" +
 			    	                        "<td>" +
-			    	                            "<button class='btn btn-outline-primary' id='tableButton' data-id="+ row.payment_idx +" data-bs-toggle='modal' data-bs-target='#trackingModal'>입력</button>" +
+			    	                            "<button class='btn btn-outline-primary btn-sm' id='tableButton' data-id="+ row.payment_idx +" data-bs-toggle='modal' data-bs-target='#trackingModal'>입력</button>" +
 			    	                        "</td>" +
 			    	                        "<td>" + row.delivery_date + "</td>" +
 			    	                        "<td>" + 
@@ -155,7 +155,7 @@
 			    	                        "<td>" +
 			    	                        	(function() {
 			    	                        		if(row.payment_confirm == 3) { // 펀딩금 반환 신청 시
-					    	                            return "<button class='btn btn-outline-danger' id='refundButton' data-id="+ row.payment_idx +" data-bs-toggle='modal' data-bs-target='#refundModal'>신청</button>";
+					    	                            return "<button class='btn btn-outline-danger btn-sm' id='refundButton' data-id="+ row.payment_idx +" data-bs-toggle='modal' data-bs-target='#refundModal'>신청</button>";
 			    	                        		} else if(row.payment_confirm == 4) { // 반환 완료 시
 			    	                        			return "완료";
 			    	                        		} else if(row.payment_confirm == 5) { // 반환 거절 시 
@@ -563,7 +563,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">반환 신청</button>
+					<button type="button" class="btn btn-danger">반환 신청</button>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				</div>
 			</div>

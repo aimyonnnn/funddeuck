@@ -44,7 +44,6 @@ CREATE TABLE payment (
     delivery_status INT COMMENT '배송상황(1:미발송,2:배송중,3:배송완료)',
     cancel_context VARCHAR(200) COMMENT '취소신청시 취소사유',
     cancel_img VARCHAR(200) COMMENT '취소증빙이미지',
-    first_amount INT DEFAULT 0 COMMENT '1차 정산금액',
     FOREIGN KEY (member_idx) REFERENCES members(member_idx) ON DELETE CASCADE,
     FOREIGN KEY (project_idx) REFERENCES project(project_idx) ON DELETE CASCADE,
     FOREIGN KEY (reward_idx) REFERENCES reward(reward_idx) ON DELETE CASCADE,
@@ -73,8 +72,6 @@ public class PaymentVO {
 	private String courier;
 	private String waybill_num;
 	private int delivery_status;
-	private int first_amount;
-	
 	
 	
 	// ########## total_amount, payment_date 컬럼명 변경 시 꼭 알려주세요! ##########

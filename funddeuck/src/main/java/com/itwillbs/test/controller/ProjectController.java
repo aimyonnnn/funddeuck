@@ -700,6 +700,14 @@ public class ProjectController {
 	    return new ChartDataProjectVO(
 	    		labels, dailyPaymentAmounts, acmlPaymentAmounts, dailySupporterCounts, acmlSupporterCounts, acmlPaymentAmount, acmlSupporterCount);
 	}
+
+	// 정산내역서 출력
+	@GetMapping("settlementList")
+	public List<PaymentVO> settlementList(@RequestParam("project_idx") int project_idx) {
+		List<PaymentVO> settlementList = paymentService.getSettlementList(project_idx);
+		
+		return settlementList;
+	}
 	
 	
 }
