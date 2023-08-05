@@ -90,4 +90,9 @@ public class FundingService {
 	public int registComment(ProjectCommunityVO projectCommunity) {
 		return mapper.insertComment(projectCommunity);
 	}
+
+	// 오픈 예정 프로젝트 리스트 조회(탐색 페이지)
+	public List<ProjectVO> getExpectedFundingList(String category) {
+		return mapper.selectExpectedFundingList(category);
+	}
 }

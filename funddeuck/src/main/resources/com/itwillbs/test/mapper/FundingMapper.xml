@@ -63,7 +63,7 @@
 					WHERE project_idx = #{project_idx}
 	</select>
 	
-	<!-- 펀딩 프로젝트 목록 탐색 -->
+	<!-- 펀딩 프로젝트 목록 탐색(아직 미사용) -->
 	<select id="selectProjectListDiscover">
 			SELECT *
 				FROM project
@@ -230,7 +230,7 @@
 							project_end_date DESC
 						</when>
 						<when test="index.equals('amount')">
-							project_amount DESC
+							project_cumulative_amount DESC
 						</when>
 						<when test="index.equals('target')">
 							project_target DESC
@@ -266,5 +266,42 @@
 				, now()                        -- project_community_regdate
 			)
 	</insert>
+	
+	<!-- 오픈 예정 프로젝트 리스트 조회(탐색 페이지) -->
+	<select id="selectExpectedFundingList">
+		SELECT *
+			FROM project
+				WHERE project_start_date <![CDATA[<]]> now()
+				<!-- 카테고리 선택 시 실행할 구문, 미선택시 실행x -->
+				<if test="!category.equals('all')">
+					AND
+					<choose>
+						<when test="category.equals('tech')">
+							project_category LIKE '테크/가전'
+						</when>
+						<when test="category.equals('fashion')">
+							project_category LIKE '패션/잡화'
+						</when>
+						<when test="category.equals('living')">
+							project_category LIKE '홈/리빙'
+						</when>
+						<when test="category.equals('beauty')">
+							project_category LIKE '뷰티'
+						</when>
+						<when test="category.equals('publish')">
+							project_category LIKE '출판'
+						</when>
+						<when test="category.equals('green')">
+							project_category LIKE '친환경'
+						</when>
+						<when test="category.equals('donate')">
+							project_category LIKE '기부'
+						</when>
+						<when test="category.equals('savAnimal')">
+							project_category LIKE '동물보호'
+						</when>
+					</choose>
+				</if>
+	</select>
 		
 </mapper>

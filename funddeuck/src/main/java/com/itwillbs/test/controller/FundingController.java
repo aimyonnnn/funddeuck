@@ -52,6 +52,20 @@ public class FundingController {
 		return "funding/funding_discover";
 	}
 	
+	// 오픈 예정 펀딩 탐색 페이지
+	@GetMapping("fundingExpected")
+	public String fundingDiscover(Model model,
+			@RequestParam(defaultValue = "all") String category
+			) {
+		
+		// 오픈 예정 프로젝트 리스트 조회(탐색 페이지)
+		List<ProjectVO> project = fundingService.getExpectedFundingList(category);
+		model.addAttribute("project", project);
+		
+		return "funding/funding_expected_discover";
+	}	
+	
+	
 	// 펀딩 상세페이지 이동
 	@GetMapping ("fundingDetail")
 	public String fundingDetail(Model model

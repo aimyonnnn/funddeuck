@@ -91,7 +91,7 @@
       <!-- 데스크 -->
       <ul class="navbar-nav left">
         <li class="nav-item">
-          <a class="nav-link" href="#">오픈예정</a>
+          <a class="nav-link" href="fundingExpected?category=all">오픈예정</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="fundingDiscover?category=all&status=all&index=newest">펀딩+</a>
