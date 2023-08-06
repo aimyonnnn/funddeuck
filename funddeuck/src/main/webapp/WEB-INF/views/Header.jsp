@@ -81,7 +81,7 @@
   <!-- 배너 -->
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light rounded fixed-top">
-    <a class="navbar-brand" href="#">Funddeuck</a>
+    <a class="navbar-brand" href ='<c:url value="/" />'>LOGO</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -100,7 +100,7 @@
           <a class="nav-link" href="helpInquiryForm">고객센터</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">커뮤니티</a>
+          <a class="nav-link" href ='<c:url value="member/memberideacommunity" />'>커뮤니티</a>
         </li>
       </ul>
 

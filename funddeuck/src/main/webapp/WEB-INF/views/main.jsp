@@ -120,12 +120,12 @@
 		                    <div class="card-body">
 		                        <em class="card-title"><b>${reversedProject.project_subject}</b></em>
 		                        <p class="card-text">
-		        	<div class="progress" style="height: 10px">
-	  					<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example" 
-	  					style="height:10px; width: ${project.project_amount/project.project_target * 100}%" 
-	  					aria-valuenow="${project.project_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100">
-	  					</div>
-				    </div>
+						        	<div class="progress" style="height: 10px">
+					 					<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example" 
+					  					style="height:10px; width: ${project.project_amount/project.project_target * 100}%" 
+					  					aria-valuenow="${project.project_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100">
+					  					</div>
+								    </div> 
 							    ${reversedProject.project_category}
 		                        </p>
 		                    </div>
@@ -192,7 +192,7 @@
 
 
 		<div class="container mt-4 d-flex justify-content-end">
-		    <button type="button" class="btn btn-light" onclick="moreShow()"><b>더 많은 프로젝트 보기</b></button>
+		    <button type="button" class="btn btn-light" onclick="moreShow()"><b>어떤 프로젝트가 있나요?</b></button>
 		</div>
 	</div>
 	<br>

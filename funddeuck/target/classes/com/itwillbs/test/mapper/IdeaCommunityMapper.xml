@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.test.mapper.IdeaCommunityMapper">
     <insert id="insertIdea" parameterType="com.itwillbs.test.vo.IdeaCommunityVO">
-        INSERT INTO idea (title, member_idx, description, likecount, today)
-        VALUES (#{title}, #{member_idx}, #{description}, #{likecount}, #{today})
+        INSERT INTO idea (title, member_idx, description, likecount)
+        VALUES (#{title}, #{member_idx}, #{description}, #{likecount})
     </insert>
 
     <select id="getAllCardData" resultType="com.itwillbs.test.vo.IdeaCommunityVO">
