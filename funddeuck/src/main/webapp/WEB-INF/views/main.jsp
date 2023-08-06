@@ -167,7 +167,7 @@
 	<div class="container">
 	      <h3><b>오픈 예정 프로젝트</b></h3>
 		  <p>주목하세요! 오픈할 프로젝트</p>
-		<div class="row" id="projectContainer">
+		<div class="row" id="unprojectContainer">
 			    <c:forEach items="${projectList}" var="project" varStatus="status">
 			        <c:if test="${status.count <= 6 && project.project_status == 1}">
 			            <c:set var="reversedIndex" value="${fn:length(projectList) - status.count}" />
@@ -176,13 +176,12 @@
 			                <article class="card">
 			                    <div class="card-thumbnail" style="background-image: url('${reversedProject.project_thumnails1}');"></div>
 			                    <div class="card-body">
-			                        <em class="card-title">${reversedProject.project_subject}</em>
+			                        <em class="card-title"><b>${reversedProject.project_subject}</b></em>
 			                        <p class="card-text">
-			                            <span class="badge dbadge-primary">${reversedProject.project_target}원</span>
 			                            ${reversedProject.project_category}
 			                        </p>
 			                    </div>
-		                    <p style="text-align: center;"><b>지금 참여하기></b></p>
+		                    <p style="text-align: center;"><b>지금 살펴보기></b></p>
 			                </article>
 			            </div>
 			            <c:if test="${status.count % 3 == 0}"></c:if>
@@ -192,12 +191,13 @@
 
 
 		<div class="container mt-4 d-flex justify-content-end">
-		    <button type="button" class="btn btn-light" onclick="moreShow()"><b>어떤 프로젝트가 있나요?</b></button>
+		    <button type="button" class="btn btn-light" onclick="showRandomunProjects()"><b>어떤 프로젝트가 있나요?</b></button>
 		</div>
 	</div>
 	<br>
   
     <script src="resources/js/showRandomProjects.js"></script>
+    <script src="resources/js/showRandomunProjects.js"></script>
   	<script src="resources/js/rankingList.js"></script>
 	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 	<script type="text/javascript">

@@ -58,7 +58,6 @@ public class HomeController {
     public ResponseEntity<List<ProjectVO>> showRandomProjects() {
         List<ProjectVO> allProjects = ProjectService.getAllProjects();
 
-        // 리스트를 랜덤하게 섞어서 6개만 추출
         Collections.shuffle(allProjects);
         List<ProjectVO> randomProjects = allProjects.subList(0, Math.min(allProjects.size(), 6));
 
