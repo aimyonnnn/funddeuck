@@ -1,6 +1,7 @@
 package com.itwillbs.test.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,6 @@ public class ChatService {
 		return mapper.selectChatRoom(chatRoom);
 	}
 
-	public List<ChatRoomVO> getChatRoomList(String id) {
-		return mapper.selectChatList(id);
-	}
 
 	public int addChatRoom(ChatRoomVO chatRoom) {
 		return mapper.insertChatRoom(chatRoom);
@@ -31,8 +29,26 @@ public class ChatService {
 		return mapper.insertChat(chatVO);
 	}
 
-	public List<ChatVO> getMemberChatList(String room_id) {
-		return mapper.selectmemberChatList(room_id);
+	public List<ChatVO> getMemberChatList(String room_id, int startRow, int listLimit) {
+		return mapper.selectmemberChatList(room_id, startRow, listLimit);
+	}
+
+	public int getCountMemberChat(String room_id) {
+		return mapper.selecCountMemberChat(room_id);
+	}
+
+	public List<Map<String, Object>> getMakerChatRoomList(int listLimit, int startRow, String sId) {
+		return mapper.selectMakerChatRoomList(listLimit,startRow, sId);
+	}
+
+
+	public int getCountMakerChattingRoom(String sId) {
+		return mapper.selectCountMakerChattingRoom(sId);
+	}
+
+
+	public List<Map<String, Object>> getMemberChatRoomList(int listLimit, int startRow, String sId) {
+		return mapper.selectMemberChatRoomList(listLimit,startRow, sId);
 	}
 
 

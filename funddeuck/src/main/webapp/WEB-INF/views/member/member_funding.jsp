@@ -37,6 +37,14 @@
         .starR.on{
         text-shadow: 0 0 0 #ffbc00;
         }
+        
+    	footer {
+    		position: fixed;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			padding: 10px;
+    	}
     </style>
   <script type="text/javascript">
   	
@@ -151,21 +159,21 @@
 	  		success: function(data) {
 				$("#tbody").empty();
 				
-				for (let map of data.map) {
-					  $("#tbody").append(
-					    '<tr>'
-					    + '<th scope="row">' + map.payment_idx + '</th>'
-					    + '<td> ' + map.project_subject + '</td>'
-					    + '<td> ' + map.payment_quantity + '</td>'
-					    + '<td> ' + map.total_amount + '</td>'
-					    + (map.payment_confirm == 1 ? '<td id="payConfirm'+ map.payment_idx +'">예약완료</td>' : (map.payment_confirm == 2 ? '<td id="payConfirm'+ map.payment_idx +'">결제완료</td>' : (map.payment_confirm == 3 ? '<td>반환신청</td>' : (map.payment_confirm == 4 ? '<td>반환완료</td>' : '<td>반환거절</td>'))))
-					    + (map.delivery_status == 1 ? '<td>미발송</td>' : (map.delivery_status == 2 ? '<td class="delevery">배송중</td>' : '<td>배송완료</td>'))
-					    + '<td><button class="btn btn-primary" onclick="modal(' + map.payment_idx + ')" data-bs-toggle="modal" data-bs-target=".exampleModal">상세보기</button></td>'
-					    + '</tr>'
-					  );
-					}
-				
-					let page = data.pageInfo;
+				let page = data.pageInfo;
+				if(page.maxPage != 0){
+					for (let map of data.map) {
+						  $("#tbody").append(
+						    '<tr>'
+						    + '<th scope="row">' + map.payment_idx + '</th>'
+						    + '<td><a href="fundingDetail?project_idx='+map.project_idx+'"style="text-decoration: none; color: black;">' + map.project_subject + '<a></td>'
+						    + '<td> ' + map.payment_quantity + '</td>'
+						    + '<td> ' + map.total_amount + '</td>'
+						    + (map.payment_confirm == 1 ? '<td id="payConfirm'+ map.payment_idx +'">예약완료</td>' : (map.payment_confirm == 2 ? '<td id="payConfirm'+ map.payment_idx +'">결제완료</td>' : (map.payment_confirm == 3 ? '<td>반환신청</td>' : (map.payment_confirm == 4 ? '<td>반환완료</td>' : '<td>반환거절</td>'))))
+						    + (map.delivery_status == 1 ? '<td>미발송</td>' : (map.delivery_status == 2 ? '<td class="delevery">배송중</td>' : '<td>배송완료</td>'))
+						    + '<td><button class="btn btn-primary" onclick="modal(' + map.payment_idx + ')" data-bs-toggle="modal" data-bs-target=".exampleModal">상세보기</button></td>'
+						    + '</tr>'
+						  );
+						}
 					
 					$("#toolbar").empty();
 					
@@ -193,6 +201,14 @@
 // 							    '<button type="button" class="btn btn-outline-primary" onclick="pageing(' + page.maxPage + ',' + payment_confirm + ')">&gt;&gt;</button>'
 // 							);
 // 						}
+					} else if(payment_confirm == 0 || page.maxPage == 0){
+						$("#tbody").empty();
+						$("#thead").empty();
+						$("#tbody").append(
+							'<th scope="row" colspan="7" class="mt-5"> <h4> 아직 참여하신 펀딩이 없습니다! </h4><br>'
+							+ '<a href="fundingDiscover"style="text-decoration: none; color: black;"><h5>펀딩하러 가기</h5></a> </th>'
+						);
+					}
 
 			},
 			error: function() {
@@ -225,8 +241,8 @@
         <option value="5">반환거절</option>
       </select>
 
-      <table class="table text-center">
-        <thead>
+      <table class="table text-center" id="fundingTable">
+        <thead id="thead" >
           <tr>
             <th scope="col">주문번호</th>
             <th scope="col">프로젝트</th>
@@ -242,15 +258,8 @@
         </tbody>
       </table>
 	      <div class="btn-toolbar justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
-			  <div class="btn-group me-2" id="toolbar" role="group" aria-label="First group">
-			    <button type="button" class="btn btn-outline-primary">&lt;</button>
-			    <button type="button" class="btn btn-outline-primary" onclick="pageing(1,0)">1</button>
-			    <button type="button" class="btn btn-outline-primary">2</button>
-			    <button type="button" class="btn btn-outline-primary">3</button>
-			    <button type="button" class="btn btn-outline-primary">4</button>
-			    <button type="button" class="btn btn-outline-primary">5</button>
-			    <button type="button" class="btn btn-outline-primary">&gt;</button>
-			</div>
+			  <div class="btn-group me-2" id="toolbar" role="group" aria-label="First group">			
+			  </div>
     	</div>
   	</div>
   </div>
@@ -561,8 +570,9 @@
  	
  	
  	
-
-<%@ include file="../Footer.jsp" %>
+<footer>
+	<%@ include file="../Footer.jsp" %>
+</footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"

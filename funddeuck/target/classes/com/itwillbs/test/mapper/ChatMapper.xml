@@ -30,8 +30,52 @@
 
 <select id="selectmemberChatList">
 	SELECT *
-	FROM chat
-	WHERE room_id = #{room_id}
+	    FROM chat
+	    WHERE room_id = #{room_id}
+	    ORDER BY chat_idx DESC
+	    LIMIT #{startRow }, #{listLimit }
+</select>
+
+<select id="selecCountMemberChat">
+	SELECT COUNT(chat_idx)
+		FROM chat
+		WHERE room_id = #{room_id}
+</select>
+
+<select id="selectMakerChatRoomList">
+    SELECT mem.member_name, cr.room_id, cr.member_id, ch.sender, ch.content
+    FROM chatroom cr 
+        JOIN members mem
+        ON cr.member_id = mem.member_id
+        JOIN chat ch
+        ON cr.room_id = ch.room_id
+            WHERE cr.maker_member_id = #{sId} 
+                AND ch.chat_idx = (SELECT max(chat_idx) 
+                                    FROM chat
+                                    WHERE room_id = cr.room_id)
+    ORDER BY ch.chat_idx DESC
+    LIMIT #{startRow} ,#{listLimit}
+</select>
+
+<select id="selectCountMakerChattingRoom">
+		SELECT COUNT(room_id)
+		FROM chatroom
+		WHERE maker_member_id = #{sId}
+</select>
+
+<select id="selectMemberChatRoomList">
+    SELECT mem.member_name, cr.room_id, cr.member_id, ch.sender, ch.content
+    FROM chatroom cr 
+        JOIN members mem
+        ON cr.maker_member_id = mem.member_id
+        JOIN chat ch
+        ON cr.room_id = ch.room_id
+            WHERE cr.member_id = #{sId} 
+                AND ch.chat_idx = (SELECT max(chat_idx) 
+                                    FROM chat
+                                    WHERE room_id = cr.room_id)
+    ORDER BY ch.chat_idx DESC
+    LIMIT #{startRow} ,#{listLimit}
 </select>
 
 </mapper>

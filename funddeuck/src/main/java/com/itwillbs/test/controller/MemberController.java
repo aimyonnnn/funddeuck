@@ -57,6 +57,14 @@ public class MemberController {
     		return "fail_back";
     	}
     	
+    	int fundingCount = fundingservice.getMemberFunDingCount((String)session.getAttribute("sId"), 0);
+    	
+    	System.out.println((String)session.getAttribute("sId"));
+    	
+    	System.out.println("fundingCount : " + fundingCount);
+    	
+    	model.addAttribute("fundingCount",fundingCount);
+    	
         return "member/myPage"; 
     }
     

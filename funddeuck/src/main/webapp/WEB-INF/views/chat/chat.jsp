@@ -15,18 +15,75 @@
 	crossorigin="anonymous">
 <style type="text/css">
 #fixed-to-bottom {
-	position: fixed;
+	position: sticky;
 	bottom: 0;
-	left: 0;
-	width: 100%;
-	padding: 10px;
-	background: white;
-}
-
-#msgArea {
-	background: white;
 }
 </style>
+	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
+	<script type="text/javascript">
+	let pageNum = 1; // 기본 페이지 번호 미리 저장
+	let maxPage = 1; // 최대 페이지 번호 미리 저장
+	let room_id = "${param.room_id}".split("=")[0];
+	
+	$(function() {
+	lodechatList();
+	
+    // 스크롤을 맨 아래로 이동
+    setTimeout(function() {
+        $(window).scrollTop($(document).height());
+    }, 10); // 100밀리초 후에 이동시킴
+	
+	    $(window).on("scroll", function() { // 스크롤 동작 시 이벤트 처리
+	        let scrollTop = $(window).scrollTop(); // 스크롤바 현재 위치
+	        let x = 1;
+	        
+	        if (scrollTop <= x) { // 스크롤이 맨 위에 도달했을 때
+	            if (pageNum < maxPage) {
+	                pageNum++;
+	                lodechatList();
+	        	}
+	        }
+	    });
+	});
+
+	function lodechatList() {
+		
+		$.ajax({
+			type:"post",
+			url:"lodeChatList",
+			data:{pageNum:pageNum, room_id:room_id},
+			dataType:"json",
+			success: function(data) {
+				console.log(JSON.stringify(data));
+				maxPage = data.maxPage;
+				
+				for(let chat of data.chatList){
+					if(chat.sender == "${sessionScope.sId}"){
+						var str = "<div class='col-7 float-end'>";
+						str += "<div class='alert alert-secondary text-end'>";
+						str += "<b>" + chat.content + "</b>";
+						str += "</div></div>";
+						$("#msgArea").prepend(str);
+					} else {
+						var str = "<div class='col-7' style='clear: both;'>";
+						str += "<div class='alert alert-warning'>";
+						str += "<b>" + chat.sender + "<br>" + chat.content + "</b>";
+						str += "</div></div>";
+						
+						$("#msgArea").prepend(str);
+					}
+				}
+				
+			},
+			error: function() {
+				alert("오류");
+			}
+		});
+		
+	}
+	
+	
+	</script>
 </head>
 <body>
 	<div class="container">
@@ -34,41 +91,19 @@
 			<label><b></b></label>
 		</div>
 		<div id="msgArea" class="col">
-			<c:forEach items="${chatList }" var="chat">
-				<c:choose>
-					<c:when test="${chat.sender eq sessionScope.sId }">
-						<div class='col-7 float-end'>
-							<div class='alert alert-secondary text-end'>
-								<b> ${chat.content} </b>
-							</div>
-						</div>
-					</c:when>
-					<c:otherwise>
-						<div class='col-7' style="clear: both;">
-							<div class='alert alert-warning'>
-								<b>${chat.receiver}<br>${chat.content}</b>
-							</div>
-						</div>
-					</c:otherwise>
-				</c:choose>
 
-			</c:forEach>
 		</div>
 		<div class="col-12" id="fixed-to-bottom">
 			<div class="input-group mb-3">
-				<input type="text" id="msg" class="form-control"
-					aria-label="Recipient's username" aria-describedby="button-addon2">
+				<input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
 				<div class="input-group-append">
-					<button class="btn btn-outline-secondary" type="button"
-						id="button-send">전송</button>
+					<button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
 				</div>
 			</div>
 		</div>
 		<div class="col-6"></div>
 	</div>
 	<!-- websocket javascript -->
-	<script
-		src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
 	<script type="text/javascript">
 
 //전송 버튼 누르는 이벤트
@@ -96,6 +131,10 @@ function onMessage(msg) {
 	var sessionId = null; //데이터를 보낸 사람
 	var message = null;
 	
+	if(data == "이미 창이 열려있습니다."){
+		onClose(data);
+	}
+	
 	var arr = data.split(",");
 	
 	for(var i=0; i<arr.length; i++){
@@ -111,7 +150,7 @@ function onMessage(msg) {
     //로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
 	if(sessionId == cur_session){
 		
-		var str = "<div class='col-7'>";
+		var str = "<div class='col-7 float-end'>";
 		str += "<div class='alert alert-secondary text-end'>";
 		str += "<b>" + message + "</b>";
 		str += "</div></div>";
@@ -132,9 +171,16 @@ function onMessage(msg) {
 //채팅창에서 나갔을 때
 function onClose(evt) {
 	
-	alert("잘못된 접근입니다.");
+	if(evt == "이미 창이 열려있습니다."){
+		alert("이미 채팅창이 열려있습니다.");
+		
+	} else {
+		
+		alert("잘못된 접근입니다.");
+	}
 	
-	history.back();
+	
+	window.close();
 }
 //채팅창에 들어왔을 때
 function onOpen(evt) {

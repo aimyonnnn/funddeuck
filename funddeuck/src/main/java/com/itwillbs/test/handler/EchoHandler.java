@@ -37,36 +37,41 @@ public class EchoHandler extends TextWebSocketHandler {
 		String senderId = getMemberId(session);
 		
 		if (senderId != null) {
-			log(senderId + " 연결됨");
-			users.put(senderId, session);
-			sessions.put(session, senderId);
-		}
+			if(users.get(senderId) != null) {
+				session.sendMessage(new TextMessage("이미 창이 열려있습니다."));
+			} else {
+				log(senderId + " 연결됨");
+				users.put(senderId, session);
+				sessions.put(session, senderId);
 
-		// -------------------------------------- 채팅 부분 ------------------------------------------
-		String url = session.getUri().getQuery();
 		
-		if(url != null) {
-			
-			System.out.println("첫번째");
-			
-			if (session.getUri().getQuery().split("=")[0].equals("room_id")) {
-				System.out.println("두번째");
-				String room_id = session.getUri().getQuery().split("=")[1];
-				List<WebSocketSession> chatSessions = chatRoomId.getOrDefault(room_id, new ArrayList<WebSocketSession>());
+		// -------------------------------------- 채팅 부분 ------------------------------------------
+				String url = session.getUri().getQuery();
 				
-				System.out.println("점검1 : " +chatSessions.size());
-				
-				if (chatSessions.size() >= 2) {
-					// 두 개 이상의 세션이 존재하면 클라이언트에게 메시지 보내기
-					String message = "잘못된 접근입니다.";
-					session.sendMessage(new TextMessage(message));
-					session.close(CloseStatus.NORMAL.withReason("잘못된 접근입니다."));
-					return;
+				if(url != null) {
+					
+					System.out.println("첫번째");
+					
+					if (session.getUri().getQuery().split("=")[0].equals("room_id")) {
+						System.out.println("두번째");
+						String room_id = session.getUri().getQuery().split("=")[1];
+						List<WebSocketSession> chatSessions = chatRoomId.getOrDefault(room_id, new ArrayList<WebSocketSession>());
+						
+						System.out.println("점검1 : " +chatSessions.size());
+						
+						if (chatSessions.size() >= 2) {
+							// 두 개 이상의 세션이 존재하면 클라이언트에게 메시지 보내기
+							String message = "잘못된 접근입니다.";
+							session.sendMessage(new TextMessage(message));
+							session.close(CloseStatus.NORMAL.withReason(message));
+							return;
+						}
+						System.out.println("끝까지 옴");
+						chatSessions.add(session);
+						chatRoomId.put(room_id, chatSessions);
+						System.out.println("점검2 : " +chatSessions.size());
+					}
 				}
-				System.out.println("끝까지 옴");
-				chatSessions.add(session);
-				chatRoomId.put(room_id, chatSessions);
-				System.out.println("점검2 : " +chatSessions.size());
 			}
 		}
 		// --------------------------------------------------------------------------------------------
@@ -114,10 +119,12 @@ public class EchoHandler extends TextWebSocketHandler {
 					}
 					// ---------------------------------------------------------------------------------
 					if(sessions.size() == 1) {
-						type = "메시지가 도착했어요!";
-						TextMessage tmpMsg = new TextMessage(
-								"<a target='_blank' href='" + url + "'>[<b>" + type + "</b>] " + content + "</a>");
-						targetSession.sendMessage(tmpMsg);
+						if (targetSession != null) {
+							type = "메시지가 도착했어요!";
+							TextMessage tmpMsg = new TextMessage(
+									"<a target='_blank' href='" + url + "'>[<b>" + type + "</b>] " + content + "</a>");
+							targetSession.sendMessage(tmpMsg);
+						}
 					}
 				} else if (type.equals("notification")) {
 					if (targetSession != null) {
