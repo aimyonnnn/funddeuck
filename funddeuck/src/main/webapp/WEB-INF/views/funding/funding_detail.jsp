@@ -232,7 +232,7 @@
 				<!-- 팔로우, 1:1문의 버튼-->
 				<div class="row">
 					<div class="col d-flex justify-content-center">
-						<button class="btn btn-primary me-2" onclick="#">팔로우</button>
+						<button class="btn btn-primary me-2" onclick="FallowingForm">팔로우</button>
 						<button class="btn btn-primary me-2" onclick="#">1:1문의</button>
 					</div>
 				</div>
@@ -541,13 +541,6 @@
 function focusOnReward(){
 	document.getElementById('rewardSelect').scrollIntoView();
 }
-
-// 진행 바 값 가져오기
-window.onload = function(){
-	var percentData = '<c:out value="${project.project_cumulative_amount/project.project_target * 100 }"/>';
-	var a = document.getElementById('progressbar').style.width = percentData + "%";
-	var location = document.querySelector("#focusArea").offsetTop;
-	var category = document.getElementById("categoryVal").value;
 	
 	// 카테고리 선택 시 자동 포커스 이동
 	if(category != ""){
