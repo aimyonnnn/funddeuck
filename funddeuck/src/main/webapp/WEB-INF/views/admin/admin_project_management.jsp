@@ -46,6 +46,7 @@ th, td {
 	<div class="container my-5">
 	<div class="container">
 		<h2 class="fw-bold mt-5">프로젝트 관리</h2>
+		<p class="projectContent">전체 프로젝트를 확인 할 수 있습니다.</p>
 	</div>
 
 	<!-- 검색 버튼 -->

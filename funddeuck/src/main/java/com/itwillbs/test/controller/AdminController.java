@@ -78,6 +78,15 @@ public class AdminController {
 	// 관리자 메인
 	@GetMapping("admin")
 	public String adminMain(HttpSession session, Model model) {
+		
+		List<ProjectVO> pList = projectService.getAllProjects();
+		int totalProjectCount = pList.size();
+		int todaySupporterCount = paymentService.getSupportCountByPaymentDate();
+		
+		model.addAttribute("pList", pList);
+		model.addAttribute("totalProjectCount", totalProjectCount);
+		model.addAttribute("todaySupporterCount", todaySupporterCount);
+		
 		return "admin/admin_main";
 	}
 	
@@ -354,6 +363,8 @@ public class AdminController {
 			@RequestParam int project_idx,
 			@RequestParam int project_approve_status,
 			HttpServletRequest request) {
+		
+		System.out.println("approveProjectStatus");
 		
 		// toast 팝업 알림을 보내기 위해 member_id 조회하기
 		String memberId = memberService.getMemberId(member_idx);

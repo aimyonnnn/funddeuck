@@ -45,6 +45,7 @@ th, td {
 
 	<div class="container">
 		<h2 class="fw-bold mt-5">프로젝트 승인 관리</h2>
+		<p class="projectContent">프로젝트 등록 전 승인, 거절 처리를 할 수 있습니다.</p>
 	</div>
 	
 	<div class="container my-5">

@@ -40,6 +40,7 @@ th, td {
 
 	<div class="container">
 		<h2 class="fw-bold mt-5">프로젝트 상세보기</h2>
+		<p class="projectContent">프로젝트의 모든 정보를 한 눈에 확인할 수 있습니다.</p>
 	</div>
 
 	<!--  -->
@@ -511,7 +512,7 @@ function approveProjectStatus(project_idx, project_approve_status) {
 	
 	// 프로젝트 승인여부 조회하기
 	// 승인완료, 결제완료 된 경우 false가 콜백으로 전달됨
-	// 승인요청, 반려처리 된 경우 true가 콜백으로 전달됨
+	// 승인요청, 거절처리 된 경우 true가 콜백으로 전달됨
    	isProjectApproved(project_idx, project_approve_status, function(isApproved) {
    		
   			if (isApproved) {
@@ -536,6 +537,9 @@ function approveProjectStatus(project_idx, project_approve_status) {
 							project_approve_status: project_approve_status
 						},
 						success: function(data) {
+							
+							console.log("여기까지옴");
+							
 							if (data.trim() == 'true') {
 								Swal.fire({
 									icon: 'success',
@@ -555,14 +559,10 @@ function approveProjectStatus(project_idx, project_approve_status) {
 							}
 						},
 						error: function() {
-							console.log('ajax 요청이 실패하였습니다!');	
+							console.log('ajax 요청이 실패하였습니다!222');	
 						}
 					});
-				} else {
-					// 취소 선택 시 체크박스 해제
-					$('input[type=checkbox]').prop('checked', false);
-					
-				}
+				} 
 			});
 			
 		} else {
@@ -618,12 +618,12 @@ function sendNotificationMessage(memberPhone, message) {
   });
 }
 
-// 프로젝트 반려 처리
+// 프로젝트 거절 처리
 function rejectProjectStatus(project_idx, project_approve_status) {
 	
 	Swal.fire({
 		title: '프로젝트 상태 변경',
-		text: '프로젝트 반려 처리를 하시겠습니까?',
+		text: '프로젝트 거절 처리를 하시겠습니까?',
 		icon: 'question',
 		showCancelButton: true,
 		confirmButtonText: '예',
@@ -645,7 +645,7 @@ function rejectProjectStatus(project_idx, project_approve_status) {
 					if(data.trim() == 'true') {
 						Swal.fire({
 						      icon: 'success',
-						      title: '프로젝트 반려처리 완료.',
+						      title: '프로젝트 거절처리 완료.',
 						      text: '프로젝트 상태가 성공적으로 변경되었습니다.',
 					    }).then(function(){
 						    location.reload();
@@ -653,7 +653,7 @@ function rejectProjectStatus(project_idx, project_approve_status) {
 					} else {
 						Swal.fire({
 						      icon: 'error',
-						      title: '프로젝트 반려처리 실패.',
+						      title: '프로젝트 거절처리 실패.',
 						      text: '프로젝트 상태 변경에 실패하였습니다.',
 					    });
 					}

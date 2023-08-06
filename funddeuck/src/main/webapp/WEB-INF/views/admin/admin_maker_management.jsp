@@ -47,6 +47,7 @@ th, td {
 
 	<div class="container">
 		<h2 class="fw-bold mt-5">메이커 관리</h2>
+		<p class="projectContent">전체 메이커를 확인 할 수 있습니다.</p>
 	</div>
 
 	<!-- 검색 버튼 -->
@@ -100,7 +101,7 @@ th, td {
 							</c:choose>
 						</td>
 						<td class="text-center">
-							<a href="adminProjectDetail?maker_idx=${mList.maker_idx}&pageNum=${pageNum}" style="text-decoration: none; color: black;">
+							<a href="adminMakerDetail?maker_idx=${mList.maker_idx}&pageNum=${pageNum}" style="text-decoration: none; color: black;">
 								${mList.maker_name}
 							</a> 
 						</td>
