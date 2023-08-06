@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.test.mapper.QnaMapper">
+
+	<!-- QNA 제출 시 -->
+	<insert id="registQNA">
+			INSERT INTO Qna VALUES(
+			NULL
+			, #{member_id}
+			, #{qna_division}
+			, #{qna_subject}
+			, #{qna_context}
+			, now()
+			<choose>
+				<!-- 첨부파일 있을 경우 -->
+				<when test="qna_file != ''">
+				, #{qna_file}
+				</when>
+				<otherwise>
+				, null
+				</otherwise>
+			</choose>
+		)
+	</insert>
+</mapper>

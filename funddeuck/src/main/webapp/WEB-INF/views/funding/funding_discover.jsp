@@ -12,18 +12,22 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 <!-- line-awesome icons CDN -->
 <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-<!-- fundingDiscover page CSS -->
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/funding_discover.css">
-<!-- header include -->
-<jsp:include page="../Header.jsp"></jsp:include>
 <!-- Jquery CDN -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- fundingDiscover page CSS -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/funding_discover.css">
+<!-- 공용 css -->
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/mypage.css" />
 <!-- fundingDiscover page JS -->
 <script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
-<!-- 공용 css -->
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
+<!-- header include -->
+<jsp:include page="../Header.jsp"></jsp:include>
 </head>
 <body>
+<!-- header fixed 속성으로 인한 공백 추가 -->
+<div class="container text-center">
+  <div class="row">&nbsp;</div>
+</div>
 <!-- 요청 파라미터 값 저장 -->
 <input type="hidden" value="${param.category }" id="categoryVal">
 <input type="hidden" value="${param.status }" id="statusVal">
@@ -167,8 +171,8 @@
 	<div class="col float-end" >
 		<select class="text-dark-emphasis fw-bold" id="selectBox" onchange="chageLangSelect()">
 			<option class="text-dark-emphasis fw-bold" value="all" <c:if test="${param.status eq 'all' }">selected</c:if>>전체</option>
-			<option class="text-dark-emphasis fw-bold" value="active" <c:if test="${param.status eq 'active' }">selected</c:if>>진행중</option>
-			<option class="text-dark-emphasis fw-bold" value="end" <c:if test="${param.status eq 'end' }">selected</c:if>>종료된</option>
+			<option class="text-dark-emphasis fw-bold" value="active" <c:if test="${param.status eq 'active' }" >selected</c:if>>진행중</option>
+			<option class="text-dark-emphasis fw-bold" value="end" <c:if test="${param.status eq 'end' }" >selected</c:if>>종료된</option>
 		</select>
 		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'newest' }">border-info border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=newest">최신순</a>&nbsp;
 		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'lastMin' }">border-info border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=lastMin">마감임박순</a>&nbsp;
@@ -217,13 +221,18 @@
 		</div>
 	</div>
 </div>
+<!-- //진행 바 값 가져오기 -->
+<!-- window.onload = function(){ -->
+	
+<%-- 	var percentData = "<c:out value='${project.project_cumulative_amount/project.project_target * 100 }'/>"; --%>
+<!-- 	var a = document.getElementById('progressbar').style.width = percentData + "%"; -->
+<!-- } -->
 <br>
 <script type="text/javascript">
 // 셀렉트 박스 이벤트 스크립트
 function chageLangSelect(){
     var langSelect = document.getElementById("selectBox");
      
-    
     // select element에서 선택된 option의 value가 저장된다.
     var status = langSelect.options[langSelect.selectedIndex].value;
     var category = document.getElementById("categoryVal").value;
@@ -272,13 +281,7 @@ function closeLoading() {
 	  $('#mask, #loadingImg').hide();
 	  $('#mask, #loadingImg').remove(); 
 	}
-	
-//진행 바 값 가져오기
-window.onload = function(){
-	
-	var percentData = "<c:out value='${project.project_cumulative_amount/project.project_target * 100 }'/>";
-	var a = document.getElementById('progressbar').style.width = percentData + "%";
-}
+
 </script>
 </body>
 </html>

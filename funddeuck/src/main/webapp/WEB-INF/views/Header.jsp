@@ -97,7 +97,7 @@
           <a class="nav-link" href="fundingDiscover?category=all&status=all&index=newest">펀딩+</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">고객센터</a>
+          <a class="nav-link" href="helpInquiryForm">고객센터</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">커뮤니티</a>
