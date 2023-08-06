@@ -719,12 +719,14 @@ th, td {
 					<div>
 					    <p class="subheading"><b>판매량이 높은 리워드 조회</b></p>
 					    <p class="projectContent">리워드의 판매 비율을 전체 수량에 대해 계산한 차트입니다.</p>
+					    
 					    <!-- 선택한 프로젝트별 리워드의 판매 비율 차트 -->
 					    <div style="width: 450px; height: 450px;" id="rewardChartContainer">
-					        <canvas id="rewardChart" width="400" height="400"></canvas>
+					        <canvas id="rewardChart"></canvas>
 					    </div>
 					    
-					    <!-- 차트에서 해당 리워드 클릭 시 오른쪽 div에 해당 리워드에 옵션이 출력됨 -->
+					    <!-- 차트에서 리워드 클릭 시 해당 리워드에 대한 옵션을 테이블로 출력 -->
+					    
 					    
 					</div>
 
@@ -1103,8 +1105,7 @@ function drawRewardChart(rewardData) {
                 text: 'Reward Sales Chart',
             },
             cutoutPercentage: 30, 											// 도넛 차트의 반지 모양의 두께 조절 (0 ~ 100)
-        		
-        }, // options
+        },
     });
 }
 	

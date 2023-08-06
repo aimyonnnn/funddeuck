@@ -49,12 +49,10 @@ th, td {
 
 				<div class="container mb-5">
 					<div class="d-flex justify-content-end mb-1">
-						<button class="btn btn-outline-primary btn-sm"
-							id="feedbackMessage">수정사항 전달하기</button>
 						<button class="btn btn-outline-primary btn-sm mx-2"
 							onclick="approveProjectStatus(${project.project_idx}, ${project.project_approve_status})">승인처리</button>
 						<button class="btn btn-outline-primary btn-sm"
-							onclick="rejectProjectStatus(${project.project_idx}, 4)">반려처리</button>
+							onclick="rejectProjectStatus(${project.project_idx}, 4)">승인거절</button>
 					</div>
 				</div>
 
@@ -477,22 +475,16 @@ $(document).ready(function () {
     });
     $("tr td img").attr("title", "클릭 시 이미지를 크게 볼 수 있습니다");
 });
- 	
+
+// 비행기 아이콘 클릭 시 아이디를 자동으로 입력
 $(document).ready(function() {
 	// 아이디 입력 필드 찾기
-	let notifyIdInput = $('#notifyId');
+	let receiver = $('#message_receiver');
 	
 	// memberId 값을 가져와서 입력 필드의 value로 설정하고 readonly로 만들기
-	let memberIdValue = '${memberId}';
-	notifyIdInput.val(memberIdValue);
-	notifyIdInput.prop('readonly', true);
-});
-
-// 피드백 메시지 버튼을 클릭했을 때의 동작 정의
-$('#feedbackMessage').click(function() {
-	// Message 버튼을 가져와서 클릭 이벤트 실행
-	let messageButton = $('[data-bs-target="#notifyModal"]');
-	messageButton.click();
+	let memberId = '${memberId}';
+	receiver.val(memberId);
+	receiver.prop('readonly', true);
 });
 </script>
 	
