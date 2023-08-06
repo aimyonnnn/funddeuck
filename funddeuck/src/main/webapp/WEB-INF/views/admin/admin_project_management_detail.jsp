@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
 <!DOCTYPE html>
@@ -40,6 +40,7 @@ th, td {
 
 <div class="container">
 	<h2 class="fw-bold mt-5">프로젝트 정보 변경</h2>
+	<p class="projectContent">프로젝트의 모든 정보를 수정 할 수 있습니다.</p>
 </div>
 
 <div class="container mt-2" style="max-width: 800px;">
@@ -53,7 +54,7 @@ th, td {
 				
 				<!-- 프로젝트 정보수정 -->
 				<div class="content-area" id="tab1">
-				<form action="adminModifyProject" method="post" id="modifyForm" enctype="multipart/form-data">
+				<form action="adminModifyProject" method="post" id="projectForm" enctype="multipart/form-data">
 				    <!-- hidden 필드 -->
 				    <input type="hidden" name="pageNum" value="${param.pageNum}">
 				    <input type="hidden" name="project_idx" value="${project.project_idx}">
@@ -67,14 +68,26 @@ th, td {
 				        <tr>
 				            <th style="width: 30%">프로젝트 요금제</th>
 				            <td style="width: 70%">
-				                <input type="text" name="project_plan" class="form-control" value="${project.project_plan}">
+				                <select name="project_plan" class="form-control">
+				                	<option value="1" ${project.project_plan eq 1 ? 'selected' : ''}>기본요금제</option>
+				                	<option value="2" ${project.project_plan eq 2 ? 'selected' : ''}>인플루언서요금제</option>
+				                </select>
 				            </td>
 				        </tr>
 				        <tr>
 				            <th>프로젝트 카테고리</th>
-				            <td>
-				                <input type="text" name="project_category" class="form-control" value="${project.project_category}">
-				            </td>
+							<td>
+							    <select name="project_category" class="form-control">
+							        <option value="테크/가전" ${project.project_category eq '테크/가전' ? 'selected' : ''}>테크/가전</option>
+							        <option value="패션/잡화" ${project.project_category eq '패션/잡화' ? 'selected' : ''}>패션/잡화</option>
+							        <option value="홈/리빙" ${project.project_category eq '홈/리빙' ? 'selected' : ''}>홈/리빙</option>
+							        <option value="뷰티" ${project.project_category eq '뷰티' ? 'selected' : ''}>뷰티</option>
+							        <option value="출판" ${project.project_category eq '출판' ? 'selected' : ''}>출판</option>
+							        <option value="친환경" ${project.project_category eq '친환경' ? 'selected' : ''}>친환경</option>
+							        <option value="기부" ${project.project_category eq '기부' ? 'selected' : ''}>기부</option>
+							        <option value="동물보호" ${project.project_category eq '동물보호' ? 'selected' : ''}>동물보호</option>
+							    </select>
+							</td>
 				        </tr>
 				        <tr>
 				            <th>프로젝트 제목</th>
@@ -185,13 +198,13 @@ th, td {
 				        <tr>
 				            <th>목표 금액</th>
 				            <td>
-				                <input type="text" name="project_target" class="form-control" value="${project.project_target}">
+				                <input type="number" name="project_target" class="form-control" value="${project.project_target}">
 				            </td>
 				        </tr>
 				        <tr>
 				            <th>누적 금액</th>
 				            <td>
-				                <input type="text" name="project_cumulative_amount" class="form-control" value="${project.project_cumulative_amount}">
+				                <input type="number" name="project_cumulative_amount" class="form-control" value="${project.project_cumulative_amount}">
 				            </td>
 				        </tr>
 				        <tr>
@@ -227,7 +240,7 @@ th, td {
 				        <tr>
 				            <th>대표 주민등록번호</th>
 				            <td>
-				                <input type="text" name="project_representative_birth" class="form-control" value="${project.project_representative_birth}">
+				                <input type="text" name="project_representative_birth" class="form-control" value="${project.project_representative_birth}" maxlength="14">
 				            </td>
 				        </tr>
 				        <tr>
@@ -285,13 +298,25 @@ th, td {
 				        <tr>
 				            <th>프로젝트 승인 상태</th>
 				            <td>
-				                <input type="text" name="project_approve_status" class="form-control" value="${project.project_approve_status}">
+				                <select name="project_approve_status" class="form-control">
+				                	<option value="1" ${project.project_approve_status eq 1 ? 'selected' : ''}>미승인</option>
+				                	<option value="2" ${project.project_approve_status eq 2 ? 'selected' : ''}>승인요청</option>
+				                	<option value="3" ${project.project_approve_status eq 3 ? 'selected' : ''}>승인완료</option>
+				                	<option value="4" ${project.project_approve_status eq 4 ? 'selected' : ''}>승인거절</option>
+				                	<option value="5" ${project.project_approve_status eq 5 ? 'selected' : ''}>결제완료</option>
+				                </select>
 				            </td>
 				        </tr>
 				        <tr>
 				            <th>프로젝트 상태</th>
 				            <td>
-				                <input type="text" name="project_status" class="form-control" value="${project.project_status}">
+				                <select name="project_status" class="form-control">
+				                	<option value="1" ${project.project_status eq 1 ? 'selected' : '' }>미진행</option>
+				                	<option value="2" ${project.project_status eq 2 ? 'selected' : '' }>진행중</option>
+				                	<option value="3" ${project.project_status eq 3 ? 'selected' : '' }>진행완료</option>
+				                	<option value="4" ${project.project_status eq 4 ? 'selected' : '' }>정산신청</option>
+				                	<option value="5" ${project.project_status eq 5 ? 'selected' : '' }>정산완료</option>
+				                </select>
 				            </td>
 				        </tr>
 				        <tr>
@@ -315,13 +340,17 @@ th, td {
 				        <tr>
 				            <th>1차 정산금액</th>
 				            <td>
-				                <input type="text" name="first_amount" class="form-control" value="${project.first_amount}">
+				                <input type="number" name="first_amount" class="form-control" value="${project.first_amount}">
 				            </td>
 				        </tr>
 				        <tr>
 				            <th>정산 상태</th>
 				            <td>
-				                <input type="text" name="settlement_status" class="form-control" value="${project.settlement_status}">
+				                <select name="settlement_status" class="form-control">
+				                	<option value="1" ${project.settlement_status eq 1 ? 'selected' : ''}>미정산</option>
+				                	<option value="2" ${project.settlement_status eq 2 ? 'selected' : ''}>정산완료(1차)</option>
+				                	<option value="3" ${project.settlement_status eq 3 ? 'selected' : ''}>정산완료(최종)</option>
+				                </select>
 				            </td>
 				        </tr>
 				    </table>
@@ -333,57 +362,9 @@ th, td {
 			
 			<!-- 리위드 -->
 			<div class="content-area" id="tab2">
-				<div class="accordion" id="accordionExample">
 				
-				    <c:forEach var="mList" items="${mList}">
-				        <div class="accordion-item">
-				            <h2 class="accordion-header" id="heading${mList.maker_board_idx}">
-				                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-				                    data-bs-target="#collapse${mList.maker_board_idx}" aria-expanded="true"
-				                    aria-controls="collapse${mList.maker_board_idx}">
-				                    ${mList.maker_board_subject}
-				                </button>	
-				            </h2>
-				            <div id="collapse${mList.maker_board_idx}" class="accordion-collapse collapse show"
-				                aria-labelledby="heading${mList.maker_board_idx}" data-bs-parent="#accordionExample">
-				                <div class="accordion-body">
-				                	<table class="table text-center">
-				                		<tr>
-				                			<td style="width: 20%">작성내용</td>
-				                			<td style="width: 80%">${mList.maker_board_content}</td>
-				                		</tr>
-				                		<tr>
-				                			<td>작성일자</td>
-				                			<td><fmt:formatDate value="${mList.maker_board_regdate}" pattern="yy-MM-dd HH:mm" /></td>
-				                		</tr>
-				                		<tr>
-				                			<td>첨부파일</td>
-				                			<td>
-				                				<c:choose>
-				                					<c:when test="${not empty mList.maker_board_file1}">
-						                				<a href="${pageContext.request.contextPath}/resources/upload/${mList.maker_board_file1}" download="${fn:split(mList.maker_board_file1, '_')[1]}">
-											                ${fn:split(mList.maker_board_file1, '_')[1]}
-											            </a>
-				                					</c:when>
-				                					<c:otherwise>
-				                						첨부파일 없음
-				                					</c:otherwise>
-				                				</c:choose>
-				                			</td>
-				                		</tr>
-				                		<tr>
-				                			<td colspan="2" class="text-center">
-					                			<input type="button" value="삭제하기" class="btn btn-outline-danger btn-sm"
-												onclick="deleteMakerBoard(${mList.maker_board_idx})">
-				                			</td>
-				                		<tr>
-				                	</table>
-				                </div>
-				            </div>
-				        </div>
-				    </c:forEach>
+				 
 				    
-				</div>
 			</div>
 			
 				
@@ -393,6 +374,58 @@ th, td {
 </div>
 
 <script>
+// 이메일 형식을 확인하는 함수
+function isValidEmail(email) {
+	const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	return emailPattern.test(email);
+}
+
+// 주민등록번호 유효성 검사 함수
+function isValidResidentNumber(residentNumber) {
+    // 주민등록번호 정규표현식: 6자리 생년월일 + 7자리 뒷자리
+    const residentNumberPattern = /^[0-9]{6}[ -]?[0-9]{7}$/;
+    return residentNumberPattern.test(residentNumber);
+}
+
+//폼 제출 시 유효성 검사를 위한 이벤트 핸들러
+$("#projectForm").on("submit", function (e) {
+	
+    const startDate = new Date($("[name='project_start_date']").val());
+    const endDate = new Date($("[name='project_end_date']").val());
+    const representativeEmail = $("[name='project_representative_email']");
+    const taxEmail = $("[name='project_tax_email']");
+    const dateTime = new Date($("[name='project_approval_request_time']").val());
+    const residentNumber = $("[name='project_representative_birth']").val().replace(/[^0-9]/g, ''); // 숫자만 남기고 '-' 또는 공백은 제거
+
+    if (endDate < startDate) {
+        alert("종료일은 시작일보다 빠를 수 없습니다.");
+        e.preventDefault();
+    }
+
+    if (isNaN(dateTime)) {
+        alert("올바른 날짜와 시간을 입력하세요.");
+        e.preventDefault();
+    }
+    
+    if (!isValidEmail(representativeEmail.val())) {
+        alert("올바른 대표 이메일 형식을 입력하세요.");
+        representativeEmail.focus();
+        e.preventDefault();
+    }
+
+    if (!isValidEmail(taxEmail.val())) {
+        alert("올바른 세금계산서 발행 이메일 형식을 입력하세요.");
+        taxEmail.focus();
+        e.preventDefault();
+    }
+    
+    if (!isValidResidentNumber(residentNumber)) {
+        alert("올바른 주민등록번호 형식을 입력하세요. (예: YYMMDD-1234567 또는 YYMMDD1234567)");
+        event.preventDefault();
+    }
+    
+});
+
 //탭 버튼 클릭 시
 $(document).ready(function() {
 	

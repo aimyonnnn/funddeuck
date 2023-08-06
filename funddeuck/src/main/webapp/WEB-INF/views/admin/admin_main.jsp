@@ -23,119 +23,121 @@
 <input type="checkbox" name="" id="sidebar-toggle">
 <jsp:include page="../common/admin_side.jsp"/>
 
-	<div class="main-content">
-		<!-- top include -->
-		<jsp:include page="../common/admin_top.jsp" />
+<div class="main-content">
+	<!-- top include -->
+	<jsp:include page="../common/admin_top.jsp" />
 
-		<main>
-			<div class="page-header">
-				<div>
-					<h1>관리자 페이지</h1>
-					<small>각종 통계 확인 및 관리</small>
-				</div>
+	<main>
+		<div class="page-header">
+			<div>
+				<h2 class="fw-bold mt-2">관리자 페이지</h2>
+				<p class="projectContent">프로젝트 관리 및 데이터 수정을 할 수 있습니다.</p>
 			</div>
+		</div>
 
-			<div class="cards">
-				<div class="card-single">
-					<div class="card-flex">
-						<div class="card-into">
-							<div class="card-head">
-								<span>MEMBER</span> <small>총 회원 수</small>
-							</div>
+		<div class="cards">
+			<div class="card-single">
+				<div class="card-flex">
+					<div class="card-into">
+						<div class="card-head">
+							<span>MEMBER</span> <small>총 회원 수</small>
+						</div>
 
-							<h2>11 명</h2>
-							<small><a style="color: red;">활동 정지된 회원을 포함한</a> 총 회원
-								수입니다.</small>
-						</div>
-						<div class="card-chart danger">
-							<span class="las la-chart-line"></span>
-						</div>
+						<h2>11명</h2>
+						<small><a style="color: red;">활동 정지된 회원을 포함한</a> 총 회원
+							수입니다.</small>
 					</div>
-				</div>
-
-				<div class="card-single">
-					<div class="card-flex">
-						<div class="card-into">
-							<div class="card-head">
-								<span>Project</span> <small>총 프로젝트 수</small>
-							</div>
-
-							<h2>5개</h2>
-
-							<small>현재 등록된 총 프로젝트 수입니다.</small>
-						</div>
-						<div class="card-chart success">
-							<span class="las la-chart-line"></span>
-						</div>
-					</div>
-				</div>
-
-				<div class="card-single">
-					<div class="card-flex">
-						<div class="card-into">
-							<div class="card-head">
-								<span>SUPPORTER</span> <small>오늘 등록된 서포터 수</small>
-							</div>
-
-							<h2>7명</h2>
-
-							<small><a style="color: red;">취소된 서포터를 포함한</a> 총 서포터
-								수입니다.</small>
-						</div>
-						<div class="card-chart yellow">
-							<span class="las la-chart-line"></span>
-						</div>
+					<div class="card-chart danger">
+						<span class="las la-chart-line"></span>
 					</div>
 				</div>
 			</div>
 
-			<div class="jobs-grid">
-				<div class="analytics-card">
-					<div class="analytics-head">
-						<h3>오늘 가입한 회원 수</h3>
-					</div>
-
-					<form method="post" class="analytics-chart">
-						<div class="chart-circle">
-							<h1>9명</h1>
+			<div class="card-single">
+				<div class="card-flex">
+					<div class="card-into">
+						<div class="card-head">
+							<span>Project</span> <small>총 프로젝트 수</small>
 						</div>
-						<small>회원가입일이<a style="color: blue;"> 오늘</a>인 회원수를 카운팅합니다.
-						</small>
-					</form>
+
+						<h2>${totalProjectCount}개</h2>
+
+						<small>현재 등록된 총 프로젝트 수입니다.</small>
+					</div>
+					<div class="card-chart success">
+						<span class="las la-chart-line"></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="card-single">
+				<div class="card-flex">
+					<div class="card-into">
+						<div class="card-head">
+							<span>SUPPORTER</span> <small>오늘 등록된 서포터 수</small>
+						</div>
+
+						<h2>${todaySupporterCount}명</h2>
+
+						<small><a style="color: red;">취소된 서포터를 포함한</a> 총 서포터
+							수입니다.</small>
+					</div>
+					<div class="card-chart yellow">
+						<span class="las la-chart-line"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="jobs-grid">
+			<div class="analytics-card">
+				<div class="analytics-head">
+					<h3>오늘 가입한 회원 수</h3>
 				</div>
 
-				<div class="jobs">
-					<h2>
-						최근 프로젝트
-						<small>
-							<a href="adminProjectList">전체 프로젝트 확인하기</a> <span class="las la-arrow-right"></span>
-						</small>
-					</h2>
+				<form method="post" class="analytics-chart">
+					<div class="chart-circle">
+						<h1>9명</h1>
+					</div>
+					<small>회원가입일이<a style="color: blue;"> 오늘</a>인 회원수를 카운팅합니다.
+					</small>
+				</form>
+			</div>
 
-					<div class="table-responsive">
-						
-						<!-- 반복문으로 최근 프로젝트 리스트 출력하기! -->
-						<table class="table">
+			<div class="jobs">
+				<h3>최근 프로젝트</h3>
+				<small>
+					<a href="adminProjectManagement">전체 프로젝트 확인하기</a>
+					<span class="las la-arrow-right"></span>
+				</small>
+				
+				<div class="table-responsive">
+					
+					<table class="table text-center">
+						<tr>
+							<th style="width: 5%">번호</th>
+							<th style="width: 10%">카테고리</th>
+							<th style="width: 15%">프로젝트명</th>
+							<th style="width: 7%">대표자명</th>
+							<th style="width: 15%">프로젝트 기간</th>
+						</tr>
+						<c:forEach var="pList" items="${pList}">
 							<tr>
-								<th>프로젝트 번호</th>
-								<th>프로젝트 이름</th>
-								<th>대표자 이름</th>
-								<th>승인 상태</th>
+								<td>${pList.project_idx}</td>
+								<td>${pList.project_category}</td>
+								<td>${pList.project_subject}</td>
+								<td>${pList.project_representative_name}</td>
+								<td>${pList.project_start_date}~${pList.project_end_date}</td>
 							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
-						</table>
-						<!--  -->
-						
-					</div>
+						</c:forEach>
+					</table>
+					<!--  -->
+					
 				</div>
 			</div>
-		</main>
-	</div>
+		</div>
+	</main>
+</div>
 
 <label for="sidebar-toggle" class="body-label"></label>
 <!-- bootstrap -->

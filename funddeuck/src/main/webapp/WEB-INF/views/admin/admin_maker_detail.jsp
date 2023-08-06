@@ -40,6 +40,7 @@ th, td {
 
 <div class="container">
 	<h2 class="fw-bold mt-5">메이커 정보 변경</h2>
+	<p class="projectContent">메이커의 모든 정보를 수정 할 수 있습니다.</p>
 </div>
 		
 <div class="container mt-2" style="max-width: 800px;">

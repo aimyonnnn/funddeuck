@@ -368,4 +368,12 @@
 		    p.project_idx;
 	</select>
 	
+	<!-- 오늘 등록된 서포터 수 -->
+	<select id="selectSupportCountByPaymentDate">
+		select count(*)
+			from payment
+		where
+			date(payment_date) = curdate();
+	</select>
+	
 </mapper>

@@ -139,4 +139,9 @@ public class PaymentService {
 		return mapper.selectSettlementList(project_idx);
 	}
 	
+	// 오늘 등록된 서포터 수
+	public int getSupportCountByPaymentDate() {
+		return mapper.selectSupportCountByPaymentDate();
+	}
+	
 }
