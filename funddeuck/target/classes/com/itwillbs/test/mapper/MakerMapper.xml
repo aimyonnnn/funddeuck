@@ -145,7 +145,7 @@
 			, #{listLimit}
 	</select>
 	
-	<!-- 전체 메이거 갯수 조회 -->
+	<!-- 전체 메이커 갯수 조회 -->
 	<select id="selectAllMakerListCount">
 		select count(*)
 			from maker

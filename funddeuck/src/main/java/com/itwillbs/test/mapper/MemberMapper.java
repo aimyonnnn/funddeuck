@@ -86,11 +86,28 @@ public interface MemberMapper {
 	// 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회
 	MembersVO selectMemberInfoByProjectIdx(int project_idx);
 	
-	//배달 완료 채크
+	//배달 완료 체크
 	int updateDeleveryComplete(int payment_idx);
 	
 	//리뷰 작성
 	int insertRevewRegistration(@Param("payment_idx") int payment_idx, @Param("context") String context, @Param("starRating") int starRating, @Param("saveFileName")String saveFileName);
+
+	// 회원 목록 조회 요청
+	List<MembersVO> selectAllMemberList(
+			@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType,
+			@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+
+	// 전체 회원 갯수 조회
+	int selectAllMemberListCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType);
+
+	// 회원 상세정보 보기
+	MembersVO selectMemberInfo(Integer member_idx);
+
+	// 회원 정보 변경 비즈니스 로직 처리
+	int updateMemberByAdmin(MembersVO member);
+
+	// 회원 활동내역 목록 조회
+	List<MembersVO> selectMemberActivityList(Integer member_idx);
 	
 
 }

@@ -41,6 +41,7 @@ import com.itwillbs.test.service.SendPhoneMessageService;
 import com.itwillbs.test.vo.ChartDataVO;
 import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
+import com.itwillbs.test.vo.MembersVO;
 import com.itwillbs.test.vo.NotificationVO;
 import com.itwillbs.test.vo.PageInfoVO;
 import com.itwillbs.test.vo.PaymentVO;
@@ -755,8 +756,69 @@ public class AdminController {
 	    }
 	}
 	
-	
-	
+	// 회원 관리 페이지
+	@GetMapping("adminMemberManagement")
+	public String adminMember(@RequestParam(defaultValue = "") String searchType,
+							  @RequestParam(defaultValue = "") String searchKeyword,
+							  @RequestParam(defaultValue = "1") int pageNum,
+							  HttpSession session, Model model) {
 		
+		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		
+		// 회원 목록 조회 요청
+		List<MembersVO> memberList = memberService.getAllMemberList(searchKeyword, searchType, startRow, listLimit);
+		
+		// 페이징 처리를 위한 계산 작업
+		// 1. 전체 게시물 수 조회 요청
+		int listCount = memberService.getAllMemberListCount(searchKeyword, searchType);
+		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+		int pageListLimit = 10;
+		// 3. 전체 페이지 목록 갯수 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 4. 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5. 끝 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {	endPage = maxPage; }
+		
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		return "admin/admin_member_management";
+	}
+	
+	// 회원 상세정보 보기
+	@GetMapping("adminMemberDetail")
+	public String adminMemberDetail(@RequestParam(required = true) Integer member_idx, HttpSession session, Model model) {
+		MembersVO member = memberService.getMemberInfo(member_idx); // 회원 정보 조회
+		List<MembersVO> memberActivityList = memberService.getMemberActivityList(member_idx); // 회원 활동내역 목록 조회
+		
+		model.addAttribute("member", member);
+		
+		return "admin/admin_member_detail";
+	}
+	
+	// 회원 정보 변경 비즈니스 로직 처리
+	@PostMapping("adminModifyMember")
+	public String adminModifyMember(
+			@RequestParam(defaultValue = "1") int pageNum,
+			MembersVO member, HttpSession session, Model model) {
+		
+		int updateCount = memberService.ModifyMemberByAdmin(member); // 회원 정보 수정
+		
+		if(updateCount > 0) {
+			// 회원 정보 변경 성공 시
+			String targetURL = "adminMemberDetail?member_idx=" + member.getMember_idx() + "&pageNum=" + pageNum;
+			model.addAttribute("msg", "회원 정보 수정이 완료되었습니다.");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
+		} else {
+			model.addAttribute("msg", "메이커 정보 수정에 실패하였습니다.");
+			return "fail_back";
+		}
+	}
 	
 }
