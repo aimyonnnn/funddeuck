@@ -311,6 +311,7 @@
 			WHERE payment_idx = #{payment_idx}
 	</select>
 	
+	<!-- 프로젝트별 리워드 전체 리워드수, 판매, 재고 조회 -->
 	<select id="selectRemainingQuantities" resultType="com.itwillbs.test.vo.PaymentVO">
 		 SELECT
 			r.project_idx,
