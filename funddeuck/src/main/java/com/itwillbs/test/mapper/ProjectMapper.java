@@ -122,8 +122,12 @@ public interface ProjectMapper {
 	
 	// 프로젝트 승인상태 조회
 	Integer selectProjectStatus(int project_idx);
-		
-		
+	
+	// 관리자 - 프로젝트 정보 수정
+	int updateProjectByAdmin(ProjectVO project);
+
+	// 관리자 - 첨부파일 실시간 삭제
+	int deleteProjectFile(@Param("project_idx") int project_idx, @Param("fileName") String fileName, @Param("fileNumber") int fileNumber);	
 			
 
 

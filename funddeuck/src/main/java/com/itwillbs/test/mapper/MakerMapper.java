@@ -40,4 +40,5 @@ public interface MakerMapper {
 	// 관리자 - 메이커 정보 수정
 	int updateMakerByAdmin(MakerVO maker);
 	
+	
 }

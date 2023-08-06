@@ -280,6 +280,20 @@ public class AdminController {
 		return "admin/admin_project_management";
 	}
 	
+	// 프로젝트 관리 - 상세 페이지
+	@GetMapping("adminProjectManagementDetail")
+	public String adminProjectManagementDetail(@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, HttpSession session, Model model) {
+		
+		ProjectVO project = projectService.getProjectInfo(project_idx);
+		List<RewardVO> rList = projectService.getRewardList(project_idx);
+		
+		model.addAttribute("project", project);
+		model.addAttribute("rList", rList);
+		
+		return "admin/admin_project_management_detail";
+	}
+	
+	
 	// 결제 관리
 	@GetMapping("adminPayment")
 	public String adminPayment() {
@@ -589,5 +603,149 @@ public class AdminController {
     		labels, dailyPaymentAmounts, acmlPaymentAmounts, dailySupporterCounts, acmlSupporterCounts, acmlPaymentAmount, acmlSupporterCount);
 	}
 
+	// 프로젝트 정보 수정 비즈니스 로직 처리
+	@PostMapping("adminModifyProject")
+	public String adminModifyProject(@RequestParam(defaultValue = "1") int pageNum, ProjectVO project, HttpSession session, Model model) {
+
+	    System.out.println("adminModifyProject");
+	    String uploadDir = "/resources/upload";
+	    String saveDir = session.getServletContext().getRealPath(uploadDir);
+	    String subDir = "";
+
+	    try {
+	        Date date = new Date();
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+	        subDir = sdf.format(date);
+	        saveDir += "/" + subDir;
+	        Path path = Paths.get(saveDir);
+	        Files.createDirectories(path);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    // 파일 업로드 폴더 경로 출력
+	    System.out.println("실제 업로드 폴더 경로: " + saveDir);
+
+	    MultipartFile mFile1 = project.getFile1();
+	    MultipartFile mFile2 = project.getFile2();
+	    MultipartFile mFile3 = project.getFile3();
+	    MultipartFile mFile4 = project.getFile4();
+	    MultipartFile mFile5 = project.getFile5();
+
+	    String uuid = UUID.randomUUID().toString();
+	    project.setProject_thumnails1("");
+	    project.setProject_thumnails2("");
+	    project.setProject_thumnails3("");
+	    project.setProject_image("");
+	    project.setProject_settlement_image("");
+
+	    String fileName1 = null;
+	    String fileName2 = null;
+	    String fileName3 = null;
+	    String fileName4 = null;
+	    String fileName5 = null;
+
+	    if (mFile1 != null && !mFile1.getOriginalFilename().equals("")) {
+	        fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
+	        project.setProject_thumnails1(subDir + "/" + fileName1);
+	    }
+
+	    if (mFile2 != null && !mFile2.getOriginalFilename().equals("")) {
+	        fileName2 = uuid.substring(0, 8) + "_" + mFile2.getOriginalFilename();
+	        project.setProject_thumnails2(subDir + "/" + fileName2);
+	    }
+
+	    if (mFile3 != null && !mFile3.getOriginalFilename().equals("")) {
+	        fileName3 = uuid.substring(0, 8) + "_" + mFile3.getOriginalFilename();
+	        project.setProject_thumnails3(subDir + "/" + fileName3);
+	    }
+
+	    if (mFile4 != null && !mFile4.getOriginalFilename().equals("")) {
+	        fileName4 = uuid.substring(0, 8) + "_" + mFile4.getOriginalFilename();
+	        project.setProject_image(subDir + "/" + fileName4);
+	    }
+
+	    if (mFile5 != null && !mFile5.getOriginalFilename().equals("")) {
+	        fileName5 = uuid.substring(0, 8) + "_" + mFile5.getOriginalFilename();
+	        project.setProject_settlement_image(subDir + "/" + fileName5);
+	    }
+
+	    System.out.println("실제 업로드 파일명1 : " + project.getProject_thumnails1());
+	    System.out.println("실제 업로드 파일명2 : " + project.getProject_thumnails2());
+	    System.out.println("실제 업로드 파일명3 : " + project.getProject_thumnails3());
+	    System.out.println("실제 업로드 파일명4 : " + project.getProject_image());
+	    System.out.println("실제 업로드 파일명5 : " + project.getProject_settlement_image());
+
+	    // -----------------------------------------------------------------------------------
+
+	    int updateCount = projectService.modifyProjectByAdmin(project);
+
+	    if (updateCount > 0) {
+	        // 파일 업로드 처리
+	        try {
+	            if (fileName1 != null) {
+	                mFile1.transferTo(new File(saveDir, fileName1));
+	            }
+	            if (fileName2 != null) {
+	                mFile2.transferTo(new File(saveDir, fileName2));
+	            }
+	            if (fileName3 != null) {
+	                mFile3.transferTo(new File(saveDir, fileName3));
+	            }
+	            if (fileName4 != null) {
+	                mFile4.transferTo(new File(saveDir, fileName4));
+	            }
+	            if (fileName5 != null) {
+	                mFile5.transferTo(new File(saveDir, fileName5));
+	            }
+	        } catch (IllegalStateException e) {
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+
+	        // 프로젝트 정보 변경 성공 시
+	        String targetURL = "adminProjectManagementDetail?project_idx=" + project.getProject_idx() + "&pageNum=" + pageNum;
+	        model.addAttribute("msg", "프로젝트 정보 수정이 완료되었습니다.");
+	        model.addAttribute("targetURL", targetURL);
+	        return "success_forward";
+
+	    } else {
+	        model.addAttribute("msg", "프로젝트 정보 수정에 실패하였습니다.");
+	        return "fail_back";
+	    }
+	}
+	
+	// 프로젝트 수정하기 - 첨부파일 실시간 삭제
+	@PostMapping("deleteProjectFile")
+	@ResponseBody
+	public String deleteProjectFile(int project_idx, String fileName, int fileNumber, HttpSession session) {
+		System.out.println("deleteFile() - fileName : " + fileName);
+		// 파일 삭제 요청
+	    int deleteCount = projectService.removeProjectFile(project_idx, fileName, fileNumber);
+	    if (deleteCount != 0) {
+	        // 파일 삭제 로직
+	        String uploadDir = "/resources/upload";
+	        String saveDir = session.getServletContext().getRealPath(uploadDir);
+	        String filePath = saveDir + "/" + fileName;
+	        File file = new File(filePath);
+	        if (file.exists()) {
+	            if (file.delete()) {
+	                return "success";
+	            } else {
+	                return "fail";
+	            }
+	        } else {
+	            // 파일이 이미 삭제되어 있음
+	            return "success";
+	        }
+	    } else {
+	        return "fail";
+	    }
+	}
+	
+	
+	
+		
 	
 }

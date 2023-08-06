@@ -81,7 +81,7 @@ th, td {
 					<th class="text-center" style="width: 7%;">목표금액</th>
 					<th class="text-center" style="width: 10%;">기간</th>
 					<th class="text-center" style="width: 5%;">상태</th>
-					<th class="text-center" style="width: 5%;">상세보기</th>
+					<th class="text-center" style="width: 5%;">정보수정</th>
 				</tr>
 				
 				<c:forEach var="pList" items="${pList}">
@@ -89,7 +89,7 @@ th, td {
 						<td class="text-center" style="width: 5%;">${pList.project_idx}</td>
 						<td class="text-center" style="width: 5%;">${pList.project_category}</td>
 						<td class="text-center" style="width: 20%;">
-							<a href="adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}" style="text-decoration: none; color: black;">
+							<a href="adminProjectManagementDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}" style="text-decoration: none; color: black;">
 								${pList.project_subject}
 							</a> 
 						</td>
@@ -118,7 +118,7 @@ th, td {
 						</c:choose>
 						<td class="text-center" style="width: 5%;">
 							<button class="btn btn-outline-primary btn-sm" 
-							onclick="location.href='adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}'">상세보기</button>
+							onclick="location.href='adminProjectManagementDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}'">상세보기</button>
 						</td>
 					</tr>
 				</c:forEach>
