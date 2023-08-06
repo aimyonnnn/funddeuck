@@ -95,11 +95,17 @@
                     </div>
                 </div>
             </div>
-            <div class="button-container">
-            	<button id="joinButton" class="btn btn-primary">등록</button>            
+    <div class="button-container">
+        <c:choose>
+            <c:when test="${isProfileSaved}">
                 <button id="saveButton" class="btn btn-primary">수정</button>
-                <button id="cancelButton" class="btn btn-primary">취소</button>
-            </div>
+            </c:when>
+            <c:otherwise>
+                <button id="joinButton" class="btn btn-primary">등록</button>
+            </c:otherwise>
+        </c:choose>
+        <button id="cancelButton" class="btn btn-primary">취소</button>
+    </div>
         </div>
     </div>
 </section>
