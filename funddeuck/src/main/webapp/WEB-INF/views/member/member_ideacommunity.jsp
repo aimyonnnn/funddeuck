@@ -23,18 +23,42 @@
             <ul class="nav nav-pills p-3 bg-white mb-3 rounded-pill align-items-center">
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link rounded-pill note-link d-flex align-items-center px-2 px-md-3 mr-0 mr-md-2 active" id="all-category">
-                        <i class="icon-layers mr-1"></i><span class="d-none d-md-block">All Notes</span>
+                        <i class="icon-layers mr-1"></i><span class="d-none d-md-block">모든 아이디어 보기</span>
                     </a>
                 </li>
                 <li class="nav-item ml-auto">
-                    <a href="javascript:void(0)" class="nav-link btn-primary rounded-pill d-flex align-items-center px-3" id="add-notes"> <i class="icon-note m-1"></i><span class="d-none d-md-block font-14">Add Notes</span></a>
+                    <a href="javascript:void(0)" class="nav-link btn-primary rounded-pill d-flex align-items-center px-3" id="add-notes"> <i class="icon-note m-1"></i><span class="d-none d-md-block font-14">아이디어 제시하기</span></a>
                 </li>
             </ul>
             <div class="tab-content bg-transparent">
                 <div id="note-full-container" class="note-has-grid row">
-                    <!-- Your cards will be dynamically generated here -->
+<!-- 아이디어 출력 -->
+<div id="note-full-container" class="note-has-grid row">
+    <c:forEach var="cardData" items="${data}">
+        <div class="col-md-4 single-note-item all-category">
+            <div class="card">
+                <div class="card-header">
+                    <!-- 작성자: ${cardData.member_idx} <br> -->
+                    <h5 class="card-title"><b>${cardData.title}</b></h5>
+                    작성 시간: ${cardData.today}
+                </div>
+                <div class="card-body">
+                    <p class="card-text">${cardData.description}</p>
+                    <div style="text-align: right;">
+<img src="https://cdn-icons-png.flaticon.com/512/1216/1216656.png?w=740&t=st=1691318684~exp=1691319284~hmac=77832eaa223611f6a84a833c33ce0ecbbc67e5b6cdddb4cfc0b3b757b0e20439"
+    alt="좋아요" width="20" height="20" style="cursor: pointer;" onclick="likeIdea(${cardData.idea_idx})">
+<span id="likeCount_${cardData.idea_idx}">${cardData.likecount}</span>
+                    </div>
                 </div>
             </div>
+        </div>
+    </c:forEach>
+</div>
+
+                </div>
+            </div>
+        </div>
+
 
             <!-- Modal Add notes -->
             <div class="modal fade" id="addnotesmodal" tabindex="-1" role="dialog" aria-labelledby="addnotesmodalTitle" style="display: none;" aria-hidden="true">
@@ -131,7 +155,6 @@
                 });
             }
 
-
             $.ajax({
                 url: '${pageContext.request.contextPath}/member/getCardsData',
                 type: 'GET',
@@ -140,6 +163,23 @@
                 }
             });
         });
+        
+        function likeIdea(ideaIdx) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/member/likeIdea',
+                type: 'POST',
+                data: { ideaIdx: ideaIdx }, 
+                success: function () {
+                    var likeCountElement = $('#likeCount_' + ideaIdx);
+                    var currentLikeCount = parseInt(likeCountElement.text());
+                    likeCountElement.text(currentLikeCount + 1);
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+        
     </script>
 
     <%@ include file="../Footer.jsp" %>
