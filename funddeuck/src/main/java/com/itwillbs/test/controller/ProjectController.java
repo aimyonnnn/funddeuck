@@ -711,6 +711,7 @@ public class ProjectController {
 	}
 
 	// 정산내역서 출력
+	@ResponseBody
 	@GetMapping("settlementList")
 	public List<PaymentVO> settlementList(@RequestParam("project_idx") int project_idx) {
 		List<PaymentVO> settlementList = paymentService.getSettlementList(project_idx);

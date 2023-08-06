@@ -268,16 +268,16 @@
 						  '</tr>' +
 						  '<tr>' +
 						    '<th scope="row" class="col-3 bg-light">결제수단</th>' +
-						    '<td class="col-9">' + (data.payment_method == 1 ? '카드결제' : '계좌이체') + '</td>' +
+						    '<td class="col-9">' + (data.payment_method === 1 ? '카드결제' : '계좌이체') + '</td>' +
 						  '</tr>' +
 						  '<tr>' +
 						    '<th scope="row" class="col-3 bg-light">환불은행</th>' +
-						    '<td class="col-9">' + data.refund_bank + '</td>' +
+						    '<td class="col-9">' + (data.refund_bank !== null ? data.refund_bank : '없음') + '</td>' +
 						  '</tr>' +
 						  '<tr>' +
 						    '<th scope="row" class="col-3 bg-light">환불계좌</th>' +
-						    '<td class="col-9">' + data.refund_accountnum + '</td>' +
-						  '</tr>' +
+						    '<td class="col-9">' + (data.refund_accountnum !== null ? data.refund_accountnum : '없음') + '</td>' +
+						  '</tr>'
 						  '<tr>';
 
 						// 테이블 바디에 추가
@@ -295,9 +295,6 @@
 						} else {
 						    $("#refund-document").text("").removeAttr("href").removeAttr("download");
 						}
-
-
-
 					
 				},
 				error: function() {

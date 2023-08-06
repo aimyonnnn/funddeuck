@@ -340,10 +340,31 @@
 	</select>
 	
 	<!-- 정산내역 조회 -->
-<!-- 	<select id="selectSettlementList" resultType="com.itwillbs.test.vo.PaymentVO"> -->
-<!-- 		SELECT  -->
-<!-- 			FROM payment p -->
-<!-- 			WHERE project_idx = #{project_idx} -->
-<!-- 	</select> -->
+	<select id="selectSettlementList" resultType="com.itwillbs.test.vo.PaymentVO">
+		SELECT 
+		    p.*,
+		    SUM(pa.total_amount) as total_amount,
+		    SUM(pa.additional_amount) as total_additional_amount,
+		    SUM(pa.reward_amount) as total_reward_amount,
+		    SUM(IF(pa.payment_method = 1, pa.reward_amount, 0)) as card_total_reward_amount,
+		    SUM(IF(pa.payment_method = 1, pa.additional_amount, 0)) as card_total_additional_amount,
+		    SUM(IF(pa.payment_method = 1, pa.total_amount, 0)) as total_card_amount,
+		    SUM(r.delivery_price) as total_delivery_amount, 
+		    SUM(IF(pa.payment_method = 1, r.delivery_price, 0)) as card_total_delivery_amount
+		FROM
+		    project p
+		JOIN
+		    payment pa
+		ON
+		    p.project_idx = pa.project_idx
+		 JOIN
+        	reward r
+    	ON
+        	pa.reward_idx = r.reward_idx
+		WHERE
+		    p.project_idx = #{project_idx} AND (pa.payment_confirm = 1 OR pa.payment_confirm = 2)
+		GROUP BY
+		    p.project_idx;
+	</select>
 	
 </mapper>

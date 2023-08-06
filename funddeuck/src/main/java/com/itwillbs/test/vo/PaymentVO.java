@@ -66,6 +66,7 @@ public class PaymentVO {
 	private Date payment_date;
 	private int payment_quantity;
 	private int payment_confirm;
+	private int payment_method;
 	private String refund_bank;
 	private String refund_accountnum;
 	private String delivery_method;
@@ -97,4 +98,21 @@ public class PaymentVO {
 	private String delivery_detailadd;
 	private String cancel_context;
 	private String cancel_img;
+	
+	// ===============================================================================
+	// 정산내역 출력 시 사용 
+	private int project_plan;						// 프로젝트 요금제
+	private String project_representative_name;		// 대표자명
+	private String project_representative_email; 	// 대표자 이메일
+	private String project_settlement_bank;			// 정산 받을 은행
+	private String project_settlement_account;		// 정산 받을 계좌
+	private String project_settlement_name;			// 정산 받을 예금주명
+	private int total_reward_amount;				// 총 리워드 금액
+	private int total_card_amount;					// 총 카드 금액
+	private int total_additional_amount; 			// 총 추가 후원금액
+	private int card_total_additional_amount;		// 총 카드 후원금액
+	private int card_total_reward_amount;			// 총 카드 리워드 결제금액
+	private int total_delivery_amount;				// 총 리워드 배송비
+	private int card_total_delivery_amount;			// 총 카드 결제의 리워드 배송비
+	
 }
