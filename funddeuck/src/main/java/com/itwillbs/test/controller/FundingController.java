@@ -146,9 +146,6 @@ public class FundingController {
 //		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, HttpSession session, Model model) {
 		public String fundingOrder(HttpSession session, Model model) {
 		
-		// 보희씨 주문 페이지로 project_idx, reward_idx 파라미터 넘어가게 해 두었고, 기본 후원(1000원) 선택 시
-		// reward_idx 값 0으로 넘어가게 해 두었습니다. 해당 값 0인지 체크하는것 필요!(0이면 리워드 없이 결제)
-		
 		String sId = (String)session.getAttribute("sId");
 		// 미로그인 또는 주문하던 회원이 아닐경우 ****
 		// 이전페이지? 아니면 로그인화면으로?
@@ -221,12 +218,9 @@ public class FundingController {
 					}
 				}
 //				System.out.println("bankAccount : " + bankAccount);
-				
-				
 			}
 			// 계좌 정보
 			model.addAttribute("bankAccount", bankAccount);
-			
 		}
 		// 달성률 = 실제금액 / 목표금액 x 100
 		int project_target = project.getProject_target(); // 목표금액
@@ -285,9 +279,43 @@ public class FundingController {
 	    String access_token = (String)session.getAttribute("access_token");
 	    ResponseWithdrawVO withdrawResult = bankApiService.requestWithdrawMember(payment.getTotal_amount(), fintech_use_num, access_token);
 	    logger.info("withdrawResult" + withdrawResult);
-	    // DB에 출금내역 저장
+	    // DB에 출금내역(회원) 입금내역(사이트) 저장
+	    // 응답데이터를 ResponseWithdrawVO 로 받음
+		/*
+		 * 사이트계좌(입금) 
+		 * 입금기관명 dps_bank_name 
+		 * 입금계좌번호(마스킹) dps_account_num_masked 
+		 * 입금계좌인자내역 dps_print_content 
+		 * 수취인성명 dps_account_holder_name 
+		 * 거래일자 bank_tran_date 
+		 * 거래금액 tran_amt
+		 * 
+		 * 
+		 * 회원(출금) 
+		 * 개설기관명 bank_name 
+		 * 출금계좌번호(출력용) account_num_masked 
+		 * 출금계좌인자내역 print_content
+		 * 송금인성명 account_holder_name 
+		 * 거래일자 bank_tran_date 
+		 * 거래금액 tran_amt
+		 */
+	    // 입금(사이트)
+	    withdrawResult.getDps_bank_name();
+	    withdrawResult.getDps_account_num_masked();
+	    withdrawResult.getDps_print_content();
+	    withdrawResult.getDps_account_holder_name();
+	    withdrawResult.getBank_tran_date();
+	    withdrawResult.getTran_amt();
+	    // 출금(회원)
+	    withdrawResult.getBank_name();
+	    withdrawResult.getAccount_num_masked();
+	    withdrawResult.getPrint_content();
+	    withdrawResult.getAccount_holder_name();
+	    withdrawResult.getBank_tran_date();
+	    withdrawResult.getTran_amt();
+	    BankingVO dpsBankTran;
 	    
-	    // 거래요청일시를 프로젝트 종료일로 전달
+	    // 거래요청일시를 프로젝트 종료일로 전달(예약)
 	    
 	    // 환불
 	    ResponseDepositVO depositResult = bankApiService.requestDeposit(payment.getTotal_amount(), fintech_use_num, access_token);
@@ -298,7 +326,7 @@ public class FundingController {
 	    // 실패시 fail_back
 		
 		// 쿠폰 사용시 쿠폰 상태 변경
-	    // 리워드 수량 -1
+	    // 리워드 수량 -1 주문수량..?
 		return "";
 	}
 	
