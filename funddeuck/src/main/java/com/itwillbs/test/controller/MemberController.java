@@ -520,6 +520,7 @@ public class MemberController {
     	
     }
     
+    //찜한 프로젝트의 최근 소식
     @GetMapping("zimFollowBoard")
     public String zimFollowBoard(HttpSession session, Model model) {
     	
@@ -529,8 +530,10 @@ public class MemberController {
     	}
     	
     	
-    	return "member_zim_board";
+    	return "member/member_zim_board";
     }
+    
+    //찜한 프로젝트의 최근 소식을
     
     // 팔로우의 활동 페이지로 이동
     @GetMapping("FollowBoardForm")

@@ -112,7 +112,7 @@
                 <a href="" class="text-black"> 찜 목록 </a>
             </div>
             <div class="col col-sm-3 col-lg-2 py-3">
-                <a href="" class="text-black"> 최근 소식 </a>
+                <a href="zimFollowBoard" class="text-black"> 최근 소식 </a>
             </div>
         </div>
     </div>

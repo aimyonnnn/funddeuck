@@ -63,7 +63,7 @@
 				        + 			chatRoom.content
 				        +    '</div>'
 				        +    '<div class="col text-end">'
-				        +        '<button class="btn btn-outline-primary" onclick="window.open(\'chat?room_id=' + chatRoom.room_id + '=' + chatRoom.member_id + '\', \'_blank\', \'width=500, height=800\')">1대1채팅</button>'
+				        +        '<button class="btn btn-outline-primary" onclick="window.open(\'chat?room_id=' + chatRoom.room_id + '=' + chatRoom.maker_member_id + '\', \'_blank\', \'width=500, height=800\')">1대1채팅</button>'
 				        +    '</div>'
 				        +'</div>'
 					);

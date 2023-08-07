@@ -24,6 +24,24 @@
         }
     </style>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript">
+        	$(function() {
+				
+        		$.ajax({
+        			type:"post",
+        			url:"ZimPostList",
+        			dataType:"json",
+        			success: function() {
+						
+					},
+					error function() {
+						
+					}
+        			
+        		});
+        		
+			})
+        </script>
 </head>
 <body>
     <!-- cupon 페이지 시작 -->
@@ -31,7 +49,7 @@
     <div class="col"></div>
     <div class="col-12 col-md-8 col-lg-6 mt-5">
         <div class="row">
-            <h2><b>찜만 모았어요</b></h2>
+            <h2><b>찜하신 프로잭트의 최근 소식입니다!</b></h2>
         </div>
         <!-- 메뉴 선택 -->
         <div class="row mt-4 text-center">

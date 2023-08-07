@@ -64,7 +64,7 @@
 </select>
 
 <select id="selectMemberChatRoomList">
-    SELECT mem.member_name, cr.room_id, cr.member_id, ch.sender, ch.content
+    SELECT mem.member_name, cr.room_id, cr.maker_member_id, ch.sender, ch.content
     FROM chatroom cr 
         JOIN members mem
         ON cr.maker_member_id = mem.member_id
