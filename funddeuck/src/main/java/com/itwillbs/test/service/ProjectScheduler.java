@@ -41,6 +41,13 @@ public class ProjectScheduler {
             }
         }, 7, TimeUnit.DAYS);
 	}
+
+	// 미발송 및 배송중이 없다면 2주 후 최종정산 가능으로 프로젝트 상태 변경
+	public void modifyProjectStatus(int payment_idx) {
+		executorService.schedule(() -> {
+			mapper.updateProjectStatus(payment_idx); // 2주 후 배송완료로 상태변경 업데이트 실행
+        }, 14, TimeUnit.DAYS);
+	}
 	
 	
 	

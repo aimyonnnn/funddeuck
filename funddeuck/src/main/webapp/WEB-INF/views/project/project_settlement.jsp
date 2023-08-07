@@ -35,27 +35,22 @@
 				success: function(data) {
 					var data = data[0];
 					
-					
 					// 카드 결제의 수수료(카드 리워드 금액 + 후원금 + 배송비) * 0.03)
 					var card_tax = (data.card_total_reward_amount + data.card_total_additional_amount + data.card_total_delivery_amount) * 0.03;
-					
 					// 결제 완료 금액 (현재 총 결제 금액 - 환불금액(이미 포함x) + 후원금 + 카드 결제의 수수료)
 					var total_amount = Math.floor(data.total_amount + data.total_additional_amount + card_tax);
-					
 					// 배송비 (총 리워드 배송비 - 총 카드로 결제한 리워드 배송비)
 					var delivery_amount = Math.floor(data.total_delivery_amount - (data.card_total_delivery_amount) * 0.03);
-					
 					// 요금제 수수료 1-기본요금제(5%), 2-인플루언서요금제(3%)
 					var project_plan = data.project_plan === 1 ? 0.05 : 0.03;
-					
 					// 세금계산서 발행금액 (총 금액(이미 카드 수수료 포함o) * 선택한 요금제 수수료)
 					var tax_amount = Math.floor(data.total_amount * project_plan + card_tax);
-					
-					// 총 지급 금액(결제 완료 금액 - 세금계산서 발행금액)
-					var final_amount = total_amount - tax_amount;
-					
+					// 총 지급 금액(결제 완료 금액 - 1차 정산금액 - 세금계산서 발행금액)
+					var final_amount = total_amount - data.first_amount - tax_amount;
 					// 요금제 수수료 출력용
 					var charge = data.project_plan === 1 ? 5 : 3;
+					
+					console.log("1차 정산금액 : " + data.first_amount);
 					
 					$('#project_subject').text(data.project_subject);						// 프로젝트 제목
 					$('#representative_name').text(data.project_representative_name);		// 대표자명
@@ -68,6 +63,32 @@
 					$('#delivery_amount').text(delivery_amount.toLocaleString() + '원');	// 배송비 
 					$('#tax_amount').text(tax_amount.toLocaleString() + '원');				// 세금
 					$('#charge').text('(' + charge + '%)')									// 수수료 
+					
+					 var buttonText = ""; // 버튼 텍스트를 초기화합니다.
+					
+					if(data.project_status == 3) { 			// 프로젝트 진행완료 (1차 정산 가능일 때)
+						if(data.maker_grade == 1) { 		// 메이커 등급이 1레벨일 시
+							final_amount *= 0.5; 			// 50%만 1차 정산
+							$('#final_amount').text(final_amount.toLocaleString() + '원');
+						} else if(data.maker_grade == 2) {	// 메이커 등급이 2레벨일 시
+							final_amount *= 0.7;			// 70%만 1차 정산
+							$('#final_amount').text(final_amount.toLocaleString() + '원');
+						}
+						buttonText = "1차 정산";
+					} else if(data.project_status == 4) {	// 프로젝트 1차 정산완료 (최종 정산 불가능일 때)
+						buttonText = "정산 대기중";		
+					} else if(data.project_status == 5) {	// 프로젝트 최종 정산 가능일 때
+						buttonText = "최종 정산";
+					}
+					$('.btn-danger').text(buttonText);
+					
+					$('.btn-danger').off('click').on('click', function(event) {
+				        if (data.project_status == 4) { // 프로젝트 상태가 4일 때
+				        	event.preventDefault(); // 제출 불가
+				            alert("아직 환불 기간이므로 정산을 할 수 없습니다!");
+				    	}
+					});
+					
 				},
 				error: function() {
 					alert("정산 내역 요청에 오류가 발생했습니다!");
@@ -295,7 +316,9 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger">정산 신청</button>
+					<form action="" method="post" class="settlement-form">
+						<button type="submit" class="btn btn-danger"></button>
+					</form>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				</div>
 			</div>

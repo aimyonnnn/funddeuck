@@ -103,7 +103,7 @@ public class PaymentVO {
 	private String cancel_context;
 	private String cancel_img;
 	
-	// ===============================================================================
+	// =========================================================================================================================================================
 	// 정산내역 출력 시 사용 
 	private int project_plan;						// 프로젝트 요금제
 	private String project_representative_name;		// 대표자명
@@ -118,5 +118,7 @@ public class PaymentVO {
 	private int card_total_reward_amount;			// 총 카드 리워드 결제금액
 	private int total_delivery_amount;				// 총 리워드 배송비
 	private int card_total_delivery_amount;			// 총 카드 결제의 리워드 배송비
-	
+	private int maker_grade;						// 메이커 등급
+	private int project_status;						// 프로젝트 상태 1-오픈예정 2-프로젝트 진행중 3-진행완료 4-1차정산완료 5-최종정산진행가능 6-최종정산완료
+	private int first_amount;						// 1차 정산금액 default 0
 }

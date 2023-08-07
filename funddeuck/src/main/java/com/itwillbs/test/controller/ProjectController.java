@@ -452,6 +452,14 @@ public class ProjectController {
 			// 송장번호 입력 후 일주일 후 '배송완료'로 상태변경
 			projectScheduler.modifyDeliveryStatus(payment_idx);
 			
+			// 미발송 및 배송중 조회
+			int deliveryCount = paymentService.getDeliveryCount(payment_idx);
+
+			// 미발송 및 배송중이 없다면 최종정산 가능으로 프로젝트 상태 변경
+			if(deliveryCount == 0) {
+				projectScheduler.modifyProjectStatus(payment_idx);
+			}
+			
 			List<PaymentVO> paymentList = paymentService.getPaymentList(payment_idx);
 			
 			return new ResponseEntity<>(paymentList, HttpStatus.OK);

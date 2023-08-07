@@ -99,6 +99,11 @@ public class PaymentService {
 		return mapper.updateShippingInfo(payment_idx, delivery_method, courier, waybill_num);
 	}
 	
+	// 미발송 및 배송중 조회
+	public int getDeliveryCount(int payment_idx) {
+		return mapper.selectDeliveryCount(payment_idx);
+	}
+	
 	// 결제 목록 조회 
 	public List<PaymentVO> getPaymentList(int payment_idx) {
 		return mapper.selectPaymentList(payment_idx);
