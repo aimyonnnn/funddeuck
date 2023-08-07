@@ -261,16 +261,6 @@
 		WHERE payment_idx = #{payment_idx}
 	</update>
 	
-	<insert id="insertRevewRegistration">
-		INSERT INTO review
-			VALUES(
-				NULL,
-				#{payment_idx},
-				#{context},
-				#{starRating},
-				#{saveFileName}
-			)
-	</insert>
 	
 	<!-- 회원 목록 조회 요청 -->
 	<select id="selectAllMemberList">
@@ -340,5 +330,67 @@
 <!-- 			FROM members -->
 <!-- 			WHERE member_idx = #{member_idx} -->
 <!-- 	</select> -->
+
+	<!-- 리뷰작성 -->
+	<insert id="insertRevewRegistration">
+		INSERT INTO review
+			VALUES(
+				NULL,
+				#{payment_idx},
+				#{context},
+				#{starRating},
+				#{saveFileName},
+				1
+			)
+	</insert>
+	
+	
+	<!-- 리뷰 리스트 컬럼 -->
+	<select id="selectMemberReviewList">
+		SELECT review_idx
+		, pro.project_subject
+		, rew.reward_name
+		, rev.review_content
+		, rev.starRating
+		, rev.saveFileName 
+			FROM review rev 
+			JOIN payment pay
+				ON pay.payment_idx = rev.payment_idx
+			JOIN project pro
+				ON pro.project_idx = pay.project_idx
+			JOIN reward rew
+				ON rew.reward_idx = pay.reward_idx
+			WHERE pay.member_idx = (SELECT member_idx
+									FROM members
+									WHERE member_id = #{sId}) 
+				AND rev.review_status = 1
+		LIMIT #{startRow}, #{listLimit}
+	</select>
+	<!-- 리뷰 갯수 -->
+	<select id="selectMemberReviewListCount">
+			SELECT COUNT(rev.review_idx)
+				FROM review rev 
+				JOIN payment pay
+					ON pay.payment_idx = rev.payment_idx
+				WHERE pay.member_idx = (SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId}) 
+							AND rev.review_status = 1;
+	</select>
+	<!-- 리뷰 삭제 -->
+	<update id="deleteUpdateMemberReview">
+		update review
+		set review_status = 2
+		where review_idx = #{num}
+	</update>
+	
+	<!-- 메이커의 멤버 id 가져오기 -->
+	<select id="getMakerMemberId" resultType="String">
+		SELECT member_id
+		FROM members
+		WHERE member_idx = (SELECT member_idx
+							FROM maker
+							WHERE maker_idx = #{maker_idx})
+	</select>
 	
 </mapper>
