@@ -29,7 +29,6 @@ public class RewardVO {
 	private String reward_category; 		// 리워드 카테고리
 	private String reward_name; 			// 리워드명 
 	private int reward_quantity;			// 리워드 수량
-	private int reward_residual_quantity;	// 리워드 잔여 수량
 	private String reward_option; 			// 리워드 옵션
 	private String reward_detail; 			// 리워드 설명
 	private String delivery_status; 		// 배송여부 
