@@ -63,7 +63,7 @@
 					WHERE project_idx = #{project_idx}
 	</select>
 	
-	<!-- 펀딩 프로젝트 목록 탐색(아직 미사용) -->
+	<!-- 펀딩 프로젝트 목록 검색(아직 미사용) -->
 	<select id="selectProjectListDiscover">
 			SELECT *
 				FROM project
@@ -170,9 +170,10 @@
 	<select id="selectFundingList" resultType="com.itwillbs.test.vo.ProjectVO">
 		SELECT *
 			FROM project
+				WHERE project_approve_status = 5
 			<!-- 카테고리 선택 시 실행할 구문, 미선택시 실행x -->
 			<if test="!category.equals('all')">
-				WHERE
+				AND
 				<choose>
 					<when test="category.equals('tech')">
 						project_category LIKE '테크/가전'
@@ -215,7 +216,7 @@
 				<!-- 카테고리 선택시 실행 -->
 				<!-- 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료' -->
 				<if test="!status.equals('all') and category.equals('all')">
-					WHERE
+					AND
 					<choose>
 						<when test="status.equals('active')">
 							project_status = 2
@@ -274,6 +275,7 @@
 		SELECT *
 			FROM project
 				WHERE project_start_date <![CDATA[<]]> now()
+					AND project_approve_status = 5
 				<!-- 카테고리 선택 시 실행할 구문, 미선택시 실행x -->
 				<if test="!category.equals('all')">
 					AND
