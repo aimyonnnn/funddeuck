@@ -65,7 +65,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content border-0">
                         <div class="modal-header bg-info text-white">
-                            <h5 class="modal-title text-white">Add Notes</h5>
+                            <h5 class="modal-title text-white">새로운 아이디어를 제시합니다.</h5>
                         </div>
                         <div class="modal-body">
                             <div class="notes-box">
