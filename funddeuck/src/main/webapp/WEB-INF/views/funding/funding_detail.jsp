@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,9 +25,11 @@
 <body>
 <!-- 요청 파라미터 값 저장 -->
 <input type="hidden" value="${param.category }" id="categoryVal">
+<c:set var="currentTime" value="<%= new java.util.Date() %>" />  
 	<br>
 	<hr>
 	<br>
+	${project }
 	<!-- 상단 영역 -->
 	<div class="container text-center">
 		<!-- 해시태그 -->
@@ -39,7 +41,7 @@
 			</div>
 		</div>
 		<!-- 펀딩이름 -->
-	
+
 		<!-- 이미지, 펀딩 진행상태, 기본정보-->
 		<div class="row p-5">
 			<!--펀딩 이미지 슬라이드-->
@@ -399,7 +401,7 @@
 					</div>
 					<!-- 팔로우, 1:1문의 버튼-->
 					<div class="row">
-						<button class="btn btn-outline-success me-2 rounded-0 btn-block">
+						<button class="btn btn-outline-success me-2 rounded-0 btn-block" id="projectInquiry">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
 						<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
 						<path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
@@ -552,6 +554,40 @@ window.onload = function(){
 		window.scrollTo({top:location, behavior:'instant'});
 	}
 }
+
+
+// 웹 소켓 채팅방
+	$("#projectInquiry").click(function() {
+		
+		let maker_idx = ${project.maker_idx};
+		let member = '<%= session.getAttribute("sId") %>';
+		
+		if(member == "null"){
+			alert("로그인 후 문의가 가능합니다!");
+		return false;
+		}
+		
+		$.ajax({
+			type:"post",
+			url:"createRoom",
+			dataType:"json",
+			data: {maker_idx: maker_idx},
+			success: function (data) {
+				console.log(data);
+				
+				if (window.name !== 'newWindow') {
+					  sessionStorage.setItem('origin', true);
+					} else {
+					  sessionStorage.setItem('new', true);
+					}
+				
+				window.open("chat?room_id="+data.room_id + "=" +data.maker_member_id , "_blank", "width=500, height=800");
+			},
+		   error : function(request, status, error) {
+		        console.log(error)
+		    }
+		});				
+	});
 
 </script>
 <br>

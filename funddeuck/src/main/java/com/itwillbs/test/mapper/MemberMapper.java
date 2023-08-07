@@ -92,5 +92,16 @@ public interface MemberMapper {
 	//리뷰 작성
 	int insertRevewRegistration(@Param("payment_idx") int payment_idx, @Param("context") String context, @Param("starRating") int starRating, @Param("saveFileName")String saveFileName);
 	
+	//리뷰 목록 가져오기
+	List<Map<String, Object>> selectMemberReviewList(@Param("sId") String sId, @Param("startRow")int startRow, @Param("listLimit") int listLimit);
+	
+	//리뷰 갯수
+	int selectMemberReviewListCount(String sId);
+	
+	//리뷰 삭제
+	int deleteUpdateMemberReview(int num);
+
+	String getMakerMemberId(int maker_idx);
+	
 
 }

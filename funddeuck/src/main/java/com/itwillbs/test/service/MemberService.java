@@ -141,13 +141,32 @@ public class MemberService {
 	
 	// 리뷰작성 시 리뷰 등록
 	public int reivewRegistration(int payment_idx, String context, int starRating, String saveFileName) {
-		return mapper.insertRevewRegistration(payment_idx, context, starRating, saveFileName);
+			return mapper.insertRevewRegistration(payment_idx, context, starRating, saveFileName);
+	}
+	
+	// 리뷰 리스트 가져오기
+	public List<Map<String, Object>> getMemberReviewList(String sId, int startRow, int listLimit) {
+		return mapper.selectMemberReviewList(sId, startRow, listLimit);
+	}
+	
+	//리뷰 카운트
+	public int getMemberReveiwListCount(String sId) {
+		return mapper.selectMemberReviewListCount(sId);
 	}
 	
 	
 	// 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회
 	public MembersVO getMemberInfoByProjectIdx(int project_idx) {
 		return mapper.selectMemberInfoByProjectIdx(project_idx);
+	}
+	
+	// 리뷰 삭제
+	public int deleteMemberReview(int num) {
+		return mapper.deleteUpdateMemberReview(num);
+	}
+
+	public String getMakerMemberId(int maker_idx) {
+		return mapper.getMakerMemberId(maker_idx);
 	}
 	
 

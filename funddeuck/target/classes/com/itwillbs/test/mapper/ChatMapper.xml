@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.test.mapper.ChatMapper">
+
+<select id="selectChatRoom">
+	SELECT *
+	FROM chatroom
+	WHERE member_id = #{member_id} 
+		AND maker_member_id = #{maker_member_id}
+</select>
+<insert id="insertChatRoom">
+	INSERT INTO chatroom 
+		VALUES (
+			#{room_id}
+			, #{member_id}
+			, #{maker_member_id}
+		);
+</insert>
+
+<insert id="insertChat">
+	INSERT INTO chat
+		VALUES(
+			NULL
+			,#{room_id}
+			,#{sender}
+			,#{receiver}
+			,#{content}
+		);
+</insert>
+
+<select id="selectmemberChatList">
+	SELECT *
+	    FROM chat
+	    WHERE room_id = #{room_id}
+	    ORDER BY chat_idx DESC
+	    LIMIT #{startRow }, #{listLimit }
+</select>
+
+<select id="selecCountMemberChat">
+	SELECT COUNT(chat_idx)
+		FROM chat
+		WHERE room_id = #{room_id}
+</select>
+
+<select id="selectMakerChatRoomList">
+    SELECT mem.member_name, cr.room_id, cr.member_id, ch.sender, ch.content
+    FROM chatroom cr 
+        JOIN members mem
+        ON cr.member_id = mem.member_id
+        JOIN chat ch
+        ON cr.room_id = ch.room_id
+            WHERE cr.maker_member_id = #{sId} 
+                AND ch.chat_idx = (SELECT max(chat_idx) 
+                                    FROM chat
+                                    WHERE room_id = cr.room_id)
+    ORDER BY ch.chat_idx DESC
+    LIMIT #{startRow} ,#{listLimit}
+</select>
+
+<select id="selectCountMakerChattingRoom">
+		SELECT COUNT(room_id)
+		FROM chatroom
+		WHERE maker_member_id = #{sId}
+</select>
+
+<select id="selectMemberChatRoomList">
+    SELECT mem.member_name, cr.room_id, cr.member_id, ch.sender, ch.content
+    FROM chatroom cr 
+        JOIN members mem
+        ON cr.maker_member_id = mem.member_id
+        JOIN chat ch
+        ON cr.room_id = ch.room_id
+            WHERE cr.member_id = #{sId} 
+                AND ch.chat_idx = (SELECT max(chat_idx) 
+                                    FROM chat
+                                    WHERE room_id = cr.room_id)
+    ORDER BY ch.chat_idx DESC
+    LIMIT #{startRow} ,#{listLimit}
+</select>
+
+</mapper>
