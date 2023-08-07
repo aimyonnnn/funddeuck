@@ -359,15 +359,141 @@ th, td {
 					</div>
 				</form>
 			</div>
+			<!-- 프로젝트 -->
 			
 			<!-- 리위드 -->
 			<div class="content-area" id="tab2">
-				
-				 
-				    
-			</div>
 			
-				
+				<c:forEach var="rList" items="${rList}">
+					<form action="adminModifyReward" method="post" id="rewardForm" enctype="multipart/form-data">
+					    <!-- hidden 필드 -->
+					    <input type="hidden" name="pageNum" value="${param.pageNum}">
+					    <input type="hidden" name="reward_idx" value="${rList.reward_idx}">
+					    <table class="table text-center">
+					        <tr>
+					            <th style="width: 30%">리워드 번호</th>
+					            <td style="width: 70%">
+					                <input type="number" class="form-control" value="${rList.reward_idx}" disabled="disabled">
+					            </td>
+					        </tr>
+					        <tr>
+					            <th style="width: 30%">프로젝트 번호</th>
+					            <td style="width: 70%">
+					                <input type="text" name="project_idx" class="form-control" value="${rList.project_idx}">
+					            </td>
+					        </tr>
+					        <tr>
+					            <th style="width: 30%">리워드 가격</th>
+					            <td style="width: 70%">
+					                <input type="number" name="reward_price" class="form-control" value="${rList.reward_price}">
+					            </td>
+					        </tr>
+					        <tr>
+					            <th style="width: 30%">리워드 카테고리</th>
+					            <td style="width: 70%">
+					                <select name="reward_category" class="form-control">
+								        <option value="테크/가전" ${rList.reward_category eq '테크/가전' ? 'selected' : ''}>테크/가전</option>
+								        <option value="패션/잡화" ${rList.reward_category eq '패션/잡화' ? 'selected' : ''}>패션/잡화</option>
+								        <option value="홈/리빙" ${rList.reward_category eq '홈/리빙' ? 'selected' : ''}>홈/리빙</option>
+								        <option value="뷰티" ${rList.reward_category eq '뷰티' ? 'selected' : ''}>뷰티</option>
+								        <option value="출판" ${rList.reward_category eq '출판' ? 'selected' : ''}>출판</option>
+								        <option value="친환경" ${rList.reward_category eq '친환경' ? 'selected' : ''}>친환경</option>
+								        <option value="기부" ${rList.reward_category eq '기부' ? 'selected' : ''}>기부</option>
+								        <option value="동물보호" ${rList.reward_category eq '동물보호' ? 'selected' : ''}>동물보호</option>
+								    </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <th style="width: 30%">리워드명</th>
+					            <td style="width: 70%">
+					                <input type="text" name="reward_name" class="form-control" value="${rList.reward_name}">
+					            </td>
+					        </tr>
+					        <tr>
+					            <th style="width: 30%">리워드 수량</th>
+					            <td style="width: 70%">
+					                <input type="number" name="reward_quantity" class="form-control" value="${rList.reward_quantity}">
+					            </td>
+					        </tr>
+					        <tr>
+					            <th style="width: 30%">리워드 옵션</th>
+					            <td style="width: 70%">
+					                <input type="text" name="reward_option" class="form-control" value="${rList.reward_option}">
+					            </td>
+					        </tr>
+					        <tr>
+					            <th style="width: 30%">리워드 설명</th>
+					            <td style="width: 70%">
+					                <input type="text" name="reward_detail" class="form-control" value="${rList.reward_detail}">
+					            </td>
+					        </tr>
+					        <tr>
+					            <th style="width: 30%">배송여부</th>
+					            <td style="width: 70%">
+					                <select name="delivery_status" class="form-control">
+					                	<option value="배송" ${rList.delivery_status eq '배송' ? 'selected' : ''}>배송</option>
+					                	<option value="배송없음" ${rList.delivery_status eq '배송없음' ? 'selected' : ''}>배송없음</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <th style="width: 30%">배송비</th>
+					            <td style="width: 70%">
+					                <input type="number" name="delivery_price" class="form-control" value="${rList.delivery_price}">
+					            </td>
+					        </tr>
+					        <tr>
+					            <th style="width: 30%">발송 시작일</th>
+					            <td style="width: 70%">
+					                 <div class="container">
+								     	<div class="row">
+											<div class="col-sm-4">
+										    	<select class="form-control" name="yearMonth" id="yearMonth">
+											        <option value="">-- 선택 --</option>
+											        <option value="2023/08">2023년 8월</option>
+											        <option value="2023/09">2023년 9월</option>
+											        <option value="2023/10">2023년 10월</option>
+											        <option value="2023/11">2023년 11월</option>
+											        <option value="2023/12">2023년 12월</option>
+											        <option value="2024/01">2024년 1월</option>
+											        <option value="2024/02">2024년 2월</option>
+											        <option value="2024/03">2024년 3월</option>
+											        <option value="2024/04">2024년 4월</option>
+											        <option value="2024/05">2024년 5월</option>
+										      	</select>
+										    </div>
+										    <div class="col-sm-4">
+									      		<select class="form-control" name="day" id="day">
+											        <option value="">-- 선택 --</option>
+											        <option value="/1~10">1일 ~ 10일(초)</option>
+											        <option value="/11~20">11일 ~ 20일(중순)</option>
+											        <option value="/21~30">21일 ~ 30일(말)</option>
+										      	</select>
+										    </div>
+										    <div class="col-sm-4">
+										    	<input type="text" name="delivery_date" id="delivery_date" class="form-control" value="${rList.delivery_date}" readonly="readonly">
+										    </div>
+									  </div>
+									</div>
+					            </td>
+					        </tr>
+					        <tr>
+					            <th style="width: 30%">리워드 정보 제공 고시</th>
+					            <td style="width: 70%">
+					            	<textarea rows="5" cols="20" name="reward_info" class="form-control">${rList.reward_info}</textarea>
+					            </td>
+					        </tr>
+					        <tr>
+					        	<td colspan="2">
+					        		<input type="submit" value="수정하기" class="btn btn-outline-primary">
+					        	</td>
+					        </tr>
+						  </table>
+					</form>			        	
+				</c:forEach>
+			</div>
+			<!-- 리위드 -->
+			
 			</div>
 		</div>
 	</div>
@@ -514,6 +640,17 @@ function checkFileInput() {
 $(document).ready(function() {
 	checkFileInput();
 });
+
+//선택 상자의 값을 변경할 때마다 히든 필드 업데이트
+document.getElementById("yearMonth").addEventListener("change", updateDeliveryDate);
+document.getElementById("day").addEventListener("change", updateDeliveryDate);
+
+function updateDeliveryDate() {
+    var yearMonth = document.getElementById("yearMonth").value;
+    var day = document.getElementById("day").value;
+    var delivery_date = yearMonth + day;
+    document.getElementById("delivery_date").value = delivery_date;
+}
 </script>
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

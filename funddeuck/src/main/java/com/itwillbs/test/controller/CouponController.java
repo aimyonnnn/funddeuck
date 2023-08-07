@@ -25,7 +25,7 @@ public class CouponController {
     @Autowired
     private CouponService couponService;
 
-    @GetMapping("/admin/coupon")
+    @GetMapping("adminCoupon")
     public String adminCoupon(HttpSession session, Model model) {
         // 세션에서 로그인 정보를 가져옴
         Integer memberIdx = (Integer) session.getAttribute("sIdx");

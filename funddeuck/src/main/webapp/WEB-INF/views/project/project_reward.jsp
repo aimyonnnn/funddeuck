@@ -91,11 +91,14 @@
                         <div class="d-flex flew-row">
                             <select class="form-control" name="reward_category" id="reward_category" style="width:150px;">
                                 <option value="">-- 선택 --</option>
-                                <option value="tech">테크/가전</option>
-                                <option value="fashion">패션/잡화</option>
-                                <option value="living">홈/리빙</option>
-                                <option value="beauty">뷰티</option>
-                                <option value="book">출판</option>
+                                <option value="테크/가전">테크/가전</option>
+								<option value="패션/잡화">패션/잡화</option>
+								<option value="홈/리빙">홈/리빙</option>
+								<option value="뷰티">뷰티</option>
+								<option value="출판">출판</option>
+								<option value="친환경">친환경</option>
+								<option value="기부">기부</option>
+								<option value="동물보호">동물보호</option>
                             </select>
                         </div>
                         
