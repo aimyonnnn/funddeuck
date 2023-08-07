@@ -92,6 +92,24 @@ public class AdminController {
 		return "admin/admin_main";
 	}
 	
+	// 문자 보내기
+	@PostMapping("savePhoneMessage")
+	@ResponseBody
+	public String savePhoneMessage(@RequestParam String member_id, @RequestParam String message) throws CoolsmsException {
+		System.out.println("savePhoneMessage");
+		MembersVO member = memberService.getMemberInfo(member_id);
+		String memberPhone = member.getMember_phone();
+		return sendPhoneMessageService.SendMessage(member_id, memberPhone, message, 1);
+	}
+	
+	// 문자 보내기 모달창 호출 시 전화번호 조회해서 자동 입력
+	@PostMapping("getPhoneNumber")
+	@ResponseBody
+	public String getPhoneNumber(@RequestParam String member_id) {
+		MembersVO member = memberService.getMemberInfo(member_id);
+		return member.getMember_phone();
+	}
+	
 	// 문자 관리
 	@GetMapping("adminSmsManagement")
 	public String adminSmsManagement(

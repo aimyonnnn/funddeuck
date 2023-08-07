@@ -44,6 +44,7 @@ public class SendPhoneMessageService {
 	    	logger.info("■■■■■ 문자 발송 내역이 저장되었습니다.");
 	    } else {
 	    	logger.info("■■■■■ 문자 발송 내역 저장에 실패하였습니다.");
+	    	return "false";
 	    }
 	    
 		return "true";

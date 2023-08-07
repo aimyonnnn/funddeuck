@@ -30,6 +30,9 @@
 				<when test="searchType.equals('phone')">
 					recipient like '%${searchKeyword}%'
 				</when>					
+				<when test="searchType.equals('content')">
+					message like '%${searchKeyword}%'
+				</when>					
 			</choose>
 		</if>
 		order by
@@ -51,6 +54,9 @@
 				</when>
 				<when test="searchType.equals('phone')">
 					recipient like '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('content')">
+					message like '%${searchKeyword}%'
 				</when>					
 			</choose>
 		</if>

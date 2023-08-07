@@ -56,6 +56,7 @@ th, td {
 		<form action="adminSmsManagement" class="d-flex flex-row justify-content-end">
 			<!-- 셀렉트 박스 -->
 			<select class="form-select form-select-sm me-2" name="searchType" id="searchType" style="width: 100px;">
+				<option value="content" <c:if test="${param.searchType eq 'content'}">selected</c:if>>내용</option>
 				<option value="memberId" <c:if test="${param.searchType eq 'memberId'}">selected</c:if>>아이디</option>
 				<option value="phone" <c:if test="${param.searchType eq 'phone'}">selected</c:if>>전화번호</option>
 			</select>

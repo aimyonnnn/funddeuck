@@ -23,6 +23,4 @@ public interface SendPhoneMessageMapper {
 	int selectAllSmsListCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType);
 	
 	
-	
-	
 }
