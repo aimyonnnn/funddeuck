@@ -100,7 +100,7 @@
           <a class="nav-link" href="helpInquiryForm">고객센터</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href ='<c:url value="member/memberideacommunity" />'>커뮤니티</a>
+          <a class="nav-link" href ="memberideacommunity" >커뮤니티</a>
         </li>
       </ul>
 

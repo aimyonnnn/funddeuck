@@ -22,7 +22,7 @@ import com.itwillbs.test.service.IdeaCommunityService;
 import com.itwillbs.test.vo.IdeaCommunityVO;
 
 @Controller
-@RequestMapping("/member")
+@RequestMapping
 public class IdeaCommunityController {
 
     @Autowired
@@ -44,7 +44,7 @@ public class IdeaCommunityController {
         return "member/member_ideacommunity";
     }
 
-    @PostMapping("/saveIdea")
+    @PostMapping("/member/saveIdea")
     @ResponseBody
     public void saveIdea(@ModelAttribute IdeaCommunityVO ideaCommunityVO, HttpSession session) {
         Integer memberIdx = (Integer) session.getAttribute("sIdx");
@@ -57,14 +57,14 @@ public class IdeaCommunityController {
         ideaCommunityService.saveIdea(ideaCommunityVO);
     }
 
-    @GetMapping("/getCardsData")
+    @GetMapping("/member/getCardsData")
     public List<IdeaCommunityVO> getCardsData() {
         List<IdeaCommunityVO> cardsData = ideaCommunityService.getAllCardData();
 
         return cardsData;
     }
 
-    @PostMapping("/likeIdea")
+    @PostMapping("/member/likeIdea")
     @ResponseBody
     public void likeIdea(@RequestParam("ideaIdx") int ideaIdx) {
         IdeaCommunityVO idea = ideaCommunityService.getIdeaById(ideaIdx);

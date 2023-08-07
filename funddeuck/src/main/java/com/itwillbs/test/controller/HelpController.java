@@ -31,11 +31,11 @@ public class HelpController {
 	@GetMapping("helpInquiryForm")
 	public String helpInquiryForm(HttpSession session, Model model) {
 		
-//		// 미로그인시 이전페이지로
-//    	if(session.getAttribute("sId") == null) {
-//    		model.addAttribute("msg","로그인이 필요합니다.");
-//    		return "fail_back";
-//    	}
+		// 미로그인시 이전페이지로
+    	if(session.getAttribute("sId") == null) {
+    		model.addAttribute("msg","로그인이 필요합니다.");
+    		return "fail_back";
+    	}
 		
 		return "help/help_inquiry";
 	}
