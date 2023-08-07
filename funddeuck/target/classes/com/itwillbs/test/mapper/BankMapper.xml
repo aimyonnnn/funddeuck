@@ -70,5 +70,12 @@
 				WHERE member_idx = #{member_idx}
 	</select>
 	
+	<!-- user_ci 조회 -->
+	<select id="selectUserCI" resultType="String">
+		SELECT user_ci
+			FROM bankAccount
+				WHERE member_idx = #{member_idx}
+	</select>
+	
 	
 </mapper>

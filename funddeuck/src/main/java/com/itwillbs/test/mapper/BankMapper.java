@@ -25,4 +25,7 @@ public interface BankMapper {
 	
 	// 계좌 정보 조회
 	BankAccountVO selectBankAccountInfo(int member_idx);
+	
+	// user_ci 조회
+	String selectUserCI(int member_idx);
 }

@@ -176,7 +176,10 @@ public class FundingController {
 		if(bankAccount != null) {
 			// DB에 저장된 회원의 토큰정보 확인
 			ResponseTokenVO token = bankService.getTokenInfo(member_idx);
-			if(token != null) { // 토큰의 정보가 있다면 => 계좌 조회
+			if(token != null) { // 토큰의 정보가 있다면
+				// 세션 객체에 엑세스토큰(access_token)과 사용자번호(user_seq_no) 저장
+				session.setAttribute("access_token", token.getAccess_token());
+				session.setAttribute("user_seq_no", token.getUser_seq_no());
 				// 엑세스토큰과 사용자번호 저장
 				String access_token = token.getAccess_token();
 				logger.info("●●●●● userInfo : " + access_token);
@@ -194,7 +197,7 @@ public class FundingController {
 						bankAccount = account;
 					}
 				}
-				System.out.println("bankAccount : " +bankAccount);
+				System.out.println("bankAccount : " + bankAccount);
 				
 				
 			}
@@ -211,6 +214,35 @@ public class FundingController {
 		// 리워드리스트(리워드 변경 모달창)
 		model.addAttribute("rewardList", rewardList);
 		return "funding/funding_order";
+	}
+	
+	// 펀딩 결제
+	@PostMapping("fundingPayment")
+	public String fundingPayment(PaymentVO payment) {
+		System.out.println("PaymentVO : " + payment);
+		// 주문날짜 payment_date
+	    Date currentDateTime = new Date();
+//	    payment.setPayment_date(currentDateTime);
+//	    System.out.println("현재 날짜 : " + currentDateTime);
+		
+		// 주문수량 payment_quantity ??? 1로 가정
+	    payment.setPayment_quantity(1);
+		// 결제승인여부 payment_confirm 예약완료
+	    payment.setPayment_confirm(1);
+	    
+		// 결제 수단 카드(1)/ 계좌(2) payment_method
+	    // 계좌면 회원 계좌에 출금
+	    // 사이트 계좌에 입금
+	    payment.setPayment_method(2);
+	    // 회원계좌 조회 사용자정보조회 하기 
+	    // fintech_use_num access_token 필요
+	    
+	    // 주문서 DB 등록
+	    // 성공시 fundingResult 결제 완료페이지로 이동
+	    // 실패시 fail_back
+		
+		// 쿠폰 사용시 쿠폰 상태 변경
+		return "";
 	}
 	
 	// 결제 완료 페이지
