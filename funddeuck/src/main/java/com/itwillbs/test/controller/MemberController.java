@@ -533,7 +533,38 @@ public class MemberController {
     	return "member/member_zim_board";
     }
     
-    //찜한 프로젝트의 최근 소식을
+    //찜한 프로젝트의 최근 소식을 가져오는 ajax
+    @PostMapping("ZimPostList")
+    @ResponseBody
+    public String ZimPostList(HttpSession session, @RequestParam int pageNum) {
+    	
+		int listLimit = 5;// 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit;
+    	
+    	List<Map<String, Object>> zimPostList = service.getZimPostList((String)session.getAttribute("sId"), startRow, listLimit);
+    	
+    	int listCount = service.getZimPostListCount((String)session.getAttribute("sId"));
+    	
+    	int pageListLimit = 5;
+    	
+    	int maxPage = listCount/listLimit + (listCount%listLimit > 0 ? 1 : 0);
+    	
+    	int startPage = (pageNum - 1 ) / pageListLimit * pageListLimit + 1;
+    	
+    	int endPage = startPage + pageListLimit - 1 ;
+    	
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		
+    	JSONObject jsonObject = new JSONObject();
+		jsonObject.put("zimPostList", zimPostList);
+		jsonObject.put("listCount", listCount);
+    	
+    	return jsonObject.toString();
+    	
+    }
     
     // 팔로우의 활동 페이지로 이동
     @GetMapping("FollowBoardForm")
@@ -586,7 +617,6 @@ public class MemberController {
     public String MemberFundingPageing(@RequestParam(defaultValue = "1") int pageNum, HttpSession session, @RequestParam(defaultValue = "0") int payment_confirm) {
     	
     	System.out.println(pageNum + ", " +payment_confirm);
-    	
     	
 		int listLimit = 5;// 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit;

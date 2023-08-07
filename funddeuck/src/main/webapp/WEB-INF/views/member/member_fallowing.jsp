@@ -130,7 +130,7 @@
             </div>
             <div class="col">
                 <div class="row">
-                    ${fallow.maker_name }
+                   <a href="makerDetail?maker_idx=${fallow.maker_idx }" style="color: black; text-decoration: none;">${fallow.maker_name }</a> 
                 </div>
                 <div class="row" id="count${fallow.maker_idx }">
                     팔로워 ${fallow.follower_count }
@@ -139,7 +139,7 @@
             <div class="col text-end" id="fallowing${fallow.maker_idx }">
             	<c:choose>
             		<c:when test="${fallow.is_alam eq 1 }">
-	                	<button class="btn btn-outline-primary" id='' onclick="isAlam(0,'${fallow.maker_name }',${fallow.maker_idx })"><i class="bi bi-bell"></i></button>
+	                	<button class="btn btn-outline-primary" onclick="isAlam(0,'${fallow.maker_name }',${fallow.maker_idx })"><i class="bi bi-bell"></i></button>
 	                </c:when>
 	                <c:otherwise>
 	                	<button class="btn btn-outline-primary" onclick="isAlam(1,'${fallow.maker_name }',${fallow.maker_idx })"><i class="bi bi-bell-slash"></i></button>

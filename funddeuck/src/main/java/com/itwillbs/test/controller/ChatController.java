@@ -62,12 +62,18 @@ public class ChatController {
 	
 	// 채팅방 이동
     @GetMapping("chat")
-    public String chat(HttpSession session, Model model) {
+    public String chat(HttpSession session, Model model, @RequestParam(defaultValue = "0") int project_idx) {
     	
     	if((String)session.getAttribute("sId") == null) {
     		model.addAttribute("msg", "잘못된 접근입니다.");
     		return "fail_back";
     	}
+    	
+    	if(project_idx == 0) {
+    		return "chat/chat";
+    	}
+    	
+    	model.addAttribute("project_id", project_idx);
     	
     	return "chat/chat";
     }

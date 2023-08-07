@@ -22,6 +22,33 @@
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+	let pageNum = 1; // 기본 페이지 번호 미리 저장
+	let maxPage = 1; // 최대 페이지 번호 미리 저장
+	
+		$(function() {
+			
+			makerChatList();
+			
+			$(window).on("scroll", function() { // 스크롤 동작 시 이벤트 처리
+				
+				let scrollTop = $(window).scrollTop(); // 스크롤바 현재 위치
+				let windowHeight = $(window).height(); // 브라우저 창의 높이
+				let documentHeight = $(document).height(); // 문서의 높이(창의 높이보다 크거나 같음)
+				let x = 1;
+				if(scrollTop + windowHeight + x >= documentHeight) {
+					if(pageNum < maxPage) {
+						pageNum++;
+						makerChatList();
+					} else {
+					}
+				}
+				
+			});
+		});
+	
+	
+    </script>
 </head>
 <body>
     <!-- 팔로잉 페이지 시작 -->

@@ -15,7 +15,9 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.itwillbs.test.service.ChatService;
+import com.itwillbs.test.service.FundingService;
 import com.itwillbs.test.vo.ChatVO;
+import com.itwillbs.test.vo.ProjectVO;
 
 public class EchoHandler extends TextWebSocketHandler {
 
@@ -30,6 +32,10 @@ public class EchoHandler extends TextWebSocketHandler {
 	// 채팅 내용을 저장 할 서비스
 	@Autowired
 	private ChatService chatService;
+	
+	// 프로젝트 정보를 띄울 내용을 가져올 서비스
+	@Autowired
+	private FundingService fundingService;
 
 	// 클라이언트가 서버로 연결되었을 때
 	@Override
@@ -52,6 +58,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					if (session.getUri().getQuery().split("=")[0].equals("room_id")) {
 						System.out.println("두번째");
 						String room_id = session.getUri().getQuery().split("=")[1];
+						System.out.println("id : " + session.getUri().getQuery().split("=")[2]);
 						List<WebSocketSession> chatSessions = chatRoomId.getOrDefault(room_id, new ArrayList<WebSocketSession>());
 						
 						System.out.println("점검1 : " +chatSessions.size());
@@ -87,7 +94,31 @@ public class EchoHandler extends TextWebSocketHandler {
 	        log(strs.toString());
 	        String type = strs[0];
 	        
-	        if (strs != null && strs.length == 5) {
+	        if(type.equals("project")) {
+	        	
+	        	String sender = strs[1];
+	        	int project_idx = Integer.parseInt(strs[2]);
+	        	
+	        	System.out.println("sender: " + sender);
+	        	
+				String roomId = session.getUri().getQuery().split("=")[1];
+				String receiver = session.getUri().getQuery().split("=")[2];
+	        	ProjectVO projectVO = fundingService.selectProjectInfo(project_idx);
+	        	
+	        	String content = "<a href='fundingDetail?project_idx=" + projectVO.getProject_idx() + "' style=\"text-decoration: none; color: black; display: block;\">"
+	        		    + projectVO.getProject_subject() + "</a><br>"
+	        		    + "<img src='" + projectVO.getProject_settlement_image() + "'>";
+	        	
+				List<WebSocketSession> sessionList = chatRoomId.getOrDefault(roomId, new ArrayList<WebSocketSession>());
+
+				for (WebSocketSession s : sessionList) {
+						int insertCount = chatService.addMessage(new ChatVO(roomId, sender, receiver, content));
+						if (insertCount > 0) {
+							s.sendMessage(new TextMessage(sender + "," + content));
+						}
+				}
+	        			
+	        } else if (strs != null && strs.length == 5) {
 	        	
 	            String target = strs[1];
 	            String subject = strs[2];
