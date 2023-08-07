@@ -34,8 +34,18 @@ public class BankApiService {
 	}
 	
 	// 사용자인증 인증생략
-	public String authenticationSkip(String access_token, String user_seq_no, String user_ci) {
+	public ResponseAuthVO authenticationSkip(String access_token, String user_seq_no, String user_ci) {
 		return bankApiClient.authenticationSkip(access_token, user_seq_no, user_ci);
+	}
+	
+	// 회원 계좌 출금
+	public ResponseWithdrawVO requestWithdrawMember(int total_amount, String fintech_use_num, String access_token) {
+		return bankApiClient.requestWithdrawMember(total_amount, fintech_use_num, access_token);
+	}
+	
+	// 환불
+	public ResponseDepositVO requestDeposit(int total_amount, String fintech_use_num, String access_token) {
+		return bankApiClient.requestDeposit(total_amount, fintech_use_num, access_token);
 	}
 
 }

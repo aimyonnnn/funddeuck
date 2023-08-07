@@ -225,14 +225,12 @@
 									<span class="fs-6 fw-bold">계좌번호</span>&nbsp;&nbsp;
 									<span class="fs-6">${bankAccount.account_num_masked}</span>
 								</div>								
-<!-- 								<input class="btn btn-primary" type="button" value="계좌변경" id="btnAccountAuth"> -->
-<!-- 								<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', '_blank');"> -->
-								<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
+								<input class="btn btn-primary" type="button" value="계좌변경" id="btnAccountAuth">
+<!-- 								<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');"> -->
 							</c:if>
 							<c:if test="${empty bankAccount }">
-<!-- 								<input class="btn btn-primary" type="button" value="계좌인증" id="btnAccountAuth"> -->
-<!-- 								<input class="btn btn-primary" type="button" value="계좌인증" onclick="location.href='callbackMember'"> -->
-								<input class="btn btn-primary" type="button" value="계좌인증" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
+								<input class="btn btn-primary" type="button" value="계좌인증" id="btnAccountAuth">
+<!-- 								<input class="btn btn-primary" type="button" value="계좌인증" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');"> -->
 							</c:if>
 						</div>
 					</div>

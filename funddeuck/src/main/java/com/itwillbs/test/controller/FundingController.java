@@ -1,5 +1,6 @@
 package com.itwillbs.test.controller;
 
+import java.time.*;
 import java.util.*;
 
 import javax.servlet.http.*;
@@ -223,30 +224,50 @@ public class FundingController {
 	
 	// 펀딩 결제
 	@PostMapping("fundingPayment")
-	public String fundingPayment(PaymentVO payment) {
+	public String fundingPayment(PaymentVO payment, HttpSession session) {
 		System.out.println("PaymentVO : " + payment);
 		// 주문날짜 payment_date
-	    Date currentDateTime = new Date();
-//	    payment.setPayment_date(currentDateTime);
-//	    System.out.println("현재 날짜 : " + currentDateTime);
+		// 현재 날짜를 얻습니다. (java.time.LocalDate 객체 사용)
+		LocalDate currentDate = LocalDate.now();
+
+		// 현재 날짜를 java.sql.Date 객체로 변환합니다.
+		java.sql.Date currentSqlDate = java.sql.Date.valueOf(currentDate);
+
+		// 변환된 java.sql.Date 객체를 setPayment_date 메서드에 전달합니다.
+		System.out.println("현재 날짜 " + currentSqlDate);
+		payment.setPayment_date(currentSqlDate);
 		
 		// 주문수량 payment_quantity ??? 1로 가정
 	    payment.setPayment_quantity(1);
-		// 결제승인여부 payment_confirm 예약완료
+		// 결제승인여부 payment_confirm 예약완료 1
 	    payment.setPayment_confirm(1);
 	    
 		// 결제 수단 카드(1)/ 계좌(2) payment_method
-	    // 계좌면 회원 계좌에 출금
-	    // 사이트 계좌에 입금
-	    payment.setPayment_method(2);
-	    // 회원계좌 조회 사용자정보조회 하기 
-	    // fintech_use_num access_token 필요
+	    payment.setPayment_method(2); // 계좌라고 가정
+	    // 사이트 계좌의 핀테크이용번호, 엑세스토큰 가져오기 ?
+	    String funddeuckId = "admin";
+//	    String funddeuckFintech_use_num = bankService.getFunddeuckFintech_use_num(funddeuckId);
+//	    String funddeuckAccess_token = bankService.getFunddeuckAccess_token(funddeuckId);
+	    // 계좌면 회원 계좌에서 출금
+	    // fintech_use_num access_token 필요(세션값 불러오기)
+	    String fintech_use_num = (String)session.getAttribute("fintech_use_num");
+	    String access_token = (String)session.getAttribute("access_token");
+	    ResponseWithdrawVO withdrawResult = bankApiService.requestWithdrawMember(payment.getTotal_amount(), fintech_use_num, access_token);
+	    logger.info("withdrawResult" + withdrawResult);
+	    // DB에 출금내역 저장
+	    
+	    // 거래요청일시를 프로젝트 종료일로 전달
+	    
+	    // 환불
+	    ResponseDepositVO depositResult = bankApiService.requestDeposit(payment.getTotal_amount(), fintech_use_num, access_token);
+	    logger.info("depositResult" + depositResult);
 	    
 	    // 주문서 DB 등록
 	    // 성공시 fundingResult 결제 완료페이지로 이동
 	    // 실패시 fail_back
 		
 		// 쿠폰 사용시 쿠폰 상태 변경
+	    // 리워드 수량 -1
 		return "";
 	}
 	
