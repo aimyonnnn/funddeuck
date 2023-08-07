@@ -31,7 +31,7 @@
 <input type="hidden" value="${param.category }" id="categoryVal">
 <c:set var="currentTime" value="<%= new java.util.Date() %>" />  
 	<br>
-	<hr>
+	<br>
 	<br>
 	<!-- 상단 영역 -->
 	<div class="container text-center">
