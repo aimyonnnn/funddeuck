@@ -79,7 +79,7 @@ public class FundingController {
 		
 		// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
 		List<RewardVO> reward = fundingService.selectProjectRewardInfo(project_idx);
-		model.addAttribute(reward);
+		model.addAttribute("reward", reward);
 		
 		// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 게시판 정보
 		List<MakerBoardVO> makerBoard = fundingService.getMakerBoardInfo(project_idx);

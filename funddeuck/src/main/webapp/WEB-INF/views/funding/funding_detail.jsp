@@ -127,10 +127,11 @@
 					<div class="col">
 						<div class="progress">
 							<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Example with label" 
+		  					style="width: ${project.project_cumulative_amount/project.project_target * 100}%" 
 							aria-valuenow="${project.project_cumulative_amount/project.project_target * 100 }" aria-valuemin="0" aria-valuemax="100">${project.project_cumulative_amount/project.project_target * 100 }%</div>
 						</div>
 					</div>
-				</div>
+					</div>
 				<br>
 				<table class="table-borderless">
 				 	<tr>
@@ -153,6 +154,7 @@
 						${project.project_end_date }에 결제 진행</small></td>
 				 	</tr>
 				</table>
+				</div>
 				<br>
 				<br>
 				 <!-- 펀딩 기본 정보 끝 -->
@@ -183,7 +185,7 @@
 				<!-- 공유, 좋아요, 후원하기 버튼 -->
 				<!-- 화면크기 lg 일 때-->
 				<div class="row d-none d-lg-block" id="focusArea">
-					<div class="col-12 col-lg-auto d-flex justify-content-center">
+					<div class="col-12 col-lg-auto d-flex justify-content-end">
 						<!-- 공유 -->
 						<button class="btn btn-primary me-2 bg-white border border-secondary border-opacity-25 rounded-0" id="kakao-link-btn" onclick="javascript:kakaoShare()">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-share" viewBox="0 0 16 16">
@@ -388,7 +390,7 @@
 					</div>
 					<div class="row">
 						<!-- 프로필 이미지 -->
-						<div class="col-lg-8">
+						<div class="col-lg-8 text-start">
 						<!-- 프로필 클릭시 메이커 새탭 이동-->
 							<a href="#" target="_blank">
 								<img src="https://cdn-icons-png.flaticon.com/512/3135/3135707.png" class="rounded-circle" alt="..." width="40px" height="40px"></a>
@@ -448,6 +450,7 @@
 									<a href="fundingOrder?project_idx=${project.project_idx }&reward_idx=${reward.reward_idx }" class="stretched-link"></a>
 								</div>
 							</div>
+							<div>&nbsp;</div>
 						</c:forEach>
 					</div>
 				</div>
@@ -542,11 +545,16 @@ function focusOnReward(){
 	document.getElementById('rewardSelect').scrollIntoView();
 }
 	
-	// 카테고리 선택 시 자동 포커스 이동
+// 카테고리 선택 시 자동 포커스 이동
+window.onload = function(){
+	var category = document.getElementById( 'categoryVal' );
+	var location = document.querySelector("#focusArea").offsetTop;
+	
+	
 	if(category != ""){
 		window.scrollTo({top:location, behavior:'instant'});
 	}
-}
+};
 
 </script>
 <br>
