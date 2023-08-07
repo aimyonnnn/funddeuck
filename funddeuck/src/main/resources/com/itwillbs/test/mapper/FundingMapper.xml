@@ -314,4 +314,9 @@
 			FROM payment
 				WHERE project_idx = #{project_idx};
 	</select>
+	
+	<!-- 검색어로 프로젝트 리스트 조회(미완) -->
+	<select id="selectFundingSearchKeyword">
+	
+	</select>
 </mapper>

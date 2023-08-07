@@ -60,4 +60,7 @@ public interface FundingMapper {
 	// 프로젝트 상세 페이지 이동 시 조회할 총 후원자수 정보
 	int selectSupTotal(int project_idx);
 	
+	// 검색어로 프로젝트 리스트 조회
+	List<ProjectVO> selectFundingSearchKeyword(String status, String index, String searchKeyword);
+	
 }

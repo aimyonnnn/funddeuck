@@ -354,9 +354,10 @@
       </ul>
 
 	<div style="display: flex; justify-content: center;">
-	  <form class="form-inline my-2 my-md-0">
-	    <input class="form-control" type="text" placeholder="프로젝트를 검색하세요!" aria-label="Search">
+	  <form class="form-inline my-2 my-md-0" action="fundingSearchKeyword?status=all&index=newest&searchKeyword=${param.searchKeyword }">
+	    <input class="form-control" type="text" placeholder="프로젝트를 검색하세요!" aria-label="Search" name="searchKeyword" id="searchKeyword" value=""${param.searchKeyword}>
 	  </form>
+      </div>
 
       </div>
   

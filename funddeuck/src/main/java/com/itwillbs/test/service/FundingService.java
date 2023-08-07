@@ -100,4 +100,9 @@ public class FundingService {
 	public int getSupTotal(int project_idx) {
 		return mapper.selectSupTotal(project_idx);
 	}
+	
+	// 검색어로 프로젝트 리스트 조회
+	public List<ProjectVO> getFundingSearchKeyword(@Param("status") String status,@Param("index") String index, @Param("searchKeyword") String searchKeyword) {
+		return mapper.selectFundingSearchKeyword(status, index, searchKeyword);
+	}
 }

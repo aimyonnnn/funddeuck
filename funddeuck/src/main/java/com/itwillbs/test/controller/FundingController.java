@@ -69,6 +69,19 @@ public class FundingController {
 		return "funding/funding_expected_discover";
 	}	
 	
+	// 펀딩 검색어 탐색 페이지
+	@GetMapping("fundingSearchKeyword")
+	public String fundingSearchKeyword(Model model
+			, @RequestParam(defaultValue = "all") String status
+			, @RequestParam(defaultValue = "newest") String index
+			, @RequestParam(defaultValue = "") String searchKeyword) {
+		
+		// 검색어로 프로젝트 리스트 조회
+		List<ProjectVO> project = fundingService.getFundingSearchKeyword(status, index, searchKeyword);
+		model.addAttribute("project" ,project);
+		
+		return "funding/funding_search";
+	}	
 	
 	// 펀딩 상세페이지 이동
 	@GetMapping ("fundingDetail")
