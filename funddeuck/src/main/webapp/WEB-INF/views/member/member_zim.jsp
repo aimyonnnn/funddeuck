@@ -132,7 +132,7 @@
 				                </div>
 				                <div class="col" style="font-size: 0.7em;">
 				                    <div class="row">
-				                        ${zim.maker_name }
+				                       <a href="makerDetail?maker_idx=${zim.maker_idx }" style="color:black; text-decoration:none;">${zim.maker_name }</a> 
 				                    </div>
 				                    <div class="row">
 				                        팔로워 ${zim.follow_count }
@@ -142,7 +142,7 @@
 				        </div>
 				        <div class="row">
 				            <div class="col-12">
-				                ${zim.project_subject }
+				                <a href="fundingDetail?project_idx=${zim.project_idx }" style="color:black; text-decoration:none;">${zim.project_subject }</a>
 				            </div>
 				            <div class="col-12 mt-1" style="font-size: 0.9em;">
 				                ${zim.project_introduce }

@@ -194,5 +194,14 @@ public class MemberService {
 	public List<MembersVO> getMemberActivityList(Integer member_idx) {
 		return mapper.selectMemberActivityList(member_idx);
 	}
+	
+	//찜한 프로잭트의 최신 소식 리스트
+	public List<Map<String, Object>> getZimPostList(String sId, int startRow, int listLimit) {
+		return mapper.selectZimPostList(sId, startRow, listLimit);
+	}
+
+	public int getZimPostListCount(String sId) {
+		return mapper.selectZimPostListCount(sId);
+	}
 
 }

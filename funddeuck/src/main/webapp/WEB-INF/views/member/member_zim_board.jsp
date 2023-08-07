@@ -25,22 +25,103 @@
     </style>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript">
-        	$(function() {
-				
+        
+		let pageNum = 1; // 기본 페이지 번호 미리 저장
+		let maxPage = 1; // 최대 페이지 번호 미리 저장
+		
+	$(function() {
+		
+		ZimPostList();
+		
+		$(window).on("scroll", function() { // 스크롤 동작 시 이벤트 처리
+			
+			let scrollTop = $(window).scrollTop(); // 스크롤바 현재 위치
+			let windowHeight = $(window).height(); // 브라우저 창의 높이
+			let documentHeight = $(document).height(); // 문서의 높이(창의 높이보다 크거나 같음)
+			let x = 1;
+			if(scrollTop + windowHeight + x >= documentHeight) {
+				if(pageNum < maxPage) {
+					pageNum++;
+					ZimPostList();
+				} else {
+					
+				}
+			}
+			
+		});
+	});
+        
+        
+		function ZimPostList() {
         		$.ajax({
         			type:"post",
         			url:"ZimPostList",
+        			data:{pageNum:pageNum},
         			dataType:"json",
-        			success: function() {
+        			success: function(data) {
+        				
+        				console.log(JSON.stringify(data));
+        				maxPage = data.maxPage;
+        				
+        				for(let zimPost of data.zimPostList){
+        					$("#rowArea").after(
+        						'<div class="row">'
+							    +    '<div class="col"></div>'
+								+    '<div class="col-12 col-sm-8 col-lg-6 m-3" style="border: 1px solid #eeeeee;">'
+								+    	'<div class="row align-items-center">'
+								+	    	'<div class="col">'
+								+		        '<div class="row">'
+								+		        	'<div class="col" style="font-size: 0.7em;">'
+								+						zimPost.maker_board_regdate
+								+					'</div>'
+								+		        '</div>'
+								+		        '<div class="row">'
+								+		            '<div class="row my-3">'
+								+		                '<div class="col-1 me-3 h5 text-primary">'
+								+		                    '<img class="center" style="width: 30px; height: 30px; border-radius: 50%;">'
+								+		                '</div>'
+								+		                '<div class="col" style="font-size: 0.7em;">'
+								+		                    '<div class="row">'
+								+		                        '<a href="makerDetail?maker_idx='+ zimPost.maker_idx +'" style="color:black; text-decoration:none;">' + zimPost.maker_name + '</a>'
+								+		                    '</div>'
+								+		                    '<div class="row">'
+								+		                        '팔로워 ' + zimPost.maker_follow_count 
+								+		                    '</div>'
+								+		                '</div>'
+								+		            '</div>'
+								+		        '</div>'
+								+		        '<div class="row">'
+								+		            '<div class="col-12">'
+								+		                '<a href="fundingDetail?project_idx='+ zimPost.project_idx +'" style="color:black; text-decoration:none;">' + zimPost.project_subject + '</a>'
+								+		            '</div>'
+								+		            '<div class="col-12 my-1">'
+								+		                '<hr>'
+								+						'<div class="row h5">'
+								+							zimPost.maker_board_subject
+								+						'</div>'
+								+						'<div class="row">'
+								+							zimPost.maker_board_content
+								+						'</div>'
+								+						'<div class="row mt-4">'
+								+		                    '<img src="${pageContext.request.contextPath}/resources/upload/'+ zimPost.maker_board_file1 +'">'
+								+						'</div>'
+								+		           ' </div>'
+								+		        '</div>'
+								+	        '</div>'
+								+       '</div>'
+								+ 	 '</div>'
+							    +	'<div class="col"></div>'
+								+	'</div>'		
+        					);
+        				}
 						
 					},
-					error function() {
-						
+					error: function() {
+						alert("오류");
 					}
         			
         		});
-        		
-			})
+		}		
         </script>
 </head>
 <body>
@@ -63,48 +144,8 @@
     </div>
     <div class="col"></div>
     </div>
-    <div class="col"></div>
-	    <div class="row">
-	        <div class="col"></div>
-		    <div class="col-12 col-sm-8 col-lg-6 m-3" style="border: 1px solid #eeeeee;">
-		    	<div class="row align-items-center">
-			    	<div class="col">
-				        <div class="row">
-				            <div class="row my-3">
-				                <div class="col-1 me-3 h5 text-primary">
-				                    <img class="center" style="width: 30px; height: 30px; border-radius: 50%;">
-				                </div>
-				                <div class="col" style="font-size: 0.7em;">
-				                    <div class="row">
-				                        ${zim.maker_name }
-				                    </div>
-				                    <div class="row">
-				                        팔로워 ${zim.follow_count }
-				                    </div>
-				                </div>
-				            </div>
-				        </div>
-				        <div class="row">
-				            <div class="col-12">
-				                ${zim.project_subject }
-				            </div>
-				            <div class="col-12 mt-1" style="font-size: 0.9em;">
-				                ${zim.project_introduce }
-				            </div>
-				            <div class="col-12 my-1">
-				                이미지 영역
-				            </div>
-				        </div>
-			        </div>
-			        <div class="col text-end" id="zimBtnArea${zim.project_idx }">
-				        		<button class="btn btn-outline-primary" onclick="zimAlam(0,${zim.project_idx })"><i class="bi bi-bell"></i></button>
-				        		<button class="btn btn-outline-primary" onclick="zimAlam(1,${zim.project_idx })"><i class="bi bi-bell-slash"></i></button>
-			        	<button class="btn btn-outline-primary" onclick="zim(0, ${zim.project_idx})"><i class="bi bi-suit-heart-fill"></i></button>
-			        </div>
-		        </div>
-		    </div>
-	    <div class="col"></div>
-	</div>
+    <div class="col" id="rowArea"></div>
+
 
 <%@ include file="../Footer.jsp" %>
 

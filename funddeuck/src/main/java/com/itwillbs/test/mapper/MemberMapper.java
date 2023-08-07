@@ -120,5 +120,11 @@ public interface MemberMapper {
 
 	String getMakerMemberId(int maker_idx);
 	
+	//찜한 리스트의 최근 포스트 가져오기
+	List<Map<String, Object>> selectZimPostList(@Param("sId") String sId,@Param("startRow") int startRow,@Param("listLimit") int listLimit);
+	
+	//찜한 리스트의 포트스 카운트
+	int selectZimPostListCount(String sId);
+	
 
 }

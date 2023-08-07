@@ -188,6 +188,7 @@
                 ,(SELECT count(*) FROM fallowing f WHERE f.maker_idx = mk.maker_idx) AS 'follow_count'
 				, z.zim_is_alam
 				, z.project_idx
+				, mk.maker_idx
         FROM project p JOIN maker mk
         ON p.maker_idx = mk.maker_idx
         JOIN zim z 
@@ -393,4 +394,36 @@
 							WHERE maker_idx = #{maker_idx})
 	</select>
 	
+	<select id="selectZimPostList">
+	SELECT (SELECT count(maker_idx)
+			FROM fallowing
+			WHERE maker_idx=mb.maker_idx) AS 'maker_follow_count',
+			mb.maker_board_subject,
+			mb.maker_board_content,
+			mb.maker_board_regdate,
+			mb.maker_board_file1,
+			p.project_idx,
+			p.project_subject,
+			mk.maker_name,
+			mb.maker_idx
+		FROM maker_board mb JOIN zim z
+		ON mb.project_idx = z.project_idx
+		JOIN project p
+		ON p.project_idx = z.project_idx
+		JOIN maker mk ON p.maker_idx = mk.maker_idx 
+		WHERE z.member_idx = (SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+		ORDER BY mb.maker_board_idx DESC
+		LIMIT #{startRow}, #{listLimit}
+	</select>
+	
+	<select id="selectZimPostListCount" resultType="int">
+		SELECT count(mb.maker_board_idx)
+			FROM maker_board mb JOIN zim z
+			ON mb.project_idx = z.project_idx
+			WHERE z.member_idx = (SELECT member_idx
+								FROM members
+								WHERE member_id = #{sId})
+	</select>
 </mapper>

@@ -571,7 +571,7 @@ window.onload = function(){
 					  sessionStorage.setItem('new', true);
 					}
 				
-				window.open("chat?room_id="+data.room_id + "=" +data.maker_member_id , "_blank", "width=500, height=800");
+				window.open("chat?room_id="+data.room_id + "=" +data.maker_member_id + "&project_idx=${param.project_idx }" , "_blank", "width=500, height=800");
 			},
 		   error : function(request, status, error) {
 		        console.log(error)

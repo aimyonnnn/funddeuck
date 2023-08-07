@@ -21,6 +21,14 @@
 </style>
 	<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
 	<script type="text/javascript">
+	
+	function openNewWindow(projectIdx) {
+	    var url = "fundingDetail?project_idx=" + projectIdx;
+	    var width = 500;
+	    var height = 800;
+	    window.open(url, '_blank', 'width=' + width + ', height=' + height);
+	}
+	
 	let pageNum = 1; // 기본 페이지 번호 미리 저장
 	let maxPage = 1; // 최대 페이지 번호 미리 저장
 	let room_id = "${param.room_id}".split("=")[0];
@@ -129,7 +137,7 @@ function onMessage(msg) {
 	
 	var data = msg.data;
 	var sessionId = null; //데이터를 보낸 사람
-	var message = null;
+	var message = "";
 	
 	if(data == "이미 창이 열려있습니다."){
 		onClose(data);
@@ -145,14 +153,20 @@ function onMessage(msg) {
 	console.log("cur_session : " + cur_session);
 	
 	sessionId = arr[0];
-	message = arr[1];
+	
+	
+	for(let mes of arr){
+		if(mes != sessionId){
+			message = message + mes;
+		}
+	}
 	
     //로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
 	if(sessionId == cur_session){
 		
 		var str = "<div class='col-7 float-end'>";
 		str += "<div class='alert alert-secondary text-end'>";
-		str += "<b>" + message + "</b>";
+		str += message;
 		str += "</div></div>";
 		
 		$("#msgArea").append(str);
@@ -193,6 +207,12 @@ function onClose(evt) {
 //채팅창에 들어왔을 때
 function onOpen(evt) {
 	
+	var project_idx = ${param.project_idx};
+	
+	if(project_idx != null){
+		sock.send("project,"+"${sessionScope.sId},"+project_idx);
+	}
+	
 // 	console.log(evt);
 	
 // 	var user = '${sessionScope.id}';
@@ -200,6 +220,8 @@ function onOpen(evt) {
 	
 // 	$("#msgArea").append(str);
 }
+
+
 
 
 </script>
