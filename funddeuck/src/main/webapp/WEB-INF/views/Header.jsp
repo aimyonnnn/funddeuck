@@ -33,17 +33,32 @@
 		cursor: pointer;
 	}
 	
-	.badge{
-		font-size: 10px;
-	   	height: 15px;
-	   	margin-bottom: 20px;
-	   	margin-left: -15px;	
+	/* 아이콘의 스타일링 */
+	.bi-bell {
+	  width: 28px;
+	  height: 28px;
+	  fill: currentColor;
 	}
+	
+	/* 배지의 스타일링 */
+	#newNotificationCount {
+	  position: relative; 
+	  top: -10px; 
+	  right: 19px; 
+	  z-index: 100; 
+	  background-color: red; 
+	  color: white; 
+	  padding: 4px 8px; 
+	  border-radius: 50%; 
+	}
+
 	
 	/* 종 모양 아이콘 크기 설정 */
 	.nav-link svg {
 		font-size: 1.7em;
-		fill: #ff9300; /* 아이콘의 색상을 흰색으로 설정 */
+		fill: #ff9300; 
+	 	position: relative; 
+  		display: inline-block;
 	}
 
     
@@ -336,10 +351,10 @@
         </div>
       </ul>
 
-<div style="display: flex; justify-content: center;">
-  <form class="form-inline my-2 my-md-0">
-    <input class="form-control" type="text" placeholder="프로젝트를 검색하세요!" aria-label="Search">
-  </form>
+	<div style="display: flex; justify-content: center;">
+	  <form class="form-inline my-2 my-md-0">
+	    <input class="form-control" type="text" placeholder="프로젝트를 검색하세요!" aria-label="Search">
+	  </form>
 
       </div>
   
