@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.itwillbs.test.mapper.MemberMapper">
+	
+	<resultMap id="ActivityListResultType" type="com.itwillbs.test.vo.ActivityListVO">
+		<result property="activity_type" column="activity_type"/>
+		<result property="activity_date" column="activity_date"/>
+		<result property="content" column="content"/>
+	</resultMap>
+	
+
 
 	<!-- 회원 정보 조회하기 -->
 	<select id="selectMember">
@@ -326,11 +334,44 @@
 	</update>
 	
 	<!-- 회원 활동내역 목록 조회 -->
-<!-- 	<select id="selectMemberActivityList" resultType="com.itwillbs.test.vo.MembersVO"> -->
-<!-- 		SELECT -->
-<!-- 			FROM members -->
-<!-- 			WHERE member_idx = #{member_idx} -->
-<!-- 	</select> -->
+	<select id="selectMemberActivityList" resultMap="ActivityListResultType">
+		SELECT
+				'payment' as activity_type,
+				payment_date as activity_date,
+				total_amount as content
+			FROM payment
+			WHERE member_idx = #{member_idx}
+  
+		UNION ALL
+  
+		SELECT
+				'review' as activity_type,
+				review_date as activity_date,
+				review_content as content
+			FROM review
+			WHERE payment_idx IN (SELECT payment_idx FROM payment WHERE member_idx = #{member_idx})
+  
+		UNION ALL
+  
+		SELECT
+				'project_community' as activity_type,
+				project_community_regdate as activity_date,
+				project_community_subject as content
+		FROM project_community
+		WHERE member_id IN (SELECT member_id FROM members WHERE member_idx = #{member_idx})
+  
+		UNION ALL
+  
+		SELECT
+				'idea' as activity_type,
+				today as activity_date,
+				title as content
+			FROM idea
+			WHERE member_idx = #{member_idx}
+
+			ORDER BY activity_date DESC
+			LIMIT #{listLimit}
+	</select>
 
 	<!-- 리뷰작성 -->
 	<insert id="insertRevewRegistration">

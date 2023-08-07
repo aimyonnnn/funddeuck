@@ -107,7 +107,7 @@ public interface MemberMapper {
 	int updateMemberByAdmin(MembersVO member);
 
 	// 회원 활동내역 목록 조회
-	List<MembersVO> selectMemberActivityList(Integer member_idx);
+	List<ActivityListVO> selectMemberActivityList(@Param("member_idx") Integer member_idx, @Param("listLimit") int listLimit);
 	
 	//리뷰 목록 가져오기
 	List<Map<String, Object>> selectMemberReviewList(@Param("sId") String sId, @Param("startRow")int startRow, @Param("listLimit") int listLimit);

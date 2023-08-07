@@ -27,6 +27,24 @@ th, td {
 .hover-effect:hover {
  	text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */
 }
+
+.card-text-container {
+	height: 300px;
+	overflow-y: scroll;
+	padding-right: 1rem; 
+	font-size: 14px;
+}
+
+.card-text-container .activity-item {
+    background-color: #f8f8f8; 
+    margin-bottom: 10px;
+    padding: 8px;
+}
+
+.activityDate {
+	font-size: 11px;
+}
+
 </style>
 </head>
 <body>
@@ -102,9 +120,30 @@ th, td {
 		                        </div>
 		                        <div class="card-body">
 		                            <!-- 회원 활동내역 내용 -->
-		                            <p class="card-text">
-		                            	여기에 회원 활동내역을 출력하세요.
-		                            </p>
+		                            <div class="card-text-container">
+										<c:forEach var="activity" items="${memberActivityList}">
+												<c:if test="${activity.activity_type == 'payment'}">
+													<div class="activity-item">
+														펀딩 <b><c:out value="${activity.content}"/></b> 원을 결제했습니다.<span class="activityDate"> | <c:out value="${activity.activity_date}"/></span>
+													</div>
+												</c:if>
+												<c:if test="${activity.activity_type == 'review'}">
+													<div class="activity-item">
+														리뷰 <b><c:out value="${activity.content}"/></b>를 작성했습니다.<span class="activityDate"> | <c:out value="${activity.activity_date}"/></span>
+													</div>
+												</c:if>
+												<c:if test="${activity.activity_type == 'project_community'}">
+													<div class="activity-item">
+														프로젝트 게시판에 <b><c:out value="${activity.content}"/></b>을/를 작성했습니다.<span class="activityDate"> | <c:out value="${activity.activity_date}"/></span>
+													</div>
+												</c:if>
+												<c:if test="${activity.activity_type == 'idea'}">
+													<div class="activity-item">
+														아이디어 게시판에 <b><c:out value="${activity.content}"/></b>을/를 작성했습니다.<span class="activityDate"> | <c:out value="${activity.activity_date}"/></span>
+													</div>
+												</c:if>
+									    </c:forEach>
+		                            </div>
 		                        </div>
                     		</div>
                			</div>

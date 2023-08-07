@@ -191,8 +191,8 @@ public class MemberService {
 	}
 
 	// 회원 활동내역 목록 조회
-	public List<MembersVO> getMemberActivityList(Integer member_idx) {
-		return mapper.selectMemberActivityList(member_idx);
+	public List<ActivityListVO> getMemberActivityList(Integer member_idx, int listLimit) {
+		return mapper.selectMemberActivityList(member_idx, listLimit);
 	}
 	
 	//찜한 프로잭트의 최신 소식 리스트
