@@ -756,6 +756,21 @@ public class AdminController {
 	    }
 	}
 	
+	// 리워드 수정 비즈니스 로직 처리
+	@PostMapping("adminModifyReward")
+	public String adminModifyReward(@RequestParam(defaultValue = "1") int pageNum, RewardVO reward, HttpSession session, Model model) {
+		int updateCount = projectService.modifyReward(reward);
+		if(updateCount > 0) { 
+			String targetURL = "adminProjectManagementDetail?project_idx=" + reward.getProject_idx() + "&pageNum=" + pageNum;
+	        model.addAttribute("msg", "리워드 정보 수정이 완료되었습니다.");
+	        model.addAttribute("targetURL", targetURL);
+	        return "success_forward";
+		} else {
+			model.addAttribute("msg", "리워드 정보 수정에 실패하였습니다.");
+			return "fail_back";
+		}
+	}
+	
 	// 회원 관리 페이지
 	@GetMapping("adminMemberManagement")
 	public String adminMember(@RequestParam(defaultValue = "") String searchType,

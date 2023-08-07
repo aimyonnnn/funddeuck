@@ -83,7 +83,7 @@
                         <!-- 금액 -->
                         <div>
                             <label class="form-content subheading" for="reward_price">금액</label>
-                            <input class="form-control" type="text" name="reward_price" id="reward_price" placeholder="금액을 입력하세요" style="width:500px;">
+                            <input class="form-control" type="number" name="reward_price" id="reward_price" placeholder="금액을 입력하세요" style="width:500px;">
                         </div>
 
                         <!-- 리워드 카테고리 -->
@@ -91,11 +91,14 @@
                         <div class="d-flex flew-row">
                             <select class="form-control" name="reward_category" id="reward_category" style="width:150px;">
                                 <option value="">-- 선택 --</option>
-                                <option value="tech">테크/가전</option>
-                                <option value="fashion">패션/잡화</option>
-                                <option value="living">홈/리빙</option>
-                                <option value="beauty">뷰티</option>
-                                <option value="book">출판</option>
+                                <option value="테크/가전">테크/가전</option>
+								<option value="패션/잡화">패션/잡화</option>
+								<option value="홈/리빙">홈/리빙</option>
+								<option value="뷰티">뷰티</option>
+								<option value="출판">출판</option>
+								<option value="친환경">친환경</option>
+								<option value="기부">기부</option>
+								<option value="동물보호">동물보호</option>
                             </select>
                         </div>
                         
@@ -108,7 +111,7 @@
                         <!--리워드 수량 -->
                         <div>
                             <label class="form-content subheading" for="reward_quantity">수량</label>
-                            <input class="form-control" type="text" name="reward_quantity" id="reward_quantity" style="width:500px;">
+                            <input class="form-control" type="number" name="reward_quantity" id="reward_quantity" style="width:500px;">
                         </div>
                         
                         <!--리워드 옵션 -->
@@ -141,7 +144,7 @@
                         <!-- 배송비 -->
                         <div>
                             <label class="form-content subheading" for="delivery_price">배송비</label>
-                            <input class="form-control" type="text" name="delivery_price" id="delivery_price" placeholder="배송비를 입력하세요" style="width:500px;">
+                            <input class="form-control" type="number" name="delivery_price" id="delivery_price" placeholder="배송비를 입력하세요" style="width:500px;">
                         </div>
                         
                         <!-- 발송 시작일 -->
