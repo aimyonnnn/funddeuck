@@ -30,7 +30,7 @@ public class CouponController {
         // 세션에서 로그인 정보를 가져옴
         Integer memberIdx = (Integer) session.getAttribute("sIdx");
         
-        // 로그인 정보가 없거나 memberIdx가 3이 아니면 메인 화면으로 리다이렉트
+        // 로그인 정보가 없거나 memberIdx가 3(admin의 member_idx이용)이 아니면 메인 화면으로 리다이렉트
         if (memberIdx == null || memberIdx != 3) {
             return "redirect:/";
         }
