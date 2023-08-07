@@ -15,22 +15,6 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
-	<style>
-		.table-center {
-		  margin: auto;
-		  width: 70%;
-		}
-		
-		.table-center tr td {
-		  text-align: center;
-		  vertical-align: middle;
-		}
-		
-		.table-center thead tr th {
-		  text-align: center;
-		  vertical-align: middle;
-		}
-    </style>
 	<script>
 	$(document).ready(function(){
 		// 팝오버 활성화
@@ -38,6 +22,58 @@
         var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
           return new bootstrap.Popover(popoverTriggerEl)
         });
+		
+		// 정산내역서 - 모달
+		$(document).on("click", "button[data-bs-target='#settlementModal']", function(event){
+			var project_idx = $(this).data("project-idx");
+			
+			$.ajax({
+				url: "settlementList",
+				method: "GET",
+				data: {project_idx: project_idx},
+				dataType: "json",
+				success: function(data) {
+					var data = data[0];
+					
+					
+					// 카드 결제의 수수료(카드 리워드 금액 + 후원금 + 배송비) * 0.03)
+					var card_tax = (data.card_total_reward_amount + data.card_total_additional_amount + data.card_total_delivery_amount) * 0.03;
+					
+					// 결제 완료 금액 (현재 총 결제 금액 - 환불금액(이미 포함x) + 후원금 + 카드 결제의 수수료)
+					var total_amount = Math.floor(data.total_amount + data.total_additional_amount + card_tax);
+					
+					// 배송비 (총 리워드 배송비 - 총 카드로 결제한 리워드 배송비)
+					var delivery_amount = Math.floor(data.total_delivery_amount - (data.card_total_delivery_amount) * 0.03);
+					
+					// 요금제 수수료 1-기본요금제(5%), 2-인플루언서요금제(3%)
+					var project_plan = data.project_plan === 1 ? 0.05 : 0.03;
+					
+					// 세금계산서 발행금액 (총 금액(이미 카드 수수료 포함o) * 선택한 요금제 수수료)
+					var tax_amount = Math.floor(data.total_amount * project_plan + card_tax);
+					
+					// 총 지급 금액(결제 완료 금액 - 세금계산서 발행금액)
+					var final_amount = total_amount - tax_amount;
+					
+					// 요금제 수수료 출력용
+					var charge = data.project_plan === 1 ? 5 : 3;
+					
+					$('#project_subject').text(data.project_subject);						// 프로젝트 제목
+					$('#representative_name').text(data.project_representative_name);		// 대표자명
+					$('#representative_email').text(data.project_representative_email);		// 이메일
+					$('#settlement_bank').text(data.project_settlement_bank);				// 정산 받을 은행
+					$('#settlement_account').text(data.project_settlement_account);			// 정산 받을 계좌
+					$('#settlement_name').text(data.project_settlement_name);				// 예금주명
+					$('#final_amount').text(final_amount.toLocaleString() + '원');			// 총 지급 금액
+					$('#total_amount').text(total_amount.toLocaleString() + '원');			// 결제 완료 금액 
+					$('#delivery_amount').text(delivery_amount.toLocaleString() + '원');	// 배송비 
+					$('#tax_amount').text(tax_amount.toLocaleString() + '원');				// 세금
+					$('#charge').text('(' + charge + '%)')									// 수수료 
+				},
+				error: function() {
+					alert("정산 내역 요청에 오류가 발생했습니다!");
+				}
+			});
+		});
       });
 	</script>
 </head>
@@ -107,7 +143,7 @@
 														<img class="project-img" src="${pageContext.request.contextPath }/resources/upload/${projectList.project_thumnails1 }">
 													</td>
 													<td>${projectList.project_subject }</td>
-													<td>30%</td>
+													<td><fmt:formatNumber value="${projectList.project_cumulative_amount/projectList.project_target * 100}" pattern="#"/>%</td>
 													<td>
 														<c:choose>
 															<c:when test="${projectList.project_status eq 1 }">
@@ -156,7 +192,7 @@
 														<img class="project-img" src="${pageContext.request.contextPath }/resources/upload/${projectList.project_thumnails1 }">
 													</td>
 													<td>${projectList.project_subject }</td>
-													<td>30%</td>
+													<td><fmt:formatNumber value="${projectList.project_cumulative_amount/projectList.project_target * 100}" pattern="#"/>%</td>
 													<td>
 														<c:choose>
 															<c:when test="${projectList.project_status eq 3 }">
@@ -171,7 +207,7 @@
 														</c:choose>
 													</td>
 													<td>
-														<button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settlementModal">확인</button>
+														<button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settlementModal" data-project-idx="${projectList.project_idx}">확인</button>
 													</td>
 												</tr>
 											</tbody>
@@ -197,7 +233,7 @@
 				<div class="modal-body">
 					<div>
 						<span class="d-block">프로젝트명</span>
-						<span class="d-block fw-bold text-primary">목도리 한 장으로 '따뜻한 겨울'을 선물해 주세요</span>
+						<span class="d-block fw-bold text-primary" id="project_subject"></span>
 					</div>
 					<div class="border-top my-3"></div>
 					<div>
@@ -206,23 +242,23 @@
 							<tbody class="shippingModalTbody">
 								<tr>
 									<th scope="row" class="col-3 bg-light">대표자명</th>
-									<td class="col-9">홍길동</td>
+									<td class="col-9" id="representative_name"></td>
 								</tr>
 								<tr>
 									<th scope="row" class="col-3 bg-light">이메일</th>
-									<td class="col-9">hong@gmail.com</td>
+									<td class="col-9" id="representative_email"></td>
 								</tr>
 								<tr>
 									<th scope="row" class="col-3 bg-light">은행명</th>
-									<td class="col-9">산업</td>
+									<td class="col-9" id="settlement_bank"></td>
 								</tr>
 								<tr>
 									<th scope="row" class="col-3 bg-light">계좌번호</th>
-									<td class="col-9">50000003</td>
+									<td class="col-9" id="settlement_account"></td>
 								</tr>
 								<tr>
 									<th scope="row" class="col-3 bg-light">예금주명</th>
-									<td class="col-9">홍길동</td>
+									<td class="col-9" id="settlement_name"></td>
 								</tr>
 							</tbody>
 						</table>
@@ -230,19 +266,19 @@
 					<div class="border-top my-3"></div>
 					<div>
 						<span class="d-block">최종 정산 지급금액</span>
-						<span class="fw-bold text-danger d-block fs-5">2,744,836원</span>
+						<span class="fw-bold text-danger d-block fs-5" id="final_amount"></span>
+						<span class="d-block mt-1" id="modalDescription">배송비: <span class="fw-bold" id="delivery_amount"></span> 포함</span>
 					</div>
 					<div class="border-top my-3"></div>
 					<div>
 						<span class="d-block">결제완료 금액</span>
-						<span class="fw-bold d-block fs-5">3,083,504원</span>
-						<span class="d-block mt-1" id="modalDescription">배송비: <span class="fw-bold">157,500원</span> 포함</span>
+						<span class="fw-bold d-block fs-5" id="total_amount"></span>
 					</div>
 					<div class="border-top my-3"></div>
 					<div>
 						<span class="d-block">세금계산서 발행금액</span>
-						<span class="fw-bold d-block fs-5">338,668원</span>
-						<span class="d-block mt-1" id="modalDescription">중개 수수료(5%) + 카드 결제(PG 등) 대행 수수료</span>
+						<span class="fw-bold d-block fs-5" id="tax_amount"></span>
+						<span class="d-block mt-1" id="modalDescription">중개 수수료<span id="charge"></span> + 카드 결제(PG 등) 대행 수수료</span>
 					</div>
 					<div class="border-top my-3"></div>
 					<div class="container">

@@ -27,5 +27,15 @@ public class BankApiService {
 	public ResponseUserInfoVO requestUserInfo(String access_token, String user_seq_no) {
 		return bankApiClient.requestUserInfo(access_token, user_seq_no);
 	}
+	
+	// 사용자인증
+	public String authentication() {
+		return bankApiClient.authentication();
+	}
+	
+	// 사용자인증 인증생략
+	public String authenticationSkip(String access_token, String user_seq_no, String user_ci) {
+		return bankApiClient.authenticationSkip(access_token, user_seq_no, user_ci);
+	}
 
 }

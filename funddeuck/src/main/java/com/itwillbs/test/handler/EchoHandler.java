@@ -81,17 +81,44 @@ public class EchoHandler extends TextWebSocketHandler {
 	// 클라이언트가 Data 전송 시
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		System.out.println("handleTextMessage");
-		String senderId = getMemberId(session);
-		String msg = message.getPayload();
 
-		if (msg != null) {
-			String[] strs = msg.split(",");
-			String type = strs[0];
-
-
-			log(strs.toString());
-			if (strs != null && strs.length == 4) {
+	    System.out.println("handleTextMessage");
+	    String senderId = getMemberId(session);
+	    String msg = message.getPayload();
+	    
+	    if (msg != null) {
+	    	
+	        String[] strs = msg.split(",");
+	        log(strs.toString());
+	        
+	        if (strs != null && strs.length == 5) {
+	        	
+	            String type = strs[0];
+	            String target = strs[1];
+	            String subject = strs[2];
+	            String content = strs[3];
+	            String url = strs[4];
+	            
+	            WebSocketSession targetSession = users.get(target);
+	            
+	            if(type.equals("message")) {
+	            	System.out.println("여기까지옴");
+	            	if(targetSession != null) {
+	            		type = "메시지가 도착했어요!";
+	            		TextMessage tmpMsg = new TextMessage("<a target='_blank' href='" + url + "'>[<b>" + type + "</b>] " + subject + "</a>");
+	            		targetSession.sendMessage(tmpMsg);
+	            	}
+	            	
+	            } else if(type.equals("notification")) {
+	            	
+	            	if(targetSession != null) {
+	            		type = "알림이 도착했어요!";
+	            		TextMessage tmpMsg = new TextMessage("<a target='_blank' href='" + url + "'>[<b>" + type + "</b>] " + subject + "</a>");
+	            		targetSession.sendMessage(tmpMsg);
+	            	}
+	            	
+	            }
+	        } else if(strs != null && strs.length == 4) {
 				String target = strs[1];
 				String content = strs[2];
 				String url = strs[3];
@@ -117,7 +144,6 @@ public class EchoHandler extends TextWebSocketHandler {
 							}
 						}
 					}
-					// ---------------------------------------------------------------------------------
 					if(sessions.size() == 1) {
 						if (targetSession != null) {
 							type = "메시지가 도착했어요!";
@@ -126,18 +152,9 @@ public class EchoHandler extends TextWebSocketHandler {
 							targetSession.sendMessage(tmpMsg);
 						}
 					}
-				} else if (type.equals("notification")) {
-					if (targetSession != null) {
-						type = "알림이 도착했어요!";
-						TextMessage tmpMsg = new TextMessage(
-								"<a target='_blank' href='" + url + "'>[<b>" + type + "</b>] " + content + "</a>");
-						targetSession.sendMessage(tmpMsg);
-					}
-				}
-			}
-
-		}
-
+					// ---------------------------------------------------------------------------------
+	        }
+	    }
 	}
 
 	// 연결 해제

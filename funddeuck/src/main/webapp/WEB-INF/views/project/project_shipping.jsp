@@ -129,7 +129,7 @@
 			    	                        "<td>" + row.total_amount + "원</td>" +
 			    	                        "<td>" + row.reward_name + "</td>" +
 			    	                        "<td>" +
-			    	                            "<button class='btn btn-outline-primary' id='tableButton' data-id="+ row.payment_idx +" data-bs-toggle='modal' data-bs-target='#trackingModal'>입력</button>" +
+			    	                            "<button class='btn btn-outline-primary btn-sm' id='tableButton' data-id="+ row.payment_idx +" data-bs-toggle='modal' data-bs-target='#trackingModal'>입력</button>" +
 			    	                        "</td>" +
 			    	                        "<td>" + row.delivery_date + "</td>" +
 			    	                        "<td>" + 
@@ -155,7 +155,7 @@
 			    	                        "<td>" +
 			    	                        	(function() {
 			    	                        		if(row.payment_confirm == 3) { // 펀딩금 반환 신청 시
-					    	                            return "<button class='btn btn-outline-danger' id='refundButton' data-id="+ row.payment_idx +" data-bs-toggle='modal' data-bs-target='#refundModal'>신청</button>";
+					    	                            return "<button class='btn btn-outline-danger btn-sm' id='refundButton' data-id="+ row.payment_idx +" data-bs-toggle='modal' data-bs-target='#refundModal'>신청</button>";
 			    	                        		} else if(row.payment_confirm == 4) { // 반환 완료 시
 			    	                        			return "완료";
 			    	                        		} else if(row.payment_confirm == 5) { // 반환 거절 시 
@@ -268,16 +268,16 @@
 						  '</tr>' +
 						  '<tr>' +
 						    '<th scope="row" class="col-3 bg-light">결제수단</th>' +
-						    '<td class="col-9">' + (data.payment_method == 1 ? '카드결제' : '계좌이체') + '</td>' +
+						    '<td class="col-9">' + (data.payment_method === 1 ? '카드결제' : '계좌이체') + '</td>' +
 						  '</tr>' +
 						  '<tr>' +
 						    '<th scope="row" class="col-3 bg-light">환불은행</th>' +
-						    '<td class="col-9">' + data.refund_bank + '</td>' +
+						    '<td class="col-9">' + (data.refund_bank !== null ? data.refund_bank : '없음') + '</td>' +
 						  '</tr>' +
 						  '<tr>' +
 						    '<th scope="row" class="col-3 bg-light">환불계좌</th>' +
-						    '<td class="col-9">' + data.refund_accountnum + '</td>' +
-						  '</tr>' +
+						    '<td class="col-9">' + (data.refund_accountnum !== null ? data.refund_accountnum : '없음') + '</td>' +
+						  '</tr>'
 						  '<tr>';
 
 						// 테이블 바디에 추가
@@ -295,9 +295,6 @@
 						} else {
 						    $("#refund-document").text("").removeAttr("href").removeAttr("download");
 						}
-
-
-
 					
 				},
 				error: function() {
@@ -563,7 +560,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">반환 신청</button>
+					<button type="button" class="btn btn-danger">반환 신청</button>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				</div>
 			</div>

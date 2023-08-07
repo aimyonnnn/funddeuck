@@ -30,10 +30,18 @@ th, td {
 </style>
 </head>
 <body>
+<!-- sidebar -->
+<input type="checkbox" name="" id="sidebar-toggle">
+<jsp:include page="../common/admin_side.jsp"/>
+
+<!-- top -->
+<div class="main-content">
 <jsp:include page="../common/admin_top.jsp"/>
-<div class="container">
-	<h2 class="fst-italic fw-bold mt-5">프로젝트 상세보기</h2>
-</div>
+
+	<div class="container">
+		<h2 class="fw-bold mt-5">프로젝트 상세보기</h2>
+		<p class="projectContent">프로젝트의 모든 정보를 한 눈에 확인할 수 있습니다.</p>
+	</div>
 
 	<!--  -->
 	<div class="container">
@@ -42,12 +50,10 @@ th, td {
 
 				<div class="container mb-5">
 					<div class="d-flex justify-content-end mb-1">
-						<button class="btn btn-outline-primary btn-sm"
-							id="feedbackMessage">수정사항 전달하기</button>
 						<button class="btn btn-outline-primary btn-sm mx-2"
 							onclick="approveProjectStatus(${project.project_idx}, ${project.project_approve_status})">승인처리</button>
 						<button class="btn btn-outline-primary btn-sm"
-							onclick="rejectProjectStatus(${project.project_idx}, 4)">반려처리</button>
+							onclick="rejectProjectStatus(${project.project_idx}, 4)">승인거절</button>
 					</div>
 				</div>
 
@@ -146,16 +152,24 @@ th, td {
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>프로젝트 한줄 소개</td>
-									<td>${project.project_semi_introduce}</td>
-								</tr>
-								<tr>
 									<td>프로젝트 소개</td>
 									<td>${project.project_introduce}</td>
 								</tr>
 								<tr>
+									<td>프로젝트 한줄 소개</td>
+									<td>${project.project_semi_introduce}</td>
+								</tr>
+								<tr>
 									<td>목표 금액</td>
 									<td>${project.project_target}</td>
+								</tr>
+								<tr>
+									<td>누적 금액</td>
+									<td>${project.project_cumulative_amount}</td>
+								</tr>
+								<tr>
+									<td>프로젝트 달성 금액</td>
+									<td>${project.project_amount}</td>
 								</tr>
 								<tr>
 									<td>프로젝트 시작일</td>
@@ -198,6 +212,10 @@ th, td {
 									<td>${project.project_settlement_name}</td>
 								</tr>
 								<tr>
+									<td>핀테크 이용번호</td>
+									<td>${project.project_fintech_use_num}</td>
+								</tr>
+								<tr>
 									<td>통장사본 이미지</td>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${project.project_settlement_image}"
@@ -233,6 +251,26 @@ th, td {
 										<c:otherwise>
 											<td>승인 요청 전 입니다</td>
 										</c:otherwise>
+									</c:choose>
+								</tr>
+								<tr>
+									<td>프로젝트 상태</td>
+									<c:choose>
+										<c:when test="${project.project_status eq 1}">
+											<td>미진행</td>
+										</c:when>
+										<c:when test="${project.project_status eq 2}">
+											<td>진행중</td>
+										</c:when>
+										<c:when test="${project.project_status eq 3}">
+											<td>진행완료</td>
+										</c:when>
+										<c:when test="${project.project_status eq 4}">
+											<td>정산신청</td>
+										</c:when>
+										<c:when test="${project.project_status eq 5}">
+											<td>정산완료</td>
+										</c:when>
 									</c:choose>
 								</tr>
 							</table>
@@ -381,6 +419,10 @@ th, td {
 									<td>메이커 홈페이지</td>
 									<td>${maker.maker_url}</td>
 								</tr>
+								<tr>
+									<td>메이커 등급</td>
+									<td>${maker.maker_grade}</td>
+								</tr>
 							</table>
 						</div>
 					</div>
@@ -399,6 +441,7 @@ th, td {
 			</div>
 		</div>
 	</div>
+</div>
 
 <!-- 모달창 -->
 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
@@ -433,22 +476,16 @@ $(document).ready(function () {
     });
     $("tr td img").attr("title", "클릭 시 이미지를 크게 볼 수 있습니다");
 });
- 	
+
+// 비행기 아이콘 클릭 시 아이디를 자동으로 입력
 $(document).ready(function() {
 	// 아이디 입력 필드 찾기
-	let notifyIdInput = $('#notifyId');
+	let receiver = $('#message_receiver');
 	
 	// memberId 값을 가져와서 입력 필드의 value로 설정하고 readonly로 만들기
-	let memberIdValue = '${memberId}';
-	notifyIdInput.val(memberIdValue);
-	notifyIdInput.prop('readonly', true);
-});
-
-// 피드백 메시지 버튼을 클릭했을 때의 동작 정의
-$('#feedbackMessage').click(function() {
-	// Message 버튼을 가져와서 클릭 이벤트 실행
-	let messageButton = $('[data-bs-target="#notifyModal"]');
-	messageButton.click();
+	let memberId = '${memberId}';
+	receiver.val(memberId);
+	receiver.prop('readonly', true);
 });
 </script>
 	
@@ -475,7 +512,7 @@ function approveProjectStatus(project_idx, project_approve_status) {
 	
 	// 프로젝트 승인여부 조회하기
 	// 승인완료, 결제완료 된 경우 false가 콜백으로 전달됨
-	// 승인요청, 반려처리 된 경우 true가 콜백으로 전달됨
+	// 승인요청, 거절처리 된 경우 true가 콜백으로 전달됨
    	isProjectApproved(project_idx, project_approve_status, function(isApproved) {
    		
   			if (isApproved) {
@@ -500,6 +537,9 @@ function approveProjectStatus(project_idx, project_approve_status) {
 							project_approve_status: project_approve_status
 						},
 						success: function(data) {
+							
+							console.log("여기까지옴");
+							
 							if (data.trim() == 'true') {
 								Swal.fire({
 									icon: 'success',
@@ -519,14 +559,10 @@ function approveProjectStatus(project_idx, project_approve_status) {
 							}
 						},
 						error: function() {
-							console.log('ajax 요청이 실패하였습니다!');	
+							console.log('ajax 요청이 실패하였습니다!222');	
 						}
 					});
-				} else {
-					// 취소 선택 시 체크박스 해제
-					$('input[type=checkbox]').prop('checked', false);
-					
-				}
+				} 
 			});
 			
 		} else {
@@ -582,12 +618,12 @@ function sendNotificationMessage(memberPhone, message) {
   });
 }
 
-// 프로젝트 반려 처리
+// 프로젝트 거절 처리
 function rejectProjectStatus(project_idx, project_approve_status) {
 	
 	Swal.fire({
 		title: '프로젝트 상태 변경',
-		text: '프로젝트 반려 처리를 하시겠습니까?',
+		text: '프로젝트 거절 처리를 하시겠습니까?',
 		icon: 'question',
 		showCancelButton: true,
 		confirmButtonText: '예',
@@ -609,7 +645,7 @@ function rejectProjectStatus(project_idx, project_approve_status) {
 					if(data.trim() == 'true') {
 						Swal.fire({
 						      icon: 'success',
-						      title: '프로젝트 반려처리 완료.',
+						      title: '프로젝트 거절처리 완료.',
 						      text: '프로젝트 상태가 성공적으로 변경되었습니다.',
 					    }).then(function(){
 						    location.reload();
@@ -617,7 +653,7 @@ function rejectProjectStatus(project_idx, project_approve_status) {
 					} else {
 						Swal.fire({
 						      icon: 'error',
-						      title: '프로젝트 반려처리 실패.',
+						      title: '프로젝트 거절처리 실패.',
 						      text: '프로젝트 상태 변경에 실패하였습니다.',
 					    });
 					}

@@ -38,7 +38,6 @@
 			<!-- 프로젝트 정보 영역 -->
 			<div class="col p-2 text-start">
 				<!-- form으로 전달할 project_idx-->
-				<input type="hidden" value="${project.project_idx }" name="project_idx">
 				<span class="fs-2 fw-bold">${project.project_subject }</span> <br>
 				<!-- 목표금액 + 후원한 사람들의 총금액 -->
 				<span class="fs-4 fw-bold">xxxx원</span>&nbsp;&nbsp;
@@ -61,7 +60,6 @@
 					<span class="fs-4 fw-bold">리워드 정보</span>
 					<div class="row m-2 p-2 border">
 						<div class="col" id="rewardContainer">
-							<input type="hidden" value="${reward.reward_idx }" name="reward_idx">
 							<table class="table table-borderless"  style="table-layout: fixed">
 								<tr>
 									<th>리워드 구성</th>
@@ -98,7 +96,6 @@
 					<span class="fs-4 fw-bold">서포터 정보</span>
 					<div class="row m-2 p-2 border">
 						<div class="col">
-							<input type="hidden" value="${member.member_idx }" name="member_idx">
 							<table class="table table-borderless">
 								<tr>
 									<th>연락처</th>
@@ -228,8 +225,15 @@
 									<span class="fs-6 fw-bold">계좌번호</span>&nbsp;&nbsp;
 									<span class="fs-6">${bankAccount.account_num_masked}</span>
 								</div>								
+<!-- 								<input class="btn btn-primary" type="button" value="계좌변경" id="btnAccountAuth"> -->
+<!-- 								<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', '_blank');"> -->
+								<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
 							</c:if>
-							<input class="btn btn-primary" type="button" value="계좌인증" id="btnAccountAuth">
+							<c:if test="${empty bankAccount }">
+<!-- 								<input class="btn btn-primary" type="button" value="계좌인증" id="btnAccountAuth"> -->
+<!-- 								<input class="btn btn-primary" type="button" value="계좌인증" onclick="location.href='callbackMember'"> -->
+								<input class="btn btn-primary" type="button" value="계좌인증" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
+							</c:if>
 						</div>
 					</div>
 				</div>
@@ -340,7 +344,20 @@
 				<!-- 클릭시 결제 페이지로 이동 -->
 				<!-- 체크박스 다 체크했을경우 이동가능 -->
 				<div class="row ms-2 me-2 pt-3">
-					<button class="btn btn-primary fs-3" onclick="location.href='fundingResult'">이 프로젝트 후원하기</button>
+					<form action="fundingPayment" method="post">
+						<input type="text" name="project_idx" value="${project.project_idx }">
+						<input type="text" name="member_idx" value="${member.member_idx }">
+						<!-- ajax로 바뀜 -->
+						<input type="text" name="reward_idx" value="${reward.reward_idx }" id="reward_idx">
+						<input type="text" name="reward_price" value="${reward.reward_price }" id="reward_price">
+						<input type="text" name="delivery_idx" id="delivery_idx" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_idx }</c:if>">
+						<input type="text" name="member_email" value="${member.member_email }">
+						<input type="text" name="member_phone" value="${member.member_phone }">
+						<input type="text" name="additional_amount" id="additional_amount" value="0">
+						<input type="text" name="use_coupon_amount" id="use_coupon_amount" value="0">
+						<input type="text" name="total_amount" id="total_amount" value="${reward.reward_price + reward.delivery_price}">
+						<button type="submit" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
+					</form>
 				</div>
 				<!-- 후원하기 버튼 영역 끝-->
 			</div>

@@ -225,8 +225,7 @@ public class MakerController {
 	    return "project/maker_detail";
 	}
 
-	
-	// 메이커 수정하기 페이지
+	// 메이커 정보 변경
 	@PostMapping("modifyMakerForm")
 	public String modifyMakerForm(@RequestParam int maker_idx, HttpSession session, Model model) {
 		String sId = (String) session.getAttribute("sId");
@@ -324,7 +323,7 @@ public class MakerController {
 		}
 	}
 	
-	// 메이커 페이지 수정하기 - 파일 실시간 삭제
+	// 메이커 수정하기 - 첨부파일 실시간 삭제
 	@PostMapping("deleteFile")
 	@ResponseBody
 	public String deleteFile(int maker_idx,	String fileName, int fileNumber, HttpSession session) {

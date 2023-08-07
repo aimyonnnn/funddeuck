@@ -32,4 +32,9 @@ public class ProfileService {
 	public void insertProfile(ProfileVO profileVO) {
         profileMapper.insertProfile(profileVO);
     }
+	
+    public boolean isProfileSaved(int memberIdx) {
+        ProfileVO profile = profileMapper.getProfileByMemberId(memberIdx);
+        return profile != null;
+    }
 }

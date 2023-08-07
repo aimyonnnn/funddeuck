@@ -21,29 +21,33 @@ import lombok.Data;
 리워드 수령자 전화번호(delivery_phone_number) - 문자(10자)
 ---------------------------------------
 CREATE TABLE payment (
-	payment_idx INT PRIMARY KEY AUTO_INCREMENT COMMENT '주문번호(PK)',
-	member_idx INT NOT NULL COMMENT '회원번호(FK)',
-	project_idx INT NOT NULL COMMENT '프로젝트번호(FK)',
-	reward_idx INT NOT NULL COMMENT '리워드번호(FK)',	
-	delivery_idx INT NOT NULL  COMMENT '배송지번호(FK)',
-	member_email VARCHAR(50) NOT NULL COMMENT '회원이메일',
-	member_phone VARCHAR(50) NOT NULL COMMENT '회원연락처',	
-	reward_amount INT NOT NULL COMMENT '리워드금액',
-	additional_amount INT COMMENT '추가후원금',
-	use_coupon_amount INT  COMMENT '쿠폰금액',
-	total_amount INT NOT NULL COMMENT '최종결제금액',
-	payment_date DATE NOT NULL COMMENT '주문날짜',
-	payment_quantity INT NOT NULL COMMENT '주문수량',
-	payment_confirm INT NOT NULL DEFAULT 1 COMMENT '결제승인여부(1:결제완료,2:취소요청,3:취소완료)', 
-	refund_bank VARCHAR(50) COMMENT '환급받을은행명',
-	refund_accountnum VARCHAR(50) COMMENT '환급받을계좌번호',
-	courier VARCHAR(50) COMMENT '택배사',
-	waybill_num VARCHAR(50) COMMENT '운송장번호',
-	delivery_status INT COMMENT '배송상황(1:미정,2:배송준비중,3:배송시작,4:배송완료,5:프로젝트취소',
-	FOREIGN KEY (member_idx) REFERENCES members(member_idx),
-	FOREIGN KEY (project_idx) REFERENCES project(project_idx),
-	FOREIGN KEY (reward_idx) REFERENCES reward(reward_idx),
-	FOREIGN KEY (delivery_idx) REFERENCES delivery(delivery_idx)
+    payment_idx INT PRIMARY KEY AUTO_INCREMENT COMMENT '주문번호(PK)',
+    member_idx INT NOT NULL COMMENT '회원번호(FK)',
+    project_idx INT NOT NULL COMMENT '프로젝트번호(FK)',
+    reward_idx INT NOT NULL COMMENT '리워드번호(FK)',   
+    delivery_idx INT NOT NULL  COMMENT '배송지번호(FK)',
+    member_email VARCHAR(50) NOT NULL COMMENT '회원이메일',
+    member_phone VARCHAR(50) NOT NULL COMMENT '회원연락처',   
+    reward_amount INT NOT NULL COMMENT '리워드금액',
+    additional_amount INT COMMENT '추가후원금',
+    use_coupon_amount INT  COMMENT '쿠폰금액',
+    total_amount INT NOT NULL COMMENT '최종결제금액',
+    payment_date DATE NOT NULL COMMENT '주문날짜',
+    payment_quantity INT NOT NULL COMMENT '주문수량',
+    payment_confirm INT NOT NULL DEFAULT 1 COMMENT '결제승인여부(1:예약완료, 2:결제완료, 3:반환신청, 4:반환완료, 5:반환거절)', 
+    payment_method INT NOT NULL COMMENT '결제수단(1:카드결제, 2:계좌결제)',
+    refund_bank VARCHAR(50) COMMENT '환급받을은행명',
+    refund_accountnum VARCHAR(50) COMMENT '환급받을계좌번호',
+    delivery_method VARCHAR(50) COMMENT '배송방법',
+    courier VARCHAR(50) COMMENT '택배사',
+    waybill_num VARCHAR(50) COMMENT '운송장번호',
+    delivery_status INT COMMENT '배송상황(1:미발송,2:배송중,3:배송완료)',
+    cancel_context VARCHAR(200) COMMENT '취소신청시 취소사유',
+    cancel_img VARCHAR(200) COMMENT '취소증빙이미지',
+    FOREIGN KEY (member_idx) REFERENCES members(member_idx) ON DELETE CASCADE,
+    FOREIGN KEY (project_idx) REFERENCES project(project_idx) ON DELETE CASCADE,
+    FOREIGN KEY (reward_idx) REFERENCES reward(reward_idx) ON DELETE CASCADE,
+    FOREIGN KEY (delivery_idx) REFERENCES delivery(delivery_idx) ON DELETE CASCADE
 );
 */
 @Data
@@ -62,13 +66,13 @@ public class PaymentVO {
 	private Date payment_date;
 	private int payment_quantity;
 	private int payment_confirm;
+	private int payment_method;
 	private String refund_bank;
 	private String refund_accountnum;
 	private String delivery_method;
 	private String courier;
 	private String waybill_num;
 	private int delivery_status;
-	
 	
 	
 	// ########## total_amount, payment_date 컬럼명 변경 시 꼭 알려주세요! ##########
@@ -94,4 +98,21 @@ public class PaymentVO {
 	private String delivery_detailadd;
 	private String cancel_context;
 	private String cancel_img;
+	
+	// ===============================================================================
+	// 정산내역 출력 시 사용 
+	private int project_plan;						// 프로젝트 요금제
+	private String project_representative_name;		// 대표자명
+	private String project_representative_email; 	// 대표자 이메일
+	private String project_settlement_bank;			// 정산 받을 은행
+	private String project_settlement_account;		// 정산 받을 계좌
+	private String project_settlement_name;			// 정산 받을 예금주명
+	private int total_reward_amount;				// 총 리워드 금액
+	private int total_card_amount;					// 총 카드 금액
+	private int total_additional_amount; 			// 총 추가 후원금액
+	private int card_total_additional_amount;		// 총 카드 후원금액
+	private int card_total_reward_amount;			// 총 카드 리워드 결제금액
+	private int total_delivery_amount;				// 총 리워드 배송비
+	private int card_total_delivery_amount;			// 총 카드 결제의 리워드 배송비
+	
 }

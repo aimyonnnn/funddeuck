@@ -49,8 +49,11 @@ public class ProfileController {
         }
 
         ProfileVO profile = profileService.getProfileByMemberId(memberIdx.intValue());
+        boolean isProfileSaved = profileService.isProfileSaved(memberIdx.intValue());
+
         System.out.println("Session attribute sIdx: " + memberIdx);
         model.addAttribute("profile", profile);
+        model.addAttribute("isProfileSaved", isProfileSaved); 
         return "member/member_profile";
     }
     
@@ -140,7 +143,8 @@ public class ProfileController {
 			return "fail_back";
 		}
 	}
-    	
+    
+    
     }
     
     

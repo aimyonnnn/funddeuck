@@ -110,5 +110,52 @@ public class BankApiClient {
 		
 		return responseEntity.getBody();
 	}
+	
+	// 사용자 인증
+	public String authentication() {
+	    String url = baseUrl + "/oauth/2.0/authorize"; // url 요청
+	    // 요청에 필요한 파라미터 설정
+	    UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(url)
+	            .queryParam("response_type", "code")
+	            .queryParam("client_id", "4066d795-aa6e-4720-9383-931d1f60d1a9")
+	            .queryParam("redirect_uri", "http://localhost:8089/test/callbackMember")
+	            .queryParam("scope", "login inquiry transfer oob")
+	            .queryParam("state", "12345678901234567890123456789012")
+	            .queryParam("auth_type", "0")
+	            .build();
+
+	    return uriComponents.toString();
+	}
+	
+	
+	// 사용자인증 인증 생략 - GET 방식(수정해야함)
+	public String authenticationSkip(String access_token, String user_seq_no, String user_ci) {
+		String url = baseUrl + "/oauth/2.0/authorize"; // url 요청
+		HttpHeaders httpHeaders = new HttpHeaders(); // 헤더 생성
+		// 헤더 정보 추가
+		httpHeaders.add("Kftc-Bfop-UserSeqNo",  user_seq_no); // 기존 고객의 사용자일련번호
+		httpHeaders.add("Kftc-Bfop-UserCI",  user_ci); // 사용자의 CI
+		httpHeaders.add("Kftc-Bfop-AccessToken",  access_token); // 기존 고객의 사용자일련번호
+		HttpEntity<String> httpEntity = new HttpEntity<String>(httpHeaders); // 바디 없이 헤더만 전달(바디 생략)
+		// 요청에 필요한 파라미터 설정
+		UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(url)
+				.queryParam("response_type", "code")
+				.queryParam("client_id", "4066d795-aa6e-4720-9383-931d1f60d1a9")
+				.queryParam("redirect_uri", "http://localhost:8089/test/callbackMember")
+				.queryParam("scope", "login inquiry transfer oob")
+				.queryParam("state", "12345678901234567890123456789012")
+				.queryParam("auth_type", "2")
+				.build();
+		// REST 방식 요청
+		restTemplate = new RestTemplate();
+		
+		// HTTP 요청 수행
+	    ResponseEntity<Map> responseEntity = 
+	            restTemplate.exchange(uriComponents.toString(), HttpMethod.GET, httpEntity, Map.class);
+	    logger.info("□□□□□□ 사용자인증 ResponseEntity.getBody() : " + responseEntity.getBody());
+
+	    return uriComponents.toString();
+		
+	}
 
 }

@@ -5,46 +5,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<!-- bootstrap -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <!-- jquery -->
-	<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
-    <!-- css -->
-    <link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
-    <!-- sweetalert -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-    <style>
-	    table {
-	        width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
-	        table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
-	    }
-	    th, td {
-	        width: 10%; /* 각 셀의 너비를 20%로 설정 */
-	    }
-		.hover-effect:hover {
-		 	text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */
-		}
-	</style>
+<meta charset="UTF-8">
+<!-- bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<!-- jquery -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
+<!-- css -->
+<link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
+<!-- sweetalert -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+<style>
+table {
+    width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
+    table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
+}
+th, td {
+    width: 10%; /* 각 셀의 너비를 20%로 설정 */
+}
+.hover-effect:hover {
+ 	text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */
+}
+</style>
 </head>
 <body>
-<jsp:include page="../common/admin_top.jsp"/>
-<!-- pageNum 파라미터 가져와서 저장(기본값 1로 지정함) -->
+<!-- 페이징 처리를 위한 pageNum 셋팅 -->
 <c:set var="pageNum" value="1"/>
 <c:if test="${not empty param.pageNum }">
 	<c:set var="pageNum" value="${param.pageNum }" />
 </c:if>
+
+<!-- sidebar -->
+<input type="checkbox" name="" id="sidebar-toggle">
+<jsp:include page="../common/admin_side.jsp"/>
+
+<!-- top -->
+<div class="main-content">
+<jsp:include page="../common/admin_top.jsp"/>
+
+	<div class="container">
+		<h2 class="fw-bold mt-5">프로젝트 승인 관리</h2>
+		<p class="projectContent">프로젝트 등록 전 승인, 거절 처리를 할 수 있습니다.</p>
+	</div>
 	
 	<div class="container my-5">
 		<!-- 검색 버튼 -->
-		<div class="d-flex flex-row justify-content-center my-3">
+		<div class="d-flex flex-row justify-content-center my-5">
 			<!-- form 태그 시작 -->
 			<form action="adminProjectList" class="d-flex flex-row justify-content-end">
 				<!-- 셀렉트 박스 -->
 				<select class="form-select form-select-sm me-2" name="searchType" id="searchType" style="width: 100px;">
-					<option value="subject" <c:if test="${param.searchType eq 'subject'}">selected</c:if>>제목</option>
-					<option value="name" <c:if test="${param.searchType eq 'name'}">selected</c:if>>이름</option>
+					<option value="subject" <c:if test="${param.searchType eq 'subject'}">selected</c:if>>프로젝트</option>
+					<option value="name" <c:if test="${param.searchType eq 'name'}">selected</c:if>>대표자</option>
 				</select>
 				<!-- 검색타입, 검색어 -->
 				<div class="input-group">
@@ -57,32 +69,17 @@
 		</div>
 		<!-- 검색 버튼 -->
 		
-		<!-- 셀렉트 박스 -->
-		<div class="container mt-5">
-			<div class="d-flex justify-content-end row mb-3">
-			    <div class="col-md-2">
-			        <select class="form-select" id="filterStatus" onchange="filterNotifications()">
-			            <option value="">전체</option>
-			            <option value="승인요청">승인요청</option>
-			            <option value="승인완료">승인완료</option>
-			            <option value="승인거절">승인거절</option>
-			        </select>
-			    </div>
-			</div>
-		</div>
-			
 		<div class="row">
 			<div class="d-flex justify-content-center">
 				
 				<table class="table">
 					<tr>
-						<th class="text-center" style="width: 5%;">프로젝트 번호</th>
-						<th class="text-center" style="width: 20%;">프로젝트 이름</th>
-						<th class="text-center" style="width: 10%;">대표자 이름</th>
-						 <!-- 프로젝트 승인 상태 1-미승인 2-승인요청 3-승인 4-반려 -->
+						<th class="text-center" style="width: 7%;">프로젝트 번호</th>
+						<th class="text-center" style="width: 15%;">프로젝트 이름</th>
+						<th class="text-center" style="width: 7%;">대표자</th>
 						<th class="text-center" style="width: 5%;">상태</th>
+						<th class="text-center" style="width: 7%;">요청시간</th>
 						<th class="text-center" style="width: 5%;">상세보기</th>
-						<th class="text-center" style="width: 5%;">반려처리</th>
 					</tr>
 					
 					<c:forEach var="pList" items="${pList}">
@@ -112,11 +109,11 @@
 								</c:otherwise>
 							</c:choose>
 							<td class="text-center" style="width: 5%;">
-								<button class="btn btn-outline-primary btn-sm" 
-								onclick="location.href='adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}'">상세보기</button>
+								<fmt:formatDate value="${pList.project_approval_request_time}" pattern="yy-MM-dd HH:mm"/>
 							</td>
 							<td class="text-center" style="width: 5%;">
-								<input type="checkbox" class="form-check-input" onclick="rejectProjectStatus(${pList.project_idx}, 4)"/>
+								<button class="btn btn-outline-primary btn-sm" 
+								onclick="location.href='adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}'">상세보기</button>
 							</td>
 						</tr>
 					</c:forEach>
@@ -211,6 +208,7 @@
 	        </ul>
 	    </nav>
 	</div>
+</div>
 	<!-- 페이징 처리 -->
 	
 	<script type="text/javascript">

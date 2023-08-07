@@ -60,4 +60,9 @@ public class BankService {
 		return mapper.selectBankAccountInfo(member_idx);
 	}
 	
+	// user_ci 조회
+	public String getUserCI(int member_idx) {
+		return mapper.selectUserCI(member_idx);
+	}
+	
 }

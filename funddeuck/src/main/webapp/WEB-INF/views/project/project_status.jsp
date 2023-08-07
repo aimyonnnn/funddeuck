@@ -715,6 +715,22 @@ th, td {
 							</div>
 						</div>
 					</div>
+					
+					<div>
+					    <p class="subheading"><b>판매량이 높은 리워드 조회</b></p>
+					    <p class="projectContent">리워드의 판매 비율을 전체 수량에 대해 계산한 차트입니다.</p>
+					    
+					    <!-- 선택한 프로젝트별 리워드의 판매 비율 차트 -->
+					    <div style="width: 450px; height: 450px;" id="rewardChartContainer">
+					        <canvas id="rewardChart"></canvas>
+					    </div>
+					    
+					    <!-- 차트에서 리워드 클릭 시 해당 리워드에 대한 옵션을 테이블로 출력 -->
+					    
+					    
+					</div>
+
+					
 				
 				<!-- 하단 여백 주기 -->
 				<div style="height: 300px; width: 100%"></div>
@@ -1048,7 +1064,51 @@ window.addEventListener('load', function() {
 });
 
 //===============================================================================================================
+	
+// 전역 변수로 차트 객체 선언
+let rewardChart;
 
+// 리워드 정보를 조회하고 차트를 그리는 함수
+function drawRewardChart(rewardData) {
+    // 차트 컨테이너 요소
+    let rewardChartContainer = document.getElementById('rewardChartContainer');
+
+    // 기존의 차트 캔버스를 제거
+    rewardChartContainer.innerHTML = '<canvas id="rewardChart"></canvas>';
+
+    // 새로운 차트를 위한 캔버스 요소
+    const ctx4 = document.getElementById('rewardChart').getContext('2d');
+
+    // 기존의 차트 객체 존재하는 경우 제거함
+    if (rewardChart && rewardChart instanceof Chart) {
+        rewardChart.destroy();
+    }
+
+    // 차트를 그릴 데이터 가공
+    const labels = rewardData.map((reward) => reward.reward_name);
+    const data = rewardData.map((reward) => reward.sales_quantity);
+    const colors = ['rgba(153, 102, 255, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)']; 						// 원형 차트의 색상 설정
+
+    // 차트 생성
+    rewardChart = new Chart(ctx4, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: colors,
+            }],
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Reward Sales Chart',
+            },
+            cutoutPercentage: 30, 											// 도넛 차트의 반지 모양의 두께 조절 (0 ~ 100)
+        },
+    });
+}
+	
 // 프로젝트별 리워드 정보 조회
 $(()=> {
 		
@@ -1088,6 +1148,9 @@ $(()=> {
 					tbody.append(newRow);
 					
 				});
+				
+				// 차트 그리기
+                drawRewardChart(data);
 				
 			},
 			error: function() {

@@ -12,7 +12,10 @@ import com.itwillbs.test.vo.NotificationVO;
 public interface NotificationMapper {
 
 	// 저장
-	int insertNotification(@Param("target") String target, @Param("content") String content);
+	int insertNotification(
+			@Param("target") String target,
+			@Param("subject") String subject,
+			@Param("content")String content);
 	
 	// 갯수 조회
 	int selectNotificationCount(String member_id);
@@ -60,5 +63,8 @@ public interface NotificationMapper {
 			@Param("searchType") String searchType,
 			@Param("sId") String sId
 			);
+	
+	// 메시지 정보 조회
+	NotificationVO selectNotificationInfo(int notification_idx);
 	
 }

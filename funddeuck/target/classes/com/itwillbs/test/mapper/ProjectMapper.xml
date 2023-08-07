@@ -43,6 +43,7 @@
 					, #{maker_email}
 					, #{maker_tel}
 					, #{maker_url}
+					, 1
 				)
 	</insert>
 	
@@ -130,6 +131,8 @@
 				, NULL							 -- 프로젝트 승인 요청 시간
 				, #{maker_idx}					 -- 메이커 번호
 				, #{token_idx}			 		 -- 프로젝트 계좌 인증에 사용될 토큰 번호
+				, 0
+				, 1
 			)
 	</insert>
 	
@@ -158,12 +161,12 @@
 				where member_id = #{sId}
 	</select>
 	
-	<!-- 프로젝트 승인 요청 -->
-	<!-- project_approve_status = 2 -->
+	<!-- 프로젝트 승인 요청 - project_approve_status = 2 -->
 	<update id="updateStatus">
 		update project
 			set
 				project_approve_status = 2
+				, project_approval_request_time = now()				
 			where
 				project_idx = #{project_idx}		
 	</update>
@@ -189,7 +192,7 @@
 		</if>
 			project_approve_status != 1
 		order by
-			project_idx desc			
+			project_approval_request_time asc	-- 승인 요청 시간
 		limit
 			#{startRow}
 			, #{listLimit}
@@ -417,8 +420,86 @@
 		select project_approve_status
 			from project
 		where
-			project_approve_status = 2
+			project_idx = #{project_idx}
 	</select>
+	
+	<!-- 관리자 - 프로젝트 정보 수정 -->
+	<update id="updateProjectByAdmin">
+	 	UPDATE project
+  			SET
+			    <if test="!project_thumnails1.equals('')">
+			    	project_thumnails1 = #{project_thumnails1},				 	-- 썸네일1
+				</if>
+			    <if test="!project_thumnails2.equals('')">
+			    	project_thumnails2 = #{project_thumnails2},				 	-- 썸네일2
+				</if>
+			    <if test="!project_thumnails3.equals('')">
+			    	project_thumnails3 = #{project_thumnails3},				 	-- 썸네일3
+				</if>
+			    <if test="!project_image.equals('')">
+			    	project_image = #{project_image},				 		  	-- 프로젝트 내용 상세 이미지
+				</if>
+		      	<if test="!project_settlement_image.equals('')">
+			   		project_settlement_image = #{project_settlement_image},	  	-- 통장사본 이미지
+				</if>
+			    project_plan = #{project_plan},
+			    project_category = #{project_category},
+			    project_subject = #{project_subject},
+			    project_introduce = #{project_introduce},
+			    project_semi_introduce = #{project_semi_introduce},
+			    project_target = #{project_target},
+			    project_cumulative_amount = #{project_cumulative_amount},
+			    project_start_date = #{project_start_date},
+			    project_end_date = #{project_end_date},
+			    project_hashtag = #{project_hashtag},
+			    project_representative_name = #{project_representative_name},
+			    project_representative_email = #{project_representative_email},
+			    project_representative_birth = #{project_representative_birth},
+			    project_tax_email = #{project_tax_email},
+			    project_settlement_bank = #{project_settlement_bank},
+			    project_settlement_account = #{project_settlement_account},
+			    project_settlement_name = #{project_settlement_name},
+			    project_fintech_use_num = #{project_fintech_use_num},
+			    project_approve_status = #{project_approve_status},
+			    project_status = #{project_status},
+			    project_approval_request_time = #{project_approval_request_time},
+			    first_amount = #{first_amount},
+			    settlement_status = #{settlement_status}
+  			WHERE
+		  		project_idx = #{project_idx}	
+	</update>
+	
+	<!-- 관리자 - 첨부파일 실시간 삭제 -->
+	<delete id="deleteProjectFile">
+		update project
+			  set
+			    <choose>
+			      <when test="fileNumber == 1">
+			        project_thumnails1 = ''
+			      </when>
+			      <when test="fileNumber == 2">
+			        project_thumnails2 = ''
+			      </when>
+			      <when test="fileNumber == 3">
+			        project_thumnails3 = ''
+			      </when>
+			      <when test="fileNumber == 4">
+			        project_image = ''
+			      </when>
+			      <when test="fileNumber == 5">
+			        project_settlement_image = ''
+			      </when>
+			    </choose>
+			  where
+			    project_idx = #{project_idx}
+			    and (
+			      (#{fileNumber} = 1 and project_thumnails1 != '')
+			      or (#{fileNumber} = 2 and project_thumnails2 != '')
+			      or (#{fileNumber} = 3 and project_thumnails3 != '')
+			      or (#{fileNumber} = 4 and project_image != '')
+			      or (#{fileNumber} = 5 and project_settlement_image != '')
+			    )
+	</delete>
 	
 </mapper>
 	

@@ -164,6 +164,16 @@ public class ProjectService {
 	public Integer getProjectStatus(int project_idx) {
 		return mapper.selectProjectStatus(project_idx);
 	}
+	
+	// 관리자 - 프로젝트 정보 수정
+	public int modifyProjectByAdmin(ProjectVO project) {
+		return mapper.updateProjectByAdmin(project);
+	}
+	
+	// 관리자 - 첨부파일 실시간 삭제
+	public int removeProjectFile(int project_idx, String fileName, int fileNumber) {
+		return mapper.deleteProjectFile(project_idx, fileName, fileNumber);
+	}
     
 		
 		

@@ -362,7 +362,17 @@ function saveReward() {
 							title: '리워드 등록 완료.',
 							text: '리워드 등록이 완료되었습니다!'
 						}).then(function(){
-							location.reload();
+							
+							Swal.fire({
+								icon: 'question',
+								title: '리워드 연속 등록',
+								text: '리워드 등록을 연속해서 하시겠습니까?'
+							}).then(function(){
+								
+						    	location.reload();
+						        
+							});
+							
 						});
 					}
 					
@@ -415,11 +425,27 @@ function projectApprovalRequestBtn(){
 					    }).then(function () {
 					        location.reload();
 					    });
-					} else {
+					} else if (data.trim() == '2') {
 					    Swal.fire({
 					        icon: 'error',
 					        title: '프로젝트 승인요청 실패',
-					        text: '이미 승인요청이 완료된 프로젝트 입니다. 승인완료까지 최대 3일이 소요됩니다.',
+					        text: '이미 승인요청된 프로젝트 입니다. 승인완료까지 최대 3일이 소요됩니다.',
+					    }).then(function () {
+					        location.reload();
+					    });
+					} else if (data.trim() == '3') {
+					    Swal.fire({
+					        icon: 'error',
+					        title: '프로젝트 승인요청 실패',
+					        text: '이미 승인완료된 프로젝트 입니다. 프로젝트 요금 결제를 진행해주세요.',
+					    }).then(function () {
+					        location.reload();
+					    });
+					} else if (data.trim() == '5') {
+					    Swal.fire({
+					        icon: 'error',
+					        title: '프로젝트 승인요청 실패',
+					        text: '이미 결제완료된 프로젝트 입니다. 새로운 프로젝트를 생성해주세요.',
 					    }).then(function () {
 					        location.reload();
 					    });
@@ -427,7 +453,7 @@ function projectApprovalRequestBtn(){
 
 				},
 				error: () => {
-					console.log('ajax 요청이 실패하였습니다.');
+					console.log('프로젝트 승인요청 ajax 실패');
 				}
 			});
 		}	
@@ -617,10 +643,10 @@ function getNotifications() {
                 var icon = $('<i class="fas fa-exclamation-circle"></i>');
                 var content = $('<span>&nbsp;' + notificationContent + '</span>');
 
-                // 읽음 처리 하기
-                content.click(function() {
-                    markNotificationAsRead(notification.notification_idx);
-                });
+//                 // 읽음 처리 하기
+//                 content.click(function() {
+//                     markNotificationAsRead(notification.notification_idx);
+//                 });
 
                 alertDiv.append(icon);
                 alertDiv.append(content);
@@ -633,54 +659,54 @@ function getNotifications() {
     });
 }
 	
-// 메시지 읽음 처리 하기
-function markNotificationAsRead(notification_idx) {
+// // 메시지 읽음 처리 하기
+// function markNotificationAsRead(notification_idx) {
 	
-	let confirmation = confirm("메시지를 읽음 처리 하시겠습니까?");
+// 	let confirmation = confirm("메시지를 읽음 처리 하시겠습니까?");
 	
-	if(confirmation) {
-		// 기본 동작 방지하기
-		event.preventDefault();
+// 	if(confirmation) {
+// 		// 기본 동작 방지하기
+// 		event.preventDefault();
 		
-		console.log("알림번호 : " + notification_idx);
-		$.ajax({
-			method: 'get',
-			url: '<c:url value="markNotificationAsRead"/>',
-			data: {
-				notification_idx: notification_idx
-			},
-			success: function(response){
-				if(response.trim() == 'true') {
+// 		console.log("알림번호 : " + notification_idx);
+// 		$.ajax({
+// 			method: 'get',
+// 			url: '<c:url value="markNotificationAsRead"/>',
+// 			data: {
+// 				notification_idx: notification_idx
+// 			},
+// 			success: function(response){
+// 				if(response.trim() == 'true') {
 					
-					// 알림 갯수 변경
-					getNotificationCount();
+// 					// 알림 갯수 변경
+// 					getNotificationCount();
 					
-					// 관리자 피드백 메시지 업데이트
-					getNotifications();
-					alert('읽음 처리 되었습니다!');
-				} 
-			},
-			error: function(error) {
-				console.log("읽음 처리 실패!");
-			}
-		})
-	} else {
+// 					// 관리자 피드백 메시지 업데이트
+// 					getNotifications();
+// 					alert('읽음 처리 되었습니다!');
+// 				} 
+// 			},
+// 			error: function(error) {
+// 				console.log("읽음 처리 실패!");
+// 			}
+// 		})
+// 	} else {
 		
-		// "아니요"를 선택했을 때 메시지에 포함된 링크로 이동할지 물어보기
-        let linkConfirmation = confirm("메시지에 포함된 링크로 이동하시겠습니까?");
+// 		// "아니요"를 선택했을 때 메시지에 포함된 링크로 이동할지 물어보기
+//         let linkConfirmation = confirm("메시지에 포함된 링크로 이동하시겠습니까?");
         
-        if (linkConfirmation) {
-            // 메시지에 포함된 링크로 이동
+//         if (linkConfirmation) {
+//             // 메시지에 포함된 링크로 이동
             
-        } else {
-        	// 기본 동작 방지하기 
-            event.preventDefault();
+//         } else {
+//         	// 기본 동작 방지하기 
+//             event.preventDefault();
         	
-            // 아무 동작도 하지 않음 (현재 페이지에 머무름)
-        	location.reload();
-        }
-	}
-}
+//             // 아무 동작도 하지 않음 (현재 페이지에 머무름)
+//         	location.reload();
+//         }
+// 	}
+// }
 	
 // 선택 상자의 값을 변경할 때마다 히든 필드 업데이트
 document.getElementById("yearMonth").addEventListener("change", updateDeliveryDate);

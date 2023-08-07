@@ -1,11 +1,18 @@
 package com.itwillbs.test.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,19 +24,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.itwillbs.test.handler.EchoHandler;
 import com.itwillbs.test.service.AdminService;
+import com.itwillbs.test.service.MakerBoardService;
+import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.NotificationService;
 import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.service.SendPhoneMessageService;
 import com.itwillbs.test.vo.ChartDataVO;
+import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
+import com.itwillbs.test.vo.MembersVO;
 import com.itwillbs.test.vo.NotificationVO;
 import com.itwillbs.test.vo.PageInfoVO;
 import com.itwillbs.test.vo.PaymentVO;
@@ -51,6 +63,10 @@ public class AdminController {
 	private MemberService memberService;
 	@Autowired
 	private SendPhoneMessageService sendPhoneMessageService;
+	@Autowired
+	private MakerService makerService;
+	@Autowired
+	private MakerBoardService makerBoardService;
 	
 	private EchoHandler echoHandler;
 	@Autowired
@@ -63,13 +79,177 @@ public class AdminController {
 	// 관리자 메인
 	@GetMapping("admin")
 	public String adminMain(HttpSession session, Model model) {
+		
+		List<ProjectVO> pList = projectService.getAllProjects();
+		int totalProjectCount = pList.size();
+		int todaySupporterCount = paymentService.getSupportCountByPaymentDate();
+		
+		model.addAttribute("pList", pList);
+		model.addAttribute("totalProjectCount", totalProjectCount);
+		model.addAttribute("todaySupporterCount", todaySupporterCount);
+		
 		return "admin/admin_main";
 	}
 	
-	// 메이커 디테일 페이지 공지사항 관리
-	@GetMapping("adminMakerManagement")
-	public String adminMakerManagement(HttpSession session, Model model) {
+	// 메이커 정보 변경 페이지 - 메이커 관리 상세보기 클릭 시
+	@GetMapping("adminMakerDetail")
+	public String adminMakerDetail(@RequestParam(required = true) Integer maker_idx ,HttpSession session, Model model) {
 		
+		MakerVO maker = makerService.getMakerInfo(maker_idx);
+		List<MakerBoardVO> mList = makerBoardService.getAllMakerBoardList(maker_idx);
+		
+		model.addAttribute("maker", maker);
+		model.addAttribute("mList", mList);
+		
+		return "admin/admin_maker_detail";
+	}
+	
+	// 메이커 정보 변경 비즈니스 로직 처리
+	@PostMapping("adminModifyMaker")
+	public String adminModifyMaker(
+			@RequestParam(defaultValue = "1") int pageNum,
+			MakerVO maker, HttpSession session, Model model) {
+		
+		System.out.println("modifyMaker");
+		String uploadDir = "/resources/upload";
+		String saveDir = session.getServletContext().getRealPath(uploadDir);
+		String subDir = "";
+		
+		try {
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			subDir = sdf.format(date);
+			saveDir += "/" + subDir;
+			Path path = Paths.get(saveDir);
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// 파일 업로드 폴더 경로 출력
+		System.out.println("실제 업로드 폴더 경로: " + saveDir);
+		
+		MultipartFile mFile1 = maker.getFile1();
+		MultipartFile mFile2 = maker.getFile2();
+		MultipartFile mFile3 = maker.getFile3();
+		MultipartFile mFile4 = maker.getFile4();
+		MultipartFile mFile5 = maker.getFile5();
+		
+		String uuid = UUID.randomUUID().toString();
+		maker.setMaker_file1("");
+		maker.setMaker_file2("");
+		maker.setMaker_file3("");
+		maker.setMaker_file4("");
+		maker.setMaker_file5("");
+		
+		String fileName1 = null;
+		String fileName2 = null;
+		String fileName3 = null;
+		String fileName4 = null;
+		String fileName5 = null;
+
+		if (mFile1 != null && !mFile1.getOriginalFilename().equals("")) {
+		    fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
+		    maker.setMaker_file1(subDir + "/" + fileName1);
+		}
+
+		if (mFile2 != null && !mFile2.getOriginalFilename().equals("")) {
+		    fileName2 = uuid.substring(0, 8) + "_" + mFile2.getOriginalFilename();
+		    maker.setMaker_file2(subDir + "/" + fileName2);
+		}
+
+		if (mFile3 != null && !mFile3.getOriginalFilename().equals("")) {
+			fileName3 = uuid.substring(0, 8) + "_" + mFile3.getOriginalFilename();
+			maker.setMaker_file3(subDir + "/" + fileName3);
+		}
+		
+		if (mFile4 != null && !mFile4.getOriginalFilename().equals("")) {
+			fileName4 = uuid.substring(0, 8) + "_" + mFile4.getOriginalFilename();
+			maker.setMaker_file4(subDir + "/" + fileName4);
+		}
+		
+		if (mFile5 != null && !mFile5.getOriginalFilename().equals("")) {
+			fileName5 = uuid.substring(0, 8) + "_" + mFile5.getOriginalFilename();
+			maker.setMaker_file5(subDir + "/" + fileName5);
+		}
+		
+		System.out.println("실제 업로드 파일명1 : " + maker.getMaker_file1());
+		System.out.println("실제 업로드 파일명2 : " + maker.getMaker_file2());
+		System.out.println("실제 업로드 파일명3 : " + maker.getMaker_file3());
+		System.out.println("실제 업로드 파일명4 : " + maker.getMaker_file4());
+		System.out.println("실제 업로드 파일명5 : " + maker.getMaker_file5());
+		
+		// -----------------------------------------------------------------------------------
+		
+		int updateCount = makerService.ModifyMakerByAdmin(maker);
+		
+		if(updateCount > 0) {
+			// 파일 업로드 처리
+			try {
+			    if (fileName1 != null) {
+			        mFile1.transferTo(new File(saveDir, fileName1));
+			    }
+			    if (fileName2 != null) {
+			        mFile2.transferTo(new File(saveDir, fileName2));
+			    }
+			    if (fileName3 != null) {
+			    	mFile3.transferTo(new File(saveDir, fileName3));
+			    }
+			    if (fileName4 != null) {
+			    	mFile4.transferTo(new File(saveDir, fileName4));
+			    }
+			    if (fileName5 != null) {
+			    	mFile5.transferTo(new File(saveDir, fileName5));
+			    }
+			} catch (IllegalStateException e) {
+			    e.printStackTrace();
+			} catch (IOException e) {
+			    e.printStackTrace();
+			}
+			
+			// 메이커 정보 변경 성공 시
+			String targetURL = "adminMakerDetail?maker_idx=" + maker.getMaker_idx() + "&pageNum=" + pageNum;
+			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다.");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
+			
+		} else {
+			model.addAttribute("msg", "메이커 정보 수정에 실패하였습니다.");
+			return "fail_back";
+		}
+	}
+	
+	// 메이커 관리 페이지
+	@GetMapping("adminMakerManagement")
+	public String adminMakerManagement(
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword,
+			@RequestParam(defaultValue = "1") int pageNum,
+			HttpSession session, Model model) {
+		
+		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		
+		// 프로젝트 목록 조회 요청
+		List<MakerVO> mList = makerService.getAllMakerList(searchKeyword, searchType, startRow, listLimit);
+		
+		// 페이징 처리를 위한 계산 작업
+		// 1. 전체 게시물 수 조회 요청
+		int listCount = makerService.getAllMakerListCount(searchKeyword, searchType);
+		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+		int pageListLimit = 10;
+		// 3. 전체 페이지 목록 갯수 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 4. 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5. 끝 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {	endPage = maxPage; }
+		
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("mList", mList);
+		model.addAttribute("pageInfo", pageInfo);
 		
 		return "admin/admin_maker_management";
 	}
@@ -110,6 +290,20 @@ public class AdminController {
 		return "admin/admin_project_management";
 	}
 	
+	// 프로젝트 관리 - 상세 페이지
+	@GetMapping("adminProjectManagementDetail")
+	public String adminProjectManagementDetail(@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, HttpSession session, Model model) {
+		
+		ProjectVO project = projectService.getProjectInfo(project_idx);
+		List<RewardVO> rList = projectService.getRewardList(project_idx);
+		
+		model.addAttribute("project", project);
+		model.addAttribute("rList", rList);
+		
+		return "admin/admin_project_management_detail";
+	}
+	
+	
 	// 결제 관리
 	@GetMapping("adminPayment")
 	public String adminPayment() {
@@ -126,7 +320,7 @@ public class AdminController {
 		return sendPhoneMessageService.SendMessage(memberPhone, message, projectIdx);
 	}
 	
-	// 프로젝트 승인관리 페이지
+	// 프로젝트 승인 관리 페이지
 	@GetMapping("adminProjectList")
 	public String adminProject(
 			@RequestParam(defaultValue = "") String searchType,
@@ -171,6 +365,8 @@ public class AdminController {
 			@RequestParam int project_approve_status,
 			HttpServletRequest request) {
 		
+		System.out.println("approveProjectStatus");
+		
 		// toast 팝업 알림을 보내기 위해 member_id 조회하기
 		String memberId = memberService.getMemberId(member_idx);
 		
@@ -178,29 +374,26 @@ public class AdminController {
 		project_approve_status = 3;
 		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
 		
-		ProjectVO project = projectService.getProjectInfo(project_idx);
-        project.setProject_approval_request_time(LocalDateTime.now());
-        projectService.modifyProjectApprovalRequestTime(project);
-		
 		// 1. 상태컬럼 변경 성공 시 결제url이 담긴 toast 팝업 알림 보내기
 		// 2. 결제url이 담긴 메시지 보내기
         // 3. 48시간 안에 결제하지 않을 시 승인거절 처리하는 스케줄러 호출
 		if(updateCount > 0) { 
 			
 			// toast 팝업 알림 보내기
-			String paymnetUrl = "projectPlanPayment?project_idx=" + project_idx;
+			String url = "projectPlanPayment?project_idx=" + project_idx;
+			String subject = "[프로젝트 승인 알림] 프로젝트 승인이 완료되었습니다.";
+			String content = 
+					"<a href='" + url + "'>결제하기</a><a style='text-decoration: none; color: black;'> 링크 클릭 시 요금 결제 페이지로 이동합니다.<br>48시간 안에 결제를 진행하지 않으면 프로젝트가 승인거절 처리 됩니다.</a>";
 			
-			String notification = 
-					"<a href='" + paymnetUrl + "' style='text-decoration: none; color: black;'>[프로젝트 승인 알림] 프로젝트 승인이 완료되었습니다. 48시간 안에 결제를 진행해주세요. 클릭 시 요금 결제 페이지로 이동합니다.</a>";
 			try {
-				echoHandler.sendNotificationToUser(memberId, notification);
+				echoHandler.sendNotificationToUser(memberId, subject);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
 			// 결제url이 담긴 메시지 보내기
 			// 메세지함에서 해당 url 클릭 시 결제 페이지로 이동함
-			int insertCount = notificationService.registNotification(memberId, notification);
+			int insertCount = notificationService.registNotification(memberId, subject, content);
 			if(insertCount > 0) { // 메시지 보내기 성공 시
 				
 				// 프로젝트 승인 상태를 48시간 후에 체크하는 작업 예약
@@ -274,10 +467,9 @@ public class AdminController {
 		return "admin/admin_project_detail";
 	}
 	
-	// 관리자 메시지함
-	// 관리가 발송한 메시지 리스트를 출력
-	@GetMapping("adminMessage")
-	public String adminMessage(
+	// 보낸 메시지함 - 관리자가 발송한 메시지 리스트를 출력
+	@GetMapping("adminSentNotification")
+	public String adminSentNotification(
 			@RequestParam(defaultValue = "") String searchType, 
 			@RequestParam(defaultValue = "") String searchKeyword, 
 			@RequestParam(defaultValue = "1") int pageNum, 
@@ -311,7 +503,47 @@ public class AdminController {
 		model.addAttribute("nList", nList);
 		model.addAttribute("pageInfo", pageInfo);
 		
-		return "admin/admin_notification_list";
+		return "admin/admin_sent_notification_list";
+	}
+	
+	// 받은 메시지함 - 관리자가 받은 메시지 리스트를 출력
+	@GetMapping("adminReceivedNotification")
+	public String adminReceivedNotification(
+			@RequestParam(defaultValue = "") String searchType, 
+			@RequestParam(defaultValue = "") String searchKeyword, 
+			@RequestParam(defaultValue = "1") int pageNum, 
+			HttpSession session, Model model) {
+		String sId = (String) session.getAttribute("sId");
+		// -------------------------------------------------------------------------
+		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		// -------------------------------------------------------------------------
+		// notificationService - getTotalList() 메서드 호출하여 게시물 목록 조회 요청
+		List<NotificationVO> nList = notificationService.getTotalListById(searchType, searchKeyword, sId, startRow, listLimit);
+		// -------------------------------------------------------------------------
+		// 한 페이지에서 표시할 페이지 목록(번호) 계산
+		// 1. notificationService - getNotificationListCount() 메서드를 호출하여
+		int listCount = notificationService.getTotalListCountById(searchType, searchKeyword, sId);
+		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+		int pageListLimit = 10;
+		// 3. 전체 페이지 목록 갯수 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 4. 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5. 끝 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		// 6. 만약, 끝 페이지 번호(endPage)가 전체(최대) 페이지 번호(maxPage) 보다
+		//	  클 경우 끝 페이지 번호를 최대 페이지 번호로 교체
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		// 페이징 처리 정보를 저장할 PageInfoVO 객체에 계산된 데이터 저장
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("nList", nList);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		return "admin/admin_received_notification_list";
 	}
 	
 	// 데이터 분석 
@@ -383,5 +615,210 @@ public class AdminController {
     		labels, dailyPaymentAmounts, acmlPaymentAmounts, dailySupporterCounts, acmlSupporterCounts, acmlPaymentAmount, acmlSupporterCount);
 	}
 
+	// 프로젝트 정보 수정 비즈니스 로직 처리
+	@PostMapping("adminModifyProject")
+	public String adminModifyProject(@RequestParam(defaultValue = "1") int pageNum, ProjectVO project, HttpSession session, Model model) {
+
+	    System.out.println("adminModifyProject");
+	    String uploadDir = "/resources/upload";
+	    String saveDir = session.getServletContext().getRealPath(uploadDir);
+	    String subDir = "";
+
+	    try {
+	        Date date = new Date();
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+	        subDir = sdf.format(date);
+	        saveDir += "/" + subDir;
+	        Path path = Paths.get(saveDir);
+	        Files.createDirectories(path);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    // 파일 업로드 폴더 경로 출력
+	    System.out.println("실제 업로드 폴더 경로: " + saveDir);
+
+	    MultipartFile mFile1 = project.getFile1();
+	    MultipartFile mFile2 = project.getFile2();
+	    MultipartFile mFile3 = project.getFile3();
+	    MultipartFile mFile4 = project.getFile4();
+	    MultipartFile mFile5 = project.getFile5();
+
+	    String uuid = UUID.randomUUID().toString();
+	    project.setProject_thumnails1("");
+	    project.setProject_thumnails2("");
+	    project.setProject_thumnails3("");
+	    project.setProject_image("");
+	    project.setProject_settlement_image("");
+
+	    String fileName1 = null;
+	    String fileName2 = null;
+	    String fileName3 = null;
+	    String fileName4 = null;
+	    String fileName5 = null;
+
+	    if (mFile1 != null && !mFile1.getOriginalFilename().equals("")) {
+	        fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
+	        project.setProject_thumnails1(subDir + "/" + fileName1);
+	    }
+
+	    if (mFile2 != null && !mFile2.getOriginalFilename().equals("")) {
+	        fileName2 = uuid.substring(0, 8) + "_" + mFile2.getOriginalFilename();
+	        project.setProject_thumnails2(subDir + "/" + fileName2);
+	    }
+
+	    if (mFile3 != null && !mFile3.getOriginalFilename().equals("")) {
+	        fileName3 = uuid.substring(0, 8) + "_" + mFile3.getOriginalFilename();
+	        project.setProject_thumnails3(subDir + "/" + fileName3);
+	    }
+
+	    if (mFile4 != null && !mFile4.getOriginalFilename().equals("")) {
+	        fileName4 = uuid.substring(0, 8) + "_" + mFile4.getOriginalFilename();
+	        project.setProject_image(subDir + "/" + fileName4);
+	    }
+
+	    if (mFile5 != null && !mFile5.getOriginalFilename().equals("")) {
+	        fileName5 = uuid.substring(0, 8) + "_" + mFile5.getOriginalFilename();
+	        project.setProject_settlement_image(subDir + "/" + fileName5);
+	    }
+
+	    System.out.println("실제 업로드 파일명1 : " + project.getProject_thumnails1());
+	    System.out.println("실제 업로드 파일명2 : " + project.getProject_thumnails2());
+	    System.out.println("실제 업로드 파일명3 : " + project.getProject_thumnails3());
+	    System.out.println("실제 업로드 파일명4 : " + project.getProject_image());
+	    System.out.println("실제 업로드 파일명5 : " + project.getProject_settlement_image());
+
+	    // -----------------------------------------------------------------------------------
+
+	    int updateCount = projectService.modifyProjectByAdmin(project);
+
+	    if (updateCount > 0) {
+	        // 파일 업로드 처리
+	        try {
+	            if (fileName1 != null) {
+	                mFile1.transferTo(new File(saveDir, fileName1));
+	            }
+	            if (fileName2 != null) {
+	                mFile2.transferTo(new File(saveDir, fileName2));
+	            }
+	            if (fileName3 != null) {
+	                mFile3.transferTo(new File(saveDir, fileName3));
+	            }
+	            if (fileName4 != null) {
+	                mFile4.transferTo(new File(saveDir, fileName4));
+	            }
+	            if (fileName5 != null) {
+	                mFile5.transferTo(new File(saveDir, fileName5));
+	            }
+	        } catch (IllegalStateException e) {
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+
+	        // 프로젝트 정보 변경 성공 시
+	        String targetURL = "adminProjectManagementDetail?project_idx=" + project.getProject_idx() + "&pageNum=" + pageNum;
+	        model.addAttribute("msg", "프로젝트 정보 수정이 완료되었습니다.");
+	        model.addAttribute("targetURL", targetURL);
+	        return "success_forward";
+
+	    } else {
+	        model.addAttribute("msg", "프로젝트 정보 수정에 실패하였습니다.");
+	        return "fail_back";
+	    }
+	}
+	
+	// 프로젝트 수정하기 - 첨부파일 실시간 삭제
+	@PostMapping("deleteProjectFile")
+	@ResponseBody
+	public String deleteProjectFile(int project_idx, String fileName, int fileNumber, HttpSession session) {
+		System.out.println("deleteFile() - fileName : " + fileName);
+		// 파일 삭제 요청
+	    int deleteCount = projectService.removeProjectFile(project_idx, fileName, fileNumber);
+	    if (deleteCount != 0) {
+	        // 파일 삭제 로직
+	        String uploadDir = "/resources/upload";
+	        String saveDir = session.getServletContext().getRealPath(uploadDir);
+	        String filePath = saveDir + "/" + fileName;
+	        File file = new File(filePath);
+	        if (file.exists()) {
+	            if (file.delete()) {
+	                return "success";
+	            } else {
+	                return "fail";
+	            }
+	        } else {
+	            // 파일이 이미 삭제되어 있음
+	            return "success";
+	        }
+	    } else {
+	        return "fail";
+	    }
+	}
+	
+	// 회원 관리 페이지
+	@GetMapping("adminMemberManagement")
+	public String adminMember(@RequestParam(defaultValue = "") String searchType,
+							  @RequestParam(defaultValue = "") String searchKeyword,
+							  @RequestParam(defaultValue = "1") int pageNum,
+							  HttpSession session, Model model) {
+		
+		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		
+		// 회원 목록 조회 요청
+		List<MembersVO> memberList = memberService.getAllMemberList(searchKeyword, searchType, startRow, listLimit);
+		
+		// 페이징 처리를 위한 계산 작업
+		// 1. 전체 게시물 수 조회 요청
+		int listCount = memberService.getAllMemberListCount(searchKeyword, searchType);
+		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+		int pageListLimit = 10;
+		// 3. 전체 페이지 목록 갯수 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 4. 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5. 끝 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {	endPage = maxPage; }
+		
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		return "admin/admin_member_management";
+	}
+	
+	// 회원 상세정보 보기
+	@GetMapping("adminMemberDetail")
+	public String adminMemberDetail(@RequestParam(required = true) Integer member_idx, HttpSession session, Model model) {
+		MembersVO member = memberService.getMemberInfo(member_idx); // 회원 정보 조회
+		List<MembersVO> memberActivityList = memberService.getMemberActivityList(member_idx); // 회원 활동내역 목록 조회
+		
+		model.addAttribute("member", member);
+		
+		return "admin/admin_member_detail";
+	}
+	
+	// 회원 정보 변경 비즈니스 로직 처리
+	@PostMapping("adminModifyMember")
+	public String adminModifyMember(
+			@RequestParam(defaultValue = "1") int pageNum,
+			MembersVO member, HttpSession session, Model model) {
+		
+		int updateCount = memberService.ModifyMemberByAdmin(member); // 회원 정보 수정
+		
+		if(updateCount > 0) {
+			// 회원 정보 변경 성공 시
+			String targetURL = "adminMemberDetail?member_idx=" + member.getMember_idx() + "&pageNum=" + pageNum;
+			model.addAttribute("msg", "회원 정보 수정이 완료되었습니다.");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
+		} else {
+			model.addAttribute("msg", "메이커 정보 수정에 실패하였습니다.");
+			return "fail_back";
+		}
+	}
 	
 }

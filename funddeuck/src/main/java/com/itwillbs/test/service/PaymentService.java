@@ -134,4 +134,14 @@ public class PaymentService {
 		return mapper.selectPaymentDetail(payment_idx);
 	}
 	
+	// 정산내역 조회
+	public List<PaymentVO> getSettlementList(int project_idx) {
+		return mapper.selectSettlementList(project_idx);
+	}
+	
+	// 오늘 등록된 서포터 수
+	public int getSupportCountByPaymentDate() {
+		return mapper.selectSupportCountByPaymentDate();
+	}
+	
 }

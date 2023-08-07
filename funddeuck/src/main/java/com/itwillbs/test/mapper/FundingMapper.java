@@ -53,5 +53,8 @@ public interface FundingMapper {
 	
 	// 프로젝트 상세 페이지에서 의견 남기기
 	int insertComment(ProjectCommunityVO projectCommunity);
+
+	// 오픈 예정 프로젝트 리스트 조회(탐색 페이지)
+	List<ProjectVO> selectExpectedFundingList(String category);
 	
 }

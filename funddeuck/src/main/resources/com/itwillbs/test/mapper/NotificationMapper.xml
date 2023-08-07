@@ -9,6 +9,7 @@
 				values(
 				null                      -- 알림번호
 				, #{target}               -- 회원아이디
+				, #{subject}              -- 알리제목
 				, #{content}              -- 알림내용
 				, now()	                  -- 알림날짜
 				, 1                       -- 알림상태: 1-읽지 않음, 2-읽음'	
@@ -59,7 +60,7 @@
   				order by notification_regdate desc
   	</select>
   	
-  	<!-- 전체 메시지 조회 - 관리자 -->
+  	<!-- 관리자 - 전체 메시지 조회 -->
   	<select id="selectTotalList" resultType="com.itwillbs.test.vo.NotificationVO">
   		select *
   			from notification -- 동적 SQL문
@@ -69,6 +70,9 @@
 				WHERE
 				<!-- 2. 검색타입(searchType)에 따른 WHERE 절 조건 대상 변경 -->
 				<choose>
+					<when test="searchType.equals('subject')">
+						notification_subject LIKE '%${searchKeyword}%'
+					</when>
 					<when test="searchType.equals('content')">
 						notification_content LIKE '%${searchKeyword}%'
 					</when>
@@ -84,11 +88,24 @@
 				, #{listLimit}
   	</select>
   	
-  	<!-- 전체 메시지 갯수 조회 -->
+  	<!-- 관리자 - 전체 메시지 갯수 조회-->
   	<select id="selectNotificationListCount" resultType="int">
   		select count(*)
-  			from
-  				notification 
+			from notification
+		<if test="!searchKeyword.equals('')">
+		where
+			<choose>
+				<when test="searchType.equals('subject')">
+					notification_subject LIKE '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('content')">
+					notification_content LIKE '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('name')">
+					member_id LIKE '%${searchKeyword}%'
+				</when>
+			</choose>
+		</if>
   	</select>
   	
   	<!-- 삭제 처리 -->
@@ -108,6 +125,10 @@
 			<if test="!searchKeyword.equals('')">
 				<!-- 2. 검색타입(searchType)에 따른 WHERE 절 조건 대상 변경 -->
 				<choose>
+					<when test="searchType.equals('subject')">
+						notification_subject LIKE '%${searchKeyword}%'
+							and
+					</when>
 					<when test="searchType.equals('content')">
 						notification_content LIKE '%${searchKeyword}%'
 							and
@@ -128,12 +149,26 @@
   			from notification -- 동적 SQL문
 		WHERE
 			<if test="!searchKeyword.equals('')">
-				<if test="searchType.equals('content')">
-					notification_content LIKE '%${searchKeyword}%'
-						and
-				</if>
+				<choose>
+					<when test="searchType.equals('subject')">
+						notification_subject LIKE '%${searchKeyword}%'
+							and
+					</when>
+					<when test="searchType.equals('content')">
+						notification_content LIKE '%${searchKeyword}%'
+							and
+					</when>
+				</choose>
 			</if>
 				member_id = #{sId}
+  	</select>
+  	
+  	<!-- 메시지 정보 조회 -->
+  	<select id="selectNotificationInfo">
+  		select *
+  			from notification
+  		where
+  			notification_idx = #{notification_idx}
   	</select>
   	
 </mapper>

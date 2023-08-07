@@ -1,6 +1,7 @@
 package com.itwillbs.test.vo;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +40,8 @@ CREATE TABLE project (
 	project_approval_request_time DATETIME COMMENT '프로젝트 승인 요청 시간',
     maker_idx int NOT NULL COMMENT '메이커 번호',
 	token_idx int NOT NULL COMMENT '프로젝트 인증에 사용될 토큰 번호',
+	first_amount INT DEFAULT 0 COMMENT '1차 정산금액',
+    settlement_status INT NOT NULL DEFAULT 1 COMMENT '정산 상태(1: 미정산, 2:1차정산완료, 3:최종정산완료)'
     FOREIGN KEY (maker_idx) REFERENCES maker(maker_idx) ON DELETE CASCADE,
 	FOREIGN KEY (token_idx) references token(token_idx) ON DELETE CASCADE
 );
@@ -73,10 +76,12 @@ public class ProjectVO {
 	private String project_fintech_use_num;					// 프로젝트 핀테크 이용번호
 	private String project_settlement_image;				// 통장사본 이미지
 	private int project_approve_status;						// 프로젝트 승인 상태
-	private LocalDateTime project_approval_request_time;    // 프로젝트 승인 요청 시간 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
+	private Timestamp project_approval_request_time;    	// 프로젝트 승인 요청 시간 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 	private int project_status;								// 프로젝트 상태 프로젝트 상태 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료
-	private int token_idx;									// 프로젝트 계좌 인증에 사용될 토큰 번호
 	private int maker_idx;									// 메이커 번호
+	private int token_idx;									// 프로젝트 계좌 인증에 사용될 토큰 번호
+	private int first_amount;								// 1차 정산금액
+	private int settlement_status;							// 정산 상태 1-미정산, 2-1차정산완료, 3-최종정산완료
 	
 	private MultipartFile file1;							// 프로젝트 썸네일 (1)
  	private MultipartFile file2;							// 프로젝트 썸네일 (2)

@@ -102,4 +102,10 @@ public interface PaymentMapper {
 	// 결제내역 조회
 	PaymentVO selectPaymentDetail(int payment_idx);
 
+	// 정산내역 조회
+	List<PaymentVO> selectSettlementList(int project_idx);
+	
+	// 오늘 등록된 서포터 수
+	int selectSupportCountByPaymentDate();
+
 }

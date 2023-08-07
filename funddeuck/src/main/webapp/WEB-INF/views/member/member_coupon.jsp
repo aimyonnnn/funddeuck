@@ -183,7 +183,6 @@
 	            url: '${pageContext.request.contextPath}/member/coupon-info', 
 	            data: { couponNumber: couponNumber },
 	            success: function (data) {
-	                // Check if coupon_use is 1 (already used)
 	                if (data.coupon_use === 1) {
 	                    alert('이미 사용된 쿠폰입니다. 등록할 수 없습니다.');
 	                    return;

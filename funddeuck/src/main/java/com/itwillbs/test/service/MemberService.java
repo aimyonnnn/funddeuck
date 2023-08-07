@@ -158,7 +158,7 @@ public class MemberService {
 	// 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회
 	public MembersVO getMemberInfoByProjectIdx(int project_idx) {
 		return mapper.selectMemberInfoByProjectIdx(project_idx);
-	}
+	}	
 	
 	// 리뷰 삭제
 	public int deleteMemberReview(int num) {
@@ -168,7 +168,31 @@ public class MemberService {
 	public String getMakerMemberId(int maker_idx) {
 		return mapper.getMakerMemberId(maker_idx);
 	}
-	
 
+
+	// 회원 목록 조회 요청
+	public List<MembersVO> getAllMemberList(String searchKeyword, String searchType, int startRow, int listLimit) {
+		return mapper.selectAllMemberList(searchKeyword, searchType, startRow, listLimit);
+	}
+
+	// 전체 회원 갯수 조회
+	public int getAllMemberListCount(String searchKeyword, String searchType) {
+		return mapper.selectAllMemberListCount(searchKeyword, searchType);
+	}
+
+	// 회원 상세정보 보기
+	public MembersVO getMemberInfo(Integer member_idx) {
+		return mapper.selectMemberInfo(member_idx);
+	}
+
+	// 회원 정보 변경 비즈니스 로직 처리
+	public int ModifyMemberByAdmin(MembersVO member) {
+		return mapper.updateMemberByAdmin(member);
+	}
+
+	// 회원 활동내역 목록 조회
+	public List<MembersVO> getMemberActivityList(Integer member_idx) {
+		return mapper.selectMemberActivityList(member_idx);
+	}
 
 }

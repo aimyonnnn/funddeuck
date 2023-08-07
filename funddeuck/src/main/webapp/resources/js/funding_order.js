@@ -39,6 +39,7 @@
 			        console.log(saveDelivery);
 			        // 기존 배송지란에 있던 내용 지우기
 			        $('#deliveryContainer').html('');
+			        $('#delivery_idx').val();
 			        
 			        let output = '<div class="col">'
 							+ '<div class="row-12">'
@@ -61,6 +62,7 @@
 						
 			        // 배송지란에 등록된 기본배송지 출력
 			        $('#deliveryContainer').html(output);
+			        $('#delivery_idx').val(saveDelivery.delivery_idx);
 			        	
 			        
 					
@@ -204,6 +206,7 @@
 			        $("#deliveryChangeModalClose").click();
 			        // 기존 배송지란에 있던 내용 지우기
 			        $('#deliveryContainer').html('');
+			        $('#delivery_idx').val();
 			        
 					let output = '<div class="col">'
 						+ '<div class="row-12">'
@@ -230,6 +233,7 @@
 						
 			        // 배송지란에 변경된 배송지 출력
 			        $('#deliveryContainer').html(output);			     	
+			        $('#delivery_idx').val(delivery.delivery_idx);			     	
 					
 				} else {
 					console.log("배송지 등록 실패!");
@@ -273,7 +277,8 @@
 						$('#rewardContainer').html('');
 						$('#rewardPrice').html('');
 						$('#rewardDeliveryPrice').html('');
-						
+						$('#reward_idx').val();
+						$('#reward_price').val();
 						
 						
 						// HTML 출력할 내용
@@ -302,10 +307,13 @@
 						            + '</table>';			
 						let output2 = reward.reward_price;
 						let output3 = reward.delivery_price;
+						let output4 = reward.reward_idx;
 			            // 출력하기
 			            $('#rewardContainer').html(output);
 			            $('#rewardPrice').html(output2);
 			            $('#rewardDeliveryPrice').html(output3);
+			            $('#reward_idx').val(output4);
+			            $('#reward_price').val(output2);
 						updateCouponSale();
 						updateTotalPrice();
 					},
@@ -371,6 +379,7 @@
 			couponSaleElement.innerText = '';
 			// 쿠폰 사용 금액 0 으로 출력
 			couponPriceElement.innerText = 0;
+			$("#use_coupon_amount").val(0);
 			updateTotalPrice();
 		} else {
 			// 쿠폰 사용금액 계산
@@ -381,6 +390,7 @@
 			// 쿠폰 사용 금액 출력
 			minusElement.innerText = '-';
 			couponPriceElement.innerText = discountedPrice.toString();
+			$("#use_coupon_amount").val(discountedPrice);
 			updateTotalPrice();
 		}
 	}	
@@ -411,6 +421,7 @@
 				inputAmount = 0;
 			}
 		    $("#addDonationAmount").text(inputAmount);
+		    $("#additional_amount").val(inputAmount);
 		    updateTotalPrice();
 		});
 		
@@ -428,6 +439,7 @@
 	
 	    let totalPrice = rewardPrice + deliveryPrice + addDonationAmount - couponPrice;
 	    document.getElementById("totalPrice").innerText = totalPrice;
+	    $("#total_amount").val(totalPrice);
 	}
 // ===========================================================
 // 계좌인증
