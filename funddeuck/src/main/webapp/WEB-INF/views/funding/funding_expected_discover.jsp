@@ -9,19 +9,20 @@
 <meta charset="UTF-8">
 <title>펀딩</title>
 <!-- 부트스트랩 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-<!-- line-awesome icons CDN -->
-<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <!-- fundingDiscover page CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/funding_discover.css">
+<!-- 공용 css -->
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
+<!-- line-awesome icons CDN -->
+<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <!-- header include -->
 <jsp:include page="../Header.jsp"></jsp:include>
 <!-- Jquery CDN -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- fundingDiscover page JS -->
 <script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
-<!-- 공용 css -->
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 </head>
 <body>
 <!-- 요청 파라미터 값 저장 -->
@@ -45,17 +46,17 @@
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="${pageContext.request.contextPath }/resources/images/banner1.png" class="d-block w-100 h-auto" alt="...">
+            <img src="./resources/images/banner1.png" class="d-block w-100 h-auto" alt="...">
             <div class="carousel-caption d-none d-md-block">
             </div>
         </div>
         <div class="carousel-item">
-            <img src="${pageContext.request.contextPath }/resources/images/banner2.png" class="d-block w-100 h-auto" alt="...">
+            <img src="./resources/images/banner2.png" class="d-block w-100 h-auto" alt="...">
             <div class="carousel-caption d-none d-md-block">
             </div>
         </div>
         <div class="carousel-item">
-            <img src="${pageContext.request.contextPath }/resources/images/banner3.png" class="d-block w-100 h-auto" alt="...">
+            <img src="./resources/images/banner3.png" class="d-block w-100 h-auto" alt="...">
             <div class="carousel-caption d-none d-md-block">
             </div>
         </div>

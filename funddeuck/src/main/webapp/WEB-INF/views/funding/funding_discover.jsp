@@ -9,19 +9,20 @@
 <meta charset="UTF-8">
 <title>펀딩</title>
 <!-- 부트스트랩 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-<!-- line-awesome icons CDN -->
-<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-<!-- Jquery CDN -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <!-- fundingDiscover page CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/funding_discover.css">
 <!-- 공용 css -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/mypage.css" />
-<!-- fundingDiscover page JS -->
-<script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
+<!-- line-awesome icons CDN -->
+<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <!-- header include -->
 <jsp:include page="../Header.jsp"></jsp:include>
+<!-- Jquery CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- fundingDiscover page JS -->
+<script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
 </head>
 <body>
 <!-- header fixed 속성으로 인한 공백 추가 -->
@@ -42,36 +43,36 @@
 	</button>
 <!-- 상위 노출 슬라이드 이미지 영역 -->
 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="${pageContext.request.contextPath }/resources/images/banner1.png" class="d-block w-100 h-auto" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="${pageContext.request.contextPath }/resources/images/banner2.png" class="d-block w-100 h-auto" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="${pageContext.request.contextPath }/resources/images/banner3.png" class="d-block w-100 h-auto" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-            </div>
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
+	<div class="carousel-indicators">
+	    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+	    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+	    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+	</div>
+	<div class="carousel-inner">
+	    <div class="carousel-item active">
+	        <img src="./resources/images/banner1.png" class="d-block w-100 h-auto" alt="...">
+	        <div class="carousel-caption d-none d-md-block">
+	        </div>
+	    </div>
+	    <div class="carousel-item">
+	        <img src="./resources/images/banner2.png" class="d-block w-100 h-auto" alt="...">
+	        <div class="carousel-caption d-none d-md-block">
+	        </div>
+	    </div>
+	    <div class="carousel-item">
+	        <img src="./resources/images/banner3.png" class="d-block w-100 h-auto" alt="...">
+	        <div class="carousel-caption d-none d-md-block">
+	        </div>
+	    </div>
+	</div>
+	<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">Previous</span>
+	</button>
+	<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">Next</span>
+	</button>
 </div>
 <br>
 <!-- 카테고리 바 영역 -->
