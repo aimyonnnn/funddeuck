@@ -417,4 +417,46 @@
 		</if>
 	</select>
 	
+	<!-- 관리자 - 결제정보 수정 -->
+	<update id="updatePaymentByAdmin">
+	 UPDATE payment
+		SET
+			<if test="!cancel_img.equals('')">
+				cancel_img = #{cancel_img},      			-- 취소증빙이미지
+			</if>
+			member_email = #{member_email},
+			member_phone = #{member_phone},
+			reward_amount = #{reward_amount},
+			additional_amount = #{additional_amount},
+			use_coupon_amount = #{use_coupon_amount},
+			total_amount = #{total_amount},
+			payment_date = #{payment_date},
+			payment_quantity = #{payment_quantity},
+			payment_confirm = #{payment_confirm},
+			payment_method = #{payment_method},
+			refund_bank = #{refund_bank},
+			refund_accountnum = #{refund_accountnum},
+			delivery_method = #{delivery_method},
+			courier = #{courier},
+			waybill_num = #{waybill_num},
+			delivery_status = #{delivery_status},
+			cancel_context = #{cancel_context}
+     	WHERE
+    		payment_idx = #{payment_idx}
+	</update>
+	
+	<!-- 관리자 - 결제정보 수정 - 첨부파일 실시간 삭제 -->
+	<delete id="deletePaymentFile">
+		update payment
+		  set
+		      <if test="fileNumber == 1">
+		        cancel_img = ''
+		      </if>
+		  where
+		    payment_idx = #{payment_idx}
+		    and (
+		      (#{fileNumber} = 1 and cancel_img != '')
+		    )
+	</delete>
+		
 </mapper>

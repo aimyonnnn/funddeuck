@@ -110,10 +110,16 @@ public interface PaymentMapper {
 	
 	// 관리자 - 결제내역 조회
 	List<PaymentVO> selectAllPaymentList(
-			@Param("searchKeyword") String searchKeyword, @Param("searchKeyword") String searchType,
+			@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType,
 			@Param("startRow") int startRow, @Param("listLimit") int listLimit);
 	
 	// 관리자 - 결제내역 갯수 조회
-	int selectAllPaymentListCount(@Param("searchKeyword") String searchKeyword, @Param("searchKeyword") String searchType);
+	int selectAllPaymentListCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType);
+	
+	// 관리자 - 결제정보 수정
+	int updatePaymentByAdmin(PaymentVO payment);
+	
+	// 관리자 - 결제정보 수정 - 첨부파일 실시간 삭제
+	int deletePaymentFile(@Param("payment_idx") int payment_idx, @Param("fileName") String fileName, @Param("fileNumber") int fileNumber);
 
 }

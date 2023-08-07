@@ -91,6 +91,98 @@ public class AdminController {
 		return "admin/admin_main";
 	}
 	
+	// 결제 관리 - 결제 정보 수정 - 첨부파일 실시간 삭제
+	@PostMapping("deletePaymentFile")
+	@ResponseBody
+	public String deletePaymentFile(int payment_idx, String fileName, int fileNumber, HttpSession session) {
+		System.out.println("deleteFile() - fileName : " + fileName);
+		// 파일 삭제 요청
+	    int deleteCount = paymentService.removePaymentFile(payment_idx, fileName, fileNumber);
+	    if (deleteCount != 0) {
+	        // 파일 삭제 로직
+	        String uploadDir = "/resources/upload";
+	        String saveDir = session.getServletContext().getRealPath(uploadDir);
+	        String filePath = saveDir + "/" + fileName;
+	        File file = new File(filePath);
+	        if (file.exists()) {
+	            if (file.delete()) {
+	                return "success";
+	            } else {
+	                return "fail";
+	            }
+	        } else {
+	            // 파일이 이미 삭제되어 있음
+	            return "success";
+	        }
+	    } else {
+	        return "fail";
+	    }
+	}
+	
+	// 결제 관리 - 결제 정보 수정 비즈니스 로직 처리
+	@PostMapping("adminModifyPayment")
+	public String adminModifyPayment(PaymentVO payment, Model model, 
+			@RequestParam(defaultValue = "1") int pageNum, HttpSession session, HttpServletRequest request) {
+		
+		System.out.println("adminModifyProject");
+	    String uploadDir = "/resources/upload";
+	    String saveDir = session.getServletContext().getRealPath(uploadDir);
+	    String subDir = "";
+
+	    try {
+	        Date date = new Date();
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+	        subDir = sdf.format(date);
+	        saveDir += "/" + subDir;
+	        Path path = Paths.get(saveDir);
+	        Files.createDirectories(path);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    System.out.println("실제 업로드 폴더 경로: " + saveDir);
+	    MultipartFile mFile1 = payment.getFile1();
+	    String uuid = UUID.randomUUID().toString();
+	    payment.setCancel_img("");
+	    String fileName1 = null;
+
+	    if (mFile1 != null && !mFile1.getOriginalFilename().equals("")) {
+	        fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
+	        payment.setCancel_img(subDir + "/" + fileName1);
+	    }
+	    System.out.println("실제 업로드 파일명1 : " + payment.getCancel_img());
+	    // -----------------------------------------------------------------------------------
+	    int updateCount = paymentService.modifyPaymentByAdmin(payment);
+	    if (updateCount > 0) {
+	        // 파일 업로드 처리
+	        try {
+	            if (fileName1 != null) {
+	                mFile1.transferTo(new File(saveDir, fileName1));
+	            }
+	        } catch (IllegalStateException e) {
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        // 결제 정보 변경 성공 시
+	        String targetURL = "adminPaymentDetail?payment_idx=" + payment.getPayment_idx() + "&pageNum=" + pageNum;
+			model.addAttribute("msg", "결제 정보 수정이 완료되었습니다.");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
+	    } else {
+	        model.addAttribute("msg", "프로젝트 정보 수정에 실패하였습니다.");
+	        return "fail_back";
+	    }
+	}
+	
+	// 결제 관리 - 상세보기 페이지
+	@GetMapping("adminPaymentDetail")
+	public String adminPaymentDetail(@RequestParam(required = true) Integer payment_idx, HttpSession session, Model model) {
+		PaymentVO payment = paymentService.getPaymentDetail(payment_idx);
+		model.addAttribute("payment", payment);
+		return "admin/admin_payment_detail";
+	}
+	
 	// 결제 관리
 	@GetMapping("adminPayment")
 	public String adminPayment(

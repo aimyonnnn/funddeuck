@@ -52,7 +52,7 @@ th, td {
 	<!-- 검색 버튼 -->
 	<div class="d-flex flex-row justify-content-center my-5">
 		<!-- form 태그 시작 -->
-		<form action="adminProjectManagement" class="d-flex flex-row justify-content-end">
+		<form action="adminPayment" class="d-flex flex-row justify-content-end">
 			<!-- 셀렉트 박스 -->
 			<select class="form-select form-select-sm me-2" name="searchType" id="searchType" style="width: 100px;">
 				<option value="phone" <c:if test="${param.searchType eq 'phone'}">selected</c:if>>연락처</option>
@@ -75,60 +75,45 @@ th, td {
 			<table class="table">
 				<tr>
 					<th class="text-center" style="width: 5%;">번호</th>
-					<th class="text-center" style="width: 5%;">카테고리</th>
-					<th class="text-center" style="width: 20%;">프로젝트 이름</th>
-					<th class="text-center" style="width: 5%;">대표자</th>
-					<th class="text-center" style="width: 5%;">요금제</th>
-					<th class="text-center" style="width: 5%;">목표금액</th>
-					<th class="text-center" style="width: 10%;">기간</th>
-					<th class="text-center" style="width: 5%;">상태</th>
+					<th class="text-center" style="width: 8%;">연락처</th>
+					<th class="text-center" style="width: 13%;">이메일</th>
+					<th class="text-center" style="width: 5%;">리워드금액</th>
+					<th class="text-center" style="width: 5%;">주문수량</th>
+					<th class="text-center" style="width: 5%;">최종금액</th>
+					<th class="text-center" style="width: 5%;">주문날짜</th>
+					<th class="text-center" style="width: 5%;">승인여부</th>
 					<th class="text-center" style="width: 5%;">상세정보</th>
 				</tr>
 				
 				<c:forEach var="pList" items="${pList}">
 					<tr>
-						<td class="text-center" >${pList.project_idx}</td>
-						<td class="text-center">${pList.project_category}</td>
+						<td class="text-center" >${pList.payment_idx}</td>
+						<td class="text-center">${pList.member_phone}</td>
+						<td class="text-center">${pList.member_email}</td>
 						<td class="text-center">
-							<a href="adminProjectManagementDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}" style="text-decoration: none; color: black;">
-								${pList.project_subject}
-							</a> 
+							<fmt:formatNumber pattern="#,##0" value="${pList.reward_amount}" var="rewardAmount" />
+							${rewardAmount}원						
 						</td>
-						<td class="text-center">${pList.project_representative_name}</td>
+						<td class="text-center">${pList.payment_quantity}</td>
+						<td class="text-center">
+							<fmt:formatNumber pattern="#,##0" value="${pList.total_amount}"  var="paymentQuantity"/>
+							${paymentQuantity}원
+						</td>
+						<td class="text-center">
+							<fmt:formatDate value="${pList.payment_date}" pattern="yy-MM-dd"/>
+						</td>
 						<td class="text-center">
 							<c:choose>
-								<c:when test="${pList.project_plan eq 1}">
-									기본
-								</c:when>
-								<c:otherwise>
-									인플루언서
-								</c:otherwise>
+								<c:when test="${pList.payment_confirm eq 1}">예약완료</c:when>
+								<c:when test="${pList.payment_confirm eq 2}">결제완료</c:when>
+								<c:when test="${pList.payment_confirm eq 3}">반환신청</c:when>
+								<c:when test="${pList.payment_confirm eq 4}">반환완료</c:when>
+								<c:when test="${pList.payment_confirm eq 5}">반환거절</c:when>
 							</c:choose>
 						</td>
-						<td class="text-center">${pList.project_target}</td>
-						<td class="text-center">
-   							<fmt:formatDate value="${pList.project_start_date}" pattern="yy/MM/dd" />~<fmt:formatDate value="${pList.project_end_date}" pattern="yy/MM/dd" />
-						</td>
-						<c:choose>
-							<c:when test="${pList.project_approve_status eq 1}">
-								<td class="text-center">미승인</td>
-							</c:when>
-							<c:when test="${pList.project_approve_status eq 2}">
-								<td class="text-center text-danger">승인요청</td>
-							</c:when>
-							<c:when test="${pList.project_approve_status eq 3}">
-								<td class="text-center text-success">승인완료</td>
-							</c:when>
-							<c:when test="${pList.project_approve_status eq 5}">
-								<td class="text-center">결제완료</td>
-							</c:when>
-							<c:otherwise>
-								<td class="text-center">승인거절</td>
-							</c:otherwise>
-						</c:choose>
 						<td class="text-center" style="width: 5%;">
 							<button class="btn btn-outline-primary btn-sm" 
-							onclick="location.href='adminProjectManagementDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}'">상세보기</button>
+							onclick="location.href='adminPaymentDetail?payment_idx=${pList.payment_idx}&pageNum=${pageNum}'">상세보기</button>
 						</td>
 					</tr>
 				</c:forEach>

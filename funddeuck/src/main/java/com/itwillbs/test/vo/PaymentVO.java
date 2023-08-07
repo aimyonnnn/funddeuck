@@ -3,6 +3,8 @@ package com.itwillbs.test.vo;
 import java.sql.Date;
 import java.util.Optional;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 /*
@@ -74,6 +76,8 @@ public class PaymentVO {
 	private String waybill_num;
 	private int delivery_status;
 	
+	// 첨부파일
+ 	private MultipartFile file1;					// 취소증빙이미지
 	
 	// ########## total_amount, payment_date 컬럼명 변경 시 꼭 알려주세요! ##########
 	// 차트 & 프로젝트 현황 출력 시 사용

@@ -154,4 +154,14 @@ public class PaymentService {
 		return mapper.selectAllPaymentListCount(searchKeyword, searchType);
 	}
 	
+	// 관리자 - 결제정보 수정
+	public int modifyPaymentByAdmin(PaymentVO payment) {
+		return mapper.updatePaymentByAdmin(payment);
+	}
+	
+	// 관리자 - 결제정보 수정 - 첨부파일 실시간 삭제
+	public int removePaymentFile(int payment_idx, String fileName, int fileNumber) {
+		return mapper.deletePaymentFile(payment_idx, fileName, fileNumber);
+	}
+	
 }
