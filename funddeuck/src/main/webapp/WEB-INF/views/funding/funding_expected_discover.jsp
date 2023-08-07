@@ -27,8 +27,6 @@
 <body>
 <!-- 요청 파라미터 값 저장 -->
 <input type="hidden" value="${param.category }" id="categoryVal">
-<div class="mask"></div>
-<div class="loadingImg"></div>
 <!-- 현재 날짜 정보 저장 -->
 <c:set var="today" value="<%=new java.util.Date()%>" />
 <!-- 상단 이동 버튼 -->
@@ -208,46 +206,6 @@ function chageLangSelect(){
 
     location.href = "fundingDiscover?category=" + category;
 }
-
-// 페이지 로딩 스크립트
-$(function() {
-
-	Loading();	
-	setTimeout("closeLoading()", 100);
-
-	});
-
-function Loading() {
-    var maskHeight = $(document).height();
-    var maskWidth  = window.document.body.clientWidth;
-     
-    var mask       = "<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
-    var loadingImg = '${pageContext.request.contextPath }/resources/images/loading.gif';
-     
-    loadingImg +=" <div id='loadingImg'>";
-    loadingImg +=" <img src='${pageContext.request.contextPath }/resources/images/loading.gif' style='position:absolute; z-index:9500; text-align:center; display:block; margin-top:300px; margin-left:750px;'/>";
-    loadingImg += "</div>";  
- 
-    $('body')
-        .append(mask)
- 
-    $('#mask').css({
-            'width' : maskWidth,
-            'height': maskHeight,
-            'opacity' :'0.3'
-    });
-    
-    $('#mask').show();
-  
-    $('.loadingImg').append(loadingImg);
-    $('#loadingImg').show();
-}
-
-// 페이지 로딩 종료
-function closeLoading() {
-	  $('#mask, #loadingImg').hide();
-	  $('#mask, #loadingImg').remove(); 
-	}
 </script>
 </body>
 </html>

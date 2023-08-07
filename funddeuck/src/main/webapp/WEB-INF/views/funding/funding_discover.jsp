@@ -25,16 +25,10 @@
 <script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
 </head>
 <body>
-<!-- header fixed 속성으로 인한 공백 추가 -->
-<div class="container text-center">
-  <div class="row">&nbsp;</div>
-</div>
 <!-- 요청 파라미터 값 저장 -->
 <input type="hidden" value="${param.category }" id="categoryVal">
 <input type="hidden" value="${param.status }" id="statusVal">
 <input type="hidden" value="${param.index }" id="indexVal">
-<div class="mask"></div>
-<div class="loadingImg"></div>
 <!-- 상단 이동 버튼 -->
 	<button type="button" class="btn btn-dark position-fixed bottom-0 end-0" id="go-top">
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-up-square-fill" viewBox="0 0 16 16">
@@ -236,46 +230,6 @@ function chageLangSelect(){
 
     location.href = "fundingDiscover?category=" + category + "&status=" + status + "&index=" + index;
 }
-
-// 페이지 로딩 스크립트
-$(function() {
-
-	Loading();	
-	setTimeout("closeLoading()", 100);
-
-	});
-
-function Loading() {
-    var maskHeight = $(document).height();
-    var maskWidth  = window.document.body.clientWidth;
-     
-    var mask       = "<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
-    var loadingImg = '${pageContext.request.contextPath }/resources/images/loading.gif';
-     
-    loadingImg +=" <div id='loadingImg'>";
-    loadingImg +=" <img src='${pageContext.request.contextPath }/resources/images/loading.gif' style='position:absolute; z-index:9500; text-align:center; display:block; margin-top:300px; margin-left:750px;'/>";
-    loadingImg += "</div>";  
- 
-    $('body')
-        .append(mask)
- 
-    $('#mask').css({
-            'width' : maskWidth,
-            'height': maskHeight,
-            'opacity' :'0.3'
-    });
-    
-    $('#mask').show();
-  
-    $('.loadingImg').append(loadingImg);
-    $('#loadingImg').show();
-}
-
-// 페이지 로딩 종료
-function closeLoading() {
-	  $('#mask, #loadingImg').hide();
-	  $('#mask, #loadingImg').remove(); 
-	}
 
 </script>
 </body>

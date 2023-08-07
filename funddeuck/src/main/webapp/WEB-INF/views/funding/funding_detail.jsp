@@ -81,7 +81,7 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<span class="fs-2">${project.project_cumulative_amount }</span>&nbsp;
+						<span class="fs-2"><fmt:formatNumber value="${project.project_cumulative_amount }" pattern="#,###" /></span>&nbsp;
 						<small>원</small>&nbsp;
 						<span class="fs-5 fw-bold"><fmt:formatNumber type="number" value="${project.project_cumulative_amount/project.project_target * 100 }" maxFractionDigits="0"></fmt:formatNumber>%</span>
 					</div>
@@ -137,12 +137,12 @@
 				<table class="table-borderless">
 				 	<tr>
 				   		<th><small>펀딩 기간</small></th>
-				   		<td>&nbsp;&nbsp;&nbsp;</td>
+				   		<td></td>
 				   		<td><small>
 				   		${project.project_start_date }
 				   		~
 				   		${project.project_end_date }
-				   		</small>
+				   		</small>&nbsp;&nbsp;&nbsp;
 				   		<span class="badge text-danger text-bg-danger bg-opacity-10">
 				   		${endDate - strDate } 일 남음
 				   		</span>
@@ -236,7 +236,7 @@
 				<div class="row">
 					<div class="col d-flex justify-content-center">
 						<button class="btn btn-primary me-2" onclick="FallowingForm">팔로우</button>
-						<button class="btn btn-primary me-2" onclick="#">1:1문의</button>
+						<button class="btn btn-primary me-2" onclick="projectInquiry()">1:1문의</button>
 					</div>
 				</div>
       			<!-- 팔로우, 1:1문의 버튼 끝-->
@@ -431,7 +431,7 @@
 									<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button">
 									${reward.reward_residual_quantity }개 남음</a>
 									</span><br>
-									<span class="fs-4 card-title fw-bold">${reward.reward_price }원 +</span><br>
+									<span class="fs-4 card-title fw-bold"><fmt:formatNumber value="${reward.reward_price }" pattern="#,###" />원 +</span><br>
 									<small class="card-text opacity-75">${reward.reward_name }</small><br>
 									<small class="card-text opacity-75">${reward.reward_detail }</small>
 									<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
@@ -535,15 +535,16 @@ function focusOnReward(){
 }
 	
 // 카테고리 선택 시 자동 포커스 이동
+// 진행 바 값 가져오기
 window.onload = function(){
-	var category = document.getElementById( 'categoryVal' );
 	var location = document.querySelector("#focusArea").offsetTop;
+	var category = document.getElementById("categoryVal").value;
 	
-	
+	// 카테고리 선택 시 자동 포커스 이동
 	if(category != ""){
 		window.scrollTo({top:location, behavior:'instant'});
 	}
-};
+}
 
 
 // 웹 소켓 채팅방
