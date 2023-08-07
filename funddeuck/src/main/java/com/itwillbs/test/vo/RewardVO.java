@@ -11,7 +11,6 @@ CREATE TABLE reward (
     reward_category VARCHAR(100) COMMENT '리워드 카테고리',
     reward_name VARCHAR(500) COMMENT '리워드명',
     reward_quantity INT NOT NULL COMMENT '리워드 수량',
-    reward_residual_quantity INT NOT NULL COMMENT '리워드 잔여 수량',
     reward_option VARCHAR(255) NOT NULL COMMENT '리워드 옵션',
     reward_detail VARCHAR(1000) NOT NULL COMMENT '리워드 설명',
     delivery_status VARCHAR(50) NOT NULL COMMENT '배송여부',
