@@ -77,7 +77,7 @@ th, td {
 				<tr>
 					<th class="text-center" style="width: 5%;">번호</th>
 					<th class="text-center" style="width: 7%;">유형</th>
-					<th class="text-center" style="width: 15%;">메이커명</th>
+					<th class="text-center" style="width: 15%;">메이커 이름</th>
 					<th class="text-center" style="width: 7%;">이메일</th>
 					<th class="text-center" style="width: 7%;">전화번호</th>
 					<th class="text-center" style="width: 5%;">등급</th>

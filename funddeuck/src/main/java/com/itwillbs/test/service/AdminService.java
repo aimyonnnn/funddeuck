@@ -37,7 +37,7 @@ public class AdminService {
 	private NotificationService notificationService;
 	
 	// 로거 출력을 위한 변수 선언
-	private static final Logger logger = LoggerFactory.getLogger(BankController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminService.class);
 	// 스케줄러
 	private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
@@ -80,11 +80,12 @@ public class AdminService {
 				
 				// 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회
 				MembersVO member = memberService.getMemberInfoByProjectIdx(project_idx);
+				String memberId = member.getMember_phone();
 				String memberPhone = member.getMember_phone();
 				String message = "[Funddeuck] 프로젝트 완성을 서둘러주세요! 지금 바로 프로젝트를 등록하고 후원을 받아보세요!";
 				
 				try {
-					String isSendMessage = sendPhoneMessageService.SendMessage(memberPhone, message, project_idx);
+					String isSendMessage = sendPhoneMessageService.SendMessage(memberId, memberPhone, message, project_idx);
 					if(isSendMessage.equals("true")) {
 						logger.info("■■■■■■ 문자 메시지 발송 완료");
 					} else {

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.test.mapper.SendPhoneMessageMapper">
+	
+	<insert id="insertSms">
+		insert into
+			send_phone_message
+		values (
+				null
+				, #{memberId}
+				, now()
+				, #{memberPhone}
+				, #{message}
+				, 1	
+				)
+	</insert>
+	
+	<!-- 관리자 - 문자 리스트 조회 -->
+	<select id="selectAllSmsList">
+		select *
+			from send_phone_message
+		<!-- 검색타입이 널스트링이 아닐 때 -->
+		<if test="!searchKeyword.equals('')">
+		where
+			<!-- 검색타입에 따른 where절 조건 대상 변경 -->
+			<choose>
+				<when test="searchType.equals('memberId')">
+					member_id like '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('phone')">
+					recipient like '%${searchKeyword}%'
+				</when>					
+			</choose>
+		</if>
+		order by
+			sent_date desc			
+		limit
+			#{startRow}
+			, #{listLimit}
+	</select>
+	
+	<!-- // 관리자 - 문자 갯수 조회 -->
+	<select id="selectAllSmsListCount">
+		select count(*)
+			from send_phone_message
+		<if test="!searchKeyword.equals('')">
+		where
+			<choose>
+				<when test="searchType.equals('memberId')">
+					member_id like '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('phone')">
+					recipient like '%${searchKeyword}%'
+				</when>					
+			</choose>
+		</if>
+	</select>
+
+</mapper>

@@ -47,6 +47,7 @@ import com.itwillbs.test.vo.PageInfoVO;
 import com.itwillbs.test.vo.PaymentVO;
 import com.itwillbs.test.vo.ProjectVO;
 import com.itwillbs.test.vo.RewardVO;
+import com.itwillbs.test.vo.SendPhoneMessageVO;
 
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
@@ -90,6 +91,34 @@ public class AdminController {
 		
 		return "admin/admin_main";
 	}
+	
+	// 문자 관리
+	@GetMapping("adminSmsManagement")
+	public String adminSmsManagement(
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword,
+			@RequestParam(defaultValue = "1") int pageNum,
+			HttpSession session, Model model) {
+		
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		
+		List<SendPhoneMessageVO> sList = sendPhoneMessageService.getAllSmsList(searchKeyword, searchType, startRow, listLimit);
+		int listCount = sendPhoneMessageService.getAllSmsListCount(searchKeyword, searchType);
+		
+		int pageListLimit = 10;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {	endPage = maxPage; }
+		
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("sList", sList);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		return "admin/admin_sms_management";
+	}
+	
 	
 	// 결제 관리 - 결제 정보 수정 - 첨부파일 실시간 삭제
 	@PostMapping("deletePaymentFile")
@@ -427,9 +456,10 @@ public class AdminController {
 	@PostMapping("sendPhoneMessage")
 	@ResponseBody 
 	public String checkPhone(@RequestParam String memberPhone, @RequestParam String message,
-							@RequestParam String memberIdx,	@RequestParam int projectIdx) throws CoolsmsException {
+							@RequestParam Integer memberIdx, @RequestParam int projectIdx) throws CoolsmsException {
+		String memberId = memberService.getMemberId(memberIdx);
 		message = "[Funddeuck] 프로젝트 승인이 완료되었습니다. 프로젝트 요금 결제를 진행해주세요!";
-		return sendPhoneMessageService.SendMessage(memberPhone, message, projectIdx);
+		return sendPhoneMessageService.SendMessage(memberId, memberPhone, message, projectIdx);
 	}
 	
 	// 프로젝트 승인 관리 페이지

@@ -43,20 +43,21 @@ th, td {
 <div class="main-content">
 <jsp:include page="../common/admin_top.jsp"/>
 
-	<div class="container my-5">
+<div class="container my-5">
+
 	<div class="container">
-		<h2 class="fw-bold mt-5">결제 관리</h2>
-		<p class="projectContent">전체 결제 내역을 확인 할 수 있습니다.</p>
+		<h2 class="fw-bold mt-5">문자 관리</h2>
+		<p class="projectContent">회원에게 문자를 전송할 수 있으며, 발송내역을 확인 할 수 있습니다.</p>
 	</div>
 
 	<!-- 검색 버튼 -->
 	<div class="d-flex flex-row justify-content-center my-5">
 		<!-- form 태그 시작 -->
-		<form action="adminPayment" class="d-flex flex-row justify-content-end">
+		<form action="adminSmsManagement" class="d-flex flex-row justify-content-end">
 			<!-- 셀렉트 박스 -->
 			<select class="form-select form-select-sm me-2" name="searchType" id="searchType" style="width: 100px;">
-				<option value="phone" <c:if test="${param.searchType eq 'phone'}">selected</c:if>>연락처</option>
-				<option value="email" <c:if test="${param.searchType eq 'email'}">selected</c:if>>이메일</option>
+				<option value="memberId" <c:if test="${param.searchType eq 'memberId'}">selected</c:if>>아이디</option>
+				<option value="phone" <c:if test="${param.searchType eq 'phone'}">selected</c:if>>전화번호</option>
 			</select>
 			<!-- 검색타입, 검색어 -->
 			<div class="input-group">
@@ -75,48 +76,24 @@ th, td {
 			<table class="table">
 				<tr>
 					<th class="text-center" style="width: 5%;">번호</th>
-					<th class="text-center" style="width: 8%;">연락처</th>
-					<th class="text-center" style="width: 13%;">이메일</th>
-					<th class="text-center" style="width: 5%;">리워드금액</th>
-					<th class="text-center" style="width: 5%;">주문수량</th>
-					<th class="text-center" style="width: 5%;">최종금액</th>
-					<th class="text-center" style="width: 5%;">주문날짜</th>
-					<th class="text-center" style="width: 5%;">승인여부</th>
-					<th class="text-center" style="width: 5%;">상세정보</th>
+					<th class="text-center" style="width: 15%;">메시지 내용</th>
+					<th class="text-center" style="width: 10%;">발송 일시</th>
+					<th class="text-center" style="width: 7%;">회원 아이디</th>
+					<th class="text-center" style="width: 10%;">회원 전화번호</th>
+					<th class="text-center" style="width: 5%;">상태</th>
 				</tr>
 				
-				<c:forEach var="pList" items="${pList}">
+				<c:forEach var="sList" items="${sList}">
 					<tr>
-						<td class="text-center" >${pList.payment_idx}</td>
-						<td class="text-center">${pList.member_phone}</td>
-						<td class="text-center">${pList.member_email}</td>
-						<td class="text-center">
-							<fmt:formatNumber pattern="#,##0" value="${pList.reward_amount}" var="rewardAmount" />
-							${rewardAmount}원						
-						</td>
-						<td class="text-center">${pList.payment_quantity}</td>
-						<td class="text-center">
-							<fmt:formatNumber pattern="#,##0" value="${pList.total_amount}"  var="paymentQuantity"/>
-							${paymentQuantity}원
-						</td>
-						<td class="text-center">
-							<fmt:formatDate value="${pList.payment_date}" pattern="yy-MM-dd"/>
-						</td>
-						<td class="text-center">
-							<c:choose>
-								<c:when test="${pList.payment_confirm eq 1}">예약완료</c:when>
-								<c:when test="${pList.payment_confirm eq 2}">결제완료</c:when>
-								<c:when test="${pList.payment_confirm eq 3}">반환신청</c:when>
-								<c:when test="${pList.payment_confirm eq 4}">반환완료</c:when>
-								<c:when test="${pList.payment_confirm eq 5}">반환거절</c:when>
-							</c:choose>
-						</td>
-						<td class="text-center" style="width: 5%;">
-							<button class="btn btn-outline-primary btn-sm" 
-							onclick="location.href='adminPaymentDetail?payment_idx=${pList.payment_idx}&pageNum=${pageNum}'">상세보기</button>
-						</td>
+						<td class="text-center">${sList.sms_idx}</td>
+						<td class="text-center">${sList.message}</td>
+						<td class="text-center">${sList.sent_date}</td>
+						<td class="text-center">${sList.member_id}</td>
+						<td class="text-center">${sList.recipient}</td>
+						<td class="text-center">${sList.status}</td>
 					</tr>
 				</c:forEach>
+				
 			</table>
 	
 			</div>
@@ -133,14 +110,14 @@ th, td {
 	                	<c:choose>
 	                		<c:when test="${not empty param.searchType and not empty param.searchKeyword}">
 			                    <li class="page-item">
-			                        <a class="page-link" aria-label="Previous" href="adminPayment?pageNum=${pageNum - 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">
+			                        <a class="page-link" aria-label="Previous" href="adminSmsManagement?pageNum=${pageNum - 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">
 			                            <span aria-hidden="true">&laquo;</span>
 			                        </a>
 			                    </li>
 	                		</c:when>
 	                		<c:otherwise>
 			                    <li class="page-item">
-			                        <a class="page-link" aria-label="Previous" href="adminPayment?pageNum=${pageNum - 1}">
+			                        <a class="page-link" aria-label="Previous" href="adminSmsManagement?pageNum=${pageNum - 1}">
 			                            <span aria-hidden="true">&laquo;</span>
 			                        </a>
 			                    </li>
@@ -167,10 +144,10 @@ th, td {
 	                        <%-- 검색 키워드가 있을 때와 없을 때를 구분하여 페이지 이동 URL 생성 --%>
 	                        <c:choose>
 	                            <c:when test="${not empty param.searchType and not empty param.searchKeyword}">
-	                                <li class="page-item"><a class="page-link" href="adminPayment?pageNum=${i}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">${i}</a></li>
+	                                <li class="page-item"><a class="page-link" href="adminSmsManagement?pageNum=${i}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">${i}</a></li>
 	                            </c:when>
 	                            <c:otherwise>
-	                                <li class="page-item"><a class="page-link" href="adminPayment?pageNum=${i}">${i}</a></li>
+	                                <li class="page-item"><a class="page-link" href="adminSmsManagement?pageNum=${i}">${i}</a></li>
 	                            </c:otherwise>
 	                        </c:choose>
 	                    </c:otherwise>
@@ -183,14 +160,14 @@ th, td {
 	                	<c:choose>
 	                		<c:when test="${not empty param.searchType and not empty param.searchKeyword}">
 			                    <li class="page-item">
-			                        <a class="page-link" aria-label="Next" href="adminPayment?pageNum=${pageNum + 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">
+			                        <a class="page-link" aria-label="Next" href="adminSmsManagement?pageNum=${pageNum + 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">
 			                            <span aria-hidden="true">&raquo;</span>
 			                        </a>
 			                    </li>
 	                		</c:when>
 	                		<c:otherwise>
 			                    <li class="page-item">
-			                        <a class="page-link" aria-label="Next" href="adminPayment?pageNum=${pageNum + 1}">
+			                        <a class="page-link" aria-label="Next" href="adminSmsManagement?pageNum=${pageNum + 1}">
 			                            <span aria-hidden="true">&raquo;</span>
 			                        </a>
 			                    </li>
