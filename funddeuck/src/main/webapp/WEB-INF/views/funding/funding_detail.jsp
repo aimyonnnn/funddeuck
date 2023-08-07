@@ -29,7 +29,6 @@
 	<br>
 	<hr>
 	<br>
-	${project }
 	<!-- 상단 영역 -->
 	<div class="container text-center">
 		<!-- 해시태그 -->
@@ -419,18 +418,6 @@
 				</div>
 				<!--스크롤-->
 				<div class="row fixed-right" id="scrollBar">
-					<div class="row pb-3 d-flex text-start">
-						<div class="card">
-							<div class="card-body">
-								<span class="fs-4 card-title fw-bold">1000원 +</span><br>
-								<small class="card-text opacity-75">선물 없이 후원하기</small>
-							</div>
-							<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
-							<div>&nbsp;</div>
-							<!-- 선물 없이 후원은 reward_idx 값 0으로 고정(default value) -->
-							<a href="fundingOrder?project_idx=${project.project_idx }&reward_idx=0" class="stretched-link"></a>
-						</div>
-					</div>
 					<!-- 리워드 카드 영역 -->
 					<div class="row pb-3 d-flex text-start">
 						<c:forEach items="${reward }" var="reward" varStatus="status">

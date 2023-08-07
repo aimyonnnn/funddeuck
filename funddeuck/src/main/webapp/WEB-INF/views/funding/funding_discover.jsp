@@ -222,12 +222,6 @@
 		</div>
 	</div>
 </div>
-<!-- //진행 바 값 가져오기 -->
-<!-- window.onload = function(){ -->
-	
-<%-- 	var percentData = "<c:out value='${project.project_cumulative_amount/project.project_target * 100 }'/>"; --%>
-<!-- 	var a = document.getElementById('progressbar').style.width = percentData + "%"; -->
-<!-- } -->
 <br>
 <script type="text/javascript">
 // 셀렉트 박스 이벤트 스크립트
