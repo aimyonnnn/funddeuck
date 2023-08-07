@@ -97,12 +97,12 @@ public class FundingController {
 	@PostMapping("commentWritePro")
 	public String commentWrite(ProjectCommunityVO ProjectCommunity, HttpSession session, HttpServletRequest request, Model model) {
 		
-//		String sId = (String)session.getAttribute("sId");
-//		// 미로그인시
-//    	if(sId == null) {
-//    		model.addAttribute("msg","잘못된 접근입니다.");
-//    		return "fail_back";
-//    	}
+		String sId = (String)session.getAttribute("sId");
+		// 미로그인시
+    	if(sId == null) {
+    		model.addAttribute("msg","잘못된 접근입니다.");
+    		return "fail_back";
+    	}
     	
     	int insertCount = fundingService.registComment(ProjectCommunity);
     	
