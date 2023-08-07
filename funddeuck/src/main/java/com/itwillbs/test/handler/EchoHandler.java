@@ -37,9 +37,6 @@ public class EchoHandler extends TextWebSocketHandler {
 		String senderId = getMemberId(session);
 		
 		if (senderId != null) {
-			if(users.get(senderId) != null) {
-				session.sendMessage(new TextMessage("이미 창이 열려있습니다."));
-			} else {
 				log(senderId + " 연결됨");
 				users.put(senderId, session);
 				sessions.put(session, senderId);
@@ -59,8 +56,7 @@ public class EchoHandler extends TextWebSocketHandler {
 						
 						System.out.println("점검1 : " +chatSessions.size());
 						
-						if (chatSessions.size() >= 2) {
-							// 두 개 이상의 세션이 존재하면 클라이언트에게 메시지 보내기
+						if ((chatSessions.size() >= 2 && users.get(senderId) != null) || chatSessions.size() >= 2) {
 							String message = "잘못된 접근입니다.";
 							session.sendMessage(new TextMessage(message));
 							session.close(CloseStatus.NORMAL.withReason(message));
@@ -73,7 +69,6 @@ public class EchoHandler extends TextWebSocketHandler {
 					}
 				}
 			}
-		}
 		// --------------------------------------------------------------------------------------------
 
 	}
@@ -144,11 +139,15 @@ public class EchoHandler extends TextWebSocketHandler {
 							}
 						}
 					}
-					if(sessions.size() == 1) {
+					if(sessionList.size() == 1) {
+						System.out.println("sessionList.size() : " + sessionList.size());
+						System.out.println("targetSession : " + targetSession);
 						if (targetSession != null) {
+							System.out.println("targetSession2 : " + targetSession);
+							
 							type = "메시지가 도착했어요!";
 							TextMessage tmpMsg = new TextMessage(
-									"<a target='_blank' href='" + url + "'>[<b>" + type + "</b>] " + content + "</a>");
+									"<a target='_blank' onclick='window.open(\"" + url + "\", \"_blank\", \"width=500, height=800\"); return false;'>[<b>" + type + "</b>] " + content + "</a>");
 							targetSession.sendMessage(tmpMsg);
 						}
 					}
@@ -162,13 +161,15 @@ public class EchoHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		String senderId = getMemberId(session);
-		if (senderId != null) {
+		String url = session.getUri().getQuery();
+		
+		
+		if (senderId != null && url == null) {
 			log(senderId + " 연결 종료됨");
 			users.remove(senderId);
 			sessions.remove(session);
 		}
 		
-		String url = session.getUri().getQuery();
 		
 		if(url != null) {
 

@@ -395,12 +395,9 @@
 	<div class="row my-5">
 		<div class="col"></div>
 		<div class="col-6 col-md-3 text-center">
-			<h2 class="float-start mt-5" style="font-weight: bold;">간편가입</h2>
-			<input class="btn btn-warning w-100 mt-2 p-2 mb-4" type="button"
-				value="카카오로 시작하기" />
+			<h2 class="mt-5" style="font-weight: bold;">간편가입</h2>
 			<hr>
 			<div class="text-start">
-				<h5 class="my-3 text-start">이메일 간편가입</h5>
 				<form action="JoinPro" method="post">
 					<h6 class="mt-4">이름</h6>
 					<input class="form-control" type="text" name="member_name"

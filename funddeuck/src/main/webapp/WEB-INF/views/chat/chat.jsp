@@ -31,7 +31,7 @@
     // 스크롤을 맨 아래로 이동
     setTimeout(function() {
         $(window).scrollTop($(document).height());
-    }, 10); // 100밀리초 후에 이동시킴
+    }, 100); // 100밀리초 후에 이동시킴
 	
 	    $(window).on("scroll", function() { // 스크롤 동작 시 이벤트 처리
 	        let scrollTop = $(window).scrollTop(); // 스크롤바 현재 위치
@@ -156,6 +156,10 @@ function onMessage(msg) {
 		str += "</div></div>";
 		
 		$("#msgArea").append(str);
+		
+		setTimeout(function() {
+	        $(window).scrollTop($(document).height());
+	    }, 100);
 	}
 	else{
 		
@@ -165,6 +169,10 @@ function onMessage(msg) {
 		str += "</div></div>";
 		
 		$("#msgArea").append(str);
+		
+		setTimeout(function() {
+	        $(window).scrollTop($(document).height());
+	    }, 100);
 	}
 	
 }
