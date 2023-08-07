@@ -6,8 +6,8 @@
     <title>IdeaCommunity</title>
     <%@ include file="../Header.jsp" %>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../resources/css/mypage.css" />
+<!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+<!--     <link rel="stylesheet" type="text/css" href="../resources/css/mypage.css" /> -->
     <link rel="stylesheet" type="text/css" href="../resources/css/member_ideacommunity.css" />
 </head>
 <style>
@@ -30,12 +30,47 @@
                     <a href="javascript:void(0)" class="nav-link btn-primary rounded-pill d-flex align-items-center px-3" id="add-notes"> <i class="icon-note m-1"></i><span class="d-none d-md-block font-14">아이디어 제시하기</span></a>
                 </li>
             </ul>
+            <br>
+			<div class="container mt-4">
+			  <div class="card">
+			    <div class="card-body">
+			      <h5 class="card-title">우리는 함께하는 힘으로 혁신적인 아이디어들을 실현시킬 수 있는 특별한 공간. <b>아이디어 펀딩 커뮤니티</b>에 여러분을 초대합니다!</h5>
+			      <p class="card-text">이제 여러분은 자유롭게 각종 분야의 창의적인 아이디어를 공유하고 다양한 사람들로부터 찬사를 받을 수 있는 기회를 갖게 되었습니다. 게시판에 올리신 아이디어가 다른 회원들에게 좋아요를 많이 받을수록 해당 아이디어의 실현 가능성을 높일 수 있습니다.</p>
+			      <p class="card-text">
+			        어떤 아이디어가 가능성이 있는지는 회원 여러분들의 손에 달려 있습니다. 주제나 분야를 제한하지 않으며, 다음과 같은 방식으로 게시판이 운영됩니다.<br>
+			        ＊ 아이디어 게시: 여러분이 고안한 아이디어를 게시판에 올려주세요. 제목과 내용을 자세히 설명하여 다른 회원들이 쉽게 이해하고 지지할 수 있도록 도와주세요.</p>
+			    </div>
+			  </div>
+			</div>
+			<br>
             <div class="tab-content bg-transparent">
                 <div id="note-full-container" class="note-has-grid row">
 			<!-- 아이디어 출력 -->
-			<div id="note-full-container" class="note-has-grid row">
-			    <c:forEach var="cardData" items="${data}">
-			        <div class="col-md-4 single-note-item all-category">
+<!-- 			<div id="note-full-container" class="note-has-grid row"> -->
+<%-- 			    <c:forEach var="cardData" items="${data}"> --%>
+<!-- 			        <div class="col-md-4 single-note-item all-category"> -->
+<!-- 			            <div class="card"> -->
+<!-- 			                <div class="card-header"> -->
+<!-- 			                    작성자: ${cardData.member_idx} <br> -->
+<%-- 			                    <h5 class="card-title"><b>${cardData.title}</b></h5> --%>
+<%-- 			                    작성 시간: ${cardData.today} --%>
+<!-- 			                </div> -->
+<!-- 			                <div class="card-body"> -->
+<%-- 			                    <p class="card-text">${cardData.description}</p> --%>
+<!-- 			                    <div style="text-align: right;"> -->
+<!-- 								<img src="https://cdn-icons-png.flaticon.com/512/1216/1216656.png?w=740&t=st=1691318684~exp=1691319284~hmac=77832eaa223611f6a84a833c33ce0ecbbc67e5b6cdddb4cfc0b3b757b0e20439" -->
+<%-- 								    alt="좋아요" width="20" height="20" style="cursor: pointer;" onclick="likeIdea(${cardData.idea_idx})"> --%>
+<%-- 								<span id="likeCount_${cardData.idea_idx}">${cardData.likecount}</span> --%>
+<!-- 			                    </div> -->
+<!-- 			                </div> -->
+<!-- 			            </div> -->
+<!-- 			        </div> -->
+<%-- 			    </c:forEach> --%>
+<!-- 			</div> -->
+
+<div id="note-full-container" class="note-has-grid row">
+    <c:forEach var="cardData" items="${data}">
+        <div class="col-md-4 single-note-item all-category mb-4">
 			            <div class="card">
 			                <div class="card-header">
 			                    <!-- 작성자: ${cardData.member_idx} <br> -->
@@ -51,9 +86,10 @@
 			                    </div>
 			                </div>
 			            </div>
-			        </div>
-			    </c:forEach>
-			</div>
+        </div>
+    </c:forEach>
+</div>
+
 
                 </div>
             </div>

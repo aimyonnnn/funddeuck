@@ -12,7 +12,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 	<link rel="stylesheet" type="text/css" href="resources/css/mypage.css" />
-	<link rel="stylesheet" type="text/css" href="resources/css/moreProject.css" />
+<!-- 	<link rel="stylesheet" type="text/css" href="resources/css/moreProject.css" /> -->
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     .card-thumbnail {

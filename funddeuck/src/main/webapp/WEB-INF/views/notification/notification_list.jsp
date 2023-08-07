@@ -247,7 +247,7 @@ function markAllAsRead(member_id) {
 </head>
 <body>
 
-<jsp:include page="../common/project_top.jsp"/>
+<jsp:include page="../Header.jsp"/>
 
 <c:set var="pageNum" value="1"/>
 <c:if test="${not empty param.pageNum }">
