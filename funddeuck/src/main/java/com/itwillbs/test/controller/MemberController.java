@@ -519,6 +519,18 @@ public class MemberController {
     	
     }
     
+    @GetMapping("zimFollowBoard")
+    public String zimFollowBoard(HttpSession session, Model model) {
+    	
+    	if(session.getAttribute("sId") == null) {
+    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
+    	
+    	return "member_zim_board";
+    }
+    
     // 팔로우의 활동 페이지로 이동
     @GetMapping("FollowBoardForm")
     public String FollowBoardForm(HttpSession session, Model model) {
