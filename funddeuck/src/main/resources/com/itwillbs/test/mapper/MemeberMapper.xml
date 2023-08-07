@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itwillbs.test.mapper.MemberMapper">
+
+	<!-- 회원 정보 조회하기 -->
+	<select id="selectMember">
+		SELECT * 
+			FROM members
+				WHERE member_id = #{id}
+		
+	</select>
+	
+	<!-- 회원 가입 -->
+	<insert id="insertMember">
+		INSERT INTO members
+			VALUES(
+				null
+				,#{member_name}
+				,#{member_id}
+				,#{member_passwd}
+				,#{member_email}
+				,#{member_phone}
+				,1
+				,1
+				,0
+			)
+	</insert>
+	
+	<!-- 이메일 인증 코드 저장 -->
+	<insert id="insertEmailDuplicate">
+		INSERT INTO email 
+			VALUES(
+				#{email}
+				, #{authCode}
+			);
+	</insert>
+	
+	<!-- 이메일 존재 여부 확인 -->
+	<select id="selectEmail" resultType="int">
+		SELECT COUNT(*)
+		FROM email
+		WHERE email = #{email}
+	</select>
+	
+	<!-- 이메일 인증 코드 업데이트 -->
+	<update id="updateEmailAuthCode">
+		UPDATE email
+		SET authCode = #{authCode}
+		WHERE email = #{email}
+	</update>
+	
+	<!-- 인증코드가 일치한지 확인 -->
+	<select id="isAuthCode">
+		SELECT COUNT(*)
+			FROM email
+			WHERE email = #{email} and authCode = #{authCode}
+	</select>
+	
+	<!-- 인증코드가 일치할시 삭제 -->
+	<delete id="deleteAuthCode">
+		DELETE FROM email
+			WHERE email = #{email} and authCode = #{authCode}
+	</delete>
+	
+	<!-- url 판별 -->
+	<select id="selectIdx" resultType="com.itwillbs.test.vo.MembersVO">
+ 	 	SELECT 
+		    IFNULL(ma.maker_idx, 0) AS maker_idx,
+		    IFNULL(r.reward_idx, 0) AS reward_idx,
+	    	IFNULL(p.project_idx, 0) AS project_idx
+		FROM 
+		    maker ma
+			LEFT JOIN members m ON m.member_idx = ma.member_idx
+			LEFT JOIN project p ON ma.maker_idx = p.maker_idx AND p.project_approve_status = 1
+			LEFT JOIN reward r ON p.project_idx = r.project_idx
+		WHERE 
+	    	m.member_id = #{sId}
+	</select> 
+	
+	<!-- 로그인 실패 카운트 업데이트 -->
+	<update id="updateFailCount">
+		UPDATE members
+		SET false_count = #{false_count}
+		WHERE member_id = #{member_id}
+	</update>
+	
+	<!-- 피드백 메시지를 보내기 위해 member_id를 조회 -->
+	<select id="selectMemberId">
+		select member_id
+			from
+				members
+			where
+				member_idx = #{member_idx}		
+	</select>
+	
+	<select id="selectMemberPhone">
+		select member_phone
+			from
+				members
+			where
+				member_idx = #{member_idx}
+	</select>
+	
+	<!-- Members 테이블의 email 존재 여부 확인 -->
+	<select id="selectMemberEmail" resultType="int">
+		SELECT COUNT(*)
+			FROM members
+			WHERE member_email = #{email}
+	</select>
+	
+	<!-- 회원의 이메일 존재여부 -->
+	<select id="selectMemberInfoEmail">
+		SELECT *
+			FROM members
+			WHERE member_email = #{email}
+	</select>
+	
+	<!-- 페스워드 변경 -->
+	<update id="updatePasswd">
+		UPDATE members
+			SET member_passwd = #{passwd}
+			WHERE member_email = #{email}
+	</update>
+	
+	<!-- 존재하는 회원인지 확인하기 -->
+	<select id="selectCorrectMember">
+		select *
+			from
+				members
+			where
+				member_id = #{target}
+	</select>
+	
+	<!-- 팔로우 리스트 가져오기 -->
+	<select id="selectFallowList">
+    SELECT maker_name,
+           (SELECT COUNT(*) FROM fallowing WHERE maker_idx = f.maker_idx) AS follower_count,
+           MAX(is_alam) AS is_alam,
+           f.maker_idx
+    FROM fallowing f join maker k
+    on f.maker_idx = k.maker_idx
+    WHERE f.member_idx = (SELECT member_idx
+                        FROM members
+                        WHERE member_id = #{sId})
+    GROUP BY k.maker_idx;
+	</select>
+	
+	<!-- 팔로우 알람 설정 -->
+	<update id="updateFallowingAlam">
+		UPDATE fallowing
+		SET is_alam = #{is_alam}
+		WHERE member_idx = (SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+				AND
+			  maker_idx = (SELECT maker_idx
+			  			   FROM maker
+			  			   WHERE maker_name = #{maker_name}) 
+	</update>
+	
+	<!-- 팔로우 해제 -->
+	<delete id="deleteFallow">
+		DELETE FROM fallowing
+		WHERE member_idx = (SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+			AND
+			maker_idx = (SELECT maker_idx
+			  			   FROM maker
+			  			   WHERE maker_name = #{maker_name}) 
+	</delete>
+
+	<!-- 팔로우 추가 -->
+	<insert id="insertFallow">
+		INSERT INTO fallowing
+		VALUES ((SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+				,(SELECT maker_idx
+			  			   FROM maker
+			  			   WHERE maker_name = #{maker_name})
+			  	, 1) 
+	</insert>
+	
+	<!-- 찜 리스트 -->
+	<select id="selectZimList">
+        SELECT p.project_subject, p.project_introduce,mk.maker_name
+                ,(SELECT count(*) FROM fallowing f WHERE f.maker_idx = mk.maker_idx) AS 'follow_count'
+				, z.zim_is_alam
+				, z.project_idx
+        FROM project p JOIN maker mk
+        ON p.maker_idx = mk.maker_idx
+        JOIN zim z 
+        ON p.project_idx = z.project_idx
+        WHERE z.member_idx = (SELECT member_idx
+                            FROM members
+                            WHERE member_id = #{sId});
+	</select>
+	
+	<!-- 찜 알람 -->
+	<update id="updateZimAlam">
+		UPDATE zim
+		SET zim_is_alam = #{isAlam }
+		WHERE project_idx = #{project_idx}
+			AND	
+				member_idx = (SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+		
+	</update>
+	
+	<!-- 찜 삭제 -->
+	<delete id="deleteZim">
+		DELETE FROM zim
+		WHERE project_idx = #{project_idx}
+			AND
+				member_idx = (SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+	</delete>
+	
+	<!-- 찜하기 -->
+	<insert id="insertZim">
+		INSERT INTO zim 
+			VALUES ((SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId})
+					, #{project_idx}
+					, 1)
+	</insert>
+	
+	<!-- 팔로우의 프로잭트 리스트 -->
+	<select id="selectFollowProjectList">
+		SELECT *
+			FROM project
+			WHERE maker_idx IN ((SELECT maker_idx
+								FROM fallowing
+								WHERE member_idx = (SELECT member_idx
+													FROM members
+													WHERE member_id = #{sId})))
+			ORDER BY project_start_date DESC
+	</select>
+	
+	<!-- 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회 -->
+	<select id="selectMemberInfoByProjectIdx">
+		SELECT *
+		FROM members
+		WHERE member_idx = (
+		    SELECT member_idx
+		    FROM maker
+		    JOIN project ON maker.maker_idx = project.maker_idx
+		    WHERE project.project_idx = #{project_idx}
+		);
+	</select>
+	
+	
+	<!-- 회원이 배송완료 버튼을 눌렀을 때 업데이트됨 -->
+	<update id="updateDeleveryComplete">
+		UPDATE payment
+		SET delivery_status = 3
+		WHERE payment_idx = #{payment_idx}
+	</update>
+	
+	<!-- 리뷰작성 -->
+	<insert id="insertRevewRegistration">
+		INSERT INTO review
+			VALUES(
+				NULL,
+				#{payment_idx},
+				#{context},
+				#{starRating},
+				#{saveFileName},
+				1
+			)
+	</insert>
+	
+	
+	<!-- 리뷰 리스트 컬럼 -->
+	<select id="selectMemberReviewList">
+		SELECT review_idx
+		, pro.project_subject
+		, rew.reward_name
+		, rev.review_content
+		, rev.starRating
+		, rev.saveFileName 
+			FROM review rev 
+			JOIN payment pay
+				ON pay.payment_idx = rev.payment_idx
+			JOIN project pro
+				ON pro.project_idx = pay.project_idx
+			JOIN reward rew
+				ON rew.reward_idx = pay.reward_idx
+			WHERE pay.member_idx = (SELECT member_idx
+									FROM members
+									WHERE member_id = #{sId}) 
+				AND rev.review_status = 1
+		LIMIT #{startRow}, #{listLimit}
+	</select>
+	<!-- 리뷰 갯수 -->
+	<select id="selectMemberReviewListCount">
+			SELECT COUNT(rev.review_idx)
+				FROM review rev 
+				JOIN payment pay
+					ON pay.payment_idx = rev.payment_idx
+				WHERE pay.member_idx = (SELECT member_idx
+							FROM members
+							WHERE member_id = #{sId}) 
+							AND rev.review_status = 1;
+	</select>
+	<!-- 리뷰 삭제 -->
+	<update id="deleteUpdateMemberReview">
+		update review
+		set review_status = 2
+		where review_idx = #{num}
+	</update>
+	
+	<!-- 메이커의 멤버 id 가져오기 -->
+	<select id="getMakerMemberId" resultType="String">
+		SELECT member_id
+		FROM members
+		WHERE member_idx = (SELECT member_idx
+							FROM maker
+							WHERE maker_idx = #{maker_idx})
+	</select>
+</mapper>

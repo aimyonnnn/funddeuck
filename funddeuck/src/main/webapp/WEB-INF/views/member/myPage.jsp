@@ -55,44 +55,30 @@
                 <!-- 쿠폰, 펀딩, 스토어 영역 -->
                 <div class="col">
                     <div class="row mt-5 h6">
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-12 col-md-6">
                             <a href="" class="text-black w-100">
                                 <div class="row ms-md-1 me-md-1" style="border: 1px solid lightgray; border-radius: 7px;">
                                     <div class="col text-start m-3">
                                         쿠폰
                                     </div>
                                     <div class="col text-end m-3">
-                                        x개
+                                       x개
                                     </div>
                                 </div>
                             </a>
                         </div>
                         <div class="col-sm-12 col-md">
-                            <div class="row me-md-3" style="border: 1px solid lightgray; border-radius: 7px;">
-                                <div class="col" style="border-right: solid 1px lightgray;">
-                                    <a href="MemberFunDing" class="text-black">
-                                        <div class="row">
-                                            <div class="col text-start m-3">
-                                                펀딩
-                                            </div>
-                                            <div class="col text-end m-3">
-                                                x개
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col">
-                                    <a href="" class="text-black">
-                                        <div class="row">
-                                            <div class="col text-start m-3">
-                                                스토어
-                                            </div>
-                                            <div class="col text-end m-3">
-                                                x개
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
+                             <div class="col">
+                                 <a href="MemberFunDing" class="text-black">
+                                     <div class="row me-3" style="border: 1px solid lightgray; border-radius: 7px;">
+                                         <div class="col text-start m-3">
+                                             펀딩
+                                         </div>
+                                         <div class="col text-end m-3">
+                                             ${fundingCount } 개
+                                         </div>
+                                     </div>
+                                 </a>
                             </div>
                         </div>
                     </div>
@@ -126,14 +112,26 @@
                                 </div>
                             </a>
                         </div>
+                        <div class="col-sm-12 col-md-6">
+                            <a href="reviewListPage" class="text-black w-100">
+                                <div class="row me-md-2">
+                                    <div class="col text-start my-3">
+                                       <i class="bi bi-pencil-square"></i> 리뷰
+                                    </div>
+                                    <div class="col text-end my-3">
+                                        <i class="bi bi-arrow-return-right"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                     <div class="row mt-5 mx-3 border-1">
                         <div class="col-12">
                             <h5>나의 문의 내역</h5>
                         </div>
                         <div class="col-sm-12 col-md-6">
-                            <a href="" class="text-black w-100">
-                                <div class="row   me-md-2">
+                            <a href="memberChattingRoomList" class="text-black w-100">
+                                <div class="row me-md-2">
                                     <div class="col text-start my-3">
                                         <i class="bi bi-envelope-at"></i> 서포터 문의
                                     </div>
@@ -162,7 +160,7 @@
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <a href="" class="text-black w-100">
-                                <div class="row   me-md-2">
+                                <div class="row me-md-2">
                                     <div class="col text-start my-3">
                                         <i class="bi bi-chat-left-dots"></i> 1대1 상담
                                     </div>
@@ -174,7 +172,7 @@
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <a href="" class="text-black w-100">
-                                <div class="row  ms-md-2 me-md-2">
+                                <div class="row ms-md-2 me-md-2">
                                     <div class="col text-start my-3">
                                         <i class="bi bi-journals"></i> 도움말 센터
                                     </div>

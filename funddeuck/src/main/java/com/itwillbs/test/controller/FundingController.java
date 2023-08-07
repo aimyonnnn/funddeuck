@@ -71,11 +71,12 @@ public class FundingController {
 	public String fundingDetail(Model model
 			, @RequestParam int project_idx
 			, @RequestParam(defaultValue = "introduce") String category
+
 			) {
 		
 		// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보
 		ProjectVO project = fundingService.selectProjectInfo(project_idx);
-		model.addAttribute("project", project);
+		model.addAttribute("project",project);
 		
 		// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
 		List<RewardVO> reward = fundingService.selectProjectRewardInfo(project_idx);

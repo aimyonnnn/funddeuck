@@ -24,79 +24,6 @@
         }
     </style>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script type="text/javascript">
-        function zimAlam(isAlam,project_idx){
-	
-        	$.ajax({
-        		type:"post",
-        		url:"zimAlam",
-        		data:{isAlam : isAlam,
-        			project_idx : project_idx},
-        		dataType : "text",
-        		success: function(data) {
-        			
-        			if(data = "true"){
-        				if(isAlam == 1){
-	        				$("#zimBtnArea"+project_idx).empty();
-	        				$("#zimBtnArea"+project_idx).append(
-	        					'<button class="btn btn-outline-primary" onclick="zimAlam(0,'+ project_idx +')"><i class="bi bi-bell"></i></button>'	
-	        					+'<button class="btn btn-outline-primary ms-1"><i class="bi bi-suit-heart-fill"></i></button>'
-	        				);
-        				} else {
-	        				$("#zimBtnArea"+project_idx).empty();
-	        				$("#zimBtnArea"+project_idx).append(
-	        					'<button class="btn btn-outline-primary" onclick="zimAlam(1,'+ project_idx +')"><i class="bi bi-bell-slash"></i></button>'	
-	        					+'<button class="btn btn-outline-primary ms-1"><i class="bi bi-suit-heart-fill"></i></button>'
-	        				);
-        				}
-        			} else {
-        				alert("실패");
-        			}
-        			
-				},
-				error: function() {
-					alert("오류!");
-				}
-        	});
-        	
-        	
-        }
-        
-        function zim(is_zim,project_idx) {
-			
-        	$.ajax({
-        		type:"post",
-        		url:"isZim",
-        		data:{is_zim:is_zim,
-        			project_idx:project_idx},
-        		dataType: "text",
-        		success: function(data) {
-					
-        			if(data = "true"){
-        				if(is_zim == 1){
-	        				$("#zimBtnArea"+project_idx).empty();
-	        				$("#zimBtnArea"+project_idx).append(
-	        					'<button class="btn btn-outline-primary" onclick="zimAlam(0,'+ project_idx +')"><i class="bi bi-bell"></i></button>'	
-	        					+'<button class="btn btn-outline-primary ms-1" onclick="zim(0, '+ project_idx +')"><i class="bi bi-suit-heart-fill"></i></button>'
-	        				);
-        				} else {
-	        				$("#zimBtnArea"+project_idx).empty();
-	        				$("#zimBtnArea"+project_idx).append(
-	        					'<button class="btn btn-primary" onclick="zim(1, '+ project_idx +')"><i class="bi bi-suit-heart"></i></button>'
-	        				);
-        				}
-        			} else {
-        				alert("실패");
-        			}
-        			
-				},
-				error: function() {
-					alert("오류!");
-				}
-        	});
-		}
-        
-        </script>
 </head>
 <body>
     <!-- cupon 페이지 시작 -->
@@ -108,18 +35,17 @@
         </div>
         <!-- 메뉴 선택 -->
         <div class="row mt-4 text-center">
-            <div class="col col-sm-3 col-lg-2 py-3" style="border-bottom: solid 1px #ff9300;">
-                <a href="" class="text-black"> 찜 목록 </a>
-            </div>
             <div class="col col-sm-3 col-lg-2 py-3">
-                <a href="" class="text-black"> 최근 소식 </a>
+                <a href="ZimForm" class="text-black"> 찜 목록 </a>
+            </div>
+            <div class="col col-sm-3 col-lg-2 py-3" style="border-bottom: solid 1px #ff9300;">
+                <a href="zimFollowBoard" class="text-black"> 최근 소식 </a>
             </div>
         </div>
     </div>
     <div class="col"></div>
     </div>
     <div class="col"></div>
-    <c:forEach items="${zimList }" var="zim">
 	    <div class="row">
 	        <div class="col"></div>
 		    <div class="col-12 col-sm-8 col-lg-6 m-3" style="border: 1px solid #eeeeee;">
@@ -153,21 +79,14 @@
 				        </div>
 			        </div>
 			        <div class="col text-end" id="zimBtnArea${zim.project_idx }">
-			        	<c:choose>
-			        		<c:when test="${zim.zim_is_alam eq 1 }">
 				        		<button class="btn btn-outline-primary" onclick="zimAlam(0,${zim.project_idx })"><i class="bi bi-bell"></i></button>
-			        		</c:when>
-			        		<c:otherwise>
 				        		<button class="btn btn-outline-primary" onclick="zimAlam(1,${zim.project_idx })"><i class="bi bi-bell-slash"></i></button>
-				        	</c:otherwise>
-			        	</c:choose>
 			        	<button class="btn btn-outline-primary" onclick="zim(0, ${zim.project_idx})"><i class="bi bi-suit-heart-fill"></i></button>
 			        </div>
 		        </div>
 		    </div>
 	    <div class="col"></div>
 	</div>
-</c:forEach>
 
 <%@ include file="../Footer.jsp" %>
 

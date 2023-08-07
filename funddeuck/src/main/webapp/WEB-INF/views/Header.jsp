@@ -120,12 +120,19 @@
 	        </c:when>
 	        <c:otherwise>
 		        <li class="nav-item">
-		        <a class="nav-link" href="memberMypage"><b>${sessionScope.sId}님 환영합니다.</b></a>
+		        	<c:choose>
+		        		<c:when test="${sessionScope.sId eq 'admin'}">
+		        			<a class="nav-link" href="admin">관리자님 환영합니다.</a>
+		        		</c:when>
+		        		<c:otherwise>
+		        			<a class="nav-link" href="memberMypage">${sessionScope.sId}님 환영합니다.</a>
+		        		</c:otherwise>
+		        	</c:choose>
 		        </li>
 	        	<li class="nav-item">
 		          <a class="nav-link" href="LogOut">로그아웃</a>
 		        </li>
-	        	<li class="nav-item">
+		       	<li class="nav-item">
 		          <a class="nav-link" href="#">프로젝트 생성</a>
 		        </li>
 	        </c:otherwise>
