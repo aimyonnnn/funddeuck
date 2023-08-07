@@ -90,10 +90,10 @@ public class EchoHandler extends TextWebSocketHandler {
 	    	
 	        String[] strs = msg.split(",");
 	        log(strs.toString());
+	        String type = strs[0];
 	        
 	        if (strs != null && strs.length == 5) {
 	        	
-	            String type = strs[0];
 	            String target = strs[1];
 	            String subject = strs[2];
 	            String content = strs[3];
@@ -154,6 +154,7 @@ public class EchoHandler extends TextWebSocketHandler {
 					}
 					// ---------------------------------------------------------------------------------
 	        }
+	       }
 	    }
 	}
 
