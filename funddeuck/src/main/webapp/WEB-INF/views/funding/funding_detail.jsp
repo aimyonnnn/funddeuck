@@ -82,7 +82,7 @@
 					<div class="col">
 						<span class="fs-2">${project.project_cumulative_amount }</span>&nbsp;
 						<small>원</small>&nbsp;
-						<span class="fs-5 fw-bold">${project.project_cumulative_amount/project.project_target * 100 }%</span>
+						<span class="fs-5 fw-bold"><fmt:formatNumber type="number" value="${project.project_cumulative_amount/project.project_target * 100 }" maxFractionDigits="0"></fmt:formatNumber>%</span>
 					</div>
 				</div>
 				<br>
