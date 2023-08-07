@@ -376,4 +376,45 @@
 			date(payment_date) = curdate();
 	</select>
 	
+	<!-- 관리자 - 결제내역 조회 -->
+	<select id="selectAllPaymentList">
+		select *
+			from payment
+		<!-- 검색타입이 널스트링이 아닐 때 -->
+		<if test="!searchKeyword.equals('')">
+		where
+			<!-- 검색타입에 따른 where절 조건 대상 변경 -->
+			<choose>
+				<when test="searchType.equals('phone')">
+					member_phone like '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('email')">
+					maker_email like '%${searchKeyword}%'
+				</when>					
+			</choose>
+		</if>
+		order by
+			payment_idx desc
+		limit
+			#{startRow}
+			, #{listLimit}					
+	</select>
+	
+	<!-- 관리자 -  -->
+	<select id="selectAllPaymentListCount">
+		select count(*)
+			from payment
+		<if test="!searchKeyword.equals('')">
+		where
+			<choose>
+				<when test="searchType.equals('phone')">
+					member_phone like '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('email')">
+					maker_email like '%${searchKeyword}%'
+				</when>					
+			</choose>
+		</if>
+	</select>
+	
 </mapper>

@@ -79,42 +79,51 @@ th, td {
 					<th class="text-center" style="width: 20%;">프로젝트 이름</th>
 					<th class="text-center" style="width: 5%;">대표자</th>
 					<th class="text-center" style="width: 5%;">요금제</th>
-					<th class="text-center" style="width: 7%;">목표금액</th>
+					<th class="text-center" style="width: 5%;">목표금액</th>
 					<th class="text-center" style="width: 10%;">기간</th>
 					<th class="text-center" style="width: 5%;">상태</th>
-					<th class="text-center" style="width: 5%;">정보수정</th>
+					<th class="text-center" style="width: 5%;">상세정보</th>
 				</tr>
 				
 				<c:forEach var="pList" items="${pList}">
 					<tr>
-						<td class="text-center" style="width: 5%;">${pList.project_idx}</td>
-						<td class="text-center" style="width: 5%;">${pList.project_category}</td>
-						<td class="text-center" style="width: 20%;">
+						<td class="text-center" >${pList.project_idx}</td>
+						<td class="text-center">${pList.project_category}</td>
+						<td class="text-center">
 							<a href="adminProjectManagementDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}" style="text-decoration: none; color: black;">
 								${pList.project_subject}
 							</a> 
 						</td>
-						<td class="text-center" style="width: 20%;">${pList.project_representative_name}</td>
-						<td class="text-center" style="width: 5%;">${pList.project_plan}</td>
-						<td class="text-center" style="width: 5%;">${pList.project_target}</td>
-						<td class="text-center" style="width: 10%;">
+						<td class="text-center">${pList.project_representative_name}</td>
+						<td class="text-center">
+							<c:choose>
+								<c:when test="${pList.project_plan eq 1}">
+									기본
+								</c:when>
+								<c:otherwise>
+									인플루언서
+								</c:otherwise>
+							</c:choose>
+						</td>
+						<td class="text-center">${pList.project_target}</td>
+						<td class="text-center">
    							<fmt:formatDate value="${pList.project_start_date}" pattern="yy/MM/dd" />~<fmt:formatDate value="${pList.project_end_date}" pattern="yy/MM/dd" />
 						</td>
 						<c:choose>
 							<c:when test="${pList.project_approve_status eq 1}">
-								<td class="text-center" style="width: 5%;">미승인</td>
+								<td class="text-center">미승인</td>
 							</c:when>
 							<c:when test="${pList.project_approve_status eq 2}">
-								<td class="text-center text-danger" style="width: 5%;">승인요청</td>
+								<td class="text-center text-danger">승인요청</td>
 							</c:when>
 							<c:when test="${pList.project_approve_status eq 3}">
-								<td class="text-center text-success" style="width: 5%;">승인완료</td>
+								<td class="text-center text-success">승인완료</td>
 							</c:when>
 							<c:when test="${pList.project_approve_status eq 5}">
-								<td class="text-center" style="width: 5%;">결제완료</td>
+								<td class="text-center">결제완료</td>
 							</c:when>
 							<c:otherwise>
-								<td class="text-center" style="width: 5%;">승인거절</td>
+								<td class="text-center">승인거절</td>
 							</c:otherwise>
 						</c:choose>
 						<td class="text-center" style="width: 5%;">

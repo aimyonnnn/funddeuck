@@ -91,6 +91,33 @@ public class AdminController {
 		return "admin/admin_main";
 	}
 	
+	// 결제 관리
+	@GetMapping("adminPayment")
+	public String adminPayment(
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword,
+			@RequestParam(defaultValue = "1") int pageNum,
+			HttpSession session, Model model) {
+		
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		
+		List<PaymentVO> pList = paymentService.getAllPaymentList(searchKeyword, searchType, startRow, listLimit);
+		int listCount = paymentService.getAllPaymentListCount(searchKeyword, searchType);
+		
+		int pageListLimit = 10;
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {	endPage = maxPage; }
+		
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("pList", pList);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		return "admin/admin_payment";
+	}
+	
 	// 메이커 정보 변경 페이지 - 메이커 관리 상세보기 클릭 시
 	@GetMapping("adminMakerDetail")
 	public String adminMakerDetail(@RequestParam(required = true) Integer maker_idx ,HttpSession session, Model model) {
@@ -301,13 +328,6 @@ public class AdminController {
 		model.addAttribute("rList", rList);
 		
 		return "admin/admin_project_management_detail";
-	}
-	
-	
-	// 결제 관리
-	@GetMapping("adminPayment")
-	public String adminPayment() {
-		return "admin/admin_payment";
 	}
 	
 	// 프로젝트 승인완료 시 메이커에게 문자 메시지 전송하기

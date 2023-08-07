@@ -243,12 +243,18 @@ th, td {
 			
 			<!-- 공지사항 리스트 -->
 			<div class="content-area" id="tab2">
+			
+				<c:if test="${empty mList}">
+					<div class="d-flex justify-content-center mt-5">
+			        	<p>등록된 공지사항이 없습니다.&nbsp;&nbsp;<a href="makerDetail?maker_idx=${param.maker_idx}">공지사항 등록하러 가기</a></p>
+			        </div>
+				</c:if>
+			
 				<div class="accordion" id="accordionExample">
-				
 				    <c:forEach var="mList" items="${mList}">
 				        <div class="accordion-item">
 				            <h2 class="accordion-header" id="heading${mList.maker_board_idx}">
-				                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+				                <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse"
 				                    data-bs-target="#collapse${mList.maker_board_idx}" aria-expanded="true"
 				                    aria-controls="collapse${mList.maker_board_idx}">
 				                    ${mList.maker_board_subject}
@@ -257,43 +263,47 @@ th, td {
 				            <div id="collapse${mList.maker_board_idx}" class="accordion-collapse collapse show"
 				                aria-labelledby="heading${mList.maker_board_idx}" data-bs-parent="#accordionExample">
 				                <div class="accordion-body">
-				                	<table class="table text-center">
-				                		<tr>
-				                			<td style="width: 20%">작성내용</td>
-				                			<td style="width: 80%">${mList.maker_board_content}</td>
-				                		</tr>
-				                		<tr>
-				                			<td>작성일자</td>
-				                			<td><fmt:formatDate value="${mList.maker_board_regdate}" pattern="yy-MM-dd HH:mm" /></td>
-				                		</tr>
-				                		<tr>
-				                			<td>첨부파일</td>
-				                			<td>
-				                				<c:choose>
-				                					<c:when test="${not empty mList.maker_board_file1}">
-						                				<a href="${pageContext.request.contextPath}/resources/upload/${mList.maker_board_file1}" download="${fn:split(mList.maker_board_file1, '_')[1]}">
-											                ${fn:split(mList.maker_board_file1, '_')[1]}
-											            </a>
-				                					</c:when>
-				                					<c:otherwise>
-				                						첨부파일 없음
-				                					</c:otherwise>
-				                				</c:choose>
-				                			</td>
-				                		</tr>
-				                		<tr>
-				                			<td colspan="2" class="text-center">
-					                			<input type="button" value="삭제하기" class="btn btn-outline-danger btn-sm"
-												onclick="deleteMakerBoard(${mList.maker_board_idx})">
-				                			</td>
-				                		<tr>
-				                	</table>
+				                	<form action="">
+					                	<table class="table text-center">
+					                		<tr>
+					                			<td style="width: 20%">작성내용</td>
+					                			<td style="width: 80%">${mList.maker_board_content}</td>
+					                		</tr>
+					                		<tr>
+					                			<td>작성일자</td>
+					                			<td><fmt:formatDate value="${mList.maker_board_regdate}" pattern="yy-MM-dd HH:mm" /></td>
+					                		</tr>
+					                		<tr>
+					                			<td>첨부파일</td>
+					                			<td>
+					                				<c:choose>
+					                					<c:when test="${not empty mList.maker_board_file1}">
+							                				<a href="${pageContext.request.contextPath}/resources/upload/${mList.maker_board_file1}" download="${fn:split(mList.maker_board_file1, '_')[1]}">
+												                ${fn:split(mList.maker_board_file1, '_')[1]}
+												            </a>
+					                					</c:when>
+					                					<c:otherwise>
+					                						첨부파일 없음
+					                					</c:otherwise>
+					                				</c:choose>
+					                			</td>
+					                		</tr>
+					                		<tr>
+					                			<td colspan="2" class="text-center">
+						                			<input type="button" value="수정하기" class="btn btn-outline-primary btn-sm"
+													onclick="updateMakerBoard(${mList.maker_board_idx})">
+						                			<input type="button" value="삭제하기" class="btn btn-outline-primary btn-sm"
+													onclick="deleteMakerBoard(${mList.maker_board_idx})">
+					                			</td>
+					                		<tr>
+					                	</table>
+				                	</form>
 				                </div>
 				            </div>
 				        </div>
 				    </c:forEach>
-				    
 				</div>
+				
 			</div>
 			
 				

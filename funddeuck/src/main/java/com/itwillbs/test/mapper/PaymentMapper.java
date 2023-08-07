@@ -107,5 +107,13 @@ public interface PaymentMapper {
 	
 	// 오늘 등록된 서포터 수
 	int selectSupportCountByPaymentDate();
+	
+	// 관리자 - 결제내역 조회
+	List<PaymentVO> selectAllPaymentList(
+			@Param("searchKeyword") String searchKeyword, @Param("searchKeyword") String searchType,
+			@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+	
+	// 관리자 - 결제내역 갯수 조회
+	int selectAllPaymentListCount(@Param("searchKeyword") String searchKeyword, @Param("searchKeyword") String searchType);
 
 }

@@ -90,7 +90,7 @@
 					    <c:forEach var="mList" items="${mList}">
 					        <div class="accordion-item">
 					            <h2 class="accordion-header" id="heading${mList.maker_board_idx}">
-					                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+					                <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse"
 					                    data-bs-target="#collapse${mList.maker_board_idx}" aria-expanded="true"
 					                    aria-controls="collapse${mList.maker_board_idx}">
 					                    ${mList.maker_board_subject}

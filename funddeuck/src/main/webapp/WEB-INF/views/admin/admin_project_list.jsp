@@ -79,7 +79,7 @@ th, td {
 						<th class="text-center" style="width: 7%;">대표자</th>
 						<th class="text-center" style="width: 5%;">상태</th>
 						<th class="text-center" style="width: 7%;">요청시간</th>
-						<th class="text-center" style="width: 5%;">상세보기</th>
+						<th class="text-center" style="width: 5%;">상세정보</th>
 					</tr>
 					
 					<c:forEach var="pList" items="${pList}">

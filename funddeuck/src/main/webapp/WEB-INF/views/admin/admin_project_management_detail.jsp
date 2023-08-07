@@ -300,10 +300,10 @@ th, td {
 				            <td>
 				                <select name="project_approve_status" class="form-control">
 				                	<option value="1" ${project.project_approve_status eq 1 ? 'selected' : ''}>미승인</option>
-				                	<option value="2" ${project.project_approve_status eq 2 ? 'selected' : ''}>승인요청</option>
-				                	<option value="3" ${project.project_approve_status eq 3 ? 'selected' : ''}>승인완료</option>
-				                	<option value="4" ${project.project_approve_status eq 4 ? 'selected' : ''}>승인거절</option>
-				                	<option value="5" ${project.project_approve_status eq 5 ? 'selected' : ''}>결제완료</option>
+				                	<option value="2" ${project.project_approve_status eq 2 ? 'selected' : ''}>관리자에게 프로젝트 승인요청</option>
+				                	<option value="3" ${project.project_approve_status eq 3 ? 'selected' : ''}>관리자의 프로젝트 승인완료</option>
+				                	<option value="4" ${project.project_approve_status eq 4 ? 'selected' : ''}>관리자의 프로젝트 승인거절</option>
+				                	<option value="5" ${project.project_approve_status eq 5 ? 'selected' : ''}>프로젝트 요금제 결제완료</option>
 				                </select>
 				            </td>
 				        </tr>
@@ -311,8 +311,8 @@ th, td {
 				            <th>프로젝트 상태</th>
 				            <td>
 				                <select name="project_status" class="form-control">
-				                	<option value="1" ${project.project_status eq 1 ? 'selected' : '' }>미진행</option>
-				                	<option value="2" ${project.project_status eq 2 ? 'selected' : '' }>진행중</option>
+				                	<option value="1" ${project.project_status eq 1 ? 'selected' : '' }>오픈예정</option>
+				                	<option value="2" ${project.project_status eq 2 ? 'selected' : '' }>프로젝트 진행중</option>
 				                	<option value="3" ${project.project_status eq 3 ? 'selected' : '' }>진행완료</option>
 				                	<option value="4" ${project.project_status eq 4 ? 'selected' : '' }>정산신청</option>
 				                	<option value="5" ${project.project_status eq 5 ? 'selected' : '' }>정산완료</option>

@@ -144,4 +144,14 @@ public class PaymentService {
 		return mapper.selectSupportCountByPaymentDate();
 	}
 	
+	// 관리자 - 결제내역 조회
+	public List<PaymentVO> getAllPaymentList(String searchKeyword, String searchType, int startRow, int listLimit) {
+		return mapper.selectAllPaymentList(searchKeyword, searchType, startRow, listLimit);
+	}
+	
+	// 관리자 - 결제내역 갯수 조회
+	public int getAllPaymentListCount(String searchKeyword, String searchType) {
+		return mapper.selectAllPaymentListCount(searchKeyword, searchType);
+	}
+	
 }

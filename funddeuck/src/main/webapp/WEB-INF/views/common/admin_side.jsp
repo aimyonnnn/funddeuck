@@ -35,7 +35,7 @@
 				<li><a href="adminProjectList"><span class="las la-check"></span> 승인 관리</a></li>
 				<li><a href="adminPayment"><span class="las la-credit-card"></span> 결제 관리</a></li>
 				<li><a href="adminMemberManagement"><span class="las la-user-circle"></span> 회원 관리</a></li>
-				<li><a href="adminCoupon"><span class="las la-user-circle"></span> 쿠폰 관리</a></li>
+				<li><a href="adminCoupon"><span class="las la-percentage"></span> 쿠폰 관리</a></li>
 			</ul>
 			<div class="menu-head">
 				<span>2 TEAM</span>
