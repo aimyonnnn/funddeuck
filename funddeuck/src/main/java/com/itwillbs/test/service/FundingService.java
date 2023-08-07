@@ -95,4 +95,9 @@ public class FundingService {
 	public List<ProjectVO> getExpectedFundingList(String category) {
 		return mapper.selectExpectedFundingList(category);
 	}
+
+	// 프로젝트 상세 페이지 이동 시 조회할 총 후원자수 정보
+	public int getSupTotal(int project_idx) {
+		return mapper.selectSupTotal(project_idx);
+	}
 }

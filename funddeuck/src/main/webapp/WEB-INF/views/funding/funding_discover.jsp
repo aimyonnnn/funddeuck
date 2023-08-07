@@ -69,7 +69,7 @@
 	</button>
 </div>
 <br>
-<!-- 카테고리 바 영역 -->
+<!-- 카테고리 바 영역(화면 클때) -->
 <div class="container-lg">
 	<ul class="nav justify-content-center">
 		<li class="nav-item 
@@ -175,8 +175,9 @@
 		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'target' }">border-info border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=target">목표금액순</a>
 	</div>
 	<br>
+<!--  -->
 <!-- 프로젝트 리스트 영역 -->
-	<div class="col with .gy-5 gutters">
+	<div class="container-lg col with .gy-5 gutters">
 		<small class="text-danger">${project.size() }</small><small>개의 프로젝트가 있습니다.</small>
 		<div class="row row-cols-3 row-cols-sm-4 g-3">
 		<!-- 페이징 처리 -->
@@ -196,14 +197,36 @@
 		      			<fmt:formatNumber type="number" maxFractionDigits="0"  value="${project.project_cumulative_amount/project.project_target * 100 }" />%
 		      			</small>&nbsp;
 		      			<small class="opacity-75"><fmt:formatNumber value="${project.project_cumulative_amount }" pattern="#,###" />원
-		      			<small class="fw-bold float-end">
 			      			<fmt:parseDate value="${project.project_end_date }" var="projectEndDate" pattern="yyyy-MM-dd"/>
 							<fmt:parseNumber value="${projectEndDate.time / (1000*60*60*24)}" integerOnly="true" var="endDate"></fmt:parseNumber>
 							<fmt:parseDate value="${project.project_start_date }" var="projectStartDate" pattern="yyyy-MM-dd"/>
 							<fmt:parseNumber value="${projectStartDate.time / (1000*60*60*24)}" integerOnly="true" var="strDate"></fmt:parseNumber>
-							${endDate - strDate }
-			      			일 남음
-			      		</small></small>
+			      			<!-- 아직 진행되지 않은 프로젝트의 경우 -->
+			      			<c:if test="${project.project_status eq 1 }">
+			      			<small class="fw-bold float-end text-danger">
+								미진행
+			      			</small>
+			      			</c:if>
+			      			<!-- 프로젝트가 진행중이며, 아직 진행일이 남아있을 경우 -->
+			      			<c:if test="${project.project_status eq 2 && endDate - strDate ne 0 }">
+			      			<small class="fw-bold float-end">
+								${endDate - strDate }
+				      			일 남음
+			      			</small>
+			      			</c:if>
+			      			<!-- 프로젝트가 진행중이지만, 오늘 종료될 경우 -->
+			      			<c:if test="${project.project_status eq 2 && endDate - strDate eq 0 }">
+			      			<small class="fw-bold float-end text-danger">
+								오늘 종료
+			      			</small>
+			      			</c:if>
+			      			<!-- 이미 종료된 프로젝트의 경우 -->
+			      			<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 }">
+			      			<small class="fw-bold float-end text-danger">
+								종료됨
+			      			</small>
+			      			</c:if>
+			      		</small>
 		        	<div class="progress" style="height: 10px">
 	  					<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example" 
 	  					style="height:10px; width: ${project.project_cumulative_amount/project.project_target * 100}%" 

@@ -24,6 +24,10 @@
 </head>
 <body>
 <!-- 요청 파라미터 값 저장 -->
+<fmt:parseDate value="${project.project_end_date }" var="projectEndDate" pattern="yyyy-MM-dd"/>
+<fmt:parseNumber value="${projectEndDate.time / (1000*60*60*24)}" integerOnly="true" var="endDate"></fmt:parseNumber>
+<fmt:parseDate value="${project.project_start_date }" var="projectStartDate" pattern="yyyy-MM-dd"/>
+<fmt:parseNumber value="${projectStartDate.time / (1000*60*60*24)}" integerOnly="true" var="strDate"></fmt:parseNumber>
 <input type="hidden" value="${param.category }" id="categoryVal">
 <c:set var="currentTime" value="<%= new java.util.Date() %>" />  
 	<br>
@@ -92,14 +96,31 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<span class="fs-2">
-							<fmt:parseDate value="${project.project_end_date }" var="projectEndDate" pattern="yyyy-MM-dd"/>
-							<fmt:parseNumber value="${projectEndDate.time / (1000*60*60*24)}" integerOnly="true" var="endDate"></fmt:parseNumber>
-							<fmt:parseDate value="${project.project_start_date }" var="projectStartDate" pattern="yyyy-MM-dd"/>
-							<fmt:parseNumber value="${projectStartDate.time / (1000*60*60*24)}" integerOnly="true" var="strDate"></fmt:parseNumber>
-							${endDate - strDate }
+						<!-- 프로젝트가 아직 진행 되지 않았을 경우 -->
+						<c:if test="${project.project_status eq 1}">
+							<span class="fs-2 text-danger fw-bold">
+								미진행
+							</span>
+						</c:if>
+						<!-- 프로젝트가 진행중인 경우 -->
+						<c:if test="${project.project_status eq 2 && endDate - strDate ne 0}">
+							<span class="fs-2">
+								${endDate - strDate }
+							</span>&nbsp;
+				  			<small>일</small>&nbsp;&nbsp;
+						</c:if>
+						<!-- 프로젝트가 진행중이지만 종료가 임박한 프로젝트(남은 일자가 없을 경우) -->
+						<c:if test="${project.project_status eq 2 && endDate - strDate eq 0}">
+						<span class="fs-2 text-danger fw-bold">
+							오늘 종료
 						</span>&nbsp;
-			  			<small>일</small>&nbsp;&nbsp;
+						</c:if>
+						<!-- 종료된 프로젝트인 경우 -->
+						<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5}">
+						<span class="fs-2 text-danger fw-bold">
+							종료된 프로젝트
+						</span>&nbsp;
+						</c:if>
 					</div>
 				</div>
 				<br>
@@ -108,7 +129,7 @@
 				</div>
 				<div class="row">
 					<div class="col">
-				  		<span class="fs-2">82</span>&nbsp;
+				  		<span class="fs-2">${supTotal }</span>&nbsp;
 				  		<small>명</small>&nbsp;
 					</div>
 				</div>
@@ -138,15 +159,54 @@
 				 	<tr>
 				   		<th><small>펀딩 기간</small></th>
 				   		<td></td>
-				   		<td><small>
-				   		${project.project_start_date }
-				   		~
-				   		${project.project_end_date }
-				   		</small>&nbsp;&nbsp;&nbsp;
-				   		<span class="badge text-danger text-bg-danger bg-opacity-10">
-				   		${endDate - strDate } 일 남음
-				   		</span>
-				   		</td>
+				   		<!-- 아직 진행되지 않은 프로젝트의 경우 -->
+				   		<c:if test="${project.project_status eq 1 }">
+					   		<td><small>
+					   		${project.project_start_date }
+					   		~
+					   		${project.project_end_date }
+					   		</small>&nbsp;&nbsp;&nbsp;
+					   		<span class="badge text-danger text-bg-danger bg-opacity-10">
+					   		미진행
+					   		</span>
+					   		</td>
+				   		</c:if>
+				   		<!-- 프로젝트가 진행중이며, 아직 진행일이 남아있을 경우 -->
+				   		<c:if test="${project.project_status eq 2 && endDate - strDate ne 0 }">
+					   		<td><small>
+					   		${project.project_start_date }
+					   		~
+					   		${project.project_end_date }
+					   		</small>&nbsp;&nbsp;&nbsp;
+					   		<span class="badge text-danger text-bg-danger bg-opacity-10">
+					   		${endDate - strDate } 일 남음
+					   		</span>
+					   		</td>
+				   		</c:if>
+				   		<!-- 프로젝트가 진행중이지만, 오늘 종료될 경우 -->
+				   		<c:if test="${project.project_status eq 2 && endDate - strDate eq 0 }">
+					   		<td><small>
+					   		${project.project_start_date }
+					   		~
+					   		${project.project_end_date }
+					   		</small>&nbsp;&nbsp;&nbsp;
+					   		<span class="badge text-danger text-bg-danger bg-opacity-10">
+					   		오늘 종료
+					   		</span>
+					   		</td>
+				   		</c:if>
+				   		<!-- 이미 종료된 프로젝트의 경우 -->
+				   		<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 }">
+					   		<td><small>
+					   		${project.project_start_date }
+					   		~
+					   		${project.project_end_date }
+					   		</small>&nbsp;&nbsp;&nbsp;
+					   		<span class="badge text-danger text-bg-danger bg-opacity-10">
+					   		종료됨
+					   		</span>
+					   		</td>
+				   		</c:if>
 				 	</tr>
 				 	<tr>
 						<th><small>결제</small></th>
@@ -245,7 +305,6 @@
 			<!--화면 작을 때 -->
 		  </div>
 	<!-- 이미지, 펀딩 진행상태, 기본정보 끝-->          
-	</div>
 	<!-- 상단 영역 끝-->
 	<hr>
 	<!--내용 영역-->
@@ -436,7 +495,18 @@
 									<small class="card-text opacity-75">${reward.reward_detail }</small>
 									<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
 									<div>&nbsp;</div>
-									<a href="fundingOrder?project_idx=${project.project_idx }&reward_idx=${reward.reward_idx }" class="stretched-link"></a>
+									<!-- 프로젝트가 진행되지 않은 상태일 경우(주문 불가능) -->
+									<c:if test="${project.project_status eq 1 }">
+										<a href="javascript:nrReward()" class="stretched-link"></a>
+									</c:if>
+									<!-- 프로젝트가 진행중인 경우(주문 가능) -->
+									<c:if test="${project.project_status eq 2 }">
+										<a href="fundingOrder?project_idx=${project.project_idx }&reward_idx=${reward.reward_idx }" class="stretched-link"></a>
+									</c:if>
+									<!-- 프로젝트가 종료된 경우(주문 불가능) -->
+			      					<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 }">
+										<a href="javascript:endReward()" class="stretched-link"></a>
+									</c:if>
 								</div>
 							</div>
 							<div>&nbsp;</div>
@@ -580,6 +650,15 @@ window.onload = function(){
 		});				
 	});
 
+// 프로젝트가 진행되지 않은 상태에서 리워드 주문 버튼 클릭 시
+function nrReward(){
+	alert("아직 주문이 불가능합니다!\n오픈을 기다려주세요!");
+}
+
+// 프로젝트가 종료된 상태에서 리워드 주문 버튼 클릭 시
+function endReward(){
+	alert("이미 종료된 프로젝트입니다!\n다음 기회에 이용해주세요!");	
+}
 </script>
 <br>
 <jsp:include page="../Footer.jsp"></jsp:include>

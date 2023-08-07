@@ -56,5 +56,8 @@ public interface FundingMapper {
 
 	// 오픈 예정 프로젝트 리스트 조회(탐색 페이지)
 	List<ProjectVO> selectExpectedFundingList(String category);
+
+	// 프로젝트 상세 페이지 이동 시 조회할 총 후원자수 정보
+	int selectSupTotal(int project_idx);
 	
 }

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,7 +56,7 @@
 					  		<tr>
 					  			<th><span class="fs-5 fw-bold">결제금액</span></th>
 					  			<td>&nbsp;&nbsp;</td>
-					  			<td><span class="fs-5">${payment.total_amount }원</span></td>
+					  			<td><span class="fs-5"><fmt:formatNumber value="${payment.total_amount }" pattern="#,###" />원</span></td>
 					  		</tr>
 					  	</table>
 					  </div>
@@ -64,7 +65,7 @@
 		</div>
 		<br>
 		<div class="col text-center">
-			<button class="btn btn-primary me-8 bg-success" onclick="javascript:history.back()"><span class="text-center text-white fw-bold">뒤로가기</span></button>
+			<button class="btn btn-primary me-8 bg-success" onclick="location.href='fundingDiscover?category=all&status=all&index=newest'"><span class="text-center text-white fw-bold">프로젝트 목록 페이지로 이동</span></button>
 			<button class="btn btn-primary me-8 bg-success" onclick="#"><span class="text-center text-white fw-bold">메인 페이지로 이동</span></button>
 		</div>
 		<br>

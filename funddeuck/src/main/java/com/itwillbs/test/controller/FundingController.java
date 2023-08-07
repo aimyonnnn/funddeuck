@@ -90,6 +90,10 @@ public class FundingController {
 		List<ProjectCommunityVO> ProjectCommunity = fundingService.getProjectCommunityInfo(project_idx);
 		model.addAttribute("ProjectCommunity", ProjectCommunity);
 		
+		// 프로젝트 상세 페이지 이동 시 조회할 총 후원자수 정보
+		int supTotal = fundingService.getSupTotal(project_idx);
+		model.addAttribute("supTotal", supTotal);
+		
 		return "funding/funding_detail";
 	}
 	
