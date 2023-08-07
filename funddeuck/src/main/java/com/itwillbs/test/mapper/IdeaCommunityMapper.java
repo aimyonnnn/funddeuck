@@ -20,6 +20,8 @@ public interface IdeaCommunityMapper {
 	void updateIdea(IdeaCommunityVO idea);
 
 	int getLikeCountForToday(int ideaIdx, int memberIdx);
+
+	int deleteIdea(int ideaIdx);
         
 
     

@@ -75,5 +75,18 @@ public class IdeaCommunityController {
         }
     }
     
-    
+    @PostMapping("/member/deleteIdea")
+    @ResponseBody
+    public String deleteIdea(@RequestParam("ideaIdx") int ideaIdx, HttpSession session) {
+    	
+        String memberId = (String) session.getAttribute("sId");
+        if (memberId != null) {
+            int deleteCount = ideaCommunityService.deleteIdea(ideaIdx, memberId);
+            if(deleteCount > 0) return "true";
+        }
+        
+        return "false";
+        
+    }
+
 }

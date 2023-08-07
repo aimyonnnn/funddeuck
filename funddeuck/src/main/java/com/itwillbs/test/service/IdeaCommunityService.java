@@ -47,8 +47,8 @@ public class IdeaCommunityService {
         ideaCommunityMapper.updateIdea(idea);
     }
     
-    public boolean isAllowedToLike(int ideaIdx, int memberIdx) {
-        int likeCountForToday = ideaCommunityMapper.getLikeCountForToday(ideaIdx, memberIdx);
-        return likeCountForToday < 3;
+    
+    public int deleteIdea(int ideaIdx, String memberId) {
+    	return ideaCommunityMapper.deleteIdea(ideaIdx);
     }
 }

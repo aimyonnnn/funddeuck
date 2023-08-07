@@ -20,4 +20,10 @@
         SELECT * FROM idea
         WHERE idea_idx = #{ideaIdx}
     </select>
+    
+   <delete id="deleteIdea">
+        DELETE FROM idea
+        WHERE idea_idx = #{ideaIdx}
+    </delete>
+    
 </mapper>
