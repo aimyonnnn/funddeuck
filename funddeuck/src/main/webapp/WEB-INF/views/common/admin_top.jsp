@@ -275,37 +275,43 @@ $(() => {
 });
 </script>	
 <!-- 메시지 모달창 -->
-<div class="modal fade" id="notifyModal" tabindex="-1" aria-labelledby="notifyModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="notifyModalLabel">메시지 보내기</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="sendMessageForm">
-                   	<table class="table">
-						<tr>
-							<td class="text-center" style="width:15%">제목</td>
-							<td style="width:85%">
-								<input type="text" class="form-control" id="message_subject" placeholder="제목을 입력해주세요">
-							</td>
-						</tr>
-						<tr>
-							<td class="text-center">아이디</td>
-							<td>
-								<input type="text" class="form-control" id="message_receiver" placeholder="아이디를 입력해주세요">
-							</td>
-						</tr>
-						<tr>
-							<td class="text-center">내용</td>
-							<td>
-								<textarea class="form-control" id="message_content" cols="10" rows="7" placeholder="내용을 작성해주세요"></textarea>
-							</td>
-						</tr>
-					</table>
-                </form>
-                <button type="button" class="btn btn-primary w-100" id="notifySendBtn">메시지 전송하기</button>
+<div class="modal fade" id="notifyModal" tabindex="-1" role="dialog" aria-labelledby="notifyModalLabel" style="display: none;" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content border-0">
+           <div class="modal-header bg-primary text-white">
+               <h5 class="modal-title text-white">메시지 보내기</h5>
+           </div>
+           <div class="modal-body">
+               <div class="notes-box">
+                   <div class="notes-content">
+                       <form id="sendMessageForm">
+                           <div class="col-md-12 mb-3">
+                               <div class="ideatitle">
+                                   <label>제목</label>
+								   <input id="message_subject" type="text" class="form-control" placeholder="제목을 입력하세요">
+                               </div>
+                           </div>
+                           
+                           <div class="col-md-12 mb-3">
+                               <div class="ideatitle">
+                                   <label>ID</label>
+								   <input id="message_receiver" type="text" class="form-control" placeholder="아이디를 입력하세요">
+                               </div>
+                           </div>
+
+                           <div class="col-md-12">
+                               <div class="ideadescription">
+                                   <label>내용</label>
+                                   <textarea id="message_content" class="form-control" placeholder="내용을 입력하세요" rows="3"></textarea>
+                               </div>
+                           </div>
+                        </form>
+                     	<div class="modal-footer">
+	                        <button id="notifySendBtn" class="btn btn-primary">전송</button>
+	                        <button class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">닫기</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

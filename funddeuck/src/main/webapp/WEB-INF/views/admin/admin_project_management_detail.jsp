@@ -363,7 +363,13 @@ th, td {
 			
 			<!-- 리위드 -->
 			<div class="content-area" id="tab2">
-			
+				
+			  	<c:if test="${empty rList}">
+			        <div class="d-flex justify-content-center mt-5">
+			        	<p>등록된 리워드가 없습니다.&nbsp;&nbsp;<a href="projectReward?project_idx=${param.project_idx}">리워드 등록하러 가기</a></p>
+			        </div>
+			    </c:if>
+				
 				<c:forEach var="rList" items="${rList}">
 					<form action="adminModifyReward" method="post" id="rewardForm" enctype="multipart/form-data">
 					    <!-- hidden 필드 -->
