@@ -37,14 +37,13 @@
 			<!-- 프로젝트 이미지 영역 끝 -->
 			<!-- 프로젝트 정보 영역 -->
 			<div class="col p-2 text-start">
-				<!-- form으로 전달할 project_idx-->
 				<span class="fs-2 fw-bold">${project.project_subject }</span> <br>
-				<!-- 목표금액 + 후원한 사람들의 총금액 -->
-				<span class="fs-4 fw-bold">xxxx원</span>&nbsp;&nbsp;
-				<!-- 목표금액까지의 % -->
-				<span class="fs-5 text-primary fw-bold">xx%</span> &nbsp; 
-				<!-- 프로젝트 종료일 - 현재시간 -->
-				<span class="fs-6 text-muted">xx일 남음</span>
+				<!-- 누적금액 -->
+				<span class="fs-4 fw-bold">${project.project_cumulative_amount }원</span>&nbsp;&nbsp;
+				<!-- 달성률 -->
+				<span class="fs-5 text-primary fw-bold">${achievementRate }%</span> &nbsp; 
+				<!-- 남은 프로젝트 기간 -->
+				<span class="fs-6 text-muted">${remainingDays }일 남음</span>
 			</div>
 			<!-- 프로젝트 정보 영역 끝 -->
 		</div>
@@ -298,7 +297,7 @@
 					<!-- a태그 내용보기 -->
 					<!-- 모달창으로 개인정보 동의 내용 보여주기 -->
 					<div class="col-4 pt-2 fs-6">
-						<a href="#" onclick="">내용보기</a>
+						<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#personalInfoAgreeModal">내용보기</button>
 					</div>
 					<!-- a태그 내용보기 끝 -->
 				</div>
@@ -665,6 +664,38 @@
 		</div>
 	</div>	
 	<!-- 배송지 변경 모달창 끝 -->
+	<!-- 내용보기 클릭시 개인정보 동의 안내문 모달창 -->
+	<div class="modal" id="personalInfoAgreeModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+	 			<div class="modal-header">
+					<h4 class="modal-title fw-bold">개인정보 제3자 제공 동의</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p class="fs-6" style="white-space: pre-line">개인정보 제3자 제공 동의 안내
+					
+					<span class="fw-bold">[펀뜩]</span>은 고객님의 개인정보를 소중하게 여기며, 개인정보보호법, 정보통신망 이용 촉진 및 정보보호 등에 관한 법률 등 관련 법령에 따라 원칙적으로 고객님의 개인정보를 제3자에게 제공하지 않습니다. 
+					
+					그러나 회원님께 더 나은 서비스를 제공하기 위해, 배송 등의 필요한 업무처리를 위하여 아래와 같은 범위 내에서 개인정보를 제공할 수 있습니다.
+					
+					1. 제공 받는 자: [배송업체명]
+					2. 제공되는 개인정보: 성명, 주소, 연락처 등 배송에 필요한 정보
+					3. 제공목적: 상품 배송을 위한 정보 전달 및 상품/서비스 제공과 관련한 업무 처리
+					4. 보유 및 이용기간: 회원탈퇴 시 혹은 제3자 제공 동의 철회 요청 시까지
+					
+					단, 고객님께서 동의하지 않으시더라도 서비스 이용에 지장은 없으며, 언제든지 동의를 철회할 수 있습니다.
+					동의를 철회하는 방법은 <span class="fw-bold">[펀뜩]</span> 고객센터로 연락하시거나, 개인정보 변경 화면에서 설정을 변경하실 수 있습니다.
+					
+					위 내용을 숙지하시고 동의하신 경우, 
+					[개인정보 제3자 제공 동의] 버튼을 눌러주세요.</p>		
+				</div>
+			</div>
+		</div>
+	</div>	
+	<!-- 내용보기 클릭시 개인정보 동의 안내문 모달창 끝 -->
+	
+	
 	<!-- 부트스트랩 -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=001f863eaaba2072ed70014e7f424f2f&libraries=services"></script>

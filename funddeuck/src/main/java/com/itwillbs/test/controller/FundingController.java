@@ -12,6 +12,7 @@ import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 
+import com.itwillbs.test.handler.*;
 import com.itwillbs.test.service.*;
 import com.itwillbs.test.vo.*;
 
@@ -34,6 +35,8 @@ public class FundingController {
 	private BankService bankService;
 	@Autowired
 	private BankApiService bankApiService;
+	@Autowired
+	private BankValueGenerator bankValueGenerator;
 	
 	// 로그 출력을 위한 변수 선언
 	private static final Logger logger = LoggerFactory.getLogger(FundingController.class);
@@ -149,19 +152,20 @@ public class FundingController {
     	
 		// 회원 정보 불러오기
 		MembersVO member = memberService.getMemberInfo(sId);
-		System.out.println("회원 정보 : " + member);
+//		System.out.println("회원 정보 : " + member);
+
 		// 프로젝트 정보 불러오기
 		ProjectVO project = projectService.getProjectInfo(project_idx);
-		System.out.println("프로젝트 정보 : " + project);
+//		System.out.println("프로젝트 정보 : " + project);
 		// 선택한 리워드 정보 불러오기
 		RewardVO reward = projectService.getRewardInfo(reward_idx);
-		System.out.println("리워드 정보 : " + reward);
+//		System.out.println("리워드 정보 : " + reward);
 		// 리워드 리스트 불러오기(리워드 변경 모달창)
 		List<RewardVO> rewardList = projectService.getRewardList(project_idx);
-		System.out.println(rewardList);
+//		System.out.println(rewardList);
 		// 로그인한 회원의 기본 배송지가 있는지 확인해서 있으면 전달
 		DeliveryVO deliveryDefault = fundingService.getDeliveryDefault(sId);
-		System.out.println("기본 배송지 정보 : " + deliveryDefault);
+//		System.out.println("기본 배송지 정보 : " + deliveryDefault);
 		if(deliveryDefault != null) {
 			// 기본 배송지 정보
 			model.addAttribute("deliveryDefault", deliveryDefault);
@@ -171,7 +175,7 @@ public class FundingController {
 		int member_idx = member.getMember_idx();
 		// 회원의 쿠폰 목록 중 미사용 쿠폰 목록만 조회
 		List<CouponVO> couponList = couponService.getCouponsByMemberAndStatus(member_idx, 0);
-		System.out.println("회원이 보유한 미사용 쿠폰 목록 : " + couponList);
+//		System.out.println("회원이 보유한 미사용 쿠폰 목록 : " + couponList);
 		if(couponList != null) {
 			model.addAttribute("couponList", couponList);
 		}
@@ -188,9 +192,9 @@ public class FundingController {
 				session.setAttribute("user_seq_no", token.getUser_seq_no());
 				// 엑세스토큰과 사용자번호 저장
 				String access_token = token.getAccess_token();
-				logger.info("●●●●● userInfo : " + access_token);
+				logger.info("●●●●● access_token : " + access_token);
 				String user_seq_no = token.getUser_seq_no();
-				logger.info("●●●●● userInfo : " + user_seq_no);
+				logger.info("●●●●● user_seq_no : " + user_seq_no);
 				// 핀테크 이용자 정보 조회(API)
 				ResponseUserInfoVO userInfo = bankApiService.requestUserInfo(access_token, user_seq_no); 
 				logger.info("●●●●● userInfo : " + userInfo);
@@ -203,7 +207,7 @@ public class FundingController {
 						bankAccount = account;
 					}
 				}
-				System.out.println("bankAccount : " + bankAccount);
+//				System.out.println("bankAccount : " + bankAccount);
 				
 				
 			}
@@ -211,6 +215,22 @@ public class FundingController {
 			model.addAttribute("bankAccount", bankAccount);
 			
 		}
+		// 달성률 = 실제금액 / 목표금액 x 100
+		int project_target = project.getProject_target(); // 목표금액
+		int project_cumulative_amount = project.getProject_cumulative_amount(); // 누적금액
+		// 소수점 둘째자리 반올림
+		double achievementRate = Math.round( ((double)project_cumulative_amount / project_target) * 100 * 100) / 100.0;
+		model.addAttribute("achievementRate", achievementRate);
+		
+		// 프로젝트 남은기간 계산
+		LocalDate currentDate = LocalDate.now();
+		LocalDate projectEndDate = project.getProject_end_date().toLocalDate();
+        // 프로젝트 종료일과 현재 날짜 사이의 남은 날짜 계산
+        Period period = Period.between(currentDate, projectEndDate);
+        int remainingDays = period.getDays();
+        // 남은기간(출력용)
+        model.addAttribute("remainingDays", remainingDays);
+		
 		// 회원 정보
 		model.addAttribute("member", member);
 		// 프로젝트 정보
@@ -227,11 +247,9 @@ public class FundingController {
 	public String fundingPayment(PaymentVO payment, HttpSession session) {
 		System.out.println("PaymentVO : " + payment);
 		// 주문날짜 payment_date
-		// 현재 날짜를 얻습니다. (java.time.LocalDate 객체 사용)
-		LocalDate currentDate = LocalDate.now();
 
-		// 현재 날짜를 java.sql.Date 객체로 변환합니다.
-		java.sql.Date currentSqlDate = java.sql.Date.valueOf(currentDate);
+		// 현재 날짜를 java.sql.Date 객체로 변환(VO의 데이터타입 일치시켜주기위함)
+		java.sql.Date currentSqlDate = java.sql.Date.valueOf(LocalDate.now());
 
 		// 변환된 java.sql.Date 객체를 setPayment_date 메서드에 전달합니다.
 		System.out.println("현재 날짜 " + currentSqlDate);
