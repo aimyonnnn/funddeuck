@@ -12,7 +12,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 	<link rel="stylesheet" type="text/css" href="resources/css/mypage.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <style>
     .card-thumbnail {
       width: 100%;
@@ -66,6 +68,35 @@
 	.light-gray-text {
         color: #aaaaaa; 
     }
+    
+	.slick-slide {
+	    padding: 1em;
+	 }   
+	  
+	.swiper-pagination-custom {
+    	display: none;
+	}
+	
+	.swiper-container {
+    display: flex;
+    align-items: flex-start;
+	}
+	
+	.swiper-slide {
+	    flex: 0 0 auto;
+	}
+	
+	.swiper-pagination-custom {
+	    margin-top: 10px;
+	}
+	
+	.swiper-slide .card {
+	    width: 100%;
+	    max-width: 363.143px; /* 원하는 최대 너비 설정 */
+	    margin-right: 10px;
+	    box-sizing: border-box;
+	}
+	  
   </style>
   
   <script type="text/javascript">
@@ -114,7 +145,7 @@
 		    <p>함께 만드는 성공</p>
 		    <div class="row" id="projectContainer"  >
 		        <c:forEach items="${projectList}" var="project" varStatus="status">
-		            <c:if test="${status.index <= 5 && project.project_status eq 2 && project.project_approve_status eq 5}">
+		            <c:if test="${status.index <= 2 && project.project_status eq 2 && project.project_approve_status eq 5}">
 		                <div class="col-md-4 mb-4">
 		                    <article class="card">
 		                        <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>
@@ -166,40 +197,52 @@
 		</div>
 
  	<br>
-	<div class="container">
-	      <h3><b>오픈 예정 프로젝트</b></h3>
-		  <p>주목하세요! 오픈할 프로젝트</p>
-		<div class="row" id="unprojectContainer">
-        <c:forEach items="${projectList}" var="project" varStatus="status">
-            <c:if test="${project.project_status == 1 && project.project_approve_status == 5}">
-                <div class="col-md-4 mb-4">
-                    <article class="card">
-                        <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>
-                        <div class="card-body">
-                            <em class="card-title"><b>${project.project_subject}</b></em>
-                            <p class="card-text">
-                                ${project.project_category}
-                            </p>
-                        </div>
-                        <p style="text-align: center;"><b>지금 살펴보기></b></p>
-                    </article>
-                </div>
-            </c:if>
-        </c:forEach>
+		<div class="container">
+		    <h3><b>오픈 예정 프로젝트</b></h3>
+		    <p>주목하세요! 오픈할 프로젝트</p>
+		    <div class="swiper-container">
+		        <div class="swiper-wrapper">
+		            <c:forEach items="${projectList}" var="project" varStatus="status">
+		                <c:if test="${project.project_status == 1 && project.project_approve_status == 5}">
+		                    <div class="swiper-slide">
+		                        <div class="card">
+		                            <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>
+		                            <div class="card-body">
+		                                <em class="card-title"><b>${project.project_subject}</b></em>
+		                                <p class="card-text">
+		                                    <br>${project.project_category} | ${project.project_representative_name}
+		                                </p>
+		                            </div>
+		                            <hr>
+		                            <p style="text-align: center;"><b>지금 살펴보기></b></p>
+		                        </div>
+		                    </div>
+		                </c:if>
+		            </c:forEach>
+		        </div>
+		        <div class="swiper-pagination-custom swiper-pagination"></div>
+		    </div>
 		</div>
-    </div>
+		
+		<br>
+		
 
-		<div class="container mt-4 d-flex justify-content-end">
-		    <button type="button" class="btn btn-light" onclick="showRandomunProjects()"><b>어떤 프로젝트가 있나요?</b></button>
-		</div>
-	<br>
   
     <script src="resources/js/showRandomProjects.js"></script>
     <script src="resources/js/showRandomunProjects.js"></script>
   	<script src="resources/js/rankingList.js"></script>
 	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 	
-	
+	<script>
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 3.5,
+        spaceBetween: 10,
+        pagination: {
+            el: '.swiper-pagination-custom', 
+            clickable: true,
+        },
+    });
+	</script>
 	
     <%@ include file="Footer.jsp" %>
     
