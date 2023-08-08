@@ -248,30 +248,34 @@ public class FundingController {
 	
 	// 펀딩 결제
 	@PostMapping("fundingPayment")
-	public String fundingPayment(PaymentVO payment, HttpSession session) {
+	public String fundingPayment(PaymentVO payment, HttpSession session, Model model) {
+		
 		System.out.println("PaymentVO : " + payment);
-		// 주문날짜 payment_date
-
+		// 주문날짜
 		// 현재 날짜를 java.sql.Date 객체로 변환(VO의 데이터타입 일치시켜주기위함)
 		java.sql.Date currentSqlDate = java.sql.Date.valueOf(LocalDate.now());
-
-		// 변환된 java.sql.Date 객체를 setPayment_date 메서드에 전달합니다.
-		System.out.println("현재 날짜 " + currentSqlDate);
 		payment.setPayment_date(currentSqlDate);
 		
-		// 주문수량 payment_quantity ??? 1로 가정
-	    payment.setPayment_quantity(1);
+		System.out.println("리워드 수량 : " + payment.getPayment_quantity());
 		// 결제승인여부 payment_confirm 예약완료 1
 	    payment.setPayment_confirm(1);
 	    
 		// 결제 수단 카드(1)/ 계좌(2) payment_method
-	    payment.setPayment_method(2); // 계좌라고 가정
+	    payment.setPayment_method(2); // 계좌라고 가정 주문페이지에서 결제수단선택시 전달해야함
 	    
-	    // 계좌면 회원 계좌에서 출금
+	    // 계좌면 회원 계좌에서 출금이체
 	    // fintech_use_num access_token 필요(세션값 불러오기)
 	    String fintech_use_num = (String)session.getAttribute("fintech_use_num");
 	    String access_token = (String)session.getAttribute("access_token");
+	    // 계좌정보가 없을 경우(계좌 미등록시)
+	    if(fintech_use_num == null || access_token == null) {
+	    	model.addAttribute("msg", "계좌인증 후 계좌를 등록해주세요!");
+	    	return "fail_back";
+	    }
+	   
 	    logger.info("access_token : " + access_token);
+	    // 출금이체 API 요청(회원)
+	    // 거래요청일시를 프로젝트 종료일로 전달(예약)
 	    ResponseWithdrawVO withdrawResult = bankApiService.requestWithdrawMember(payment.getTotal_amount(), fintech_use_num, access_token);
 	    logger.info("withdrawResult" + withdrawResult);
 	    // DB에 출금내역(회원) 입금내역(사이트) 저장
@@ -303,6 +307,8 @@ public class FundingController {
 	    dpsBankTran.setBanking_account_holder_name(withdrawResult.getDps_account_holder_name()); // 수취인성명
 	    dpsBankTran.setBanking_bank_tran_date(withdrawResult.getBank_tran_date()); // 거래일자
 	    dpsBankTran.setBanking_tran_amt(withdrawResult.getTran_amt()); // 거래금액
+	    dpsBankTran.setBanking_status(1); // 1-입금
+	    System.out.println("사이트 계좌 출금내역 : " + dpsBankTran);
 	    
 //	    withdrawResult.getDps_bank_name(); // 입금기관명
 //	    withdrawResult.getDps_account_num_masked(); // 입금계좌번호(마스킹)
@@ -311,7 +317,7 @@ public class FundingController {
 //	    withdrawResult.getBank_tran_date(); // 거래일자
 //	    withdrawResult.getTran_amt(); // 거래금액
 //	    
-	    // 출금금내역
+	    // 출금내역
 	    BankingVO wdBankTran = new BankingVO();
 	    // 입금(사이트)
 	    wdBankTran.setBanking_bank_name(withdrawResult.getBank_name()); // 개설기관명
@@ -320,6 +326,8 @@ public class FundingController {
 	    wdBankTran.setBanking_account_holder_name(withdrawResult.getAccount_holder_name()); // 송금인성명
 	    wdBankTran.setBanking_bank_tran_date(withdrawResult.getBank_tran_date()); // 거래일자
 	    wdBankTran.setBanking_tran_amt(withdrawResult.getTran_amt()); // 거래금액
+	    wdBankTran.setBanking_status(2); // 2-출금
+	    System.out.println("회원 계좌 출금내역 : " + dpsBankTran);
 	    // 출금(회원)
 //	    withdrawResult.getBank_name(); // 개설기관명
 //	    withdrawResult.getAccount_num_masked(); // 출금계좌번호(마스킹)
@@ -328,7 +336,9 @@ public class FundingController {
 //	    withdrawResult.getBank_tran_date(); // 거래일자
 //	    withdrawResult.getTran_amt(); // 거래금액
 	    
-	    // 거래요청일시를 프로젝트 종료일로 전달(예약)
+	    // 스케줄링 활용하여서 프로젝트종료일(결제일)에 출금이체 메서드 실행되도록
+	    // 만약 프로젝트가 취소되면 메서드 취소, payment 상태 프로젝트 취소로 수정 => 0번 프로젝트 취소
+	    
 	    
 	    // 환불
 //	    ResponseDepositVO depositResult = bankApiService.requestDeposit(payment.getTotal_amount(), fintech_use_num, access_token);

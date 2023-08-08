@@ -25,6 +25,4 @@ public class CreditVO {
 	private int payment_total_price;			// 가격
 	private int p_status; 						// 결제상태 1-결제완료 2-결제취소
 	private int member_idx; 					// 회원번호
-	private String reason; 						// "테스트 결제 환불" 고정값
-	private int count; 							// 총 결제 금액
 }
