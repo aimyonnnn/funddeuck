@@ -120,6 +120,7 @@
 		, pay.waybill_num
 		, rev.review_idx
 		, pro.project_idx
+		, pay.
 		FROM payment pay 
 		JOIN project pro ON pay.project_idx = pro.project_idx
 		JOIN reward re ON re.reward_idx = pay.reward_idx

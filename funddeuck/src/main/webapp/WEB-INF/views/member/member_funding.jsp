@@ -48,27 +48,6 @@
     </style>
   <script type="text/javascript">
   
-  $(function() {
-	  
-	  	$.ajax({
-	  		type:"get",
-	  		url:"http://info.sweettracker.co.kr/api/v1/companylist?t_key=vOUrdVIWvOLE4CB9x3ljhw",
-	  		dataType:"json",
-	  		success: function(data) {
-				
-	  			console.log(JSON.stringify(data));
-	  			
-	  			for(let Company of data.Company){
-	  				
-	  			}
-	  			
-			},
-			error: function() {
-				
-			}
-	  		
-	  	});
-	});
   
   //모달 창 처리
   function modal(num) {
@@ -173,6 +152,9 @@
 	  
 // 		alert(pageNum+ ", " +payment_confirm);
 		
+		let url="http://info.sweettracker.co.kr";
+		let t_key="vOUrdVIWvOLE4CB9x3ljhw";
+		
 	  	$.ajax({
 	  		type:"post",
 	  		url:"MemberFundingPageing",
@@ -186,6 +168,16 @@
 					for (let map of data.map) {
 						
 						$.ajax({
+							type:"get",
+							url: url + "/api/v1/companylist?t_key=" + t_key,
+							dataType:"json",
+							success: function(companylist) {
+								
+								for(let Company of companylist.Company){
+									console.log(Company);
+								}
+								
+							}
 							
 						});
 						
