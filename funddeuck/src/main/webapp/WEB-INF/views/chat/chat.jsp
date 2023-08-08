@@ -67,20 +67,22 @@
 				
 				for(let chat of data.chatList){
 					if(chat.sender == "${sessionScope.sId}"){
-						var str = "<div class='col-7 float-end'>";
-						str += "<div class='alert alert-secondary text-end'>";
-						str += "<b>" + chat.content + "</b>";
-						str += "</div></div>";
-						$("#msgArea").prepend(str);
+				        var str = "<div class='col-12 d-flex justify-content-end'>";
+				        str += "<div class='col-7 alert alert-secondary text-end'>";
+				        str += "<b>" + chat.content + "</b>";
+				        str += "</div></div>";
+				        $("#msgArea").prepend(str);
 					} else {
-						var str = "<div class='col-7' style='clear: both;'>";
-						str += "<div class='alert alert-warning'>";
-						str += "<b>" + chat.sender + "<br>" + chat.content + "</b>";
-						str += "</div></div>";
-						
-						$("#msgArea").prepend(str);
+				        var str = "<div class='col-12 d-flex justify-content-start'>";
+				        str += "<div class='col-7 alert alert-warning'>";
+				        str += "<b>" + chat.sender + "</b>";
+				        str += "<div><b>" + chat.content + "</b></div>";
+				        str += "</div></div>";
+				        $("#msgArea").prepend(str);
 					}
 				}
+				
+				
 				
 			},
 			error: function() {
@@ -164,10 +166,10 @@ function onMessage(msg) {
     //로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
 	if(sessionId == cur_session){
 		
-		var str = "<div class='col-7 float-end'>";
-		str += "<div class='alert alert-secondary text-end'>";
-		str += message;
-		str += "</div></div>";
+        var str = "<div class='col-12 d-flex justify-content-end'>";
+        str += "<div class='col-7 alert alert-secondary text-end'>";
+        str += "<b>" + message + "</b>";
+        str += "</div></div>";
 		
 		$("#msgArea").append(str);
 		
@@ -177,10 +179,11 @@ function onMessage(msg) {
 	}
 	else{
 		
-		var str = "<div class='col-7' style='clear: both;'>";
-		str += "<div class='alert alert-warning'>";
-		str += "<b>" + sessionId + "<br>" + message + "</b>";
-		str += "</div></div>";
+        var str = "<div class='col-12 d-flex justify-content-start'>";
+        str += "<div class='col-7 alert alert-warning'>";
+        str += "<b>" + sessionId + "</b>";
+        str += "<div><b>" + message + "</b></div>";
+        str += "</div></div>";
 		
 		$("#msgArea").append(str);
 		
@@ -207,9 +210,10 @@ function onClose(evt) {
 //채팅창에 들어왔을 때
 function onOpen(evt) {
 	
-	var project_idx = ${param.project_idx};
+	var project_idx = "${param.project_idx}";
 	
-	if(project_idx != null){
+	
+	if(project_idx != ""){
 		sock.send("project,"+"${sessionScope.sId},"+project_idx);
 	}
 	
