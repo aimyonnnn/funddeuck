@@ -64,5 +64,10 @@ public class BankService {
 	public String getUserCI(int member_idx) {
 		return mapper.selectUserCI(member_idx);
 	}
+
+	// 정산 입금내역 등록
+//	public int registDepositSettlement(Map<String, Object> paramMap) {
+//		return mapper.insertDepositSettlement(paramMap);
+//	}
 	
 }

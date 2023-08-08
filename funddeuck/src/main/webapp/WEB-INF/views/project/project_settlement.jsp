@@ -91,6 +91,7 @@
 					
 					$('#fintech_use_num').val(data.project_fintech_use_num);				// 핀테크이용번호
 					$('#final_settlement').val(final_amount);								// 총 지급 금액 전달
+					$('#project_idx').val(project_idx);										// 프로젝트 고유번호
 					
 					console.log("핀테크 이용번호 : " + data.project_fintech_use_num);
 					console.log("총 지급 금액 전달 : " + final_amount);
@@ -326,6 +327,7 @@
 						<button type="submit" class="btn btn-danger"></button>
 						<input type="hidden" name="fintech_use_num" id="fintech_use_num">
 						<input type="hidden" name="final_settlement" id="final_settlement">
+						<input type="hidden" name="project_idx" id="project_idx">
 					</form>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				</div>

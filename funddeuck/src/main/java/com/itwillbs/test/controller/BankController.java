@@ -148,6 +148,9 @@ public class BankController {
 		// Map 객체에 엑세스토큰 추가
 		map.put("access_token", token.getAccess_token());
 		
+		// 프로젝트 번호 조회
+		int project_idx = Integer.parseInt(map.get("project_idx"));
+		
 		// 권한 확인
 		if(session.getAttribute("sId") == null || session.getAttribute("access_token") == null) {
 			model.addAttribute("msg", "권한이 없습니다!");
@@ -156,6 +159,19 @@ public class BankController {
 		
 		// 입금이체 요청
 		ResponseDepositVO depositResult = bankApiService.requestDepositSettlement(map);
+		
+		// 회원 ID 저장
+		String member_id = sId;
+		
+		// 정산 입금내역 DB에 저장
+		
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("member_id", member_id);
+	    paramMap.put("project_idx", project_idx);
+	    paramMap.put("depositInfoList", depositResult.getRes_list());
+		
+//		int insertCount = bankService.registDepositSettlement(paramMap);
+		
 		
 		model.addAttribute("depositResult", depositResult);
 		
