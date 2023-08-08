@@ -83,16 +83,19 @@
 						        <th>쿠폰 만료</th>
 						    </tr>
 						    <c:forEach items="${couponList}" var="coupon">
-						        <tr>
-						            <td>${coupon.coupon_name}</td>
-						            <td>${coupon.coupon_text}</td>
-						            <td>${coupon.coupon_num}</td>
-									<td style="background-color: yellow; font-weight: bold;">${coupon.coupon_sale}%</td>
-						            <td>${coupon.coupon_start}</td>
-						            <td>${coupon.coupon_end}</td>
-						        </tr>
+						        <c:if test="${coupon.member_idx == 10}"> <!-- 10이 amdin member_idx이기 때문 -->
+						            <tr>
+						                <td>${coupon.coupon_name}</td>
+						                <td>${coupon.coupon_text}</td>
+						                <td>${coupon.coupon_num}</td>
+						                <td style="background-color: yellow; font-weight: bold;">${coupon.coupon_sale}%</td>
+						                <td>${coupon.coupon_start}</td>
+						                <td>${coupon.coupon_end}</td>
+						            </tr>
+						        </c:if>
 						    </c:forEach>
 						</table>
+
                     </div>
                     <br>
                 </div>
