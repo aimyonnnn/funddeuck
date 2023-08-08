@@ -7,9 +7,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.siot.IamportRestClient.IamportClient;
@@ -39,5 +41,12 @@ public class PaymentController {
 			@PathVariable(value= "imp_uid") String imp_uid) throws IamportResponseException, IOException {
 				return api.paymentByImpUid(imp_uid);
 	} 
+	
+	// 테스트 페이지로 이동
+	@GetMapping("testPage")
+	public String testPage(
+			) {
+		return "funding/test";
+	}
 }	
 	

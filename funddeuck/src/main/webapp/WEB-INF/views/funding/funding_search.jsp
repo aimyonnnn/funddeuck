@@ -177,7 +177,6 @@ function chageLangSelect(){
 
     location.href = "fundingSearchKeyword?searchKeyword=" + searchKeyword + "&status=" + status + "&index=" + index;
 }
-
 </script>
 </body>
 </html>
