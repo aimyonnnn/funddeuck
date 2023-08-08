@@ -58,6 +58,7 @@
 	
 	<!--  -->
 	<div class="container-lg col with .gy-5 gutters">
+		<c:if test="${project ne null or project.size() ne 0 }">
 		<div class="row row-cols-3 row-cols-sm-4 g-3">
 		<!-- 페이징 처리 -->
 		<c:forEach items="${project}" var="project" varStatus="status">
@@ -116,6 +117,51 @@
 			</div>
 		</c:forEach>
 		</div>
+		</c:if>
+		<c:if test="${project eq null or project.size() eq 0}">
+			<div class="page-content container-fluid note-has-grid">
+				<ul class="nav nav-pills p-3 bg-white mb-3 rounded-0 align-items-center">
+					<li class="nav-item">
+						<a class="fw-bold fs-2 text-dark text-decoration-none">검색 결과가 없어요</a><br>
+						<small class="fw-bold opacity-75">새 프로젝트를 아래의 카테고리에서 찾아보세요</small>
+					</li>
+				</ul>
+				<ul class="nav justify-content-start">
+					<li class="nav-item">
+				    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=tech&status=${param.status }&index=${param.index }">
+						테크·가전</a>
+					</li>
+					<li class="nav-item">
+				    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=fashion&status=${param.status }&index=${param.index }">
+						패션·잡화</a>
+					</li>
+					<li class="nav-item">
+				    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=living&status=${param.status }&index=${param.index }">
+						홈·리빙</a>
+					</li>
+					<li class="nav-item">
+				    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=beauty&status=${param.status }&index=${param.index }">
+						뷰티</a>
+					</li>
+					<li class="nav-item">
+				    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=publish&status=${param.status }&index=${param.index }">
+						출판</a>
+					</li>
+					<li class="nav-item">
+				    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingDiscover?category=green&status=${param.status }&index=${param.index }">
+						친환경</a>
+					</li>
+					<li class="nav-item">
+				    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingDiscover?category=donate&status=${param.status }&index=${param.index }">
+						기부</a>
+					</li>
+					<li class="nav-item">
+				    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingDiscover?category=savAnimal&status=${param.status }&index=${param.index }">
+						동물보호</a>
+					</li>
+				</ul>
+			</div>
+		</c:if>
 	</div>
 </div>
 <br>

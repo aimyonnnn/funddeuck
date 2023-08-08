@@ -39,7 +39,7 @@
                 <div id="note-full-container" class="note-has-grid row">
                 </div>
             </div>
-        </div>
+		</div>
     </section><br><br>
 <div class="container-lg">
 	<a class="fw-bold fs-3 text-dark text-decoration-none">1:1 문의 등록</a><div class="row">&nbsp;</div>
