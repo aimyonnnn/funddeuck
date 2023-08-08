@@ -5,8 +5,8 @@ import java.sql.Timestamp;
 import lombok.Data;
 
 /*
--- SMS 문자 관리 테이블 생성
-CREATE TABLE sms_history (
+-- 문자 발송 관리 테이블 생성
+CREATE TABLE send_phone_message (
     sms_idx INT NOT NULL PRIMARY KEY auto_increment comment 'sms번호',
     member_id VARCHAR(20) NOT NULL COMMENT '회원아이디',
     sent_date timestamp NOT NULL COMMENT '발송날짜',
