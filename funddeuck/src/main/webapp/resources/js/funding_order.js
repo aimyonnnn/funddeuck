@@ -449,7 +449,7 @@
 			let requestUri = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
 					+ "response_type=code"
 					+ "&client_id=4066d795-aa6e-4720-9383-931d1f60d1a9"
-					+ "&redirect_uri=http://localhost:8089/test/callbackMember" // 변경될 부분
+					+ "&redirect_uri=http://localhost:8089/test/callbackMember" // 서버주소 변경필요!
 					+ "&scope=login inquiry transfer oob"
 					+ "&state=12345678901234567890123456789012"
 					+ "&auth_type=0";
@@ -457,6 +457,48 @@
 		});
 	});	
 
+// ===========================================================
+// 후원하기 버튼 클릭(submit)시 배송지 정보가 없을경우 경고창
+// 체크박스 체크되지 않으면 경고창
+	function validateForm() {
+		let deliveryIdx = document.getElementById("delivery_idx").value;
+		let personalInfoAgree = document.getElementById("personalInfoAgree");
+		let notesCheck = document.getElementById("notesCheck");
+		
+		if (deliveryIdx === "") {
+		    alert("배송지를 등록해주세요!");
+		    return false;
+		}
+		if(!personalInfoAgree.checked) {
+			alert("개인정보 제3자 제공 동의를 체크해주세요!");
+			return false;
+		}
+		if(!notesCheck.chekced) {
+			alert("후원 유의사항 확인을 체크해주세요!");
+			return false;
+		}
+		return true;
+	}
 
+// ===========================================================
+// 개인정보 제3자 제공동의 체크시 내용보기 모달창 버튼 클릭
+	$(document).ready(function() {
+		$("#personalInfoAgree").on("change", function() {
+			if ($(this).is(":checked")) {
+				$("#personalInfoAgreeModalOpen").click();
+			}
+		});
+	});
 
+// ===========================================================
+// 후원 유의사항 체크시 열기 버튼 클릭
+	$(document).ready(function() {
+		$("#notesCheck").on("change", function() {
+			if ($(this).is(":checked")) {
+				$("#notesOpen").click();
+			}
+		});
+	});
+// ===========================================================
+// 
 // ===========================================================

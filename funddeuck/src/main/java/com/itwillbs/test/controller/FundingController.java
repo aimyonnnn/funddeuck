@@ -35,8 +35,6 @@ public class FundingController {
 	private BankService bankService;
 	@Autowired
 	private BankApiService bankApiService;
-	@Autowired
-	private BankValueGenerator bankValueGenerator;
 	
 	// 로그 출력을 위한 변수 선언
 	private static final Logger logger = LoggerFactory.getLogger(FundingController.class);
@@ -148,8 +146,8 @@ public class FundingController {
 	// 펀딩 주문페이지 이동
 	@GetMapping ("fundingOrder")
 		// 파라미터 전달, 주석 풀 부분
-//		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, HttpSession session, Model model) {
-		public String fundingOrder(HttpSession session, Model model) {
+		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, HttpSession session, Model model) {
+//		public String fundingOrder(HttpSession session, Model model) {
 		
 		String sId = (String)session.getAttribute("sId");
 		// 미로그인 또는 주문하던 회원이 아닐경우 ****
@@ -158,12 +156,6 @@ public class FundingController {
     		model.addAttribute("msg","잘못된 접근입니다.");
     		return "fail_back";
     	}
-    	
-    	//------------------------------ 프로젝트, 리워드 가데이터
-    	int project_idx = 1;
-    	int reward_idx = 1;
-    	//------------------------------ 프로젝트, 리워드 가데이터
-    	
     	
 		// 회원 정보 불러오기
 		MembersVO member = memberService.getMemberInfo(sId);
@@ -274,14 +266,12 @@ public class FundingController {
 	    
 		// 결제 수단 카드(1)/ 계좌(2) payment_method
 	    payment.setPayment_method(2); // 계좌라고 가정
-	    // 사이트 계좌의 핀테크이용번호, 엑세스토큰 가져오기 ?
-	    String funddeuckId = "admin";
-//	    String funddeuckFintech_use_num = bankService.getFunddeuckFintech_use_num(funddeuckId);
-//	    String funddeuckAccess_token = bankService.getFunddeuckAccess_token(funddeuckId);
+	    
 	    // 계좌면 회원 계좌에서 출금
 	    // fintech_use_num access_token 필요(세션값 불러오기)
 	    String fintech_use_num = (String)session.getAttribute("fintech_use_num");
 	    String access_token = (String)session.getAttribute("access_token");
+	    logger.info("access_token : " + access_token);
 	    ResponseWithdrawVO withdrawResult = bankApiService.requestWithdrawMember(payment.getTotal_amount(), fintech_use_num, access_token);
 	    logger.info("withdrawResult" + withdrawResult);
 	    // DB에 출금내역(회원) 입금내역(사이트) 저장
@@ -304,27 +294,45 @@ public class FundingController {
 		 * 거래일자 bank_tran_date 
 		 * 거래금액 tran_amt
 		 */
+	    // 입금내역
+	    BankingVO dpsBankTran = new BankingVO();
 	    // 입금(사이트)
-	    withdrawResult.getDps_bank_name();
-	    withdrawResult.getDps_account_num_masked();
-	    withdrawResult.getDps_print_content();
-	    withdrawResult.getDps_account_holder_name();
-	    withdrawResult.getBank_tran_date();
-	    withdrawResult.getTran_amt();
+	    dpsBankTran.setBanking_bank_name(withdrawResult.getDps_bank_name()); // 입금기관명
+	    dpsBankTran.setBanking_account_num_masked(withdrawResult.getDps_account_num_masked()); // 입금계좌번호(마스킹)
+	    dpsBankTran.setBanking_print_content(withdrawResult.getDps_print_content()); // 입금계좌인자내역
+	    dpsBankTran.setBanking_account_holder_name(withdrawResult.getDps_account_holder_name()); // 수취인성명
+	    dpsBankTran.setBanking_bank_tran_date(withdrawResult.getBank_tran_date()); // 거래일자
+	    dpsBankTran.setBanking_tran_amt(withdrawResult.getTran_amt()); // 거래금액
+	    
+//	    withdrawResult.getDps_bank_name(); // 입금기관명
+//	    withdrawResult.getDps_account_num_masked(); // 입금계좌번호(마스킹)
+//	    withdrawResult.getDps_print_content(); // 입금계좌인자내역
+//	    withdrawResult.getDps_account_holder_name(); // 수취인성명
+//	    withdrawResult.getBank_tran_date(); // 거래일자
+//	    withdrawResult.getTran_amt(); // 거래금액
+//	    
+	    // 출금금내역
+	    BankingVO wdBankTran = new BankingVO();
+	    // 입금(사이트)
+	    wdBankTran.setBanking_bank_name(withdrawResult.getBank_name()); // 개설기관명
+	    wdBankTran.setBanking_account_num_masked(withdrawResult.getAccount_num_masked()); // 출금계좌번호(마스킹)
+	    wdBankTran.setBanking_print_content(withdrawResult.getPrint_content()); // 출금계좌인자내역
+	    wdBankTran.setBanking_account_holder_name(withdrawResult.getAccount_holder_name()); // 송금인성명
+	    wdBankTran.setBanking_bank_tran_date(withdrawResult.getBank_tran_date()); // 거래일자
+	    wdBankTran.setBanking_tran_amt(withdrawResult.getTran_amt()); // 거래금액
 	    // 출금(회원)
-	    withdrawResult.getBank_name();
-	    withdrawResult.getAccount_num_masked();
-	    withdrawResult.getPrint_content();
-	    withdrawResult.getAccount_holder_name();
-	    withdrawResult.getBank_tran_date();
-	    withdrawResult.getTran_amt();
-	    BankingVO dpsBankTran;
+//	    withdrawResult.getBank_name(); // 개설기관명
+//	    withdrawResult.getAccount_num_masked(); // 출금계좌번호(마스킹)
+//	    withdrawResult.getPrint_content(); // 출금계좌인자내역
+//	    withdrawResult.getAccount_holder_name(); // 송금인성명
+//	    withdrawResult.getBank_tran_date(); // 거래일자
+//	    withdrawResult.getTran_amt(); // 거래금액
 	    
 	    // 거래요청일시를 프로젝트 종료일로 전달(예약)
 	    
 	    // 환불
-	    ResponseDepositVO depositResult = bankApiService.requestDeposit(payment.getTotal_amount(), fintech_use_num, access_token);
-	    logger.info("depositResult" + depositResult);
+//	    ResponseDepositVO depositResult = bankApiService.requestDeposit(payment.getTotal_amount(), fintech_use_num, access_token);
+//	    logger.info("depositResult" + depositResult);
 	    
 	    // 주문서 DB 등록
 	    // 성공시 fundingResult 결제 완료페이지로 이동

@@ -23,6 +23,9 @@
 <script src="${pageContext.request.contextPath }/resources/js/funding_order.js"></script>
 <!-- 공용 css -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
+<!-- sweetalert -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 
 </head>
 <body>
@@ -297,7 +300,7 @@
 					<!-- a태그 내용보기 -->
 					<!-- 모달창으로 개인정보 동의 내용 보여주기 -->
 					<div class="col-4 pt-2 fs-6">
-						<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#personalInfoAgreeModal">내용보기</button>
+						<button class="btn btn-primary" id="personalInfoAgreeModalOpen" data-bs-toggle="modal" data-bs-target="#personalInfoAgreeModal">내용보기</button>
 					</div>
 					<!-- a태그 내용보기 끝 -->
 				</div>
@@ -307,7 +310,7 @@
 						<div class="form-check fs-6">
 							<input class="form-check-input" type="checkbox" value="" id="notesCheck">
 							<label class="form-check-label" for="notesCheck">
-								후원 유의사항 확인
+								후원 유의 사항 확인
 							</label>
 						</div>
 					</div>
@@ -341,7 +344,7 @@
 				<!-- 클릭시 결제 페이지로 이동 -->
 				<!-- 체크박스 다 체크했을경우 이동가능 -->
 				<div class="row ms-2 me-2 pt-3">
-					<form action="fundingPayment" method="post">
+					<form action="fundingPayment" method="post" onsubmit="return validateForm()">
 						<input type="text" name="project_idx" value="${project.project_idx }">
 						<input type="text" name="member_idx" value="${member.member_idx }">
 						<!-- ajax로 바뀜 -->
@@ -353,7 +356,7 @@
 						<input type="text" name="additional_amount" id="additional_amount" value="0">
 						<input type="text" name="use_coupon_amount" id="use_coupon_amount" value="0">
 						<input type="text" name="total_amount" id="total_amount" value="${reward.reward_price + reward.delivery_price}">
-						<button type="submit" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
+						<button type="submit" id="fundingPaymentSubmitButton" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
 					</form>
 				</div>
 				<!-- 후원하기 버튼 영역 끝-->
