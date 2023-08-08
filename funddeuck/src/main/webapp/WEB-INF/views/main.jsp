@@ -92,11 +92,64 @@
 	
 	.swiper-slide .card {
 	    width: 100%;
-	    max-width: 363.143px; /* 원하는 최대 너비 설정 */
+	    max-width: 363.143px; 
 	    margin-right: 10px;
 	    box-sizing: border-box;
 	}
-	  
+	
+	a {
+    text-decoration: none; /
+    color: inherit;
+	}
+	
+	.project-table {
+	  text-align: center;
+	}
+	
+	.project-table th,
+	.project-table td {
+	  text-align: center;
+	}
+	
+ 	.table tr:nth-child(2) td,
+ 	.table tr:nth-child(3) td, 
+ 	.table tr:nth-child(4) td,
+ 	.table tr:nth-child(5) td, 
+ 	.table tr:nth-child(6) td, 
+ 	.table tr:nth-child(7) td, 
+ 	.table tr:nth-child(8) td, 
+ 	.table tr:nth-child(9) td, 
+ 	.table tr:nth-child(10) td, 
+ 	.table tr:nth-child(11) td { 
+ 	  font-weight: bold; 
+ 	  font-size: 125%; 
+ 	} 
+	
+	.project-end-date {
+	  color: #999; 
+	}
+	 
+    .hashtags-container {
+        position: relative;
+        height: 100px;
+        overflow: hidden;
+    }
+
+    .random-hashtag {
+        position: absolute;
+    }
+
+    .card-body_hash {
+        position: relative;
+        height: 200px;
+        width: 470px;
+        padding: 10px;
+    }
+    
+    .hashtags-container{
+        height: 340px;
+        width: 600px;
+    }
   </style>
   
   <script type="text/javascript">
@@ -188,10 +241,32 @@
 		      </div>
 		    </div>
 		    <div class="col-md-6">
-		      <div class="card-body">
-		        <p><b>오늘 가장 많은 <span class="highlight">#후원금액</span> 프로젝트</b><p>
-		        <ul id="totalAmountList" class="card-text"></ul>
-		      </div>
+				<div class="card-body_hash">
+				    <p><b>당신이 찾고있는 <span class="highlight">#해시태그</span></b></p>
+						<div class="hashtags-container">
+						    <c:set var="usedHashtags" value="" scope="request" />
+						    <c:forEach items="${projectList}" var="project" varStatus="status">
+						        <c:set var="isDuplicate" value="false" />
+						        <c:choose>
+						            <c:when test="${usedHashtags.indexOf(project.project_hashtag) != -1}">
+						                <c:set var="isDuplicate" value="true" />
+						            </c:when>
+						            <c:otherwise>
+						                <c:set var="usedHashtags" value="${usedHashtags},${project.project_hashtag}" scope="request" />
+						            </c:otherwise>
+						        </c:choose>
+						        
+						        <c:if test="${!isDuplicate}">
+						            <a href="fundingDetail?project_idx=${project.project_idx}">
+						                <span class="random-hashtag" style="left: ${Math.random() * 370}px; top: ${Math.random() * 80}px;">
+						                    ${project.project_hashtag}
+						                </span>
+						            </a>
+						        </c:if>
+						    </c:forEach>
+						</div>
+
+				</div>
 		    </div>
 		  </div>
 		</div>
@@ -225,11 +300,9 @@
 		</div>
 		
 		<br>
-		
-
+	
   
     <script src="resources/js/showRandomProjects.js"></script>
-    <script src="resources/js/showRandomunProjects.js"></script>
   	<script src="resources/js/rankingList.js"></script>
 	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 	
@@ -242,6 +315,20 @@
             clickable: true,
         },
     });
+	</script>
+	
+	<script>
+	    var hashtags = document.querySelectorAll('.random-hashtag');
+	    var container = document.querySelector('.hashtags-container');
+	    var containerWidth = container.clientWidth;
+	    var containerHeight = container.clientHeight;
+	
+	    hashtags.forEach(function(hashtag) {
+	        var randomX = Math.random() * (containerWidth - 100);
+	        var randomY = Math.random() * (containerHeight - 20);
+	        hashtag.style.left = randomX + 'px';
+	        hashtag.style.top = randomY + 'px';
+	    });
 	</script>
 	
     <%@ include file="Footer.jsp" %>

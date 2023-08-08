@@ -21,7 +21,7 @@ function showProjects(data) {
     var row = $(`
       <tr>
         <td>${rank}위</td>
-        <td class="project-name">${project.project_subject}</td>
+        <td class="project-name"><a href="fundingDetail?project_idx=${project.project_idx}">${project.project_subject}</a></td>
         <td class="project-end-date">${endDateStr}</td>
       </tr>
     `);
