@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,6 +33,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.itwillbs.test.handler.EchoHandler;
 import com.itwillbs.test.service.AdminService;
+import com.itwillbs.test.service.CreditService;
 import com.itwillbs.test.service.MakerBoardService;
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
@@ -41,6 +43,7 @@ import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.service.SendPhoneMessageService;
 import com.itwillbs.test.vo.ActivityListVO;
 import com.itwillbs.test.vo.ChartDataVO;
+import com.itwillbs.test.vo.CreditVO;
 import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.MembersVO;
@@ -78,6 +81,8 @@ public class AdminController {
 	}
 	@Autowired
 	public AdminService adminService;
+	@Autowired
+	private CreditService creditService; 
 	
 	// 관리자 메인
 	@GetMapping("admin")
@@ -580,24 +585,34 @@ public class AdminController {
 	
 	// 프로젝트 결제완료 처리하기
 	// 프로젝트 상태컬럼 변경하기 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
-	@GetMapping("completePaymentStatus")
+	@PostMapping("completePaymentStatus")
 	@ResponseBody
 	public String completePaymentStatus(
-			@RequestParam int project_idx, 
-			@RequestParam int project_approve_status,
-			@RequestParam int payment_num,
-			@RequestParam int p_orderNum,
-			@RequestParam int payment_total_price
+			@RequestParam("project_idx") int project_idx,
+			@RequestParam("project_approve_status") int project_approve_status,
+			@RequestParam("payment_num") int payment_num,
+			@RequestParam("p_orderNum") int p_orderNum,
+			@RequestParam("payment_total_price") int payment_total_price,
+			HttpSession session		
 			) {
+		System.out.println("여기까지옴1");
+		String sId = (String)session.getAttribute("sId");
+		MembersVO member = memberService.getMemberInfoByProjectIdx(project_idx);
+		Integer member_idx = member.getMember_idx();
+		System.out.println("멤버아이디 : " + member_idx);
+		member_idx = 1;
 		
 		// 프로젝트 상태컬럼 결제완료로 변경하기
 		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
-		// credit 테이블에 결제정보 저장하기
-//		int insertCount = creditService.registCreditInfo();
 		
 		if(updateCount > 0) {
-			return "true"; 
+			// credit 테이블에 결제정보 저장하기
+			CreditVO creditInfo = creditService.registCreditInfo(payment_num, p_orderNum, payment_total_price, member_idx);
+			System.out.println("출력 테스트 : " + creditInfo);
+			System.out.println("여기까지옴2");
+			return "true";
 		} 
+		
 		return "false";
 	}
 	

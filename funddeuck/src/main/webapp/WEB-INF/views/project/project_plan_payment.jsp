@@ -109,11 +109,10 @@ $(()=>{
 			pg: "kakopay",
 			pay_method: "card",
 			merchant_uid: createOrderNum(),
-			name: "${project.project_representative_name}",
+			name: "프로젝트 요금제 결제",
 			amount: "10",
 			buyer_email: "${project.project_representative_email}",
-			buyer_name: "${project.project_representative_name}", 
-			buyer_tel: "${member.member_phone}"
+			buyer_name: "${project.project_representative_name}"
 			
        },
        function(rsp) {
@@ -123,20 +122,25 @@ $(()=>{
        		if(rsp.success) {
 	     		console.log('결제가 완료되었습니다.');
 	        
-// 	       		let payment_num = rsp.imp_uid; 					// 아임포트 주문번호
-// 	 		 	let p_orderNum = rsp.merchant_uid; 				// 주문번호-자동생성한것
-// 	 		 	let payment_total_price = rsp.paid_amount; 		// 결제가격
+	       		let payment_num = rsp.imp_uid; 					// 아임포트 주문번호
+	 		 	let p_orderNum = rsp.merchant_uid; 				// 주문번호-자동생성한것
+	 		 	let payment_total_price = rsp.paid_amount; 		// 결제가격
 	        
 		        // ================= DB 작업 =================
 		        // 1. project_approve_status = 5일 경우 결제테이블 결제 정보 저장하기
 		        // 2. 프로젝트 상태컬럼을 5-결제완료 상태로 변경(펀딩+ 페이지에 출력 가능한 상태)
 		        
 		        $.ajax({
-					method: 'get',
+					method: 'post',
 					url: "<c:url value='completePaymentStatus'/>",
 					data: {
+						
 						project_idx: ${project.project_idx},
-						project_approve_status: 5
+						project_approve_status: 5,
+						payment_num: payment_num,
+						p_orderNum: p_orderNum,
+						payment_total_price: payment_total_price,
+						
 					},
 					success: function(data){
 						
@@ -146,16 +150,16 @@ $(()=>{
 								icon: 'success',
 								title: '프로젝트 요금제 결제완료',
 								text: '펀딩+ 페이지에서 프로젝트를 확인해주세요!'
-							}).then(function() {
+							}).then(function(data) {
 								
-								
-								
-								
-								
+								if(data) {
+									alert('결제 완료되었습니다.');
+								}
 								
 								// 결제 완료 시 이동 할 페이지
 								$('#orderModal').modal('hide');
 								location.href='confirmNotification';
+								
 							});
 							
 						}
