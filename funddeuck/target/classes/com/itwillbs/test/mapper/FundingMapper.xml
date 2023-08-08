@@ -289,7 +289,7 @@
 	<select id="selectExpectedFundingList">
 		SELECT *
 			FROM project
-				WHERE project_start_date <![CDATA[<]]> now()
+				WHERE project_status = 1
 					AND project_approve_status = 5
 				<!-- 카테고리 선택 시 실행할 구문, 미선택시 실행x -->
 				<if test="!category.equals('all')">
