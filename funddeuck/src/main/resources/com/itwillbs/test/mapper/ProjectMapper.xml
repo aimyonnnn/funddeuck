@@ -132,7 +132,6 @@
 				, #{maker_idx}					 -- 메이커 번호
 				, #{token_idx}			 		 -- 프로젝트 계좌 인증에 사용될 토큰 번호
 				, 0
-				, 1
 			)
 	</insert>
 	
@@ -463,8 +462,7 @@
 			    project_approve_status = #{project_approve_status},
 			    project_status = #{project_status},
 			    project_approval_request_time = #{project_approval_request_time},
-			    first_amount = #{first_amount},
-			    settlement_status = #{settlement_status}
+			    first_amount = #{first_amount}
   			WHERE
 		  		project_idx = #{project_idx}	
 	</update>

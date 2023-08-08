@@ -48,4 +48,9 @@ public class BankApiService {
 		return bankApiClient.requestDeposit(total_amount, fintech_use_num, access_token);
 	}
 
+	// 정산 - 입금
+	public ResponseDepositVO requestDepositSettlement(Map<String, String> map) {
+		return bankApiClient.requestDepositSettlement(map);
+	}
+
 }

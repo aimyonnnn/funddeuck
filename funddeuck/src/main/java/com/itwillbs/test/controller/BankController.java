@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.test.service.BankApiService;
@@ -131,6 +132,34 @@ public class BankController {
 		return "bank_fail_back";
 		
 		}
+	}
+	
+	// 정산 요청
+	@PostMapping("bankSettlement")
+	public String bankSettlement(@RequestParam Map<String, String> map, HttpSession session, Model model) {
+		// member_idx 조회
+		String sId = (String) session.getAttribute("sId");
+		int member_idx = projectService.getMemberIdx(sId);
+		
+		ResponseTokenVO token = bankService.getTokenInfo(member_idx); // 멤버에 저장된 액세스토큰 조회
+		
+		session.setAttribute("access_token", token.getAccess_token()); // 세션에 저장
+		
+		// Map 객체에 엑세스토큰 추가
+		map.put("access_token", token.getAccess_token());
+		
+		// 권한 확인
+		if(session.getAttribute("sId") == null || session.getAttribute("access_token") == null) {
+			model.addAttribute("msg", "권한이 없습니다!");
+			return "fail_back";
+		}
+		
+		// 입금이체 요청
+		ResponseDepositVO depositResult = bankApiService.requestDepositSettlement(map);
+		
+		model.addAttribute("depositResult", depositResult);
+		
+		return "project/projectSettlement";
 	}
 	
 	// 회원 계좌인증

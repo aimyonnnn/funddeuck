@@ -121,4 +121,5 @@ public class PaymentVO {
 	private int maker_grade;						// 메이커 등급
 	private int project_status;						// 프로젝트 상태 1-오픈예정 2-프로젝트 진행중 3-진행완료 4-1차정산완료 5-최종정산진행가능 6-최종정산완료
 	private int first_amount;						// 1차 정산금액 default 0
+	private String project_fintech_use_num;			// 핀테크이용번호 
 }

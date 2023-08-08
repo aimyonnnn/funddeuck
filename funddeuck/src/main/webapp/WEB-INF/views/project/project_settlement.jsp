@@ -50,7 +50,6 @@
 					// 요금제 수수료 출력용
 					var charge = data.project_plan === 1 ? 5 : 3;
 					
-					console.log("1차 정산금액 : " + data.first_amount);
 					
 					$('#project_subject').text(data.project_subject);						// 프로젝트 제목
 					$('#representative_name').text(data.project_representative_name);		// 대표자명
@@ -63,6 +62,7 @@
 					$('#delivery_amount').text(delivery_amount.toLocaleString() + '원');	// 배송비 
 					$('#tax_amount').text(tax_amount.toLocaleString() + '원');				// 세금
 					$('#charge').text('(' + charge + '%)')									// 수수료 
+					
 					
 					 var buttonText = ""; // 버튼 텍스트를 초기화합니다.
 					
@@ -88,6 +88,12 @@
 				            alert("아직 환불 기간이므로 정산을 할 수 없습니다!");
 				    	}
 					});
+					
+					$('#fintech_use_num').val(data.project_fintech_use_num);				// 핀테크이용번호
+					$('#final_settlement').val(final_amount);								// 총 지급 금액 전달
+					
+					console.log("핀테크 이용번호 : " + data.project_fintech_use_num);
+					console.log("총 지급 금액 전달 : " + final_amount);
 					
 				},
 				error: function() {
@@ -316,8 +322,10 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<form action="" method="post" class="settlement-form">
+					<form action="bankSettlement" method="post" class="settlement-form">
 						<button type="submit" class="btn btn-danger"></button>
+						<input type="hidden" name="fintech_use_num" id="fintech_use_num">
+						<input type="hidden" name="final_settlement" id="final_settlement">
 					</form>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				</div>

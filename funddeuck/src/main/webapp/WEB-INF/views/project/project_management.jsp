@@ -215,7 +215,7 @@
 					+ "response_type=code"
 					+ "&client_id=4066d795-aa6e-4720-9383-931d1f60d1a9"
 					+ "&redirect_uri=http://localhost:8089/test/callback"
-					+ "&scope=login inquiry transfer"
+					+ "&scope=login inquiry transfer oob"
 					+ "&state=12345678901234567890123456789012"
 					+ "&auth_type=0";
 			window.open(requestUri, "authWindow", "width=600, height=800");
