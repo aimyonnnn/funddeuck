@@ -99,7 +99,9 @@ public class ProjectController {
 		    model.addAttribute("msg", "승인된 프로젝트만 결제 페이지에 접근할 수 있습니다.");
 		    return "fail_back";
 		}
+		MembersVO member = memberService.getMemberInfoByProjectIdx(project_idx);
 	    model.addAttribute("project", project);
+	    model.addAttribute("member", member);
 		return "project/project_plan_payment";
 	}
 		

@@ -37,6 +37,15 @@ table tr:hover td {
 </head>
 <body>
 <jsp:include page="../common/project_top.jsp"/>
+<c:if test="${project.project_plan eq 1}">
+	<c:set var="project_plan" value="기본요금제" />
+	<c:set var="project_plan_payment" value="50000" />
+</c:if>
+<c:if test="${project.project_plan ne 1}">
+	<c:set var="project_plan" value="인플루언서요금제" />
+	<c:set var="project_plan_payment" value="100000" />
+</c:if>
+
 <button type="button" class="btn btn-outline-primary btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#orderModal" style="display: none;">결제하기</button>
 	
 <!-- 요금제 결제하기 모달창 -->
@@ -109,8 +118,8 @@ $(()=>{
 			pg: "kakopay",
 			pay_method: "card",
 			merchant_uid: createOrderNum(),
-			name: "프로젝트 요금제 결제",
-			amount: "10",
+			name: "${project_plan}",
+			amount: "${project_plan_payment}",
 			buyer_email: "${project.project_representative_email}",
 			buyer_name: "${project.project_representative_name}"
 			
@@ -205,7 +214,6 @@ $(document).ready(function () {
         history.back();
     });
 });
-
 </script>
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

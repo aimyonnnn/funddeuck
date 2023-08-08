@@ -587,28 +587,26 @@ public class AdminController {
 	// 프로젝트 상태컬럼 변경하기 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 	@PostMapping("completePaymentStatus")
 	@ResponseBody
-	public String completePaymentStatus(
-			@RequestParam("project_idx") int project_idx,
-			@RequestParam("project_approve_status") int project_approve_status,
-			@RequestParam("payment_num") int payment_num,
-			@RequestParam("p_orderNum") int p_orderNum,
-			@RequestParam("payment_total_price") int payment_total_price,
-			HttpSession session		
-			) {
-		System.out.println("여기까지옴1");
+	public String completePaymentStatus(@RequestParam Map<String, String> map, HttpSession session) {
+		System.out.println("이거출력됨 :" + map);
 		String sId = (String)session.getAttribute("sId");
-		MembersVO member = memberService.getMemberInfoByProjectIdx(project_idx);
+		MembersVO member = memberService.getMemberInfoByProjectIdx(Integer.parseInt(map.get("project_idx")));
 		Integer member_idx = member.getMember_idx();
 		System.out.println("멤버아이디 : " + member_idx);
-		member_idx = 1;
 		
 		// 프로젝트 상태컬럼 결제완료로 변경하기
-		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
+		int updateCount = projectService.modifyProjectStatus(
+				Integer.parseInt(map.get("project_idx")), 
+				Integer.parseInt(map.get("project_approve_status")));
 		
 		if(updateCount > 0) {
 			// credit 테이블에 결제정보 저장하기
-			CreditVO creditInfo = creditService.registCreditInfo(payment_num, p_orderNum, payment_total_price, member_idx);
-			System.out.println("출력 테스트 : " + creditInfo);
+			int insertCount = creditService.registCreditInfo(
+					map.get("payment_num"), 
+					map.get("p_orderNum"), 
+					Integer.parseInt(map.get("payment_total_price")), 
+					member_idx);
+			System.out.println("출력 테스트 : " + insertCount);
 			System.out.println("여기까지옴2");
 			return "true";
 		} 
