@@ -3,8 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin_Coupon</title>
-	<%@ include file="../Header.jsp" %>
+<title>Admin</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -40,10 +39,16 @@
     }
 </style>
 <body>
-    <section style="background-color: #f4f5f7;">
-        <div class="container">
-            <div style="height: 50px;"></div>
-            <h3><b>쿠폰 관리</b></h3>
+
+	<!-- sidebar -->
+<input type="checkbox" name="" id="sidebar-toggle">
+<jsp:include page="../common/admin_side.jsp"/>
+
+<!-- top -->
+<div class="main-content">
+<jsp:include page="../common/admin_top.jsp"/>
+	<div class="container my-5">
+            <h2><b>쿠폰 관리</b></h2>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link " aria-current="page" href="#couponForm">쿠폰 등록</a>
@@ -92,7 +97,7 @@
 						                <td>${coupon.coupon_start}</td>
 						                <td>${coupon.coupon_end}</td>
 						            </tr>
-						        </c:if>
+						         </c:if>   
 						    </c:forEach>
 						</table>
 
@@ -114,6 +119,7 @@
 						        <th>쿠폰 만료</th>
 						    </tr>
 						    <c:forEach items="${couponList}" var="coupon">
+						        <c:if test="${coupon.member_idx == 10}"> 
 						        <tr class="coupon-row">
 						            <td>${coupon.coupon_name}</td>
 						            <td>${coupon.coupon_text}</td>
@@ -122,6 +128,7 @@
 						            <td>${coupon.coupon_start}</td>
 						            <td style="background-color: yellow; font-weight: bold;">${coupon.coupon_end}</td>
 						        </tr>
+						        </c:if>
 						    </c:forEach>
 						</table>
 						    <!-- 쿠폰 목록이 없을 때 메시지 출력 -->
@@ -130,9 +137,8 @@
 						    </c:if>
 				</div>
             </div>
-        </div>
-    </section>
-
+</div>
+</div>
     <script>
         // 탭 스크립트
         $(document).ready(function () {
@@ -265,6 +271,5 @@
 
 
 
-    <%@ include file="../Footer.jsp" %>
 </body>
 </html>
