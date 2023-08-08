@@ -55,8 +55,8 @@
 	<br>
 	<div>&nbsp;</div>
 	<hr><br>
-<!--  -->
-<!-- 프로젝트 리스트 영역 -->
+	
+	<!--  -->
 	<div class="container-lg col with .gy-5 gutters">
 		<div class="row row-cols-3 row-cols-sm-4 g-3">
 		<!-- 페이징 처리 -->
