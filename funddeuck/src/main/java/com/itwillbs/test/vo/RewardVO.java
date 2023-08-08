@@ -34,4 +34,9 @@ public class RewardVO {
 	private int delivery_price; 			// 배송비
 	private String delivery_date; 			// 발송 시작일
 	private String reward_info; 			// 리워드 정보 제공 고시
+	
+	// ----------------------------------------
+	// funding_detail 페이지 출력용 데이터
+	private int sales_quantity;             // 리워드 판매량
+	private int remaining_quantity;         // 리워드 재고
 }

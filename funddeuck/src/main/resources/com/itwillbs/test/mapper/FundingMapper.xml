@@ -58,23 +58,24 @@
 	
 	<!-- 프로젝트 상세 페이지 이동 시 조회할 리워드 정보 -->
 	<select id="selectProjectRewardInfo" resultType="com.itwillbs.test.vo.RewardVO"> 
-         SELECT
-            r.project_idx,
-            r.reward_idx,
-            r.reward_price,
-            r.reward_name,
-            r.reward_option,
-            r.reward_quantity, 
-            r.reward_quantity - IFNULL(SUM(p.payment_quantity), 0) as remaining_quantity,
-            r.reward_quantity - (r.reward_quantity - IFNULL(SUM(p.payment_quantity), 0)) as sales_quantity
-       	 		FROM reward r
-					WHERE project_idx = #{project_idx}
-					        LEFT JOIN payment p ON r.reward_idx = p.reward_idx
-						            AND p.payment_confirm = 1
-						        WHERE 
-						            r.project_idx = #{project_idx}
-						        GROUP BY 
-						            r.project_idx, r.reward_idx, r.reward_option, r.reward_quantity
+		 SELECT
+			r.project_idx,
+		    r.reward_idx,
+		    r.reward_name,
+		    r.reward_price,
+		    r.reward_option,
+		    r.reward_quantity, 
+	        r.reward_quantity - IFNULL(SUM(p.payment_quantity), 0) as remaining_quantity,
+    	    r.reward_quantity - (r.reward_quantity - IFNULL(SUM(p.payment_quantity), 0)) as sales_quantity
+	    FROM 
+	        reward r
+	    LEFT JOIN 
+	        payment p ON r.reward_idx = p.reward_idx
+	        AND p.payment_confirm = 1 					-- 예약완료
+	    WHERE 
+	        r.project_idx = 1
+	    GROUP BY 
+	        r.project_idx, r.reward_idx, r.reward_option, r.reward_quantity;
 	</select>
 	
 	<!-- 펀딩 프로젝트 목록 검색(아직 미사용) -->
@@ -326,11 +327,14 @@
 	<select id="selectSupTotal" resultType="int">
 		SELECT count(*)
 			FROM payment
-				WHERE project_idx = #{project_idx};
+				WHERE project_idx = #{project_idx} AND payment_confirm = 1;
 	</select>
 	
 	<!-- 검색어로 프로젝트 리스트 조회(미완) -->
 	<select id="selectFundingSearchKeyword">
-	
+		SELECT *
+			FROM project
+				WHERE project_subject = #{searchKeyword}
+					OR project_hashtag = #{searchKeyword}
 	</select>
 </mapper>

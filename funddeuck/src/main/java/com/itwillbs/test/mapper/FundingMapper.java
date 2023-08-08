@@ -61,6 +61,6 @@ public interface FundingMapper {
 	int selectSupTotal(int project_idx);
 	
 	// 검색어로 프로젝트 리스트 조회
-	List<ProjectVO> selectFundingSearchKeyword(String status, String index, String searchKeyword);
+	List<ProjectVO> selectFundingSearchKeyword(@Param("status") String status, @Param("index") String index, @Param("searchKeyword") String searchKeyword);
 	
 }

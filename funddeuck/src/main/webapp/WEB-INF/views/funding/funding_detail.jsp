@@ -129,7 +129,7 @@
 				</div>
 				<div class="row">
 					<div class="col">
-				  		<span class="fs-2">${supTotal }</span>&nbsp;
+				  		<span class="fs-2">${ }</span>&nbsp;
 				  		<small>명</small>&nbsp;
 					</div>
 				</div>
@@ -488,11 +488,11 @@
 									</svg>
 									<small>${reward.sales_quantity }개 선택</small>
 									<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button">
-									${reward.remaining_quantity }개 남음</a>
+									${reward.reward_quantity - reward.sales_quantity }개 남음</a>
 									</span><br>
-									<span class="fs-4 card-title fw-bold"><fmt:formatNumber value="${reward.r.reward_price }" pattern="#,###" />원 +</span><br>
-									<small class="card-text opacity-75">${reward.r.reward_name }</small><br>
-									<small class="card-text opacity-75">${reward.r.reward_detail }</small>
+									<span class="fs-4 card-title fw-bold"><fmt:formatNumber value="${reward.reward_price }" pattern="#,###" />원 +</span><br>
+									<small class="card-text opacity-75">${reward.reward_name }</small><br>
+									<small class="card-text opacity-75">${reward.reward_detail }</small>
 									<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
 									<div>&nbsp;</div>
 									<!-- 프로젝트가 진행되지 않은 상태일 경우(주문 불가능) -->
