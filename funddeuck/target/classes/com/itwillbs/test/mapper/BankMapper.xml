@@ -78,21 +78,19 @@
 	</select>
 	
 	<!-- 정산 입금내역 등록 -->
-<!-- 	<insert id="insertDepositSettlement"> -->
-<!-- 		INSERT -->
-<!-- 			INTO banking  -->
-<!-- 			VALUES ( -->
-<!-- 				<foreach collection="depositInfoList" item="depositInfo" separator="," > -->
-<!-- 			        ( -->
-<!-- 			            #{member_id} -->
-<!-- 			            ,#{project_idx} -->
-<!-- 			            ,#{bank_name} -->
-<!-- 			            ,#{account_num_masked} -->
-<!-- 			            ,#{account_num_masked} -->
-<!-- 			            ,#{bank_tran_date} -->
-<!-- 			        ) -->
-<!-- 			    </foreach> -->
-<!-- 			) -->
-<!-- 	</insert> -->
+	<insert id="insertDepositSettlement">
+	    INSERT INTO banking (
+	        member_id, project_idx, banking_bank_name, banking_account_num_masked, banking_bank_tran_date, 
+	        banking_account_holder_name, banking_tran_amt, banking_print_content, banking_status)
+	    VALUES
+	    <foreach collection="depositInfoList" item="depositInfo" separator=",">
+	        (#{member_id}, #{project_idx}, #{depositInfo.bank_name}, #{depositInfo.account_num_masked},
+	         #{depositInfo.bank_tran_date}, #{depositInfo.account_holder_name}, #{depositInfo.tran_amt},
+	         #{depositInfo.print_content}, 1)
+	    </foreach>
+	</insert>
+
+
+
 	
 </mapper>

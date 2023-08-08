@@ -127,7 +127,10 @@ public interface ProjectMapper {
 	int updateProjectByAdmin(ProjectVO project);
 
 	// 관리자 - 첨부파일 실시간 삭제
-	int deleteProjectFile(@Param("project_idx") int project_idx, @Param("fileName") String fileName, @Param("fileNumber") int fileNumber);	
+	int deleteProjectFile(@Param("project_idx") int project_idx, @Param("fileName") String fileName, @Param("fileNumber") int fileNumber);
+
+	// 정산 완료 후 프로젝트 상태 변경
+	int updateProjectSettlementStatus(@Param("project_idx") int project_idx,@Param("final_amount") int final_amount);	
 			
 
 

@@ -64,7 +64,7 @@
 					$('#charge').text('(' + charge + '%)')									// 수수료 
 					
 					
-					 var buttonText = ""; // 버튼 텍스트를 초기화합니다.
+					var buttonText = ""; // 버튼 텍스트를 초기화합니다.
 					
 					if(data.project_status == 3) { 			// 프로젝트 진행완료 (1차 정산 가능일 때)
 						if(data.maker_grade == 1) { 		// 메이커 등급이 1레벨일 시
@@ -92,9 +92,6 @@
 					$('#fintech_use_num').val(data.project_fintech_use_num);				// 핀테크이용번호
 					$('#final_settlement').val(final_amount);								// 총 지급 금액 전달
 					$('#project_idx').val(project_idx);										// 프로젝트 고유번호
-					
-					console.log("핀테크 이용번호 : " + data.project_fintech_use_num);
-					console.log("총 지급 금액 전달 : " + final_amount);
 					
 				},
 				error: function() {

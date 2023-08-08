@@ -499,6 +499,16 @@
 			    )
 	</delete>
 	
+	<!-- 정산완료 후 프로젝트 상태 변경 -->
+	<update id="updateProjectSettlementStatus">
+		UPDATE project
+			SET 
+				project_status = project_status + 1
+				,first_amount = #{first_amount}
+			WHERE 
+				project_idx = #{project_idx}
+	</update>
+	
 </mapper>
 	
 	

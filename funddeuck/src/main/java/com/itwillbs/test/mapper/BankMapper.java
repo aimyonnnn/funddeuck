@@ -32,5 +32,5 @@ public interface BankMapper {
 	String selectUserCI(int member_idx);
 
 	// 정산 입금내역 등록
-//	int insertDepositSettlement(Map<String, Object> paramMap);
+	int insertDepositSettlement(Map<String, Object> paramMap);
 }
