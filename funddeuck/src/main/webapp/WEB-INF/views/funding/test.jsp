@@ -32,7 +32,7 @@
 <button onclick="request_pay()">결제 테스트
 </button>
 <script type="text/javascript">
-//아임포트 결제 스크립트 ---------------------------------------------
+//아임포트 결제 스크립트 ---------------------------------------------미완
 function request_pay() {
 	var IMP = window.IMP;
 	IMP.init("imp30787507");
