@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -581,9 +582,23 @@ public class AdminController {
 	// 프로젝트 상태컬럼 변경하기 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 	@GetMapping("completePaymentStatus")
 	@ResponseBody
-	public String completePaymentStatus(@RequestParam int project_idx, @RequestParam int project_approve_status) {
+	public String completePaymentStatus(
+			@RequestParam int project_idx, 
+			@RequestParam int project_approve_status,
+			@RequestParam int payment_num,
+			@RequestParam int p_orderNum,
+			@RequestParam int payment_total_price
+			) {
+		
+		// 프로젝트 상태컬럼 결제완료로 변경하기
 		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
-		if(updateCount > 0) { return "true"; } return "false";
+		// credit 테이블에 결제정보 저장하기
+//		int insertCount = creditService.registCreditInfo();
+		
+		if(updateCount > 0) {
+			return "true"; 
+		} 
+		return "false";
 	}
 	
 	// 프로젝트 승인여부 확인하기

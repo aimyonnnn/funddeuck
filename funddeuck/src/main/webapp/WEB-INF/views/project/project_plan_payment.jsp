@@ -147,6 +147,12 @@ $(()=>{
 								title: '프로젝트 요금제 결제완료',
 								text: '펀딩+ 페이지에서 프로젝트를 확인해주세요!'
 							}).then(function() {
+								
+								
+								
+								
+								
+								
 								// 결제 완료 시 이동 할 페이지
 								$('#orderModal').modal('hide');
 								location.href='confirmNotification';
