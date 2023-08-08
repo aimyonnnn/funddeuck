@@ -56,13 +56,13 @@
                 <div class="col">
                     <div class="row mt-5 h6">
                         <div class="col-sm-12 col-md-6">
-                            <a href="" class="text-black w-100">
+                            <a href="member/coupon" class="text-black w-100">
                                 <div class="row ms-md-1 me-md-1" style="border: 1px solid lightgray; border-radius: 7px;">
                                     <div class="col text-start m-3">
                                         쿠폰
                                     </div>
                                     <div class="col text-end m-3">
-                                       x개
+                                    사용 가능한 쿠폰 확인하기
                                     </div>
                                 </div>
                             </a>

@@ -3,7 +3,7 @@ function showProjects(data) {
   rankingList.empty(); // 기존 리스트 초기화
 
   // data 배열을 역순으로 변경
-  data.reverse();
+//  data.reverse();
 
   var table = $("<table class='table project-table'></table>");
 

@@ -12,7 +12,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 	<link rel="stylesheet" type="text/css" href="resources/css/mypage.css" />
-<!-- 	<link rel="stylesheet" type="text/css" href="resources/css/moreProject.css" /> -->
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     .card-thumbnail {
@@ -73,7 +72,6 @@
 </head>
 
 <body>
-
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -107,30 +105,35 @@
         </button>
     </div>
 
-	<div class="container">
-	  <h3><b>오늘의 추천 프로젝트</b></h3>
-	  <p>함께 만드는 성공</p>
-		<div class="row" id="projectContainer">
-		    <c:forEach items="${projectList}" var="project" varStatus="status">
-		        <c:if test="${status.count <= 6 && project.project_status == 2 && project.project_approve_status == 5}">
-		            <c:set var="reversedIndex" value="${fn:length(projectList) - status.count}" />
-		            <c:set var="reversedProject" value="${projectList[reversedIndex]}" />
-		            <div class="col-md-4 mb-4">
-		                <article class="card">
-		                    <div class="card-thumbnail" style="background-image: url('${reversedProject.project_thumnails1}');"></div>
-		                    <div class="card-body">
-		                        <em class="card-title"><b>${reversedProject.project_subject}</b></em>
-		                        <p class="card-text">
-							    ${reversedProject.project_category}
-		                        </p>
-		                    </div>
-		                    <p style="text-align: center;"><b>지금 참여하기></b></p>
-		                </article>
-		            </div>
-		            <c:if test="${status.count % 3 == 0}"></c:if>
-		        </c:if>
-		    </c:forEach>
-		</div>
+
+		<div class="container">
+    <h3><b>오늘의 추천 프로젝트</b></h3>
+    <p>함께 만드는 성공</p>
+    <div class="row" id="projectContainer">
+        <c:forEach items="${projectList}" var="project" varStatus="status">
+            <c:if test="${project.project_status == 2 && project.project_approve_status == 5}">
+                <div class="col-md-4 mb-4">
+                    <article class="card">
+                        <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>
+                        <div class="card-body">
+                            <em class="card-title"><b>${project.project_subject}</b></em>
+                            <p class="card-text">
+                                <div class="progress" style="height: 10px">
+                                    <div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example"
+                                        style="height:10px; width: ${project.project_cumulative_amount / project.project_target * 100}%"
+                                        aria-valuenow="${project.project_cumulative_amount / project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                ${project.project_category}
+                            </p>
+                        </div>
+                        <p style="text-align: center;"><b>지금 참여하기></b></p>
+                    </article>
+                </div>
+            </c:if>
+        </c:forEach>
+    </div>
+</div>
+
 
 
 		<div class="container mt-4 d-flex justify-content-end">
@@ -156,52 +159,40 @@
 		  </div>
 		</div>
 
- 
-	</div>
-	<br>
+ 	<br>
 	<div class="container">
 	      <h3><b>오픈 예정 프로젝트</b></h3>
 		  <p>주목하세요! 오픈할 프로젝트</p>
 		<div class="row" id="unprojectContainer">
-			    <c:forEach items="${projectList}" var="project" varStatus="status">
-			        <c:if test="${status.count <= 6 && project.project_status == 1 && project.project_approve_status == 5}">
-			            <c:set var="reversedIndex" value="${fn:length(projectList) - status.count}" />
-			            <c:set var="reversedProject" value="${projectList[reversedIndex]}" />
-			            <div class="col-md-4 mb-4">
-			                <article class="card">
-			                    <div class="card-thumbnail" style="background-image: url('${reversedProject.project_thumnails1}');"></div>
-			                    <div class="card-body">
-			                        <em class="card-title"><b>${reversedProject.project_subject}</b></em>
-			                        <p class="card-text">
-			                            ${reversedProject.project_category}
-			                        </p>
-			                    </div>
-			                    <!-- progress bar -->
-<!-- 			            <div class="progress" style="height: 10px"> -->
-<!-- 	  					<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example"  -->
-<%-- 	  					style="height:10px; width: ${project.project_cumulative_amount/project.project_target * 100}%"  --%>
-<%-- 	  					aria-valuenow="${project.project_cumulative_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div> --%>
-<!-- 						</div> -->
-					<div>&nbsp;</div>
-		                    <p style="text-align: center;"><b>지금 살펴보기></b></p>
-			                </article>
-			            </div>
-			            <c:if test="${status.count % 3 == 0}"></c:if>
-			        </c:if>
-			    </c:forEach>
+        <c:forEach items="${projectList}" var="project" varStatus="status">
+            <c:if test="${project.project_status == 1 && project.project_approve_status == 5}">
+                <div class="col-md-4 mb-4">
+                    <article class="card">
+                        <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>
+                        <div class="card-body">
+                            <em class="card-title"><b>${project.project_subject}</b></em>
+                            <p class="card-text">
+                                ${project.project_category}
+                            </p>
+                        </div>
+                        <p style="text-align: center;"><b>지금 살펴보기></b></p>
+                    </article>
+                </div>
+            </c:if>
+        </c:forEach>
 		</div>
-
+    </div>
 
 		<div class="container mt-4 d-flex justify-content-end">
 		    <button type="button" class="btn btn-light" onclick="showRandomunProjects()"><b>어떤 프로젝트가 있나요?</b></button>
 		</div>
-	</div>
 	<br>
   
     <script src="resources/js/showRandomProjects.js"></script>
     <script src="resources/js/showRandomunProjects.js"></script>
   	<script src="resources/js/rankingList.js"></script>
 	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
 	
     <%@ include file="Footer.jsp" %>
     
