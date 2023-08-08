@@ -129,7 +129,7 @@
 				</div>
 				<div class="row">
 					<div class="col">
-				  		<span class="fs-2">${ }</span>&nbsp;
+				  		<span class="fs-2">${supTotal }</span>&nbsp;
 				  		<small>명</small>&nbsp;
 					</div>
 				</div>
