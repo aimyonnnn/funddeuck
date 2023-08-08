@@ -135,6 +135,7 @@
 	//전역변수 설정
 	var socket = null;
 	var member_id = "${sessionScope.sId}";
+	var member_idx = "${sessionScope.sIdx}";
 	
 	// 페이지 로드 후 실행하는 함수 모음
 	$(() => {

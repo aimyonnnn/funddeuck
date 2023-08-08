@@ -37,7 +37,7 @@
 						  </div>
 						  <br>
 						  <form action="updateProfileImage" method="post" enctype="multipart/form-data">
-						      <input type="hidden" name="member_idx" value="${profile.member_idx}" />
+							    <input type="hidden" name="member_idx" value="${sessionScope.sIdx}" />
 						      <div class="custom-file">
 						          <input type="file" class="custom-file-input" name="file"  value="바꾸기" id="customFile">
 						          <label class="custom-file-label" for="customFile"></label>

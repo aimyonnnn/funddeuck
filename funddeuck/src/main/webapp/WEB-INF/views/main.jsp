@@ -111,7 +111,7 @@
 	  <p>함께 만드는 성공</p>
 		<div class="row" id="projectContainer">
 		    <c:forEach items="${projectList}" var="project" varStatus="status">
-		        <c:if test="${status.count <= 6 && project.project_status == 2}">
+		        <c:if test="${status.count <= 6 && project.project_status == 2 && project.project_approve_status == 5}">
 		            <c:set var="reversedIndex" value="${fn:length(projectList) - status.count}" />
 		            <c:set var="reversedProject" value="${projectList[reversedIndex]}" />
 		            <div class="col-md-4 mb-4">
@@ -120,12 +120,11 @@
 		                    <div class="card-body">
 		                        <em class="card-title"><b>${reversedProject.project_subject}</b></em>
 		                        <p class="card-text">
-						        	<div class="progress" style="height: 10px">
-					 					<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example" 
-					  					style="height:10px; width: ${project.project_amount/project.project_target * 100}%" 
-					  					aria-valuenow="${project.project_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100">
-					  					</div>
-								    </div> 
+<div class="progress" style="height: 10px">
+<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example" 
+style="height:10px; width: ${project.project_cumulative_amount/project.project_target * 100}%" 
+aria-valuenow="${project.project_cumulative_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
 							    ${reversedProject.project_category}
 		                        </p>
 		                    </div>
@@ -169,7 +168,7 @@
 		  <p>주목하세요! 오픈할 프로젝트</p>
 		<div class="row" id="unprojectContainer">
 			    <c:forEach items="${projectList}" var="project" varStatus="status">
-			        <c:if test="${status.count <= 6 && project.project_status == 1}">
+			        <c:if test="${status.count <= 6 && project.project_status == 1 && project.project_approve_status == 5}">
 			            <c:set var="reversedIndex" value="${fn:length(projectList) - status.count}" />
 			            <c:set var="reversedProject" value="${projectList[reversedIndex]}" />
 			            <div class="col-md-4 mb-4">
