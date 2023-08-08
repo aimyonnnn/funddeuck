@@ -105,7 +105,7 @@ public class EchoHandler extends TextWebSocketHandler {
 				String receiver = session.getUri().getQuery().split("=")[2];
 	        	ProjectVO projectVO = fundingService.selectProjectInfo(project_idx);
 	        	
-	        	String content = "<a href='fundingDetail?project_idx=" + projectVO.getProject_idx() + "' style=\"text-decoration: none; color: black; display: block;\">"
+	        	String content = "<a target='_blank' href='fundingDetail?project_idx=" + projectVO.getProject_idx() + "' style=\"text-decoration: none; color: black; display: block; cursor: pointer;\">"
 	        		    + projectVO.getProject_subject() + "</a><br>"
 	        		    + "<img src='" + projectVO.getProject_settlement_image() + "'>";
 	        	
