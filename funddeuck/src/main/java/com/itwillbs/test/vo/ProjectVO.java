@@ -41,7 +41,6 @@ CREATE TABLE project (
     maker_idx int NOT NULL COMMENT '메이커 번호',
 	token_idx int NOT NULL COMMENT '프로젝트 인증에 사용될 토큰 번호',
 	first_amount INT DEFAULT 0 COMMENT '1차 정산금액',
-    settlement_status INT NOT NULL DEFAULT 1 COMMENT '정산 상태(1: 미정산, 2:1차정산완료, 3:최종정산완료)'
     FOREIGN KEY (maker_idx) REFERENCES maker(maker_idx) ON DELETE CASCADE,
 	FOREIGN KEY (token_idx) references token(token_idx) ON DELETE CASCADE
 );
@@ -81,7 +80,6 @@ public class ProjectVO {
 	private int maker_idx;									// 메이커 번호
 	private int token_idx;									// 프로젝트 계좌 인증에 사용될 토큰 번호
 	private int first_amount;								// 1차 정산금액
-	private int settlement_status;							// 정산 상태 1-미정산, 2-1차정산완료, 3-최종정산완료
 	
 	private MultipartFile file1;							// 프로젝트 썸네일 (1)
  	private MultipartFile file2;							// 프로젝트 썸네일 (2)

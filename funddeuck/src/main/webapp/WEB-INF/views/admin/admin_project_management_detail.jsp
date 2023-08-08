@@ -343,16 +343,6 @@ th, td {
 				                <input type="number" name="first_amount" class="form-control" value="${project.first_amount}">
 				            </td>
 				        </tr>
-				        <tr>
-				            <th>정산 상태</th>
-				            <td>
-				                <select name="settlement_status" class="form-control">
-				                	<option value="1" ${project.settlement_status eq 1 ? 'selected' : ''}>미정산</option>
-				                	<option value="2" ${project.settlement_status eq 2 ? 'selected' : ''}>정산완료(1차)</option>
-				                	<option value="3" ${project.settlement_status eq 3 ? 'selected' : ''}>정산완료(최종)</option>
-				                </select>
-				            </td>
-				        </tr>
 				    </table>
 				    <div class="d-flex justify-content-center">
 						<input type="submit" value="수정하기" class="btn btn-outline-primary">
