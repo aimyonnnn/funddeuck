@@ -73,6 +73,7 @@
 </head>
 
 <body>
+
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -120,11 +121,6 @@
 		                    <div class="card-body">
 		                        <em class="card-title"><b>${reversedProject.project_subject}</b></em>
 		                        <p class="card-text">
-<div class="progress" style="height: 10px">
-<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example" 
-style="height:10px; width: ${project.project_cumulative_amount/project.project_target * 100}%" 
-aria-valuenow="${project.project_cumulative_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div>
-</div>
 							    ${reversedProject.project_category}
 		                        </p>
 		                    </div>
@@ -180,6 +176,13 @@ aria-valuenow="${project.project_cumulative_amount/project.project_target * 100}
 			                            ${reversedProject.project_category}
 			                        </p>
 			                    </div>
+			                    <!-- progress bar -->
+<!-- 			            <div class="progress" style="height: 10px"> -->
+<!-- 	  					<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example"  -->
+<%-- 	  					style="height:10px; width: ${project.project_cumulative_amount/project.project_target * 100}%"  --%>
+<%-- 	  					aria-valuenow="${project.project_cumulative_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div> --%>
+<!-- 						</div> -->
+					<div>&nbsp;</div>
 		                    <p style="text-align: center;"><b>지금 살펴보기></b></p>
 			                </article>
 			            </div>
@@ -199,13 +202,6 @@ aria-valuenow="${project.project_cumulative_amount/project.project_target * 100}
     <script src="resources/js/showRandomunProjects.js"></script>
   	<script src="resources/js/rankingList.js"></script>
 	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-	<script type="text/javascript">
-    //진행 바 값 가져오기
-    window.onload = function(){
-        var percentData = '<c:out value="${project.project_amount/project.project_target * 100 }"/>';
-        var a = document.getElementById('progressbar').style.width = percentData + "%";
-    }
-	</script>
 	
     <%@ include file="Footer.jsp" %>
     
