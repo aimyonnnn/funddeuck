@@ -136,7 +136,7 @@
 	        +'<div class="modal-footer">'
 	        +  (items.delivery_status == 2 ? '<button type="button" id="deliveryBtn" onclick="isDelivery('+ items.payment_idx +')"; class="btn btn-outline-primary">배송완료</button>' : '')
 	        +  (items.delivery_status == 3 && items.review_idx == null ? '<button type="button" class="btn btn-outline-primary" onclick="IdxNum('+items.payment_idx+')" data-bs-toggle="modal" data-bs-target="#reviewmodify">리뷰작성</button>' : '')
-	        +  (items.delivery_status == 2 ? '<button type="button" id="showDelivery" class="btn btn-outline-primary">배송확인하기</button>' : '')
+	        +  (items.delivery_status == 2 ? '<button type="button" onclick="showDelivery()" class="btn btn-outline-primary">배송확인하기</button>' : '')
 	        +  (items.payment_confirm == 2 && items.delivery_status == 3 ? '<button type="button" class="btn btn-primary" onclick="IdxNum('+items.payment_idx+')" data-bs-toggle="modal" data-bs-target="#cancelModal">반환신청</button>' : '')
 	        +  '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>'
 	        + '</div>'		
@@ -385,7 +385,18 @@
     </div>
   
  	<script type="text/javascript">
-	  
+	
+ 		function showDelivery() {
+ 			
+ 			let t_key = $("#t_key").val();
+ 			let t_code = $("#t_code").val();
+ 			let t_invoice = $("#t_invoice").val();
+ 			
+ 			window.open("http://info.sweettracker.co.kr/tracking/5?t_key="+t_key+"&t_code="+t_code+"&t_invoice="+t_invoice ,"popForm", 
+ 			"toolbar=no, width=540, height=800, directories=no, status=no, resizable=no"); 
+ 		}
+ 	
+ 	
 	  	function isDelivery(num) {
 			
 	  		Swal.fire({
@@ -594,16 +605,6 @@
 		
 	});
 	
-	$("#showDelivery").click(function() {
-		
-		let t_key = $("#t_key").val();
-		let t_code = $("#t_code").val();
-		let t_invoice = $("#t_invoice").val();
-		
-		window.open("http://info.sweettracker.co.kr/tracking/5?t_key="+t_key+"&t_code="+t_code+"&t_invoice="+t_invoice ,"popForm", 
-		"toolbar=no, width=540, height=467, directories=no, status=no, resizable=no"); 
-		
-	});
  	</script>
  	
  	
