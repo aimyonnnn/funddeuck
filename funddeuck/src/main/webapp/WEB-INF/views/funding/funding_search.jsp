@@ -26,7 +26,7 @@
 </head>
 <body>
 <!-- 요청 파라미터 값 저장 -->
-<input type="hidden" value="${param.category }" id="categoryVal">
+<input type="hidden" value="${param.searchKeyword }" id="searchKeywordVal">
 <input type="hidden" value="${param.status }" id="statusVal">
 <input type="hidden" value="${param.index }" id="indexVal">
 <!-- 상단 이동 버튼 -->
@@ -38,19 +38,19 @@
 <br>
 <!-- 카테고리 바 영역(화면 클때) -->
 <div class="container-lg">
-	<span class="fs-2 fw-bold">검색결과</span>&nbsp;
+	<span class="fs-2 text-info fw-bold">${param.searchKeyword }</span><span class="fs-2 fw-bold">&nbsp;검색결과</span>&nbsp;
 	<small class="text-info fw-bold">${project.size() }</small><small class="fw-bold">개</small>
 	<br>
 	<div class="col float-end" >
 		<select class="text-dark-emphasis fw-bold" id="selectBox" onchange="chageLangSelect()">
 			<option class="text-dark-emphasis fw-bold" value="all" <c:if test="${param.status eq 'all' }">selected</c:if>>전체</option>
+			<option class="text-dark-emphasis fw-bold" value="noStart" <c:if test="${param.status eq 'noStart' }">selected</c:if>>진행전</option>
 			<option class="text-dark-emphasis fw-bold" value="active" <c:if test="${param.status eq 'active' }" >selected</c:if>>진행중</option>
 			<option class="text-dark-emphasis fw-bold" value="end" <c:if test="${param.status eq 'end' }" >selected</c:if>>종료된</option>
 		</select>
-		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'newest' }">border-info border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=newest">최신순</a>&nbsp;
-		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'lastMin' }">border-info border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=lastMin">마감임박순</a>&nbsp;
-		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'amount' }">border-info border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=amount">모집금액순</a>&nbsp;
-		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'target' }">border-info border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=target">목표금액순</a>
+		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'newest' or empty param.index }">border-info border-bottom border-2</c:if>" href="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=${param.status }&index=newest">최신순</a>&nbsp;
+		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'amount' }">border-info border-bottom border-2</c:if>" href="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=${param.status }&index=amount">모집금액순</a>&nbsp;
+		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'target' }">border-info border-bottom border-2</c:if>" href="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=${param.status }&index=target">목표금액순</a>
 	</div>
 	<br>
 	<div>&nbsp;</div>
@@ -125,12 +125,11 @@ function chageLangSelect(){
     var langSelect = document.getElementById("selectBox");
      
     // select element에서 선택된 option의 value가 저장된다.
+    var searchKeyword = document.getElementById("searchKeywordVal").value;
     var status = langSelect.options[langSelect.selectedIndex].value;
-    var category = document.getElementById("categoryVal").value;
     var index = document.getElementById("indexVal").value;
-    console.log()
 
-    location.href = "fundingDiscover?category=" + category + "&status=" + status + "&index=" + index;
+    location.href = "fundingSearchKeyword?searchKeyword=" + searchKeyword + "&status=" + status + "&index=" + index;
 }
 
 </script>

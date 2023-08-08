@@ -330,7 +330,7 @@
 				WHERE project_idx = #{project_idx} AND payment_confirm = 1;
 	</select>
 	
-	<!-- 검색어로 프로젝트 리스트 조회(미완) -->
+	<!-- 검색어로 프로젝트 리스트 조회 -->
 	<select id="selectFundingSearchKeyword">
 		SELECT *
 			FROM project
