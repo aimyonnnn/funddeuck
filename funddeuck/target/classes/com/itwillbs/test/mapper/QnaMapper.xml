@@ -4,22 +4,23 @@
 
 	<!-- QNA 제출 시 -->
 	<insert id="registQNA">
-			INSERT INTO Qna VALUES(
-			NULL
-			, #{member_id}
-			, #{qna_division}
-			, #{qna_subject}
-			, #{qna_context}
-			, now()
-			<choose>
-				<!-- 첨부파일 있을 경우 -->
-				<when test="qna_file != ''">
-				, #{qna_file}
-				</when>
-				<otherwise>
-				, null
-				</otherwise>
-			</choose>
-		)
+			INSERT INTO qna 
+				VALUES(
+					NULL
+					, #{member_id}
+					, #{qna_division}
+					, #{qna_subject}
+					, #{qna_context}
+					, now()
+					<choose>
+						<!-- 첨부파일 있을 경우 -->
+						<when test="qna_file != ''">
+						, #{qna_file}
+						</when>
+						<otherwise>
+						, null
+						</otherwise>
+					</choose>
+				)
 	</insert>
 </mapper>

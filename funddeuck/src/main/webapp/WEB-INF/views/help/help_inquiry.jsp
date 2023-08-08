@@ -54,12 +54,12 @@
 		<div class="row">&nbsp;</div>
 		<div class="mb-3">
 			<label for="exampleFormControlInput1" class="form-label">아이디</label>
-			<input type="text" class="form-control" id="member_id_" placeholder="${sessionScope.sId }" disabled="disabled">
-			<input type="hidden" id="member_id" value="${sessionScope.sId }">
+			<input type="text" class="form-control" name="member_id_" placeholder="${sessionScope.sId }" disabled="disabled">
+			<input type="hidden" name="member_id" value="id">
 		</div>
 		<div class="mb-3">
 			<label for="exampleFormControlInput2" class="form-label">문의자 유형</label>
-			<select class="form-select" aria-label="Default select example" id="qna_division">
+			<select class="form-select" aria-label="Default select example" name="qna_division">
 				<option selected>문의자 유형을 선택해주세요.</option>
 				<option value="1">프로젝트를 개설한 메이커입니다.</option>
 				<option value="2">프로젝트에 참여한 서포터입니다.</option>
@@ -67,15 +67,15 @@
 		</div>
 		<div class="mb-3">
 			<label for="exampleFormControlInput3" class="form-label">제목</label>
-			<input type="email" class="form-control" id="qna_subject" placeholder="제목을 입력해주세요" required="required">
+			<input type="text" class="form-control" name="qna_subject" placeholder="제목을 입력해주세요" required="required">
 		</div>
 		<div class="mb-3">
 			<label for="exampleFormControlTextarea1" class="form-label">문의사항</label>
-			<textarea class="form-control" id="qna_context" placeholder="문의사항을 입력해주세요" rows="10" required="required"></textarea>
+			<textarea class="form-control" name="qna_context" placeholder="문의사항을 입력해주세요" rows="10" required="required"></textarea>
 		</div>
 		<div class="mb-3">
 			<label for="exampleFormControlTextarea2" class="form-label">첨부파일(선택사항)</label>
-			<input type="file" class="form-control" name="qna_file" id="fileSave">
+			<input type="file" class="form-control" name="file1">
 		</div>
 		<div class="mb-3">
 			<button type="submit" class="btn btn-outline-dark" >제출</button>
