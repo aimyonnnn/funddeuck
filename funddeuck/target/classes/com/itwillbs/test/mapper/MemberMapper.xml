@@ -150,7 +150,10 @@
     WHERE f.member_idx = (SELECT member_idx
                         FROM members
                         WHERE member_id = #{sId})
-    GROUP BY k.maker_idx;
+    GROUP BY k.maker_idx
+	LIMIT
+		#{startRow}
+		, #{listLimit};
 	</select>
 	
 	<!-- 팔로우 알람 설정 -->
@@ -203,7 +206,10 @@
         ON p.project_idx = z.project_idx
         WHERE z.member_idx = (SELECT member_idx
                             FROM members
-                            WHERE member_id = #{sId});
+                            WHERE member_id = #{sId})
+       	LIMIT
+		#{startRow}
+		, #{listLimit};
 	</select>
 	
 	<!-- 찜 알람 -->
@@ -464,6 +470,21 @@
 			FROM maker_board mb JOIN zim z
 			ON mb.project_idx = z.project_idx
 			WHERE z.member_idx = (SELECT member_idx
+								FROM members
+								WHERE member_id = #{sId})
+	</select>
+	
+	<select id="selectFollowingCount">
+		SELECT count(member_idx)
+			FROM fallowing
+			WHERE member_idx = (SELECT member_idx
+								FROM members
+								WHERE member_id = #{sId})
+	</select>
+	<select id="selectZimCount">
+		SELECT count(member_idx)
+			FROM zim
+			WHERE member_idx = (SELECT member_idx
 								FROM members
 								WHERE member_id = #{sId})
 	</select>

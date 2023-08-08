@@ -24,7 +24,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
     
-    	function isAlam(alam, name, num) {
+    	function isAlam(alam, name, num, count) {
     		$.ajax({
     			type:'post',
     			url:'fallowingAlam',
@@ -37,14 +37,14 @@
     				    if (alam == 1) {
     	                    $("#fallowing" + num).empty();
     	                    $("#fallowing" + num).append(
-    				            '<button class="btn btn-outline-primary" onclick="isAlam(0,\'' + name + '\', ' + num + ')"><i class="bi bi-bell"></i></button>'
-    				            +'<button class="ms-1 btn btn-outline-primary" onclick="fallowingCheck(1, \'' + name + '\', ' + num + ')"><i class="bi bi-check"></i> 팔로잉</button>'
+    				            '<button class="btn btn-outline-primary" onclick="isAlam(0,\'' + name + '\', ' + num + ', '+ count +')"><i class="bi bi-bell"></i></button>'
+    				            +'<button class="ms-1 btn btn-outline-primary" onclick="fallowingCheck(1, \'' + name + '\', ' + num + ', '+ count +')"><i class="bi bi-check"></i> 팔로잉</button>'
     				        );
     				    } else {
     	                    $("#fallowing" + num).empty();
     	                    $("#fallowing" + num).append(
-    				            '<button class="btn btn-outline-primary" onclick="isAlam(1,\'' + name + '\', ' + num + ')"><i class="bi bi-bell-slash"></i></button>'
-    	                        +'<button class="ms-1 btn btn-outline-primary" onclick="fallowingCheck(1, \'' + name + '\', ' + num + ')"><i class="bi bi-check"></i> 팔로잉</button>'
+    				            '<button class="btn btn-outline-primary" onclick="isAlam(1,\'' + name + '\', ' + num + ', '+ count +')"><i class="bi bi-bell-slash"></i></button>'
+    	                        +'<button class="ms-1 btn btn-outline-primary" onclick="fallowingCheck(1, \'' + name + '\', ' + num + ', '+ count +')"><i class="bi bi-check"></i> 팔로잉</button>'
     				        );
     				    } 
     				}
@@ -87,7 +87,7 @@
     	                	
     	                    $("#fallowing" + num).empty();
     	                    $("#fallowing" + num).append(
-    	                        '<button class="btn btn-outline-primary" onclick="isAlam(1, \'' + name + '\',' + num + ')"><i class="bi bi-bell"></i></button>'
+    	                        '<button class="btn btn-outline-primary" onclick="isAlam(1, \'' + name + '\',' + num + ', '+ fallowCount +')"><i class="bi bi-bell"></i></button>'
     	                        +'<button class="ms-1 btn btn-outline-primary" onclick="fallowingCheck(1, \'' + name + '\', ' + num + ', '+ fallowCount +')"><i class="bi bi-check"></i> 팔로잉</button>'
     	                    );
     	                    
@@ -103,13 +103,99 @@
     	        }
     	    });
     	}
+    	
+    	//------------------------- 팔로잉 스크롤 페이징 처리 ------------------------------------
+    let pageNum = 1; // 기본 페이지 번호 미리 저장
+	let maxPage = 1; // 최대 페이지 번호 미리 저장
+	
+		$(function() {
+			
+			memberFollowingList();
+			
+			$(window).on("scroll", function() { // 스크롤 동작 시 이벤트 처리
+				
+				let scrollTop = $(window).scrollTop(); // 스크롤바 현재 위치
+				let windowHeight = $(window).height(); // 브라우저 창의 높이
+				let documentHeight = $(document).height(); // 문서의 높이(창의 높이보다 크거나 같음)
+				let x = 1;
+				if(scrollTop + windowHeight + x >= documentHeight) {
+					if(pageNum < maxPage) {
+						pageNum++;
+						memberFollowingList();
+					} else {
+						
+					}
+				}
+				
+			});
+		});
+	
+		function memberFollowingList() {
+			
+			$.ajax({
+				type:"Post",
+				url:"MemberFollowList",
+				data:{pageNum:pageNum},
+				dataType:"json",
+				success: function(data) {
+					console.log(JSON.stringify(data));
+					maxPage = data.maxPage;
+					
+					if(maxPage == 0){
+						$("#followingArea").append(
+							    '<div class="col-12 mt-5 text-center" style="padding-bottom: 300px;"> <h4> 아직 팔로잉 한 메이커가 없습니다! </h4></div>'
+						);
+						return false;
+					}
+					
+					var html = '';
+					for (let memberFollowing of data.memberFollowingList) {
+						html += '<div class="row my-5 align-items-center">' +
+					    '<div class="col-1 me-5 h5 text-primary">' +
+					        '<img class="center" style="width: 50px; height: 50px; border-radius: 50%;">' +
+					    '</div>' +
+					    '<div class="col">' +
+					        '<div class="row">' +
+					            '<a href="makerDetail?maker_idx=' + memberFollowing.maker_idx + '" style="color: black; text-decoration: none;">' +
+					                memberFollowing.maker_name +
+					            '</a>' +
+					        '</div>' +
+					        '<div class="row" id="count' + memberFollowing.maker_idx + '">' +
+					            '팔로워 ' + memberFollowing.follower_count +
+					        '</div>' +
+					    '</div>' +
+					    '<div class="col text-end" id="fallowing' + memberFollowing.maker_idx + '">' +
+				        	(memberFollowing.is_alam == 1
+				                ? '<button class="btn btn-outline-primary" onclick="isAlam(0, \'' + memberFollowing.maker_name + '\', ' + memberFollowing.maker_idx + ', ' + memberFollowing.follower_count + ')">' +
+				                    '<i class="bi bi-bell"></i>' +
+				                  '</button>'
+				                : '<button class="btn btn-outline-primary" onclick="isAlam(1, \'' + memberFollowing.maker_name + '\', ' + memberFollowing.maker_idx + ', ' + memberFollowing.follower_count + ')">' +
+				                    '<i class="bi bi-bell-slash"></i>' +
+				                  '</button>') +
+					        '<button class="btn btn-outline-primary ms-1" onclick="fallowingCheck(1, \'' + memberFollowing.maker_name + '\', ' + memberFollowing.maker_idx + ', ' + memberFollowing.follower_count + ')">' +
+					            '<i class="bi bi-check"></i> 팔로잉' +
+					        '</button>' +
+					    '</div>' +
+					'</div>';
+					}
+					
+					$('#followingArea').append(html);
+				            
+				},
+				error: function() {
+					
+				}
+			});
+			
+		}
+    	
     </script>
 </head>
 <body>
     <!-- 팔로잉 페이지 시작 -->
 <div class="row">
     <div class="col"></div>
-    <div class="col-12 col-md-5">
+    <div class="col-12 col-md-5" id="followingArea">
         <div class="row" style="margin-top: 100px">
             <h2><b>팔로잉 메이커</b></h2>
         </div>
@@ -123,32 +209,7 @@
             </div>
         </div>
         <!-- 메뉴 선택 -->
-        <c:forEach items="${fallowList }" var="fallow">
-        <div class="row my-5 align-items-center">
-            <div class="col-1 me-5 h5 text-primary">
-                <img class="center" style="width: 50px; height: 50px; border-radius: 50%;">
-            </div>
-            <div class="col">
-                <div class="row">
-                   <a href="makerDetail?maker_idx=${fallow.maker_idx }" style="color: black; text-decoration: none;">${fallow.maker_name }</a> 
-                </div>
-                <div class="row" id="count${fallow.maker_idx }">
-                    팔로워 ${fallow.follower_count }
-                </div>
-            </div>
-            <div class="col text-end" id="fallowing${fallow.maker_idx }">
-            	<c:choose>
-            		<c:when test="${fallow.is_alam eq 1 }">
-	                	<button class="btn btn-outline-primary" onclick="isAlam(0,'${fallow.maker_name }',${fallow.maker_idx })"><i class="bi bi-bell"></i></button>
-	                </c:when>
-	                <c:otherwise>
-	                	<button class="btn btn-outline-primary" onclick="isAlam(1,'${fallow.maker_name }',${fallow.maker_idx })"><i class="bi bi-bell-slash"></i></button>
-	                </c:otherwise>
-                </c:choose>
-	                <button class="btn btn-outline-primary" onclick="fallowingCheck(1,'${fallow.maker_name }',${fallow.maker_idx },${fallow.follower_count })"><i class="bi bi-check"></i> 팔로잉</button>
-            </div>
-        </div> 
-        </c:forEach>
+
     </div>
     <div class="col"></div>
 </div>

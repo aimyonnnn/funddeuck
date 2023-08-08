@@ -422,6 +422,7 @@
 					<input class="form-control" type="text"
 						id="callNumber"
 						name="member_phone" placeholder="전화번호 입력">
+						<input type="button" class="btn btn-primary my-1" id="phonebtn" value="전화번호 인증">
 					<h6 class="mt-3">이메일</h6>
 					<input class="form-control center mt-2" type="text"
 						id="email"

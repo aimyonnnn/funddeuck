@@ -184,6 +184,13 @@
 				let page = data.pageInfo;
 				if(page.maxPage != 0){
 					for (let map of data.map) {
+						
+						$.ajax({
+							
+						});
+						
+						
+						
 						  $("#tbody").append(
 						    '<tr>'
 						    + '<th scope="row">' + map.payment_idx + '</th>'
