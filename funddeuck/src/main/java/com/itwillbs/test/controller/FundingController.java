@@ -134,7 +134,7 @@ public class FundingController {
     	if(insertCount > 0) {
     		
     		// 작성 성공 시"의견이 등록되었습니다" 출력 후 이전 페이지로(실패 아님)
-    		model.addAttribute("msg", "의견이 등록되었습니다.");
+    		model.addAttribute("msg", "글이 등록되었습니다.");
     		return "fail_back";
     	} else {
     		
@@ -349,9 +349,15 @@ public class FundingController {
 			, @RequestParam int member_idx
 			, @RequestParam int payment_idx
 			, @RequestParam int delivery_idx
-//			 테이블 데이터 추가 시 주석 해제
 			) {
 
+		// 세션 아이디가 존재하지 않을 때 
+		String sId = (String) session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "fail_back";
+		}
+		
 		// 결제 정보 조회
 		List<PaymentVO> payment = paymentService.getPaymentList(payment_idx);
 		model.addAttribute(payment);
@@ -359,14 +365,6 @@ public class FundingController {
 		// 주문 정보 조회
 		List<DeliveryVO> delivery = deliveryService.getDeliveryList(payment_idx);
 		model.addAttribute(delivery);
-		
-		// 세션 아이디가 존재하지 않을 때 
-//		String sId = (String) session.getAttribute("sId");
-//		if(sId == null) {
-//			model.addAttribute("msg", "잘못된 접근입니다.");
-//			return "fail_back";
-//		}
-		
 		
 		return "funding/funding_result";
 	}	
