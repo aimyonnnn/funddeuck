@@ -95,6 +95,10 @@ public class FundingController {
 		ProjectVO project = fundingService.selectProjectInfo(project_idx);
 		model.addAttribute("project",project);
 		
+		// 프로젝트 메이커 로고
+		MakerVO maker = fundingService.getMakerLogo(project.getMaker_idx());
+		model.addAttribute("maker", maker);
+		
 		// 프로젝트 상세 페이지 이동 시 조회할 리워드 정보
 		List<RewardVO> reward = fundingService.selectProjectRewardInfo(project_idx);
 		model.addAttribute("reward", reward);

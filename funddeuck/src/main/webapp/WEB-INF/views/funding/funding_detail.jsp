@@ -57,13 +57,13 @@
 			    </div>
 			    <div class="carousel-inner">
 			      <div class="carousel-item active">
-			        <img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" class="d-block w-100" alt="...">
+			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" class="d-block w-100" alt="...">
 			      </div>
 			      <div class="carousel-item">
-			        <img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/a397a6ce-95bb-4a70-b7c1-039614ca4856.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=43dd7aafe0b498502d2c5ef6fb92122d" class="d-block w-100" alt="...">
+			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails2}" class="d-block w-100" alt="...">
 			      </div>
 			      <div class="carousel-item">
-			        <img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/98a2d25a-dbc6-4fff-8493-5d7270bc63bf.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=94c401adb61acad990a9dfe06dfc12dd" class="d-block w-100" alt="...">
+			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails3}" class="d-block w-100" alt="...">
 			      </div>
 			    </div>
 			    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -295,7 +295,7 @@
 				<!-- 팔로우, 1:1문의 버튼-->
 				<div class="row">
 					<div class="col d-flex justify-content-center">
-						<button class="btn btn-primary me-2" onclick="FallowingForm">팔로우</button>
+						<button class="btn btn-primary me-2" onclick="fallowCheck">팔로우</button>
 						<button class="btn btn-primary me-2" onclick="projectInquiry()">1:1문의</button>
 					</div>
 				</div>
@@ -340,6 +340,11 @@
 				<c:if test="${param.category eq 'introduce' or param.category eq null}">
 				<div class="col">
 					<article>
+						<!-- 사진이 있을 경우 출력 -->
+						<c:if test="${project.project_image ne null or project.project_image ne ''}">
+							<img src="${pageContext.request.contextPath}/resources/upload/${project.project_image}">
+						</c:if>
+						<div>&nbsp;</div>
 						<p class="text-justify">${project.project_introduce }</p>
 					</article>
 				</div>
@@ -452,8 +457,9 @@
 						<!-- 프로필 이미지 -->
 						<div class="col-lg-8 text-start">
 						<!-- 프로필 클릭시 메이커 새탭 이동-->
-							<a href="#" target="_blank">
-								<img src="https://cdn-icons-png.flaticon.com/512/3135/3135707.png" class="rounded-circle" alt="..." width="40px" height="40px"></a>
+							<a href="makerDetail?maker_idx=${maker.maker_idx }" target="_blank">
+								<!-- 사진이 등록되어 있을 경우 출력, 없으면 기본 이미지 출력 -->
+								<img src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file5}" class="rounded-circle" alt="..." width="40px" height="40px"></a>
 						</div>
 						<br>
 						<small class="text-start pb-3">${project.project_semi_introduce }</small>

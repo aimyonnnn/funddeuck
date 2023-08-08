@@ -105,4 +105,10 @@ public class FundingService {
 	public List<ProjectVO> getFundingSearchKeyword(@Param("status") String status,@Param("index") String index, @Param("searchKeyword") String searchKeyword) {
 		return mapper.selectFundingSearchKeyword(status, index, searchKeyword);
 	}
+
+	// 프로젝트 메이커 로고
+	public MakerVO getMakerLogo(int maker_idx) {
+		return mapper.selectMakerLogo(maker_idx);
+	}
+
 }

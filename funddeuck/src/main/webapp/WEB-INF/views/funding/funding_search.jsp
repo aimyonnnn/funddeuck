@@ -39,7 +39,7 @@
 <!-- 카테고리 바 영역(화면 클때) -->
 <div class="container-lg">
 	<span class="fs-2 fw-bold">검색결과</span>&nbsp;
-	<small class="text-info fw-bold">0</small><small class="fw-bold">개</small>
+	<small class="text-info fw-bold">${project.size() }</small><small class="fw-bold">개</small>
 	<br>
 	<div class="col float-end" >
 		<select class="text-dark-emphasis fw-bold" id="selectBox" onchange="chageLangSelect()">

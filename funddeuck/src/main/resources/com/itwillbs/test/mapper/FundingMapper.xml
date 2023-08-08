@@ -337,4 +337,11 @@
 				WHERE project_subject = #{searchKeyword}
 					OR project_hashtag = #{searchKeyword}
 	</select>
+	
+	<!-- 프로젝트 메이커 로고  -->
+	<select id="selectMakerLogo">
+		SELECT *
+			FROM maker
+				WHERE maker_idx = #{maker_idx}
+	</select>
 </mapper>

@@ -62,5 +62,8 @@ public interface FundingMapper {
 	
 	// 검색어로 프로젝트 리스트 조회
 	List<ProjectVO> selectFundingSearchKeyword(@Param("status") String status, @Param("index") String index, @Param("searchKeyword") String searchKeyword);
+
+	// 프로젝트 메이커 로고
+	MakerVO selectMakerLogo(int maker_idx);
 	
 }
