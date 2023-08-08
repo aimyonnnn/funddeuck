@@ -462,7 +462,7 @@
 			    project_approve_status = #{project_approve_status},
 			    project_status = #{project_status},
 			    project_approval_request_time = #{project_approval_request_time},
-			    first_amount = #{first_amount}
+			    settlement_amount = #{settlement_amount}
   			WHERE
 		  		project_idx = #{project_idx}	
 	</update>
@@ -504,7 +504,7 @@
 		UPDATE project
 			SET 
 				project_status = project_status + 1
-				,first_amount = #{first_amount}
+				,settlement_amount = settlement_amount + #{final_settlement}
 			WHERE 
 				project_idx = #{project_idx}
 	</update>

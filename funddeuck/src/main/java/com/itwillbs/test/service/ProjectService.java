@@ -176,8 +176,8 @@ public class ProjectService {
 	}
 	
 	// 정산 완료 후 프로젝트 상태 수정
-	public int updateProjectSettlementStatus(int project_idx, int final_amount) {
-		return mapper.updateProjectSettlementStatus(project_idx, final_amount);
+	public int updateProjectSettlementStatus(int project_idx, int final_settlement) {
+		return mapper.updateProjectSettlementStatus(project_idx, final_settlement);
 	}
     
 		

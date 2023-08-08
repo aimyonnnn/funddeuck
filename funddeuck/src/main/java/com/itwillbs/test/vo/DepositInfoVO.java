@@ -21,9 +21,4 @@ public class DepositInfoVO {
 	private String account_holder_name; // 수취인성명
 	private String tran_amt; // 거래금액
 	private String cms_num; // CMS 번호
-	
-	// =========================================================================
-	// DB 저장 시에 필요함
-	private String member_id;	// 회원 아이디
-	private int project_idx;	// 프로젝트 번호
 }

@@ -11,38 +11,38 @@ import lombok.Data;
 /*
 -- 프로젝트 테이블 생성
 CREATE TABLE project (
-    project_idx int PRIMARY KEY AUTO_INCREMENT COMMENT '프로젝트 번호',
-    project_plan int NOT NULL COMMENT '프로젝트 요금제: 1- 기본요금제, 2-인플루언서요금제',
-    project_category varchar(10) NOT NULL COMMENT '프로젝트 카테고리',
-    project_subject varchar(30) NOT NULL COMMENT '프로젝트 제목',
-    project_thumnails1 varchar(100) NOT NULL COMMENT '프로젝트 썸네일 (1)',
-    project_thumnails2 varchar(100) COMMENT '프로젝트 썸네일 (2)',
-    project_thumnails3 varchar(100) COMMENT '프로젝트 썸네일 (3)',
-    project_image varchar(100) NOT NULL COMMENT '프로젝트 내용 상세 이미지',
-    project_introduce varchar(300) NOT NULL COMMENT '프로젝트 소개',
-    project_semi_introduce varchar(150) NOT NULL COMMENT '프로젝트 한줄 소개',
-    project_target int NOT NULL COMMENT '목표 금액',
-	project_cumulative_amount int COMMENT '누적 금액',
+    project_idx INT PRIMARY KEY AUTO_INCREMENT COMMENT '프로젝트 번호',
+    project_plan INT NOT NULL COMMENT '프로젝트 요금제: 1- 기본요금제, 2-인플루언서요금제',
+    project_category VARCHAR(10) NOT NULL COMMENT '프로젝트 카테고리',
+    project_subject VARCHAR(30) NOT NULL COMMENT '프로젝트 제목',
+    project_thumnails1 VARCHAR(100) NOT NULL COMMENT '프로젝트 썸네일 (1)',
+    project_thumnails2 VARCHAR(100) COMMENT '프로젝트 썸네일 (2)',
+    project_thumnails3 VARCHAR(100) COMMENT '프로젝트 썸네일 (3)',
+    project_image VARCHAR(100) NOT NULL COMMENT '프로젝트 내용 상세 이미지',
+    project_introduce VARCHAR(300) NOT NULL COMMENT '프로젝트 소개',
+    project_semi_introduce VARCHAR(150) NOT NULL COMMENT '프로젝트 한줄 소개',
+    project_target INT NOT NULL COMMENT '목표 금액',
+    project_cumulative_amount INT DEFAULT 0 COMMENT '누적 금액',
     project_start_date date NOT NULL COMMENT '프로젝트 시작일',
     project_end_date date NOT NULL COMMENT '프로젝트 종료일',
-    project_hashtag varchar(20) NOT NULL COMMENT '검색용 태그',
-    project_representative_name varchar(50) NOT NULL COMMENT '대표자명',
-    project_representative_email varchar(50) NOT NULL COMMENT '대표 이메일',
-    project_representative_birth varchar(14) NOT NULL COMMENT '대표 주민등록번호',
-    project_tax_email varchar(50) NOT NULL COMMENT '세금계산서 발행 이메일',
-    project_settlement_bank varchar(20) NOT NULL COMMENT '정산받을 은행',
-    project_settlement_account varchar(30) NOT NULL COMMENT '정산받을 계좌번호',
-    project_settlement_name varchar(50) NOT NULL COMMENT '예금주명',
-    project_fintech_use_num varchar(50) NOT NULL COMMENT '핀테크이용번호',
-    project_settlement_image varchar(100) NOT NULL COMMENT '통장사본 이미지',
-    project_approve_status int NOT NULL COMMENT '프로젝트 승인 상태 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)',
-    project_status int NOT NULL COMMENT '프로젝트 상태 1-미진행 2-진행중 3-진행완료 4-정산신청 5-정산완료',
-	project_approval_request_time DATETIME COMMENT '프로젝트 승인 요청 시간',
-    maker_idx int NOT NULL COMMENT '메이커 번호',
-	token_idx int NOT NULL COMMENT '프로젝트 인증에 사용될 토큰 번호',
-	first_amount INT DEFAULT 0 COMMENT '1차 정산금액',
+    project_hashtag VARCHAR(20) NOT NULL COMMENT '검색용 태그',
+    project_representative_name VARCHAR(50) NOT NULL COMMENT '대표자명',
+    project_representative_email VARCHAR(50) NOT NULL COMMENT '대표 이메일',
+    project_representative_birth VARCHAR(14) NOT NULL COMMENT '대표 주민등록번호',
+    project_tax_email VARCHAR(50) NOT NULL COMMENT '세금계산서 발행 이메일',
+    project_settlement_bank VARCHAR(20) NOT NULL COMMENT '정산받을 은행',
+    project_settlement_account VARCHAR(30) NOT NULL COMMENT '정산받을 계좌번호',
+    project_settlement_name VARCHAR(50) NOT NULL COMMENT '예금주명',
+    project_fintech_use_num VARCHAR(50) NOT NULL COMMENT '핀테크이용번호',
+    project_settlement_image VARCHAR(100) NOT NULL COMMENT '통장사본 이미지',
+    project_approve_status INT NOT NULL COMMENT '프로젝트 승인 상태 1-미승인 2-관리자에게 프로젝트 승인요청 3-관리자의 프로젝트 승인완료 4-관리자의 프로젝트 승인거절 5-프로젝트 요금제 결제완료(펀딩+ 페이지에 출력 가능한 상태)',
+    project_status INT NOT NULL COMMENT '프로젝트 상태 1-오픈예정 2-프로젝트 진행중 3-진행완료 4-1차정산완료 5-최종정산진행가능 6-최종정산완료',
+    project_approval_request_time DATETIME COMMENT '프로젝트 승인 요청 시간',
+    maker_idx INT NOT NULL COMMENT '메이커 번호',
+    token_idx INT NOT NULL COMMENT '프로젝트 인증에 사용될 토큰 번호',
+    settlement_amount INT DEFAULT 0 COMMENT '누적 정산금액',
     FOREIGN KEY (maker_idx) REFERENCES maker(maker_idx) ON DELETE CASCADE,
-	FOREIGN KEY (token_idx) references token(token_idx) ON DELETE CASCADE
+    FOREIGN KEY (token_idx) references token(token_idx) ON DELETE CASCADE
 );
 
 */
@@ -79,7 +79,7 @@ public class ProjectVO {
 	private int project_status;								// 프로젝트 상태 1-오픈예정 2-프로젝트 진행중 3-진행완료 4-1차정산완료 5-최종정산진행가능 6-최종정산완료
 	private int maker_idx;									// 메이커 번호
 	private int token_idx;									// 프로젝트 계좌 인증에 사용될 토큰 번호
-	private int first_amount;								// 1차 정산금액
+	private int settlement_amount;							// 누적 정산금액
 	
 	private MultipartFile file1;							// 프로젝트 썸네일 (1)
  	private MultipartFile file2;							// 프로젝트 썸네일 (2)

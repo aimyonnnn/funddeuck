@@ -66,8 +66,8 @@ public class BankService {
 	}
 
 	// 정산 입금내역 등록
-	public int registDepositSettlement(Map<String, Object> paramMap) {
-		return mapper.insertDepositSettlement(paramMap);
+	public int registDepositSettlement(String member_id, int project_idx, Map<String, Object> paramMap) {
+		return mapper.insertDepositSettlement(member_id, project_idx, paramMap);
 	}
 	
 }

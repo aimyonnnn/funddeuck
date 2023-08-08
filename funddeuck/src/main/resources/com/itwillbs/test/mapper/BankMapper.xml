@@ -78,19 +78,32 @@
 	</select>
 	
 	<!-- 정산 입금내역 등록 -->
-	<insert id="insertDepositSettlement">
+	<insert id="insertDepositSettlement" parameterType="map">
 	    INSERT INTO banking (
-	        member_id, project_idx, banking_bank_name, banking_account_num_masked, banking_bank_tran_date, 
-	        banking_account_holder_name, banking_tran_amt, banking_print_content, banking_status)
+	        member_id,
+	        project_idx,
+	        banking_bank_name,
+	        banking_account_num_masked,
+	        banking_bank_tran_date,
+	        banking_account_holder_name,
+	        banking_tran_amt,
+	        banking_print_content,
+	        banking_status
+	    )
 	    VALUES
-	    <foreach collection="depositInfoList" item="depositInfo" separator=",">
-	        (#{member_id}, #{project_idx}, #{depositInfo.bank_name}, #{depositInfo.account_num_masked},
-	         #{depositInfo.bank_tran_date}, #{depositInfo.account_holder_name}, #{depositInfo.tran_amt},
-	         #{depositInfo.print_content}, 1)
+	    <foreach collection="paramMap.depositInfoList" item="item" separator=",">
+	        (
+	            #{member_id},
+	            #{project_idx},
+	            #{item.bank_name},
+	            #{item.account_num_masked},
+	            #{item.bank_tran_date},
+	            #{item.account_holder_name},
+	            #{item.tran_amt},
+	            #{item.print_content},
+	            1
+	        )
 	    </foreach>
 	</insert>
 
-
-
-	
 </mapper>
