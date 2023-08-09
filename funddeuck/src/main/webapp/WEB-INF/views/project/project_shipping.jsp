@@ -152,7 +152,7 @@
 			    	                        		}
 			    	                        	})()
 			    	                        + "</td>" +
-			    	                        "<td>" +
+			    	                        "<td class='refundStatus' data-id='" + row.payment_idx + "'>" +
 			    	                        	(function() {
 			    	                        		if(row.payment_confirm == 3) { // 펀딩금 반환 신청 시
 					    	                            return "<button class='btn btn-outline-danger btn-sm' id='refundButton' data-id="+ row.payment_idx +" data-bs-toggle='modal' data-bs-target='#refundModal'>신청</button>";
@@ -223,7 +223,6 @@
 
 				      // 테이블 바디에 추가
 				      $("#trackingModal .shippingModalTbody").html(tableBodyHtml);
-					
 				},
 				error: function() {
 					alert("모달 요청에 오류가 발생했습니다!");
@@ -235,7 +234,6 @@
 		// 반환입력 - 모달창
 		$(document).on("click", "#refundButton", function(event) {
 			var payment_idx = $(this).data("id");
-// 		    $('.shippingForm input[name="payment_idx"]').val(payment_idx); // 폼 hidden에 payment_idx 값 주기
 			
 			$.ajax({
 				url: "shippingModalList",
@@ -263,7 +261,7 @@
 						    '<td class="col-9">' + data.payment_quantity + '개</td>' +
 						  '</tr>' +
 						  '<tr>' +
-						    '<th scope="row" class="col-3 bg-light">금액</th>' +
+						    '<th scope="row" class="col-3 bg-light">결제금액</th>' +
 						    '<td class="col-9">' + data.total_amount + '원</td>' +
 						  '</tr>' +
 						  '<tr>' +
@@ -295,7 +293,14 @@
 						} else {
 						    $("#refund-document").text("").removeAttr("href").removeAttr("download");
 						}
-					
+						
+						// hidden에 환불 입금 api 요청할 값 추가 
+						$('#fintech_use_num').val(data.fintech_use_num);
+						$('#project_idx').val(data.project_idx);
+						$('#print_content').val('펀딩금반환');
+						$('#final_settlement').val(data.total_amount);
+						$('#member_id').val(data.member_id);
+						$('#payment_idx').val(payment_idx);
 				},
 				error: function() {
 					alert("모달 요청에 오류가 발생했습니다!");
@@ -320,13 +325,35 @@
 				    updatedTd.html(newRowContent);
 		            
 		            $("#trackingModal").modal("hide"); // 모달을 닫음
-		            alert('성공적으로 데이터가 처리되었습니다.');
+		            alert('성공적으로 발송 입력이 되었습니다.');
 		        },
 		        error: function(xhr) {
 		            alert(xhr.responseText); // 실패 메시지 출력
 		        }
 		    });
 		}
+		
+		// 환불 거절 상태 변경
+		$(document).on("click", "#refuse", function(event) {
+			var payment_idx = $(this).closest(".modal-content").find("#payment_idx").val();
+			console.log(payment_idx);
+			$.ajax({
+				url: "updateShippingRefuse",
+				method: "POST",
+				data: { payment_idx: payment_idx },
+				dataType: "json",
+				success: function(data) {
+					var updatedTd = $('td.refundStatus[data-id="' + payment_idx + '"]');
+		            updatedTd.html("거절");
+					         
+					$("#refundModal").modal("hide"); // 모달을 닫음
+					alert('성공적으로 반환이 거절되었습니다.');
+				},
+				error: function(xhr) {
+				    alert(xhr.responseText); // 실패 메시지 출력
+				}
+			});
+		});
 	});
 	</script>
 </head>
@@ -560,8 +587,17 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger">반환 신청</button>
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					<form action="bankRefund" method="post" class="settlement-form">
+						<input type="hidden" name="fintech_use_num" id="fintech_use_num">
+						<input type="hidden" name="project_idx" id="project_idx">
+						<input type="hidden" name="final_settlement" id="final_settlement">
+						<input type="hidden" name="print_content" id="print_content">
+						<input type="hidden" name="member_id" id="member_id">
+						<input type="hidden" name="payment_idx" id="payment_idx">
+						<button type="submit" class="btn btn-danger">반환 승인</button>
+						<button type="button" class="btn btn-primary" id="refuse" data-bs-dismiss="modal">거절</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					</form>
 				</div>
 			</div>
 		</div>
