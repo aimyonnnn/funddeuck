@@ -30,7 +30,7 @@ import com.itwillbs.test.service.ProfileService;
 import com.itwillbs.test.vo.ProfileVO;
 
 @Controller
-@RequestMapping("/member")
+@RequestMapping
 public class ProfileController {
 
     private final ProfileService profileService;

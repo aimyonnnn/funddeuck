@@ -44,7 +44,7 @@ public class IdeaCommunityController {
         return "member/member_ideacommunity";
     }
 
-    @PostMapping("/member/saveIdea")
+    @PostMapping("/saveIdea")
     @ResponseBody
     public void saveIdea(@ModelAttribute IdeaCommunityVO ideaCommunityVO, HttpSession session) {
         Integer memberIdx = (Integer) session.getAttribute("sIdx");
@@ -57,14 +57,14 @@ public class IdeaCommunityController {
         ideaCommunityService.saveIdea(ideaCommunityVO);
     }
 
-    @GetMapping("/member/getCardsData")
+    @GetMapping("/getCardsData")
     public List<IdeaCommunityVO> getCardsData() {
         List<IdeaCommunityVO> cardsData = ideaCommunityService.getAllCardData();
 
         return cardsData;
     }
 
-    @PostMapping("/member/likeIdea")
+    @PostMapping("/likeIdea")
     @ResponseBody
     public void likeIdea(@RequestParam("ideaIdx") int ideaIdx) {
         IdeaCommunityVO idea = ideaCommunityService.getIdeaById(ideaIdx);
@@ -75,7 +75,7 @@ public class IdeaCommunityController {
         }
     }
     
-    @PostMapping("/member/deleteIdea")
+    @PostMapping("/deleteIdea")
     @ResponseBody
     public String deleteIdea(@RequestParam("ideaIdx") int ideaIdx, HttpSession session) {
     	

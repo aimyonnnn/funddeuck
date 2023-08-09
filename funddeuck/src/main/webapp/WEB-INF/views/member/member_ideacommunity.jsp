@@ -100,7 +100,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button id="btn-n-save" class="float-left btn btn-success" style="display: none;">Save</button>
+                                            <button id="btn-n-save" class="float-left btn btn-success" style="display: none;" style="background-color: #FF9300;">Save</button>
                                             <button class="btn btn-danger" data-dismiss="modal">Discard</button>
                                             <button id="btn-n-add" class="btn btn-info" disabled="disabled">Add</button>
                                         </div>
@@ -125,7 +125,7 @@
                 var title = $('#idea_title').val();
                 var description = $('#idea_description').val();
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/member/saveIdea',
+                    url: '${pageContext.request.contextPath}/saveIdea',
                     type: 'POST',
                     data: {title: title, description: description},
                     success: function() {
@@ -177,7 +177,7 @@
             }
 
             $.ajax({
-                url: '${pageContext.request.contextPath}/member/getCardsData',
+                url: '${pageContext.request.contextPath}/getCardsData',
                 type: 'GET',
                 success: function(data) {
                     generateCards(data);
@@ -187,7 +187,7 @@
         
         function likeIdea(ideaIdx) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/member/likeIdea',
+                url: '${pageContext.request.contextPath}/likeIdea',
                 type: 'POST',
                 data: { ideaIdx: ideaIdx }, 
                 success: function () {
@@ -211,7 +211,7 @@
             if (member_id === "admin") {
                 $.ajax({
                     type: 'POST',
-                    url: '${pageContext.request.contextPath}/member/deleteIdea',
+                    url: '${pageContext.request.contextPath}/deleteIdea',
                     data: { ideaIdx: ideaIdx },
                     success: function (data) {
                     	

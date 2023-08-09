@@ -207,6 +207,28 @@
     margin-bottom: 10px;
 }
 
+/* 모바일 환경에서 팝업 창 스타일 */
+@media (max-width: 768px) {
+    .popup-content {
+        max-width: 90%;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .popup-content img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .close-button {
+        top: 20px;
+        right: 20px;
+    }
+
+    .content-wrapper {
+        margin-top: 10px;
+    }
+}
     
     
   </style>
@@ -257,7 +279,7 @@
 		    <p>함께 만드는 성공</p>
 		    <div class="row" id="projectContainer"  >
 		        <c:forEach items="${projectList}" var="project" varStatus="status">
-		            <c:if test="${status.index <= 2 && project.project_status eq 2 && project.project_approve_status eq 5}">
+		            <c:if test="${status.index <= 3 && project.project_status eq 2 && project.project_approve_status eq 5}">
 		                <div class="col-md-4 mb-4">
 		                    <article class="card">
 		                        <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>

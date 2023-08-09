@@ -25,7 +25,7 @@ public class CouponController {
     @Autowired
     private CouponService couponService;
 
-    @GetMapping("adminCoupon")
+    @GetMapping("/adminCoupon")
     public String adminCoupon(HttpSession session, Model model) {
         // 세션에서 로그인 정보를 가져옴
         Integer memberIdx = (Integer) session.getAttribute("sIdx");
@@ -43,14 +43,14 @@ public class CouponController {
         return "admin/admin_coupon";
     }
 
-    @PostMapping("/admin/saveCoupon")
+    @PostMapping("/saveCoupon")
     @ResponseBody
     public String saveCoupon(@RequestBody CouponVO couponVO) {
         couponService.registerCoupon(couponVO);
         return "success";
     }
     
-    @PostMapping("/admin/processExpiredCoupons")
+    @PostMapping("/processExpiredCoupons")
     @ResponseBody
     public List<CouponVO> processExpiredCoupons() {
         List<CouponVO> expiredCoupons = couponService.getExpiredCoupons();
@@ -63,7 +63,7 @@ public class CouponController {
         return couponService.getCouponList();
     }
     
-    @GetMapping("/admin/expiredCoupons")
+    @GetMapping("/expiredCoupons")
     public String getExpiredCoupons(Model model) {
         List<CouponVO> expiredCoupons = couponService.getExpiredCoupons();
         model.addAttribute("expiredCouponList", expiredCoupons);
@@ -73,7 +73,7 @@ public class CouponController {
 
     //-------------------------------------------------------------------------------------
     
-    @GetMapping("member/coupon")
+    @GetMapping("/coupon")
     public String memberCoupon(HttpSession session, Model model) {
     	Integer memberIdx = (Integer) session.getAttribute("sIdx");
     
@@ -90,7 +90,7 @@ public class CouponController {
     	return "member/member_coupon";	
     }
     
-    @PostMapping("/member/coupon-info")
+    @PostMapping("/coupon-info")
     @ResponseBody
     public ResponseEntity<CouponVO> getCouponInfo(@RequestParam("couponNumber") String couponNumber, HttpSession session) {
         CouponVO couponInfo = couponService.getCouponInfoByNumber(couponNumber);

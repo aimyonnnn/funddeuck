@@ -8,7 +8,7 @@
     <%@ include file="../Header.jsp" %>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../resources/css/mypage.css" />	
+    <link rel="stylesheet" type="text/css" href="./resources/css/mypage.css" />	
 </head>
 <style>
 	.container h3 {
@@ -180,7 +180,7 @@
 	        var couponNumber = $('#couponNumberInput').val();
 	        $.ajax({
 	            type: 'POST',
-	            url: '${pageContext.request.contextPath}/member/coupon-info', 
+	            url: '${pageContext.request.contextPath}/coupon-info', 
 	            data: { couponNumber: couponNumber },
 	            success: function (data) {
 	                if (data.coupon_use === 1) {

@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../resources/css/mypage.css" />	
-    <link rel="stylesheet" type="text/css" href="../resources/css/member_profile.css" />
+    <link rel="stylesheet" type="text/css" href="./resources/css/mypage.css" />	
+    <link rel="stylesheet" type="text/css" href="./resources/css/member_profile.css" />
 </head>
 <body>
 			<section style="background-color: #f4f5f7;">
@@ -135,7 +135,7 @@
             
             $.ajax({
                 type: "POST",
-                url: '<c:url value="/member/profile"/>',
+                url: '<c:url value="/profile"/>',
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -173,7 +173,7 @@
 
             $.ajax({
                 type: "POST",
-                url: '<c:url value="/member/insert"/>', 
+                url: '<c:url value="/insert"/>', 
                 data: formData,
                 processData: false,
                 contentType: false,

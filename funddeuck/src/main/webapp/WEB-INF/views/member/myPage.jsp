@@ -40,23 +40,34 @@
             <div class="row bg-white">
                 <!-- 프로필 영역 -->
                 <div class="col-md-2 col-12 text-center mt-3" style="border-right: solid 1px lightgray;">
-                    <div>
-                        <img class="mt-5 center" img src=" ${pageContext.request.contextPath}/resources/upload/${profile.profile_img}"  style="width: 80px; height: 80px;">
-                    </div>
+				<div>
+				    <c:choose>
+				        <c:when test="${not empty profile.profile_img}">
+				            <img class="mt-5 center" src="${pageContext.request.contextPath}/resources/upload/${profile.profile_img}"
+				                 style="width: 80px; height: 80px;">
+				        </c:when>
+				        <c:otherwise>
+				            <img class="mt-5 center" src="https://cdn.pixabay.com/photo/2017/04/20/01/46/focus-2244304_1280.png"
+				                 style="width: 80px; height: 80px;">
+				        </c:otherwise>
+				    </c:choose>
+				</div>
+
+
                     <br>
                     <div>
                         <a href="" class="text-black">${sessionScope.sId}님</a>
                     </div>
                     <hr>
                     <button class="btn" style="border-radius: 50px;">로그아웃</button><br>
-					<button class="btn" style="border-radius: 50px;" onclick="location.href='member/profile'">프로필수정</button>
+					<button class="btn" style="border-radius: 50px;" onclick="location.href='profile'">프로필수정</button>
                 </div>
                 <!-- 프로필 영역 -->
                 <!-- 쿠폰, 펀딩, 스토어 영역 -->
                 <div class="col">
                     <div class="row mt-5 h6">
                         <div class="col-sm-12 col-md-6">
-                            <a href="member/coupon" class="text-black w-100">
+                            <a href="coupon" class="text-black w-100">
                                 <div class="row ms-md-1 me-md-1" style="border: 1px solid lightgray; border-radius: 7px;">
                                     <div class="col text-start m-3">
                                         쿠폰

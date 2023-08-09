@@ -20,9 +20,10 @@
     table {
         border-collapse: collapse;
         width: 100%;
+        text-align: center;
     }
     
-    th, td {
+    td {
         padding: 10px;
         text-align: center;
     }
@@ -30,6 +31,8 @@
     th {
         background-color: #f2f2f2;
         font-weight: bold; 
+        text-align: center;
+        padding: 10px;
     }
     
     p input {
@@ -188,7 +191,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '${pageContext.request.contextPath}/admin/saveCoupon',
+                url: '${pageContext.request.contextPath}/saveCoupon',
                 contentType: 'application/json',
                 data: JSON.stringify(couponData),
                 success: function (data) {
@@ -226,7 +229,7 @@
 	function processExpiredCoupons() {
 	    $.ajax({
 	        type: 'POST',
-	        url: '${pageContext.request.contextPath}/admin/processExpiredCoupons',
+	        url: '${pageContext.request.contextPath}/processExpiredCoupons',
 	        success: function (data) {
 	            if (data.length === 0) {
 	                alert("더이상 만료 처리할 쿠폰이 없습니다.");
