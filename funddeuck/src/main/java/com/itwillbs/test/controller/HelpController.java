@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.test.service.HelpService;
 import com.itwillbs.test.service.MakerService;
-import com.itwillbs.test.service.MissionService;
 import com.itwillbs.test.vo.QnaVO;
 
 @Controller
@@ -28,10 +27,6 @@ public class HelpController {
 
 	@Autowired
 	HelpService service;
-	@Autowired
-	private MissionService missionService;
-	@Autowired
-	private MakerService makerService;
 	
 	// QNA 폼 요청 시
 	@GetMapping("helpInquiryForm")
@@ -43,16 +38,7 @@ public class HelpController {
     		return "fail_back";
     	}
 		
-    	String sId = (String)session.getAttribute("sId");
-    	Integer maker_idx = makerService.getMakerIdx(sId);
-    	int updateCount2 = missionService.addMissionPoints(maker_idx, "고객센터 페이지 둘러보기", 1);
-        if(updateCount2 > 0) {
-        	System.out.println("■■■■■■■■고객센터페이지둘러보기");
         	return "help/help_inquiry";
-        } else {
-        	System.out.println("■■■■■■■■미션을완료했기때문에무조건true리턴을해야함");
-        	return "help/help_inquiry";
-        }
 	}
 	
 	// QNA 제출 시

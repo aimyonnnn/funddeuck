@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
-import com.itwillbs.test.service.MissionService;
 import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
@@ -39,27 +38,6 @@ public class MakerController {
 	private ProjectService projectService;
 	@Autowired
 	private MemberService memberService;
-	@Autowired
-	private MissionService missionService;
-	
-	
-	// 챌린지
-	@GetMapping("makerChallenge")
-	public String makerChallenge(@RequestParam(required = false) Integer maker_idx, HttpSession session, Model model) {
-		String sId = (String) session.getAttribute("sId");
-	    MakerVO maker = null;
-	    if (maker_idx != null) {
-	        maker = makerService.getMakerInfo(maker_idx);
-	
-	        if (maker == null) {
-	            model.addAttribute("msg", "메이커 정보를 찾을 수 없습니다.");
-	            return "fail_back";
-	        }
-	
-	    }
-	    
-		return "project/maker_challenge";
-	}
 	
 	// 메이커 등록 페이지
 	@GetMapping("projectMaker")
@@ -332,12 +310,6 @@ public class MakerController {
 			    e.printStackTrace();
 			}
 			
-			int updateCount2 = missionService.addMissionPoints(maker.getMaker_idx(), "메이커 페이지 꾸며보기", 1);
-	        if(updateCount2 > 0) {
-	        	System.out.println("■■■■■■■■메이커페이지꾸며보기");
-	        } else {
-	        	System.out.println("■■■■■■■■미션을완료했기때문에무조건makerDetail리턴을해야함");
-	        }
 			// 메이커 수정 성공 시 makerDetail로 이동
 			String targetURL = "makerDetail?maker_idx=" + maker.getMaker_idx();
 			System.out.println("메이커 idx : " + maker.getMaker_idx());
@@ -417,13 +389,6 @@ public class MakerController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			int updateCount2 = missionService.addMissionPoints(makerBoard.getMaker_idx(), "프로젝트 공지사항 작성해보기", 1);
-	        if(updateCount2 > 0) {
-	        	System.out.println("■■■■■■■■프로젝트공지사항작성해보기");
-	        } else {
-	        	System.out.println("■■■■■■■■미션을완료했기때문에무조건makerDetail리턴을해야함");
-	        }
 			String targetURL = "makerDetail?maker_idx=" + makerBoard.getMaker_idx();
 			model.addAttribute("msg", "공지사항 작성이 성공적으로 완료되었습니다!");
 			model.addAttribute("targetURL", targetURL);

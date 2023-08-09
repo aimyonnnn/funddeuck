@@ -41,7 +41,6 @@ import com.itwillbs.test.handler.EchoHandler;
 import com.itwillbs.test.service.AdminService;
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
-import com.itwillbs.test.service.MissionService;
 import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectScheduler;
 import com.itwillbs.test.service.ProjectService;
@@ -76,8 +75,6 @@ public class ProjectController {
 	public ProjectController(EchoHandler echoHandler) {
 		this.echoHandler = echoHandler;
 	}
-	@Autowired
-	private MissionService missionService;
 	
 	// 프로젝트 메인
 	@GetMapping("project")
@@ -151,18 +148,8 @@ public class ProjectController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			MakerVO maker = projectService.getMakerIdx(project_idx);
-			int maker_idx = maker.getMaker_idx();
-			int updateCount2 = missionService.addMissionPoints(maker_idx, "프로젝트 승인요청 하기", 1);
-	        if(updateCount2 > 0) {
-	        	System.out.println("■■■■■■■■프로젝트승인요청함");
-	        	return "true";
-	        } else {
-	        	System.out.println("■■■■■■■■미션을완료했기때문에무조건true리턴을해야함");
-	        	return "true";
-	        }
-	        
-		} 
+        	return "true";
+        }
 		return "false"; 
 	}
 	
@@ -205,12 +192,8 @@ public class ProjectController {
 	    Integer maker_idx = makerService.getMakerIdx(sId);
 	    
 	    if (insertCount > 0) {
-	        int points = 1; // 리워드 등록 시 부여할 포인트 값
-	        int updateCount = missionService.addMissionPoints(maker_idx, "첫 리워드 등록", points);
-	        if(updateCount > 0) {
-	        	return "true";
-	        } 
-	    }
+	    	return "true";
+        } 
 	    return "false";
 	}
 	
@@ -573,15 +556,7 @@ public class ProjectController {
 	    model.addAttribute("maker_idx", maker_idx);
 	    model.addAttribute("projectList", projectList);
 	    
-		int updateCount2 = missionService.addMissionPoints(maker_idx, "프로젝트 진행상황 확인해보기", 1);
-        if(updateCount2 > 0) {
-        	System.out.println("■■■■■■■■프로젝트진행상황확인해보기");
-        	return "project/project_status";
-        } else {
-        	System.out.println("■■■■■■■■미션을완료했기때문에무조건true리턴을해야함");
-        	return "project/project_status";
-        }
-	    
+    	return "project/project_status";
 	}
 		
 	// 메이커의 전체 프로젝트 차트 출력
