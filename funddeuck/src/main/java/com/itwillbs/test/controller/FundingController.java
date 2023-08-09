@@ -145,9 +145,7 @@ public class FundingController {
 	
 	// 펀딩 주문페이지 이동
 	@GetMapping ("fundingOrder")
-		// 파라미터 전달, 주석 풀 부분
 		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, HttpSession session, Model model) {
-//		public String fundingOrder(HttpSession session, Model model) {
 		
 		String sId = (String)session.getAttribute("sId");
 		// 미로그인 또는 주문하던 회원이 아닐경우 ****
@@ -189,11 +187,11 @@ public class FundingController {
 		
 		// 회원의 계좌정보 조회
 		BankAccountVO bankAccount = bankService.getBankAccountInfo(member_idx);
-		System.out.println("bankAccount : " + bankAccount);
+//		System.out.println("bankAccount : " + bankAccount);
 		if(bankAccount != null) {
 			// DB에 저장된 회원의 토큰정보 확인
 			ResponseTokenVO token = bankService.getTokenInfo(member_idx);
-			if(token != null) { // 토큰의 정보가 있다면
+			if(token != null) { // 토큰의 정보 있을 경우(계좌존재)
 				// 세션 객체에 엑세스토큰(access_token)과 사용자번호(user_seq_no) 저장
 				session.setAttribute("access_token", token.getAccess_token());
 				session.setAttribute("user_seq_no", token.getUser_seq_no());
@@ -214,7 +212,6 @@ public class FundingController {
 						bankAccount = account;
 					}
 				}
-//				System.out.println("bankAccount : " + bankAccount);
 			}
 			// 계좌 정보
 			model.addAttribute("bankAccount", bankAccount);
@@ -384,9 +381,7 @@ public class FundingController {
 	@ResponseBody
 	public DeliveryVO deliveryNewAdd(DeliveryVO delivery, HttpSession session) {
 		//세션아이디 가져와서 DeliveryVO에 저장
-//		String id = (String)session.getAttribute("sId");
-		// 멤버 아이디 필요(가데이터)
-		String id = "kim1234";
+		String id = (String)session.getAttribute("sId");
 		delivery.setMember_id(id);
 		
 		// 신규 등록시 자동으로 기본배송지로 등록
@@ -412,9 +407,7 @@ public class FundingController {
 	public String deliveryAdd(DeliveryVO delivery, HttpSession session) {
 		System.out.println(delivery);
 		//세션아이디 가져와서 DeliveryVO에 저장
-//		String id = (String)session.getAttribute("sId");
-		// 멤버 아이디 필요(가데이터)
-		String id = "kim1234";
+		String id = (String)session.getAttribute("sId");
 		delivery.setMember_id(id);
 		
 		// 기본배송지로 설정시 기존의 기본배송지 0으로 변경
@@ -440,8 +433,7 @@ public class FundingController {
 	@ResponseBody
 	public List<DeliveryVO> getDeliveryList(HttpSession session) {
 		// 세션 아이디 가져오기
-//		String id = (String)session.getAttribute("sId");
-		String id = "kim1234";
+		String id = (String)session.getAttribute("sId");
 		// 배송지 목록을 가져오는 DB 작업
 		List<DeliveryVO> deliveryList = fundingService.getDeliveryList(id);
 		System.out.println(deliveryList);
@@ -467,8 +459,7 @@ public class FundingController {
 	public DeliveryVO deliveryChange(int changeDelivery_idx, HttpSession session) {
 		System.out.println("전달받은 delivery_idx = " + changeDelivery_idx);
 		// 세션 아이디 가져오기
-//		String id = (String)session.getAttribute("sId");
-		String id = "kim1234";
+		String id = (String)session.getAttribute("sId");
 		// 해당 회원 아이디와 배송지 번호가 전달받은 changeDelivery_idx 인 배송지 조회
 		DeliveryVO delivery = fundingService.getDeliveryInfo(id, changeDelivery_idx);
 		System.out.println("조회한 delivery : " + delivery);

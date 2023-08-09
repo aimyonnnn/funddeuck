@@ -237,70 +237,82 @@ public class BankController {
 		}
 	}
 	
-	// 회원 계좌인증
+	// 계좌인증 / 계좌변경 버튼 클릭시
+	@GetMapping("authMember")
+	public String authMember(Model model, HttpSession session) {
+		// member_idx 조회
+		String sId = (String) session.getAttribute("sId");
+		int member_idx = projectService.getMemberIdx(sId);
+		// 아니면 계좌정보 확인?
+		// DB에 저장된 엑세스 토큰 여부확인
+		ResponseTokenVO existingToken = bankService.getTokenInfo(member_idx);
+		if(existingToken == null) { // 토큰 없을 경우(첫 계좌등록)
+			System.out.println("첫 계좌등록시");
+			// 사용자인증요청 API 
+			return "redirect:" + bankApiService.authentication();
+		} else { // 토큰 존재시(계좌변경)
+			System.out.println("계좌변경시");
+			// DB에 등록되어있던 토큰 정보 삭제
+			boolean isDeleteTokenSuccess = bankService.deleteToken(member_idx);
+			if(isDeleteTokenSuccess) { // 토큰 정보 삭제 성공시
+				return "redirect:" + bankApiService.authentication();
+			} else { // 토큰 정보 삭제 실패시
+				model.addAttribute("msg", "토큰 정보 삭제 오류! 다시 인증하세요!");
+				model.addAttribute("isClose", true); // true : 창 닫기, false : 창 닫기 X(이전페이지로 돌아가기)
+				return "bank_fail_back";				
+			}
+		}
+		
+	}
+	
+	// 회원 계좌인증 / 계좌변경
 	@GetMapping("callbackMember")
-	public String accountAuthMember(@RequestParam Map<String, String> authResponse, Model model, HttpSession session) {
-		
-		logger.info(authResponse.toString());
-		
+	public String callbackMember(@RequestParam Map<String, String> authResponse, HttpSession session, Model model) {
+		logger.info("●●●●● authResponse :" + authResponse.toString());
 		// 인증 실패 시(= 인증 정보 존재하지 않을 경우) 오류 메세지 출력 및 인증 창 닫기
 		if(authResponse == null || authResponse.get("code") == null) {
 			// Model 객체를 통해 출력할 메세지(msg) 전달 및 창 닫기 여부(isClose)도 전달
 			model.addAttribute("msg", "인증 오류 발생! 다시 인증하세요!");
 			model.addAttribute("isClose", true); // true : 창 닫기, false : 창 닫기 X(이전페이지로 돌아가기)
-			return "fail_back";
+			return "bank_fail_back";
 		}
-		
-		// 엑세스 토큰 발급 요청
+		// 엑세스 토큰 발급 API 요청
 		ResponseTokenVO responseToken = bankApiService.requestTokenMember(authResponse);
 		logger.info("★★★★★ Access Token : " + responseToken.toString());
 		
-		if(responseToken.getAccess_token() == null) { // 토큰 없을 경우
+		// 토큰 발급 요청 후 토큰이 존재하지 않을 경우
+		if(responseToken.getAccess_token() == null) { 
 			// Model 객체를 통해 출력할 메세지(msg) 전달 및 창 닫기 여부(isClose)도 전달
 			model.addAttribute("msg", "토큰 발급 오류 발생! 다시 인증하세요!");
 			model.addAttribute("isClose", true); // true : 창 닫기, false : 창 닫기 X(이전페이지로 돌아가기)
-			return "fail_back";
+			return "bank_fail_back";
 		}
 		
 		// member_idx 조회
 		String sId = (String) session.getAttribute("sId");
 		int member_idx = projectService.getMemberIdx(sId);
 		
-		// DB에 저장된 토큰 정보 확인
-		ResponseTokenVO existingToken = bankService.getTokenInfo(member_idx);
+		// 토큰 정보 DB 저장
+		boolean isRegistSuccess = bankService.registToken(member_idx, responseToken);
 		
-		boolean isRegistSuccess = false;
-		boolean isUpdateSuccess = false;
-		
-		// 저장된 토큰이 없거나 만료된 경우 새로운 토큰을 저장하고, 이미 저장된 토큰이 있다면 업데이트
-		if (existingToken == null) {
-			// 토큰을 DB에 저장
-			isRegistSuccess = bankService.registToken(member_idx, responseToken);
-		} else {
-			// 토큰을 DB에 업데이트
-			isUpdateSuccess = bankService.updateTokenInfo(member_idx, responseToken);
-		}
-		
-		if(isRegistSuccess || isUpdateSuccess) { 
-			model.addAttribute("msg", "계좌인증 완료!");
-			
-			// 계좌인증 완료 후 해당 회원의 토큰정보조회
+		if(isRegistSuccess) { 
+			// 해당 회원의 토큰 정보 조회
 			ResponseTokenVO token = bankService.getTokenInfo(member_idx);
 			logger.info("●●●●● token : " + token);
-			if(token != null) { // 토큰 정보 존재시
+			if(token == null) { // 토큰 정보 DB 조회 실패시
+				model.addAttribute("msg", "토큰 정보 조회 오류 발생! 다시 인증해주세요!");
+				model.addAttribute("isClose", true);
+				return "bank_fail_back";
+			} else { // 토큰 정보 DB 조회 성공시
 				// 세션 객체에 엑세스토큰(access_token)과 사용자번호(user_seq_no) 저장
 				session.setAttribute("access_token", token.getAccess_token());
 				session.setAttribute("user_seq_no", token.getUser_seq_no());
-				// 엑세스토큰과 사용자번호 저장
 				String access_token = token.getAccess_token();
 				logger.info("●●●●● access_token : " + access_token);
 				String user_seq_no = token.getUser_seq_no();
-				logger.info("●●●●● user_seq_no : " + user_seq_no);			
-				// 핀테크 이용자 정보 조회
-				ResponseUserInfoVO userInfo = bankApiService.requestUserInfo(access_token, user_seq_no); 
-				logger.info("●●●●● userInfo : " + userInfo);
-				// CI(Connect Info) 저장(인증생략시 사용)
-				String user_ci = userInfo.getUser_ci();
+				logger.info("●●●●● user_seq_no : " + user_seq_no);
+				// 사용자정보조회 요청 API
+				ResponseUserInfoVO userInfo = bankApiService.requestUserInfo(access_token, user_seq_no);
 				// BankAccountVO 중에 조회서비스 동의일시(inquiry_agree_dtime)가 제일 최근인 계좌 가져오기
 				List<BankAccountVO> bankAccountList = userInfo.getRes_list();
 				BankAccountVO mostRecentBankAccount = null;
@@ -312,198 +324,68 @@ public class BankController {
 				        // 가장 최근의 조회서비스 동의일시를 찾기 위해 inquiry_agree_dtime 비교
 				        Date mostRecentDateTime = mostRecentBankAccount.getInquiry_agree_dtime();
 				        Date currentDateTime = bankAccount.getInquiry_agree_dtime();
-
+	
 				        if (currentDateTime.after(mostRecentDateTime)) {
 				            mostRecentBankAccount = bankAccount;
 				        }
 				    }
 				}
-				logger.info("●●●●● 제일 최근 조회서비스 동의 계좌: " + mostRecentBankAccount);
-				
-				// 핀테크이용번호가 일치하는 계좌정보 있는지 조회
-				BankAccountVO bankAccount = bankService.getBankAccount(member_idx, mostRecentBankAccount);
-				
-				boolean isRegistAccountSuccess = false;
-				if(bankAccount == null) { // 계좌정보 조회
-					// 계좌정보 DB 저장
-					mostRecentBankAccount.setUser_ci(user_ci); // 사용자 CI 저장
-					logger.info("●●●●● 사용자 user_ci : " + user_ci);
-					isRegistAccountSuccess = bankService.registBankAccount(member_idx, mostRecentBankAccount);
-				} else { // 등록된 계좌가 존재함 
-					// 등록된 계좌가 같을때, 변경시에는 계좌정보 수정 해주기
-					model.addAttribute("msg", "이미 등록된 계좌입니다!");
-					model.addAttribute("isClose", true);
-					return "bank_fail_back";
+				logger.info("●●●●● 제일 최근 조회서비스 동의 계좌 : " + mostRecentBankAccount);
+				logger.info("●●●●● 핀테크이용번호 : " + mostRecentBankAccount.getFintech_use_num());
+				// 회원이 가지고 있는 계좌정보 조회 
+				BankAccountVO isExistingBankAccount = bankService.getBankAccountInfo(member_idx);
+				if(isExistingBankAccount == null) { // 계좌정보 미존재(첫 계좌등록)
+					// 계좌정보 DB 등록
+					boolean isRegistAccountSuccess = bankService.registBankAccount(member_idx, mostRecentBankAccount);
+					if(isRegistAccountSuccess) { // 계좌정보 DB 등록 성공시
+						// 세션에 핀테크이용번호 저장
+						// 성공 페이지에 model로 계좌정보 전달
+						model.addAttribute("msg", "계좌 등록 완료!");
+						session.setAttribute("fintech_use_num", mostRecentBankAccount.getFintech_use_num());
+						model.addAttribute("mostRecentBankAccount", mostRecentBankAccount);
+						model.addAttribute("isClose", true);
+						return "bank_success_forward_member";
+					} else { // 계좌정보 DB 등록 실패시
+						model.addAttribute("msg", "계좌등록 오류 발생! 다시 인증해주세요!");
+						model.addAttribute("isClose", true);
+						return "bank_fail_back";
+					}
+					
+				} else { // 계좌정보 존재(계좌변경)
+					// 핀테크이용번호가 일치하는 계좌정보 있는지 조회(중복확인)
+					boolean isDupeBankAccount = bankService.getBankAccount(member_idx, mostRecentBankAccount);
+					if(!isDupeBankAccount) { // 중복된 계좌정보가 없을 경우
+						// 등록된 계좌정보 삭제
+						// 변경된 계좌정보 DB 등록
+						boolean isRegistAccountSuccess = bankService.registBankAccount(member_idx, mostRecentBankAccount);
+						if(isRegistAccountSuccess) { // 계좌정보 DB 등록 성공시
+							// 세션에 핀테크이용번호 저장
+							// 성공 페이지에 model로 계좌정보 전달
+							model.addAttribute("msg", "계좌 변경 완료!");
+							session.setAttribute("fintech_use_num", mostRecentBankAccount.getFintech_use_num());
+							model.addAttribute("mostRecentBankAccount", mostRecentBankAccount);
+							model.addAttribute("isClose", true);
+							return "bank_success_forward_member";
+						} else { // 계좌정보 DB 등록 실패시
+							model.addAttribute("msg", "계좌변경 오류 발생! 다시 인증해주세요!");
+							model.addAttribute("isClose", true);
+							return "bank_fail_back";
+						}
+						
+					} else { // 중복된 계좌정보 있을 경우
+						model.addAttribute("msg", "이미 등록된 계좌입니다! 다시 인증해주세요!");
+						model.addAttribute("isClose", true);
+						return "bank_fail_back";
+					}
 				}
 				
-				if(isRegistAccountSuccess) {
-					// 세션에 핀테크이용번호 저장 
-					session.setAttribute("fintech_use_num", mostRecentBankAccount.getFintech_use_num());
-					model.addAttribute("mostRecentBankAccount", mostRecentBankAccount);
-					// 토큰 idx 전달 => 필요 ?
-					model.addAttribute("token_idx", responseToken.getToken_idx());
-					model.addAttribute("isClose", true);
-					return "bank_success_forward_member";
-				} else {
-					model.addAttribute("msg", "계좌등록 오류 발생! 다시 인증해주세요!");
-					model.addAttribute("isClose", true);
-					return "bank_fail_back";
-				}
-				
-				
-			} else {
-				model.addAttribute("msg", "계좌조회 오류 발생! 다시 인증해주세요!");
-				model.addAttribute("isClose", true);
-				return "bank_fail_back";
 			}
-			
-			
-		} else {
-			model.addAttribute("msg", "계좌인증 오류 발생! 다시 인증하세요!");
+		} else { // 토큰 정보 DB 저장 실패
+			model.addAttribute("msg", "토큰 정보 저장 오류 발생! 다시 인증해주세요!");
 			model.addAttribute("isClose", true);
 			return "bank_fail_back";
 		}
 	}
-	
-//	// 계좌인증버튼 클릭시
-//	@GetMapping("authMember")
-//	public String authMember(Model model, HttpSession session) {
-//		// member_idx 조회
-//		String sId = (String) session.getAttribute("sId");
-//		int member_idx = projectService.getMemberIdx(sId);
-//		// DB에 저장된 엑세스 토큰 여부확인
-//		ResponseTokenVO existingToken = bankService.getTokenInfo(member_idx);
-//		if(existingToken == null) { // 토큰 없을 경우 
-//			System.out.println("사용자 인증하러감!");
-//			return  "redirect:" + bankApiService.authentication();
-//		} else { // 토큰 존재시 
-//			// 사용자인증생략
-//			// access_token user_seq_no user_ci 필요
-//			String access_token = existingToken.getAccess_token();
-//			String user_seq_no = existingToken.getUser_seq_no();
-//			// 계좌 정보 가져오기 
-//			String user_ci = bankService.getUserCI(member_idx);
-//			if(user_ci == null) { // 계좌 등록하지 않은 회원
-//				return  "redirect:" + bankApiService.authentication();
-//			} else { // 오류발생함..
-//				System.out.println("사용자 인증생략!");
-//				ResponseAuthVO responseAuth = bankApiService.authenticationSkip(access_token, user_seq_no, user_ci);
-//				logger.info("●●●●● responseAuth :" + responseAuth.toString());
-////				return  "redirect:" + bankApiService.authenticationSkip(access_token, user_seq_no, user_ci);			
-//				return  "redirect:callbackMember" ;			
-//			}
-//		}
-//		
-//	}
-//	
-//	
-//	// 회원 계좌인증(테스트)
-//	@GetMapping("callbackMember")
-//	public String callbackMember(@RequestParam Map<String, String> authResponse, HttpSession session, Model model) {
-//		logger.info("●●●●● authResponse :" + authResponse.toString());
-//		
-//		// 인증 실패 시(= 인증 정보 존재하지 않을 경우) 오류 메세지 출력 및 인증 창 닫기
-//		if(authResponse == null || authResponse.get("code") == null) {
-//			// Model 객체를 통해 출력할 메세지(msg) 전달 및 창 닫기 여부(isClose)도 전달
-//			model.addAttribute("msg", "인증 오류 발생! 다시 인증하세요!");
-//			model.addAttribute("isClose", true); // true : 창 닫기, false : 창 닫기 X(이전페이지로 돌아가기)
-//			return "fail_back";
-//		}
-//		// 엑세스 토큰 발급 요청
-//		ResponseTokenVO responseToken = bankApiService.requestTokenMember(authResponse);
-//		logger.info("★★★★★ Access Token : " + responseToken.toString());
-//		
-//		if(responseToken.getAccess_token() == null) { // 토큰 없을 경우
-//			// Model 객체를 통해 출력할 메세지(msg) 전달 및 창 닫기 여부(isClose)도 전달
-//			model.addAttribute("msg", "토큰 발급 오류 발생! 다시 인증하세요!");
-//			model.addAttribute("isClose", true); // true : 창 닫기, false : 창 닫기 X(이전페이지로 돌아가기)
-//			return "fail_back";
-//		}
-//		// member_idx 조회
-//		String sId = (String) session.getAttribute("sId");
-//		int member_idx = projectService.getMemberIdx(sId);
-//		
-//		// 토큰 DB 저장
-//		boolean isRegistSuccess = bankService.registToken(member_idx, responseToken);
-//		
-//		if(isRegistSuccess) { 
-//			model.addAttribute("msg", "계좌인증 완료!");
-//			
-//			// 계좌인증 완료 후 해당 회원의 토큰정보조회
-//			ResponseTokenVO token = bankService.getTokenInfo(member_idx);
-//			logger.info("●●●●● token : " + token);
-//			if(token != null) { // 토큰 정보 존재시
-//				// 엑세스토큰과 사용자번호 저장 (세션 저장?)
-//				// 세션 객체에 엑세스토큰(access_token)과 사용자번호(user_seq_no) 저장
-//				session.setAttribute("access_token", token.getAccess_token());
-//				session.setAttribute("user_seq_no", token.getUser_seq_no());
-//				String access_token = token.getAccess_token();
-//				logger.info("●●●●● access_token : " + access_token);
-//				String user_seq_no = token.getUser_seq_no();
-//				logger.info("●●●●● user_seq_no : " + user_seq_no);			
-//				// 핀테크 이용자 정보 조회
-//				ResponseUserInfoVO userInfo = bankApiService.requestUserInfo(access_token, user_seq_no); 
-////				logger.info("●●●●● userInfo : " + userInfo);
-//				// CI(Connect Info) 저장(인증생략시 사용)
-//				String user_ci = userInfo.getUser_ci();
-//				// BankAccountVO 중에 조회서비스 동의일시(inquiry_agree_dtime)가 제일 최근인 계좌 가져오기
-//				List<BankAccountVO> bankAccountList = userInfo.getRes_list();
-//				BankAccountVO mostRecentBankAccount = null;
-//				for(BankAccountVO bankAccount : bankAccountList) {
-//				    // mostRecentBankAccount 변수 초기화
-//				    if (mostRecentBankAccount == null) {
-//				        mostRecentBankAccount = bankAccount;
-//				    } else {
-//				        // 가장 최근의 조회서비스 동의일시를 찾기 위해 inquiry_agree_dtime 비교
-//				        Date mostRecentDateTime = mostRecentBankAccount.getInquiry_agree_dtime();
-//				        Date currentDateTime = bankAccount.getInquiry_agree_dtime();
-//	
-//				        if (currentDateTime.after(mostRecentDateTime)) {
-//				            mostRecentBankAccount = bankAccount;
-//				        }
-//				    }
-//				}
-//				logger.info("●●●●● 제일 최근 조회서비스 동의 계좌: " + mostRecentBankAccount);
-//				
-//				// DB에 핀테크이용번호가 일치하는 계좌정보 있는지 조회
-//				BankAccountVO bankAccount = bankService.getBankAccount(member_idx, mostRecentBankAccount);
-//				
-//				boolean isRegistAccountSuccess = false;
-//				if(bankAccount == null) { 
-//					// 계좌정보 DB 저장
-//					mostRecentBankAccount.setUser_ci(user_ci); // 사용자 CI 저장
-//					logger.info("●●●●● 사용자 user_ci : " + user_ci);
-//					isRegistAccountSuccess = bankService.registBankAccount(member_idx, mostRecentBankAccount);
-//				} else { // 있다면 삭제
-//	//				bankService.deleteBankAccount(member_idx, mostRecentBankAccount);
-//					isRegistAccountSuccess = true;
-//				}
-//				
-//				if(isRegistAccountSuccess) {
-//					session.setAttribute("fintech_use_num", mostRecentBankAccount.getFintech_use_num());
-//					model.addAttribute("mostRecentBankAccount", mostRecentBankAccount);
-//					model.addAttribute("isClose", true);
-//					return "bank_success_forward_member";
-//				} else {
-//					model.addAttribute("msg", "계좌등록 오류 발생! 다시 인증해주세요!");
-//					model.addAttribute("isClose", true);
-//					return "bank_fail_back";
-//				}
-//				
-//				
-//			} else {
-//				model.addAttribute("msg", "계좌조회 오류 발생! 다시 인증해주세요!");
-//				model.addAttribute("isClose", true);
-//				return "bank_fail_back";
-//			}
-//			
-//			
-//		} else {
-//			model.addAttribute("msg", "계좌인증 오류 발생! 다시 인증하세요!");
-//			model.addAttribute("isClose", true);
-//			return "bank_fail_back";
-//		}
-//	}
 	
 	
 }

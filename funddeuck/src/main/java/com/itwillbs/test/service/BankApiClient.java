@@ -130,7 +130,7 @@ public class BankApiClient {
 	}
 	
 	
-	// 사용자인증 인증 생략 - GET 방식(수정해야함)
+	// 사용자인증 인증 생략 - API 사용불가
 	public ResponseAuthVO authenticationSkip(String access_token, String user_seq_no, String user_ci) {
 		String url = baseUrl + "/oauth/2.0/authorize"; // url 요청
 		HttpHeaders httpHeaders = new HttpHeaders(); // 헤더 생성

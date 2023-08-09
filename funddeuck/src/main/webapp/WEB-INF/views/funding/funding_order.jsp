@@ -11,8 +11,6 @@
 <title>펀딩</title>
 <!-- 부트스트랩 -->
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
-<!-- 헤더  -->
-<jsp:include page="../common/main_header.jsp"></jsp:include>
 <!-- 부트스트랩 5.3.0 CSS 추가 -->
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css"> -->
 <!-- 부트스트랩 5.3.0 JS 추가 -->
@@ -29,7 +27,7 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script type="text/javascript">
 //===========================================================
-//아임포트 결제 스크립트
+// 아임포트 결제 스크립트
 	function request_pay() {
 		
 		var IMP = window.IMP;
@@ -76,6 +74,8 @@
 
 </head>
 <body>
+	<!-- 헤더  -->
+	<jsp:include page="../Header.jsp"></jsp:include>
 	<!-- 이미지, 프로젝트 정보 -->
 	<div class="container text-center">
 		<div class="row p-2 m-3">
@@ -281,7 +281,7 @@
 						<div class="col">
 							<input class="btn btn-primary" type="button" value="카드결제" onclick="request_pay()">
 						</div>
-					<!-- 계좌있을경우 가져오기 -->
+					<!-- 최초등록 / 계좌변경 -->
 						<div class="col" id="paymentMethodForm">
 							<c:if test="${not empty bankAccount }">
 								<div class="col-12">
@@ -296,12 +296,12 @@
 									<span class="fs-6 fw-bold">계좌번호</span>&nbsp;&nbsp;
 									<span class="fs-6">${bankAccount.account_num_masked}</span>
 								</div>								
-								<input class="btn btn-primary" type="button" value="계좌변경" id="btnAccountAuth">
-<!-- 								<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');"> -->
+<!-- 								<input class="btn btn-primary" type="button" value="계좌변경" id="btnAccountAuth"> -->
+								<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
 							</c:if>
 							<c:if test="${empty bankAccount }">
-								<input class="btn btn-primary" type="button" value="계좌인증" id="btnAccountAuth">
-<!-- 								<input class="btn btn-primary" type="button" value="계좌인증" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');"> -->
+<!-- 								<input class="btn btn-primary" type="button" value="계좌등록" id="btnAccountAuth"> -->
+								<input class="btn btn-primary" type="button" value="계좌등록" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
 							</c:if>
 						</div>
 					</div>
@@ -419,6 +419,8 @@
 						<input type="text" name="reward_idx" value="${reward.reward_idx }" id="reward_idx">
 						<input type="text" name="reward_price" value="${reward.reward_price }" id="reward_price">
 						<input type="text" name="delivery_idx" id="delivery_idx" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_idx }</c:if>">
+						<input type="text" name="delivery_idx" id="delivery_zipcode" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_zipcode }</c:if>">
+						<input type="text" name="delivery_idx" id="delivery_add" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_add }</c:if>">
 						<input type="text" name="member_email" value="${member.member_email }">
 						<input type="text" name="member_phone" value="${member.member_phone }">
 						<input type="text" name="additional_amount" id="additional_amount" value="0">

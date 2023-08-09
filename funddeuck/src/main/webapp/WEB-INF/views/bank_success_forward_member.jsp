@@ -28,7 +28,9 @@
 					<div class="col-12">
 						<span class="fs-6 fw-bold">계좌번호</span>&nbsp;&nbsp;
 						<span class="fs-6">${mostRecentBankAccount.account_num_masked}</span>
-					</div>`;
+					</div>
+					<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
+					`;
 		formElement.innerHTML = output;
 		window.close();		
 		
