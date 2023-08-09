@@ -501,15 +501,15 @@
 									<small class="card-text opacity-75">${reward.reward_detail }</small>
 									<!-- 기본 공백(클릭시 장바구니 카드로 확장하기 위함) -->
 									<div>&nbsp;</div>
-									<!-- 프로젝트가 진행되지 않은 상태일 경우(주문 불가능) -->
+<!-- 									프로젝트가 진행되지 않은 상태일 경우(주문 불가능) -->
 									<c:if test="${project.project_status eq 1 }">
 										<a href="javascript:nrReward()" class="stretched-link"></a>
 									</c:if>
-									<!-- 프로젝트가 진행중인 경우(주문 가능) -->
+<!-- 									프로젝트가 진행중인 경우(주문 가능) -->
 									<c:if test="${project.project_status eq 2 }">
 										<a href="fundingOrder?project_idx=${project.project_idx }&reward_idx=${reward.reward_idx }" class="stretched-link"></a>
 									</c:if>
-									<!-- 프로젝트가 종료된 경우(주문 불가능) -->
+<!-- 									프로젝트가 종료된 경우(주문 불가능) -->
 			      					<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 }">
 										<a href="javascript:endReward()" class="stretched-link"></a>
 									</c:if>

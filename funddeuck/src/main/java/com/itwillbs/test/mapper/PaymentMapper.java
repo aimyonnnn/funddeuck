@@ -131,4 +131,19 @@ public interface PaymentMapper {
 	// 관리자 - 결제정보 수정 - 첨부파일 실시간 삭제
 	int deletePaymentFile(@Param("payment_idx") int payment_idx, @Param("fileName") String fileName, @Param("fileNumber") int fileNumber);
 
+	// 결제 정보 등록
+	int registCreditInfo(@Param("member_idx") int member_idx
+			, @Param("project_idx") int project_idx
+			, @Param("reward_idx") int reward_idx
+			, @Param("delivery_idx") int delivery_idx
+			, @Param("member_email") String member_email
+			, @Param("member_phone") String member_phone
+			, @Param("reward_amount") int reward_amount
+			, @Param("additional_amount") int additional_amount
+			, @Param("use_coupon_amount") int use_coupon_amount
+			, @Param("total_amount") int total_amount
+			, @Param("payment_quantity") int payment_quantity
+			, @Param("payment_confirm") int payment_confirm
+			, @Param("payment_method") int payment_method);
+
 }

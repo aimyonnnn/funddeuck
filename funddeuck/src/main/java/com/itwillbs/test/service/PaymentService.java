@@ -174,4 +174,13 @@ public class PaymentService {
 		return mapper.deletePaymentFile(payment_idx, fileName, fileNumber);
 	}
 	
+	// 결제 정보 등록
+	public int registCreditInfo(int member_idx, int project_idx, int reward_idx, int delivery_idx, String member_email,
+			String member_phone, int reward_amount, int additional_amount, int use_coupon_amount, int total_amount,
+			int payment_quantity, int payment_confirm, int payment_method) {
+		return mapper.registCreditInfo(member_idx, project_idx, reward_idx, delivery_idx, member_email,
+				member_phone, reward_amount, additional_amount, use_coupon_amount, total_amount,
+				payment_quantity, payment_confirm, payment_method);
+	}
+	
 }

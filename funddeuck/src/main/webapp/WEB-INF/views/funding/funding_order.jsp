@@ -28,47 +28,58 @@
 <script type="text/javascript">
 //===========================================================
 // 아임포트 결제 스크립트
-	function request_pay() {
-		
-		var IMP = window.IMP;
-		IMP.init("imp30787507");
-
-		IMP.request_pay({
-		    pg: "html5_inicis", // PG사 선택
-		    pay_method: "card", // 지불 수단
-		    merchant_uid: "merchant_" + new Date().getTime(), // 주문번호
-		    name: "펀딩  프로젝트명", // 상품명
-		    amount: 1000, // 가격
-		    buyer_email: "test@gmail.com",
-		    buyer_name: "홍길동", // 구매자 이름
-		    buyer_tel: "010-1234-5678", // 구매자 연락처 
-		    buyer_addr: "부산광역시 부산진구",// 구매자 주소지
-		    buyer_postcode: "01181", // 구매자 우편번호
-		  }, function (rsp) { // callback
-		    if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
-		        console.log(rsp);
-		        // 결제검증
-		        $.ajax({
-				type : "GET",
-//				url : "/payments/" + rsp.imp_uid
-				url : "<c:url value='payments/'/>" + rsp.imp_uid
-		      }).done(function(data) { // 응답 처리
-		      		console.log(data);
-		      		// 위의 rsp.paid_amount 와 data.response.amount를 비교한후 로직 실행 (import 서버검증)
-		      		if(rsp.paid_amount == data.response.amount){
-					alert("결제가 완료되었습니다.");
-//					location.href = "fundingResult?merchant_uid=" + merchant_uid payment 데이터 넣으면 주석해제
-					location.href = "fundingResult"
-				} else {
-			        	alert("결제 실패");
-			        }
-		        });
-		    } 
-		    else {
-		      alert("결제에 실패하였습니다. 에러 내용: " +  rsp.error_msg);
-		    }
-		  });
-		}
+$(()=>{
+	   
+	   let IMP = window.IMP;
+	   IMP.init("imp30787507");
+	   
+	    $('#requestPay').on('click', function() {
+	    	
+	        IMP.request_pay({
+	        	
+				pg: "html5_inicis", // PG사 선택
+				pay_method: "card", // 지불 수단
+				merchant_uid: "merchant_" + new Date().getTime(), // 주문번호
+				name: "펀딩  프로젝트명", // 상품명
+				amount: 1000 // 가격
+	       },
+	       function(rsp) { // callback
+	       console.log(rsp);
+	         
+	         // ================= 결제 성공 시 =================
+	       		if(rsp.success) {
+		     		console.log('결제가 완료되었습니다.');
+		        
+		       		let payment_method = 1; 					    // 결제수단(1:카드결제)
+		       		let payment_confirm = 2; 					    // 결제상태(2:결제완료)
+			        // ================= DB 작업 =================
+			        // 1. project_approve_status = 5일 경우 결제테이블 결제 정보 저장하기
+			        // 2. 프로젝트 상태컬럼을 5-결제완료 상태로 변경(펀딩+ 페이지에 출력 가능한 상태)
+			        
+			        $.ajax({
+						method: 'post',
+						url: "<c:url value='fundingPayment'/>",
+						data: {
+							payment_method: payment_method,
+							payment_confirm: payment_confirm
+							
+						},
+						success: function(data){
+						},
+						error: function(){
+							console.log('ajax 요청이 실패하였습니다!');	
+						}
+					});
+			    	// ================= DB 작업 =================
+		        // ================= 결제 실패 시 =================
+		        } else {
+		            var msg = '결제에 실패하였습니다.';
+		            msg += '에러내용: ' + rsp.error_msg;
+		            alert(msg);
+	         	}
+	      });
+	   });
+	}); // ready
 //===========================================================
 </script>	
 
@@ -279,7 +290,7 @@
 					<div class="row m-2 p-2 border d-flex">
 					<!-- 카드결제 -->
 						<div class="col">
-							<input class="btn btn-primary" type="button" value="카드결제" onclick="request_pay()">
+							<input class="btn btn-primary" type="button" value="카드결제" name="requestPay">
 						</div>
 					<!-- 최초등록 / 계좌변경 -->
 						<div class="col" id="paymentMethodForm">
