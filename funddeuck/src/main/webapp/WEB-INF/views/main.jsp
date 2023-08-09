@@ -182,6 +182,9 @@
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+    /* 수정된 부분: 너비를 min-width로 지정해서 유동적인 조절 가능하도록 함 */
+    min-width: 300px;
     max-width: 80%;
     text-align: right; 
 }
@@ -199,6 +202,7 @@
 .content-wrapper {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     margin-top: 20px;
 }
@@ -210,12 +214,14 @@
 /* 모바일 환경에서 팝업 창 스타일 */
 @media (max-width: 768px) {
     .popup-content {
+        /* 모바일에서 크기를 유지*/
         max-width: 90%;
         text-align: center;
-        padding: 20px;
+        padding: 10px;
     }
 
     .popup-content img {
+        /* 수정된 부분: 이미지 너비 설정 */
         max-width: 100%;
         height: auto;
     }
@@ -226,11 +232,11 @@
     }
 
     .content-wrapper {
-        margin-top: 10px;
+        /* 수정된 부분: 모바일에서 이미지를 중앙에 배치*/
+        margin-top: 50px;
     }
 }
-    
-    
+
   </style>
   
   <script type="text/javascript">
@@ -272,14 +278,14 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-
+<!-- status.index <= 6 &&  -->
 <br>
 		<div class="container" >
 		    <h3><b>오늘의 추천 프로젝트</b></h3>
 		    <p>함께 만드는 성공</p>
 		    <div class="row" id="projectContainer"  >
 		        <c:forEach items="${projectList}" var="project" varStatus="status">
-		            <c:if test="${status.index <= 3 && project.project_status eq 2 && project.project_approve_status eq 5}">
+		            <c:if test="${project.project_status eq 2 && project.project_approve_status eq 5}">
 		                <div class="col-md-4 mb-4">
 		                    <article class="card">
 		                        <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>
@@ -303,6 +309,7 @@
 		                    </article>
 		                </div>
 		            </c:if>
+		            
 		        </c:forEach>
 		    </div>
 		</div>
@@ -382,7 +389,7 @@
         <span class="close-button" onclick="closePopup()">&times;</span>
         <div class="content-wrapper">
             <a href="member/coupon">
-                <img src="./resources/images/popup.png" width="550" height="700" alt="팝업 이미지">
+                <img src="./resources/images/popup.png" width="480" height="630" alt="팝업 이미지">
             </a>
             <label>
                 <input type="checkbox" id="hideToday"> 오늘 하루 안보기

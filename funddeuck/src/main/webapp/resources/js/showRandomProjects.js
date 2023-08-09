@@ -1,3 +1,5 @@
+
+
 function showRandomProjects() {
     $.ajax({
         url: './randomProjects',
@@ -11,20 +13,12 @@ function showRandomProjects() {
                 project.project_status == 2 && project.project_approve_status == 5
             );
 
-            if (filteredProjects.length <= 3) {
-                // 프로젝트가 3개 이하일 경우 모두 출력
-                filteredProjects.forEach(project => {
-                    const cardHTML = createCardHTML(project);
-                    projectContainer.append(cardHTML);
-                });
-            } else {
-                const randomIndices = getRandomIndices(filteredProjects.length, 3);
-                randomIndices.forEach(index => {
-                    const project = filteredProjects[index];
-                    const cardHTML = createCardHTML(project);
-                    projectContainer.append(cardHTML);
-                });
-            }
+            const randomIndices = getRandomIndices(filteredProjects.length, 3);
+            randomIndices.forEach(index => {
+                const project = filteredProjects[index];
+                const cardHTML = createCardHTML(project);
+                projectContainer.append(cardHTML);
+            });
         },
         error: function(error) {
             console.error('Error: ', error);

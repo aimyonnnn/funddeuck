@@ -51,6 +51,10 @@ public class HomeController {
 
         model.addAttribute("hashTagMap", hashTagMap);
 
+        // 프로젝트 목록 가져와서 모델에 추가
+        List<ProjectVO> projectList = projectService.getAllProjects();
+        model.addAttribute("projectList", projectList);
+
         return "main";
     }
 
