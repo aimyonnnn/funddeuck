@@ -243,7 +243,6 @@ public class BankController {
 		// member_idx 조회
 		String sId = (String) session.getAttribute("sId");
 		int member_idx = projectService.getMemberIdx(sId);
-		// 아니면 계좌정보 확인?
 		// DB에 저장된 엑세스 토큰 여부확인
 		ResponseTokenVO existingToken = bankService.getTokenInfo(member_idx);
 		if(existingToken == null) { // 토큰 없을 경우(첫 계좌등록)

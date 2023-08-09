@@ -348,4 +348,40 @@
 			FROM maker
 				WHERE maker_idx = #{maker_idx}
 	</select>
+	
+	<!--  -->
+	<insert id="insertPayment">
+		INSERT INTO payment(
+	        member_idx
+	        , project_idx
+	        , reward_idx
+	        , delivery_idx
+	        , member_email
+	        , member_phone
+	        , reward_amount
+	        , additional_amount
+	        , use_coupon_amount
+	        , total_amount
+	        , payment_date
+	        , payment_quantity
+	        , payment_confirm
+	        , payment_method
+	    )
+			VALUES (
+				#{member_idx}
+				, #{project_idx}
+				, #{reward_idx}
+				, #{delivery_idx}
+				, #{member_email}
+				, #{member_phone}
+				, #{reward_amount}
+				, #{additional_amount}
+				, #{use_coupon_amount}
+				, #{total_amount}
+				, #{payment_date}
+				, #{payment_quantity}
+				, #{payment_confirm}
+				, #{payment_method}
+			)
+	</insert>
 </mapper>

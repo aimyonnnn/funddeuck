@@ -270,6 +270,9 @@ public class FundingController {
 	    		return "fail_back";
 	    	}
 	    	
+	    	// map 활용하여 데이터 전달
+	    	// payment.getTotal_amount(), fintech_use_num, access_token
+//	    	Map<String, String> map = new HashMap<>();
 	    	logger.info("access_token : " + access_token);
 	    	// 출금이체 API 요청(회원)
 	    	ResponseWithdrawVO withdrawResult = bankApiService.requestWithdrawMember(payment.getTotal_amount(), fintech_use_num, access_token);
@@ -278,9 +281,23 @@ public class FundingController {
 	    	String sId = (String)session.getAttribute("sId");
 	    	
 	    	// 거래내역 DB 저장(입금내역)
+	    	// 거래내역 저장시 거래날짜가 엄청 과거로 불러와지는 문제해결 필요
 	    	boolean isSaveFundingTranHistSuccess =  bankService.saveFundingTranHist(sId, payment.getProject_idx(), withdrawResult);
 	    	if(isSaveFundingTranHistSuccess) { // 거래내역 DB 저장 성공시
-	    		System.out.println("DB 저장!");
+	    		// payment DB 작업 
+	    		boolean isRegistPayment = fundingService.registPayment(payment);
+	    		if(isRegistPayment) {
+	    			System.out.println("결제서 DB 저장!");
+	    		}
+	    		
+	    		// 쿠폰 사용시 쿠폰 상태 변경(coupon_idx 필요)
+	    		// 리워드 수량 = 주문수량 => project 테이블 변경
+	    		
+	    		
+	    	} else { // 거래내역 DB 저장 실패시
+	    		model.addAttribute("msg", "오류 발생! 다시 결제해주세요");
+	    		return "fail_back";
+	    		
 	    	}
 	    	
 	    	
@@ -296,8 +313,6 @@ public class FundingController {
 	    	// 성공시 fundingResult 결제 완료페이지로 이동
 	    	// 실패시 fail_back
 	    	
-	    	// 쿠폰 사용시 쿠폰 상태 변경
-	    	// 리워드 수량 = 주문수량 => project 테이블 변경
 	    	
 	    	// ================================================================================= 계좌
 	    }

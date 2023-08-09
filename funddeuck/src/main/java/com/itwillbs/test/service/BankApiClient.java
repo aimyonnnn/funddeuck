@@ -180,7 +180,7 @@ public class BankApiClient {
 		jo.put("bank_tran_id", valueGenerator.getBankTranId());
 		jo.put("cntr_account_type", "N"); // 약정 계좌/계정 구분(N:계좌, C:계정 => N 고정)
 		jo.put("cntr_account_num", "50000818"); // 약정계좌 계좌번호(테스트데이터 출금계좌 항목에 등록할 계좌번호) 사이트 계좌번호
-		jo.put("dps_print_content", "펀뜩결제"); // 입금계좌 인자내역
+		jo.put("dps_print_content", "펀딩결제（계좌）"); // 입금계좌 인자내역
 		jo.put("fintech_use_num", fintech_use_num); // 출금계좌 핀테크이용번호(전달받은 값) 고객계좌
 		jo.put("tran_amt", total_amount); // 거래금액 => 오픈뱅킹 사이트의 테스트데이터와 일치시켜야함
 		jo.put("tran_dtime", valueGenerator.getTranDTime()); // 거래요청일시

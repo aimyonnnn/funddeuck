@@ -52,7 +52,6 @@
 			VALUES (
 				NULL
 				, #{member_idx}
-				, #{bankAccount.user_ci}
 				, #{bankAccount.fintech_use_num}
 				, #{bankAccount.account_holder_name}
 				, #{bankAccount.bank_name}
@@ -144,17 +143,16 @@
 	<insert id="insertFundingTranHist">
 		INSERT INTO banking
 			VALUES (
-	            #{member_id},
-	            #{project_idx},
-	            #{withdrawResult.bank_name},
-	            #{withdrawResult.account_num_masked},
-	            #{withdrawResult.bank_tran_date},
-	            #{withdrawResult.account_holder_name},
-	            #{withdrawResult.tran_amt},
-	            #{withdrawResult.print_content},
-	            1
-				
-			
+				NULL
+	            , #{member_id}
+	            , #{project_idx}
+	            , #{withdrawResult.bank_name}
+	            , #{withdrawResult.account_num_masked}
+	            , #{withdrawResult.bank_tran_date}
+	            , #{withdrawResult.account_holder_name}
+	            , #{withdrawResult.tran_amt}
+	            , #{withdrawResult.dps_print_content} -- 인자내역(테스트데이터인자내역)
+	            , 1
 			)
 		
 	</insert>

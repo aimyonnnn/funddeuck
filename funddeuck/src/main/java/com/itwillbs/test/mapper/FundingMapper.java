@@ -66,4 +66,7 @@ public interface FundingMapper {
 	// 프로젝트 메이커 로고
 	MakerVO selectMakerLogo(int maker_idx);
 	
+	// 결제 후 결제서 등록
+	boolean insertPayment(PaymentVO payment);
+	
 }

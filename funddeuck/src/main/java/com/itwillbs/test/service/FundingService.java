@@ -41,22 +41,22 @@ public class FundingService {
 		
 	}
 	
-	//멤버가 한 펀딩 리스트
+	// 멤버가 한 펀딩 리스트
 	public List<Map<String, Object>> getMemberFunDing(String sId, int payment_confirm, int startRow, int listLimit) {
 		return mapper.selectMemberFunDing(sId, payment_confirm ,startRow, listLimit);
 	}
 	
-	//멤버가 한 펀딩의 모달에 띄울 내용
+	// 멤버가 한 펀딩의 모달에 띄울 내용
 	public Map<String, Object> getMemberModalFunding(int payment_idx) {
 		return mapper.selectModalFunding(payment_idx);
 	}
 	
-	//페이징 처리를 위한 펀딩 갯수
+	// 페이징 처리를 위한 펀딩 갯수
 	public int getMemberFunDingCount(String sId, int payment_confirm) {
 		return mapper.selectMemberFunDingCoung(sId, payment_confirm);
 	}
 	
-	//펀딩 취소 신청
+	// 펀딩 취소 신청
 	public int requestMemberCancellation(int cancel_idx, String context, String saveFileName) {
 		return mapper.requestMemberCancellcation(cancel_idx, context, saveFileName);
 	}
@@ -109,6 +109,11 @@ public class FundingService {
 	// 프로젝트 메이커 로고
 	public MakerVO getMakerLogo(int maker_idx) {
 		return mapper.selectMakerLogo(maker_idx);
+	}
+	
+	// 결제 후 결제서 등록
+	public boolean registPayment(PaymentVO payment) {
+		return mapper.insertPayment(payment);
 	}
 
 }
