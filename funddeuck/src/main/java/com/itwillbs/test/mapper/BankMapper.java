@@ -33,4 +33,7 @@ public interface BankMapper {
 
 	// 정산 입금내역 등록
 	int insertDepositSettlement(@Param("member_id") String member_id, @Param("project_idx") int project_idx, @Param("paramMap") Map<String, Object> paramMap);
+
+	// 환불 입금내역 등록
+	int insertDepositRefund(@Param("member_id") String member_id, @Param("project_idx") int project_idx, @Param("paramMap") Map<String, Object> paramMap);
 }

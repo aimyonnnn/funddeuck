@@ -66,7 +66,7 @@ public interface PaymentMapper {
 	// 목록 인원수 조회
 	int selectPaymentListCount(int project_idx);
 	
-	// 발송입력 - 모달창 리스트 조회
+	// 발송 및 환불 정보 입력 - 모달창 리스트 조회
 	List<PaymentVO> selectShippingModalList(int payment_idx);
 
 	// 송장 입력 후 발송 업데이트
@@ -90,11 +90,14 @@ public interface PaymentMapper {
 	// 송장번호 입력 후 일주일 후 '배송완료'로 상태변경
 	int updateDeliveryStatusPaymentList(int payment_idx);
 	
-	// 미발송 및 배송중 조회
+	// 미발송 및 배송중, 반환신청 조회 조회
 	int selectDeliveryCount(int payment_idx);
 	
 	// 미발송 및 배송중이 없다면 2주 후 최종정산 가능으로 프로젝트 상태 변경
 	void updateProjectStatus(int payment_idx);
+	
+	// 펀딩금 반환 거절 상태 변경
+	int updateShippingRefuse(int payment_idx);
 	
 	// 갯수 조회
 	int selectTotalCountByProjectIdx(

@@ -130,7 +130,10 @@ public interface ProjectMapper {
 	int deleteProjectFile(@Param("project_idx") int project_idx, @Param("fileName") String fileName, @Param("fileNumber") int fileNumber);
 
 	// 정산 완료 후 프로젝트 상태 변경
-	int updateProjectSettlementStatus(@Param("project_idx") int project_idx,@Param("final_settlement") int final_settlement);	
+	int updateProjectSettlementStatus(@Param("project_idx") int project_idx,@Param("final_settlement") int final_settlement);
+
+	// 정산 완료 후 환불 상태 변경
+	int updateProjectRefundStatus(@Param("payment_idx") int payment_idx);	
 			
 
 

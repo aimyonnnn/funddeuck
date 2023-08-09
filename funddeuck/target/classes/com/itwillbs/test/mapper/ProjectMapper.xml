@@ -509,6 +509,15 @@
 				project_idx = #{project_idx}
 	</update>
 	
+	<!-- 환불완료 후 환불상태 변경 -->
+	<update id="updateProjectRefundStatus">
+		UPDATE payment
+			SET
+				payment_confirm = 4
+			WHERE 
+				payment_idx = #{payment_idx} 
+	</update>
+	
 </mapper>
 	
 	
