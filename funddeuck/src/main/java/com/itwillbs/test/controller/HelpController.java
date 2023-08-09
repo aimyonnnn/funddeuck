@@ -49,31 +49,29 @@ public class HelpController {
 		//실제 저장 경로
 		String saveDir = session.getServletContext().getRealPath(uploadDir);
 		
-		
 		String subDir = ""; //서브디렉토리(날짜구분하여 저장)
 		// 설정한 날짜별로 파일 생성
 		
 		try {
-		//오늘날짜 가져옴
 		Date date = new Date();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		
-		//sdf 로 설정된 date 를 subDir 에 저장
+		// sdf 로 설정된 date 를 subDir 에 저장
 		subDir = sdf.format(date);
 		saveDir += "/" + subDir;
 		
 		Path path = Paths.get(saveDir);
 		
-		//실제 경로에 존재하지 않는 파일을 생성한다.
-		
+		//실제 경로에 존재하지 않는 파일을 생성
 			Files.createDirectories(path);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-			MultipartFile mFile = qna.getFile();
+			MultipartFile mFile = qna.getFile1();
 			
+			// 업로드 파일명 중복 불가 처리
 			String uuid = UUID.randomUUID().toString();
 			
 			qna.setQna_file("");
@@ -97,6 +95,8 @@ public class HelpController {
 			}
 		}
 		
-		return "redirect:helpInquiryForm";
+		model.addAttribute("msg","등록이 완료되었습니다.");
+		model.addAttribute("targetURL","helpInquiryForm");
+		return "success_forward";
 	}
 }

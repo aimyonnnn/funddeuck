@@ -11,8 +11,6 @@
 <title>펀딩</title>
 <!-- 부트스트랩 -->
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> -->
-<!-- 헤더  -->
-<jsp:include page="../common/main_header.jsp"></jsp:include>
 <!-- 부트스트랩 5.3.0 CSS 추가 -->
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css"> -->
 <!-- 부트스트랩 5.3.0 JS 추가 -->
@@ -23,16 +21,69 @@
 <script src="${pageContext.request.contextPath }/resources/js/funding_order.js"></script>
 <!-- 공용 css -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
+<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<script type="text/javascript">
+//===========================================================
+// 아임포트 결제 스크립트
+	function request_pay() {
+		
+		var IMP = window.IMP;
+		IMP.init("imp30787507");
+
+		IMP.request_pay({
+		    pg: "html5_inicis", // PG사 선택
+		    pay_method: "card", // 지불 수단
+		    merchant_uid: "merchant_" + new Date().getTime(), // 주문번호
+		    name: "펀딩  프로젝트명", // 상품명
+		    amount: 1000, // 가격
+		    buyer_email: "test@gmail.com",
+		    buyer_name: "홍길동", // 구매자 이름
+		    buyer_tel: "010-1234-5678", // 구매자 연락처 
+		    buyer_addr: "부산광역시 부산진구",// 구매자 주소지
+		    buyer_postcode: "01181", // 구매자 우편번호
+		  }, function (rsp) { // callback
+		    if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
+		        console.log(rsp);
+		        // 결제검증
+		        $.ajax({
+				type : "GET",
+//				url : "/payments/" + rsp.imp_uid
+				url : "<c:url value='payments/'/>" + rsp.imp_uid
+		      }).done(function(data) { // 응답 처리
+		      		console.log(data);
+		      		// 위의 rsp.paid_amount 와 data.response.amount를 비교한후 로직 실행 (import 서버검증)
+		      		if(rsp.paid_amount == data.response.amount){
+					alert("결제가 완료되었습니다.");
+//					location.href = "fundingResult?merchant_uid=" + merchant_uid payment 데이터 넣으면 주석해제
+					location.href = "fundingResult"
+				} else {
+			        	alert("결제 실패");
+			        }
+		        });
+		    } 
+		    else {
+		      alert("결제에 실패하였습니다. 에러 내용: " +  rsp.error_msg);
+		    }
+		  });
+		}
+//===========================================================
+</script>	
 
 </head>
 <body>
+	<!-- 헤더  -->
+	<jsp:include page="../Header.jsp"></jsp:include>
 	<!-- 이미지, 프로젝트 정보 -->
 	<div class="container text-center">
 		<div class="row p-2 m-3">
 			<!-- 프로젝트 이미지 영역 -->
 			<!-- 프로젝트 이미지 불러오기 -->
 			<div class="col-lg-2 col-4">
-				<img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" class="img-fluid" alt="...">
+				<img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" class="d-block w-100" alt="project_thumnails1">
+<!-- 				<img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" class="img-fluid" alt="..."> -->
 			</div>
 			<!-- 프로젝트 이미지 영역 끝 -->
 			<!-- 프로젝트 정보 영역 -->
@@ -69,7 +120,24 @@
 								</tr>
 								<tr>
 									<th>리워드 금액</th>
-									<td>${reward.reward_price }원</td>
+									<td><span id="reward">${reward.reward_price }</span>원</td>
+								</tr>
+								<tr>
+									<th>리워드 수량</th>
+									<td class="d-flex align-items-center">
+										<a class="text-primary fs-4 w-20 d-block " role="button" id="rewardQuantityUp">
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-circle fs-6" viewBox="0 0 16 16">
+												<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+											</svg>										
+										</a> &nbsp;&nbsp;
+										<input type="hidden" id="maxRewardQuantity" value="${reward.reward_quantity }">
+										<input class="form-control form-inline w-10" id="rewardQuantity" type="number" value="1" min="1" max="${reward.reward_quantity }">&nbsp;&nbsp;
+										<a class="text-primary fs-4 w-20 d-block" role="button" id="rewardQuantityDown">
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+												<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+											</svg>									
+										</a>
+									</td>
 								</tr>
 								<tr>
 									<th>배송비</th>
@@ -208,9 +276,13 @@
 				<!-- 결제 수단 선택 -->
 				<div class="row">
 					<span class="fs-4 fw-bold">결제 수단</span>
-					<div class="row m-2 p-2 border">
-					<!-- 계좌있을경우 가져오기 -->
-						<div class="row" id="paymentMethodForm">
+					<div class="row m-2 p-2 border d-flex">
+					<!-- 카드결제 -->
+						<div class="col">
+							<input class="btn btn-primary" type="button" value="카드결제" onclick="request_pay()">
+						</div>
+					<!-- 최초등록 / 계좌변경 -->
+						<div class="col" id="paymentMethodForm">
 							<c:if test="${not empty bankAccount }">
 								<div class="col-12">
 									<span class="fs-6 fw-bold">은행명</span>&nbsp;&nbsp;
@@ -224,12 +296,12 @@
 									<span class="fs-6 fw-bold">계좌번호</span>&nbsp;&nbsp;
 									<span class="fs-6">${bankAccount.account_num_masked}</span>
 								</div>								
-								<input class="btn btn-primary" type="button" value="계좌변경" id="btnAccountAuth">
-<!-- 								<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');"> -->
+<!-- 								<input class="btn btn-primary" type="button" value="계좌변경" id="btnAccountAuth"> -->
+								<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
 							</c:if>
 							<c:if test="${empty bankAccount }">
-								<input class="btn btn-primary" type="button" value="계좌인증" id="btnAccountAuth">
-<!-- 								<input class="btn btn-primary" type="button" value="계좌인증" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');"> -->
+<!-- 								<input class="btn btn-primary" type="button" value="계좌등록" id="btnAccountAuth"> -->
+								<input class="btn btn-primary" type="button" value="계좌등록" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
 							</c:if>
 						</div>
 					</div>
@@ -238,7 +310,7 @@
 			</div>
 			<!-- 왼쪽 영역 끝 -->
 			<!-- 결제 확인 영역-->
-			<div class="col-lg-6 col-md-12 p-4">
+			<div class="col-lg-6 col-md-12 p-4 mt-4">
 				<!-- 후원 금액 -->
 				<div class="row border ms-2 me-2">
 					<div class="col text-start">
@@ -251,7 +323,7 @@
 				<!-- 최종금액 외 금액들 -->
 				<div class="row border ms-2 me-2">
 						<div class="col-6 text-start">
-							<span class="fs-6 fw-bold">리워드 금액</span>
+							<span class="fs-6 fw-bold">리워드 총금액</span>
 						</div>
 						<div class="col-6 text-end">
 							<span class="fs-6 fw-bold" id="rewardPrice">${reward.reward_price }</span><span class="fs-6 fw-bold">원</span>
@@ -297,7 +369,7 @@
 					<!-- a태그 내용보기 -->
 					<!-- 모달창으로 개인정보 동의 내용 보여주기 -->
 					<div class="col-4 pt-2 fs-6">
-						<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#personalInfoAgreeModal">내용보기</button>
+						<button class="btn btn-primary" id="personalInfoAgreeModalOpen" data-bs-toggle="modal" data-bs-target="#personalInfoAgreeModal">내용보기</button>
 					</div>
 					<!-- a태그 내용보기 끝 -->
 				</div>
@@ -307,7 +379,7 @@
 						<div class="form-check fs-6">
 							<input class="form-check-input" type="checkbox" value="" id="notesCheck">
 							<label class="form-check-label" for="notesCheck">
-								후원 유의사항 확인
+								후원 유의 사항 확인
 							</label>
 						</div>
 					</div>
@@ -330,7 +402,6 @@
 				</div>
 				<!-- 후원 유의사항 -->
 				<div class="row ms-2 me-2 pt-2 text-start" id="notesContainer">
-
 <!-- 					<ul class="list-group"> -->
 <!-- 						<li class="list-group-item"></li> -->
 <!-- 					</ul> -->
@@ -341,19 +412,22 @@
 				<!-- 클릭시 결제 페이지로 이동 -->
 				<!-- 체크박스 다 체크했을경우 이동가능 -->
 				<div class="row ms-2 me-2 pt-3">
-					<form action="fundingPayment" method="post">
+					<form action="fundingPayment" method="post" onsubmit="return validateForm()">
 						<input type="text" name="project_idx" value="${project.project_idx }">
 						<input type="text" name="member_idx" value="${member.member_idx }">
 						<!-- ajax로 바뀜 -->
 						<input type="text" name="reward_idx" value="${reward.reward_idx }" id="reward_idx">
 						<input type="text" name="reward_price" value="${reward.reward_price }" id="reward_price">
 						<input type="text" name="delivery_idx" id="delivery_idx" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_idx }</c:if>">
+						<input type="text" name="delivery_idx" id="delivery_zipcode" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_zipcode }</c:if>">
+						<input type="text" name="delivery_idx" id="delivery_add" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_add }</c:if>">
 						<input type="text" name="member_email" value="${member.member_email }">
 						<input type="text" name="member_phone" value="${member.member_phone }">
 						<input type="text" name="additional_amount" id="additional_amount" value="0">
 						<input type="text" name="use_coupon_amount" id="use_coupon_amount" value="0">
 						<input type="text" name="total_amount" id="total_amount" value="${reward.reward_price + reward.delivery_price}">
-						<button type="submit" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
+						<input type="text" name="payment_quantity" id="payment_quantity" value="1">
+						<button type="submit" id="fundingPaymentSubmitButton" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
 					</form>
 				</div>
 				<!-- 후원하기 버튼 영역 끝-->
@@ -694,7 +768,7 @@
 		</div>
 	</div>	
 	<!-- 내용보기 클릭시 개인정보 동의 안내문 모달창 끝 -->
-	
+
 	
 	<!-- 부트스트랩 -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

@@ -39,6 +39,11 @@
 			member_idx = #{member_idx} 
 	</update>
 	
+	<!-- 토큰 삭제 -->
+	<delete id="deleteToken">
+		DELETE FROM token
+			WHERE member_idx = #{member_idx}
+	</delete>
 	
 	<!-- 계좌 정보 저장 -->
 	<insert id="insertBankAccount">
@@ -47,6 +52,7 @@
 			VALUES (
 				NULL
 				, #{member_idx}
+				, #{bankAccount.user_ci}
 				, #{bankAccount.fintech_use_num}
 				, #{bankAccount.account_holder_name}
 				, #{bankAccount.bank_name}
@@ -55,14 +61,6 @@
 	
 	</insert>	
 	
-	<!-- 계좌 정보 조회(핀테크이용번호 일치 여부 확인) -->
-	<select id="selectBankAccount" resultType="com.itwillbs.test.vo.BankAccountVO">
-		SELECT *
-			FROM bankAccount
-				WHERE member_idx = #{member_idx}
-					AND fintech_use_num = #{bankAccount.fintech_use_num}
-	</select>
-	
 	<!-- 계좌 정보 조회 -->
 	<select id="selectBankAccountInfo" resultType="com.itwillbs.test.vo.BankAccountVO">
 		SELECT *
@@ -70,12 +68,76 @@
 				WHERE member_idx = #{member_idx}
 	</select>
 	
-	<!-- user_ci 조회 -->
-	<select id="selectUserCI" resultType="String">
-		SELECT user_ci
+	<!-- 중복된 계좌 정보 조회(핀테크이용번호 일치 여부 확인) -->
+	<select id="selectBankAccount" resultType="com.itwillbs.test.vo.BankAccountVO">
+		SELECT *
 			FROM bankAccount
 				WHERE member_idx = #{member_idx}
+					AND fintech_use_num = #{bankAccount.fintech_use_num}
 	</select>
 	
+	<!-- 계좌변경시 등록된 계좌정보 삭제 -->
+	<delete id="deleteBankAccount">
+		DELETE FROM bankAccount
+			WHERE member_idx = #{member_idx}
+	</delete>
 	
+	<!-- 정산 입금내역 등록 -->
+	<insert id="insertDepositSettlement" parameterType="map">
+	    INSERT INTO banking (
+	        member_id,
+	        project_idx,
+	        banking_bank_name,
+	        banking_account_num_masked,
+	        banking_bank_tran_date,
+	        banking_account_holder_name,
+	        banking_tran_amt,
+	        banking_print_content,
+	        banking_status
+	    )
+	    VALUES
+	    <foreach collection="paramMap.depositInfoList" item="item" separator=",">
+	        (
+	            #{member_id},
+	            #{project_idx},
+	            #{item.bank_name},
+	            #{item.account_num_masked},
+	            #{item.bank_tran_date},
+	            #{item.account_holder_name},
+	            #{item.tran_amt},
+	            #{item.print_content},
+	            1
+	        )
+	    </foreach>
+	</insert>
+	
+	<!-- 환불 입금내역 등록 -->
+	<insert id="insertDepositRefund" parameterType="map">
+	    INSERT INTO banking (
+	        member_id,
+	        project_idx,
+	        banking_bank_name,
+	        banking_account_num_masked,
+	        banking_bank_tran_date,
+	        banking_account_holder_name,
+	        banking_tran_amt,
+	        banking_print_content,
+	        banking_status
+	    )
+	    VALUES
+	    <foreach collection="paramMap.depositInfoList" item="item" separator=",">
+	        (
+	            #{member_id},
+	            #{project_idx},
+	            #{item.bank_name},
+	            #{item.account_num_masked},
+	            #{item.bank_tran_date},
+	            #{item.account_holder_name},
+	            #{item.tran_amt},
+	            #{item.print_content},
+	            2
+	        )
+	    </foreach>
+	</insert>
+
 </mapper>

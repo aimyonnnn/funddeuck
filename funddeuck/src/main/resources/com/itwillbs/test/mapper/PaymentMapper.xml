@@ -253,7 +253,6 @@
         order by p.payment_date desc
 	</select>
 	
-	<!--  -->
 	<!-- 메이커의 프로젝트별 결제 내역 조회 -->
 	<select id="selectPaymentByProjectIdx" resultType="com.itwillbs.test.vo.PaymentVO">
 		SELECT p.*, proj.project_subject, r.reward_name
@@ -277,15 +276,17 @@
 	          AND DATE(payment_date) BETWEEN #{parsedStartDate} AND #{parsedEndDate}
 	</select>
 	
-	<!-- 발송입력 - 모달창 리스트 조회 -->
+	<!-- 발송 및 환불 정보 입력 - 모달창 리스트 조회 -->
 	<select id="selectShippingModalList" resultType="com.itwillbs.test.vo.PaymentVO">
 	    SELECT *
 	        FROM payment p
 	        JOIN members m ON p.member_idx = m.member_idx
 	        JOIN reward r ON p.reward_idx = r.reward_idx
 	        JOIN delivery d ON p.delivery_idx = d.delivery_idx
-	        WHERE payment_idx = #{payment_idx}
+	        JOIN bankAccount b ON p.member_idx = b.member_idx
+	        WHERE p.payment_idx = #{payment_idx}
 	</select>
+
 
 
 	<!-- 송장입력 후 발송 업데이트 -->
@@ -309,8 +310,15 @@
 		SELECT count(*)
 			FROM payment
 			WHERE payment_idx = #{payment_idx} 
-				AND (delivery_status=1 OR delivery_status=2)
+				AND (delivery_status=1 OR delivery_status=2 OR payment_confirm = 3)
 	</select>
+	
+	<!-- 펀딩금 반환 거절 시 상태 변경 -->
+	<update id="updateShippingRefuse">
+		UPDATE payment
+			SET payment_confirm = 5
+			WHERE payment_idx = #{payment_idx}	
+	</update>
 
 	<!-- 미발송 및 배송중이 없다면 2주 후 최종정산 가능으로 프로젝트 상태 변경 -->
 	<update id="updateProjectStatus">
@@ -387,7 +395,7 @@
     	ON
         	p.maker_idx = m.maker_idx
 		WHERE
-		    p.project_idx = #{project_idx} AND (pa.payment_confirm = 1 OR pa.payment_confirm = 2)
+		    p.project_idx = #{project_idx} AND (pa.payment_confirm = 1 OR pa.payment_confirm = 2 OR pa.payment_confirm = 5)
 		GROUP BY
 		    p.project_idx;
 	</select>

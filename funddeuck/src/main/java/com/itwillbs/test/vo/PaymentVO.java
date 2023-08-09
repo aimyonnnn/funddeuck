@@ -120,5 +120,11 @@ public class PaymentVO {
 	private int card_total_delivery_amount;			// 총 카드 결제의 리워드 배송비
 	private int maker_grade;						// 메이커 등급
 	private int project_status;						// 프로젝트 상태 1-오픈예정 2-프로젝트 진행중 3-진행완료 4-1차정산완료 5-최종정산진행가능 6-최종정산완료
-	private int first_amount;						// 1차 정산금액 default 0
+	private int settlement_amount;					// 누적 정산금액 default 0
+	private String project_fintech_use_num;			// 핀테크이용번호 
+
+	// ===========================================================================================
+	// 환불 시 출력
+	private String fintech_use_num;					// bankAccount 테이블의 회원 핀테크이용번호
+	private String member_id;						// 환불 시 거래내역에 저장될 멤버 아이디 
 }

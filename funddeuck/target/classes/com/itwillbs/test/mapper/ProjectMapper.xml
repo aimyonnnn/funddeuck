@@ -132,7 +132,6 @@
 				, #{maker_idx}					 -- 메이커 번호
 				, #{token_idx}			 		 -- 프로젝트 계좌 인증에 사용될 토큰 번호
 				, 0
-				, 1
 			)
 	</insert>
 	
@@ -463,8 +462,7 @@
 			    project_approve_status = #{project_approve_status},
 			    project_status = #{project_status},
 			    project_approval_request_time = #{project_approval_request_time},
-			    first_amount = #{first_amount},
-			    settlement_status = #{settlement_status}
+			    settlement_amount = #{settlement_amount}
   			WHERE
 		  		project_idx = #{project_idx}	
 	</update>
@@ -500,6 +498,25 @@
 			      or (#{fileNumber} = 5 and project_settlement_image != '')
 			    )
 	</delete>
+	
+	<!-- 정산완료 후 프로젝트 상태 변경 -->
+	<update id="updateProjectSettlementStatus">
+		UPDATE project
+			SET 
+				project_status = project_status + 1
+				,settlement_amount = settlement_amount + #{final_settlement}
+			WHERE 
+				project_idx = #{project_idx}
+	</update>
+	
+	<!-- 환불완료 후 환불상태 변경 -->
+	<update id="updateProjectRefundStatus">
+		UPDATE payment
+			SET
+				payment_confirm = 4
+			WHERE 
+				payment_idx = #{payment_idx} 
+	</update>
 	
 </mapper>
 	

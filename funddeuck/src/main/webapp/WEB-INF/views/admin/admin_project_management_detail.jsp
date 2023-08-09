@@ -338,19 +338,9 @@ th, td {
 				            </td>
 				        </tr>
 				        <tr>
-				            <th>1차 정산금액</th>
+				            <th>누적 정산금액</th>
 				            <td>
-				                <input type="number" name="first_amount" class="form-control" value="${project.first_amount}">
-				            </td>
-				        </tr>
-				        <tr>
-				            <th>정산 상태</th>
-				            <td>
-				                <select name="settlement_status" class="form-control">
-				                	<option value="1" ${project.settlement_status eq 1 ? 'selected' : ''}>미정산</option>
-				                	<option value="2" ${project.settlement_status eq 2 ? 'selected' : ''}>정산완료(1차)</option>
-				                	<option value="3" ${project.settlement_status eq 3 ? 'selected' : ''}>정산완료(최종)</option>
-				                </select>
+				                <input type="number" name="settlement_amount" class="form-control" value="${project.settlement_amount}">
 				            </td>
 				        </tr>
 				    </table>

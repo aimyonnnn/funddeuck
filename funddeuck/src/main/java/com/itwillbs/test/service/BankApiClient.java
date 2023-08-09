@@ -130,7 +130,7 @@ public class BankApiClient {
 	}
 	
 	
-	// 사용자인증 인증 생략 - GET 방식(수정해야함)
+	// 사용자인증 인증 생략 - API 사용불가
 	public ResponseAuthVO authenticationSkip(String access_token, String user_seq_no, String user_ci) {
 		String url = baseUrl + "/oauth/2.0/authorize"; // url 요청
 		HttpHeaders httpHeaders = new HttpHeaders(); // 헤더 생성
@@ -262,6 +262,59 @@ public class BankApiClient {
 		ResponseEntity<ResponseDepositVO> responseEntity = 
 				restTemplate.postForEntity(url, httpEntity, ResponseDepositVO.class);
 		logger.info("□□□□□□ 입금이체결과 ResponseEntity.getBody() : " + responseEntity.getBody());
+		
+		return responseEntity.getBody();
+	}
+
+	// 사이트 - 정산
+	public ResponseDepositVO requestDepositSettlement(Map<String, String> map) {
+		
+		// 입금이체 요청 API 의 URL 생성 - POST 방식
+		String url = baseUrl + "/v2.0/transfer/deposit/fin_num";
+		
+		HttpHeaders httpHeaders = new HttpHeaders(); // 헤더 생성
+		httpHeaders.setBearerAuth(map.get("access_token")); // Bearer 토큰 설정
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON); // JSON 타입 요청 헤더 설정
+		
+		// 1개 입금정보를 저장할 JSONObject 객체 생성
+		JSONObject joReq = new JSONObject();
+		joReq.put("tran_no", "1"); // 거래순번
+		joReq.put("bank_tran_id", valueGenerator.getBankTranId());
+		joReq.put("fintech_use_num", map.get("fintech_use_num")); // 입금계좌 핀테크이용번호(전달받은 값)
+		joReq.put("print_content", map.get("print_content")); // 입금계좌 인자내역(테스트 데이터 등록)
+		joReq.put("tran_amt", map.get("final_settlement")); // 거래금액(테스트 데이터 등록)
+		joReq.put("req_client_name", "펀뜩"); // 거래를 요청한 사용자 이름
+		joReq.put("req_client_fintech_use_num", map.get("fintech_use_num")); // 거래를 요청한 사용자 핀테크번호
+		joReq.put("req_client_num", "1"); //  // 거래를 요청한 사용자 번호(아이디처럼 사용되는 번호, 임의부여)
+		joReq.put("transfer_purpose", "TR"); // 출금(송금)
+		
+		// 입금 정보를 배열로 관리할 JSONArray 객체 생성
+		JSONArray jaReqList = new JSONArray();
+		jaReqList.put(joReq);
+		
+		// 요청 파라미터를 JSON 형식으로 생성
+		JSONObject jo = new JSONObject();
+		jo.put("cntr_account_type", "N"); // 약정 계좌/계정 구분(N:계좌, C:계정 => N 고정)
+		jo.put("cntr_account_num", "50000818"); // 약정계좌 계좌번호(테스트데이터 입금계좌 항목에 등록할 계좌번호)
+		jo.put("wd_pass_phrase", "NONE"); // 테스트용은 "NONE" 값 고정
+		jo.put("wd_print_content", map.get("print_content")); // 출금계좌인자내역
+		jo.put("name_check_option", "on"); // 수취인성명 검증 여부(on:검증함) - 생략 시 기본값 on
+		jo.put("tran_dtime", valueGenerator.getTranDTime()); // 거래요청일시
+		jo.put("req_cnt", "1"); // 입금요청건수("1" 고정)
+		jo.put("req_list", jaReqList); // 입금정보목록 - JSONArray 객체
+		
+		logger.info("□□□□□□ 정산의 입금이체 요청 JSON 데이터 : " + jo.toString());
+		
+		// 요청에 사용될 헤더와 파라미터 정보를 갖는 HttpEntity 객체 생성
+		HttpEntity<String> httpEntity = new HttpEntity<String>(jo.toString(), httpHeaders);
+		
+		// POST 요청 시 JSON 데이터를 전송하기 위해 RestTemplate 객체의 postForEntity() 메서드 호출
+		restTemplate = new RestTemplate();
+		ResponseEntity<ResponseDepositVO> responseEntity = 
+				restTemplate.postForEntity(url, httpEntity, ResponseDepositVO.class);
+		logger.info("□□□□□□ 정산의 입금이체결과 ResponseEntity.getBody() : " + responseEntity.getBody());
+		
+		System.out.println("□□□□□□ 정산의 입금이체결과 ResponseEntity.getBody() : " + responseEntity.getBody());
 		
 		return responseEntity.getBody();
 	}

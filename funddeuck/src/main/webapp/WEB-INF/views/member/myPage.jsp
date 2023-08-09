@@ -41,11 +41,11 @@
                 <!-- 프로필 영역 -->
                 <div class="col-md-2 col-12 text-center mt-3" style="border-right: solid 1px lightgray;">
                     <div>
-                        <img class="mt-5 center" style="width: 80px; height: 80px;">
+                        <img class="mt-5 center" img src=" ${pageContext.request.contextPath}/resources/upload/${profile.profile_img}"  style="width: 80px; height: 80px;">
                     </div>
                     <br>
                     <div>
-                        <a href="" class="text-black">닉네임님</a>
+                        <a href="" class="text-black">${sessionScope.sId}님</a>
                     </div>
                     <hr>
                     <button class="btn" style="border-radius: 50px;">로그아웃</button><br>
@@ -56,13 +56,13 @@
                 <div class="col">
                     <div class="row mt-5 h6">
                         <div class="col-sm-12 col-md-6">
-                            <a href="" class="text-black w-100">
+                            <a href="member/coupon" class="text-black w-100">
                                 <div class="row ms-md-1 me-md-1" style="border: 1px solid lightgray; border-radius: 7px;">
                                     <div class="col text-start m-3">
                                         쿠폰
                                     </div>
                                     <div class="col text-end m-3">
-                                       x개
+                                    사용 가능한 쿠폰 확인하기
                                     </div>
                                 </div>
                             </a>

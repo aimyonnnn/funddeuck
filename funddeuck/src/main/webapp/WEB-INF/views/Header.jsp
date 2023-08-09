@@ -222,12 +222,12 @@
 	}
 		
 	// 나가기
-	function exit() {
+// 	function exit() {
 		
-		let exit = confirm("정말 나가시겠습니까?");
-		if(exit) { location.href = "./"; }
+// 		let exit = confirm("정말 나가시겠습니까?");
+// 		if(exit) { location.href = "./"; }
 		
-	}
+// 	}
 	
 	// 현재 페이지의 경로를 가져오는 함수
 	function getCurrentPage() {
@@ -307,7 +307,7 @@
         		<c:when test="${sessionScope.sId eq 'admin'}">
         		
 		            <a class="nav-link  me-6" href="admin"><b>${sessionScope.sId}님</b></a>
-		            <a class="nav-link  me-6" href="javascript:exit()">나가기</a>
+<!-- 		            <a class="nav-link  me-6" href="javascript:exit()">나가기</a> -->
 		            <a class="nav-link  me-6" href="javascript:logout()">로그아웃</a>
 		            
             	 	<%-- 비행기 아이콘 - 메시지 전송용 --%>
@@ -330,7 +330,7 @@
         		<%-- 세션아이디가 admin이 아니고, 세션아이디가 존재 할 때 --%>
         		<c:when test="${sessionScope.sId != 'admin' && not empty sessionScope.sId}">
 		            <a class="nav-link me-4" href="memberMypage"><b>${sessionScope.sId}님</b></a>
-		            <a class="nav-link me-4" href="javascript:exit()">나가기</a>
+<!-- 		            <a class="nav-link me-4" href="javascript:exit()">나가기</a> -->
         		    <a class="nav-link me-4" href="javascript:logout()">로그아웃</a>
         		    
         		    <%-- 종 아이콘 - 받은 메시지함 --%>
@@ -355,8 +355,8 @@
       </ul>
 
 	<div style="display: flex; justify-content: center;">
-	  <form class="form-inline my-2 my-md-0" action="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=${param.status }&index=${param.index}" method="get">
-	    <input class="form-control" type="text" placeholder="프로젝트를 검색하세요!" aria-label="Search" name="searchKeyword" id="searchKeyword" value=""${searchKeyword}>
+	  <form class="form-inline my-2 my-md-0" action="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=all&index=newest" method="get">
+	    <input class="form-control" type="text" placeholder="프로젝트를 검색하세요!" aria-label="Search" name="searchKeyword" id="searchKeyword" value="${searchKeyword}" required="required">
 	  </form>
       </div>
 

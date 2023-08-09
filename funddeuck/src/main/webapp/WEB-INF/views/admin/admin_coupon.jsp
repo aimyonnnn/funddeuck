@@ -3,13 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin_Coupon</title>
-	<%@ include file="../Header.jsp" %>
+<title>Admin</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="../resources/css/mypage.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 </head>
 <style>
     .container h3 {
@@ -40,10 +37,16 @@
     }
 </style>
 <body>
-    <section style="background-color: #f4f5f7;">
-        <div class="container">
-            <div style="height: 50px;"></div>
-            <h3><b>쿠폰 관리</b></h3>
+
+<!-- sidebar -->
+<input type="checkbox" name="" id="sidebar-toggle">
+<jsp:include page="../common/admin_side.jsp"/>
+
+<!-- top -->
+<div class="main-content">
+<jsp:include page="../common/admin_top.jsp"/>
+	<div class="container my-5">
+            <h2><b>쿠폰 관리</b></h2>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link " aria-current="page" href="#couponForm">쿠폰 등록</a>
@@ -83,7 +86,7 @@
 						        <th>쿠폰 만료</th>
 						    </tr>
 						    <c:forEach items="${couponList}" var="coupon">
-						        <c:if test="${coupon.member_idx == 10}"> <!-- 10이 amdin member_idx이기 때문 -->
+						        <c:if test="${coupon.member_idx == 1}"> <!-- 10이 amdin member_idx이기 때문 -->
 						            <tr>
 						                <td>${coupon.coupon_name}</td>
 						                <td>${coupon.coupon_text}</td>
@@ -92,7 +95,7 @@
 						                <td>${coupon.coupon_start}</td>
 						                <td>${coupon.coupon_end}</td>
 						            </tr>
-						        </c:if>
+						         </c:if>   
 						    </c:forEach>
 						</table>
 
@@ -114,6 +117,7 @@
 						        <th>쿠폰 만료</th>
 						    </tr>
 						    <c:forEach items="${couponList}" var="coupon">
+						        <c:if test="${coupon.member_idx == 10}"> 
 						        <tr class="coupon-row">
 						            <td>${coupon.coupon_name}</td>
 						            <td>${coupon.coupon_text}</td>
@@ -122,6 +126,7 @@
 						            <td>${coupon.coupon_start}</td>
 						            <td style="background-color: yellow; font-weight: bold;">${coupon.coupon_end}</td>
 						        </tr>
+						        </c:if>
 						    </c:forEach>
 						</table>
 						    <!-- 쿠폰 목록이 없을 때 메시지 출력 -->
@@ -130,9 +135,8 @@
 						    </c:if>
 				</div>
             </div>
-        </div>
-    </section>
-
+</div>
+</div>
     <script>
         // 탭 스크립트
         $(document).ready(function () {
@@ -202,19 +206,19 @@
     </script>
 
 	<script>
-    // DatePicker 설정
-    $(document).ready(function () {
-        $("#coupon_start").datepicker({
-            minDate: 0, // 오늘 이후의 날짜만 선택 가능하도록 설정
-            dateFormat: "yy-mm-dd" 
-        });
+	$(document).ready(function() {
+	    $("#coupon_start").datepicker({
+	        minDate: 0,
+	        dateFormat: "yy-mm-dd"
+	    });
 
-        $("#coupon_end").datepicker({
-            minDate: 0, // 오늘 이후의 날짜만 선택 가능하도록 설정
-            dateFormat: "yy-mm-dd" 
-        });
-    });
+	    $("#coupon_end").datepicker({
+	        minDate: 0,
+	        dateFormat: "yy-mm-dd"
+	    });
+	});
 	</script>
+
 	
 	<script>
 	var addedCouponNumbers = new Set();
@@ -263,8 +267,10 @@
 	}
 	</script>
 
+<!-- datepicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-
-    <%@ include file="../Footer.jsp" %>
 </body>
 </html>

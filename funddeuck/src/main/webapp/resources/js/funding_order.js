@@ -39,7 +39,6 @@
 			        console.log(saveDelivery);
 			        // 기존 배송지란에 있던 내용 지우기
 			        $('#deliveryContainer').html('');
-			        $('#delivery_idx').val();
 			        
 			        let output = '<div class="col">'
 							+ '<div class="row-12">'
@@ -62,7 +61,10 @@
 						
 			        // 배송지란에 등록된 기본배송지 출력
 			        $('#deliveryContainer').html(output);
+			        // form으로 전달할 데이터들
 			        $('#delivery_idx').val(saveDelivery.delivery_idx);
+			        $('#delivery_zipcode').val(saveDelivery.delivery_zipcode);
+			        $('#delivery_add').val(saveDelivery.delivery_add);
 			        	
 			        
 					
@@ -206,7 +208,6 @@
 			        $("#deliveryChangeModalClose").click();
 			        // 기존 배송지란에 있던 내용 지우기
 			        $('#deliveryContainer').html('');
-			        $('#delivery_idx').val();
 			        
 					let output = '<div class="col">'
 						+ '<div class="row-12">'
@@ -232,8 +233,11 @@
 						+ '</div>';
 						
 			        // 배송지란에 변경된 배송지 출력
-			        $('#deliveryContainer').html(output);			     	
+			        $('#deliveryContainer').html(output);	
+			        // form으로 전달할 데이터들		     	
 			        $('#delivery_idx').val(delivery.delivery_idx);			     	
+			        $('#delivery_zipcode').val(delivery.delivery_zipcode);			     	
+			        $('#delivery_add').val(delivery.delivery_add);			     	
 					
 				} else {
 					console.log("배송지 등록 실패!");
@@ -283,28 +287,51 @@
 						
 						// HTML 출력할 내용
 						// hidden 값으로 리워드번호 전달
-						let output = '<input type="hidden" value="' + reward.reward_idx + '"name="reward_idx">'
-						            + '<table class="table table-borderless" style="table-layout: fixed">'
-						            +  '<tr>'
-						            +   '<th>리워드 구성</th>'   
-						            +   '<td>'
-						            +     reward.reward_name + '<br>'
-						            +     reward.reward_option
-						            +   '</td>'
-						            +  '</tr>' 
-						            +  '<tr>'
-						            +   '<th>리워드 금액</th>'
-						            +   '<td>' + reward.reward_price + '원</td>'
-						            +  '</tr>'
-						            +  '<tr>'
-						            +   '<th>배송비</th>'
-						            +   '<td>' + reward.delivery_price + '원</td>'
-						            +  '</tr>'
-						            +  '<tr>'
-						            +   '<th>발송 시작일</th>'
-						            +   '<td>' + reward.delivery_date + '</td>'
-						            +  '</tr>'
-						            + '</table>';			
+						let output = `
+							<input type="hidden" value="${reward.reward_idx}" name="reward_idx">
+							<table class="table table-borderless" style="table-layout: fixed">
+								<tr>
+									<th>리워드 구성</th>
+									<td>
+										${reward.reward_name} <br>
+										${reward.reward_option}
+									</td>
+								</tr>
+								<tr>
+									<th>리워드 금액</th>
+									<td>
+										<span id="reward">${reward.reward_price}</span>원
+									</td>
+								</tr>
+						
+								<tr>
+									<th>리워드 수량</th>
+									<td class="d-flex align-items-center">
+										<a class="text-primary fs-4 w-20 d-block" role="button" id="rewardQuantityUp">
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-up-circle fs-6" viewBox="0 0 16 16">
+												<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+											</svg>										
+										</a> &nbsp;&nbsp;
+										<input type="hidden" id="maxRewardQuantity" value="${reward.reward_quantity}">
+										<input class="form-control form-inline w-10" id="rewardQuantity" type="number" value="1" min="1" max="${reward.reward_quantity}">&nbsp;&nbsp;
+										<a class="text-primary fs-4 w-20 d-block" role="button" id="rewardQuantityDown">
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+												<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+											</svg>									
+										</a>
+									</td>
+								</tr>
+						
+								<tr>
+									<th>배송비</th>
+									<td>${reward.delivery_price}원</td>
+								</tr>
+								<tr>
+									<th>발송 시작일</th>
+									<td>${reward.delivery_date}</td>
+								</tr>
+							</table>`;						
+						
 						let output2 = reward.reward_price;
 						let output3 = reward.delivery_price;
 						let output4 = reward.reward_idx;
@@ -380,18 +407,18 @@
 			// 쿠폰 사용 금액 0 으로 출력
 			couponPriceElement.innerText = 0;
 			$("#use_coupon_amount").val(0);
-			updateTotalPrice();
+//			updateTotalPrice();
 		} else {
 			// 쿠폰 사용금액 계산
 			let discountPercentage = parseFloat(selectedCoupon.value);
-			let discountedPrice = rewardPrice * (1 - discountPercentage / 100) / 10;
+			let discountedPrice = Math.round(rewardPrice * discountPercentage / 100);
 			// 할인율 출력
 			couponSaleElement.innerText = selectedCoupon.value.toString() + '% 할인';
 			// 쿠폰 사용 금액 출력
 			minusElement.innerText = '-';
 			couponPriceElement.innerText = discountedPrice.toString();
 			$("#use_coupon_amount").val(discountedPrice);
-			updateTotalPrice();
+//			updateTotalPrice();
 		}
 	}	
 
@@ -432,6 +459,7 @@
 // ===========================================================
 // 최종 후원금액 출력
 	function updateTotalPrice() {
+		let rewardQuantity = parseFloat($("#rewardQuantity").val());
 	    let rewardPrice = parseFloat(document.getElementById("rewardPrice").innerText);
 	    let deliveryPrice = parseFloat(document.getElementById("rewardDeliveryPrice").innerText);
 	    let couponPrice = parseFloat(document.getElementById("couponPrice").innerText);
@@ -449,7 +477,7 @@
 			let requestUri = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
 					+ "response_type=code"
 					+ "&client_id=4066d795-aa6e-4720-9383-931d1f60d1a9"
-					+ "&redirect_uri=http://localhost:8089/test/callbackMember" // 변경될 부분
+					+ "&redirect_uri=http://localhost:8089/test/callbackMember" // 서버주소 변경필요!
 					+ "&scope=login inquiry transfer oob"
 					+ "&state=12345678901234567890123456789012"
 					+ "&auth_type=0";
@@ -457,6 +485,90 @@
 		});
 	});	
 
+// ===========================================================
+// 후원하기 버튼 클릭(submit)시 배송지 정보가 없을경우 경고창
+// 체크박스 체크되지 않으면 경고창
+	function validateForm() {
+		let deliveryIdx = document.getElementById("delivery_idx").value;
+		let personalInfoAgree = document.getElementById("personalInfoAgree");
+		let notesCheck = document.getElementById("notesCheck");
+		
+		if (deliveryIdx === "") {
+		    alert("배송지를 등록해주세요!");
+		    return false;
+		}
+		if(!personalInfoAgree.checked) {
+			alert("개인정보 제3자 제공 동의를 체크해주세요!");
+			return false;
+		}
+		if(!notesCheck.checked) {
+			alert("후원 유의사항 확인을 체크해주세요!");
+			return false;
+		}
+		return true;
+	}
 
+// ===========================================================
+// 개인정보 제3자 제공동의 체크시 내용보기 모달창 버튼 클릭
+	$(document).ready(function() {
+		$("#personalInfoAgree").on("change", function() {
+			if ($(this).is(":checked")) {
+				$("#personalInfoAgreeModalOpen").click();
+			}
+		});
+	});
+
+// ===========================================================
+// 후원 유의사항 체크시 열기 버튼 클릭
+	$(document).ready(function() {
+		$("#notesCheck").on("change", function() {
+			if ($(this).is(":checked")) {
+				$("#notesOpen").click();
+			}
+		});
+	});
+// ===========================================================
+// 리워드 수량 증가/감소 버튼
+    $(document).on('click', '#rewardQuantityUp', function() {
+        let rewardQuantity = parseInt($("#rewardQuantity").val());
+        let maxRewardQuantity = parseInt($("#maxRewardQuantity").val());
+        // 리워드 총금액
+        let rewardPrice = parseInt(document.getElementById("rewardPrice").innerText);
+        let reward = parseInt(document.getElementById("reward").innerText);
+        
+        rewardQuantity += 1;
+        rewardPrice = reward * rewardQuantity;
+        if(rewardQuantity > maxRewardQuantity) {
+            alert("주문수량을 초과했습니다");
+            rewardQuantity = maxRewardQuantity;
+            rewardPrice = reward * maxRewardQuantity;
+        }
+        $("#rewardQuantity").val(rewardQuantity);
+        $("#payment_quantity").val(rewardQuantity);
+        $("#rewardPrice").html(rewardPrice);
+        updateCouponSale();
+        updateTotalPrice();
+    });
+
+    $(document).on('click', '#rewardQuantityDown', function() {
+        let rewardQuantity = parseInt($("#rewardQuantity").val());
+        let maxRewardQuantity = parseInt($("#maxRewardQuantity").val());
+        // 리워드 총금액
+        let rewardPrice = parseInt(document.getElementById("rewardPrice").innerText);
+        let reward = parseInt(document.getElementById("reward").innerText);
+        
+        rewardQuantity -= 1;
+        rewardPrice = reward * rewardQuantity;
+        if(rewardQuantity < 1) {
+            alert("1개 이상 주문가능합니다");
+            rewardQuantity = 1;
+            rewardPrice = reward;
+        }
+        $("#rewardQuantity").val(rewardQuantity);
+        $("#payment_quantity").val(rewardQuantity);
+        $("#rewardPrice").html(rewardPrice);
+        updateCouponSale();
+        updateTotalPrice();
+    });
 
 // ===========================================================

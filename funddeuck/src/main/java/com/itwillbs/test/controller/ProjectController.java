@@ -19,6 +19,8 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,7 +99,9 @@ public class ProjectController {
 		    model.addAttribute("msg", "승인된 프로젝트만 결제 페이지에 접근할 수 있습니다.");
 		    return "fail_back";
 		}
+		MembersVO member = memberService.getMemberInfoByProjectIdx(project_idx);
 	    model.addAttribute("project", project);
+	    model.addAttribute("member", member);
 		return "project/project_plan_payment";
 	}
 		
@@ -429,7 +433,7 @@ public class ProjectController {
 		return data;
 	}
 	
-	// 발송입력 - 모달창 리스트 출력 
+	// 발송 및 환불입력 - 모달창 리스트 출력 
 	@ResponseBody
 	@PostMapping("shippingModalList")
 	public List<PaymentVO> shippingModalList(@RequestParam("payment_idx") int payment_idx) {
@@ -452,7 +456,7 @@ public class ProjectController {
 			// 송장번호 입력 후 일주일 후 '배송완료'로 상태변경
 			projectScheduler.modifyDeliveryStatus(payment_idx);
 			
-			// 미발송 및 배송중 조회
+			// 미발송 및 배송중, 반환신청 조회
 			int deliveryCount = paymentService.getDeliveryCount(payment_idx);
 
 			// 미발송 및 배송중이 없다면 최종정산 가능으로 프로젝트 상태 변경
@@ -468,6 +472,24 @@ public class ProjectController {
 	        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	// 펀딩금 반환 거절 상태 변경
+	@ResponseBody
+	@PostMapping("updateShippingRefuse")
+	public ResponseEntity<?> updateShippingRefuse(@RequestParam("payment_idx") int payment_idx) {
+		int updateCount = paymentService.modifyShippingRefuse(payment_idx);
+		
+		if(updateCount > 0) { // 성공적으로 수정 시
+			List<PaymentVO> paymentList = paymentService.getPaymentList(payment_idx);
+			
+			return new ResponseEntity<>(paymentList, HttpStatus.OK);
+		} else { // 수정 실패 시
+	        String message = "펀딩금 반환 거절 실패!";
+	        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
+	
 	
 	// 수수료·정산 관리
 	@GetMapping("projectSettlement")

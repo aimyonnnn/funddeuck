@@ -41,18 +41,23 @@ public class BankService {
 		}
 	}
 	
+	// 토큰 삭제
+	public boolean deleteToken(int member_idx) {
+		if(mapper.deleteToken(member_idx) > 0) {
+			return true;
+		}
+		return false;
+	}
+	
 	// 계좌 정보 저장
 	public boolean registBankAccount(int member_idx, BankAccountVO mostRecentBankAccount) {
 		if(mapper.insertBankAccount(member_idx, mostRecentBankAccount) > 0) {
 			return true;
 		} else {
+			// 토큰 정보 삭제
+			mapper.deleteToken(member_idx);
 			return false;
 		}
-	}
-	
-	// 계좌 정보 조회(핀테크이용번호 일치 여부 확인)
-	public BankAccountVO getBankAccount(int member_idx, BankAccountVO mostRecentBankAccount) {
-		return mapper.selectBankAccount(member_idx, mostRecentBankAccount);
 	}
 	
 	// 계좌 정보 조회
@@ -60,9 +65,26 @@ public class BankService {
 		return mapper.selectBankAccountInfo(member_idx);
 	}
 	
-	// user_ci 조회
-	public String getUserCI(int member_idx) {
-		return mapper.selectUserCI(member_idx);
+	// 중복된 계좌 정보 조회(핀테크이용번호 일치 여부 확인)
+	public boolean getBankAccount(int member_idx, BankAccountVO mostRecentBankAccount) {
+		if(mapper.selectBankAccount(member_idx, mostRecentBankAccount) == null) {
+			// 계좌 정보 삭제
+			mapper.deleteBankAccount(member_idx);
+			return false;
+		}
+		
+		return true;
+	}
+	
+	
+	// 정산 입금내역 등록
+	public int registDepositSettlement(String member_id, int project_idx, Map<String, Object> paramMap) {
+		return mapper.insertDepositSettlement(member_id, project_idx, paramMap);
+	}
+
+	// 환불 입금내역 등록
+	public int registDepositRefund(String member_id, int project_idx, Map<String, Object> paramMap) {
+		return mapper.insertDepositRefund(member_id, project_idx, paramMap);
 	}
 	
 }

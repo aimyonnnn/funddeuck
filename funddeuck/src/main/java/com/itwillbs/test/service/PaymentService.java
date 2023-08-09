@@ -89,7 +89,7 @@ public class PaymentService {
 		return mapper.selectPaymentListCount(project_idx);
 	}
 	
-	// 발송입력 - 모달창 리스트 조회
+	// 발송 및 환불 정보 입력 - 모달창 리스트 조회
 	public List<PaymentVO> getShippingModalList(int payment_idx) {
 		return mapper.selectShippingModalList(payment_idx);
 	}
@@ -99,9 +99,14 @@ public class PaymentService {
 		return mapper.updateShippingInfo(payment_idx, delivery_method, courier, waybill_num);
 	}
 	
-	// 미발송 및 배송중 조회
+	// 미발송 및 배송중, 반환신청 조회 조회
 	public int getDeliveryCount(int payment_idx) {
 		return mapper.selectDeliveryCount(payment_idx);
+	}
+	
+	// 펀딩금 반환 거절 상태 변경
+	public int modifyShippingRefuse(int payment_idx) {
+		return mapper.updateShippingRefuse(payment_idx);
 	}
 	
 	// 결제 목록 조회 

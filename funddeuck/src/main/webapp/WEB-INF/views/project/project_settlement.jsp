@@ -45,12 +45,13 @@
 					var project_plan = data.project_plan === 1 ? 0.05 : 0.03;
 					// 세금계산서 발행금액 (총 금액(이미 카드 수수료 포함o) * 선택한 요금제 수수료)
 					var tax_amount = Math.floor(data.total_amount * project_plan + card_tax);
-					// 총 지급 금액(결제 완료 금액 - 1차 정산금액 - 세금계산서 발행금액)
-					var final_amount = total_amount - data.first_amount - tax_amount;
+					// 총 지급 금액(결제 완료 금액 - 누적 정산금액 - 세금계산서 발행금액)
+					var final_amount = total_amount - data.settlement_amount - tax_amount;
+					// 누적 금액
+					var total_settlement_amount = data.settlement_amount;
 					// 요금제 수수료 출력용
 					var charge = data.project_plan === 1 ? 5 : 3;
 					
-					console.log("1차 정산금액 : " + data.first_amount);
 					
 					$('#project_subject').text(data.project_subject);						// 프로젝트 제목
 					$('#representative_name').text(data.project_representative_name);		// 대표자명
@@ -64,13 +65,18 @@
 					$('#tax_amount').text(tax_amount.toLocaleString() + '원');				// 세금
 					$('#charge').text('(' + charge + '%)')									// 수수료 
 					
-					 var buttonText = ""; // 버튼 텍스트를 초기화합니다.
 					
-					if(data.project_status == 3) { 			// 프로젝트 진행완료 (1차 정산 가능일 때)
-						if(data.maker_grade == 1) { 		// 메이커 등급이 1레벨일 시
+					var buttonText = ""; // 버튼 텍스트를 초기화합니다.
+					if(data.project_status == 1 || data.project_status == 2) {
+						$('.btn-danger').hide();
+					} else if(data.project_status == 3) { 			// 프로젝트 진행완료 (1차 정산 가능일 때)
+						if(data.maker_grade == 1) { 		// 메이커 등급이 1레벨일 시(기본 등급)
 							final_amount *= 0.5; 			// 50%만 1차 정산
 							$('#final_amount').text(final_amount.toLocaleString() + '원');
 						} else if(data.maker_grade == 2) {	// 메이커 등급이 2레벨일 시
+							final_amount *= 0.6;			// 60%만 1차 정산
+							$('#final_amount').text(final_amount.toLocaleString() + '원');
+						} else if(data.maker_grade == 3) {	// 메이커 등급이 3레벨일 시
 							final_amount *= 0.7;			// 70%만 1차 정산
 							$('#final_amount').text(final_amount.toLocaleString() + '원');
 						}
@@ -79,6 +85,12 @@
 						buttonText = "정산 대기중";		
 					} else if(data.project_status == 5) {	// 프로젝트 최종 정산 가능일 때
 						buttonText = "최종 정산";
+					} else if(data.project_status == 6) { 	// 프로젝트 최종 정산 완료일 때
+						$('#final_amount').text('');												// 총 지급 금액 초기화
+						$('#final_amount').text(total_settlement_amount.toLocaleString() + '원');	// 총 지급 금액
+						$('#delivery_amount').text('');												// 배송비 초기화
+						
+						$('.btn-danger').hide();
 					}
 					$('.btn-danger').text(buttonText);
 					
@@ -89,6 +101,10 @@
 				    	}
 					});
 					
+					$('#fintech_use_num').val(data.project_fintech_use_num);				// 핀테크이용번호
+					$('#final_settlement').val(final_amount);								// 총 지급 금액 전달
+					$('#project_idx').val(project_idx);										// 프로젝트 고유번호
+					$('#print_content').val(buttonText);									// 인자내역에 적힐 내용
 				},
 				error: function() {
 					alert("정산 내역 요청에 오류가 발생했습니다!");
@@ -168,7 +184,7 @@
 													<td>
 														<c:choose>
 															<c:when test="${projectList.project_status eq 1 }">
-																미진행
+																오픈예정
 															</c:when>
 															<c:when test="${projectList.project_status eq 2 }">
 																진행중
@@ -176,7 +192,7 @@
 														</c:choose>
 													</td>
 													<td>
-														<button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settlementModal">확인</button>
+														<button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settlementModal" data-project-idx="${projectList.project_idx}">확인</button>
 													</td>
 												</tr>
 											</c:if>
@@ -216,14 +232,17 @@
 													<td><fmt:formatNumber value="${projectList.project_cumulative_amount/projectList.project_target * 100}" pattern="#"/>%</td>
 													<td>
 														<c:choose>
-															<c:when test="${projectList.project_status eq 3 }">
+																<c:when test="${projectList.project_status eq 3 }">
 																	진행완료
 																</c:when>
 																<c:when test="${projectList.project_status eq 4 }">
-																	정산신청
+																	1차정산 완료
 																</c:when>
 																<c:when test="${projectList.project_status eq 5 }">
-																	정산완료
+																	최종정산 가능
+																</c:when>
+																<c:when test="${projectList.project_status eq 6 }">
+																	최종정산 완료
 																</c:when>
 														</c:choose>
 													</td>
@@ -316,7 +335,11 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<form action="" method="post" class="settlement-form">
+					<form action="bankSettlement" method="post" class="settlement-form">
+						<input type="hidden" name="fintech_use_num" id="fintech_use_num">
+						<input type="hidden" name="final_settlement" id="final_settlement">
+						<input type="hidden" name="project_idx" id="project_idx">
+						<input type="hidden" name="print_content" id="print_content">
 						<button type="submit" class="btn btn-danger"></button>
 					</form>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>

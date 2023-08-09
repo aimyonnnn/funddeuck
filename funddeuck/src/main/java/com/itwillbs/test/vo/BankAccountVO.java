@@ -26,5 +26,5 @@ public class BankAccountVO {
 	private String transfer_agree_yn; // 출금서비스 동의여부
 	private String transfer_agree_dtime; // 출금서비스 동의일시
 	private String account_state; // 계좌상태
-	private String user_ci; // 사용자 CI
+//	private String user_ci; // 사용자 CI (사용자인증생략 API사용시 필요)
 }

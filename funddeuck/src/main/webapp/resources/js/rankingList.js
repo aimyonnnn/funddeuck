@@ -3,7 +3,7 @@ function showProjects(data) {
   rankingList.empty(); // 기존 리스트 초기화
 
   // data 배열을 역순으로 변경
-  data.reverse();
+//  data.reverse();
 
   var table = $("<table class='table project-table'></table>");
 
@@ -21,7 +21,7 @@ function showProjects(data) {
     var row = $(`
       <tr>
         <td>${rank}위</td>
-        <td class="project-name">${project.project_subject}</td>
+        <td class="project-name"><a href="fundingDetail?project_idx=${project.project_idx}">${project.project_subject}</a></td>
         <td class="project-end-date">${endDateStr}</td>
       </tr>
     `);
