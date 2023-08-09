@@ -179,6 +179,11 @@ public class ProjectService {
 	public int updateProjectSettlementStatus(int project_idx, int final_settlement) {
 		return mapper.updateProjectSettlementStatus(project_idx, final_settlement);
 	}
+	
+	// 정산 완료 후 환불 상태 변경
+	public int updateProjectRefundStatus(int payment_idx) {
+		return mapper.updateProjectRefundStatus(payment_idx);
+	}
     
 		
 		

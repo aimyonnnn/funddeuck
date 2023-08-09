@@ -69,5 +69,10 @@ public class BankService {
 	public int registDepositSettlement(String member_id, int project_idx, Map<String, Object> paramMap) {
 		return mapper.insertDepositSettlement(member_id, project_idx, paramMap);
 	}
+
+	// 환불 입금내역 등록
+	public int registDepositRefund(String member_id, int project_idx, Map<String, Object> paramMap) {
+		return mapper.insertDepositRefund(member_id, project_idx, paramMap);
+	}
 	
 }
