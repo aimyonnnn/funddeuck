@@ -42,7 +42,7 @@ public class PaymentController {
 				return api.paymentByImpUid(imp_uid);
 	} 
 	
-	// 테스트 페이지로 이동
+	// 테스트 페이지로 이동(임시)
 	@GetMapping("testPage")
 	public String testPage(
 			) {
