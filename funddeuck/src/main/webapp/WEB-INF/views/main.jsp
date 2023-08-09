@@ -147,9 +147,68 @@
     }
     
     .hashtags-container{
-        height: 340px;
+        height: 300px;
         width: 600px;
     }
+    
+    .random-hashtag {
+        position: absolute;
+        font-size: 12px; /* 초기 폰트 크기 설정 */
+        transition: font-size 0.3s; /* 애니메이션 전환 효과 */
+    }
+    
+    .random-hashtag:hover {
+        font-size: 18px; /* 마우스 오버 시 크기 증가 */
+        z-index: 2; /* 마우스 오버 시 다른 요소 위로 올라오도록 설정 */
+    }
+    
+/* 모달 팝업 스타일 */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    max-width: 80%;
+    text-align: right; 
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #999;
+}
+
+/* 추가한 부분 */
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#hideToday {
+    margin-bottom: 10px;
+}
+
+    
+    
   </style>
   
   <script type="text/javascript">
@@ -192,7 +251,7 @@
         </button>
     </div>
 
-
+<br>
 		<div class="container" >
 		    <h3><b>오늘의 추천 프로젝트</b></h3>
 		    <p>함께 만드는 성공</p>
@@ -229,7 +288,7 @@
 		<div class="container mt-4 d-flex justify-content-end">
 		    <button type="button" class="btn btn-light" onclick="showRandomProjects()"><b>추천받아볼까요?</b></button>
 		</div>
-
+<hr>
 	<br>
 		<div class="container">
 		  <div class="row">
@@ -270,7 +329,8 @@
 		    </div>
 		  </div>
 		</div>
-
+	<br>	
+<hr>
  	<br>
 		<div class="container">
 		    <h3><b>오픈 예정 프로젝트</b></h3>
@@ -298,9 +358,26 @@
 		        <div class="swiper-pagination-custom swiper-pagination"></div>
 		    </div>
 		</div>
-		
+	   <br>	
+<hr>		
 		<br>
-	
+		
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <span class="close-button" onclick="closePopup()">&times;</span>
+        <div class="content-wrapper">
+            <a href="member/coupon">
+                <img src="./resources/images/popup.png" width="550" height="700" alt="팝업 이미지">
+            </a>
+            <label>
+                <input type="checkbox" id="hideToday"> 오늘 하루 안보기
+            </label>
+        </div>
+    </div>
+</div>
+
+
+		
   
     <script src="resources/js/showRandomProjects.js"></script>
   	<script src="resources/js/rankingList.js"></script>
@@ -329,6 +406,84 @@
 	        hashtag.style.left = randomX + 'px';
 	        hashtag.style.top = randomY + 'px';
 	    });
+	    
+	    //----------------------------------------------------
+	    
+	    document.addEventListener("DOMContentLoaded", function() {
+	        // 페이지 로드 시 팝업 띄우기
+	        openPopup();
+	    });
+
+	    function openPopup() {
+	        var popup = document.getElementById("popup");
+	        popup.style.display = "block";
+	    }
+
+	    function closePopup() {
+	        var popup = document.getElementById("popup");
+	        popup.style.display = "none";
+	    }
+
+	    //--------------------------------------------------------
+	    
+	    document.addEventListener("DOMContentLoaded", function() {
+        var currentDate = new Date();
+        var startDate = new Date("2023-08-09");
+        var endDate = new Date("2023-08-10");
+
+        if (currentDate >= startDate && currentDate <= endDate) {
+            openPopup();
+        }
+	    });
+	
+	    function openPopup() {
+	        var popup = document.getElementById("popup");
+	        popup.style.display = "block";
+	    }
+	
+	    function closePopup() {
+	        var popup = document.getElementById("popup");
+	        popup.style.display = "none";
+	    }
+	    
+	    //-----------------------------------------------------------
+	     document.addEventListener("DOMContentLoaded", function() {
+        var hideTodayCheckbox = document.getElementById("hideToday");
+        var popup = document.getElementById("popup");
+        var currentDate = new Date();
+
+        var lastHiddenDate = localStorage.getItem("popupHiddenDate");
+
+        if (lastHiddenDate) {
+            var parsedLastHiddenDate = new Date(lastHiddenDate);
+            if (currentDate.toDateString() === parsedLastHiddenDate.toDateString()) {
+                // 이미 오늘 하루 안보기가 선택되었으면 팝업 숨기기
+                popup.style.display = "none";
+                hideTodayCheckbox.checked = true;
+            }
+        }
+
+        hideTodayCheckbox.addEventListener("change", function() {
+            if (this.checked) {
+                // 체크가 선택되었을 때 현재 날짜를 localStorage에 저장
+                localStorage.setItem("popupHiddenDate", currentDate.toDateString());
+            } else {
+                // 체크 해제되면 localStorage에서 삭제
+                localStorage.removeItem("popupHiddenDate");
+            }
+		        });
+		    });
+		
+		    function openPopup() {
+		        var popup = document.getElementById("popup");
+		        popup.style.display = "block";
+		    }
+		
+		    function closePopup() {
+		        var popup = document.getElementById("popup");
+		        popup.style.display = "none";
+		    }
+	    
 	</script>
 	
     <%@ include file="Footer.jsp" %>
