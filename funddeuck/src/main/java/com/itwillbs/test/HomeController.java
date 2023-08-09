@@ -1,10 +1,13 @@
 package com.itwillbs.test;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,15 +24,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.vo.ProjectVO;
 
-
 @Controller
 public class HomeController {
 
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @Autowired
-    private ProjectService ProjectService;
-
+    private ProjectService projectService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Locale locale, Model model) {
@@ -40,9 +41,15 @@ public class HomeController {
         String formattedDate = dateFormat.format(date);
         model.addAttribute("serverTime", formattedDate);
 
-        List<ProjectVO> projects = ProjectService.getAllProjects();
+        List<ProjectVO> projects = projectService.getAllProjects();
 
-        model.addAttribute("projectList", projects);
+        Map<String, List<ProjectVO>> hashTagMap = new HashMap<>();
+        for (ProjectVO project : projects) {
+            String hashtag = project.getProject_hashtag();
+            hashTagMap.computeIfAbsent(hashtag, k -> new ArrayList<>()).add(project);
+        }
+
+        model.addAttribute("hashTagMap", hashTagMap);
 
         return "main";
     }
@@ -50,19 +57,17 @@ public class HomeController {
     @ResponseBody
     @GetMapping("/list")
     public List<ProjectVO> getProjectList() {
-        return ProjectService.getTop10ProjectsByEndDate();
+        return projectService.getTop10ProjectsByEndDate();
     }
-    
+
     @ResponseBody
     @GetMapping("/randomProjects")
     public ResponseEntity<List<ProjectVO>> showRandomProjects() {
-        List<ProjectVO> allProjects = ProjectService.getAllProjects();
+        List<ProjectVO> allProjects = projectService.getAllProjects();
 
         Collections.shuffle(allProjects);
         List<ProjectVO> randomProjects = allProjects.subList(0, Math.min(allProjects.size(), 6));
 
         return new ResponseEntity<>(randomProjects, HttpStatus.OK);
     }
-
-    
 }

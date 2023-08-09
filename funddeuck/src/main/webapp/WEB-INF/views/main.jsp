@@ -302,28 +302,21 @@
 		    <div class="col-md-6">
 				<div class="card-body_hash">
 				    <p><b>당신이 찾고있는 <span class="highlight">#해시태그</span></b></p>
-						<div class="hashtags-container">
-						    <c:set var="usedHashtags" value="" scope="request" />
-						    <c:forEach items="${projectList}" var="project" varStatus="status">
-						        <c:set var="isDuplicate" value="false" />
-						        <c:choose>
-						            <c:when test="${usedHashtags.indexOf(project.project_hashtag) != -1}">
-						                <c:set var="isDuplicate" value="true" />
-						            </c:when>
-						            <c:otherwise>
-						                <c:set var="usedHashtags" value="${usedHashtags},${project.project_hashtag}" scope="request" />
-						            </c:otherwise>
-						        </c:choose>
-						        
-						        <c:if test="${!isDuplicate}">
-						            <a href="fundingDetail?project_idx=${project.project_idx}">
-						                <span class="random-hashtag" style="left: ${Math.random() * 370}px; top: ${Math.random() * 80}px;">
-						                    ${project.project_hashtag}
-						                </span>
-						            </a>
-						        </c:if>
-						    </c:forEach>
-						</div>
+					<div class="hashtags-container">
+					        <c:forEach items="${hashTagMap}" var="hashTagEntry">
+					            <c:set var="hashTag" value="${hashTagEntry.key}" />
+					            <c:set var="projectsForTag" value="${hashTagEntry.value}" />
+					
+					            <c:forEach items="${projectsForTag}" var="project">
+					                <a href="fundingDetail?project_idx=${project.project_idx}">
+					                    <span class="random-hashtag">
+					                        ${hashTag}
+					                    </span>
+					                </a>
+					            </c:forEach>
+					        </c:forEach>
+					    </div>
+
 
 				</div>
 		    </div>
@@ -485,6 +478,62 @@
 		    }
 	    
 	</script>
+	
+	<script>
+	    function calculateSimilarity(str1, str2) {
+	        str1 = str1.replace(/,/g, "");
+	        str2 = str2.replace(/,/g, "");
+	        
+	     // 최소 길이 구하기
+	        var minLength = Math.min(str1.length, str2.length);
+	
+	        // 일치하는 문자 수 계산
+	        var matchCount = 0;
+	        for (var i = 0; i < minLength; i++) {
+	            if (str1.charAt(i) === str2.charAt(i)) {
+	                matchCount++;
+	            }
+	        }
+	
+	        // 유사도 계산 (일치하는 문자 수를 최대 길이로 나눈 값)
+	        var similarity = matchCount / Math.max(str1.length, str2.length);
+	
+	        return similarity;
+	    }
+	
+	    function getRandomPosition(existingPositions) {
+	        var x, y;
+	        do {
+	            x = Math.random() * 370;
+	            y = Math.random() * 180;
+	        } while (isTooClose(existingPositions, x, y));
+	        existingPositions.push({ x: x, y: y });
+	        return { x: x, y: y };
+	    }
+	
+	    function isTooClose(existingPositions, x, y) {
+	        for (var i = 0; i < existingPositions.length; i++) {
+	            var position = existingPositions[i];
+	            var distance = Math.sqrt(Math.pow(position.x - x, 2) + Math.pow(position.y - y, 2));
+	            if (distance < 50) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
+	
+	    window.onload = function () {
+	        var hashtags = document.querySelectorAll('.random-hashtag');
+	        var existingPositions = [];
+	
+	        for (var i = 0; i < hashtags.length; i++) {
+	            var position = getRandomPosition(existingPositions);
+	            hashtags[i].style.left = position.x + 'px';
+	            hashtags[i].style.top = position.y + 'px';
+	        }
+	    };
+	</script>
+
 	
     <%@ include file="Footer.jsp" %>
     
