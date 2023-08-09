@@ -1,6 +1,7 @@
 package com.itwillbs.test.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -40,5 +41,16 @@ public interface MakerMapper {
 	// 관리자 - 메이커 정보 수정
 	int updateMakerByAdmin(MakerVO maker);
 	
+	// 챌린지 - 완료한 미션 조회
+	int countCompletedMission(@Param("maker_idx")int maker_idx, @Param("mission_name")String mission_name);
+	
+	// 챌린지 - 미션 입력
+	int insertMission(Map<String, Object> paramMap);
+	
+	// 챌린지 - 메이커 등급 업데이트
+	int updateMakerGrade(int maker_idx);
+	
+	// 챌린지 - 메이커 등급 조회
+	int getMakerGrade(int maker_idx);
 	
 }

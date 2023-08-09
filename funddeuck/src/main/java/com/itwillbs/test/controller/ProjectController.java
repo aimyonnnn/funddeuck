@@ -41,6 +41,7 @@ import com.itwillbs.test.handler.EchoHandler;
 import com.itwillbs.test.service.AdminService;
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
+import com.itwillbs.test.service.MissionService;
 import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectScheduler;
 import com.itwillbs.test.service.ProjectService;
@@ -75,6 +76,8 @@ public class ProjectController {
 	public ProjectController(EchoHandler echoHandler) {
 		this.echoHandler = echoHandler;
 	}
+	@Autowired
+	private MissionService missionService;
 	
 	// 프로젝트 메인
 	@GetMapping("project")
@@ -148,7 +151,17 @@ public class ProjectController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			return "true"; 
+			MakerVO maker = projectService.getMakerIdx(project_idx);
+			int maker_idx = maker.getMaker_idx();
+			int updateCount2 = missionService.addMissionPoints(maker_idx, "프로젝트 승인요청 하기", 1);
+	        if(updateCount2 > 0) {
+	        	System.out.println("■■■■■■■■프로젝트승인요청함");
+	        	return "true";
+	        } else {
+	        	System.out.println("■■■■■■■■미션을완료했기때문에무조건true리턴을해야함");
+	        	return "true";
+	        }
+	        
 		} 
 		return "false"; 
 	}
@@ -171,13 +184,35 @@ public class ProjectController {
 		return "project/project_reward";
 	}
 	
+//	// 리워드 등록하기
+//	@PostMapping("saveReward")
+//    @ResponseBody
+//    public String saveReward(@ModelAttribute RewardVO reward) {
+//		int insertCount = projectService.registReward(reward);
+//		if(insertCount > 0) { return "true"; } return "false";
+//    }
+	
 	// 리워드 등록하기
 	@PostMapping("saveReward")
-    @ResponseBody
-    public String saveReward(@ModelAttribute RewardVO reward) {
-		int insertCount = projectService.registReward(reward);
-		if(insertCount > 0) { return "true"; } return "false";
-    }
+	@ResponseBody
+	public String saveReward(@ModelAttribute RewardVO reward, HttpSession session) {
+	    String sId = (String) session.getAttribute("sId");
+	    if (sId == null) {
+	        return "false";
+	    }
+	    
+	    int insertCount = projectService.registReward(reward);
+	    Integer maker_idx = makerService.getMakerIdx(sId);
+	    
+	    if (insertCount > 0) {
+	        int points = 1; // 리워드 등록 시 부여할 포인트 값
+	        int updateCount = missionService.addMissionPoints(maker_idx, "첫 리워드 등록", points);
+	        if(updateCount > 0) {
+	        	return "true";
+	        } 
+	    }
+	    return "false";
+	}
 	
 	// 리워드 수정 페이지로 이동
 	@PostMapping("openRewardModifyForm")
@@ -528,28 +563,25 @@ public class ProjectController {
 	    Integer member_idx = projectService.getMemberIdx(sId);
 	    Integer maker_idx = makerService.getMakerIdx(sId);
 	    
-
-	    if (member_idx == null) {
-	        model.addAttribute("msg", "멤버 정보를 찾을 수 없습니다.");
-	        return "fail_back";
-	    }
-	    
-	    if (maker_idx == null) {
-	        model.addAttribute("msg", "메이커 정보를 찾을 수 없습니다. 메이커 등록을 먼저 해주세요.");
-	        return "fail_back";
-	    }
-
 	    List<ProjectVO> projectList = projectService.getProjectList(member_idx);
 	    if (!projectList.isEmpty()) {
 	        int firstProjectIdx = projectList.get(0).getProject_idx();
 	        model.addAttribute("firstProjectIdx", firstProjectIdx);
 	    }
-
+	    
 	    model.addAttribute("member_idx", member_idx);
 	    model.addAttribute("maker_idx", maker_idx);
 	    model.addAttribute("projectList", projectList);
 	    
-	    return "project/project_status";
+		int updateCount2 = missionService.addMissionPoints(maker_idx, "프로젝트 진행상황 확인해보기", 1);
+        if(updateCount2 > 0) {
+        	System.out.println("■■■■■■■■프로젝트진행상황확인해보기");
+        	return "project/project_status";
+        } else {
+        	System.out.println("■■■■■■■■미션을완료했기때문에무조건true리턴을해야함");
+        	return "project/project_status";
+        }
+	    
 	}
 		
 	// 메이커의 전체 프로젝트 차트 출력

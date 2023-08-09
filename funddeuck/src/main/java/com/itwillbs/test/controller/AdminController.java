@@ -50,6 +50,7 @@ import com.itwillbs.test.service.CreditService;
 import com.itwillbs.test.service.MakerBoardService;
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
+import com.itwillbs.test.service.MissionService;
 import com.itwillbs.test.service.NotificationService;
 import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectService;
@@ -96,6 +97,8 @@ public class AdminController {
 	public AdminService adminService;
 	@Autowired
 	private CreditService creditService; 
+	@Autowired
+	private MissionService missionService;
 	
 	// 관리자 메인
 	@GetMapping("admin")
@@ -595,7 +598,7 @@ public class AdminController {
 		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
 		if(updateCount > 0) { return "true"; } return "false";
 	}
-	
+
 	// 프로젝트 결제완료 처리하기
 	// 프로젝트 상태컬럼 변경하기 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
 	@PostMapping("completePaymentStatus")
@@ -621,9 +624,19 @@ public class AdminController {
 					member_idx);
 			System.out.println("출력 테스트 : " + insertCount);
 			System.out.println("여기까지옴2");
-			return "true";
+//				return "true";
+			
+			MakerVO maker = projectService.getMakerIdx(Integer.parseInt(map.get("project_idx")));
+			int maker_idx = maker.getMaker_idx();
+			int updateCount2 = missionService.addMissionPoints(maker_idx, "프로젝트 요금 결제하기", 1);
+	        if(updateCount2 > 0) {
+	        	System.out.println("■■■■■■■■프로젝트요금결제함");
+	        	return "true";
+	        } else {
+	        	System.out.println("■■■■■■■■미션을완료했기때문에무조건true리턴을해야함");
+	        	return "ture";
+	        }
 		} 
-		
 		return "false";
 	}
 	
