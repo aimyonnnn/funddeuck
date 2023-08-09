@@ -11,7 +11,8 @@
 		        now(),                       -- 결제날짜
 		        #{payment_total_price},      -- 결제금액
 		        1,                           -- 결제완료
-		        #{member_idx}                -- 회원번호
+		        #{member_idx},               -- 회원번호
+		        null						 -- 환불사유
 		    )
 	</insert>
 	

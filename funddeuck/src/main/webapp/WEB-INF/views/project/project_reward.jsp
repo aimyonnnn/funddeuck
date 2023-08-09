@@ -368,8 +368,8 @@ function saveReward() {
 							
 							Swal.fire({
 								icon: 'question',
-								title: '리워드 연속 등록',
-								text: '리워드 등록을 연속해서 하시겠습니까?'
+								title: '리워드를 연속해서 등록 할 수 있어요!',
+								text: '등록된 리워드는 오른쪽 리워드 리스트에서 확인할 수 있습니다!'
 							}).then(function(){
 								
 						    	location.reload();

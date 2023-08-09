@@ -68,6 +68,10 @@ th, td {
 		<!-- form 태그 끝 -->	
 	</div>
 	<!-- 검색 버튼 -->
+	
+	<div class="d-flex justify-content-end">
+		<button class="btn btn-outline-primary btn-sm mb-2" onclick="location.href='excelDownload?searchType=${searchType}&searchKeyword=${searchKeyword}&pageNum=${pageNum}&listLimit=${listLimit}'">엑셀 다운로드</button>
+	</div>
 		
 	<div class="row">
 		<div class="d-flex justify-content-center">

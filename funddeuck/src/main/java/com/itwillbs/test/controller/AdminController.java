@@ -15,9 +15,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +38,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
@@ -1030,4 +1043,76 @@ public class AdminController {
 			}
 		}
 		
-	}
+	@GetMapping("excelDownload")
+    public void excelDownload(
+//    		@RequestParam Map<String, Object> map,
+    		@RequestParam(defaultValue = "") String searchType,
+    		@RequestParam(defaultValue = "") String searchKeyword,
+    		@RequestParam(defaultValue = "1") int pageNum,
+    		HttpServletResponse response) throws IOException {
+		
+		int listLimit = 10;
+		int startRow = (pageNum - 1) * listLimit;
+		
+	    List<ProjectVO> pList = projectService.getAllProject(searchKeyword, searchType, startRow, listLimit);
+		
+        Workbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet("첫번째 시트");
+        Row row = null;
+        Cell cell = null;
+        int rowNum = 0;
+
+        // Header
+        row = sheet.createRow(rowNum++);
+        cell = row.createCell(0);
+        cell.setCellValue("번호");
+        cell = row.createCell(1);
+        cell.setCellValue("카테고리");
+        cell = row.createCell(2);
+        cell.setCellValue("프로젝트 이름");
+        cell = row.createCell(3);
+        cell.setCellValue("대표자");
+        cell = row.createCell(4);
+        cell.setCellValue("요금제");
+        cell = row.createCell(5);
+        cell.setCellValue("목표금액");
+        cell = row.createCell(6);
+        cell.setCellValue("기간");
+        cell = row.createCell(7);
+        cell.setCellValue("상태");
+
+        // Body
+        for (ProjectVO project : pList) {
+            row = sheet.createRow(rowNum++);
+            cell = row.createCell(0);
+            cell.setCellValue(project.getProject_idx());
+            cell = row.createCell(1);
+            cell.setCellValue(project.getProject_category());
+            cell = row.createCell(2);
+            cell.setCellValue(project.getProject_subject());
+            cell = row.createCell(3);
+            cell.setCellValue(project.getProject_representative_name());
+            cell = row.createCell(4);
+            cell.setCellValue(project.getProject_plan());
+            cell = row.createCell(5);
+            cell.setCellValue(project.getProject_amount());
+            cell = row.createCell(6);
+            cell.setCellValue(project.getProject_start_date()+"~"+project.getProject_end_date());
+            cell = row.createCell(7);
+            if(project.getProject_approve_status() == 5) {
+            	String status = "결제완료";
+            	cell.setCellValue(status);
+            	cell = row.createCell(8);
+            }
+        }
+        // 컨텐츠 타입과 파일명 지정
+        response.setContentType("ms-vnd/excel");
+//		        response.setHeader("Content-Disposition", "attachment;filename=example.xls");
+        response.setHeader("Content-Disposition", "attachment;filename=example.xlsx");
+
+        // Excel File Output
+        wb.write(response.getOutputStream());
+        wb.close();
+    }
+		
+}
