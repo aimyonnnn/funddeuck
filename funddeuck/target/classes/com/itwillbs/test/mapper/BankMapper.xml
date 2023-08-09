@@ -47,6 +47,7 @@
 			VALUES (
 				NULL
 				, #{member_idx}
+				, #{bankAccount.user_ci}
 				, #{bankAccount.fintech_use_num}
 				, #{bankAccount.account_holder_name}
 				, #{bankAccount.bank_name}
