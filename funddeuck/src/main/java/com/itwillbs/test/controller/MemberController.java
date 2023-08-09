@@ -32,9 +32,11 @@ import com.google.gson.JsonObject;
 import com.itwillbs.test.handler.MyPasswordEncoder;
 import com.itwillbs.test.service.FundingService;
 import com.itwillbs.test.service.MemberService;
+import com.itwillbs.test.service.ProfileService;
 import com.itwillbs.test.service.SendMailService;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.MembersVO;
+import com.itwillbs.test.vo.ProfileVO;
 import com.itwillbs.test.vo.ProjectVO;
 
 @Controller
@@ -48,6 +50,9 @@ public class MemberController {
     
     @Autowired
     private SendMailService mailService;
+    
+    @Autowired
+    private ProfileService profileService;
     
     @GetMapping("memberMypage")
     public String myPage(HttpSession session, Model model) {
@@ -64,6 +69,15 @@ public class MemberController {
     	System.out.println("fundingCount : " + fundingCount);
     	
     	model.addAttribute("fundingCount",fundingCount);
+    	
+        Integer memberIdx = (Integer) session.getAttribute("sIdx");
+        if (memberIdx != null) {
+            ProfileVO profile = profileService.getProfileByMemberId(memberIdx.intValue());
+            boolean isProfileSaved = profileService.isProfileSaved(memberIdx.intValue());
+            model.addAttribute("profile", profile);
+            model.addAttribute("isProfileSaved", isProfileSaved);
+        }
+    	
     	
         return "member/myPage"; 
     }

@@ -289,7 +289,7 @@
 		                                </p>
 		                            </div>
 		                            <hr>
-		                            <p style="text-align: center;"><b>지금 살펴보기></b></p>
+		                            <a href="fundingDetail?project_idx=${project.project_idx }" class="stretched-link"><p style="text-align: center;"><b>지금 살펴보기></b></p></a>
 		                        </div>
 		                    </div>
 		                </c:if>

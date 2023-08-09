@@ -41,11 +41,11 @@
                 <!-- 프로필 영역 -->
                 <div class="col-md-2 col-12 text-center mt-3" style="border-right: solid 1px lightgray;">
                     <div>
-                        <img class="mt-5 center" style="width: 80px; height: 80px;">
+                        <img class="mt-5 center" img src=" ${pageContext.request.contextPath}/resources/upload/${profile.profile_img}"  style="width: 80px; height: 80px;">
                     </div>
                     <br>
                     <div>
-                        <a href="" class="text-black">닉네임님</a>
+                        <a href="" class="text-black">${sessionScope.sId}님</a>
                     </div>
                     <hr>
                     <button class="btn" style="border-radius: 50px;">로그아웃</button><br>
