@@ -78,28 +78,40 @@
 	        r.project_idx, r.reward_idx, r.reward_option, r.reward_quantity;
 	</select>
 	
-	<!-- 펀딩 프로젝트 목록 검색(아직 미사용) -->
-	<select id="selectProjectListDiscover">
+	<!-- 검색어로 프로젝트 리스트 조회 -->
+	<select id="selectFundingSearchKeyword" resultType="com.itwillbs.test.vo.ProjectVO">
 			SELECT *
 				FROM project
-				<if test="!category.equals('')">
-					WHERE
-				<choose>
-					<when test="searchType.equals('subject')">
-						project LIKE CONCAT('%', #{searchKeyword} ,'%')
-					</when>
-					<when test="searchType.equals('content')">
-						board_content LIKE CONCAT('%', #{searchKeyword} ,'%')
-					</when>
-					<when test="searchType.equals('subject_content')">
-						board_subject LIKE CONCAT('%', #{searchKeyword} ,'%') 
-						OR board_content LIKE CONCAT('%', #{searchKeyword} ,'%') 
-					</when>
-					<when test="searchType.equals('name')">
-						board_name LIKE CONCAT('%', #{searchKeyword} ,'%')
-					</when>
-				</choose>
-				</if>
+					WHERE project_subject LIKE CONCAT('%',#{searchKeyword},'%')
+						OR project_category LIKE CONCAT('%',#{searchKeyword},'%')
+							OR project_hashtag LIKE CONCAT('%',#{searchKeyword},'%')
+						<!-- 프로젝트 상태 선택 시 -->
+						<if test="!status.equals('all')">
+						AND
+						<choose>
+							<when test="status.equals('noStart')">
+								project_status = 1
+							</when>
+							<when test="status.equals('active')">
+								project_status = 2
+							</when>
+							<when test="status.equals('end')">
+								project_status IN (3, 4, 5)
+							</when>
+						</choose>
+						</if>
+							<!-- 프로젝트 정렬 방식 선택 시 -->
+							<if test="!index.equals('newest')">
+							ORDER BY
+							<choose>
+								<when test="index.equals('amount')">
+									project_cumulative_amount DESC
+								</when>
+								<when test="index.equals('target')">
+									project_target DESC
+								</when>
+							</choose>
+							</if>
 	</select>
 		
 	<!-- 멤버가 한 펀딩 리스트를 뽑음 -->
@@ -328,14 +340,6 @@
 		SELECT count(*)
 			FROM payment
 				WHERE project_idx = #{project_idx} AND payment_confirm = 1;
-	</select>
-	
-	<!-- 검색어로 프로젝트 리스트 조회 -->
-	<select id="selectFundingSearchKeyword">
-		SELECT *
-			FROM project
-				WHERE project_subject = #{searchKeyword}
-					OR project_hashtag = #{searchKeyword}
 	</select>
 	
 	<!-- 프로젝트 메이커 로고  -->

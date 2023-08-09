@@ -58,7 +58,7 @@
 	
 	<!--  -->
 	<div class="container-lg col with .gy-5 gutters">
-		<c:if test="${project ne null or project.size() ne 0 }">
+		<c:if test="${not empty project}">
 		<div class="row row-cols-3 row-cols-sm-4 g-3">
 		<!-- 페이징 처리 -->
 		<c:forEach items="${project}" var="project" varStatus="status">
@@ -118,7 +118,7 @@
 		</c:forEach>
 		</div>
 		</c:if>
-		<c:if test="${project eq null or project.size() eq 0}">
+		<c:if test="${empty project}">
 			<div class="page-content container-fluid note-has-grid">
 				<ul class="nav nav-pills p-3 bg-white mb-3 rounded-0 align-items-center">
 					<li class="nav-item">

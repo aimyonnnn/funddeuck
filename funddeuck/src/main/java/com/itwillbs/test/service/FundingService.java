@@ -102,7 +102,7 @@ public class FundingService {
 	}
 	
 	// 검색어로 프로젝트 리스트 조회
-	public List<ProjectVO> getFundingSearchKeyword(@Param("status") String status,@Param("index") String index, @Param("searchKeyword") String searchKeyword) {
+	public List<ProjectVO> getFundingSearchKeyword(String status, String index, String searchKeyword) {
 		return mapper.selectFundingSearchKeyword(status, index, searchKeyword);
 	}
 
