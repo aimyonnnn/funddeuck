@@ -139,5 +139,15 @@
 	        )
 	    </foreach>
 	</insert>
+	
+	<!-- 펀딩결제시(계좌) 입금내역 등록 -->
+	<insert id="insertFundingTranHist">
+		INSERT INTO banking
+			VALUES (
+				
+			
+			)
+		
+	</insert>
 
 </mapper>

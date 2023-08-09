@@ -427,6 +427,8 @@
 						<input type="text" name="use_coupon_amount" id="use_coupon_amount" value="0">
 						<input type="text" name="total_amount" id="total_amount" value="${reward.reward_price + reward.delivery_price}">
 						<input type="text" name="payment_quantity" id="payment_quantity" value="1">
+						<!-- 결제수단(1:카드 2:계좌) -->
+						<input type="text" name="payment_method" id="payment_method" value="">
 						<button type="submit" id="fundingPaymentSubmitButton" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
 					</form>
 				</div>

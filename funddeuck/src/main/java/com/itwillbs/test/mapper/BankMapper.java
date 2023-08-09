@@ -39,5 +39,8 @@ public interface BankMapper {
 
 	// 환불 입금내역 등록
 	int insertDepositRefund(@Param("member_id") String member_id, @Param("project_idx") int project_idx, @Param("paramMap") Map<String, Object> paramMap);
+	
+	// 펀딩 결제시(계좌) 입금내역 등록
+	int insertFundingTranHist(@Param("member_id") String member_id, @Param("withdrawResult") ResponseWithdrawVO withdrawResult);
 
 }

@@ -253,100 +253,56 @@ public class FundingController {
 		java.sql.Date currentSqlDate = java.sql.Date.valueOf(LocalDate.now());
 		payment.setPayment_date(currentSqlDate);
 		
-		System.out.println("리워드 수량 : " + payment.getPayment_quantity());
-		// 결제승인여부 payment_confirm 예약완료 1
-	    payment.setPayment_confirm(1);
 	    
-		// 결제 수단 카드(1)/ 계좌(2) payment_method
-	    payment.setPayment_method(2); // 계좌라고 가정 주문페이지에서 결제수단선택시 전달해야함
-	    
-	    // 계좌면 회원 계좌에서 출금이체
-	    // fintech_use_num access_token 필요(세션값 불러오기)
-	    String fintech_use_num = (String)session.getAttribute("fintech_use_num");
-	    String access_token = (String)session.getAttribute("access_token");
-	    // 계좌정보가 없을 경우(계좌 미등록시)
-	    if(fintech_use_num == null || access_token == null) {
-	    	model.addAttribute("msg", "계좌인증 후 계좌를 등록해주세요!");
-	    	return "fail_back";
-	    }
-	   
-	    logger.info("access_token : " + access_token);
-	    // 출금이체 API 요청(회원)
-	    // 거래요청일시를 프로젝트 종료일로 전달(예약)
-	    ResponseWithdrawVO withdrawResult = bankApiService.requestWithdrawMember(payment.getTotal_amount(), fintech_use_num, access_token);
-	    logger.info("withdrawResult" + withdrawResult);
-	    // DB에 출금내역(회원) 입금내역(사이트) 저장
-	    // 응답데이터를 ResponseWithdrawVO 로 받음
-		/*
-		 * 사이트계좌(입금) 
-		 * 입금기관명 dps_bank_name 
-		 * 입금계좌번호(마스킹) dps_account_num_masked 
-		 * 입금계좌인자내역 dps_print_content 
-		 * 수취인성명 dps_account_holder_name 
-		 * 거래일자 bank_tran_date 
-		 * 거래금액 tran_amt
-		 * 
-		 * 
-		 * 회원(출금) 
-		 * 개설기관명 bank_name 
-		 * 출금계좌번호(출력용) account_num_masked 
-		 * 출금계좌인자내역 print_content
-		 * 송금인성명 account_holder_name 
-		 * 거래일자 bank_tran_date 
-		 * 거래금액 tran_amt
-		 */
-	    // 입금내역
-	    BankingVO dpsBankTran = new BankingVO();
-	    // 입금(사이트)
-	    dpsBankTran.setBanking_bank_name(withdrawResult.getDps_bank_name()); // 입금기관명
-	    dpsBankTran.setBanking_account_num_masked(withdrawResult.getDps_account_num_masked()); // 입금계좌번호(마스킹)
-	    dpsBankTran.setBanking_print_content(withdrawResult.getDps_print_content()); // 입금계좌인자내역
-	    dpsBankTran.setBanking_account_holder_name(withdrawResult.getDps_account_holder_name()); // 수취인성명
-	    dpsBankTran.setBanking_bank_tran_date(withdrawResult.getBank_tran_date()); // 거래일자
-	    dpsBankTran.setBanking_tran_amt(withdrawResult.getTran_amt()); // 거래금액
-	    dpsBankTran.setBanking_status(1); // 1-입금
-	    System.out.println("사이트 계좌 출금내역 : " + dpsBankTran);
-	    
-//	    withdrawResult.getDps_bank_name(); // 입금기관명
-//	    withdrawResult.getDps_account_num_masked(); // 입금계좌번호(마스킹)
-//	    withdrawResult.getDps_print_content(); // 입금계좌인자내역
-//	    withdrawResult.getDps_account_holder_name(); // 수취인성명
-//	    withdrawResult.getBank_tran_date(); // 거래일자
-//	    withdrawResult.getTran_amt(); // 거래금액
-//	    
-	    // 출금내역
-	    BankingVO wdBankTran = new BankingVO();
-	    // 입금(사이트)
-	    wdBankTran.setBanking_bank_name(withdrawResult.getBank_name()); // 개설기관명
-	    wdBankTran.setBanking_account_num_masked(withdrawResult.getAccount_num_masked()); // 출금계좌번호(마스킹)
-	    wdBankTran.setBanking_print_content(withdrawResult.getPrint_content()); // 출금계좌인자내역
-	    wdBankTran.setBanking_account_holder_name(withdrawResult.getAccount_holder_name()); // 송금인성명
-	    wdBankTran.setBanking_bank_tran_date(withdrawResult.getBank_tran_date()); // 거래일자
-	    wdBankTran.setBanking_tran_amt(withdrawResult.getTran_amt()); // 거래금액
-	    wdBankTran.setBanking_status(2); // 2-출금
-	    System.out.println("회원 계좌 출금내역 : " + dpsBankTran);
-	    // 출금(회원)
-//	    withdrawResult.getBank_name(); // 개설기관명
-//	    withdrawResult.getAccount_num_masked(); // 출금계좌번호(마스킹)
-//	    withdrawResult.getPrint_content(); // 출금계좌인자내역
-//	    withdrawResult.getAccount_holder_name(); // 송금인성명
-//	    withdrawResult.getBank_tran_date(); // 거래일자
-//	    withdrawResult.getTran_amt(); // 거래금액
-	    
-	    // 스케줄링 활용하여서 프로젝트종료일(결제일)에 출금이체 메서드 실행되도록
-	    // 만약 프로젝트가 취소되면 메서드 취소, payment 상태 프로젝트 취소로 수정 => 0번 프로젝트 취소
-	    
-	    
-	    // 환불
+		// 결제 수단 전달시 카드(1)/ 계좌(2)
+	    if(payment.getPayment_method() == 2) { 
+	    	
+	    	// ================================================================================= 계좌
+	    	// 결제승인여부 payment_confirm 예약완료 1
+	    	payment.setPayment_confirm(1);
+	    	// 계좌면 회원 계좌에서 출금이체
+	    	// fintech_use_num access_token 필요(세션값 불러오기)
+	    	String fintech_use_num = (String)session.getAttribute("fintech_use_num");
+	    	String access_token = (String)session.getAttribute("access_token");
+	    	// 계좌정보가 없을 경우(계좌 미등록시)
+	    	if(fintech_use_num == null || access_token == null) {
+	    		model.addAttribute("msg", "계좌인증 후 계좌를 등록해주세요!");
+	    		return "fail_back";
+	    	}
+	    	
+	    	logger.info("access_token : " + access_token);
+	    	// 출금이체 API 요청(회원)
+	    	ResponseWithdrawVO withdrawResult = bankApiService.requestWithdrawMember(payment.getTotal_amount(), fintech_use_num, access_token);
+	    	logger.info("withdrawResult : " + withdrawResult);
+	    	
+	    	String sId = (String)session.getAttribute("sId");
+	    	
+	    	// 거래내역 DB 저장(입금내역)
+	    	boolean isSaveFundingTranHistSuccess =  bankService.saveFundingTranHist(sId, withdrawResult);
+	    	if(isSaveFundingTranHistSuccess) { // 거래내역 DB 저장 성공시
+	    		System.out.println("DB 저장!");
+	    	}
+	    	
+	    	
+	    	// 스케줄링 활용하여서 프로젝트종료일(결제일)에 출금이체 메서드 실행되도록
+	    	// 만약 프로젝트가 취소되면 메서드 취소, payment 상태 프로젝트 취소로 수정 => 0번 프로젝트 취소
+	    	
+	    	
+	    	// 환불 saveRefundTransactionHistory (거래내역 저장 메서드)
 //	    ResponseDepositVO depositResult = bankApiService.requestDeposit(payment.getTotal_amount(), fintech_use_num, access_token);
 //	    logger.info("depositResult" + depositResult);
+	    	
+	    	// 주문서 DB 등록
+	    	// 성공시 fundingResult 결제 완료페이지로 이동
+	    	// 실패시 fail_back
+	    	
+	    	// 쿠폰 사용시 쿠폰 상태 변경
+	    	// 리워드 수량 = 주문수량 => project 테이블 변경
+	    	
+	    	// ================================================================================= 계좌
+	    }
 	    
-	    // 주문서 DB 등록
-	    // 성공시 fundingResult 결제 완료페이지로 이동
-	    // 실패시 fail_back
-		
-		// 쿠폰 사용시 쿠폰 상태 변경
-	    // 리워드 수량 -1 주문수량..?
+	    
 		return "";
 	}
 	
@@ -381,8 +337,8 @@ public class FundingController {
 	@ResponseBody
 	public DeliveryVO deliveryNewAdd(DeliveryVO delivery, HttpSession session) {
 		//세션아이디 가져와서 DeliveryVO에 저장
-		String id = (String)session.getAttribute("sId");
-		delivery.setMember_id(id);
+		String sId = (String)session.getAttribute("sId");
+		delivery.setMember_id(sId);
 		
 		// 신규 등록시 자동으로 기본배송지로 등록
 		delivery.setDelivery_default(true);
@@ -391,7 +347,7 @@ public class FundingController {
 		int insertCount = fundingService.registDelivery(delivery);
 		if(insertCount > 0) {
 			// 기본 배송지 조회 후 전달
-			DeliveryVO saveDelivery = fundingService.getDeliveryDefault(id);
+			DeliveryVO saveDelivery = fundingService.getDeliveryDefault(sId);
 			return saveDelivery;
 			
 		} else {
@@ -407,8 +363,8 @@ public class FundingController {
 	public String deliveryAdd(DeliveryVO delivery, HttpSession session) {
 		System.out.println(delivery);
 		//세션아이디 가져와서 DeliveryVO에 저장
-		String id = (String)session.getAttribute("sId");
-		delivery.setMember_id(id);
+		String sId = (String)session.getAttribute("sId");
+		delivery.setMember_id(sId);
 		
 		// 기본배송지로 설정시 기존의 기본배송지 0으로 변경
 		if(delivery.isDelivery_default()) {
@@ -433,9 +389,9 @@ public class FundingController {
 	@ResponseBody
 	public List<DeliveryVO> getDeliveryList(HttpSession session) {
 		// 세션 아이디 가져오기
-		String id = (String)session.getAttribute("sId");
+		String sId = (String)session.getAttribute("sId");
 		// 배송지 목록을 가져오는 DB 작업
-		List<DeliveryVO> deliveryList = fundingService.getDeliveryList(id);
+		List<DeliveryVO> deliveryList = fundingService.getDeliveryList(sId);
 		System.out.println(deliveryList);
 		
 		return deliveryList;
@@ -459,9 +415,9 @@ public class FundingController {
 	public DeliveryVO deliveryChange(int changeDelivery_idx, HttpSession session) {
 		System.out.println("전달받은 delivery_idx = " + changeDelivery_idx);
 		// 세션 아이디 가져오기
-		String id = (String)session.getAttribute("sId");
+		String sId = (String)session.getAttribute("sId");
 		// 해당 회원 아이디와 배송지 번호가 전달받은 changeDelivery_idx 인 배송지 조회
-		DeliveryVO delivery = fundingService.getDeliveryInfo(id, changeDelivery_idx);
+		DeliveryVO delivery = fundingService.getDeliveryInfo(sId, changeDelivery_idx);
 		System.out.println("조회한 delivery : " + delivery);
 		
 		return delivery;
