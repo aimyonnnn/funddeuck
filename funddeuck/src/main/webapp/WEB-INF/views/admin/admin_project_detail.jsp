@@ -225,16 +225,16 @@ th, td {
 									<td>프로젝트 승인 상태</td>
 									<c:choose>
 										<c:when test="${project.project_approve_status eq 2}">
-											<td>승인요청</td>
+											<td>관리자에게 프로젝트 승인요청</td>
 										</c:when>
 										<c:when test="${project.project_approve_status eq 3}">
-											<td>승인완료</td>
+											<td>관리자의 프로젝트 승인완료</td>
 										</c:when>
 										<c:when test="${project.project_approve_status eq 4}">
-											<td>승인거절</td>
+											<td>관리자의 프로젝트 승인거절</td>
 										</c:when>
 										<c:when test="${project.project_approve_status eq 5}">
-											<td>결제완료</td>
+											<td>프로젝트 요금제 결제완료</td>
 										</c:when>
 										<c:otherwise>
 											<td>미승인</td>
@@ -243,15 +243,24 @@ th, td {
 								</tr>
 								<tr>
 								<tr>
-									<td>프로젝트 승인 요청 시간</td>
+									<td>프로젝트 상태</td>
 									<c:choose>
-										<c:when test="${not empty project.project_approval_request_time}">
-											<td>${project.project_approval_request_time}</td>
-										</c:when>
-										<c:otherwise>
-											<td>승인 요청 전 입니다</td>
-										</c:otherwise>
-									</c:choose>
+									<c:when test="${project.project_status eq 1}">
+										<td>오픈예정</td>
+									</c:when>	
+									<c:when test="${project.project_status eq 2}">
+										<td>프로젝트 진행중</td>
+									</c:when>	
+									<c:when test="${project.project_status eq 3}">
+										<td>진행완료</td>
+									</c:when>	
+									<c:when test="${project.project_status eq 4}">
+										<td>정산신청</td>
+									</c:when>	
+									<c:when test="${project.project_status eq 5}">
+										<td>정산완료</td>
+									</c:when>	
+									</c:choose>								
 								</tr>
 								<tr>
 									<td>프로젝트 상태</td>
@@ -272,6 +281,29 @@ th, td {
 											<td>정산완료</td>
 										</c:when>
 									</c:choose>
+								</tr>
+								<tr>
+									<td>프로젝트 승인 요청 시간</td>
+									<c:choose>
+										<c:when test="${not empty project.project_approval_request_time}">
+											<td>${project.project_approval_request_time}</td>
+										</c:when>
+										<c:otherwise>
+											<td>승인 요청 전 입니다</td>
+										</c:otherwise>
+									</c:choose>
+								</tr>
+								<tr>
+									<td>메이커 번호</td>
+									<td>${project.maker_idx}</td>
+								</tr>
+								<tr>
+									<td>토큰 번호</td>
+									<td>${project.token_idx}</td>
+								</tr>
+								<tr>
+									<td>누적 정산금액</td>
+									<td>${project.settlement_amount}</td>
 								</tr>
 							</table>
 						</div>

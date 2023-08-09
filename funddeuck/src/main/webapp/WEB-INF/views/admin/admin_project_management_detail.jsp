@@ -338,9 +338,9 @@ th, td {
 				            </td>
 				        </tr>
 				        <tr>
-				            <th>1차 정산금액</th>
+				            <th>누적 정산금액</th>
 				            <td>
-				                <input type="number" name="first_amount" class="form-control" value="${project.first_amount}">
+				                <input type="number" name="settlement_amount" class="form-control" value="${project.settlement_amount}">
 				            </td>
 				        </tr>
 				    </table>
