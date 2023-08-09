@@ -407,7 +407,7 @@
 			// 쿠폰 사용 금액 0 으로 출력
 			couponPriceElement.innerText = 0;
 			$("#use_coupon_amount").val(0);
-//			updateTotalPrice();
+			updateTotalPrice();
 		} else {
 			// 쿠폰 사용금액 계산
 			let discountPercentage = parseFloat(selectedCoupon.value);
@@ -418,7 +418,7 @@
 			minusElement.innerText = '-';
 			couponPriceElement.innerText = discountedPrice.toString();
 			$("#use_coupon_amount").val(discountedPrice);
-//			updateTotalPrice();
+			updateTotalPrice();
 		}
 	}	
 

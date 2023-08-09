@@ -88,8 +88,8 @@ public class BankService {
 	}
 	
 	// 펀딩 결제시(계좌) 입금내역 등록
-	public boolean saveFundingTranHist(String member_id, ResponseWithdrawVO withdrawResult) {
-		if(mapper.insertFundingTranHist(member_id, withdrawResult) > 0) {
+	public boolean saveFundingTranHist(String member_id, int project_idx, ResponseWithdrawVO withdrawResult) {
+		if(mapper.insertFundingTranHist(member_id, project_idx, withdrawResult) > 0) {
 			return true;
 		}
 		return false;

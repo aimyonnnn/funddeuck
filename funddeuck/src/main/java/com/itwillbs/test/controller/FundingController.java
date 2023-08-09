@@ -278,7 +278,7 @@ public class FundingController {
 	    	String sId = (String)session.getAttribute("sId");
 	    	
 	    	// 거래내역 DB 저장(입금내역)
-	    	boolean isSaveFundingTranHistSuccess =  bankService.saveFundingTranHist(sId, withdrawResult);
+	    	boolean isSaveFundingTranHistSuccess =  bankService.saveFundingTranHist(sId, payment.getProject_idx(), withdrawResult);
 	    	if(isSaveFundingTranHistSuccess) { // 거래내역 DB 저장 성공시
 	    		System.out.println("DB 저장!");
 	    	}
