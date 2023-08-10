@@ -415,6 +415,42 @@ public class MakerController {
 		MakerBoardVO makerBoard = makerService.getMakerBoardInfo(maker_board_idx);
 		return makerBoard;
 	}
+	
+	// Maker - 마이페이지
+	@GetMapping("makerMypage")
+	public String makerMypage(HttpSession session, Model model) {
+		String sId = (String) session.getAttribute("sId");
+	    if (sId == null) {
+	        model.addAttribute("msg", "잘못된 접근입니다. 로그인 후 사용해 주세요!");
+	        return "fail_back";
+	    }
+	    
+	    Integer maker_idx = makerService.getMakerIdx(sId); // 메이커 번호 조회
+		
+		if(maker_idx == null) { // 메이커 번호 없을 시 
+			model.addAttribute("msg", "메이커 생성 후 이용이 가능합니다!");
+			return "fail_back";
+		}
+		
+		// 메이커 정보 조회
+		MakerVO maker = makerService.getMakerInfo(maker_idx);
+		
+		// 작성중인 프로젝트 - 현재 프로젝트는 등록했는데 리워드는 등록 안한 상태
+		List<ProjectVO> unapprovedList = projectService.getUnapprovedList(maker_idx);
+		
+		// 진행중인 프로젝트
+		List<ProjectVO> proceedingList = projectService.getProceedingList(maker_idx);
+				
+		// 진행완료된 프로젝트
+		List<ProjectVO> completeList = projectService.getCompleteList(maker_idx);
+				
+		model.addAttribute("maker", maker);
+		model.addAttribute("unapprovedList", unapprovedList);
+		model.addAttribute("proceedingList", proceedingList);
+		model.addAttribute("completeList", completeList);
+		
+		return "member/maker_mypage";
+	}
 
 	
 }

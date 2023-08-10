@@ -70,16 +70,8 @@
 					if(data.project_status == 1 || data.project_status == 2) {
 						$('.btn-danger').hide();
 					} else if(data.project_status == 3) { 			// 프로젝트 진행완료 (1차 정산 가능일 때)
-						if(data.maker_grade == 1) { 		// 메이커 등급이 1레벨일 시(기본 등급)
-							final_amount *= 0.5; 			// 50%만 1차 정산
-							$('#final_amount').text(final_amount.toLocaleString() + '원');
-						} else if(data.maker_grade == 2) {	// 메이커 등급이 2레벨일 시
-							final_amount *= 0.6;			// 60%만 1차 정산
-							$('#final_amount').text(final_amount.toLocaleString() + '원');
-						} else if(data.maker_grade == 3) {	// 메이커 등급이 3레벨일 시
-							final_amount *= 0.7;			// 70%만 1차 정산
-							$('#final_amount').text(final_amount.toLocaleString() + '원');
-						}
+						final_amount *= 0.6;						// 60%만 1차 정산
+						$('#final_amount').text(final_amount.toLocaleString() + '원');
 						buttonText = "1차 정산";
 					} else if(data.project_status == 4) {	// 프로젝트 1차 정산완료 (최종 정산 불가능일 때)
 						buttonText = "정산 대기중";		

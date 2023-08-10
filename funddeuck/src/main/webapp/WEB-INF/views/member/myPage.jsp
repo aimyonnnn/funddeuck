@@ -19,6 +19,10 @@
         .border-1{
             border-bottom: 1px solid lightgray;
         }
+        
+        .nav-tabs-no-border {
+	      	border-bottom: none !important;
+	    }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
@@ -37,6 +41,19 @@
         <!-- 마이페이지 시작 -->
         <div class="container"
             style="position: absolute; top: 0; left:50% ; transform: translateX(-50%); margin-top: 100px;">
+            <!-- 서포터와 메이커 구분 탭 -->
+			<div class="container">
+				<div class="bg-primary rounded" style="padding: 0.5rem; padding-bottom: 0;">
+			 		<ul class="nav nav-tabs nav-tabs-no-border justify-content-end">
+			    		<li class="nav-item">
+			     			<a class="nav-link active text-primary" id="member-tab" href="memberMypage">회원</a>
+			    		</li>
+					    <li class="nav-item">
+					    	<a class="nav-link text-white" id="maker-tab" href="makerMypage">메이커</a>
+					    </li>
+			  		</ul>
+		  		</div>
+						
             <div class="row bg-white">
                 <!-- 프로필 영역 -->
                 <div class="col-md-2 col-12 text-center mt-3" style="border-right: solid 1px lightgray;">
@@ -222,6 +239,7 @@
                     </div>
                     <div class="row" style="height: 100px;"></div>
                 </div>
+            </div>
             </div>
         </div>
     </section>

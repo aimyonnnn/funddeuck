@@ -278,7 +278,7 @@
 				<form id="project-form" action="projectManagementPro" class="projectContent" method="post" enctype="multipart/form-data">
 					<!-- 히든 처리하는 부분 -->
 	            	<!-- 마이페이지, 메이커 등록에서 넘어올 때 파라미터로 받아와야함 -->
-	            	<input type="hidden" name="maker_idx" id="maker_idx" value="${param.maker_idx}" class="form-control" style="width:500px;">
+	            	<input type="hidden" name="maker_idx" id="maker_idx" value="${maker_idx}" class="form-control" style="width:500px;">
 					<!-- 기본 요금제 -->
 					<div class="mt-4">
 						<p class="subheading">기본 요금제</p>
@@ -288,7 +288,8 @@
 								<div class="card-header bg-primary text-white">
 					                <input type="radio" id="basic_plan" name="project_plan" value="1" class="card-radio" checked>
 					                <label for="basic_plan">
-										FUNDDEUCK 회원제(5%) (VAT 별도)
+										FUNDDEUCK 회원제(5%) (VAT 별도)<br>
+										\7,800
 					                </label>
 								</div>
 								<div class="card-body">
@@ -307,7 +308,8 @@
 								<div class="card-header bg-success text-white">
 									<input type="radio" id="influencer_plan" name="project_plan" value="2" class="card-radio">
 									<label for="influencer_plan">
-										INFLUENCER 회원제(3%) (VAT 별도)
+										INFLUENCER 회원제(3%) (VAT 별도)<br>
+										\5,800
 									</label>
 								</div>
 								<div class="card-body">

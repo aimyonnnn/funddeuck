@@ -184,6 +184,21 @@ public class ProjectService {
 	public int updateProjectRefundStatus(int payment_idx) {
 		return mapper.updateProjectRefundStatus(payment_idx);
 	}
+	
+	// 작성중인 프로젝트 조회 - 현재 프로젝트는 등록했는데 리워드는 등록 안한 상태
+	public List<ProjectVO> getUnapprovedList(Integer maker_idx) {
+		return mapper.selectUnapprovedList(maker_idx);
+	}
+	
+	// 진행중인 프로젝트 조회
+	public List<ProjectVO> getProceedingList(Integer maker_idx) {
+		return mapper.selectProceedingList(maker_idx);
+	}
+	
+	// 진행완료된 프로젝트 조회
+	public List<ProjectVO> getCompleteList(Integer maker_idx) {
+		return mapper.selectCompleteList(maker_idx);
+	}
     
 		
 		

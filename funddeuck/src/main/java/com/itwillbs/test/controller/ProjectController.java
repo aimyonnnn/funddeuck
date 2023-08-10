@@ -260,15 +260,24 @@ public class ProjectController {
 	// 프로젝트 등록 페이지
 	@GetMapping("projectManagement")
 	public String projectManagement(HttpSession session, Model model) {
-		
 		// 세션 아이디가 존재하지 않을 때 
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "잘못된 접근입니다.");
+			model.addAttribute("msg", "로그인 후 이용 가능합니다!");
 			return "fail_back";
 		}
 		
-		return "project/project_management";
+		Integer maker_idx = makerService.getMakerIdx(sId);
+		
+		if (maker_idx == null) {
+	        String targetURL = "projectMaker";
+	        model.addAttribute("msg", "프로젝트 등록 전 메이커를 먼저 등록하세요!");
+	        model.addAttribute("targetURL", targetURL);
+	        return "success_forward";
+	    } else {
+	    	model.addAttribute("maker_idx", maker_idx);
+	    	return "project/project_management";
+	    }
 	}
 		
 	// 프로젝트 등록 비즈니스 로직 처리

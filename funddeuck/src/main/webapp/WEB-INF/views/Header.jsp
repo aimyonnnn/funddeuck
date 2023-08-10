@@ -349,7 +349,7 @@
         	</c:choose>
             
      		    <li class="nav-item">
-		          <a class="nav-link me-4" href="#">프로젝트 생성</a>
+		          <a class="nav-link me-4" href="projectManagement">프로젝트 생성</a>
 		        </li>
         </div>
       </ul>

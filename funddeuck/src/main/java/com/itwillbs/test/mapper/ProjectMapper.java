@@ -133,7 +133,16 @@ public interface ProjectMapper {
 	int updateProjectSettlementStatus(@Param("project_idx") int project_idx,@Param("final_settlement") int final_settlement);
 
 	// 정산 완료 후 환불 상태 변경
-	int updateProjectRefundStatus(@Param("payment_idx") int payment_idx);	
+	int updateProjectRefundStatus(@Param("payment_idx") int payment_idx);
+
+	// 작성중인 프로젝트 조회 - 현재 프로젝트는 등록했는데 리워드는 등록 안한 상태
+	List<ProjectVO> selectUnapprovedList(Integer maker_idx);
+
+	// 진행중인 프로젝트 조회
+	List<ProjectVO> selectProceedingList(Integer maker_idx);
+
+	// 진행완료된 프로젝트 조회
+	List<ProjectVO> selectCompleteList(Integer maker_idx);	
 			
 
 

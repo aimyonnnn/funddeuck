@@ -371,7 +371,6 @@
 	<select id="selectSettlementList" resultType="com.itwillbs.test.vo.PaymentVO">
 		SELECT 
 		    p.*,
-		    m.maker_grade,
 		    SUM(pa.total_amount) as total_amount,
 		    SUM(pa.additional_amount) as total_additional_amount,
 		    SUM(pa.reward_amount) as total_reward_amount,
@@ -390,10 +389,6 @@
         	reward r
     	ON
         	pa.reward_idx = r.reward_idx
-        JOIN
-        	maker m
-    	ON
-        	p.maker_idx = m.maker_idx
 		WHERE
 		    p.project_idx = #{project_idx} AND (pa.payment_confirm = 1 OR pa.payment_confirm = 2 OR pa.payment_confirm = 5)
 		GROUP BY

@@ -113,8 +113,8 @@ public class BankController {
 				}
 			
 				model.addAttribute("mostRecentBankAccount", mostRecentBankAccount);
-				// 토큰 idx 전달 => 필요 ?
-				model.addAttribute("token_idx", responseToken.getToken_idx());
+				// 토큰 idx 전달 
+				model.addAttribute("token_idx", token.getToken_idx());
 				model.addAttribute("isClose", true);
 				
 				return "bank_success_forward";
