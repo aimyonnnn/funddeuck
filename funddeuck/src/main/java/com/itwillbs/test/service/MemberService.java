@@ -204,4 +204,14 @@ public class MemberService {
 		return mapper.selectZimPostListCount(sId);
 	}
 
+	// 전체 회원 조회
+	public List<MembersVO> getAllMemberList() {
+		return mapper.selectAllmemberList();
+	}
+
+	// 오늘 가입한 회원 수 조회
+	public int getMembersCountByToday() {
+		return mapper.selectMembersCountByToday();
+	}
+
 }

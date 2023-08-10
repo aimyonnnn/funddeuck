@@ -1,5 +1,7 @@
 package com.itwillbs.test.vo;
 
+import java.sql.Timestamp;
+
 import lombok.Data;
 /*
 CREATE TABLE members (
@@ -11,7 +13,8 @@ CREATE TABLE members (
     member_phone VARCHAR(20) NOT NULL COMMENT '회원전화번호',
     member_status INT NOT NULL DEFAULT 1 COMMENT '회원상태',
     member_grade INT NOT NULL DEFAULT 1 COMMENT '회원등급',
-    false_count INT NOT NULL DEFAULT 0 COMMENT '로그인 실패 카운트'
+    false_count INT NOT NULL DEFAULT 0 COMMENT '로그인 실패 카운트',
+    join_date DATETIME NOT NULL DEFAULT NOW() COMMENT '회원가입일'
 );
 */
 
@@ -26,6 +29,7 @@ public class MembersVO {
 	private String member_status;
 	private String member_grade;
 	private int false_count;
+	private Timestamp join_date;
 	
 	//
 	private int reward_idx;

@@ -29,8 +29,8 @@
 				,#{member_email}
 				,#{member_phone}
 				,1
-				,1
 				,0
+				,now()
 			)
 	</insert>
 	
@@ -467,4 +467,18 @@
 								FROM members
 								WHERE member_id = #{sId})
 	</select>
+	
+	<!-- 전체 회원 조회 -->
+	<select id="selectAllmemberList" resultType="com.itwillbs.test.vo.MembersVO">
+		SELECT *
+			FROM members
+	</select>
+	
+	<!-- 오늘 가입한 회원 수 조회 -->
+	<select id="selectMembersCountByToday">
+		SELECT count(member_idx)
+			FROM members
+			WHERE DATE(join_date) = CURDATE()
+	</select>
+	
 </mapper>

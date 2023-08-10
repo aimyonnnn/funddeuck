@@ -101,7 +101,7 @@ th, td {
 		                                value="${member.member_status}"></td>
 		                            </tr>
 		                            <tr>
-		                                <th>로그인 실패 카운트</th>
+		                                <th>로그인 실패</th>
 		                                <td><input type="text" name="false_count" class="form-control"
 		                                value="${member.false_count}"></td>
 		                            </tr>

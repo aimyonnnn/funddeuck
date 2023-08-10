@@ -105,9 +105,15 @@ public class AdminController {
 		int totalProjectCount = pList.size();
 		int todaySupporterCount = paymentService.getSupportCountByPaymentDate();
 		
+		List<MembersVO> memberList = memberService.getAllMemberList(); // 전체 멤버 리스트 조회
+		int totalMembersCount = memberList.size(); // 전체 멤버 수 
+		int todayMembersCount = memberService.getMembersCountByToday(); // 오늘 가입한 회원 수 
+		
 		model.addAttribute("pList", pList);
 		model.addAttribute("totalProjectCount", totalProjectCount);
+		model.addAttribute("totalMembersCount", totalMembersCount);
 		model.addAttribute("todaySupporterCount", todaySupporterCount);
+		model.addAttribute("todayMembersCount", todayMembersCount);
 		
 		return "admin/admin_main";
 	}

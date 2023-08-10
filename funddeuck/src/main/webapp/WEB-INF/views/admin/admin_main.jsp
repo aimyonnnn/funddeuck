@@ -43,7 +43,7 @@
 							<span>MEMBER</span> <small>총 회원 수</small>
 						</div>
 
-						<h2>11명</h2>
+						<h2>${totalMembersCount}명</h2>
 						<small><a style="color: red;">활동 정지된 회원을 포함한</a> 총 회원
 							수입니다.</small>
 					</div>
@@ -97,7 +97,7 @@
 
 				<form method="post" class="analytics-chart">
 					<div class="chart-circle">
-						<h1>9명</h1>
+						<h1>${todayMembersCount }명</h1>
 					</div>
 					<small>회원가입일이<a style="color: blue;"> 오늘</a>인 회원수를 카운팅합니다.
 					</small>

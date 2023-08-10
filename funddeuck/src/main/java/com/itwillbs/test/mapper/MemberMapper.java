@@ -125,6 +125,12 @@ public interface MemberMapper {
 	
 	//찜한 리스트의 포트스 카운트
 	int selectZimPostListCount(String sId);
+
+	// 전체 회원 조회
+	List<MembersVO> selectAllmemberList();
+
+	// 오늘 가입한 회원 수 조회
+	int selectMembersCountByToday();
 	
 
 }
