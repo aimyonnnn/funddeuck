@@ -65,5 +65,8 @@ public interface FundingMapper {
 
 	// 프로젝트 메이커 로고
 	MakerVO selectMakerLogo(int maker_idx);
+
+	//자동으로 택배조회후 상태 변경
+	int AutoUpdateDeliveryStatus(@Param("delivery_status") int delivery_status,@Param("payment_idx") int payment_idx);
 	
 }

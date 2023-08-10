@@ -738,6 +738,24 @@ public class MemberController {
     	
     }
     
+    // 자동 배송 상태 변경
+    @PostMapping("updateDeliveryStatus")
+    @ResponseBody
+    public String updateDeliveryStatus(@RequestParam int delivery_status, @RequestParam int payment_idx) {
+    	
+    	System.out.println(delivery_status);
+    	
+    	System.out.println(payment_idx);
+    	
+    	int updateCount = fundingservice.AutoUpdateDeliveryStatus(delivery_status, payment_idx);
+    	
+    	if(updateCount > 0) {
+    		return "true"; 
+    	}
+    	
+    	return "false";
+    }
+    
     //반환신청
     @PostMapping(value = "cancellationRequest", consumes = "multipart/form-data")
     @ResponseBody
