@@ -80,7 +80,7 @@
                 </div>
                 <hr>
                 <button class="btn" style="border-radius: 50px;">로그아웃</button><br>
-				<button class="btn btn-primary" style="border-radius: 50px;" onclick="location.href='makerDetail'">메이커페이지 바로가기</button>
+				<button class="btn btn-primary" style="border-radius: 50px;" onclick="location.href='makerDetail?maker_idx=${maker.maker_idx}'">메이커페이지 바로가기</button>
                 </div>
                 <!-- 프로필 영역 -->
                 <!-- 프로젝트 목록 영역 -->

@@ -790,7 +790,6 @@ public class MemberController {
     		try {
 				file.transferTo(new File(saveDir,fileName));
 			} catch (IllegalStateException | IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     		return "true";
