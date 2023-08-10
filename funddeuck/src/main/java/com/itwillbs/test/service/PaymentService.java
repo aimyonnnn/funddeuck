@@ -183,4 +183,9 @@ public class PaymentService {
 				payment_quantity, payment_confirm, payment_method);
 	}
 	
+	// 메이커별 누적 서포터수 조회
+	public Integer getAcmlSupportCount(Integer maker_idx) {
+		return mapper.selectAcmlSupportCount(maker_idx);
+	}
+	
 }

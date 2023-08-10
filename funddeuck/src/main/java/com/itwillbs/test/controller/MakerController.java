@@ -24,9 +24,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
+import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
+import com.itwillbs.test.vo.PaymentVO;
 import com.itwillbs.test.vo.ProjectVO;
 
 @Controller
@@ -38,6 +40,8 @@ public class MakerController {
 	private ProjectService projectService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private PaymentService paymentService;
 	
 	// 메이커 등록 페이지
 	@GetMapping("projectMaker")
@@ -185,6 +189,9 @@ public class MakerController {
 	        // 메이커 공지사항 리스트 조회
 	        List<MakerBoardVO> mList = projectService.getMakerBoardList(maker_idx);
 	        model.addAttribute("mList", mList);
+	        // 누적 서포터수 조회
+	        Integer totalAcmlSupporters = paymentService.getAcmlSupportCount(maker_idx);
+	        model.addAttribute("totalAcmlSupporters", totalAcmlSupporters);
 	    }
 
 	    if (sId != null) {
@@ -195,7 +202,7 @@ public class MakerController {
 	        boolean isMyMaker = loggedInMakerIdx != null && maker_idx != null && loggedInMakerIdx.equals(maker_idx);
 
 	        if (isMyMaker && maker == null) {
-	            // 로그인한 사용자의 메이커 정보를 가져옵니다. 이미 가져왔다면 다시 가져오지 않습니다.
+	            // 로그인한 사용자의 메이커 정보를 가져옴
 	            maker = makerService.getMakerInfo(loggedInMakerIdx);
 
 	            if (maker == null) {
@@ -209,13 +216,16 @@ public class MakerController {
 	            // 로그인한 사용자의 메이커 공지사항 리스트 조회
 	            List<MakerBoardVO> mList = projectService.getMakerBoardList(loggedInMakerIdx);
 	            model.addAttribute("mList", mList);
+	            // 누적 서포터수 조회
+		        Integer totalAcmlSupporters = paymentService.getAcmlSupportCount(maker_idx);
+		        model.addAttribute("totalAcmlSupporters", totalAcmlSupporters);
 	        }
 
 	        model.addAttribute("member_idx", member_idx);
 	        model.addAttribute("isMyMaker", isMyMaker); // 본인의 메이커인지 여부를 모델에 추가
 	    }
 
-	    // maker 정보가 있다면 모델에 추가합니다.
+	    // maker 정보가 있다면 모델에 추가
 	    if (maker != null) {
 	        model.addAttribute("maker", maker);
 	    }
@@ -224,8 +234,9 @@ public class MakerController {
 	}
 
 	// 메이커 정보 변경
-	@PostMapping("modifyMakerForm")
-	public String modifyMakerForm(@RequestParam int maker_idx, HttpSession session, Model model) {
+	@GetMapping("modifyMakerForm")
+	public String modifyMakerForm(
+			@RequestParam int maker_idx, @RequestParam(defaultValue = "1") int tab, HttpSession session, Model model) {
 		String sId = (String) session.getAttribute("sId");
 		if(sId == null) {
 			model.addAttribute("msg", "잘못된 접근입니다.");
@@ -311,9 +322,14 @@ public class MakerController {
 			}
 			
 			// 메이커 수정 성공 시 makerDetail로 이동
-			String targetURL = "makerDetail?maker_idx=" + maker.getMaker_idx();
-			System.out.println("메이커 idx : " + maker.getMaker_idx());
-			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다.");
+//			String targetURL = "makerDetail?maker_idx=" + maker.getMaker_idx();
+//			System.out.println("메이커 idx : " + maker.getMaker_idx());
+//			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다.");
+//			model.addAttribute("targetURL", targetURL);
+//			return "success_forward";
+			System.out.println("메이커수정하기여기까지옴");
+			String targetURL = "modifyMakerForm?maker_idx=" + maker.getMaker_idx() + "&tab=3"; // 파라미터 추가
+			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다!");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
 		} else {
@@ -389,7 +405,12 @@ public class MakerController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			String targetURL = "makerDetail?maker_idx=" + makerBoard.getMaker_idx();
+//			String targetURL = "makerDetail?maker_idx=" + makerBoard.getMaker_idx();
+//			model.addAttribute("msg", "공지사항 작성이 성공적으로 완료되었습니다!");
+//			model.addAttribute("targetURL", targetURL);
+//			return "success_forward";
+			System.out.println("메이커공지사항작성여기까지옴");
+			String targetURL = "modifyMakerForm?maker_idx=" + makerBoard.getMaker_idx() + "&tab=1";
 			model.addAttribute("msg", "공지사항 작성이 성공적으로 완료되었습니다!");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";

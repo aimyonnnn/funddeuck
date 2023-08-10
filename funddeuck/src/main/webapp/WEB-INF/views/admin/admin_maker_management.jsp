@@ -80,7 +80,6 @@ th, td {
 					<th class="text-center" style="width: 15%;">메이커 이름</th>
 					<th class="text-center" style="width: 7%;">이메일</th>
 					<th class="text-center" style="width: 7%;">전화번호</th>
-					<th class="text-center" style="width: 5%;">등급</th>
 					<th class="text-center" style="width: 5%;">상세정보</th>
 				</tr>
 				
@@ -107,7 +106,6 @@ th, td {
 						</td>
 						<td class="text-center">${mList.maker_email}</td>
 						<td class="text-center">${mList.maker_tel}</td>
-						<td class="text-center">${mList.maker_grade}</td>
 						<td class="text-center">
 							<button class="btn btn-outline-primary btn-sm" 
 							onclick="location.href='adminMakerDetail?maker_idx=${mList.maker_idx}&pageNum=${pageNum}'">상세보기</button>

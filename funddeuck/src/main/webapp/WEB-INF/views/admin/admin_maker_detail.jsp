@@ -86,12 +86,6 @@ th, td {
 								value="${maker.maker_url}"></td>
 						</tr>
 						<tr>
-							<th>메이커 등급</th>
-							<td><input type="text" name="maker_grade" class="form-control"
-								value="${maker.maker_grade}"></td>
-						</tr>
-						
-						<tr>
 							<th>사업자등록번호(개인)</th>
 							<td><input type="text" name="individual_biz_num" class="form-control"
 								value="${maker.individual_biz_num}"></td>

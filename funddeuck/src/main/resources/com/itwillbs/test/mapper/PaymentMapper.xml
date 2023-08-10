@@ -485,5 +485,31 @@
 		      (#{fileNumber} = 1 and cancel_img != '')
 		    )
 	</delete>
+	
+	<!-- 메이커별 누적 서포터수 조회 -->
+	<select id="selectAcmlSupportCount">
+	<![CDATA[
+	SELECT
+	    SUM(cumulative_supporters) AS count
+	FROM
+	(
+	    SELECT
+	        DATE(p.payment_date) AS date,
+	        COUNT(*) AS cumulative_supporters
+	    FROM
+	        maker m
+	    JOIN
+	        project pr ON m.maker_idx = pr.maker_idx
+	    JOIN
+	        payment p ON pr.project_idx = p.project_idx
+	    WHERE
+	        p.payment_date <= CURDATE() -- 현재 날짜를 기준으로 이전 전체 일자
+	    AND
+	        m.maker_idx = #{maker_idx}
+	    GROUP BY
+	        DATE(p.payment_date)
+	) AS subquery;
+	]]>
+	</select>
 		
 </mapper>

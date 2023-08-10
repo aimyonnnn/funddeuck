@@ -145,5 +145,8 @@ public interface PaymentMapper {
 			, @Param("payment_quantity") int payment_quantity
 			, @Param("payment_confirm") int payment_confirm
 			, @Param("payment_method") int payment_method);
+	
+	// 메이커벌 누적 서포터수 조회
+	Integer selectAcmlSupportCount(Integer maker_idx);
 
 }

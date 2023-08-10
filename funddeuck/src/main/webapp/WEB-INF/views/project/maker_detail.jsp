@@ -39,37 +39,34 @@
 			</div>
 			
 			<div class="my-4">
-				<h4>
-					<b>${maker.maker_name}</b>
-				</h4>
-				<!-- 메이커 소개 -->
-				<p>${maker.maker_intro}</p>
 
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-6">
-						
+						<div class="col-sm-12">
 							<div>
-								<!-- 만족도 -->
-								<a class="star-rating"> <svg
-										xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-										fill="currentColor" class="bi bi-star-fill"
-										viewBox="0 0 16 16">
-			            				<path
-											d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-			          				</svg>만족도:&nbsp;<span>4.0</span>
-								</a> <br>
-								<!-- 서포터 수 -->
-								<a class="supporters"> <svg
-										xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-										fill="currentColor" class="bi bi-person-plus-fill"
-										viewBox="0 0 16 16">
-			           					<path
-											d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-			            				<path fill-rule="evenodd"
-											d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
-			          				</svg>서포터:&nbsp;<span>19명</span>
-								</a>
+								<h4><b>${maker.maker_name}</b><br></h4>
+								<span>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-check" viewBox="0 0 16 16">
+									  	<path d="M7.293 1.5a1 1 0 0 1 1.414 0L11 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l2.354 2.353a.5.5 0 0 1-.708.708L8 2.207l-5 5V13.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 2 13.5V8.207l-.646.647a.5.5 0 1 1-.708-.708L7.293 1.5Z"/>
+									 	<path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.707l.547.547 1.17-1.951a.5.5 0 1 1 .858.514Z"/>
+									</svg>
+									${maker.maker_intro}
+								</span>
+							</div>
+						
+							<div class="supporters">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+								   <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+								</svg>
+	          					서포터 수&nbsp;:&nbsp;
+	          					<c:choose>
+		          					<c:when test="${empty totalAcmlSupporters}">
+		          						0명
+		          					</c:when>
+		          					<c:otherwise>
+			          					${totalAcmlSupporters}명
+		          					</c:otherwise>
+	          					</c:choose>
 							</div>
 							
 						</div>
@@ -79,9 +76,10 @@
 				<%-- maker 테이블의 member_idx와 세션아이디로 조회한 member_idx가 같을 때 수정하기 버튼 출력 --%>
 				<c:if test="${sessionScope.sId != null && (maker.member_idx eq member_idx)}">
 				    <div class="d-flex justify-content-end">
-				        <form action="modifyMakerForm" method="post">
+				        <form action="modifyMakerForm" method="get">
 				            <input type="hidden" name="maker_idx" value="${maker.maker_idx}" />
-				            <button type="submit" class="btn btn-outline-primary">메이커 페이지 수정하기</button>
+				            <input type="hidden" name="tab" value="1" />
+				            <button type="submit" class="btn btn-outline-primary">공지사항 작성하기</button>
 				        </form>
 				    </div>
 				</c:if>
@@ -109,7 +107,7 @@
 								<div class="row">
 									<div class="card col-md-6 col-lg-12">
 									  <img src="${pageContext.request.contextPath}/resources/upload/${pList.project_image}"
-											 alt="project_image를 업로드 해주세요. 후원하기 클릭 시 상세페이지로 이동합니다." class="img-fluid maker-img mt-2">
+											 alt="project_image를 업로드 해주세요" class="img-fluid maker-img mt-2">
 									  <div class="card-body">
 									    <div class="card-text makerSubject">${pList.project_subject}</div>
 									    <div class="card-text">${pList.project_semi_introduce}</div>

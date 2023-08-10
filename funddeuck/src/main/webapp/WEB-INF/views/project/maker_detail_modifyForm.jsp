@@ -18,6 +18,13 @@
 	<!-- css -->
 	<link href="${pageContext.request.contextPath}/resources/css/project.css" rel="styleSheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
+	<style>
+    .content-area {
+        /* 원하는 크기 값으로 설정 */
+        width: 100%; /* 예시로 가로폭을 100%로 설정 */
+        max-width: 800px; /* 최대 가로폭을 800px로 설정 */
+    }
+</style>
 </head>
 <body>
 <jsp:include page="../Header.jsp"></jsp:include>
@@ -26,29 +33,21 @@
 	<div class="row">
 		<div class="col">
 
-			<!-- 메이커 이미지 출력 -->
-			<div class="d-flex justify-content-center my-2">
-				<img src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file4}"
-				     alt="메이커 사진을 업로드 해주세요" class="img-fluid" style="max-height: 400px;">
-			</div>
-
 			<div class="my-4">
-
-				<div class="text-center my-2">
-					<button class="btn btn-primary w-100">
-						+Follow<span></span>
-					</button>
+			
+				<div class="d-flex justify-content-center">
+					<button class="btn btn-outline-primary" onclick="location.href='makerDetail?maker_idx=${param.maker_idx}'">뒤로가기</button>
 				</div>
-
+				
 				<div class="tab-buttons text-center">
 					<button class="btn btn-outline-primary tab-button w-100" data-tab="tab1">공지사항 작성하기</button>
-					<button class="btn btn-outline-primary tab-button w-100 active" data-tab="tab2">공지사항 리스트</button>
-					<button class="btn btn-outline-primary tab-button w-100 " data-tab="tab3">메이커정보 수정하기</button>
+					<button class="btn btn-outline-primary tab-button w-100" data-tab="tab2">공지사항 리스트</button>
+					<button class="btn btn-outline-primary tab-button w-100" data-tab="tab3">메이커정보 수정하기</button>
 				</div>
-
+				
 				<!-- 공지사항 작성하기 -->
 				<div class="content-area" id="tab1">
-					<form action="makerBoardWritePro" method="post" enctype="multipart/form-data">
+					<form action="makerBoardWritePro" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
 					   	<!-- hidden 필드 추가 -->
         				<input type="hidden" id="project_idx" name="project_idx" value="">
 						<input type="hidden" name="maker_idx" value="${maker.maker_idx}">
@@ -63,12 +62,12 @@
 							</tr>
 							<tr class="text-center">
 								<th>제목</th>
-								<td><input type="text" name="maker_board_subject" id="maker_board_subject" class="form-control"></td>
+								<td><input type="text" name="maker_board_subject" id="maker_board_subject" class="form-control" placeholder="제목을 입력해주세요"></td>
 							</tr>
 							<tr class="text-center">
 								<th>내용</th>
 								<td>
-									<textarea cols="10" rows="10" name="maker_board_content" id="maker_baord_content" class="form-control"></textarea>
+									<textarea cols="10" rows="10" name="maker_board_content" id="maker_board_content" class="form-control" placeholder="내용을 입력해주세요"></textarea>
 								</td>
 							</tr>
 							<tr>
@@ -77,64 +76,39 @@
 							</tr>
 						</table>
 						<div class="d-flex justify-content-center">
-							<input type="submit" value="글 등록하기" class="btn btn-outline-primary">
+							<input type="submit" value="등록하기" class="btn btn-outline-primary">
 						</div>
 					</form>
 				</div>
 				
 				<!-- 공지사항 리스트 -->
 				<div class="content-area" id="tab2">
-				
-					<div class="accordion" id="accordionExample">
-					
+					<div id="note-full-container" class="note-has-grid row">
 					    <c:forEach var="mList" items="${mList}">
-					        <div class="accordion-item">
-					            <h2 class="accordion-header" id="heading${mList.maker_board_idx}">
-					                <button class="accordion-button bg-primary text-white" type="button" data-bs-toggle="collapse"
-					                    data-bs-target="#collapse${mList.maker_board_idx}" aria-expanded="true"
-					                    aria-controls="collapse${mList.maker_board_idx}">
-					                    ${mList.maker_board_subject}
-					                </button>	
-					            </h2>
-					            <div id="collapse${mList.maker_board_idx}" class="accordion-collapse collapse show"
-					                aria-labelledby="heading${mList.maker_board_idx}" data-bs-parent="#accordionExample">
-					                <div class="accordion-body">
-					                	<table class="table text-center">
-					                		<tr>
-					                			<td style="width: 20%">작성내용</td>
-					                			<td style="width: 80%">${mList.maker_board_content}</td>
-					                		</tr>
-					                		<tr>
-					                			<td>작성일자</td>
-					                			<td><fmt:formatDate value="${mList.maker_board_regdate}" pattern="yy-MM-dd HH:mm" /></td>
-					                		</tr>
-					                		<tr>
-					                			<td>첨부파일</td>
-					                			<td>
-					                				<c:choose>
-					                					<c:when test="${not empty mList.maker_board_file1}">
-							                				<a href="${pageContext.request.contextPath}/resources/upload/${mList.maker_board_file1}" download="${fn:split(mList.maker_board_file1, '_')[1]}">
-												                ${fn:split(mList.maker_board_file1, '_')[1]}
-												            </a>
-					                					</c:when>
-					                					<c:otherwise>
-					                						첨부파일 없음
-					                					</c:otherwise>
-					                				</c:choose>
-					                			</td>
-					                		</tr>
-<!-- 					                		<tr> -->
-<!-- 					                			<td colspan="2" class="text-center"> -->
-<!-- 						                			<input type="button" value="삭제하기" class="btn btn-outline-danger btn-sm" -->
-<%-- 													onclick="deleteMakerBoard(${mList.maker_board_idx})"> --%>
-<!-- 					                			</td> -->
-<!-- 					                		<tr> -->
-					                	</table>
+					        <div class="col-md-12 single-note-item all-category mb-4">
+					            <div class="card">
+					                <div class="card-header">
+					                    <h5 class="card-title"><b>${mList.maker_board_subject}</b></h5>
+					                    작성 시간: <fmt:formatDate value="${mList.maker_board_regdate}" pattern="yy-MM-dd HH:mm" />
+					                </div>
+					                <div class="card-body">
+					                    <p class="card-text">${mList.maker_board_content}</p>
+					                    <div style="text-align: right;">
+					                        <c:choose>
+					                            <c:when test="${not empty mList.maker_board_file1}">
+					                                <a href="${pageContext.request.contextPath}/resources/upload/${mList.maker_board_file1}" download="${fn:split(mList.maker_board_file1, '_')[1]}">
+					                                    첨부파일: ${fn:split(mList.maker_board_file1, '_')[1]}
+					                                </a>
+					                            </c:when>
+					                            <c:otherwise>
+					                                첨부파일 없음
+					                            </c:otherwise>
+					                        </c:choose>
+					                    </div>
 					                </div>
 					            </div>
 					        </div>
 					    </c:forEach>
-					    
 					</div>
 				</div>
 				
@@ -146,7 +120,7 @@
 						<input type="hidden" name="maker_idx" value="${maker.maker_idx}">
 						<table class="table text-center">
 							<tr>
-								<th>상호명</th>
+								<th>메이커 이름</th>
 								<td><input type="text" name="maker_name" class="form-control"
 									value="${maker.maker_name}"></td>
 							</tr>
@@ -162,7 +136,7 @@
 							</tr>
 							<tr>
 								<th>전화번호</th>
-								<td><input type="text" name="maker_tel" class="form-control"
+								<td><input type="number" name="maker_tel" class="form-control"
 									value="${maker.maker_tel}"></td>
 							</tr>
 							<tr>
@@ -221,6 +195,7 @@
 					</form>
 					<!-- 폼 태그 -->
 				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -265,42 +240,33 @@
 <script>
 //탭 버튼 클릭 시
 $(document).ready(function() {
-	
-	$("#tab2").addClass("active");
-	$(".tab-button").click(function() {
-		
-		var tabId = $(this).data("tab");
-		$(".content-area").removeClass("active");
-		$("#" + tabId).addClass("active");
-		
-	});
-	
-});
+    $(".tab-button").click(function() {
+        var tabId = $(this).data("tab");
+        $(".content-area").removeClass("active");
+        $("#" + tabId).addClass("active");
 
-// 탭 버튼 클릭시 active 효과
-$(document).ready(function() {
-	
-	// 버튼1 클릭 시
-	$(".tab-button[data-tab='tab1']").click(function() {
-		$(".tab-button[data-tab='tab1']").addClass("active");
-	  	$(".tab-button[data-tab='tab2']").removeClass("active");
-	  	$(".tab-button[data-tab='tab3']").removeClass("active");
-	});
-	
-	// 버튼2 클릭 시
-	$(".tab-button[data-tab='tab2']").click(function() {
-	  	$(".tab-button[data-tab='tab1']").removeClass("active");
-	  	$(".tab-button[data-tab='tab2']").addClass("active");
-	  	$(".tab-button[data-tab='tab3']").removeClass("active");
-	});
-	
-	// 버튼3 클릭 시
-	$(".tab-button[data-tab='tab3']").click(function() {
-	  	$(".tab-button[data-tab='tab1']").removeClass("active");
-	 	$(".tab-button[data-tab='tab2']").removeClass("active");
-	 	$(".tab-button[data-tab='tab3']").addClass("active");
-	});
-	
+        // 탭 버튼 클릭시 active 효과 설정
+        $(".tab-button").removeClass("active"); // 모든 탭 버튼의 active 클래스 제거
+        $(this).addClass("active"); // 클릭한 탭 버튼에 active 클래스 추가
+    });
+
+    // URL 파라미터 확인하여 탭 활성화 설정
+    let urlParams = new URLSearchParams(window.location.search);
+    let activeTab = urlParams.get("tab");
+
+    if (activeTab === "3") {
+        $(".tab-button[data-tab='tab1']").removeClass("active");
+        $(".tab-button[data-tab='tab2']").removeClass("active");
+        $(".tab-button[data-tab='tab3']").addClass("active");
+
+        $(".content-area").removeClass("active"); // 모든 컨텐트 영역의 active 클래스 제거
+        $("#tab3").addClass("active"); // 탭3의 컨텐트 영역에 active 클래스 추가
+    } else {
+        // 기본적으로 활성화될 탭 설정
+        $(".tab-button[data-tab='tab1']").addClass("active");
+        $(".content-area").removeClass("active"); // 모든 컨텐트 영역의 active 클래스 제거
+        $("#tab1").addClass("active"); // 탭1의 컨텐트 영역에 active 클래스 추가
+    }
 });
 
 // 파일 실시간 삭제
@@ -437,6 +403,32 @@ $(() => {
 	getProjectList();	
 	
 });
+
+// 공지사항 등록 시 유효성 검사
+function validateForm() {
+    var projectSelect = document.getElementById("projectSelect");
+    var makerBoardSubject = document.getElementById("maker_board_subject");
+    var makerBoardContent = document.getElementById("maker_board_content");
+
+    if (projectSelect.value === "") {
+        alert("프로젝트를 선택해주세요.");
+        projectSelect.focus();
+        return false;
+    }
+    if (makerBoardSubject.value === "") {
+        alert("제목을 입력해주세요.");
+        makerBoardSubject.focus();
+        return false;
+    }
+    if (makerBoardContent.value.trim() === "") {
+        alert("내용을 입력해주세요.");
+        makerBoardContent.focus();
+        return false;
+    }
+
+    return true;
+}
+
 </script>
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

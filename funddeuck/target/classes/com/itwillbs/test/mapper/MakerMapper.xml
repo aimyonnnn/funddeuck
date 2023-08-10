@@ -56,8 +56,7 @@
 				maker_intro = #{maker_intro},	  					-- 메이커 소개		
 				maker_email = #{maker_email},    					-- 메이커 이메일
 				maker_tel = #{maker_tel},  	 						-- 메이커 전화번호
-				maker_url = #{maker_url},	 		    			-- 메이커 홈페이지
-				maker_grade = #{maker_grade}		 				-- 메이커 등급
+				maker_url = #{maker_url}			    			-- 메이커 홈페이지
 			where
 				maker_idx = #{maker_idx}	
 	</update>
