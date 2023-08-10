@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />  	
 	<link rel="stylesheet" type="text/css" href="resources/css/mypage.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -76,24 +77,26 @@
 	.swiper-pagination-custom {
     	display: none;
 	}
-	
+
 	.swiper-container {
-    display: flex;
-    align-items: flex-start;
+	    display: flex;
+	    align-items: flex-start;
+	    max-width: 100%;
+	    overflow: hidden;
+	    height: auto; /* 높이 자동 조절 */
 	}
-	
 	.swiper-slide {
 	    flex: 0 0 auto;
-	}
-	
-	.swiper-pagination-custom {
-	    margin-top: 10px;
-	}
-	
-	.swiper-slide .card {
-	    width: 100%;
-	    max-width: 363.143px; 
+	    width: auto;
 	    margin-right: 10px;
+	}
+		
+		.swiper-pagination-custom {
+		    margin-top: 10px;
+		}
+		
+	.swiper-slide .card {
+	    width: 100%; /* 슬라이드 너비에 맞게 카드 크기 조절 */
 	    box-sizing: border-box;
 	}
 	
@@ -162,80 +165,80 @@
         z-index: 2; /* 마우스 오버 시 다른 요소 위로 올라오도록 설정 */
     }
     
-/* 모달 팝업 스타일 */
-.popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
-
-.popup-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-
-    /* 수정된 부분: 너비를 min-width로 지정해서 유동적인 조절 가능하도록 함 */
-    min-width: 300px;
-    max-width: 80%;
-    text-align: right; 
-}
-
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    cursor: pointer;
-    color: #999;
-}
-
-/* 추가한 부분 */
-.content-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-}
-
-#hideToday {
-    margin-bottom: 10px;
-}
-
-/* 모바일 환경에서 팝업 창 스타일 */
-@media (max-width: 768px) {
-    .popup-content {
-        /* 모바일에서 크기를 유지*/
-        max-width: 90%;
-        text-align: center;
-        padding: 10px;
-    }
-
-    .popup-content img {
-        /* 수정된 부분: 이미지 너비 설정 */
-        max-width: 100%;
-        height: auto;
-    }
-
-    .close-button {
-        top: 20px;
-        right: 20px;
-    }
-
-    .content-wrapper {
-        /* 수정된 부분: 모바일에서 이미지를 중앙에 배치*/
-        margin-top: 50px;
-    }
-}
+	/* 모달 팝업 스타일 */
+	.popup {
+	    display: none;
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    background-color: rgba(0, 0, 0, 0.5);
+	    z-index: 1000;
+	}
+	
+	.popup-content {
+	    position: absolute;
+	    top: 50%;
+	    left: 50%;
+	    transform: translate(-50%, -50%);
+	    background-color: #fff;
+	    border-radius: 5px;
+	    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+	
+	    /* 수정된 부분: 너비를 min-width로 지정해서 유동적인 조절 가능하도록 함 */
+	    min-width: 300px;
+	    max-width: 80%;
+	    text-align: right; 
+	}
+	
+	.close-button {
+	    position: absolute;
+	    top: 10px;
+	    right: 10px;
+	    font-size: 20px;
+	    cursor: pointer;
+	    color: #999;
+	}
+	
+	/* 추가한 부분 */
+	.content-wrapper {
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: center;
+	    align-items: center;
+	    margin-top: 20px;
+	}
+	
+	#hideToday {
+	    margin-bottom: 10px;
+	}
+	
+	/* 모바일 환경에서 팝업 창 스타일 */
+	@media (max-width: 768px) {
+	    .popup-content {
+	        /* 모바일에서 크기를 유지*/
+	        max-width: 90%;
+	        text-align: center;
+	        padding: 10px;
+	    }
+	
+	    .popup-content img {
+	        /* 수정된 부분: 이미지 너비 설정 */
+	        max-width: 100%;
+	        height: auto;
+	    }
+	
+	    .close-button {
+	        top: 20px;
+	        right: 20px;
+	    }
+	
+	    .content-wrapper {
+	        /* 수정된 부분: 모바일에서 이미지를 중앙에 배치*/
+	        margin-top: 50px;
+	    }
+	}
 
   </style>
   
@@ -354,33 +357,35 @@
 	<br>	
 <hr>
  	<br>
-		<div class="container">
-		    <h3><b>오픈 예정 프로젝트</b></h3>
-		    <p>주목하세요! 오픈할 프로젝트</p>
-		    <div class="swiper-container">
-		        <div class="swiper-wrapper">
-		            <c:forEach items="${projectList}" var="project" varStatus="status">
-		                <c:if test="${project.project_status == 1 && project.project_approve_status == 5}">
-		                    <div class="swiper-slide">
-		                        <div class="card">
-		                            <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>
-		                            <div class="card-body">
-		                                <em class="card-title"><b>${project.project_subject}</b></em>
-		                                <p class="card-text">
-		                                    <br>${project.project_category} | ${project.project_representative_name}
-		                                </p>
-		                            </div>
-		                            <hr>
-		                            <a href="fundingDetail?project_idx=${project.project_idx }" class="stretched-link"><p style="text-align: center;"><b>지금 살펴보기></b></p></a>
-		                        </div>
-		                    </div>
-		                </c:if>
-		            </c:forEach>
-		        </div>
-		        <div class="swiper-pagination-custom swiper-pagination"></div>
-		    </div>
-		</div>
-	   <br>	
+		    <div class="container">
+        <h3><b>오픈 예정 프로젝트</b></h3>
+        <p>주목하세요! 오픈할 프로젝트</p>
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <c:forEach items="${projectList}" var="project" varStatus="status">
+                    <c:if test="${project.project_status == 1 && project.project_approve_status == 5}">
+                        <div class="swiper-slide">
+                            <div class="card">
+                                <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>
+                                <div class="card-body">
+                                    <em class="card-title"><b>${project.project_subject}</b></em>
+                                    <p class="card-text">
+                                        <br>${project.project_category} | ${project.project_representative_name}
+                                    </p>
+                                </div>
+                                <hr>
+                                <a href="fundingDetail?project_idx=${project.project_idx }" class="stretched-link">
+                                    <p style="text-align: center;"><b>지금 살펴보기></b></p>
+                                </a>
+                            </div>
+                        </div>
+                    </c:if>
+                </c:forEach>
+            </div>
+            <div class="swiper-pagination-custom swiper-pagination"></div>
+        </div>
+    </div>
+    <br>
 <hr>		
 		<br>
 		
@@ -401,20 +406,10 @@
 
 		
   
-    <script src="resources/js/showRandomProjects.js"></script>
+<!--     <script src="resources/js/showRandomProjects.js"></script> -->
   	<script src="resources/js/rankingList.js"></script>
-	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 	
-	<script>
-    var swiper = new Swiper('.swiper-container', {
-        slidesPerView: 3.5,
-        spaceBetween: 10,
-        pagination: {
-            el: '.swiper-pagination-custom', 
-            clickable: true,
-        },
-    });
-	</script>
+
 	
 	<script>
 	    var hashtags = document.querySelectorAll('.random-hashtag');
@@ -563,6 +558,19 @@
 	    };
 	</script>
 
+	<script>
+	    var swiper = new Swiper('.swiper-container', {
+	        slidesPerView: '3', //보이게 하고싶은 수만큼 적기!
+	        spaceBetween: 10,
+	        pagination: {
+	            el: '.swiper-pagination-custom',
+	            clickable: true,
+	        },
+	    });
+	</script>
+
+
+	
 	
     <%@ include file="Footer.jsp" %>
     
