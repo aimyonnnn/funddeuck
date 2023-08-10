@@ -129,9 +129,9 @@
 		, del.delivery_detailadd
 		, pay.waybill_num
 		, pay.payment_confirm
-		, pay.waybill_num
 		, rev.review_idx
 		, pro.project_idx
+		, pay.courier
 		FROM payment pay 
 		JOIN project pro ON pay.project_idx = pro.project_idx
 		JOIN reward re ON re.reward_idx = pay.reward_idx
@@ -165,6 +165,7 @@
 			, pay.payment_confirm
 			, rev.review_idx
 			, rev.review_status
+			, pay.courier
 			FROM payment pay JOIN project pro
 				ON pay.project_idx = pro.project_idx
 				JOIN reward re
@@ -384,4 +385,11 @@
 				, #{payment_method}
 			)
 	</insert>
+	
+	<!-- 자동으로 배송상태 변경 -->
+	<update id="AutoUpdateDeliveryStatus">
+		UPDATE payment
+		SET delivery_status = #{delivery_status}
+		WHERE payment_idx = #{payment_idx}
+	</update>
 </mapper>

@@ -22,6 +22,15 @@
         .f7 {
             font-size: 0.7em;
         }
+        
+/*         footer { */
+/*  			width: 100%;  */
+/* 			height: auto;  */
+/*  			padding: 1rem; */
+/*  			position: absolute; */
+/*  			bottom: 0; */
+/*  			left: 0; */
+/* 		} */
     </style>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript">
@@ -96,6 +105,109 @@
         	});
 		}
         
+        let pageNum = 1; // 기본 페이지 번호 미리 저장
+    	let maxPage = 1; // 최대 페이지 번호 미리 저장
+    	
+    		$(function() {
+    			
+    			memberZimList();
+    			
+    			$(window).on("scroll", function() { // 스크롤 동작 시 이벤트 처리
+    				
+    				let scrollTop = $(window).scrollTop(); // 스크롤바 현재 위치
+    				let windowHeight = $(window).height(); // 브라우저 창의 높이
+    				let documentHeight = $(document).height(); // 문서의 높이(창의 높이보다 크거나 같음)
+    				let x = 1;
+    				if(scrollTop + windowHeight + x >= documentHeight) {
+    					if(pageNum < maxPage) {
+    						pageNum++;
+    						memberZimList();
+    					} else {
+    						
+    					}
+    				}
+    				
+    			});
+    		});
+    	
+    	function memberZimList() {
+			
+    		$.ajax({
+    			type:"post",
+    			url:"memberZimList",
+    			data:{pageNum:pageNum},
+    			dataType:"json",
+    			success: function(data) {
+					
+					console.log(JSON.stringify(data));
+					maxPage = data.maxPage;
+					
+					
+					if(maxPage == 0){
+						$("#zimListArea").append(
+							    '<div class="col-12 mt-5 text-center" style="padding-bottom: 300px;"> <h4> 아직 찜 한 프로잭트가 없습니다! </h4></div>'
+						);
+						return false;
+					}
+					
+					var html = '';
+					for (let zim of data.zimList) {
+					    html += '<div class="row">' +
+					        '<div class="col"></div>' +
+					        '<div class="col-12 col-sm-8 col-lg-6 m-3" style="border: 1px solid #eeeeee;">' +
+					            '<div class="row align-items-center">' +
+					                '<div class="col">' +
+					                    '<div class="row">' +
+					                        '<div class="row my-3">' +
+					                            '<div class="col-1 me-3 h5 text-primary">' +
+					                                '<img class="center" style="width: 30px; height: 30px; border-radius: 50%;">' +
+					                            '</div>' +
+					                            '<div class="col" style="font-size: 0.7em;">' +
+					                                '<div class="row">' +
+					                                    '<a href="makerDetail?maker_idx=' + zim.maker_idx + '" style="color:black; text-decoration:none;">' + zim.maker_name + '</a>' +
+					                                '</div>' +
+					                                '<div class="row">' +
+					                                    '팔로워 ' + zim.follow_count +
+					                                '</div>' +
+					                            '</div>' +
+					                        '</div>' +
+					                    '</div>' +
+					                    '<div class="row">' +
+					                        '<div class="col-12">' +
+					                            '<a href="fundingDetail?project_idx=' + zim.project_idx + '" style="color:black; text-decoration:none;">' + zim.project_subject + '</a>' +
+					                        '</div>' +
+					                        '<div class="col-12 mt-1" style="font-size: 0.9em;">' +
+					                            zim.project_introduce +
+					                        '</div>' +
+					                        '<div class="col-12 my-1">' +
+					                            '이미지 영역' +
+					                        '</div>' +
+					                    '</div>' +
+					                '</div>' +
+					                '<div class="col text-end" id="zimBtnArea' + zim.project_idx + '">' +
+					                    (zim.zim_is_alam == 1
+					                        ? '<button class="btn btn-outline-primary" onclick="zimAlam(0, ' + zim.project_idx + ')"><i class="bi bi-bell"></i></button>'
+					                        : '<button class="btn btn-outline-primary" onclick="zimAlam(1, ' + zim.project_idx + ')"><i class="bi bi-bell-slash"></i></button>'
+					                    ) +
+					                    '<button class="btn btn-outline-primary" onclick="zim(0,' + zim.project_idx + ')"><i class="bi bi-suit-heart-fill"></i></button>' +
+					                '</div>' +
+					            '</div>' +
+					        '</div>' +
+					        '<div class="col"></div>' +
+					    '</div>';
+					}
+
+					
+					$('#zimListArea').append(html);
+    				
+				},
+				error: function() {
+					
+				}
+    		});
+    		
+		}
+        
         </script>
 </head>
 <body>
@@ -119,57 +231,12 @@
     <div class="col"></div>
     </div>
     <div class="col"></div>
-    <c:forEach items="${zimList }" var="zim">
-	    <div class="row">
-	        <div class="col"></div>
-		    <div class="col-12 col-sm-8 col-lg-6 m-3" style="border: 1px solid #eeeeee;">
-		    	<div class="row align-items-center">
-			    	<div class="col">
-				        <div class="row">
-				            <div class="row my-3">
-				                <div class="col-1 me-3 h5 text-primary">
-				                    <img class="center" style="width: 30px; height: 30px; border-radius: 50%;">
-				                </div>
-				                <div class="col" style="font-size: 0.7em;">
-				                    <div class="row">
-				                       <a href="makerDetail?maker_idx=${zim.maker_idx }" style="color:black; text-decoration:none;">${zim.maker_name }</a> 
-				                    </div>
-				                    <div class="row">
-				                        팔로워 ${zim.follow_count }
-				                    </div>
-				                </div>
-				            </div>
-				        </div>
-				        <div class="row">
-				            <div class="col-12">
-				                <a href="fundingDetail?project_idx=${zim.project_idx }" style="color:black; text-decoration:none;">${zim.project_subject }</a>
-				            </div>
-				            <div class="col-12 mt-1" style="font-size: 0.9em;">
-				                ${zim.project_introduce }
-				            </div>
-				            <div class="col-12 my-1">
-				                이미지 영역
-				            </div>
-				        </div>
-			        </div>
-			        <div class="col text-end" id="zimBtnArea${zim.project_idx }">
-			        	<c:choose>
-			        		<c:when test="${zim.zim_is_alam eq 1 }">
-				        		<button class="btn btn-outline-primary" onclick="zimAlam(0,${zim.project_idx })"><i class="bi bi-bell"></i></button>
-			        		</c:when>
-			        		<c:otherwise>
-				        		<button class="btn btn-outline-primary" onclick="zimAlam(1,${zim.project_idx })"><i class="bi bi-bell-slash"></i></button>
-				        	</c:otherwise>
-			        	</c:choose>
-			        	<button class="btn btn-outline-primary" onclick="zim(0, ${zim.project_idx})"><i class="bi bi-suit-heart-fill"></i></button>
-			        </div>
-		        </div>
-		    </div>
-	    <div class="col"></div>
+	<div id="zimListArea">
+		
 	</div>
-</c:forEach>
 
-<%@ include file="../Footer.jsp" %>
+
+	<%@ include file="../Footer.jsp" %>
 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"

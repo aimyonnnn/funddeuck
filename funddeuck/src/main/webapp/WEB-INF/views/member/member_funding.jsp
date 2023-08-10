@@ -48,27 +48,6 @@
     </style>
   <script type="text/javascript">
   
-  $(function() {
-	  
-	  	$.ajax({
-	  		type:"get",
-	  		url:"http://info.sweettracker.co.kr/api/v1/companylist?t_key=vOUrdVIWvOLE4CB9x3ljhw",
-	  		dataType:"json",
-	  		success: function(data) {
-				
-	  			console.log(JSON.stringify(data));
-	  			
-	  			for(let Company of data.Company){
-	  				
-	  			}
-	  			
-			},
-			error: function() {
-				
-			}
-	  		
-	  	});
-	});
   
   //모달 창 처리
   function modal(num) {
@@ -137,10 +116,15 @@
 	        +  (items.delivery_status == 2 ? '<button type="button" id="deliveryBtn" onclick="isDelivery('+ items.payment_idx +')"; class="btn btn-outline-primary">배송완료</button>' : '')
 	        +  (items.delivery_status == 3 && items.review_idx == null ? '<button type="button" class="btn btn-outline-primary" onclick="IdxNum('+items.payment_idx+')" data-bs-toggle="modal" data-bs-target="#reviewmodify">리뷰작성</button>' : '')
 	        +  (items.delivery_status == 2 ? '<button type="button" onclick="showDelivery()" class="btn btn-outline-primary">배송확인하기</button>' : '')
+// 	        +  '<button type="button" onclick="showDelivery()" class="btn btn-outline-primary">배송확인하기</button>'
 	        +  (items.payment_confirm == 2 && items.delivery_status == 3 ? '<button type="button" class="btn btn-primary" onclick="IdxNum('+items.payment_idx+')" data-bs-toggle="modal" data-bs-target="#cancelModal">반환신청</button>' : '')
 	        +  '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>'
 	        + '</div>'		
 			);
+			
+			$("#t_invoice").val(items.waybill_num);
+			$("#t_code").val(items.courier);
+			
 		},
 		error: function() {
 			alert("오류");
@@ -173,6 +157,9 @@
 	  
 // 		alert(pageNum+ ", " +payment_confirm);
 		
+		let url="http://info.sweettracker.co.kr";
+		let t_key="vOUrdVIWvOLE4CB9x3ljhw";
+		
 	  	$.ajax({
 	  		type:"post",
 	  		url:"MemberFundingPageing",
@@ -184,6 +171,67 @@
 				let page = data.pageInfo;
 				if(page.maxPage != 0){
 					for (let map of data.map) {
+						let delivery_status = map.delivery_status;
+						let courier = map.courier;
+						
+						if(map.waybill_num != null)
+							$.ajax({
+								type:"get",
+								url: url + "/api/v1/companylist?t_key=" + t_key,
+								dataType:"json",
+								success: function(companylist) {
+										console.log(map.courier);
+									for(let Company of companylist.Company){
+										console.log(Company.Name == map.courier);
+										if(Company.Name == map.courier){
+											
+											$.ajax({
+												type:"get",
+												url: url + "/api/v1/trackingInfo?t_key=" + t_key + "&t_code=" + Company.Code + "&t_invoice=" + map.waybill_num,
+												dataType:"json",
+												success: function(delivery) {
+													console.log(JSON.stringify(delivery));
+													
+													
+													if (delivery.level <= 2){
+														delivery_status = 1;
+													} else if(delivery.level == 6) {
+														delivery_status = 3;
+													} else {
+														delivery_status = 2;
+													}
+													
+													$.ajax({
+														type:"post",
+														url:"updateDeliveryStatus",
+														data:{delivery_status:delivery_status
+															, payment_idx: map.payment_idx},
+														dataType:"text",
+														success: function(data) {
+																console.log(data);
+														},
+														error: function() {
+															alert("오류3");
+														}
+													});
+													
+												},
+												error: function() {
+													alert("오류2");
+												}
+											});
+											
+										}
+									}
+									
+								},
+								error: function() {
+									alert("오류1");
+								}
+								
+							});
+						
+						
 						  $("#tbody").append(
 						    '<tr>'
 						    + '<th scope="row">' + map.payment_idx + '</th>'
@@ -191,7 +239,7 @@
 						    + '<td> ' + map.payment_quantity + '</td>'
 						    + '<td> ' + map.total_amount + '</td>'
 						    + (map.payment_confirm == 1 ? '<td id="payConfirm'+ map.payment_idx +'">예약완료</td>' : (map.payment_confirm == 2 ? '<td id="payConfirm'+ map.payment_idx +'">결제완료</td>' : (map.payment_confirm == 3 ? '<td>반환신청</td>' : (map.payment_confirm == 4 ? '<td>반환완료</td>' : '<td>반환거절</td>'))))
-						    + (map.delivery_status == 1 ? '<td>미발송</td>' : (map.delivery_status == 2 ? '<td class="delevery">배송중</td>' : '<td>배송완료</td>'))
+						    + (delivery_status == 1 ? '<td>미발송</td>' : (delivery_status == 2 ? '<td class="delevery">배송중</td>' : '<td>배송완료</td>'))
 						    + '<td><button class="btn btn-primary" onclick="modal(' + map.payment_idx + ')" data-bs-toggle="modal" data-bs-target=".exampleModal">상세보기</button></td>'
 						    + '</tr>'
 						  );
@@ -385,15 +433,47 @@
     </div>
   
  	<script type="text/javascript">
-	
+	let url="http://info.sweettracker.co.kr";
  		function showDelivery() {
  			
  			let t_key = $("#t_key").val();
  			let t_code = $("#t_code").val();
  			let t_invoice = $("#t_invoice").val();
  			
- 			window.open("http://info.sweettracker.co.kr/tracking/5?t_key="+t_key+"&t_code="+t_code+"&t_invoice="+t_invoice ,"popForm", 
- 			"toolbar=no, width=540, height=800, directories=no, status=no, resizable=no"); 
+ 			$.ajax({
+				type:"get",
+				url: url + "/api/v1/companylist?t_key=" + t_key,
+				dataType:"json",
+				success: function(companylist) {
+					
+					
+					for(let Company of companylist.Company){
+						console.log(Company.Name == t_code);
+						if(Company.Name == t_code){
+							
+							console.log(t_code);
+							t_code = Company.Code;
+							
+							console.log(t_code);
+							
+						}
+					}
+					
+ 					console.log("http://info.sweettracker.co.kr/tracking/5?t_key="+t_key+"&t_code="+t_code+"&t_invoice="+t_invoice);
+ 					
+		 			window.open("http://info.sweettracker.co.kr/tracking/5?t_key="+t_key+"&t_code="+t_code+"&t_invoice="+t_invoice ,"popForm", 
+		 			"toolbar=no, width=540, height=800, directories=no, status=no, resizable=no"); 
+					
+				},
+				error: function() {
+					alert("오류");
+				}
+				
+			});
+ 			
+
+ 			
+
  		}
  	
  	

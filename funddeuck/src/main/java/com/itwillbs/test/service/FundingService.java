@@ -115,5 +115,10 @@ public class FundingService {
 	public boolean registPayment(PaymentVO payment) {
 		return mapper.insertPayment(payment);
 	}
+	
+	//자동으로 택배조회후 상태 변경
+	public int AutoUpdateDeliveryStatus(int delivery_status, int payment_idx) {
+		return mapper.AutoUpdateDeliveryStatus(delivery_status, payment_idx);
+	}
 
 }

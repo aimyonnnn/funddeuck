@@ -425,13 +425,41 @@ public class MemberController {
     		return "fail_back";
     	}
     	
-    	List<Map<String,Object>> fallowList = service.getfallowList((String)session.getAttribute("sId"));
-    	
-    	
-    	model.addAttribute("fallowList", fallowList);
     	
     	
     	return "member/member_fallowing";
+    	
+    }
+    
+    //팔로잉 리스트 가져오는 ajax(페이징 처리)
+    @PostMapping("MemberFollowList")
+    @ResponseBody
+    public String MemberFollowList(@RequestParam(defaultValue = "1") int pageNum, HttpSession session) {
+    	
+		int listLimit = 5;// 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit;
+    	
+    	List<Map<String, Object>> memberFollowingList = service.getfallowList((String)session.getAttribute("sId"), startRow, listLimit);
+    	
+    	int listCount = service.getMemberFollowingCount((String)session.getAttribute("sId"));
+    	
+    	int pageListLimit = 5;
+    	
+    	int maxPage = listCount/listLimit + (listCount%listLimit > 0 ? 1 : 0);
+    	
+    	int startPage = (pageNum - 1 ) / pageListLimit * pageListLimit + 1;
+    	
+    	int endPage = startPage + pageListLimit - 1 ;
+    	
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+    	JSONObject jsonObject = new JSONObject();
+		jsonObject.put("memberFollowingList", memberFollowingList);
+		jsonObject.put("maxPage", maxPage);
+    	
+    	return jsonObject.toString();
     	
     }
     
@@ -484,11 +512,39 @@ public class MemberController {
     		return "fail_back";
     	}
     	
-    	List<Map<String,Object>> zimList = service.getZimList((String)session.getAttribute("sId"));
-    	
-    	model.addAttribute("zimList",zimList);
     	
     	return "member/member_zim";
+    }
+    
+    @PostMapping("memberZimList")
+    @ResponseBody
+    public String memberZimList(HttpSession session, @RequestParam(defaultValue = "1") int pageNum) {
+    	
+		int listLimit = 5;// 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit;
+    	
+    	List<Map<String, Object>> zimList = service.getZimList((String)session.getAttribute("sId"), startRow, listLimit);
+    	
+    	int listCount = service.getMemberZim((String)session.getAttribute("sId"));
+    	
+    	int pageListLimit = 5;
+    	
+    	int maxPage = listCount/listLimit + (listCount%listLimit > 0 ? 1 : 0);
+    	
+    	int startPage = (pageNum - 1 ) / pageListLimit * pageListLimit + 1;
+    	
+    	int endPage = startPage + pageListLimit - 1 ;
+    	
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+    	JSONObject jsonObject = new JSONObject();
+		jsonObject.put("zimList", zimList);
+		jsonObject.put("maxPage", maxPage);
+    	
+    	return jsonObject.toString();
+    	
     }
     
     // 찜 알람 설정
@@ -680,6 +736,24 @@ public class MemberController {
     		return "false";
     	}
     	
+    }
+    
+    // 자동 배송 상태 변경
+    @PostMapping("updateDeliveryStatus")
+    @ResponseBody
+    public String updateDeliveryStatus(@RequestParam int delivery_status, @RequestParam int payment_idx) {
+    	
+    	System.out.println(delivery_status);
+    	
+    	System.out.println(payment_idx);
+    	
+    	int updateCount = fundingservice.AutoUpdateDeliveryStatus(delivery_status, payment_idx);
+    	
+    	if(updateCount > 0) {
+    		return "true"; 
+    	}
+    	
+    	return "false";
     }
     
     //반환신청

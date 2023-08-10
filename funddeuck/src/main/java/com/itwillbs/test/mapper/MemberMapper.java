@@ -57,7 +57,7 @@ public interface MemberMapper {
 	MembersVO selectCorrectMember(String target);
 	
 	//팔로우 리스트 조회
-	List<Map<String, Object>> selectFallowList(String sId);
+	List<Map<String, Object>> selectFallowList(@Param("sId")String sId,@Param("startRow") int startRow,@Param("listLimit") int listLimit);
 
 	//팔로우 알람 설정
 	int updateFallowingAlam(@Param("maker_name") String maker_name, @Param("is_alam") int is_alam,@Param("sId") String sId);
@@ -69,7 +69,7 @@ public interface MemberMapper {
 	int insertFallow(@Param("maker_name") String maker_name,@Param("sId") String sId);
 	
 	//찜 목록 가져오기
-	List<Map<String, Object>> selectZimList(String sId);
+	List<Map<String, Object>> selectZimList(@Param("sId")String sId,@Param("startRow") int startRow,@Param("listLimit") int listLimit);
 	
 	// 찜 알람 설정
 	int updateZimAlam(@Param("project_idx") int project_idx, @Param("isAlam") int isAlam, @Param("sId") String sId);
@@ -131,6 +131,12 @@ public interface MemberMapper {
 
 	// 오늘 가입한 회원 수 조회
 	int selectMembersCountByToday();
+	
+	//팔로잉 리스트이 카운트
+	int selectFollowingCount(String sId);
+	
+	//찜 리스트 카운트
+	int selectZimCount(String sId);
 	
 
 }

@@ -90,8 +90,8 @@ public class MemberService {
 	}
 	
 	// 팔로잉 리스트 뽑기
-	public List<Map<String, Object>> getfallowList(String sId) {
-		return mapper.selectFallowList(sId);
+	public List<Map<String, Object>> getfallowList(String sId, int startRow, int listLimit) {
+		return mapper.selectFallowList(sId, startRow, listLimit);
 	}
 	
 	// 팔로우 알람 설정
@@ -110,8 +110,8 @@ public class MemberService {
 	}
 	
 	// 찜 목록 가져오기
-	public List<Map<String, Object>> getZimList(String sId) {
-		return mapper.selectZimList(sId);
+	public List<Map<String, Object>> getZimList(String sId, int startRow, int listLimit) {
+		return mapper.selectZimList(sId, startRow, listLimit);
 	}
 	
 	//찜 알람 설정
@@ -199,9 +199,20 @@ public class MemberService {
 	public List<Map<String, Object>> getZimPostList(String sId, int startRow, int listLimit) {
 		return mapper.selectZimPostList(sId, startRow, listLimit);
 	}
-
+	
+	//카운트 가져오기
 	public int getZimPostListCount(String sId) {
 		return mapper.selectZimPostListCount(sId);
+	}
+	
+	//팔로잉 카운트 가져오기
+	public int getMemberFollowingCount(String sId) {
+		return mapper.selectFollowingCount(sId);
+	}
+	
+	// 찜 카운트 가져오기
+	public int getMemberZim(String sId) {
+		return mapper.selectZimCount(sId);
 	}
 
 	// 전체 회원 조회
