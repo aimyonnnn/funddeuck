@@ -81,7 +81,7 @@
 			WHERE member_idx = #{member_idx}
 	</delete>
 	
-	<!-- 정산 입금내역 등록 -->
+	<!-- 정산 내역 등록 -->
 	<insert id="insertDepositSettlement" parameterType="map">
 	    INSERT INTO banking (
 	        member_id,
@@ -101,16 +101,16 @@
 	            #{project_idx},
 	            #{item.bank_name},
 	            #{item.account_num_masked},
-	            #{item.bank_tran_date},
+	            CURDATE(),
 	            #{item.account_holder_name},
 	            #{item.tran_amt},
 	            #{item.print_content},
-	            1
+	            4
 	        )
 	    </foreach>
 	</insert>
 	
-	<!-- 환불 입금내역 등록 -->
+	<!-- 환불 내역 등록 -->
 	<insert id="insertDepositRefund" parameterType="map">
 	    INSERT INTO banking (
 	        member_id,
@@ -130,11 +130,11 @@
 	            #{project_idx},
 	            #{item.bank_name},
 	            #{item.account_num_masked},
-	            #{item.bank_tran_date},
+	            CURDATE(),
 	            #{item.account_holder_name},
 	            #{item.tran_amt},
 	            #{item.print_content},
-	            2
+	            3
 	        )
 	    </foreach>
 	</insert>
@@ -156,5 +156,50 @@
 			)
 		
 	</insert>
+	
+	<!-- 정산 목록 조회 요청 -->
+	<select id="selectAllSettlementBanking">
+		SELECT *
+			FROM banking b
+			JOIN project p 
+			ON b.project_idx = p.project_idx
+		WHERE 1 = 1
+		<!-- 검색타입이 널스트링이 아닐 때 -->
+		<if test="!searchKeyword.equals('')">
+			<!-- 검색타입에 따른 where절 조건 대상 변경 -->
+			<choose>
+				<when test="searchType.equals('subject')">
+					AND p.project_subject LIKE '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('name')">
+					AND p.project_representative_name LIKE '%${searchKeyword}%'
+				</when>					
+			</choose>
+		</if>
+			AND b.banking_status = 4
+		ORDER BY
+			b.banking_bank_tran_date DESC, b.banking_idx DESC
+		LIMIT
+			#{startRow}
+			, #{listLimit}
+	</select>
+	
+	<!-- 정산 목록 개수 조회 요청 -->
+	<select id="selectAllSettlementBankingCount">
+		SELECT count(*)
+			FROM
+				banking
+			WHERE
+				banking_status = 4
+	</select>
+	
+	<!-- 이번 달 정산금액 조회 요청 -->
+	<select id="selectMonthAmount" resultType="int">
+		SELECT SUM(banking_tran_amt) as total
+		    FROM banking
+		    WHERE MONTH(banking_bank_tran_date) = MONTH(CURRENT_DATE())
+		    AND YEAR(banking_bank_tran_date) = YEAR(CURRENT_DATE())
+		    AND banking_status = 4
+	</select>
 
 </mapper>

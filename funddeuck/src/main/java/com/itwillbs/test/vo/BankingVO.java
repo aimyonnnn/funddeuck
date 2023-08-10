@@ -16,4 +16,11 @@ public class BankingVO {
 	private String banking_print_content; // 계좌인자내역
 	private int banking_status; // 거래상태 1-입금, 2-출금
 	// 타입만들어서 은행인지 카드인지 
+	
+	
+	// =====================================================================
+	// 정산내역 출력용
+	private String project_subject;
+	private String project_representative_name;
+	private int project_status;
 }

@@ -1,6 +1,7 @@
 package com.itwillbs.test.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +94,21 @@ public class BankService {
 			return true;
 		}
 		return false;
+	}
+
+	// 정산 목록 조회 요청 
+	public List<BankingVO> getAllSettlementBanking(String searchType, String searchKeyword, int startRow, int listLimit) {
+		return mapper.selectAllSettlementBanking(searchType, searchKeyword, startRow, listLimit);
+	}
+
+	// 정산 목록 개수 조회 요청
+	public int getAllSettlementBankingCount(String searchType, String searchKeyword) {
+		return mapper.selectAllSettlementBankingCount(searchType, searchKeyword);
+	}
+
+	// 이버 달 정산금액 조회 요청
+	public int getMonthAmount() {
+		return mapper.selectMonthAmount();
 	}
 	
 }

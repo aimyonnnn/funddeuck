@@ -91,11 +91,6 @@ th, td {
 		                                value="${member.member_email}"></td>
 		                            </tr>
 		                            <tr>
-		                                <th>회원 등급</th>
-		                                <td><input type="text" name="member_grade" class="form-control"
-		                                value="${member.member_grade}"></td>
-		                            </tr>
-		                            <tr>
 		                                <th>회원 상태</th>
 		                                <td><input type="text" name="member_status" class="form-control"
 		                                value="${member.member_status}"></td>

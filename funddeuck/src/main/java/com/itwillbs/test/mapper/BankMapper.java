@@ -1,5 +1,6 @@
 package com.itwillbs.test.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -42,5 +43,16 @@ public interface BankMapper {
 	
 	// 펀딩 결제시(계좌) 입금내역 등록
 	int insertFundingTranHist(@Param("member_id") String member_id, @Param("project_idx") int project_idx, @Param("withdrawResult") ResponseWithdrawVO withdrawResult);
+ 
+	// 정산 목록 조회 요청
+	List<BankingVO> selectAllSettlementBanking(
+												@Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword, 
+												@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+
+	// 정산 목록 개수 조회 요청 
+	int selectAllSettlementBankingCount(@Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword);
+
+	// 이번 달 정산 금액 조회 요청
+	int selectMonthAmount();
 
 }

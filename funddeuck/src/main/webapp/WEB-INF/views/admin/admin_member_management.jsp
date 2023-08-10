@@ -80,7 +80,6 @@ th, td {
 					<th class="text-center" style="width: 5%;">이름</th>
 					<th class="text-center" style="width: 7%;">전화번호</th>
 					<th class="text-center" style="width: 10%;">이메일</th>
-					<th class="text-center" style="width: 5%;">등급</th>
 					<th class="text-center" style="width: 5%;">상세정보</th>
 				</tr>
 				
@@ -91,7 +90,6 @@ th, td {
 						<td class="text-center">${memberList.member_name}</td>
 						<td class="text-center">${memberList.member_phone}</td>
 						<td class="text-center">${memberList.member_email}</td>
-						<td class="text-center">${memberList.member_grade}</td>
 						<td class="text-center">
 							<button class="btn btn-outline-primary btn-sm" 
 							onclick="location.href='adminMemberDetail?member_idx=${memberList.member_idx}&pageNum=${pageNum}'">보기</button>
