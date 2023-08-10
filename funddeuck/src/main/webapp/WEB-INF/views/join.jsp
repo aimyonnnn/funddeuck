@@ -24,6 +24,7 @@
 
         $(document).ready(function () {
         	let email = "${sessionScope.email}";
+        	var checkbox = $("#privacy");
         	
         	if(email.length != 0){
         		isEmail = 1;
@@ -123,7 +124,10 @@
                 	return false;
                 }
                 
-                
+                if (!checkbox.prop("checked")) {
+                    alert("개인정보 수집에 동의해야 합니다.");
+                    return false;
+                }
                 
                 $("#member_id").attr("disabled",false);
                 $("#email").attr("disabled",false);
@@ -395,7 +399,7 @@
 	<div class="row my-5">
 		<div class="col"></div>
 		<div class="col-6 col-md-3 text-center">
-			<h2 class="mt-5" style="font-weight: bold;">간편가입</h2>
+			<h2 class="mt-5" style="font-weight: bold;">회원가입</h2>
 			<hr>
 			<div class="text-start">
 				<form action="JoinPro" method="post">
@@ -429,7 +433,7 @@
 						name="member_email" placeholder="이메일 계정">
 						<input type="button" class="btn btn-primary my-1" id="emailbtn" value="이메일 인증">
 						<br>
-						<input type="checkbox"> 전체동의 
+						<input type="checkbox" id="privacy"> <a href="" data-bs-toggle="modal" data-bs-target="#privacyModel">개인정보 수집동의 [필수]</a>
 						<br> 
 				<input type="submit" class="btn btn-primary w-100 mt-3" value="완료">
 				</form>
@@ -437,6 +441,104 @@
 		</div>
 		<div class="col"></div>
 	</div>
+
+<!-- 개인정보처리 방침 내용 -->
+<div class="modal fade" id="privacyModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">개인정보처리 방침</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <section>
+          <h5 class = "mt-3">1. 개인정보처리 방침의 목적</h5 class = "mt-3">
+          <textarea class="form-control" rows="3" readonly>펀뜩은 개인정보보호법 및 관련 법규를 준수하며, 개인정보 보호의 중요성을 인식하고 이를 지키기 위해 최선의 노력을 다하고 있습니다. 본 개인정보처리 방침은 회사가 개인정보를 처리하는 방법과 그에 따른 권리 및 의무를 설명하는 문서입니다.</textarea>
+        </section>
+        
+        <section>
+          <h5 class = "mt-3">2. 수집하는 개인정보의 항목 및 수집 방법</h5 class = "mt-3">
+          <textarea class="form-control" rows="3" readonly>회사는 다음과 같은 개인정보를 수집 및 처리할 수 있습니다.
+개인정보 수집 항목: 성명, 연락처(전화번호, 이메일 주소 등), 주소, 생년월일, 성별 등
+수집 방법: 홈페이지, 모바일 애플리케이션, 이메일, 이벤트 응모, 고객센터 문의 등</textarea>
+        </section>
+        
+<section>
+  <h5 class = "mt-3">3. 개인정보의 수집 및 이용목적</h5 class = "mt-3">
+  <textarea class="form-control" rows="3" readonly>회사는 수집한 개인정보를 다음 목적을 위해 활용합니다.
+서비스 제공: 상품 및 서비스 제공, 주문처리, 배송 및 환불 처리 등
+회원 관리: 회원 가입 및 관리, 서비스 이용에 따른 본인 확인, 불법 및 악의적 사용 방지 등
+마케팅 및 광고: 이벤트 정보 제공, 신규 서비스 안내, 마케팅 활동 수행 등
+고객지원: 문의 및 불만 처리, 고객 응대 및 문제 해결 등</textarea>
+</section>
+
+<section>
+  <h5 class = "mt-3">4. 개인정보의 보유 및 이용기간</h5 class = "mt-3">
+  <textarea class="form-control" rows="3" readonly>회사는 원칙적으로 개인정보 수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 다만, 관련 법령에 따라 일정 기간 동안 개인정보를 보관할 수 있으며, 보관 기간은 아래와 같습니다.
+계약 및 청약철회 등에 관한 기록: 5년
+대금결제 및 재화 등의 공급에 관한 기록: 5년
+소비자의 불만 또는 분쟁처리에 관한 기록: 3년
+본 개인정보처리 방침에서 별도로 명시한 경우: 해당 기간</textarea>
+</section>
+
+<section>
+  <h5 class = "mt-3">5. 개인정보의 파기절차 및 방법</h5 class = "mt-3">
+  <textarea class="form-control" rows="3" readonly>개인정보의 파기는 수집 및 이용목적이 달성된 후에 신속하게 진행되며, 다음과 같은 방법으로 파기됩니다.
+종이에 출력된 개인정보: 분쇄기를 통한 파기
+전자적 파일 형태로 저장된 개인정보: 기록을 재생할 수 없는 기술적 방법으로 삭제</textarea>
+</section>
+
+<section>
+  <h5 class = "mt-3">6. 개인정보의 제3자 제공</h5 class = "mt-3">
+  <textarea class="form-control" rows="3" readonly>회사는 원칙적으로 회원의 동의 없이 개인정보를 외부에 제공하지 않습니다. 다만, 아래 경우에는 개인정보를 제3자에게 제공할 수 있습니다.
+법령 및 규정에 의한 경우
+서비스 제공에 따른 계약 이행을 위하여 필요한 경우
+이용자의 동의가 있는 경우</textarea>
+</section>
+
+<section>
+  <h5 class = "mt-3">7. 개인정보의 안정성 확보조치</h5 class = "mt-3">
+  <textarea class="form-control" rows="3" readonly>회사는 개인정보의 안정성을 확보하기 위하여 다음과 같은 조치를 취하고 있습니다.
+개인정보 암호화: 개인정보를 암호화하여 저장 및 관리
+접근 제한: 개인정보에 대한 접근 권한을 최소한의 인원에게만 제한
+보안 프로그램 설치: 침입 차단 시스템 등을 설치하여 외부로부터의 공격 및 유출을 방지</textarea>
+</section>
+
+<section>
+  <h5 class = "mt-3">8. 개인정보 주체의 권리와 의무</h5 class = "mt-3">
+  <textarea class="form-control" rows="3" readonly>이용자는 개인정보에 대한 아래의 권리를 가집니다.
+개인정보 열람, 정정 및 삭제 요청
+개인정보 처리정지 요청
+개인정보 이용 제한 요청</textarea>
+</section>
+
+<section>
+  <h5 class = "mt-3">9. 개인정보 처리 관련 문의</h5 class = "mt-3">
+  개인정보보호 담당자: 홍길동 <br>
+	이메일 주소: admin@admin.com <br>
+  전화번호: 010-1234-5678
+</section>
+
+        
+        <section>
+          <h5 class = "mt-3">10. 개인정보처리 방침 변경</h5 class = "mt-3">
+          <textarea class="form-control" rows="3" readonly>본 개인정보처리 방침은 법령 및 회사의 정책에 따라 변경될 수 있습니다. 변경 시 본 페이지를 통해 사전 공지를 할 것입니다.</textarea>
+        </section>
+        
+        <section>
+          <h5 class = "mt-3">펀뜩</h5 class = "mt-3">
+          <address>
+[주소]
+[연락처]
+          </address>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
