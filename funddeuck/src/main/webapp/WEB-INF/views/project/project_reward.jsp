@@ -111,13 +111,13 @@
                         <!--리워드 수량 -->
                         <div>
                             <label class="form-content subheading" for="reward_quantity">수량</label>
-                            <input class="form-control" type="text"e" name="reward_quantity" id="reward_quantity" style="width:500px;">
+                            <input class="form-control" type="number" name="reward_quantity" id="reward_quantity" placeholder="수량을 입력해주세요" style="width:500px;">
                         </div>
                         
                         <!--리워드 옵션 -->
                         <div>
                             <label class="form-content subheading" for="reward_option">옵션</label>
-                            <input class="form-control" type="text" name="reward_option" id="reward_option" style="width:500px;">
+                            <input class="form-control" type="text" name="reward_option" id="reward_option" placeholder="옵션을 입력해주세요" style="width:500px;">
                         </div>
                         
                         <!-- 리워드 설명 -->
@@ -377,6 +377,13 @@ function saveReward() {
 							});
 							
 						});
+						
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: '리워드 등록 불가',
+							text: '프로젝트 승인 후에는 리워드 등록이 불가능합니다.'
+						})
 					}
 					
 				},
@@ -555,6 +562,12 @@ function modifyReward(reward_idx) {
 					    }).then(function () {
 					        location.reload();
 					    });
+					} else if (data.trim() == 'false') {
+						Swal.fire({
+					        icon: 'error',
+					        title: '리워드 수정불가',
+					        text: '프로젝트 승인 후에는 리워드 수정이 불가능합니다.',
+					    });
 					} else {
 					    Swal.fire({
 					        icon: 'error',
@@ -604,6 +617,12 @@ function removeReward(reward_idx) {
 					        text: '리워드가 성공적으로 삭제되었습니다!',
 					    }).then(function () {
 					    	location.href='projectReward?project_idx=${project_idx}';
+					    });
+					} else if(data.trim() == 'false') {
+						Swal.fire({
+					        icon: 'error',
+					        title: '리워드 삭제불가',
+					        text: '프로젝트 승인 후에는 리워드 삭제가 불가능합니다.',
 					    });
 					} else {
 					    Swal.fire({

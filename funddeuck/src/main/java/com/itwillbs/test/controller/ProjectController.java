@@ -188,12 +188,17 @@ public class ProjectController {
 	        return "false";
 	    }
 	    
-	    int insertCount = projectService.registReward(reward);
-	    Integer maker_idx = makerService.getMakerIdx(sId);
+	    // project_approve_status가 1,4일 때만 등록이 가능해야함
+	    ProjectVO project = projectService.getProjectInfo(reward.getProject_idx());
+	    if(project.getProject_approve_status() == 1 || project.getProject_approve_status() == 4) {
+	    	
+	    	int insertCount = projectService.registReward(reward);
+	    	if (insertCount > 0) {
+	    		return "true";
+	    	}
+	    	
+	    }
 	    
-	    if (insertCount > 0) {
-	    	return "true";
-        } 
 	    return "false";
 	}
 	
@@ -209,9 +214,19 @@ public class ProjectController {
 	@PostMapping("modifyReward")
     @ResponseBody
     public String modifyReward(@ModelAttribute RewardVO reward, @RequestParam int reward_idx, HttpSession session) {
-		int updateCount = projectService.modifyReward(reward);
-		if(updateCount > 0) { return "true"; } return "false";
-    }
+		
+		// project_approve_status가 1,4일 때만 수정이 가능해야함
+	    ProjectVO project = projectService.getProjectInfo(reward.getProject_idx());
+	    if(project.getProject_approve_status() == 1 || project.getProject_approve_status() == 4) {
+		
+			int updateCount = projectService.modifyReward(reward);
+			if(updateCount > 0) { 
+				return "true";
+			}
+	    }
+	    
+	    return "false";
+	}
 	
 	// 리워드 삭제하기
 	@PostMapping("removeReward")
@@ -231,12 +246,18 @@ public class ProjectController {
 	            return "false";
 	        }
 	    }
-	    // 리워드 삭제 처리
-	    int deleteCount = projectService.removeReward(reward_idx);
-	    if (deleteCount > 0) {
-	        return "true";
+	    
+	    // project_approve_status가 1,4일 때만 삭제 가능
+	    RewardVO reward = projectService.getRewardInfo(reward_idx);
+	    ProjectVO project = projectService.getProjectInfo(reward.getProject_idx());
+	    if(project.getProject_approve_status() == 1 || project.getProject_approve_status() == 4) {
+	    	int deleteCount = projectService.removeReward(reward_idx);
+	    	if (deleteCount > 0) {
+	    		return "true";
+	    	}
 	    }
-	    return "false"; // 리워드 삭제 실패 시
+	    System.out.println("리워드삭제여기까지옴");
+	    return "false";
 	}
 	
 	// 리워드 갯수 조회하기

@@ -451,10 +451,6 @@ th, td {
 									<td>메이커 홈페이지</td>
 									<td>${maker.maker_url}</td>
 								</tr>
-								<tr>
-									<td>메이커 등급</td>
-									<td>${maker.maker_grade}</td>
-								</tr>
 							</table>
 						</div>
 					</div>

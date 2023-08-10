@@ -77,11 +77,10 @@ th, td {
 			<table class="table">
 				<tr>
 					<th class="text-center" style="width: 5%;">번호</th>
-					<th class="text-center" style="width: 15%;">메시지 내용</th>
+					<th class="text-center" style="width: 30%;">메시지 내용</th>
 					<th class="text-center" style="width: 10%;">발송 일시</th>
 					<th class="text-center" style="width: 7%;">회원 아이디</th>
-					<th class="text-center" style="width: 10%;">회원 전화번호</th>
-					<th class="text-center" style="width: 5%;">상태</th>
+					<th class="text-center" style="width: 7%;">회원 전화번호</th>
 				</tr>
 				
 				<c:forEach var="sList" items="${sList}">
@@ -91,7 +90,6 @@ th, td {
 						<td class="text-center">${sList.sent_date}</td>
 						<td class="text-center">${sList.member_id}</td>
 						<td class="text-center">${sList.recipient}</td>
-						<td class="text-center">${sList.status}</td>
 					</tr>
 				</c:forEach>
 				
