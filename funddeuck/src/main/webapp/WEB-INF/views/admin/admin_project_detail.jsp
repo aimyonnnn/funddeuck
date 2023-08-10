@@ -656,11 +656,11 @@ function rejectProjectStatus(project_idx, project_approve_status) {
 					    }).then(function(){
 						    location.reload();
 					    });
-					} else {
+					} else if(data.trim() == 'false') {
 						Swal.fire({
 						      icon: 'error',
-						      title: '프로젝트 거절처리 실패.',
-						      text: '프로젝트 상태 변경에 실패하였습니다.',
+						      title: '프로젝트 거절처리 불가',
+						      text: '프로젝트 승인요청 상태에서만 거철처리가 가능합니다',
 					    });
 					}
 					
@@ -669,9 +669,12 @@ function rejectProjectStatus(project_idx, project_approve_status) {
 					console.log('ajax 요청이 실패하였습니다!');	
 				}
 			});
+			
 		} else {
+			
 			// 취소 선택 시 체크박스 해제
-			$('input[type=checkbox]').prop('checked', false);
+// 			$('input[type=checkbox]').prop('checked', false);
+			
 		}
 	});
 }

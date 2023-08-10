@@ -142,7 +142,10 @@ public interface ProjectMapper {
 	List<ProjectVO> selectProceedingList(Integer maker_idx);
 
 	// 진행완료된 프로젝트 조회
-	List<ProjectVO> selectCompleteList(Integer maker_idx);	
+	List<ProjectVO> selectCompleteList(Integer maker_idx);
+	
+	// 프로젝트 상태컬럼 변경
+	int updateProjectSatusProgress(@Param("project_idx") int project_idx, @Param("project_status") int project_status);	
 			
 
 

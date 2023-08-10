@@ -199,6 +199,11 @@ public class ProjectService {
 	public List<ProjectVO> getCompleteList(Integer maker_idx) {
 		return mapper.selectCompleteList(maker_idx);
 	}
+	
+	// 프로젝트 상태컬럼 변경
+	public int modifyProjectSatusProgress(int project_idx, int project_status) {
+		return mapper.updateProjectSatusProgress(project_idx, project_status);
+	}
     
 		
 		

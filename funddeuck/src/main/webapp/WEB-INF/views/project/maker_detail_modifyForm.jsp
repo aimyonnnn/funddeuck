@@ -41,8 +41,7 @@
 				
 				<div class="tab-buttons text-center">
 					<button class="btn btn-outline-primary tab-button w-100" data-tab="tab1">공지사항 작성하기</button>
-					<button class="btn btn-outline-primary tab-button w-100" data-tab="tab2">공지사항 리스트</button>
-					<button class="btn btn-outline-primary tab-button w-100" data-tab="tab3">메이커정보 수정하기</button>
+					<button class="btn btn-outline-primary tab-button w-100" data-tab="tab2">메이커정보 수정하기</button>
 				</div>
 				
 				<!-- 공지사항 작성하기 -->
@@ -82,38 +81,38 @@
 				</div>
 				
 				<!-- 공지사항 리스트 -->
-				<div class="content-area" id="tab2">
-					<div id="note-full-container" class="note-has-grid row">
-					    <c:forEach var="mList" items="${mList}">
-					        <div class="col-md-12 single-note-item all-category mb-4">
-					            <div class="card">
-					                <div class="card-header">
-					                    <h5 class="card-title"><b>${mList.maker_board_subject}</b></h5>
-					                    작성 시간: <fmt:formatDate value="${mList.maker_board_regdate}" pattern="yy-MM-dd HH:mm" />
-					                </div>
-					                <div class="card-body">
-					                    <p class="card-text">${mList.maker_board_content}</p>
-					                    <div style="text-align: right;">
-					                        <c:choose>
-					                            <c:when test="${not empty mList.maker_board_file1}">
-					                                <a href="${pageContext.request.contextPath}/resources/upload/${mList.maker_board_file1}" download="${fn:split(mList.maker_board_file1, '_')[1]}">
-					                                    첨부파일: ${fn:split(mList.maker_board_file1, '_')[1]}
-					                                </a>
-					                            </c:when>
-					                            <c:otherwise>
-					                                첨부파일 없음
-					                            </c:otherwise>
-					                        </c:choose>
-					                    </div>
-					                </div>
-					            </div>
-					        </div>
-					    </c:forEach>
-					</div>
-				</div>
+<!-- 				<div class="content-area" id="tab2"> -->
+<!-- 					<div id="note-full-container" class="note-has-grid row"> -->
+<%-- 					    <c:forEach var="mList" items="${mList}"> --%>
+<!-- 					        <div class="col-md-12 single-note-item all-category mb-4"> -->
+<!-- 					            <div class="card"> -->
+<!-- 					                <div class="card-header"> -->
+<%-- 					                    <h5 class="card-title"><b>${mList.maker_board_subject}</b></h5> --%>
+<%-- 					                    작성 시간: <fmt:formatDate value="${mList.maker_board_regdate}" pattern="yy-MM-dd HH:mm" /> --%>
+<!-- 					                </div> -->
+<!-- 					                <div class="card-body"> -->
+<%-- 					                    <p class="card-text">${mList.maker_board_content}</p> --%>
+<!-- 					                    <div style="text-align: right;"> -->
+<%-- 					                        <c:choose> --%>
+<%-- 					                            <c:when test="${not empty mList.maker_board_file1}"> --%>
+<%-- 					                                <a href="${pageContext.request.contextPath}/resources/upload/${mList.maker_board_file1}" download="${fn:split(mList.maker_board_file1, '_')[1]}"> --%>
+<%-- 					                                    첨부파일: ${fn:split(mList.maker_board_file1, '_')[1]} --%>
+<!-- 					                                </a> -->
+<%-- 					                            </c:when> --%>
+<%-- 					                            <c:otherwise> --%>
+<!-- 					                                첨부파일 없음 -->
+<%-- 					                            </c:otherwise> --%>
+<%-- 					                        </c:choose> --%>
+<!-- 					                    </div> -->
+<!-- 					                </div> -->
+<!-- 					            </div> -->
+<!-- 					        </div> -->
+<%-- 					    </c:forEach> --%>
+<!-- 					</div> -->
+<!-- 				</div> -->
 				
 				<!-- 메이커 정보 -->
-				<div class="content-area" id="tab3">
+				<div class="content-area" id="tab2">
 					<!-- 폼 태그 -->
 					<form action="modifyMaker" method="post" id="modifyForm"
 						enctype="multipart/form-data">
@@ -240,7 +239,9 @@
 <script>
 //탭 버튼 클릭 시
 $(document).ready(function() {
+	
     $(".tab-button").click(function() {
+    	
         var tabId = $(this).data("tab");
         $(".content-area").removeClass("active");
         $("#" + tabId).addClass("active");
@@ -248,25 +249,33 @@ $(document).ready(function() {
         // 탭 버튼 클릭시 active 효과 설정
         $(".tab-button").removeClass("active"); // 모든 탭 버튼의 active 클래스 제거
         $(this).addClass("active"); // 클릭한 탭 버튼에 active 클래스 추가
+        
     });
 
     // URL 파라미터 확인하여 탭 활성화 설정
     let urlParams = new URLSearchParams(window.location.search);
     let activeTab = urlParams.get("tab");
 
-    if (activeTab === "3") {
-        $(".tab-button[data-tab='tab1']").removeClass("active");
-        $(".tab-button[data-tab='tab2']").removeClass("active");
-        $(".tab-button[data-tab='tab3']").addClass("active");
+    // 모든 탭 버튼의 active 클래스 제거
+    $(".tab-button").removeClass("active");
 
-        $(".content-area").removeClass("active"); // 모든 컨텐트 영역의 active 클래스 제거
-        $("#tab3").addClass("active"); // 탭3의 컨텐트 영역에 active 클래스 추가
+    if (activeTab === "1" || activeTab === "2") {
+    	
+        // 클릭한 탭 버튼에 active 클래스 추가
+        $(".tab-button[data-tab='tab" + activeTab + "']").addClass("active");
+        // 해당 탭의 컨텐트 영역에 active 클래스 추가
+        $(".content-area").removeClass("active");
+        $("#tab" + activeTab).addClass("active");
+        
     } else {
-        // 기본적으로 활성화될 탭 설정
+    	
+        // 기본적으로 활성화될 탭 설정 (여기선 1번 탭으로 설정)
         $(".tab-button[data-tab='tab1']").addClass("active");
-        $(".content-area").removeClass("active"); // 모든 컨텐트 영역의 active 클래스 제거
-        $("#tab1").addClass("active"); // 탭1의 컨텐트 영역에 active 클래스 추가
+        $(".content-area").removeClass("active");
+        $("#tab1").addClass("active");
+        
     }
+    
 });
 
 // 파일 실시간 삭제
@@ -428,7 +437,6 @@ function validateForm() {
 
     return true;
 }
-
 </script>
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

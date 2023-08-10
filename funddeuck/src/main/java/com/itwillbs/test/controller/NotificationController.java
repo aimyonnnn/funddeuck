@@ -28,8 +28,6 @@ public class NotificationController {
 	private NotificationService service;
 	@Autowired
 	private MemberService memberService;
-	@Autowired
-	private ProjectService projectService;
 	
 	// 관리자 피드백 저장하기
 	@PostMapping("saveNotification")
@@ -75,7 +73,7 @@ public class NotificationController {
 		System.out.println("검색어 : " + searchKeyword);
 		// -------------------------------------------------------------------------
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		// -------------------------------------------------------------------------
 		// notificationService - getTotalList() 메서드 호출하여 게시물 목록 조회 요청

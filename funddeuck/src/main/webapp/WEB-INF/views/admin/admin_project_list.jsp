@@ -209,76 +209,7 @@ th, td {
 	    </nav>
 	</div>
 </div>
-	<!-- 페이징 처리 -->
-	
-	<script type="text/javascript">
-	// 셀렉트 박스
-    function filterNotifications() {
-        let statusFilter = $("#filterStatus").val();
-        $("table tr:not(:first-child)").each(function () {
-            let statusCell = $(this).find("td:nth-child(4)").text().trim();
-            if (statusFilter === "" || statusCell === statusFilter) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
-    }
-	// 프로젝트 반려 처리
-	function rejectProjectStatus(project_idx, project_approve_status) {
-		
-		Swal.fire({
-			title: '프로젝트 상태 변경',
-			text: '프로젝트 반려 처리를 하시겠습니까?',
-			icon: 'question',
-			showCancelButton: true,
-			confirmButtonText: '예',
-			cancelButtonText: '아니오'
-		})
-		.then((result) => {
-			
-			if (result.isConfirmed) {
-			
-				$.ajax({
-					method: 'get',
-					url: "<c:url value='rejectProjectStatus'/>",
-					data: {
-						project_idx: project_idx,
-						project_approve_status: project_approve_status
-					},
-					success: function(data){
-						
-						if(data.trim() == 'true') {
-							Swal.fire({
-							      icon: 'success',
-							      title: '프로젝트 반려처리 완료.',
-							      text: '프로젝트 상태가 성공적으로 변경되었습니다.',
-						    }).then(function(){
-							    location.reload();
-						    });
-						} else {
-							Swal.fire({
-							      icon: 'error',
-							      title: '프로젝트 반려처리 실패.',
-							      text: '프로젝트 상태 변경에 실패하였습니다.',
-						    });
-						}
-						
-					},
-					error: function(){
-						console.log('ajax 요청이 실패하였습니다!');	
-					}
-				});
-			} else {
-				// 취소 선택 시 체크박스 해제
-				$('input[type=checkbox]').prop('checked', false);
-			}
-		});
-	}	
-	</script>
-		
-    <!-- bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-   
+<!-- bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

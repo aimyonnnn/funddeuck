@@ -162,7 +162,7 @@ $(()=>{
 							}).then(function(data) {
 								
 								if(data) {
-									alert('결제 완료되었습니다.');
+									console.log('결제 완료되었습니다.');
 								}
 								
 								// 결제 완료 시 이동 할 페이지

@@ -328,7 +328,7 @@ public class MakerController {
 //			model.addAttribute("targetURL", targetURL);
 //			return "success_forward";
 			System.out.println("메이커수정하기여기까지옴");
-			String targetURL = "modifyMakerForm?maker_idx=" + maker.getMaker_idx() + "&tab=3"; // 파라미터 추가
+			String targetURL = "modifyMakerForm?maker_idx=" + maker.getMaker_idx() + "&tab=2"; // 파라미터 추가
 			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다!");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
