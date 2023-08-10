@@ -428,7 +428,7 @@ $(()=>{
 						<input type="text" name="member_idx" value="${member.member_idx }">
 						<!-- ajax로 바뀜 -->
 						<input type="text" name="reward_idx" value="${reward.reward_idx }" id="reward_idx">
-						<input type="text" name="reward_price" value="${reward.reward_price }" id="reward_price">
+						<input type="text" name="reward_amount" value="${reward.reward_price }" id="reward_amount">
 						<input type="text" name="delivery_idx" id="delivery_idx" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_idx }</c:if>">
 						<input type="text" name="delivery_idx" id="delivery_zipcode" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_zipcode }</c:if>">
 						<input type="text" name="delivery_idx" id="delivery_add" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_add }</c:if>">

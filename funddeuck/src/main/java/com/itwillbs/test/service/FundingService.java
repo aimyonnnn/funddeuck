@@ -116,9 +116,35 @@ public class FundingService {
 		return mapper.insertPayment(payment);
 	}
 	
-	//자동으로 택배조회후 상태 변경
+	// 자동으로 택배조회후 상태 변경
 	public int AutoUpdateDeliveryStatus(int delivery_status, int payment_idx) {
 		return mapper.AutoUpdateDeliveryStatus(delivery_status, payment_idx);
+	}
+	
+	// 주문서번호 payment_idx 조회
+	public int getPaymentIdx(PaymentVO payment) {
+		return mapper.selectPaymentIdx(payment);
+	}
+	
+	// 프로젝트 상태 조회
+	public int getProjectStatus(int payment_idx) {
+		return mapper.selectProjectStatus(payment_idx);
+	}
+	
+	// 주문서 조회
+	public PaymentVO getPaymentInfo(int payment_idx) {
+		return mapper.selectPaymentInfo(payment_idx);
+	}
+	
+	// 아이디 조회
+	public String getMemberId(int member_idx) {
+		return mapper.selectMemberId(member_idx);
+	}
+	
+	// 출금이체 후 결제승인여부 결제완료(2)로 변경
+	public void ModifyPaymentConfirm(int payment_idx) {
+		mapper.updatePaymentConfirm(payment_idx);
+		
 	}
 
 }

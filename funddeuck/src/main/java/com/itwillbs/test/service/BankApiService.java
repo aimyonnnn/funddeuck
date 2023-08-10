@@ -39,8 +39,8 @@ public class BankApiService {
 	}
 	
 	// 회원 계좌 출금
-	public ResponseWithdrawVO requestWithdrawMember(int total_amount, String fintech_use_num, String access_token) {
-		return bankApiClient.requestWithdrawMember(total_amount, fintech_use_num, access_token);
+	public ResponseWithdrawVO requestWithdrawMember(int total_amount, Map<String, String> data) {
+		return bankApiClient.requestWithdrawMember(total_amount, data);
 	}
 	
 	// 환불
@@ -52,5 +52,6 @@ public class BankApiService {
 	public ResponseDepositVO requestDepositSettlement(Map<String, String> map) {
 		return bankApiClient.requestDepositSettlement(map);
 	}
+
 
 }

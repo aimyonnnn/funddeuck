@@ -282,7 +282,6 @@
 						$('#rewardPrice').html('');
 						$('#rewardDeliveryPrice').html('');
 						$('#reward_idx').val();
-						$('#reward_price').val();
 						
 						
 						// HTML 출력할 내용
@@ -340,7 +339,7 @@
 			            $('#rewardPrice').html(output2);
 			            $('#rewardDeliveryPrice').html(output3);
 			            $('#reward_idx').val(output4);
-			            $('#reward_price').val(output2);
+			            $('#reward_amount').val(output2);
 						updateCouponSale();
 						updateTotalPrice();
 					},

@@ -35,6 +35,8 @@ public class FundingController {
 	private BankService bankService;
 	@Autowired
 	private BankApiService bankApiService;
+	@Autowired
+	private FundingScheduler fundingScheduler;
 	
 	// 로그 출력을 위한 변수 선언
 	private static final Logger logger = LoggerFactory.getLogger(FundingController.class);
@@ -264,52 +266,49 @@ public class FundingController {
 	    	// fintech_use_num access_token 필요(세션값 불러오기)
 	    	String fintech_use_num = (String)session.getAttribute("fintech_use_num");
 	    	String access_token = (String)session.getAttribute("access_token");
+	    	String sId = (String)session.getAttribute("sId");
 	    	// 계좌정보가 없을 경우(계좌 미등록시)
+	    	// 계좌 결제시 확인용
+	    	logger.info("fintech_use_num : " + fintech_use_num);
+	    	logger.info("access_token : " + access_token);
 	    	if(fintech_use_num == null || access_token == null) {
 	    		model.addAttribute("msg", "계좌인증 후 계좌를 등록해주세요!");
 	    		return "fail_back";
 	    	}
-	    	
-	    	// map 활용하여 데이터 전달
-	    	// payment.getTotal_amount(), fintech_use_num, access_token
-//	    	Map<String, String> map = new HashMap<>();
-	    	logger.info("access_token : " + access_token);
-	    	// 출금이체 API 요청(회원)
-	    	ResponseWithdrawVO withdrawResult = bankApiService.requestWithdrawMember(payment.getTotal_amount(), fintech_use_num, access_token);
-	    	logger.info("withdrawResult : " + withdrawResult);
-	    	
-	    	String sId = (String)session.getAttribute("sId");
-	    	
-	    	// 거래내역 DB 저장(입금내역)
-	    	// 거래내역 저장시 거래날짜가 엄청 과거로 불러와지는 문제해결 필요
-	    	boolean isSaveFundingTranHistSuccess =  bankService.saveFundingTranHist(sId, payment.getProject_idx(), withdrawResult);
-	    	if(isSaveFundingTranHistSuccess) { // 거래내역 DB 저장 성공시
-	    		// payment DB 작업 
-	    		boolean isRegistPayment = fundingService.registPayment(payment);
-	    		if(isRegistPayment) {
-	    			System.out.println("결제서 DB 저장!");
-	    		}
+	    	// 결제서 DB 작업 
+	    	boolean isRegistPayment = fundingService.registPayment(payment);
+	    	if(isRegistPayment) { // 결제서 등록 성공시
+	    		System.out.println("결제서 DB 저장!");
 	    		
+	    		// 등록된 결제서의 payment_idx 조회
+	    		int payment_idx = fundingService.getPaymentIdx(payment);
+	    		
+	    		// map 활용하여 데이터 전달
+	    		// payment.getTotal_amount(), fintech_use_num, access_token
+	    		Map<String, String> data = new HashMap<>();
+	    		data.put("fintech_use_num", fintech_use_num);
+	    		data.put("access_token", access_token);
+	    		// payment.getTotal_amount() 는 int 값이라 Map 으로 전달 불가
+
 	    		// 쿠폰 사용시 쿠폰 상태 변경(coupon_idx 필요)
 	    		// 리워드 수량 = 주문수량 => project 테이블 변경
 	    		
+	    		// 출금이체(스케줄링) 예약
+	    		// 출금이체 API에 필요한 데이터, 최종결제금액 전달
+	    		fundingScheduler.scheduledBankTran(payment_idx, data);
+	    	} else { // 결제서 등록 실패시
 	    		
-	    	} else { // 거래내역 DB 저장 실패시
 	    		model.addAttribute("msg", "오류 발생! 다시 결제해주세요");
 	    		return "fail_back";
+
 	    		
 	    	}
-	    	
-	    	
-	    	// 스케줄링 활용하여서 프로젝트종료일(결제일)에 출금이체 메서드 실행되도록
-	    	// 만약 프로젝트가 취소되면 메서드 취소, payment 상태 프로젝트 취소로 수정 => 0번 프로젝트 취소
 	    	
 	    	
 	    	// 환불 saveRefundTransactionHistory (거래내역 저장 메서드)
 //	    ResponseDepositVO depositResult = bankApiService.requestDeposit(payment.getTotal_amount(), fintech_use_num, access_token);
 //	    logger.info("depositResult" + depositResult);
 	    	
-	    	// 주문서 DB 등록
 	    	// 성공시 fundingResult 결제 완료페이지로 이동
 	    	// 실패시 fail_back
 	    	

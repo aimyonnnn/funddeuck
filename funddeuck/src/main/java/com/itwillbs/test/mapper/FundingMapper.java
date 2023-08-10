@@ -66,10 +66,25 @@ public interface FundingMapper {
 	// 프로젝트 메이커 로고
 	MakerVO selectMakerLogo(int maker_idx);
 
-	//자동으로 택배조회후 상태 변경
+	// 자동으로 택배조회후 상태 변경
 	int AutoUpdateDeliveryStatus(@Param("delivery_status") int delivery_status,@Param("payment_idx") int payment_idx);
 	
 	// 결제 후 결제서 등록
 	boolean insertPayment(PaymentVO payment);
+	
+	// 주문서번호 payment_idx 조회
+	int selectPaymentIdx(PaymentVO payment);
+	
+	// 프로젝트 상태 조회 
+	int selectProjectStatus(int payment_idx);
+	
+	// 주문서 조회 
+	PaymentVO selectPaymentInfo(int payment_idx);
+	
+	// 아이디 조회
+	String selectMemberId(int member_idx);
+	
+	// 출금이체 후 결제승인여부 결제완료(2)로 변경
+	void updatePaymentConfirm(int payment_idx);
 	
 }
