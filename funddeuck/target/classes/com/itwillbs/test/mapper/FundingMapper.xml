@@ -392,4 +392,55 @@
 		SET delivery_status = #{delivery_status}
 		WHERE payment_idx = #{payment_idx}
 	</update>
+	
+	<!-- 주문서번호 payment_idx 조회  -->
+	<select id="selectPaymentIdx">
+		SELECT payment_idx
+			FROM payment
+				WHERE 
+					member_idx = #{member_idx} AND
+					project_idx = #{project_idx} AND
+					reward_idx = #{reward_idx} AND
+					delivery_idx = #{delivery_idx} AND
+					reward_amount = #{reward_amount} AND
+					additional_amount = #{additional_amount} AND
+					use_coupon_amount = #{use_coupon_amount} AND
+					total_amount = #{total_amount} AND
+					payment_date = #{payment_date} AND
+					payment_quantity = #{payment_quantity} AND
+					payment_confirm = #{payment_confirm} AND
+					payment_method = #{payment_method}
+				 	
+	</select>
+	
+	<!-- 프로젝트 상태 조회 -->
+	<select id="selectProjectStatus">
+		SELECT pro.project_status
+			FROM payment pay JOIN project pro
+				ON pay.project_idx = pro.project_idx 
+					WHERE pay.payment_idx = #{payment_idx}
+	</select>
+	
+	<!-- 주문서 조회 -->
+	<select id="selectPaymentInfo">
+		SELECT *
+			FROM payment
+				WHERE payment_idx = #{payment_idx}
+	</select>
+	
+	<!-- 아이디 조회 -->
+	<select id="selectMemberId">
+		SELECT member_id
+			FROM members
+				WHERE member_idx = #{member_idx}
+	</select>
+	
+	<!-- 출금이체 후 결제승인여부 결제완료(2)로 변경 -->
+	<update id="updatePaymentConfirm">
+		UPDATE payment
+			SET payment_confirm = 2
+				WHERE
+					payment_idx = #{payment_idx}
+	</update>	
+	
 </mapper>

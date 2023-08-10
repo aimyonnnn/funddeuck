@@ -161,7 +161,8 @@ public class BankApiClient {
 	}
 	
 	// 회원 계좌 출금(결제)
-	public ResponseWithdrawVO requestWithdrawMember(int total_amount, String fintech_use_num, String access_token) {
+//	public ResponseWithdrawVO requestWithdrawMember(int total_amount, String fintech_use_num, String access_token) {
+		public ResponseWithdrawVO requestWithdrawMember(int total_amount, Map<String, String> data) {
 		// 출금이체 요청 API 의 URL 생성 - POST 방식
 		String url = baseUrl + "/v2.0/transfer/withdraw/fin_num";
 		
@@ -172,7 +173,7 @@ public class BankApiClient {
 //			httpHeaders.add("Content-Type", "application/json; charset=UTF-8"); // JSON 타입 요청 헤더 설정
 		
 		// 위의 코드와 동일한 작업을 수행하는 또 다른 방법
-		httpHeaders.setBearerAuth(access_token); // Bearer 토큰 설정
+		httpHeaders.setBearerAuth(data.get("access_token")); // Bearer 토큰 설정
 		httpHeaders.setContentType(MediaType.APPLICATION_JSON); // JSON 타입 요청 헤더 설정
 		
 		// 요청 파라미터를 JSON 형식으로 생성하기 - org.json 패키지 클래스 활용
@@ -181,11 +182,11 @@ public class BankApiClient {
 		jo.put("cntr_account_type", "N"); // 약정 계좌/계정 구분(N:계좌, C:계정 => N 고정)
 		jo.put("cntr_account_num", "50000818"); // 약정계좌 계좌번호(테스트데이터 출금계좌 항목에 등록할 계좌번호) 사이트 계좌번호
 		jo.put("dps_print_content", "펀딩결제（계좌）"); // 입금계좌 인자내역
-		jo.put("fintech_use_num", fintech_use_num); // 출금계좌 핀테크이용번호(전달받은 값) 고객계좌
+		jo.put("fintech_use_num", data.get("fintech_use_num")); // 출금계좌 핀테크이용번호(전달받은 값) 고객계좌
 		jo.put("tran_amt", total_amount); // 거래금액 => 오픈뱅킹 사이트의 테스트데이터와 일치시켜야함
 		jo.put("tran_dtime", valueGenerator.getTranDTime()); // 거래요청일시
 		jo.put("req_client_name", "김보희"); // 거래를 요청한 사용자 이름 고객이름
-		jo.put("req_client_fintech_use_num", fintech_use_num); // 거래를 요청한 사용자 핀테크번호
+		jo.put("req_client_fintech_use_num", data.get("fintech_use_num")); // 거래를 요청한 사용자 핀테크번호
 		jo.put("req_client_num", "1"); //  // 거래를 요청한 사용자 번호(아이디처럼 사용되는 번호, 임의부여)
 		jo.put("transfer_purpose", "TR"); // 출금(송금)
 		// 아래 3개 정보는 피싱 등의 사고 발생 시 지급 정지를 위한 정보(검증 수행하지 않음)
