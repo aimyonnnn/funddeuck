@@ -44,7 +44,7 @@ th, td {
 <jsp:include page="../common/admin_top.jsp"/>
 
 	<div class="container">
-		<h2 class="fw-bold mt-5">프로젝트 승인 관리</h2>
+		<h2 class="fw-bold mt-5">승인 관리</h2>
 		<p class="projectContent">프로젝트 등록 전 승인, 거절 처리를 할 수 있습니다.</p>
 	</div>
 	
@@ -77,8 +77,8 @@ th, td {
 						<th class="text-center" style="width: 7%;">프로젝트 번호</th>
 						<th class="text-center" style="width: 15%;">프로젝트 이름</th>
 						<th class="text-center" style="width: 7%;">대표자</th>
-						<th class="text-center" style="width: 5%;">상태</th>
 						<th class="text-center" style="width: 7%;">요청시간</th>
+						<th class="text-center" style="width: 5%;">상태</th>
 						<th class="text-center" style="width: 5%;">상세정보</th>
 					</tr>
 					
@@ -91,6 +91,9 @@ th, td {
 								</a> 
 							</td>
 							<td class="text-center" style="width: 20%;">${pList.project_representative_name}</td>
+							<td class="text-center" style="width: 5%;">
+								<fmt:formatDate value="${pList.project_approval_request_time}" pattern="yy-MM-dd HH:mm"/>
+							</td>
 							<c:choose>
 								<c:when test="${pList.project_approve_status eq 1}">
 									<td class="text-center" style="width: 5%;">미승인</td>
@@ -108,9 +111,6 @@ th, td {
 									<td class="text-center" style="width: 5%;">승인거절</td>
 								</c:otherwise>
 							</c:choose>
-							<td class="text-center" style="width: 5%;">
-								<fmt:formatDate value="${pList.project_approval_request_time}" pattern="yy-MM-dd HH:mm"/>
-							</td>
 							<td class="text-center" style="width: 5%;">
 								<button class="btn btn-outline-primary btn-sm" 
 								onclick="location.href='adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}'">상세보기</button>

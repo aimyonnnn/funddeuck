@@ -33,7 +33,7 @@
 			<ul>
 				<li><a href="adminMakerManagement"><span class="las la-tasks"></span> 메이커 관리</a></li>
 				<li><a href="adminProjectManagement"><span class="las la-history"></span> 프로젝트 관리</a></li>
-				<li><a href="adminProjectList"><span class="las la-check"></span> 프로젝트 승인</a></li>
+				<li><a href="adminProjectList"><span class="las la-check"></span> 승인 관리</a></li>
 				<li><a href="adminPayment"><span class="las la-credit-card"></span> 결제 관리</a></li>
 				<li><a href="adminMemberManagement"><span class="las la-user-circle"></span> 회원 관리</a></li>
 				<li><a href="adminSmsManagement"><span class="las la-comments"></span> 문자 관리</a></li>

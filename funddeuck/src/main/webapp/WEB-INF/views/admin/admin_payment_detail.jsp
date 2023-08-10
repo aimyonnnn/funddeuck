@@ -48,8 +48,8 @@ th, td {
 		<div class="col">
 	
 			<div class="tab-buttons text-center">
-				<button class="btn btn-outline-primary tab-button w-100 active" data-tab="tab1">결제내역 정보변경</button>
-				<button class="btn btn-outline-primary tab-button w-100 " data-tab="tab2">배송지 정보변경</button>
+				<button class="btn btn-outline-primary tab-button w-100" data-tab="tab1">결제내역 정보변경</button>
+				<button class="btn btn-outline-primary tab-button w-100" data-tab="tab2">배송지 정보변경</button>
 			</div>
 				
 			<!-- 메이커 정보수정 -->
@@ -207,35 +207,44 @@ th, td {
 </div>
 
 <script>
-//탭 버튼 클릭 시
 $(document).ready(function() {
 	
-	$("#tab1").addClass("active");
-	$(".tab-button").click(function() {
-		
-		var tabId = $(this).data("tab");
-		$(".content-area").removeClass("active");
-		$("#" + tabId).addClass("active");
-		
-	});
-	
-});
+    $(".tab-button").click(function() {
+    	
+        var tabId = $(this).data("tab");
+        $(".content-area").removeClass("active");
+        $("#" + tabId).addClass("active");
 
-// 탭 버튼 클릭시 active 효과
-$(document).ready(function() {
-	
-	// 버튼1 클릭 시
-	$(".tab-button[data-tab='tab1']").click(function() {
-		$(".tab-button[data-tab='tab1']").addClass("active");
-	  	$(".tab-button[data-tab='tab2']").removeClass("active");
-	});
-	
-	// 버튼2 클릭 시
-	$(".tab-button[data-tab='tab2']").click(function() {
-	  	$(".tab-button[data-tab='tab1']").removeClass("active");
-	  	$(".tab-button[data-tab='tab2']").addClass("active");
-	});
-	
+        // 탭 버튼 클릭시 active 효과 설정
+        $(".tab-button").removeClass("active"); // 모든 탭 버튼의 active 클래스 제거
+        $(this).addClass("active"); // 클릭한 탭 버튼에 active 클래스 추가
+        
+    });
+
+    // URL 파라미터 확인하여 탭 활성화 설정
+    let urlParams = new URLSearchParams(window.location.search);
+    let activeTab = urlParams.get("tab");
+
+    // 모든 탭 버튼의 active 클래스 제거
+    $(".tab-button").removeClass("active");
+
+    if (activeTab === "1" || activeTab === "2") {
+    	
+        // 클릭한 탭 버튼에 active 클래스 추가
+        $(".tab-button[data-tab='tab" + activeTab + "']").addClass("active");
+        // 해당 탭의 컨텐트 영역에 active 클래스 추가
+        $(".content-area").removeClass("active");
+        $("#tab" + activeTab).addClass("active");
+        
+    } else {
+    	
+        // 기본적으로 활성화될 탭 설정 (여기선 1번 탭으로 설정)
+        $(".tab-button[data-tab='tab1']").addClass("active");
+        $(".content-area").removeClass("active");
+        $("#tab1").addClass("active");
+        
+    }
+    
 });
 
 // 파일 실시간 삭제

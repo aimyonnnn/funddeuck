@@ -60,42 +60,39 @@ th, td {
 				<!-- container -->
 				<div class="container">
 
-					<table class="table">
-						<tr>
-							<td class="align-middle text-center">프로젝트 이름</td>
-							<td>${project.project_subject}</td>
-							<td class="align-middle text-center">승인상태</td>
-							<c:choose>
-								<c:when test="${project.project_approve_status eq 2}">
-									<td class="text-danger">승인요청</td>
-								</c:when>
-								<c:when test="${project.project_approve_status eq 3}">
-									<td class="text-success">승인완료</td>
-								</c:when>
-								<c:when test="${project.project_approve_status eq 5}">
-									<td>결제완료</td>
-								</c:when>
-								<c:otherwise>
-									<td>승인거절</td>
-								</c:otherwise>
-							</c:choose>
-						</tr>
-						<tr>
-							<td class="align-middle text-center">대표자 이름</td>
-							<td>${project.project_representative_name}</td>
-							<td class="align-middle text-center">프로젝트 번호</td>
-							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${project.project_idx}</td>
-						</tr>
-					</table>
+<!-- 					<table class="table"> -->
+<!-- 						<tr> -->
+<!-- 							<td class="align-middle text-center">프로젝트 이름</td> -->
+<%-- 							<td>${project.project_subject}</td> --%>
+<!-- 							<td class="align-middle text-center">승인상태</td> -->
+<%-- 							<c:choose> --%>
+<%-- 								<c:when test="${project.project_approve_status eq 2}"> --%>
+<!-- 									<td class="text-danger">승인요청</td> -->
+<%-- 								</c:when> --%>
+<%-- 								<c:when test="${project.project_approve_status eq 3}"> --%>
+<!-- 									<td class="text-success">승인완료</td> -->
+<%-- 								</c:when> --%>
+<%-- 								<c:when test="${project.project_approve_status eq 5}"> --%>
+<!-- 									<td>결제완료</td> -->
+<%-- 								</c:when> --%>
+<%-- 								<c:otherwise> --%>
+<!-- 									<td>승인거절</td> -->
+<%-- 								</c:otherwise> --%>
+<%-- 							</c:choose> --%>
+<!-- 						</tr> -->
+<!-- 						<tr> -->
+<!-- 							<td class="align-middle text-center">대표자 이름</td> -->
+<%-- 							<td>${project.project_representative_name}</td> --%>
+<!-- 							<td class="align-middle text-center">프로젝트 번호</td> -->
+<%-- 							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${project.project_idx}</td> --%>
+<!-- 						</tr> -->
+<!-- 					</table> -->
 
 					<!-- 탭 버튼 -->
 					<div class="tab-buttons text-center mt-5">
-						<button class="btn btn-outline-primary tab-button w-100"
-							data-tab="tab1">프로젝트</button>
-						<button class="btn btn-outline-primary tab-button w-100"
-							data-tab="tab2">리워드</button>
-						<button class="btn btn-outline-primary tab-button w-100"
-							data-tab="tab3">메이커</button>
+						<button class="btn btn-outline-primary tab-button w-100" data-tab="tab1">프로젝트</button>
+						<button class="btn btn-outline-primary tab-button w-100" data-tab="tab2">리워드</button>
+						<button class="btn btn-outline-primary tab-button w-100" data-tab="tab3">메이커</button>
 					</div>
 					<div class="content-area sideDescription" id="tab1">
 						<div class="container">
@@ -263,26 +260,6 @@ th, td {
 									</c:choose>								
 								</tr>
 								<tr>
-									<td>프로젝트 상태</td>
-									<c:choose>
-										<c:when test="${project.project_status eq 1}">
-											<td>미진행</td>
-										</c:when>
-										<c:when test="${project.project_status eq 2}">
-											<td>진행중</td>
-										</c:when>
-										<c:when test="${project.project_status eq 3}">
-											<td>진행완료</td>
-										</c:when>
-										<c:when test="${project.project_status eq 4}">
-											<td>정산신청</td>
-										</c:when>
-										<c:when test="${project.project_status eq 5}">
-											<td>정산완료</td>
-										</c:when>
-									</c:choose>
-								</tr>
-								<tr>
 									<td>프로젝트 승인 요청 시간</td>
 									<c:choose>
 										<c:when test="${not empty project.project_approval_request_time}">
@@ -386,35 +363,35 @@ th, td {
 									<td>${maker.member_idx}</td>
 								</tr>
 								<tr>
-									<td>메이커 유형-개인신분증</td>
+									<td>개인신분증</td>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file1}"
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>메이커 유형-개인사업자등록번호</td>
+									<td>개인사업자등록번호</td>
 									<td>${maker.individual_biz_num}</td>
 								</tr>
 								<tr>
-									<td>메이커 유형-개인사업자명</td>
+									<td>개인사업자명</td>
 									<td>${maker.individual_biz_name}</td>
 								</tr>
 								<tr>
-									<td>메이커 유형-개인사업자등록증</td>
+									<td>개인사업자등록증</td>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file2}"
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>메이커 유형-법인사업자등록번호</td>
+									<td>법인사업자등록번호</td>
 									<td>${maker.corporate_biz_num}</td>
 								</tr>
 								<tr>
-									<td>메이커 유형-법인사업자명</td>
+									<td>법인사업자명</td>
 									<td>${maker.corporate_biz_name}</td>
 								</tr>
 								<tr>
-									<td>메이커 유형-법인사업자등록증</td>
+									<td>법인사업자등록증</td>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file3}"
 										alt="첨부파일 없음"></td>
@@ -515,16 +492,16 @@ $(document).ready(function() {
 	receiver.val(memberId);
 	receiver.prop('readonly', true);
 });
-</script>
-	
-<script type="text/javascript">
+
+// 탭 버튼 클릭 시
 $(document).ready(function () {
+	
        // 탭 1을 기본으로 활성화
        $("#tab1").addClass("active");
        $(".tab-button[data-tab='tab1']").addClass("active"); // 기본 탭 버튼에도 active 클래스 추가
 
-       $(".tab-button").click(function (e) {
-           e.preventDefault(); // form 태그와의 충돌 방지
+       $(".tab-button").click(function() {
+    	   
            var tabId = $(this).data("tab");
            $(".content-area").removeClass("active");
            $("#" + tabId).addClass("active");
@@ -532,6 +509,7 @@ $(document).ready(function () {
            // 탭 버튼에도 active 클래스 추가 (활성화된 탭 표시)
            $(".tab-button").removeClass("active");
            $(this).addClass("active");
+           
        });
 })
 

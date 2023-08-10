@@ -144,7 +144,7 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") int pageNum,
 			HttpSession session, Model model) {
 		
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		
 		List<SendPhoneMessageVO> sList = sendPhoneMessageService.getAllSmsList(searchKeyword, searchType, startRow, listLimit);
@@ -194,8 +194,8 @@ public class AdminController {
 	
 	// 결제 관리 - 결제 정보 수정 비즈니스 로직 처리
 	@PostMapping("adminModifyPayment")
-	public String adminModifyPayment(PaymentVO payment, Model model, 
-			@RequestParam(defaultValue = "1") int pageNum, HttpSession session, HttpServletRequest request) {
+	public String adminModifyPayment(PaymentVO payment, Model model, @RequestParam(defaultValue = "1") int pageNum,
+			HttpSession session, HttpServletRequest request) {
 		
 		System.out.println("adminModifyProject");
 	    String uploadDir = "/resources/upload";
@@ -238,19 +238,24 @@ public class AdminController {
 	            e.printStackTrace();
 	        }
 	        // 결제 정보 변경 성공 시
-	        String targetURL = "adminPaymentDetail?payment_idx=" + payment.getPayment_idx() + "&pageNum=" + pageNum;
-			model.addAttribute("msg", "결제 정보 수정이 완료되었습니다.");
+//	        String targetURL = "adminPaymentDetail?payment_idx=" + payment.getPayment_idx() + "&pageNum=" + pageNum;
+//			model.addAttribute("msg", "결제 정보 수정이 완료되었습니다.");
+//			model.addAttribute("targetURL", targetURL);
+//			return "success_forward";
+			String targetURL =  "adminPaymentDetail?payment_idx=" + payment.getPayment_idx() + "&tab=1";
+			model.addAttribute("msg", "결제 정보 수정이 완료되었습니다!");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
 	    } else {
-	        model.addAttribute("msg", "프로젝트 정보 수정에 실패하였습니다.");
+	        model.addAttribute("msg", "결제 정보 수정에 실패하였습니다.");
 	        return "fail_back";
 	    }
 	}
 	
 	// 결제 관리 - 상세보기 페이지
 	@GetMapping("adminPaymentDetail")
-	public String adminPaymentDetail(@RequestParam(required = true) Integer payment_idx, HttpSession session, Model model) {
+	public String adminPaymentDetail(
+			@RequestParam(required = true) Integer payment_idx, @RequestParam(defaultValue = "1") int type ,HttpSession session, Model model) {
 		PaymentVO payment = paymentService.getPaymentDetail(payment_idx);
 		model.addAttribute("payment", payment);
 		return "admin/admin_payment_detail";
@@ -264,7 +269,7 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") int pageNum,
 			HttpSession session, Model model) {
 		
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		
 		List<PaymentVO> pList = paymentService.getAllPaymentList(searchKeyword, searchType, startRow, listLimit);
@@ -285,7 +290,8 @@ public class AdminController {
 	
 	// 메이커 정보 변경 페이지 - 메이커 관리 상세보기 클릭 시
 	@GetMapping("adminMakerDetail")
-	public String adminMakerDetail(@RequestParam(required = true) Integer maker_idx ,HttpSession session, Model model) {
+	public String adminMakerDetail(@RequestParam(required = true) Integer maker_idx, @RequestParam(defaultValue = "1") int type,
+			HttpSession session, Model model) {
 		
 		MakerVO maker = makerService.getMakerInfo(maker_idx);
 		List<MakerBoardVO> mList = makerBoardService.getAllMakerBoardList(maker_idx);
@@ -400,11 +406,14 @@ public class AdminController {
 			}
 			
 			// 메이커 정보 변경 성공 시
-			String targetURL = "adminMakerDetail?maker_idx=" + maker.getMaker_idx() + "&pageNum=" + pageNum;
-			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다.");
+//			String targetURL = "adminMakerDetail?maker_idx=" + maker.getMaker_idx() + "&pageNum=" + pageNum;
+//			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다!");
+//			model.addAttribute("targetURL", targetURL);
+//			return "success_forward";
+			String targetURL =  "adminMakerDetail?maker_idx=" + maker.getMaker_idx() + "&pageNum=" + pageNum + "&tab=1";
+			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다!");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
-			
 		} else {
 			model.addAttribute("msg", "메이커 정보 수정에 실패하였습니다.");
 			return "fail_back";
@@ -420,7 +429,7 @@ public class AdminController {
 			HttpSession session, Model model) {
 		
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		
 		// 프로젝트 목록 조회 요청
@@ -455,7 +464,7 @@ public class AdminController {
 			Model model) {
 		
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		
 		// 프로젝트 목록 조회 요청
@@ -484,7 +493,9 @@ public class AdminController {
 	
 	// 프로젝트 관리 - 상세 페이지
 	@GetMapping("adminProjectManagementDetail")
-	public String adminProjectManagementDetail(@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, HttpSession session, Model model) {
+	public String adminProjectManagementDetail(
+			@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, @RequestParam(defaultValue = "1") int type, 
+			HttpSession session, Model model) {
 		
 		ProjectVO project = projectService.getProjectInfo(project_idx);
 		List<RewardVO> rList = projectService.getRewardList(project_idx);
@@ -924,11 +935,14 @@ public class AdminController {
 	        }
 
 	        // 프로젝트 정보 변경 성공 시
-	        String targetURL = "adminProjectManagementDetail?project_idx=" + project.getProject_idx() + "&pageNum=" + pageNum;
-	        model.addAttribute("msg", "프로젝트 정보 수정이 완료되었습니다.");
-	        model.addAttribute("targetURL", targetURL);
-	        return "success_forward";
-
+//	        String targetURL = "adminProjectManagementDetail?project_idx=" + project.getProject_idx() + "&pageNum=" + pageNum;
+//	        model.addAttribute("msg", "프로젝트 정보 수정이 완료되었습니다!");
+//	        model.addAttribute("targetURL", targetURL);
+//	        return "success_forward";
+	        String targetURL =  "adminProjectManagementDetail?project_idx=" + project.getProject_idx() + "&pageNum=" + pageNum + "&tab=1";
+			model.addAttribute("msg", "프로젝트 정보 수정이 완료되었습니다!");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
 	    } else {
 	        model.addAttribute("msg", "프로젝트 정보 수정에 실패하였습니다.");
 	        return "fail_back";
@@ -968,10 +982,14 @@ public class AdminController {
 	public String adminModifyReward(@RequestParam(defaultValue = "1") int pageNum, RewardVO reward, HttpSession session, Model model) {
 		int updateCount = projectService.modifyReward(reward);
 		if(updateCount > 0) { 
-			String targetURL = "adminProjectManagementDetail?project_idx=" + reward.getProject_idx() + "&pageNum=" + pageNum;
-	        model.addAttribute("msg", "리워드 정보 수정이 완료되었습니다.");
-	        model.addAttribute("targetURL", targetURL);
-	        return "success_forward";
+//			String targetURL = "adminProjectManagementDetail?project_idx=" + reward.getProject_idx() + "&pageNum=" + pageNum;
+//	        model.addAttribute("msg", "리워드 정보 수정이 완료되었습니다!");
+//	        model.addAttribute("targetURL", targetURL);
+//	        return "success_forward";
+			String targetURL =  "adminProjectManagementDetail?project_idx=" + reward.getProject_idx() + "&pageNum=" + pageNum + "&tab=2";
+			model.addAttribute("msg", "리워드 정보 수정이 완료되었습니다!");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
 		} else {
 			model.addAttribute("msg", "리워드 정보 수정에 실패하였습니다.");
 			return "fail_back";

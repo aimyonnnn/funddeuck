@@ -69,6 +69,7 @@ th, td {
 	</div>
 	<!-- 검색 버튼 -->
 	
+	<!-- 엑셀 다운로드 테스트 -->
 	<div class="d-flex justify-content-end">
 		<button class="btn btn-outline-primary btn-sm mb-2" onclick="location.href='excelDownload?searchType=${searchType}&searchKeyword=${searchKeyword}&pageNum=${pageNum}&listLimit=${listLimit}'">엑셀 다운로드</button>
 	</div>

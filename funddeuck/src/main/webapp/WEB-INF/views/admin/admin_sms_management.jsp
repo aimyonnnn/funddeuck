@@ -70,6 +70,18 @@ th, td {
 		<!-- form 태그 끝 -->	
 	</div>
 	<!-- 검색 버튼 -->
+	
+	<!-- 문자 아이콘 - 휴대폰 메시지 전송용 -->
+<!--     <a class="nav-link py-0 me-4" href="#" data-bs-toggle="modal" data-bs-target="#sendPhoneMessageModal"> -->
+<!-- 	    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16"> -->
+<!-- 			<path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/> -->
+<!-- 		</svg> -->
+<!--     </a> -->
+    
+    <!-- 문자 보내기 버튼 -->
+    <div class="d-flex justify-content-end">
+		<button class="btn btn-outline-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#sendPhoneMessageModal">문자 보내기</button>
+	</div>
 		
 	<div class="row">
 		<div class="d-flex justify-content-center">
@@ -77,10 +89,10 @@ th, td {
 			<table class="table">
 				<tr>
 					<th class="text-center" style="width: 5%;">번호</th>
-					<th class="text-center" style="width: 30%;">메시지 내용</th>
+					<th class="text-center" style="width: 30%;">문자 내용</th>
 					<th class="text-center" style="width: 10%;">발송 일시</th>
-					<th class="text-center" style="width: 7%;">회원 아이디</th>
-					<th class="text-center" style="width: 7%;">회원 전화번호</th>
+					<th class="text-center" style="width: 7%;">아이디</th>
+					<th class="text-center" style="width: 7%;">전화번호</th>
 				</tr>
 				
 				<c:forEach var="sList" items="${sList}">
@@ -185,6 +197,137 @@ th, td {
 	    </nav>
 	</div>
 </div>
+
+<!-- 휴대폰 문자 메시지 모달창 -->
+<div class="modal fade" id="sendPhoneMessageModal" tabindex="-1" role="dialog" aria-labelledby="sendPhoneMessageModalLabel" style="display: none;" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content border-0">
+           <div class="modal-header bg-primary text-white">
+               <h5 class="modal-title text-white">문자메시지 보내기</h5>
+           </div>
+           <div class="modal-body">
+               <div class="notes-box">
+                   <div class="notes-content">
+                       <form id="sendMessageForm">
+                           <div class="col-md-12 mb-3">
+                               <div class="ideatitle">
+                                   <label>ID</label>
+								   <input id="send_memberId" type="text" class="form-control" placeholder="아이디를 입력하세요" onchange="fetchPhoneNumber()">
+                               </div>
+                           </div>
+                           
+                           <div class="col-md-12 mb-3">
+                               <div class="ideatitle">
+                                   <label>Number</label>
+								   <input id="send_phoneNum" type="text" class="form-control" placeholder="아이디 입력 시 자동으로 조회됩니다" disabled="disabled">
+                               </div>
+                           </div>
+
+                           <div class="col-md-12">
+                               <div class="ideadescription">
+                                   <label>Content</label>
+                                   <textarea id="send_content" class="form-control" placeholder="내용을 입력하세요" rows="3" maxlength="80"></textarea>
+                               </div>
+                           </div>
+                        </form>
+                     	<div class="modal-footer">
+	                        <button id="sendPhoneMessageBtn" class="btn btn-primary">전송</button>
+	                        <button class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">닫기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 문자 보내기 모달창 호출 시 아이디 입력하면 전화번호 조회해서 자동으로 입력
+function fetchPhoneNumber() {
+	
+    let memberId = document.getElementById("send_memberId").value;
+
+    $.ajax({
+        url: '<c:url value="getPhoneNumber"/>',
+        method: "post",
+        data: { member_id: memberId },
+        success: function (data) {
+        	
+        	console.log(data);
+            document.getElementById("send_phoneNum").value = data.trim();
+            
+        },
+        error: function () {
+        	console.log('번호 조회 안됨');
+        }
+    });
+}
+
+//문자메시지 발송하기
+$(() => {
+	
+    $('#sendPhoneMessageBtn').click(function(e) {
+    	
+   	  	e.preventDefault();
+
+   	  	if ($('#send_memberId').val() === '') {
+	   	    alert('아이디를 입력해주세요');
+	   	    $('#send_memberId').focus();
+	   	    return;
+   	  	}
+
+   	  	if ($('#send_content').val() === '') {
+	   	    alert('내용을 입력해주세요');
+	  	    $('#send_content').focus();
+	   	    return;
+   	  	}
+    	
+        let modal = $('.modal-content').has(e.target);
+        let send_memberId = modal.find('.modal-body input[id="send_memberId"]').val();
+        let send_content = modal.find('.modal-body textarea[id="send_content"]').val();
+
+       	// 메시지 DB 저장하기
+        $.ajax({
+            type: 'post',
+            url: '<c:url value="savePhoneMessage"/>',
+            data: {
+            	
+            	member_id: send_memberId,
+            	message: send_content
+                
+            },
+            dataType: 'text',
+            success: function(data) {
+            	
+                console.log(data);
+                
+                if (data == 'true') { 
+                	
+                    Swal.fire({
+					      icon: 'success',
+					      title: '문자 메시지 발송 성공!',
+					      text: '문자 메시지가 성공적으로 발송되었습니다!',
+				    }).then(function(){
+				    	// 메시지 보내기 입력창 비우기
+	                    modal.find('.modal-body textarea').val('');
+	                    modal.find('.modal-body input').val('');
+				    });
+                    
+                } else {
+                	
+                    alert('존재하지 않는 회원입니다.');
+                    
+                } 
+                
+            },
+            error: function() {
+                alert("문자 메시지 발송 실패!");
+            }
+        });
+        
+    });
+});
+</script>
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
