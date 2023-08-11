@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <html>
 <html lang="ko">
 
@@ -13,235 +15,10 @@
   	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />  	
 	<link rel="stylesheet" type="text/css" href="resources/css/mypage.css" />
+	<link rel="stylesheet" type="text/css" href="resources/css/main.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <style>
-    .card-thumbnail {
-      width: 100%;
-      height: 0;
-      padding-bottom: 56.25%; /* 16:9 비율 */
-      background-size: cover;
-      background-position: center;
-    }
-    
-	.container h3{
-	  margin-top: 40px;
-	}
-	
-    .project-rank {
-      font-weight: bold;
-    }
 
-    .project-name {
-      color: #ff9300;
-      font-size: 100%
-	}
-	/* 리스트 스타일 변경 */
-    #rankingList {
-      padding: 0;
-      margin: 0;
-    }
-
-    /* 리스트 아이템 기호 제거 */
-    #rankingList li {
-      list-style-type: none;
-    }
-
-	.carousel-item img {
-    max-width: 100%;
-    height: auto;
-	}
-	
-	.navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 9999;
-        background-color: #fff; 
-    }
-  
-    .carousel {
-        margin-top: 70px; 
-    }
-	
-	.light-gray-text {
-        color: #aaaaaa; 
-    }
-    
-	.slick-slide {
-	    padding: 1em;
-	 }   
-	  
-	.swiper-pagination-custom {
-    	display: none;
-	}
-
-	.swiper-container {
-	    display: flex;
-	    align-items: flex-start;
-	    max-width: 100%;
-	    overflow: hidden;
-	    height: auto; /* 높이 자동 조절 */
-	}
-	.swiper-slide {
-	    flex: 0 0 auto;
-	    width: auto;
-	    margin-right: 10px;
-	}
-		
-		.swiper-pagination-custom {
-		    margin-top: 10px;
-		}
-		
-	.swiper-slide .card {
-	    width: 100%; /* 슬라이드 너비에 맞게 카드 크기 조절 */
-	    box-sizing: border-box;
-	}
-	
-	a {
-    text-decoration: none; /
-    color: inherit;
-	}
-	
-	.project-table {
-	  text-align: center;
-	}
-	
-	.project-table th,
-	.project-table td {
-	  text-align: center;
-	}
-	
- 	.table tr:nth-child(2) td,
- 	.table tr:nth-child(3) td, 
- 	.table tr:nth-child(4) td,
- 	.table tr:nth-child(5) td, 
- 	.table tr:nth-child(6) td, 
- 	.table tr:nth-child(7) td, 
- 	.table tr:nth-child(8) td, 
- 	.table tr:nth-child(9) td, 
- 	.table tr:nth-child(10) td, 
- 	.table tr:nth-child(11) td { 
- 	  font-weight: bold; 
- 	  font-size: 125%; 
- 	} 
-	
-	.project-end-date {
-	  color: #999; 
-	}
-	 
-    .hashtags-container {
-        position: relative;
-        height: 100px;
-        overflow: hidden;
-    }
-
-    .random-hashtag {
-        position: absolute;
-    }
-
-    .card-body_hash {
-        position: relative;
-        height: 200px;
-        width: 470px;
-        padding: 10px;
-    }
-    
-    .hashtags-container{
-        height: 300px;
-        width: 600px;
-    }
-    
-    .random-hashtag {
-        position: absolute;
-        font-size: 12px; /* 초기 폰트 크기 설정 */
-        transition: font-size 0.3s; /* 애니메이션 전환 효과 */
-    }
-    
-    .random-hashtag:hover {
-        font-size: 18px; /* 마우스 오버 시 크기 증가 */
-        z-index: 2; /* 마우스 오버 시 다른 요소 위로 올라오도록 설정 */
-    }
-    
-	/* 모달 팝업 스타일 */
-	.popup {
-	    display: none;
-	    position: fixed;
-	    top: 0;
-	    left: 0;
-	    width: 100%;
-	    height: 100%;
-	    background-color: rgba(0, 0, 0, 0.5);
-	    z-index: 1000;
-	}
-	
-	.popup-content {
-	    position: absolute;
-	    top: 50%;
-	    left: 50%;
-	    transform: translate(-50%, -50%);
-	    background-color: #fff;
-	    border-radius: 5px;
-	    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-	
-	    /* 수정된 부분: 너비를 min-width로 지정해서 유동적인 조절 가능하도록 함 */
-	    min-width: 300px;
-	    max-width: 80%;
-	    text-align: right; 
-	}
-	
-	.close-button {
-	    position: absolute;
-	    top: 10px;
-	    right: 10px;
-	    font-size: 20px;
-	    cursor: pointer;
-	    color: #999;
-	}
-	
-	/* 추가한 부분 */
-	.content-wrapper {
-	    display: flex;
-	    flex-direction: column;
-	    justify-content: center;
-	    align-items: center;
-	    margin-top: 20px;
-	}
-	
-	#hideToday {
-	    margin-bottom: 10px;
-	}
-	
-	/* 모바일 환경에서 팝업 창 스타일 */
-	@media (max-width: 768px) {
-	    .popup-content {
-	        /* 모바일에서 크기를 유지*/
-	        max-width: 90%;
-	        text-align: center;
-	        padding: 10px;
-	    }
-	
-	    .popup-content img {
-	        /* 수정된 부분: 이미지 너비 설정 */
-	        max-width: 100%;
-	        height: auto;
-	    }
-	
-	    .close-button {
-	        top: 20px;
-	        right: 20px;
-	    }
-	
-	    .content-wrapper {
-	        /* 수정된 부분: 모바일에서 이미지를 중앙에 배치*/
-	        margin-top: 50px;
-	    }
-	}
-
-  </style>
-  
   <script type="text/javascript">
   	console.log("${sessionScope.sId }");
   </script>
@@ -281,45 +58,43 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-<!-- status.index <= 6 &&  -->
 <br>
-		<div class="container" >
-		    <h3><b>오늘의 추천 프로젝트</b></h3>
-		    <p>함께 만드는 성공</p>
-		    <div class="row" id="projectContainer"  >
-		        <c:forEach items="${projectList}" var="project" varStatus="status">
-		            <c:if test="${project.project_status eq 2 && project.project_approve_status eq 5}">
-		                <div class="col-md-4 mb-4">
-		                    <article class="card">
-		                        <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>
-		                        <div class="card-body">
-		                            <em class="card-title"><b>${project.project_subject}</b></em>
-		                            <p class="card-text">
-		                                <div class="progress" style="height: 10px">
-		                                    <div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example"
-		                                        style="height:10px; width: ${project.project_cumulative_amount / project.project_target * 100}%"
-		                                        aria-valuenow="${project.project_cumulative_amount / project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div>
-		                                </div>
-		                                <span class="light-gray-text">
-		                                    <fmt:formatNumber type="number" maxFractionDigits="0" value="${project.project_cumulative_amount / project.project_target * 100}" />
-		                                    %
-		                                </span>
-		                                <br>${project.project_category} | ${project.project_representative_name}
-		                            </p>
-		                        </div>
-		                        <hr>
-		                        <a href="fundingDetail?project_idx=${project.project_idx}" class="stretched-link"><p style="text-align: center;"><b>지금 참여하기></b></p></a>
-		                    </article>
-		                </div>
-		            </c:if>
-		            
-		        </c:forEach>
-		    </div>
-		</div>
-		
-		<div class="container mt-4 d-flex justify-content-end">
-		    <button type="button" class="btn btn-light" onclick="showRandomProjects()"><b>추천받아볼까요?</b></button>
-		</div>
+
+<div class="container">
+    <h3><b>오늘의 추천 프로젝트</b></h3>
+    <p>함께 만드는 성공</p>
+    <div class="row" id="projectContainer">
+
+        <c:forEach items="${projectList}" var="project" varStatus="status">
+            <c:if test="${project.project_status eq 2 && project.project_approve_status eq 5}">
+                    <div class="col-md-4 mb-4">
+                        <article class="card h-100 w-100 p-3 border-0" >
+						<img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" 
+						class="card-img-top object-fit-contain" alt="..." >
+					            <div class="card-body">
+                                <em class="card-title"><b>${project.project_subject}</b></em>
+                                <p class="card-text">
+                                    <div class="progress" style="height: 10px">
+                                        <div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example"
+                                            style="height:10px; width: ${project.project_cumulative_amount / project.project_target * 100}%"
+                                            aria-valuenow="${project.project_cumulative_amount / project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <span class="light-gray-text">
+                                        <fmt:formatNumber type="number" maxFractionDigits="0" value="${project.project_cumulative_amount / project.project_target * 100}" />
+                                        %
+                                    </span>
+                                    <br>${project.project_category} | ${project.project_representative_name}
+                                </p>
+                            </div>
+                            <hr>
+                            <a href="fundingDetail?project_idx=${project.project_idx}" class="stretched-link"><p style="text-align: center;"><b>지금 참여하기></b></p></a>
+                        </article>
+                    </div>
+            </c:if>
+        </c:forEach>
+      </div> 
+</div>
+
 <hr>
 	<br>
 		<div class="container">
@@ -333,23 +108,21 @@
 		    </div>
 		    <div class="col-md-6">
 				<div class="card-body_hash">
-				    <p><b>당신이 찾고있는 <span class="highlight">#해시태그</span></b></p>
+				    <p><b>요즘 유행하는 <span class="highlight">#해시태그</span>만 모아봤어요!</b></p>
 					<div class="hashtags-container">
 					        <c:forEach items="${hashTagMap}" var="hashTagEntry">
 					            <c:set var="hashTag" value="${hashTagEntry.key}" />
 					            <c:set var="projectsForTag" value="${hashTagEntry.value}" />
 					
 					            <c:forEach items="${projectsForTag}" var="project">
-					                <a href="fundingDetail?project_idx=${project.project_idx}">
+					                <a href="fundingSearchKeyword?searchKeyword=${hashTag}">
 					                    <span class="random-hashtag">
 					                        ${hashTag}
 					                    </span>
 					                </a>
 					            </c:forEach>
 					        </c:forEach>
-					    </div>
-
-
+					  </div>
 				</div>
 		    </div>
 		  </div>
@@ -357,7 +130,7 @@
 	<br>	
 <hr>
  	<br>
-		    <div class="container">
+	<div class="container">
         <h3><b>오픈 예정 프로젝트</b></h3>
         <p>주목하세요! 오픈할 프로젝트</p>
         <div class="swiper-container">
@@ -365,9 +138,10 @@
                 <c:forEach items="${projectList}" var="project" varStatus="status">
                     <c:if test="${project.project_status == 1 && project.project_approve_status == 5}">
                         <div class="swiper-slide">
-                            <div class="card">
-                                <div class="card-thumbnail" style="background-image: url('${project.project_thumnails1}');"></div>
-                                <div class="card-body">
+                            <div class="card h-100 w-100 p-3 border-0">
+							<img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" 
+							class="card-img-top object-fit-contain" alt="..." >
+                                   <div class="card-body">
                                     <em class="card-title"><b>${project.project_subject}</b></em>
                                     <p class="card-text">
                                         <br>${project.project_category} | ${project.project_representative_name}
@@ -385,178 +159,14 @@
             <div class="swiper-pagination-custom swiper-pagination"></div>
         </div>
     </div>
-    <br>
+    <br>  
 <hr>		
-		<br>
-		
-<div id="popup" class="popup">
-    <div class="popup-content">
-        <span class="close-button" onclick="closePopup()">&times;</span>
-        <div class="content-wrapper">
-            <a href="member/coupon">
-                <img src="./resources/images/popup.png" width="480" height="630" alt="팝업 이미지">
-            </a>
-            <label>
-                <input type="checkbox" id="hideToday"> 오늘 하루 안보기
-            </label>
-        </div>
-    </div>
-</div>
 
 
-		
   
-<!--     <script src="resources/js/showRandomProjects.js"></script> -->
   	<script src="resources/js/rankingList.js"></script>
+  	<script src="resources/js/hashTag.js"></script>
 	
-
-	
-	<script>
-	    var hashtags = document.querySelectorAll('.random-hashtag');
-	    var container = document.querySelector('.hashtags-container');
-	    var containerWidth = container.clientWidth;
-	    var containerHeight = container.clientHeight;
-	
-	    hashtags.forEach(function(hashtag) {
-	        var randomX = Math.random() * (containerWidth - 100);
-	        var randomY = Math.random() * (containerHeight - 20);
-	        hashtag.style.left = randomX + 'px';
-	        hashtag.style.top = randomY + 'px';
-	    });
-	    
-	    //----------------------------------------------------
-	    
-	    document.addEventListener("DOMContentLoaded", function() {
-	        // 페이지 로드 시 팝업 띄우기
-	        openPopup();
-	    });
-
-	    function openPopup() {
-	        var popup = document.getElementById("popup");
-	        popup.style.display = "block";
-	    }
-
-	    function closePopup() {
-	        var popup = document.getElementById("popup");
-	        popup.style.display = "none";
-	    }
-
-	    //--------------------------------------------------------
-	    
-	    document.addEventListener("DOMContentLoaded", function() {
-        var currentDate = new Date();
-        var startDate = new Date("2023-08-09");
-        var endDate = new Date("2023-08-10");
-
-        if (currentDate >= startDate && currentDate <= endDate) {
-            openPopup();
-        }
-	    });
-	
-	    function openPopup() {
-	        var popup = document.getElementById("popup");
-	        popup.style.display = "block";
-	    }
-	
-	    function closePopup() {
-	        var popup = document.getElementById("popup");
-	        popup.style.display = "none";
-	    }
-	    
-	    //-----------------------------------------------------------
-	     document.addEventListener("DOMContentLoaded", function() {
-        var hideTodayCheckbox = document.getElementById("hideToday");
-        var popup = document.getElementById("popup");
-        var currentDate = new Date();
-
-        var lastHiddenDate = localStorage.getItem("popupHiddenDate");
-
-        if (lastHiddenDate) {
-            var parsedLastHiddenDate = new Date(lastHiddenDate);
-            if (currentDate.toDateString() === parsedLastHiddenDate.toDateString()) {
-                // 이미 오늘 하루 안보기가 선택되었으면 팝업 숨기기
-                popup.style.display = "none";
-                hideTodayCheckbox.checked = true;
-            }
-        }
-
-        hideTodayCheckbox.addEventListener("change", function() {
-            if (this.checked) {
-                // 체크가 선택되었을 때 현재 날짜를 localStorage에 저장
-                localStorage.setItem("popupHiddenDate", currentDate.toDateString());
-            } else {
-                // 체크 해제되면 localStorage에서 삭제
-                localStorage.removeItem("popupHiddenDate");
-            }
-		        });
-		    });
-		
-		    function openPopup() {
-		        var popup = document.getElementById("popup");
-		        popup.style.display = "block";
-		    }
-		
-		    function closePopup() {
-		        var popup = document.getElementById("popup");
-		        popup.style.display = "none";
-		    }
-	    
-	</script>
-	
-	<script>
-	    function calculateSimilarity(str1, str2) {
-	        str1 = str1.replace(/,/g, "");
-	        str2 = str2.replace(/,/g, "");
-	        
-	     // 최소 길이 구하기
-	        var minLength = Math.min(str1.length, str2.length);
-	
-	        // 일치하는 문자 수 계산
-	        var matchCount = 0;
-	        for (var i = 0; i < minLength; i++) {
-	            if (str1.charAt(i) === str2.charAt(i)) {
-	                matchCount++;
-	            }
-	        }
-	
-	        // 유사도 계산 (일치하는 문자 수를 최대 길이로 나눈 값)
-	        var similarity = matchCount / Math.max(str1.length, str2.length);
-	
-	        return similarity;
-	    }
-	
-	    function getRandomPosition(existingPositions) {
-	        var x, y;
-	        do {
-	            x = Math.random() * 370;
-	            y = Math.random() * 180;
-	        } while (isTooClose(existingPositions, x, y));
-	        existingPositions.push({ x: x, y: y });
-	        return { x: x, y: y };
-	    }
-	
-	    function isTooClose(existingPositions, x, y) {
-	        for (var i = 0; i < existingPositions.length; i++) {
-	            var position = existingPositions[i];
-	            var distance = Math.sqrt(Math.pow(position.x - x, 2) + Math.pow(position.y - y, 2));
-	            if (distance < 50) {
-	                return true;
-	            }
-	        }
-	        return false;
-	    }
-	
-	    window.onload = function () {
-	        var hashtags = document.querySelectorAll('.random-hashtag');
-	        var existingPositions = [];
-	
-	        for (var i = 0; i < hashtags.length; i++) {
-	            var position = getRandomPosition(existingPositions);
-	            hashtags[i].style.left = position.x + 'px';
-	            hashtags[i].style.top = position.y + 'px';
-	        }
-	    };
-	</script>
 
 	<script>
 	    var swiper = new Swiper('.swiper-container', {
@@ -570,8 +180,7 @@
 	</script>
 
 
-	
-	
+
     <%@ include file="Footer.jsp" %>
     
 </body>

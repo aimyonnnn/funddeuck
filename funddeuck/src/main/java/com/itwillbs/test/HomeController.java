@@ -68,10 +68,11 @@ public class HomeController {
     @GetMapping("/randomProjects")
     public ResponseEntity<List<ProjectVO>> showRandomProjects() {
         List<ProjectVO> allProjects = projectService.getAllProjects();
-
+        System.out.println("확인");
         Collections.shuffle(allProjects);
-        List<ProjectVO> randomProjects = allProjects.subList(0, Math.min(allProjects.size(), 6));
-
+        List<ProjectVO> randomProjects = allProjects.subList(0, Math.min(allProjects.size(), 3));
+        
+        System.out.println("확인2");
         return new ResponseEntity<>(randomProjects, HttpStatus.OK);
     }
 }
