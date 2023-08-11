@@ -161,13 +161,29 @@
         </div>
     </div>
     <br>  
-<hr>		
+<hr>	
+
+	
+    <!-- 팝업 컨테이너 하나만 출력할 때-->
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <span class="close-button" onclick="closePopup()">&times;</span>
+        <div class="content-wrapper">
+            <a href="member/coupon">
+                <img src="${pageContext.request.contextPath}/resources/upload/${newCouponList[0].newCouponImage}" width="480" height="630" alt="팝업 이미지">
+            </a>
+            <p>유효 기간: ${newCouponList[0].newCoupon_start}부터 ${newCouponList[0].newCoupon_end}까지 사용가능</p>
+            <label>
+                <input type="checkbox" id="hideToday"> 오늘 하루 안보기
+            </label>
+        </div>
+    </div>
+</div>
 
 
-  
+
   	<script src="resources/js/rankingList.js"></script>
   	<script src="resources/js/hashTag.js"></script>
-	
 
 	<script>
 	    var swiper = new Swiper('.swiper-container', {
@@ -180,6 +196,92 @@
 	    });
 	</script>
 
+	<script>
+	document.addEventListener("DOMContentLoaded", function() {
+	    // 페이지 로드 시 팝업 띄우기
+	    openPopup();
+	});
+	
+	function openPopup() {
+	    var popup = document.getElementById("popup");
+	    popup.style.display = "block";
+	}
+	
+	function closePopup() {
+	    var popup = document.getElementById("popup");
+	    popup.style.display = "none";
+	}
+	function openPopup() {
+	    var popup = document.getElementById("popup");
+	    popup.style.display = "block";
+	}
+	
+	function closePopup() {
+	    var popup = document.getElementById("popup");
+	    popup.style.display = "none";
+	}
+	
+	 document.addEventListener("DOMContentLoaded", function() {
+	var hideTodayCheckbox = document.getElementById("hideToday");
+	var popup = document.getElementById("popup");
+	var currentDate = new Date();
+	
+	var lastHiddenDate = localStorage.getItem("popupHiddenDate");
+	
+	if (lastHiddenDate) {
+	    var parsedLastHiddenDate = new Date(lastHiddenDate);
+	    if (currentDate.toDateString() === parsedLastHiddenDate.toDateString()) {
+	        // 이미 오늘 하루 안보기가 선택되었으면 팝업 숨기기
+	        popup.style.display = "none";
+	        hideTodayCheckbox.checked = true;
+	    }
+	}
+
+hideTodayCheckbox.addEventListener("change", function() {
+    if (this.checked) {
+        // 체크가 선택되었을 때 현재 날짜를 localStorage에 저장
+        localStorage.setItem("popupHiddenDate", currentDate.toDateString());
+    } else {
+        // 체크 해제되면 localStorage에서 삭제
+        localStorage.removeItem("popupHiddenDate");
+    }
+        });
+    });
+
+    function openPopup() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "block";
+    }
+
+    function closePopup() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "none";
+    }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const popupContainer = document.getElementById("popup");
+        
+        // 팝업을 띄울 수 있는 날짜 범위
+        const startDate = new Date("${newCouponList[0].newCoupon_start}");
+        const endDate = new Date("${newCouponList[0].newCoupon_end}");
+
+        // 현재 날짜
+        const currentDate = new Date();
+
+        // 현재 날짜가 범위 내에 있는 경우 팝업 띄우기
+        if (currentDate >= startDate && currentDate <= endDate) {
+            popupContainer.style.display = "block";
+        }
+
+        // 닫기 버튼 클릭 시 팝업 닫기
+        const closePopupButton = document.querySelector(".close-button");
+        closePopupButton.addEventListener("click", function () {
+            popupContainer.style.display = "none";
+        });
+    });
+</script>
 
 
     <%@ include file="Footer.jsp" %>

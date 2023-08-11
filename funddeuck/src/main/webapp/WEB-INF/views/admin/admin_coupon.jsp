@@ -92,12 +92,12 @@
                     <div class="container">
                         <form method="post">
                             <p>
-                                쿠폰 이름 : <input type="text" name="coupon_name" placeholder="쿠폰 이름을 입력하세요." style="width: 300px"><br>
-                                쿠폰 용도 : <input type="text" name="coupon_text" placeholder="쿠폰 용도를 입력하세요." style="width: 300px"><br>
+                                쿠폰 이름 : <input type="text" class="form-control" name="coupon_name" placeholder="쿠폰 이름을 입력하세요." style="width: 300px">
+                                쿠폰 용도 : <input type="text" class="form-control" name="coupon_text" placeholder="쿠폰 용도를 입력하세요." style="width: 300px">
                                 쿠폰 번호 : <button type="button" class="btn btn-primary" onclick="generateCouponNumber()">번호 생성</button><span id="couponNumber"></span><br>
-                                쿠폰 할인 : <input type="text" name="coupon_sale" placeholder="할인률을 입력하세요." style="width: 300px"> %<br>
-                                쿠폰 시작 : <input type="text" name="coupon_start" id="coupon_start" placeholder="시작 날짜를 선택하세요." style="width: 300px"><br>
-                                쿠폰 만료 : <input type="text" name="coupon_end" id="coupon_end" placeholder="만료 날짜를 선택하세요." style="width: 300px">
+                                쿠폰 할인 : <input type="text" class="form-control" name="coupon_sale" placeholder="할인률을 입력하세요.단위(%)" style="width: 300px">
+                                쿠폰 시작 : <input type="text" class="form-control" name="coupon_start" id="coupon_start" placeholder="시작 날짜를 선택하세요." style="width: 300px">
+                                쿠폰 만료 : <input type="text" class="form-control" name="coupon_end" id="coupon_end" placeholder="만료 날짜를 선택하세요." style="width: 300px">
                             </p>
                     		<input type="hidden" name="member_idx" value="${sessionScope.sIdx}" />
 							<button type="button" class="btn btn-primary" onclick="registerCoupon()">새로운 쿠폰 발행</button>
@@ -172,7 +172,7 @@
 				<form id="couponAdForm" enctype="multipart/form-data" method="POST">
 				        <div class="mb-3">
 				            <label for="coupon_idx" class="form-label">쿠폰 번호 선택:</label>
-				            <select class="form-select" id="coupon_idx" name="coupon_idx">
+				            <select class="form-select" id="coupon_idx" name="coupon_idx" style="width: 300px">
 				                <option value="" selected disabled>쿠폰 번호를 선택하세요</option>
 				                <!-- 데이터베이스에서 가져온 쿠폰 번호 옵션을 추가 -->
 				                <c:forEach var="coupon" items="${couponList}">
@@ -182,20 +182,21 @@
 				        </div>
 				        <div class="mb-3">
 				            <label for="newCoupon_name" class="form-label">쿠폰 광고 제목:</label>
-				            <input type="text" class="form-control" id="newCoupon_name" name="newCoupon_name">
+				            <input type="text" class="form-control" id="newCoupon_name" name="newCoupon_name" style="width: 300px" >
 				        </div>
 				        <div class="mb-3">
 				            <label for="newCoupon_start" class="form-label">시작 날짜:</label>
-				            <input type="text" class="form-control" id="newCoupon_start" name="newCoupon_start">
+				            <input type="text" class="form-control" id="newCoupon_start" name="newCoupon_start" style="width: 300px">
 				        </div>
 				        <div class="mb-3">
 				            <label for="newCoupon_end" class="form-label">끝나는 날짜:</label>
-				            <input type="text" class="form-control" id="newCoupon_end" name="newCoupon_end">
+				            <input type="text" class="form-control" id="newCoupon_end" name="newCoupon_end" style="width: 300px">
 				        </div>
 				        <div class="mb-3">
 				            <label for="couponImage" class="form-label">광고 이미지 업로드:</label>
-				            <input type="file" class="form-control" id="couponImage" name="file">
+				            <input type="file" class="form-control" id="couponImage" name="file" style="width: 300px">
 				        </div>
+				        <br>
 							<button type="submit" class="btn btn-primary" id="submitCouponBanner">광고 등록</button>
 				    </form>
 				    <br>

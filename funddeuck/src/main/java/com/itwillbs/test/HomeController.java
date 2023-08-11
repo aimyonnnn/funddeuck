@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.test.service.CouponService;
 import com.itwillbs.test.service.ProjectService;
+import com.itwillbs.test.vo.CouponBannerVO;
 import com.itwillbs.test.vo.ProjectVO;
 
 @Controller
@@ -31,6 +33,10 @@ public class HomeController {
 
     @Autowired
     private ProjectService projectService;
+    
+    @Autowired
+    private CouponService couponService;
+    
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Locale locale, Model model) {
@@ -55,6 +61,10 @@ public class HomeController {
         List<ProjectVO> projectList = projectService.getAllProjects();
         model.addAttribute("projectList", projectList);
 
+        // 베너 목록 가져와서 모델에 추가
+        List<CouponBannerVO> newCouponList = couponService.getNewCouponList();
+        model.addAttribute("newCouponList", newCouponList);
+        
         return "main";
     }
 
