@@ -39,7 +39,7 @@
 	});                    
 
 	//초기값을 오늘 날짜로 설정
-	$('#projectStartDate').datepicker('setDate', 'today'); // 시작일(오늘)
+	$('#projectStartDate').datepicker('setDate', '+7D'); // 시작일(일주일후)
 	$('#projectEndDate').datepicker('setDate', '+1M'); // 종료일(한달후)
 	});
 
@@ -82,19 +82,38 @@
 			var value = marginTag().join(', '); // return 
 			$("#searchTag").val(value); 
 		});
+		
+		// 특수문자 입력 불가 유효성 검사 
+		$("#tag").on("input", function (e) {
+			var self = $(this);
+			var inputVal = self.val();
+			var specialCharRegex = /[^ㄱ-ㅎ|ㅏ-ㅣ|가-힣|A-Za-z0-9\s]/; // 특수문자 인식을 위한 정규식 변경
+			
+			if (specialCharRegex.test(inputVal)) {
+			  alert("특수문자는 입력이 불가합니다!");
+			  self.val(inputVal.replace(/[^ㄱ-ㅎ|ㅏ-ㅣ|가-힣|A-Za-z0-9\s]/gi, ""));
+			}
+		});
 	
 		$("#tag").on("keypress", function (e) {
 	    	var self = $(this);
 	
 		    // 엔터나 스페이스바 눌렀을 때 실행
 		    if (e.key === "Enter" || e.keyCode == 32) {
-	
+		    	
+		    	e.preventDefault(); // 입력 중단
+		    	
+		        if ($("#tag-list li").length >= 3) { // 불러오기한 해시태그 검사
+		            alert("해시태그는 3개까지만 입력 가능합니다!");
+		            return false;
+		        }
+		        
 	        	var tagValue = self.val(); // 값 가져오기
 	
 		        // 해시태그 값이 없거나 3개를 초과하면 실행X
 		        if (tagValue !== "" && marginTag().length < 3) {
 	
-		            // 같은 태그가 있는지 검사한다. 있다면 해당값이 array로 return된다.
+		            // 같은 태그가 있는지 검사하고 있다면 해당값이 array로 return
 		            var result = Object.values(tag).filter(function (word) {
 		        		return word === tagValue;
 	            	})
@@ -145,6 +164,24 @@
 			    $(this).parent().remove();
 			});
 		}
+		
+		// 요금제 선택
+	    function updateRadioButtons() {
+	    	  const projectPlanValue = load("project_plan");
+	    	  if (projectPlanValue && projectPlanValue !== '') {
+	    	    if (projectPlanValue === '1') {
+	    	      $("#basic_plan").prop("checked", true).trigger("change");
+	    	      // 기본 요금제 스타일 변경
+	    	      $(".card-header").removeClass("bg-primary text-white");
+	    	      $("#basic_plan").parent().addClass("bg-primary text-white");
+	    	    } else if (projectPlanValue === '2') {
+	    	      $("#influencer_plan").prop("checked", true).trigger("change");
+	    	      // 인플루언서 요금제 스타일 변경
+	    	      $(".card-header").removeClass("bg-primary text-white");
+	    	      $("#influencer_plan").parent().addClass("bg-primary text-white");
+	    	    }
+	    	  }
+	    	}
 	
 		// 배열 정의
 		const fields = [
@@ -176,15 +213,19 @@
 			});
 			save("project_hashtag", hashtagValue.substring(0, hashtagValue.length - 2));
 			
-			console.log("임시저장 완료");
+			// 요금제 저장하기
+			var projectPlanValue = $("input[name=project_plan]:checked").val();
+			save("project_plan", projectPlanValue);
+			
+			alert("임시 저장 되었습니다!");
 		});
 	
 		// 삭제하기 버튼
 	    $("#deleteButton").click(function () {
 			localStorage.clear();
-			console.log("임시저장 삭제 완료");
+			alert("임시저장된 내용을 삭제했습니다!");
 	    });
-	
+		
 		// 불러오기 버튼 
 	    $("#loadButton").click(function () {
 			fields.forEach(f => {
@@ -205,6 +246,24 @@
 				    }
 				});
 			}
+	        
+	     	// 요금제 불러오기
+	        const projectPlanValue = load("project_plan");
+	        if (projectPlanValue && projectPlanValue !== '') {
+				// 모든 라디오 버튼의 체크 상태 확인
+				$("input.card-radio[name=project_plan]").each(function() {
+					const currentRadio = $(this);
+					const radioValue = currentRadio.val();
+					
+					// 일치하는 라디오 버튼 찾기
+					if (projectPlanValue === radioValue) {
+					  currentRadio.prop("checked", true);
+					} else {
+					  currentRadio.prop("checked", false);
+					}
+				});
+	        }
+	      alert("임시저장을 불러왔습니다!");  
 		});
 		
 	    // 계좌 본인 인증 
@@ -221,9 +280,164 @@
 			window.open(requestUri, "authWindow", "width=600, height=800");
 		});
 	    
+	    // 유효성 검사 - 목표 금액
+	    $("#targetAmount").on("focusout", function (e) {
+			var self = $(this);
+			var inputVal = Number(self.val());
+			
+			// 최소 금액과 최대 금액 설정
+			var minAmount = 500000;
+			var maxAmount = 100000000;
+			
+			// 금액 범위 확인
+			if (inputVal < minAmount || inputVal > maxAmount) {
+			  alert("금액은 최소 50만 원에서 최대 1억 원 사이로 설정해 주세요.");
+			  self.val(""); // 입력값 초기화
+			}
+		});
+
+	    // 유효성 검사 - 이메일
+	    $("#representativeEmail, #taxEmail").on("focusout", function (e) {
+			var self = $(this);
+			var inputVal = self.val();
+			
+			// 이메일 형식 확인을 위한 정규식
+			var emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+			
+			// 이메일 형식 검증
+			if (!emailRegex.test(inputVal)) {
+			  alert("올바른 이메일 형식이 아닙니다. 예시: abcd@abcd.com");
+			  self.val(""); // 입력값 초기화
+			}
+		});
 	    
+	 	// 유효성 검사 - 주민등록번호
+	    function validateNumberLength(inputVal, length) {
+	      var numberOnlyRegex = /^\d+$/;
+	      return numberOnlyRegex.test(inputVal) && inputVal.length === length;
+	    }
+	
+	    $("#representativeBirth1, #representativeBirth2").on("input focusout", function (e) {
+	      var self = $(this);
+	      var inputVal = self.val();
+	      var expectedLength = self.attr("id") === "representativeBirth1" ? 6 : 7;
+	
+	      // 숫자 외 문자 제거 전과 후를 비교하여 경고창 띄우기
+	      var numberOnlyVal = inputVal.replace(/[^\d]/g, "");
+	      if (inputVal.length > numberOnlyVal.length) {
+	        alert("숫자만 입력해주세요.");
+	      }
+	
+	      // 최대 글자수에 맞춰 자름
+	      var trimmedVal = numberOnlyVal.slice(0, expectedLength);
+	
+	      // 입력값 업데이트
+	      self.val(trimmedVal);
+	      
+	      // 앞에 6글자 입력이 완료되면 다음 입력창으로 자동 이동
+	      if (e.type === "input" && self.attr("id") === "representativeBirth1" && inputVal.length === 6) {
+	        $("#representativeBirth2").focus();
+	      }
+	
+	      // 포커스 아웃 시 글자수 검사
+	      if (e.type === "focusout" && inputVal.length !== expectedLength) {
+	        // 글자수가 다를 때 추가 작업 진행
+	        alert(expectedLength + "자리를 입력하세요!");
+	        self.one("focus", focusOnce); // 포커스 이벤트가 한 번만 발생하도록 처리
+	      }
+	    });
+	
+	    // 포커스 이벤트가 한 번만 발생하도록 하는 함수
+	    function focusOnce() {
+	      $(this).off("focus", focusOnce);
+	    }
 	    
+	    // 유효성 검사 - 카테고리
+		function checkCategory() {
+			var category = $("#projectCategory").val();
+			if (category === "") {
+			  alert("카테고리를 선택해주세요.");
+			  return false;
+			}
+			return true;
+		}
+
+	    // 유효성 검사 - 썸네일
+		function checkProjectThumbnail() {
+			var thumbnail = $('input[name="file1"]').val();
+			if (thumbnail === "") {
+			  alert("썸네일 이미지를 업로드해주세요.");
+			  return false;
+			}
+			return true;
+		}
+
+	    // 유효성 검사 - 해시태그
+		function checkHashtags() {
+		    var hashtags = $("#searchTag").val().trim(); // 앞 뒤 공백 제거
+		    var cleanHashtags = hashtags.replaceAll(' ', ''); // 모든 공백 제거
+
+		    console.log('Clean Hashtags:', cleanHashtags); // 정리된 해시태그 값 확인
+		    var hashtagArray = cleanHashtags.split(",");
+		    console.log('Hashtag array:', hashtagArray); // 해시태그 배열 확인
+
+		    if (hashtagArray.length < 3) {
+		        alert("해시태그를 3개 입력해주세요.");
+		        return false;
+		    }
+		    $("#searchTag").val(cleanHashtags); // 정리된 해시태그 값으로 원래 input의 값을 대체
+		    return true;
+		}
+
+
+	    // 유효성 검사 - 상세정보 이미지
+		function checkProjectDetails() {
+			var details = $('input[name="file4"]').val();
+			if (details === "") {
+			  alert("상세정보 이미지를 업로드해주세요.");
+			  return false;
+			}
+			return true;
+		}
+
+	    // 유효성 검사 - 본인 인증
+		function checkAccountAuth() {
+		    if (document.getElementById('isAuthenticated').value !== 'true') {
+		        alert("본인 인증을 해주세요.");
+		        return false;
+		    }
+		    return true;
+		}
+
+
+	    // 유효성 검사 - 통장 사본
+		function checkBankbookImage() {
+			var bankbook = $('input[name="file5"]').val();
+			if (bankbook === "") {
+			  alert("통장 사본 이미지를 제출해주세요.");
+			  return false;
+			}
+			return true;
+		}
 	    
+	    // 유효성 검사 - 체크박스
+		function checkAgreement() {
+			var total = $("input[name=agreeCheck]").length;
+			var checked = $("input[name=agreeCheck]:checked").length;
+			
+			if (total != checked) {
+			  alert("서비스 이용 동의를 체크해주세요.");
+			  return false;
+			}
+			  return true;
+		}
+
+	    // 유효성 검사 - 제출 검사
+		$("form").on("submit", function(e) {
+			if (!checkCategory() || !checkProjectThumbnail() || !checkHashtags() || !checkProjectDetails() || !checkAccountAuth() || !checkBankbookImage() || !checkAgreement()) {
+			  e.preventDefault(); // 유효성 검사를 통과하지 못한 경우 폼 전송을 취소
+			}
+		});
 	});
 	</script>
 </head>
@@ -351,14 +565,14 @@
 					<div class="mt-4">
 						<label class="subheading" for="projectSubject">프로젝트 제목</label>
 						<p class="sideDescription">리워드의 장점과 특징이 잘 드러나는 키워드를 한 가지 이상 포함해 주세요.</p>
-						<input class="form-control" type="text" name="project_subject" id="projectSubject" placeholder="제목을 입력해 주세요">
+						<input class="form-control" type="text" name="project_subject" id="projectSubject" placeholder="제목을 입력해 주세요" required>
 					</div>
 
 					<!-- 프로젝트 썸네일 -->
 					<div class="mt-5">
 						<p class="subheading">썸네일 이미지</p>
 						<p class="sideDescription">
-							· 3MB 이하의 JPG, JPEG, PNG 파일<br>
+							· JPG, JPEG, PNG 파일<br>
 							· 텍스트나 로고는 넣을 수 없어요.<br>
 							· 최소 1개에서 최대 3개까지 업로드가 가능해요.
 						</p>
@@ -379,7 +593,7 @@
 						</div>
 						             
 						<div class="form-group">
-							<input type="text" id="tag" size="7" placeholder="엔터로 해시태그를 등록해주세요." class="w-100 form-control"/>
+							<input type="text" id="tag" size="7" placeholder="엔터로 해시태그를 등록해주세요. 특수문자는 입력이 불가합니다." class="w-100 form-control"/>
 						</div>
 						<ul id="tag-list" class="mt-3"></ul>
 					</div>
@@ -393,7 +607,7 @@
 							기존 제품 ・ 서비스 ・ 콘텐츠를 개선했다면 어떤 점이 달라졌는지 작성해 주세요.<br>
 							위에 입력 된 정보를 바탕으로 AI로 자동 입력도 가능해요. 
 						</p>
-						<textarea class="form-control management-info" name="project_introduce" id="managementDetail" placeholder="예시 : 우리집 아이가 ○○ 인형을 좋아하는 모습을 보고 만들게 되었습니다." style="height: 300px; resize: none;"></textarea>
+						<textarea class="form-control management-info" name="project_introduce" id="managementDetail" placeholder="예시 : 우리집 아이가 ○○ 인형을 좋아하는 모습을 보고 만들게 되었습니다." style="height: 300px; resize: none;" maxlength="300" required></textarea>
 					</div>
 					
 					<!-- 프로젝트 한줄 소개 -->
@@ -402,14 +616,14 @@
 						<p class="sideDescription">
 							메인에 소개될 프로젝트를 한 줄로 소개해 주세요.<br>
 						</p>
-						<input type="text" class="form-control" name="project_semi_introduce" id="managementSemiDetail" placeholder="150자까지 작성 가능해요.">
+						<input type="text" class="form-control" name="project_semi_introduce" id="managementSemiDetail" placeholder="150자까지 작성 가능해요." maxlength="150" required>
 					</div>
 
 					<!-- 프로젝트 상세정보 이미지 -->
 					<div class="mt-5">
 						<p class="subheading">상세정보 이미지</p>
 						<p class="sideDescription">
-							· 3MB 이하의 JPG, JPEG, PNG 파일<br>
+							· JPG, JPEG, PNG 파일<br>
 							· 프로젝트를 설명할 상세정보를 업로드해요. 
 						</p>
 						<input type="file" name="file4"><br>
@@ -419,7 +633,7 @@
 					<div class="mt-4">
 						<label class="subheading" for="targetAmount">목표 금액</label>
 						<p class="sideDescription">최소 50만 원~최대 1억 원 사이에서 설정해 주세요.</p>
-						<input class="form-control" type="text" name="project_target" id="targetAmount" placeholder="금액을 입력해 주세요">
+						<input class="form-control" type="text" name="project_target" id="targetAmount" placeholder="금액을 입력해 주세요" required>
 					</div>
 
 					<!-- 프로젝트 일정 -->
@@ -439,9 +653,9 @@
 					<div class="mt-5">
 						<p class="subheading">대표자 정보</p>
 						<label class="sideDescription" for="representativeName">대표자명</label>
-						<input class="form-control" type="text" name="project_representative_name" id="representativeName" placeholder="법인 사업자는 법인등기부상 법인명 / 개인은 성명을 입력해 주세요">
+						<input class="form-control" type="text" name="project_representative_name" id="representativeName" placeholder="법인 사업자는 법인등기부상 법인명 / 개인은 성명을 입력해 주세요" maxlength="50" required>
 						<label class="sideDescription" for="representativeEmail">대표 이메일</label>
-						<input class="form-control" type="text" name="project_representative_email" id="representativeEmail" placeholder="대표자의 이메일을 입력해 주세요"><br>
+						<input class="form-control" type="text" name="project_representative_email" id="representativeEmail" placeholder="대표자의 이메일을 입력해 주세요. 예시)abcd@abcd.com" maxlength="50" required><br>
 					</div>
               
 					<!-- 정산 정보 -->
@@ -458,14 +672,14 @@
 					<label class="sideDescription" for="representativeBirth1">대표자 주민등록번호</label>
 					<div class="row">
 						<div class="col-sm-6">
-							<input class="form-control" type="text" name="representativeBirth1" id="representativeBirth1" placeholder="앞 6자리 입력">
+							<input class="form-control" type="text" name="representativeBirth1" id="representativeBirth1" placeholder="앞 6자리 입력" required>
 						</div>
 						<div class="col-sm-6">
-							<input class="form-control" type="text" name="representativeBirth2" id="representativeBirth2" placeholder="뒤 7자리 입력">
+							<input class="form-control" type="text" name="representativeBirth2" id="representativeBirth2" placeholder="뒤 7자리 입력" required>
 						</div>
 					</div>
 					<label class="sideDescription" for="taxEmail">세금계산서 발행 이메일</label>
-					<input class="form-control" type="text" name="project_tax_email" id="taxEmail" placeholder="세금계산서를 발행할 이메일을 입력해 주세요"><br>
+					<input class="form-control" type="text" name="project_tax_email" id="taxEmail" placeholder="세금계산서를 발행할 이메일을 입력해 주세요. 예시)abcd@abcd.com" maxlength="50" required><br>
 					<label class="sideDescription" for="taxEmail">계좌정보</label>
 					<p class="sideDescription">
 						· 개인사업자의 경우 본인/사업자 명의 계좌 등록이 가능하며, 법인사업자의 경우 법인계좌만 등록 가능해요.<br>
@@ -473,7 +687,8 @@
 						· 저축성 예금 계좌, 외화 예금 계좌, CMA 계좌, 평생 계좌번호(휴대전화 번호) 등은 입금이 불가합니다.
 					</p>
 					<span id="accountAuth">
-						<button class="btn btn-primary" id="btnAccountAuth">본인 인증</button>
+						<button type="button" class="btn btn-primary" id="btnAccountAuth">본인 인증</button>
+						<input type="hidden" id="isAuthenticated" value="false" />
 					</span>
 					<input type="hidden" name="token_idx" id="token_idx" value="">
 					</div>
@@ -482,7 +697,7 @@
 					<div class="mt-5">
 						<p class="subheading">통장사본</p>
 						<p class="sideDescription">
-							· 10MB 이하의 JPG, JPEG, PNG 파일<br>
+							· JPG, JPEG, PNG 파일<br>
 							· 위 계좌 정보와 동일한 명의의 통장 사본을 제출해 주세요.
 						</p>
 						<input type="file" name="file5"><br>
@@ -542,9 +757,9 @@
 										</div>
 									</div>
 								</div>
-								<a id="popupClausePrivacyPerson" class="view_indetail popup_clause_open" target="_blank">
-									<span class="blind">서비스 이용 동의 상세보기</span>
-								</a>
+								<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#serviceModal">
+									서비스 이용 동의
+								</button>
 							</li>
 					   </ul>
 					  </div>
@@ -555,7 +770,9 @@
 					<div class="mt-5">
 						<p class="subheading">환불 정책</p>
 						<p class="sideDescription">이 프로젝트는 환불 정책이 적용돼요.</p>
-						<a href="#">환불 정책 상세보기</a>
+						<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#refundModal">
+							환불 정책 상세보기
+						</button>
 					</div>
 					
 					<div class="d-flex justify-content-center my-3">
@@ -599,6 +816,74 @@
 		<!-- 오른쪽 네비게이션 끝 -->
 		</div>
 	</main>
+	
+	<!-- 서비스 이용 동의 모달 -->
+	<div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h1 class="modal-title fs-5" id="exampleModalLabel">서비스 이용 동의</h1>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	        <div class="border p-4">
+	        	본 메이커 이용약관(이하 "본 약관")은 펀뜩(이하 "회사")가 운영 및 제공하는 크라우드펀딩, 프리오더 및 스토어 프로젝트를 개설하여 펀딩금을 모집하거나 통신판매의 방식으로 상품을 판매하고자 하는 자(이하 "메이커")가 프로젝트의 개설 및 중개 등의 서비스를 이용함에 있어 회사와 메이커 간의 권리, 의무 및 제반절차를 확정하고 이를 이행함으로써 상호 발전을 도모하는 것을 그 목적으로 합니다.<br>
+	        	<br>
+	        	회사는 서비스의 성격, 서비스 제공 비용, 서비스 제공 방법, 시장 조건, 사업 유형 등을 고려하여 요금제별 수수료를 결정합니다.
+				회사는 서비스의 내용, 수수료율 등 구체적인 사항을 개별 정책을 통해 정할 수 있으며, 그에 따른 수수료를 메이커 스튜디오 또는 별도 약정서 등을 통해 메이커에게 통지하여야 합니다.
+				회사는 필요한 경우 요금제의 내용 및 수수료를 변경할 수 있으며, 변경사항은 제17조 제2항 단서에 따라 개별 통지합니다.
+				회사는 서비스의 제공에 있어 광고 집행 비용(광고대행사 이용수수료 포함) 등 별도 비용이 발생하는 경우 수수료 외 추가 비용 상당의 금원을 청구할 수 있으며, 구체적인 사항은 정산내역서 등을 통해 고지합니다.
+				회사는 프로모션이나 내부 기준 등에 따라 수수료 인하를 적용할 수 있습니다. 단, 당초 수수료 인하 적용을 위하여 메이커가 보증하였던 내용과 상이한 사실이 확인되는 경우, 회사는 메이커가 기존에 산정된 수수료를 본 약관에 따른 정산금에서 공제하거나 메이커에게 별도로 청구할 수 있습니다.
+				메이커의 귀책사유 없이 결제가 취소되거나 환불이 일어나는 등 메이커에게 수수료를 부과하는 것이 적절하지 않다고 판단되는 경우 회사는 해당 금원에 대한 수수료를 면제할 수 있습니다.<br>
+	       		<br>
+	       		메이커는 프로젝트를 진행함에 있어 다음 각 호의 사항을 준수해야 합니다.
+				메이커는 본 약관에 따라 전달받은 금원을 메이커가 프로젝트에서 약속한 프로젝트의 수행 및 완료, 약속한 리워드의 제공 및 발송을 위한 경비 충당을 위해 우선 사용하여야 합니다.
+				메이커는 리워드 또는 상품이 배송 중 파손 또는 훼손되지 않도록 견고하게 포장하여 서포터에게 제공하여야 합니다.
+				메이커는 리워드의 발송일 또는 제공완료일에 다음 각 목의 정보를 회사가 정한 절차와 방법에 따라 제공하여야 합니다. 단, 이를 위반하여 회사 또는 제3자에게 발생하는 손해에 대해서는 메이커가 배상할 책임을 부담합니다.<br>
+				<br>
+				메이커는 본 정책 및 관련 법률에 의거하여 환불에 필요한 조치를 하여야 하며 이로 인하여 발생하는 비용은 교환 또는 환불의 책임이 있는 당사자가 부담하여야 합니다.
+				메이커는자신의 책임 및 비용으로 제공된 리워드 또는 상품에 대한 보증 및 A/S 서비스를 제공해야 합니다.
+				메이커는 서포터의 문의에 성실, 정확히 답변해야 하며, 메이커의 부정확하거나 불성실한 답변으로 인하여 발생하는 모든 책임과 의무는 메이커 본인에게 있습니다.
+				메이커는 회사가 서비스 운영에 필요한 정보 및 증빙자료의 제공을 요청할 경우 이에 성실히 응하여야 합니다.
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- 환불 정책 모달 -->
+	<div class="modal fade" id="refundModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h1 class="modal-title fs-5" id="exampleModalLabel">환불 정책</h1>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="border p-4">
+	      		"펀뜩"은 신뢰있는 서비스를 제공할 수 있도록 소비자기본법에서 정하고 있는 소비자분쟁해결기준을 참고하여 환불 정책을 시행하고 있습니다.
+				따라서 서포터는 본 정책에서 안내하는 개별 반환 사유를 이유로 환불을 신청할 수 있고, 와디즈는 본 정책에서 안내하는 일괄 반환 사유를 이유로 서포터에게 환불을 할 수 있습니다.<br>
+				<br>
+				환불 정책은 펀뜩에 개설된 펀딩 프로젝트에 적용되며 그 외의 서비스는 본 정책의 범위에 포함되지 않습니다. 또한, 펀딩 프로젝트에 대해서는 리워드 품질 평가에 따른 반환과 프로젝트 종료 후 서포터의 단순변심으로 인한 환불은 포함하고 있지 않습니다. (교환/AS에 관한 사항은 개별 프로젝트 페이지에 정한바에 따름.)<br>
+				<br>
+				환불 기준은 개별 반환과 일괄 반환의 내용으로 구성되어 있습니다. 아래와 같은 사유에 해당할 경우 서포터는 개별 프로젝트에 대해 환불을 신청할 수 있거나, 일괄적인 환불의 대상이 될 수 있습니다. 구체적인 환불 기준은 다음과 같습니다.<br>
+				<br>
+				펀뜩은 소비자기본법에서 정하고 있는 소비자분쟁해결기준 별표Ⅱ 품목별 해결기준의 분쟁유형을 참고하여 리워드 하자에 대한 판단을 합니다. 다음과 같은 사유에 해당할 경우, 서포터는 해당 프로젝트에 대해 리워드를 받은 날로부터 14일 이내에 개별적으로 환불을 신청할 수 있습니다. 단, 위 기간이 도과한 후에도 메이커의 민형사상의 책임이 면책되는 것은 아닙니다.<br>
+				<br>
+				메이커가 펀딩 종료일로부터 11개월 이내에서 자유롭게 지정한 제공예정일(메이커는 각 리워드 구성에 따라 제공예정일을 다르게 지정할 수 있습니다)까지 유형리워드를 발송하지 않았거나 약속된 유형리워드의 발송으로 볼 수 없는 경우, 제공예정일의 익일부터 법에서 정하는 채권의 소멸시효 완성 전까지 서포터는 환불 신청을 할 수 있습니다.
+				단, 1회분이라도 배송이 된 경우 배송지연을 사유로 환불 신청을 할 수 없습니다.
+	      	</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
 	
 	<script>
 	$(document).ready(function () {

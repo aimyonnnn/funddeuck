@@ -17,6 +17,9 @@
         var btnAccountAuth = window.opener.document.getElementById('btnAccountAuth');
         btnAccountAuth.style.display = 'none';
         
+     	// 부모창에 있는 'isAuthenticated' input 값을 true로 변경합니다.
+        window.opener.document.getElementById('isAuthenticated').value = 'true';
+        
         let formElement = window.opener.document.getElementById('accountAuth');
         formElement.innerHTML = "";
         
