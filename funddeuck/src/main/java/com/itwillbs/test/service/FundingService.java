@@ -146,5 +146,11 @@ public class FundingService {
 		mapper.updatePaymentConfirm(payment_idx);
 		
 	}
+	
+	// 리워드 수량 변경
+	public void modifyRewardAmount(int project_idx, int reward_idx, int payment_quantity) {
+		mapper.updateRewardAmount(project_idx, reward_idx, payment_quantity);
+		
+	}
 
 }

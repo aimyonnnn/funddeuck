@@ -1,5 +1,6 @@
 package com.itwillbs.test.controller;
 
+import java.text.*;
 import java.time.*;
 import java.util.*;
 
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import com.itwillbs.test.handler.*;
 import com.itwillbs.test.service.*;
 import com.itwillbs.test.vo.*;
+
+import edu.emory.mathcs.backport.java.util.concurrent.*;
 
 @Controller
 public class FundingController {
@@ -210,10 +213,13 @@ public class FundingController {
 				// userInfo 중 핀테크이용번호가 일치하는 정보 조회
 				List<BankAccountVO> bankAccountList = userInfo.getRes_list();
 				for(BankAccountVO account : bankAccountList) {
-					if (account.getFintech_use_num().equals(fintech_use_num)) {
-						bankAccount = account;
-					}
+				    if (account.getFintech_use_num() != null && account.getFintech_use_num().equals(fintech_use_num)) {
+				        bankAccount = account;
+				        break;
+				    }
 				}
+				session.setAttribute("fintech_use_num", fintech_use_num);
+				logger.info("●●●●● fintech_use_num : " + fintech_use_num);
 			}
 			// 계좌 정보
 			model.addAttribute("bankAccount", bankAccount);
@@ -247,7 +253,7 @@ public class FundingController {
 	
 	// 펀딩 결제
 	@PostMapping("fundingPayment")
-	public String fundingPayment(@RequestBody PaymentVO payment, HttpSession session, Model model) {
+	public String fundingPayment(@RequestParam String project_end_date, @RequestBody PaymentVO payment, HttpSession session, Model model) throws ParseException {
 		
 		System.out.println("PaymentVO : " + payment);
 		// 주문날짜
@@ -260,6 +266,8 @@ public class FundingController {
 	    if(payment.getPayment_method() == 2) { 
 	    	
 	    	// ================================================================================= 계좌
+	    	System.out.println("프로젝트 종료일 : " + project_end_date); 
+	    	
 	    	// 결제승인여부 payment_confirm 예약완료 1
 	    	payment.setPayment_confirm(1);
 	    	// 계좌면 회원 계좌에서 출금이체
@@ -288,19 +296,32 @@ public class FundingController {
 	    		Map<String, String> data = new HashMap<>();
 	    		data.put("fintech_use_num", fintech_use_num);
 	    		data.put("access_token", access_token);
-	    		// payment.getTotal_amount() 는 int 값이라 Map 으로 전달 불가
 
 	    		// 쿠폰 사용시 쿠폰 상태 변경(coupon_idx 필요)
-	    		// 리워드 수량 = 주문수량 => project 테이블 변경
+	    		// 리워드 수량 변경
+	    		System.out.println("리워드 수량 : " + payment.getPayment_quantity());
+	    		fundingService.modifyRewardAmount(payment.getProject_idx(), payment.getReward_idx(), payment.getPayment_quantity());
+	    		// 결제날짜 계산 프로젝트 종료일 - 주문날짜(현재시간)
+	    		Date now = new Date();
+	    		// 프로젝트 종료일 project_end_date (문자열에서 Date 객체로 변환)
+	    		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    		Date projectEndDate = format.parse(project_end_date + " 23:59:59"); // 예외 처리 필요
+
+	    		// 딜레이 값 계산
+	    		long diffInMillies = projectEndDate.getTime() - now.getTime();
+	    		long diff = TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);// 출금이체(스케줄링) 예약
+	    		// 출금이체 API에 필요한 데이터, 최종결제금액, 딜레이 값 전달
+	    		fundingScheduler.scheduledBankTran(payment_idx, data, diffInMillies, diff);
 	    		
-	    		// 출금이체(스케줄링) 예약
-	    		// 출금이체 API에 필요한 데이터, 최종결제금액 전달
-	    		fundingScheduler.scheduledBankTran(payment_idx, data);
+	    		// 결제 완료 페이지 이동 
+	    		// 등록된 결제서의 payment_idx model로 전달
+	    		model.addAttribute("payment_idx", payment_idx);
+	    		return "fundingResult";
+	    		
 	    	} else { // 결제서 등록 실패시
 	    		
 	    		model.addAttribute("msg", "오류 발생! 다시 결제해주세요");
 	    		return "fail_back";
-
 	    		
 	    	}
 	    	
@@ -308,9 +329,6 @@ public class FundingController {
 	    	// 환불 saveRefundTransactionHistory (거래내역 저장 메서드)
 //	    ResponseDepositVO depositResult = bankApiService.requestDeposit(payment.getTotal_amount(), fintech_use_num, access_token);
 //	    logger.info("depositResult" + depositResult);
-	    	
-	    	// 성공시 fundingResult 결제 완료페이지로 이동
-	    	// 실패시 fail_back
 	    	
 	    	
 	    	// ================================================================================= 계좌

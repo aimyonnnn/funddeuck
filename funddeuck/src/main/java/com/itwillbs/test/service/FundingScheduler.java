@@ -25,7 +25,7 @@ public class FundingScheduler {
 	// 스케줄러
 	private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-	public void scheduledBankTran(int payment_idx, Map<String, String> data) {
+	public void scheduledBankTran(int payment_idx, Map<String, String> data, long diffInMillies, long diff) {
 		executorService.schedule(() -> {
 			// 프로젝트 상태 조회 (0-취소, 3-진행완료)
 			// 2-진행중인걸로 일단함
@@ -52,11 +52,14 @@ public class FundingScheduler {
 		    		// 결제승인여부 결제완료로 변경
 		    		fundingService.ModifyPaymentConfirm(payment_idx);
 		    	} else { // 거래내역 DB 저장 실패시
+		    		// 스케줄러 취소
+		    		executorService.shutdown();
 		    	}
 				
 			}
-			
-		}, 1, TimeUnit.MINUTES);
+		
+		}, diff, TimeUnit.MINUTES);
+//		}, 1, TimeUnit.MINUTES); // 테스트용(1분 후)
 		
 	}
 }

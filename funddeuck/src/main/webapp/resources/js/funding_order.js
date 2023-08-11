@@ -571,3 +571,47 @@
     });
 
 // ===========================================================
+// 카드결제/계좌결제 라디오박스 체크시
+
+$(document).ready(function () {
+	
+	// 스크롤바 가장 아래로 내리기
+    function scrollToBottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function togglePaymentArea(radioElement, paymentAreaElement, paymentMethodValue) {
+        if (radioElement.checked) {
+            paymentAreaElement.classList.remove("d-none");
+            paymentAreaElement.classList.add("d-block");
+            document.getElementById("payment_method").value = paymentMethodValue;
+            scrollToBottom();
+        } else {
+            paymentAreaElement.classList.remove("d-block");
+            paymentAreaElement.classList.add("d-none");
+        }
+    }
+	
+    // 라디오 버튼 클릭 이벤트 리스너 추가
+    let cardPaymentRadio = document.getElementById("card_payment");
+    let cardPaymentArea = document.getElementById("card_payment_area");
+    cardPaymentRadio.addEventListener("click", function() {
+        togglePaymentArea(cardPaymentRadio, cardPaymentArea, "1");
+        togglePaymentArea(accountPaymentRadio, accountPaymentArea, "");
+    });
+	
+    let accountPaymentRadio = document.getElementById("account_payment");
+    let accountPaymentArea = document.getElementById("account_payment_area");
+    accountPaymentRadio.addEventListener("click", function() {
+        togglePaymentArea(accountPaymentRadio, accountPaymentArea, "2");
+        togglePaymentArea(cardPaymentRadio, cardPaymentArea, "");
+    });
+	
+    // 페이지 로드시 모든 결제 영역 숨기기
+    togglePaymentArea(cardPaymentRadio, cardPaymentArea, "1");
+    togglePaymentArea(accountPaymentRadio, accountPaymentArea, "1");
+});
+
+
+
+// ===========================================================

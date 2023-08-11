@@ -27,6 +27,7 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script type="text/javascript">
 //===========================================================
+//===========================================================
 // 아임포트 결제 스크립트
 $(()=>{
 	   
@@ -290,36 +291,56 @@ $(()=>{
 				<!-- 결제 수단 선택 -->
 				<div class="row">
 					<span class="fs-4 fw-bold">결제 수단</span>
-					<div class="row m-2 p-2 border d-flex">
-					<!-- 카드결제 -->
-						<div class="col">
-							<input class="btn btn-primary" type="button" value="카드결제" name="requestPay">
+					<div class="row m-2 p-2 border d-flex align-content-center">
+						<div class="form-check col ms-4">
+							<input class="form-check-input" type="radio" name="paymentCheck" id="card_payment" checked>
+							<label class="form-check-label fs-6" for="card_payment">
+								카드로 결제하기(기본 결제)
+							</label>
 						</div>
-					<!-- 최초등록 / 계좌변경 -->
-						<div class="col" id="paymentMethodForm">
-							<c:if test="${not empty bankAccount }">
-								<div class="col-12">
-									<span class="fs-6 fw-bold">은행명</span>&nbsp;&nbsp;
-									<span class="fs-6">${bankAccount.bank_name}</span>
-								</div>
-								<div class="col-12">
-									<span class="fs-6 fw-bold">예금주명</span>&nbsp;&nbsp;
-									<span class="fs-6">${bankAccount.account_holder_name}</span>
-								</div>
-								<div class="col-12">
-									<span class="fs-6 fw-bold">계좌번호</span>&nbsp;&nbsp;
-									<span class="fs-6">${bankAccount.account_num_masked}</span>
-								</div>								
-<!-- 								<input class="btn btn-primary" type="button" value="계좌변경" id="btnAccountAuth"> -->
-								<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
-							</c:if>
-							<c:if test="${empty bankAccount }">
-<!-- 								<input class="btn btn-primary" type="button" value="계좌등록" id="btnAccountAuth"> -->
-								<input class="btn btn-primary" type="button" value="계좌등록" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
-							</c:if>
-						</div>
+						<div class="form-check col">
+							<input class="form-check-input" type="radio" name="paymentCheck" id="account_payment">
+							<label class="form-check-label fs-6" for="account_payment">
+								계좌로 결제하기
+							</label>
+						</div>					
 					</div>
 				</div>
+				<div class="row">
+				
+					<div class="row d-none" id="card_payment_area">
+					<!-- 카드결제 -->
+<!-- 						카드결제 체크시 보여줄 영역 -->
+<!-- 						<input class="btn btn-primary" type="button" value="카드결제" name="requestPay"> -->
+					<!-- 최초등록 / 계좌변경 -->
+					</div>
+					<div class="row d-none" id="account_payment_area">
+						<c:if test="${not empty bankAccount }">
+							<div class="col-12">
+								<span class="fs-6 fw-bold">은행명</span>&nbsp;&nbsp;
+								<span class="fs-6">${bankAccount.bank_name}</span>
+							</div>
+							<div class="col-12">
+								<span class="fs-6 fw-bold">예금주명</span>&nbsp;&nbsp;
+								<span class="fs-6">${bankAccount.account_holder_name}</span>
+							</div>
+							<div class="col-12">
+								<span class="fs-6 fw-bold">계좌번호</span>&nbsp;&nbsp;
+								<span class="fs-6">${bankAccount.account_num_masked}</span>
+							</div>
+							<div class="col-12 d-flex align-content-center mt-2">
+	<!-- 								<input class="btn btn-primary" type="button" value="계좌변경" id="btnAccountAuth"> -->
+								<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
+							</div>								
+						</c:if>
+						<c:if test="${empty bankAccount }">
+							<div class="col-12 d-flex justify-content-center align-self-center mt-2">
+	<!-- 								<input class="btn btn-primary" type="button" value="계좌등록" id="btnAccountAuth"> -->
+								<input class="btn btn-primary" type="button" value="계좌등록" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
+							</div>
+						</c:if>
+					</div>
+					</div>
 				<!-- 결제 수단 선택 끝-->   
 			</div>
 			<!-- 왼쪽 영역 끝 -->
@@ -442,7 +463,9 @@ $(()=>{
 						<input type="text" name="total_amount" id="total_amount" value="${reward.reward_price + reward.delivery_price}">
 						<input type="text" name="payment_quantity" id="payment_quantity" value="1">
 						<!-- 결제수단(1:카드 2:계좌) -->
-						<input type="text" name="payment_method" id="payment_method" value="">
+						<input type="text" name="payment_method" id="payment_method" value="1">
+						<input type="text" name="project_end_date" id="project_end_date" value="${project.project_end_date }">
+<!-- 						<input type="text" name="coupon_idx" id="coupon_idx" value=""> -->
 						<button type="submit" id="fundingPaymentSubmitButton" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
 					</form>
 				</div>

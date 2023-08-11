@@ -59,6 +59,7 @@ public class PaymentVO {
 	private int project_idx;
 	private int reward_idx;
 	private int delivery_idx;
+	private int coupon_idx;
 	private String member_email;
 	private String member_phone;
 	private int reward_amount;

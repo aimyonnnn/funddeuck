@@ -443,4 +443,12 @@
 					payment_idx = #{payment_idx}
 	</update>	
 	
+	<!-- 리워드 수량 변경 -->
+	<update id="updateRewardAmount">
+		UPDATE reward 
+			SET reward_quantity = reward_quantity - #{payment_quantity}
+				WHERE project_idx = #{project_idx}
+					AND reward_idx = #{reward_idx}
+	</update>
+	
 </mapper>
