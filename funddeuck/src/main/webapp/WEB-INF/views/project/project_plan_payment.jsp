@@ -38,12 +38,12 @@ table tr:hover td {
 <body>
 <jsp:include page="../common/project_top.jsp"/>
 <c:if test="${project.project_plan eq 1}">
-	<c:set var="project_plan" value="기본요금제" />
-	<c:set var="project_plan_payment" value="50000" />
+	<c:set var="project_plan" value="FUNDDEUCK회원제" />
+	<c:set var="project_plan_payment" value="7800" />
 </c:if>
 <c:if test="${project.project_plan ne 1}">
-	<c:set var="project_plan" value="인플루언서요금제" />
-	<c:set var="project_plan_payment" value="100000" />
+	<c:set var="project_plan" value="INFLUENCER회원제" />
+	<c:set var="project_plan_payment" value="5800" />
 </c:if>
 
 <button type="button" class="btn btn-outline-primary btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#orderModal" style="display: none;">결제하기</button>
@@ -66,10 +66,10 @@ table tr:hover td {
                 <th scope="row" width="150"><label for="resName">결제상품</label></th>
                 <c:choose>
                 	<c:when test="${project.project_plan eq 1}">
-               			<td>기본요금제</td>
+               			<td>FUNDDEUCK 회원제</td>
                 	</c:when>
 					<c:otherwise>
-               			<td>인플루언서요금제</td>
+               			<td>INFLUENCER 회원제</td>
 					</c:otherwise>                	
                 </c:choose>
               </tr>
@@ -77,10 +77,10 @@ table tr:hover td {
                 <th scope="row" width="150"><label for="pay">결제금액</label></th>
                	<c:choose>
 	               	<c:when test="${project.project_plan eq 1}">
-             			<td>50000</td>
+             			<td>7800</td>
 	               	</c:when>
 					<c:otherwise>
-	              		<td>100000</td>
+	              		<td>5800</td>
 					</c:otherwise>                	
                 </c:choose>
               </tr>

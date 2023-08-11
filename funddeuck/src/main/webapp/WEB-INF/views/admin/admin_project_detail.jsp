@@ -77,10 +77,10 @@ th, td {
 									<th style="background-color: #f8f9fa;">프로젝트 요금제</th>
 									<c:choose>
 										<c:when test="${project.project_plan eq 1}">
-											<td>기본 요금제</td>
+											<td>FUNDDEUCK 회원제</td>
 										</c:when>
 										<c:when test="${project.project_plan eq 2}">
-											<td>인플루언서 요금제</td>
+											<td>INFLUENCER 회원제</td>
 										</c:when>
 									</c:choose>
 								</tr>

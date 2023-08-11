@@ -69,8 +69,8 @@ th, td {
 				            <th style="width: 30%">프로젝트 요금제</th>
 				            <td style="width: 70%">
 				                <select name="project_plan" class="form-control">
-				                	<option value="1" ${project.project_plan eq 1 ? 'selected' : ''}>기본요금제</option>
-				                	<option value="2" ${project.project_plan eq 2 ? 'selected' : ''}>인플루언서요금제</option>
+				                	<option value="1" ${project.project_plan eq 1 ? 'selected' : ''}>FUNDDEUCK 회원제</option>
+				                	<option value="2" ${project.project_plan eq 2 ? 'selected' : ''}>INFLUENCER 회원제</option>
 				                </select>
 				            </td>
 				        </tr>
