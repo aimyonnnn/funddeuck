@@ -55,7 +55,7 @@
 		<div class="mb-3">
 			<label for="exampleFormControlInput1" class="form-label">아이디</label>
 			<input type="text" class="form-control" name="member_id_" placeholder="${sessionScope.sId }" disabled="disabled">
-			<input type="hidden" name="member_id" value="id">
+			<input type="hidden" class="form-control" name="member_id" value="${sessionScope.sId }">
 		</div>
 		<div class="mb-3">
 			<label for="exampleFormControlInput2" class="form-label">문의자 유형</label>
