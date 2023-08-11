@@ -58,35 +58,7 @@ th, td {
 				</div>
 
 				<!-- container -->
-				<div class="container">
-
-<!-- 					<table class="table"> -->
-<!-- 						<tr> -->
-<!-- 							<td class="align-middle text-center">프로젝트 이름</td> -->
-<%-- 							<td>${project.project_subject}</td> --%>
-<!-- 							<td class="align-middle text-center">승인상태</td> -->
-<%-- 							<c:choose> --%>
-<%-- 								<c:when test="${project.project_approve_status eq 2}"> --%>
-<!-- 									<td class="text-danger">승인요청</td> -->
-<%-- 								</c:when> --%>
-<%-- 								<c:when test="${project.project_approve_status eq 3}"> --%>
-<!-- 									<td class="text-success">승인완료</td> -->
-<%-- 								</c:when> --%>
-<%-- 								<c:when test="${project.project_approve_status eq 5}"> --%>
-<!-- 									<td>결제완료</td> -->
-<%-- 								</c:when> --%>
-<%-- 								<c:otherwise> --%>
-<!-- 									<td>승인거절</td> -->
-<%-- 								</c:otherwise> --%>
-<%-- 							</c:choose> --%>
-<!-- 						</tr> -->
-<!-- 						<tr> -->
-<!-- 							<td class="align-middle text-center">대표자 이름</td> -->
-<%-- 							<td>${project.project_representative_name}</td> --%>
-<!-- 							<td class="align-middle text-center">프로젝트 번호</td> -->
-<%-- 							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${project.project_idx}</td> --%>
-<!-- 						</tr> -->
-<!-- 					</table> -->
+				<div class="container" style="max-width: 800px;">
 
 					<!-- 탭 버튼 -->
 					<div class="tab-buttons text-center mt-5">
@@ -95,18 +67,14 @@ th, td {
 						<button class="btn btn-outline-primary tab-button w-100" data-tab="tab3">메이커</button>
 					</div>
 					<div class="content-area sideDescription" id="tab1">
-						<div class="container">
-							<table class="table text-center">
+						<div class="container table-responsive">
+							<table class="table text-start">
 								<tr>
-									<th>제목</th>
-									<th>내용</th>
-								</tr>
-								<tr>
-									<td>프로젝트 번호</td>
+									<th style="background-color: #f8f9fa;">프로젝트 번호</th>
 									<td>${project.project_idx}</td>
 								</tr>
 								<tr>
-									<td>프로젝트 요금제</td>
+									<th style="background-color: #f8f9fa;">프로젝트 요금제</th>
 									<c:choose>
 										<c:when test="${project.project_plan eq 1}">
 											<td>기본 요금제</td>
@@ -117,109 +85,109 @@ th, td {
 									</c:choose>
 								</tr>
 								<tr>
-									<td>프로젝트 카테고리</td>
+									<th style="background-color: #f8f9fa;">프로젝트 카테고리</th>
 									<td>${project.project_category}</td>
 								</tr>
 								<tr>
-									<td>프로젝트 제목</td>
+									<th style="background-color: #f8f9fa;">프로젝트 제목</th>
 									<td>${project.project_subject}</td>
 								</tr>
 								<tr>
-									<td>프로젝트 썸네일 (1)</td>
+									<th style="background-color: #f8f9fa;">프로젝트 썸네일 (1)</th>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}"
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>프로젝트 썸네일 (2)</td>
+									<th style="background-color: #f8f9fa;">프로젝트 썸네일 (2)</th>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails2}"
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>프로젝트 썸네일 (3)</td>
+									<th style="background-color: #f8f9fa;">프로젝트 썸네일 (3)</th>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails3}"
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>프로젝트 내용 상세 이미지</td>
+									<th style="background-color: #f8f9fa;">프로젝트 내용 상세 이미지</th>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${project.project_image}"
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>프로젝트 소개</td>
+									<th style="background-color: #f8f9fa;">프로젝트 소개</th>
 									<td>${project.project_introduce}</td>
 								</tr>
 								<tr>
-									<td>프로젝트 한줄 소개</td>
+									<th style="background-color: #f8f9fa;">프로젝트 한줄 소개</th>
 									<td>${project.project_semi_introduce}</td>
 								</tr>
 								<tr>
-									<td>목표 금액</td>
+									<th style="background-color: #f8f9fa;">목표 금액</th>
 									<td>${project.project_target}</td>
 								</tr>
 								<tr>
-									<td>누적 금액</td>
+									<th style="background-color: #f8f9fa;">누적 금액</th>
 									<td>${project.project_cumulative_amount}</td>
 								</tr>
 								<tr>
-									<td>프로젝트 달성 금액</td>
+									<th style="background-color: #f8f9fa;">프로젝트 달성 금액</th>
 									<td>${project.project_amount}</td>
 								</tr>
 								<tr>
-									<td>프로젝트 시작일</td>
+									<th style="background-color: #f8f9fa;">프로젝트 시작일</th>
 									<td>${project.project_start_date}</td>
 								</tr>
 								<tr>
-									<td>프로젝트 종료일</td>
+									<th style="background-color: #f8f9fa;">프로젝트 종료일</th>
 									<td>${project.project_end_date}</td>
 								</tr>
 								<tr>
-									<td>검색용 태그</td>
+									<th style="background-color: #f8f9fa;">검색용 태그</th>
 									<td>${project.project_hashtag}</td>
 								</tr>
 								<tr>
-									<td>대표자명</td>
+									<th style="background-color: #f8f9fa;">대표자명</th>
 									<td>${project.project_representative_name}</td>
 								</tr>
 								<tr>
-									<td>대표 이메일</td>
+									<th style="background-color: #f8f9fa;">대표 이메일</th>
 									<td>${project.project_representative_email}</td>
 								</tr>
 								<tr>
-									<td>대표 주민등록번호</td>
+									<th style="background-color: #f8f9fa;">대표 주민등록번호</th>
 									<td>${project.project_representative_birth}</td>
 								</tr>
 								<tr>
-									<td>세금계산서 발행 이메일</td>
+									<th style="background-color: #f8f9fa;">세금계산서 발행 이메일</th>
 									<td>${project.project_tax_email}</td>
 								</tr>
 								<tr>
-									<td>정산받을 은행</td>
+									<th style="background-color: #f8f9fa;">정산받을 은행</th>
 									<td>${project.project_settlement_bank}</td>
 								</tr>
 								<tr>
-									<td>정산받을 계좌번호</td>
+									<th style="background-color: #f8f9fa;">정산받을 계좌번호</th>
 									<td>${project.project_settlement_account}</td>
 								</tr>
 								<tr>
-									<td>예금주명</td>
+									<th style="background-color: #f8f9fa;">예금주명</th>
 									<td>${project.project_settlement_name}</td>
 								</tr>
 								<tr>
-									<td>핀테크 이용번호</td>
+									<th style="background-color: #f8f9fa;">핀테크 이용번호</th>
 									<td>${project.project_fintech_use_num}</td>
 								</tr>
 								<tr>
-									<td>통장사본 이미지</td>
+									<th style="background-color: #f8f9fa;">통장사본 이미지</th>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${project.project_settlement_image}"
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>프로젝트 승인 상태</td>
+									<th style="background-color: #f8f9fa;">프로젝트 승인 상태</th>
 									<c:choose>
 										<c:when test="${project.project_approve_status eq 2}">
 											<td>관리자에게 프로젝트 승인요청</td>
@@ -240,27 +208,39 @@ th, td {
 								</tr>
 								<tr>
 								<tr>
-									<td>프로젝트 상태</td>
+									<th style="background-color: #f8f9fa;">프로젝트 상태</th>
 									<c:choose>
-									<c:when test="${project.project_status eq 1}">
-										<td>오픈예정</td>
-									</c:when>	
-									<c:when test="${project.project_status eq 2}">
-										<td>프로젝트 진행중</td>
-									</c:when>	
-									<c:when test="${project.project_status eq 3}">
-										<td>진행완료</td>
-									</c:when>	
-									<c:when test="${project.project_status eq 4}">
-										<td>정산신청</td>
-									</c:when>	
-									<c:when test="${project.project_status eq 5}">
-										<td>정산완료</td>
-									</c:when>	
+										<c:when test="${project.project_status eq 0}">
+											<td>프로젝트 취소</td>
+										</c:when>	
+										<c:when test="${project.project_status eq 1}">
+											<td>오픈예정</td>
+										</c:when>	
+										<c:when test="${project.project_status eq 2}">
+											<td>프로젝트 진행중</td>
+										</c:when>	
+										<c:when test="${project.project_status eq 3}">
+											<td>진행완료</td>
+										</c:when>	
+										<c:when test="${project.project_status eq 4}">
+											<td>1차정산완료</td>
+										</c:when>	
+										<c:when test="${project.project_status eq 5}">
+											<td>최종정산진행가능</td>
+										</c:when>	
+										<c:when test="${project.project_status eq 6}">
+											<td>최종정산완료</td>
+										</c:when>	
+										<c:when test="${project.project_status eq 7}">
+											<td>펀딩닥터신청</td>
+										</c:when>	
+										<c:when test="${project.project_status eq 8}">
+											<td>펀딩닥터답변완료</td>
+										</c:when>	
 									</c:choose>								
 								</tr>
 								<tr>
-									<td>프로젝트 승인 요청 시간</td>
+									<th style="background-color: #f8f9fa;">프로젝트 승인 요청 시간</th>
 									<c:choose>
 										<c:when test="${not empty project.project_approval_request_time}">
 											<td>${project.project_approval_request_time}</td>
@@ -271,15 +251,15 @@ th, td {
 									</c:choose>
 								</tr>
 								<tr>
-									<td>메이커 번호</td>
+									<th style="background-color: #f8f9fa;">메이커 번호</th>
 									<td>${project.maker_idx}</td>
 								</tr>
 								<tr>
-									<td>토큰 번호</td>
+									<th style="background-color: #f8f9fa;">토큰 번호</th>
 									<td>${project.token_idx}</td>
 								</tr>
 								<tr>
-									<td>누적 정산금액</td>
+									<th style="background-color: #f8f9fa;">누적 정산금액</th>
 									<td>${project.settlement_amount}</td>
 								</tr>
 							</table>
@@ -287,59 +267,55 @@ th, td {
 					</div>
 
 					<div class="content-area sideDescription" id="tab2">
-						<div class="container">
-							<table class="table text-center">
-								<tr>
-									<th>제목</th>
-									<th>내용</th>
-								</tr>
+						<div class="container table-responsive">
+							<table class="table text-start">
 								<c:forEach var="rList" items="${rList}">
 									<tr>
-										<td>리워드 번호</td>
+										<th style="background-color: #f8f9fa;">리워드 번호</th>
 										<td>${rList.reward_idx}</td>
 									</tr>
 									<tr>
-										<td>프로젝트 번호</td>
+										<th style="background-color: #f8f9fa;">프로젝트 번호</th>
 										<td>${rList.project_idx}</td>
 									</tr>
 									<tr>
-										<td>리워드 가격</td>
+										<th style="background-color: #f8f9fa;">리워드 가격</th>
 										<td>${rList.reward_price}</td>
 									</tr>
 									<tr>
-										<td>리워드 카테고리</td>
+										<th style="background-color: #f8f9fa;">리워드 카테고리</th>
 										<td>${rList.reward_category}</td>
 									</tr>
 									<tr>
-										<td>리워드명</td>
+										<th style="background-color: #f8f9fa;">리워드명</th>
 										<td>${rList.reward_name}</td>
 									</tr>
 									<tr>
-										<td>리워드 수량</td>
+										<th style="background-color: #f8f9fa;">리워드 수량</th>
 										<td>${rList.reward_quantity}</td>
 									</tr>
 									<tr>
-										<td>리워드 옵션</td>
+										<th style="background-color: #f8f9fa;">리워드 옵션</th>
 										<td>${rList.reward_option}</td>
 									</tr>
 									<tr>
-										<td>리워드 설명</td>
+										<th style="background-color: #f8f9fa;">리워드 설명</th>
 										<td>${rList.reward_detail}</td>
 									</tr>
 									<tr>
-										<td>배송여부</td>
+										<th style="background-color: #f8f9fa;">배송여부</th>
 										<td>${rList.delivery_status}</td>
 									</tr>
 									<tr>
-										<td>배송비</td>
+										<th style="background-color: #f8f9fa;">배송비</th>
 										<td>${rList.delivery_price}</td>
 									</tr>
 									<tr>
-										<td>발송 시작일</td>
+										<th style="background-color: #f8f9fa;">발송 시작일</th>
 										<td>${rList.delivery_date}</td>
 									</tr>
 									<tr>
-										<td>리워드 정보 제공 고시</td>
+										<th style="background-color: #f8f9fa;">리워드 정보 제공 고시</th>
 										<td>${rList.reward_info}</td>
 									</tr>
 								</c:forEach>
@@ -348,84 +324,80 @@ th, td {
 					</div>
 
 					<div class="content-area sideDescription" id="tab3">
-						<div class="container">
-							<table class="table text-center">
+						<div class="container table-responsive">
+							<table class="table text-start">
 								<tr>
-									<th>제목</th>
-									<th>내용</th>
-								</tr>
-								<tr>
-									<td>메이커 번호</td>
+									<th style="background-color: #f8f9fa;">메이커 번호</th>
 									<td>${maker.maker_idx}</td>
 								</tr>
 								<tr>
-									<td>회원번호</td>
+									<th style="background-color: #f8f9fa;">회원번호</th>
 									<td>${maker.member_idx}</td>
 								</tr>
 								<tr>
-									<td>개인신분증</td>
+									<th style="background-color: #f8f9fa;">개인신분증</th>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file1}"
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>개인사업자등록번호</td>
+									<th style="background-color: #f8f9fa;">개인사업자등록번호</th>
 									<td>${maker.individual_biz_num}</td>
 								</tr>
 								<tr>
-									<td>개인사업자명</td>
+									<th style="background-color: #f8f9fa;">개인사업자명</th>
 									<td>${maker.individual_biz_name}</td>
 								</tr>
 								<tr>
-									<td>개인사업자등록증</td>
+									<th style="background-color: #f8f9fa;">개인사업자등록증</th>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file2}"
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>법인사업자등록번호</td>
+									<th style="background-color: #f8f9fa;">법인사업자등록번호</th>
 									<td>${maker.corporate_biz_num}</td>
 								</tr>
 								<tr>
-									<td>법인사업자명</td>
+									<th style="background-color: #f8f9fa;">법인사업자명</th>
 									<td>${maker.corporate_biz_name}</td>
 								</tr>
 								<tr>
-									<td>법인사업자등록증</td>
+									<th style="background-color: #f8f9fa;">법인사업자등록증</th>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file3}"
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>메이커 사진</td>
+									<th style="background-color: #f8f9fa;">메이커 사진</th>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file4}"
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>메이커 로고</td>
+									<th style="background-color: #f8f9fa;">메이커 로고</th>
 									<td><img
 										src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file5}"
 										alt="첨부파일 없음"></td>
 								</tr>
 								<tr>
-									<td>메이커 이름</td>
+									<th style="background-color: #f8f9fa;">메이커 이름</th>
 									<td>${maker.maker_name}</td>
 								</tr>
 								<tr>
-									<td>메이커 소개</td>
+									<th style="background-color: #f8f9fa;">메이커 소개</th>
 									<td>${maker.maker_intro}</td>
 								</tr>
 								<tr>
-									<td>메이커 이메일</td>
+									<th style="background-color: #f8f9fa;">메이커 이메일</th>
 									<td>${maker.maker_email}</td>
 								</tr>
 								<tr>
-									<td>메이커 전화번호</td>
+									<th style="background-color: #f8f9fa;">메이커 전화번호</th>
 									<td>${maker.maker_tel}</td>
 								</tr>
 								<tr>
-									<td>메이커 홈페이지</td>
+									<th style="background-color: #f8f9fa;">메이커 홈페이지</th>
 									<td>${maker.maker_url}</td>
 								</tr>
 							</table>

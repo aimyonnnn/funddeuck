@@ -76,14 +76,14 @@
                     <p class="projectContent">서포터들에게 제공할 리워드를 입력해 주세요.</p>
 
                     <!-- 폼 태그 시작 -->
-                    <form action="" class="projectContent" method="post" id="rewardForm">
+                    <form action="" class="projectContent" method="post" id="rewardForm" > 
                         <!-- 히든 처리하는 부분 -->
                         <input type="text" name="project_idx" id="project_idx" value="${project_idx}" class="form-control" style="width:500px;">
 
                         <!-- 금액 -->
                         <div>
                             <label class="form-content subheading" for="reward_price">금액</label>
-                            <input class="form-control" type="text" name="reward_price" id="reward_price" placeholder="금액을 입력하세요" style="width:500px;">
+                            <input class="form-control" type="number" name="reward_price" id="reward_price" placeholder="금액을 입력하세요" style="width:500px;">
                         </div>
 
                         <!-- 리워드 카테고리 -->
@@ -111,7 +111,7 @@
                         <!--리워드 수량 -->
                         <div>
                             <label class="form-content subheading" for="reward_quantity">수량</label>
-                            <input class="form-control" type="number" name="reward_quantity" id="reward_quantity" placeholder="수량을 입력해주세요" style="width:500px;">
+                            <input class="form-control" type="number" name="reward_quantity" id="reward_quantity" placeholder="수량을 입력해주세요" min="1" style="width:500px;">
                         </div>
                         
                         <!--리워드 옵션 -->
@@ -128,7 +128,7 @@
                         <div class="form-content">
                             <span class="subheading">배송여부</span>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="delivery_status" id="delivery_status1" value="배송">
+                                <input class="form-check-input" type="radio" name="delivery_status" id="delivery_status1" value="배송" checked="checked">
                                 <label class="form-check-label" for="delivery_status1">
                                     <span>배송</span>
                                 </label>
@@ -144,7 +144,7 @@
                         <!-- 배송비 -->
                         <div>
                             <label class="form-content subheading" for="delivery_price">배송비</label>
-                            <input class="form-control" type="text" name="delivery_price" id="delivery_price" placeholder="배송비를 입력하세요" style="width:500px;">
+                            <input class="form-control" type="number" name="delivery_price" id="delivery_price" placeholder="예시-배송없음 체크 시 0원 입력"  min="0" style="width:500px;">
                         </div>
                         
                         <!-- 발송 시작일 -->
@@ -173,19 +173,9 @@
                         </div>
 
                         <!-- 리워드 정보 제공 고시 -->
-                        <!-- 들여쓰기 안한게 아니라 스페이스바 누르면 뷰에 스페이스바까지 나와서 이렇게 작성한거임 -->
                         <label class="form-content subheading" for="reward_info">리워드 정보 제공 고시</label>
-                        <!-- 첫 페이지 - 기본 양식 -->
-                        <textarea class="form-control reward-info" placeholder="제품 소재, 색상, 주의사항, 품질보증기준을 작성해주세요" name="reward_info" id="reward_info" style="height: 300px; resize: none;">
-제품소재 :
-
-색상 :
-
-크기 :
-
-주의사항 :
-
-품질보증기준 :</textarea>
+                        <p class="projectContent">제품소재, 색상, 크기, 주의사항, 품질보증기준을 입력해주세요</p>
+                        <textarea class="form-control reward-info" name="reward_info" id="reward_info" style="height: 300px; resize: none;"></textarea>
 						
 						<div class="alert alert-danger mt-3 text-center" role="alert">
 		                	<i class="fas fa-exclamation-circle"></i>&nbsp;리워드 등록까지 완료해야 프로젝트 승인요청을 할 수 있습니다.
@@ -338,6 +328,11 @@ $(document).ready(function() {
 	
 //리워드 등록하기
 function saveReward() {
+	
+	// 유효성 검사 실행
+    if (!validateForm()) {
+        return; // 유효성 검사 실패 시 함수 종료
+    }
 	
 	Swal.fire({
 		title: '리워드 등록하기',
@@ -533,6 +528,11 @@ function openRewardModifyForm(reward_idx) {
 			
 // 리워드 수정하기
 function modifyReward(reward_idx) {
+	
+	// 유효성 검사 실행
+    if (!validateForm()) {
+        return; // 유효성 검사 실패 시 함수 종료
+    }
 	
 	Swal.fire({
 		title: '리워드 수정하기',
@@ -739,6 +739,125 @@ function updateDeliveryDate() {
     var day = document.getElementById("day").value;
     var delivery_date = yearMonth + day;
     document.getElementById("delivery_date").value = delivery_date;
+}
+
+//유효성 검사
+function validateForm() {
+	
+    // 금액 검사
+    const rewardPrice = document.getElementById('reward_price').value;
+    if (rewardPrice < 1 || isNaN(rewardPrice)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '금액을 1원 이상 입력하세요.'
+        });
+        return false;
+    }
+
+    // 리워드 카테고리 검사
+    const rewardCategory = document.getElementById('reward_category').value;
+    if (rewardCategory === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '리워드 카테고리를 선택해주세요.'
+        });
+        return false;
+    }
+
+    // 리워드명 검사
+    const rewardName = document.getElementById('reward_name').value;
+    if (rewardName.trim() === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '리워드명을 입력해주세요.'
+        });
+        return false;
+    }
+
+    // 수량 검사
+    const rewardQuantity = document.getElementById('reward_quantity').value;
+    if (rewardQuantity <= 0 || isNaN(rewardQuantity)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '수량을 1개 이상 입력하세요.'
+        });
+        return false;
+    }
+
+    // 리워드 옵션 검사
+    const rewardOption = document.getElementById('reward_option').value;
+    if (rewardOption.trim() === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '리워드 옵션을 입력해주세요.'
+        });
+        return false;
+    }
+
+ 	// 리워드 설명 검사
+    const rewardDetail = document.getElementById('reward_detail').value;
+    if (rewardDetail.length < 50 || rewardDetail.length > 300) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '리워드 설명을 50자 이상 300자 이하로 입력해주세요.'
+        });
+        return false;
+    }
+
+    // 배송여부 검사
+    const deliveryStatus = document.querySelector('input[name="delivery_status"]:checked').value;
+    const deliveryPrice = parseFloat(document.getElementById('delivery_price').value);
+
+    if (deliveryStatus === '배송') {
+        if (isNaN(deliveryPrice) || deliveryPrice <= 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '배송일 경우 배송비를 1원 이상 입력하세요.'
+            });
+            return false;
+        }
+    } else if (deliveryStatus === '배송없음') {
+        if (!isNaN(deliveryPrice) && deliveryPrice !== 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '배송없음 체크 시 배송비는 0원을 입력하세요.'
+            });
+            return false;
+        }
+    }
+
+    // 발송 시작일 검사
+    const yearMonth = document.getElementById('yearMonth').value;
+    const day = document.getElementById('day').value;
+    if (yearMonth === '' || day === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '발송 시작일을 제대로 선택해주세요.'
+        });
+        return false;
+    }
+    
+ 	// 리워드 정보 제공 고시 검사
+    const rewardInfo = $("#reward_info").val();
+    if (rewardInfo.length < 100 || rewardInfo.length > 500) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '리워드 정보 제공 고시를 100자 이상 500자 이하로 입력해주세요.'
+        });
+        return false;
+    }
+
+    return true;
 }
 </script>
 <!-- js -->

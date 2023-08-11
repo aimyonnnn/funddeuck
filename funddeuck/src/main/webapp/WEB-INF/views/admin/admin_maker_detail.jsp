@@ -284,8 +284,8 @@ th, td {
 					                		</tr>
 					                		<tr>
 					                			<td colspan="2" class="text-center">
-						                			<input type="button" value="수정하기" class="btn btn-outline-primary btn-sm"
-													onclick="updateMakerBoard(${mList.maker_board_idx})">
+<!-- 						                			<input type="button" value="수정하기" class="btn btn-outline-primary btn-sm" -->
+<%-- 													onclick="updateMakerBoard(${mList.maker_board_idx})"> --%>
 						                			<input type="button" value="삭제하기" class="btn btn-outline-primary btn-sm"
 													onclick="deleteMakerBoard(${mList.maker_board_idx})">
 					                			</td>

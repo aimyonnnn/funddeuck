@@ -49,7 +49,7 @@ th, td {
 	
 			<div class="tab-buttons text-center">
 				<button class="btn btn-outline-primary tab-button w-100" data-tab="tab1">결제내역 정보변경</button>
-				<button class="btn btn-outline-primary tab-button w-100" data-tab="tab2">배송지 정보변경</button>
+<!-- 				<button class="btn btn-outline-primary tab-button w-100" data-tab="tab2">배송지 정보변경</button> -->
 			</div>
 				
 			<!-- 메이커 정보수정 -->
@@ -196,9 +196,9 @@ th, td {
 			</div>
 			
 			<!-- 공지사항 리스트 -->
-			<div class="content-area" id="tab2">
+<!-- 			<div class="content-area" id="tab2"> -->
 			
-			</div>
+<!-- 			</div> -->
 			
 				
 			</div>
