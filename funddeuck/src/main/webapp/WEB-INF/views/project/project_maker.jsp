@@ -63,16 +63,15 @@
             <p class="projectContent">메이커로 출력될 정보를 입력해 주세요.</p>
             
             <!-- 폼 태그 -->
-            <form action="projectMakerPro" class="projectContent" method="post" enctype="multipart/form-data">
+            <form action="projectMakerPro" class="projectContent" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
               
-              <!-- 히든 처리하는 부분 -->
-<!--               <p class="subheading">member_idx</p> -->
+              <!-- 히든 처리 -->
               <input type="text" name="member_idx" value="${member_idx}" class="form-control">
               
               <!-- 메이커 유형 -->
               <div>
                 <p class="subheading">메이커 유형</p>
-                <p class="sideDescription">사업자 등록증 상단의 사업자 종류를 확인해 주세요.</p>
+                <p class="sideDescription">메이커 유형을 선택해주세요.</p>
                 <!-- 탭 버튼 -->
 			    <div class="tab-buttons text-center">
 			        <button class="btn btn-outline-primary tab-button w-100" data-tab="tab1">개인</button>
@@ -163,8 +162,8 @@
               <!-- 메이커 SNS/홈페이지/채널 주소 -->
               <div>
                 <label class="subheading" for="maker_url">메이커 링크</label>
-                <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 URL을 입력해 주세요.</p>
-                <input class="form-control" type="text" name="maker_url" id="maker_url" placeholder="메이커 URL을 입력해 주세요">
+                <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 홈페이지 URL을 입력해 주세요.</p>
+                <input class="form-control" type="text" name="maker_url" id="maker_url" placeholder="입력예시-www.example.com">
               </div>
 
               <div class="d-flex justify-content-center my-3">
@@ -325,6 +324,98 @@
              }
          });
      }
+	
+	// 유효성 검사
+ 	function validateForm() {
+		
+ 		let file1 = document.getElementById("personal_id").value;
+        let file2 = document.getElementById("individual_biz_id").value;
+        let file3 = document.getElementById("corporate_biz_id").value;
+
+        if (!file1 && !file2 && !file3) {
+	        Swal.fire({
+	       		icon: 'error',
+	            title: 'Oops...',
+	            text: '신분증 사본 또는 사업자등록증을 첨부 해주세요.'
+	       	});
+        	return false;
+        }
+		
+        let makerName = document.getElementById("maker_name").value;
+        if (makerName.trim() === "") {
+        	Swal.fire({
+	       		icon: 'error',
+	            title: 'Oops...',
+	            text: '메이커명을 입력해주세요.'
+	       	});
+            return false;
+        }
+
+        let makerIntro = document.getElementById("maker_intro").value;
+        if (makerIntro.trim() === "") {
+            Swal.fire({
+	       		icon: 'error',
+	            title: 'Oops...',
+	            text: '메이커 소개를 입력해주세요.'
+	       	});
+            return false;
+        }
+
+        let makerImage = document.querySelector('input[name="file4"]').value;
+        if (!makerImage) {
+            Swal.fire({
+	       		icon: 'error',
+	            title: 'Oops...',
+	            text: '메이커 이미지를 입력해주세요.'
+	       	});
+            return false;
+        }
+
+        let makerLogo = document.querySelector('input[name="file5"]').value;
+        if (!makerLogo) {
+            Swal.fire({
+	       		icon: 'error',
+	            title: 'Oops...',
+	            text: '메이커 로고를 입력해주세요.'
+	       	});
+            return false;
+        }
+
+        let makerEmail = document.getElementById("maker_email").value;
+        let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!emailPattern.test(makerEmail)) {
+            Swal.fire({
+	       		icon: 'error',
+	            title: 'Oops...',
+	            text: '유효한 이메일 주소를 입력해주세요.'
+	       	});
+            return false;
+        }
+
+        let makerTel = document.getElementById("maker_tel").value;
+        let telPattern = /^[0-9]+$/;
+        if (!telPattern.test(makerTel)) {
+            Swal.fire({
+	       		icon: 'error',
+	            title: 'Oops...',
+	            text: '전화번호는 숫자만 입력해야 합니다.'
+	       	});
+            return false;
+        }
+        
+        let makerURL = document.getElementById("maker_url").value;
+        urlPattern = /^www\.[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!urlPattern.test(makerURL)) {
+            Swal.fire({
+	       		icon: 'error',
+	            title: 'Oops...',
+	            text: '올바른 형식의 URL을 입력해주세요 (예: www.example.com).'
+	       	});
+            return false;
+        }
+        
+        return true;
+    }
 	</script>
 
 	<!-- js -->

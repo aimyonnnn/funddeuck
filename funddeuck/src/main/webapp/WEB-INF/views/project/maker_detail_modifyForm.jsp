@@ -74,6 +74,9 @@
 								<td><input type="file" name="file1"></td>
 							</tr>
 						</table>
+						<div class="alert alert-danger mt-3 text-center" role="alert">
+		                	<i class="fas fa-exclamation-circle"></i>&nbsp;공지사항 삭제는 고객센터를 통해서만 가능합니다.
+						</div>
 						<div class="d-flex justify-content-center">
 							<input type="submit" value="등록하기" class="btn btn-outline-primary">
 						</div>
@@ -200,42 +203,6 @@
 	</div>
 </div>
 
-<!-- 공지사항 수정 모달 -->
-<div class="modal fade" id="modifyNoticeBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="noticeStaticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="noticeStaticBackdropLabel">공지사항 수정하기</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="noticeDetail">
-	     <form action="modifyMakerBoard" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="maker_idx" value="${maker.maker_idx}">
-			<table class="table">
-				<tr class="text-center">
-					<th>제목</th>
-					<td><input type="text" name="maker_board_subject" value="" class="form-control"></td>
-				</tr>
-				<tr class="text-center">
-					<th>내용</th>
-					<td>
-						<textarea cols="10" rows="10" name="maker_board_content" class="form-control"></textarea>
-					</td>
-				</tr>
-				<tr>
-					<th class="text-center">첨부파일</th>
-					<td><input type="file" name="file1"></td>
-				</tr>
-			</table>
-			<div class="d-flex justify-content-center">
-				<input type="submit" value="수정하기" class="btn btn-outline-primary">
-			</div>
-		</form>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
 //탭 버튼 클릭 시
 $(document).ready(function() {
@@ -281,32 +248,54 @@ $(document).ready(function() {
 // 파일 실시간 삭제
 function deleteFile(maker_idx, fileName, fileNumber) {
 	
-	if(confirm('파일을 삭제 하시겠습니까?')) {
+	Swal.fire({
+		title: '첨부파일 삭제하기',
+		text: '첨부파일을 삭제하시겠습니까?',
+		icon: 'question',
+		showCancelButton: true,
+		confirmButtonText: '예',
+		cancelButtonText: '아니오'
+	})
+	.then((result) => {
 		
-		$.ajax({
-			type: 'post',
-			url: "<c:url value='deleteFile'/>",
-			data: {
-				maker_idx: maker_idx,
-				fileName: fileName,
-				fileNumber: fileNumber
-			},
-			success: function(result){
-				
-				if(result.trim() === 'success') {
-					// 파일 삭제 성공 시
-					alert('파일이 삭제되었습니다.');
-					location.reload();
-				} else {
-					alert('파일 삭제 실패!');
+		if(result.isConfirmed) {
+		
+			$.ajax({
+				type: 'post',
+				url: "<c:url value='deleteFile'/>",
+				data: {
+					maker_idx: maker_idx,
+					fileName: fileName,
+					fileNumber: fileNumber
+				},
+				success: function(result){
+					
+					if(result.trim() === 'success') {
+						
+						// 파일 삭제 성공 시
+					 	Swal.fire({
+					        icon: 'success',
+					        title: '첨부파일 삭제완료!',
+					        text: '파일이 성공적으로 삭제되었습니다.',
+					    }).then(function(){
+							location.href='modifyMakerForm?maker_idx=${param.maker_idx}&tab=2';
+					    })
+						
+					} else {
+						Swal.fire({
+					        icon: 'error',
+					        title: '첨부파일 삭제실패',
+					        text: '파일 삭제에 실패하였습니다.',
+					    });
+					}
+				},
+				error: function (error) {
+					//에러 처리
+					console.log(error);
 				}
-			},
-			error: function (error) {
-				//에러 처리
-				console.log(error);
-			}
-		});	// ajax
-	}
+			});	// ajax
+		}
+	});	
 }
 
 // 개별 파일 첨부 입력 필드 초기화 함수
@@ -336,37 +325,6 @@ function checkFileInput() {
 $(document).ready(function() {
 	checkFileInput();
 });
-
-// 공지사항 게시글 삭제하기
-function deleteMakerBoard(maker_board_idx) {
-	
-	if(confirm('공지사항을 삭제하시겠습니까?')) {
-		
-		$.ajax({
-			method: 'post',
-			url: "<c:url value='deleteMakerBoard'/>",
-			data: { 
-				maker_board_idx: maker_board_idx
-			},
-			success: function(data) {
-				
-				console.log(data);
-				
-				if(data.trim() == 'true') {
-					
-					alert("공지사항이 성공적으로 삭제되었습니다.");
-					location.reload();
-					
-				}
-				
-			},
-			error: function(){
-				console.log('공지사항 삭제에 실패하였습니다.');
-			}
-		});
-		
-	}
-}
 
 //서버에서 프로젝트 리스트를 받아와서 셀렉트 박스에 추가
 function getProjectList() {
@@ -420,17 +378,29 @@ function validateForm() {
     var makerBoardContent = document.getElementById("maker_board_content");
 
     if (projectSelect.value === "") {
-        alert("프로젝트를 선택해주세요.");
+        Swal.fire({
+       		icon: 'error',
+            title: 'Oops...',
+            text: '프로젝트를 선택해주세요.'
+       	});
         projectSelect.focus();
         return false;
     }
     if (makerBoardSubject.value === "") {
-        alert("제목을 입력해주세요.");
+        Swal.fire({
+       		icon: 'error',
+            title: 'Oops...',
+            text: '제목을 입력해주세요.'
+       	});
         makerBoardSubject.focus();
         return false;
     }
     if (makerBoardContent.value.trim() === "") {
-        alert("내용을 입력해주세요.");
+        Swal.fire({
+       		icon: 'error',
+            title: 'Oops...',
+            text: '내용을 입력해주세요.'
+       	});
         makerBoardContent.focus();
         return false;
     }

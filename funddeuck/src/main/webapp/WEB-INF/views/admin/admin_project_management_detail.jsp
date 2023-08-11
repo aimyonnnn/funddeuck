@@ -311,11 +311,15 @@ th, td {
 				            <th>프로젝트 상태</th>
 				            <td>
 				                <select name="project_status" class="form-control">
+				                	<option value="1" ${project.project_status eq 0 ? 'selected' : '' }>프로젝트 취소</option>
 				                	<option value="1" ${project.project_status eq 1 ? 'selected' : '' }>오픈예정</option>
 				                	<option value="2" ${project.project_status eq 2 ? 'selected' : '' }>프로젝트 진행중</option>
 				                	<option value="3" ${project.project_status eq 3 ? 'selected' : '' }>진행완료</option>
-				                	<option value="4" ${project.project_status eq 4 ? 'selected' : '' }>정산신청</option>
-				                	<option value="5" ${project.project_status eq 5 ? 'selected' : '' }>정산완료</option>
+				                	<option value="4" ${project.project_status eq 4 ? 'selected' : '' }>1차정산완료</option>
+				                	<option value="5" ${project.project_status eq 5 ? 'selected' : '' }>최종정산진행가능</option>
+				                	<option value="6" ${project.project_status eq 6 ? 'selected' : '' }>최종정산완료</option>
+				                	<option value="7" ${project.project_status eq 7 ? 'selected' : '' }>펀딩닥터신청</option>
+				                	<option value="8" ${project.project_status eq 8 ? 'selected' : '' }>펀딩닥터답변완료</option>
 				                </select>
 				            </td>
 				        </tr>
