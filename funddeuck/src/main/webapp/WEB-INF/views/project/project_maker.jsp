@@ -62,115 +62,251 @@
             <p class="projectTitle">메이커 정보</p>
             <p class="projectContent">메이커로 출력될 정보를 입력해 주세요.</p>
             
-            <!-- 폼 태그 -->
-            <form action="projectMakerPro" class="projectContent" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
-              
-              <!-- 히든 처리 -->
-              <input type="text" name="member_idx" value="${member_idx}" class="form-control">
-              
               <!-- 메이커 유형 -->
               <div>
                 <p class="subheading">메이커 유형</p>
                 <p class="sideDescription">메이커 유형을 선택해주세요.</p>
+                
                 <!-- 탭 버튼 -->
 			    <div class="tab-buttons text-center">
 			        <button class="btn btn-outline-primary tab-button w-100" data-tab="tab1">개인</button>
 			        <button class="btn btn-outline-primary tab-button w-100" data-tab="tab2">개인사업자</button>
 			        <button class="btn btn-outline-primary tab-button w-100" data-tab="tab3">법인사업자</button>
 			    </div>
-		        <div class="content-area sideDescription" id="tab1">
-		        	<span>대표자 확인을 위해 신분증 사본을 업로드해 주세요.<br>
-					   주민등록번호 뒷자리는 노출되지 않도록 가려 주세요.<br>
-					   JPG, JPEG, PNG, PDF / 10MB 이하 파일 업로드 가능<br>
-					   <input type="file" name="file1" class="mt-3" id="personal_id">
-				   </span>
-		        </div>
+			    	
+				<!-- 개인회원 -->			    
+				<div class="content-area sideDescription" id="tab1">
+				    <!-- 폼 태그 -->
+				    <form action="projectMakerPro" class="projectContent" method="post" enctype="multipart/form-data" onsubmit="return validateForm()" name="projectForm">
+				        <!-- 히든 처리 -->
+				        <input type="hidden" name="member_idx" class="form-control" value="${member_idx}" >
+						<input type="file" name="file2" class="mt-3" style="display: none">
+						<input type="file" name="file3" class="mt-3" style="display: none">
+				        
+				        <span>대표자 확인을 위해 신분증 사본을 업로드해 주세요.<br>
+				            주민등록번호 뒷자리는 노출되지 않도록 가려 주세요.<br>
+				            JPG, JPEG, PNG, PDF / 10MB 이하 파일 업로드 가능<br>
+				            <input type="file" name="file1" class="mt-3">
+				        </span>
+				
+				        <!-- 메이커 명 -->
+				        <div>
+				            <label class="subheading" for="maker_name">메이커명</label>
+				            <p class="sideDescription">법인 사업자는 법인등기부상 법인명 / 개인 사업자는 주민등록상 성명 또는 상호 / 개인은 주민등록상 성명을 입력해 주세요.</p>
+				            <input class="form-control" type="text" name="maker_name" placeholder="메이커명을 입력해 주세요">
+				        </div>
+				
+				        <!-- 메이커 소개 -->
+				        <div>
+				            <label class="subheading" for="maker_intro">메이커 소개</label>
+				            <button class="btn btn-outline-primary btn-sm mx-2" onclick="makeGpt(event)">AI로 입력</button>
+				            <p class="sideDescription">
+				                메이커를 표현할 수 있는 매력적인 문구를 작성해주세요.<br>
+				                문구 작성이 막막하시면 AI가 문구를 추천해 드려요.<br>
+				                간단하게 작성하고 버튼을 클릭하면 AI가 문구를 수정해드려요.
+				            </p>
+				            <input class="form-control" type="text" name="maker_intro" placeholder="메이커를 소개를 적어주세요.">
+				        </div>
+				
+				        <!-- 메이커 대표 이미지 -->
+				        <div>
+				            <p class="subheading">메이커 이미지&로고</p>
+				            <p class="sideDescription">
+				                · 3MB 이하의 JPG, JPEG, PNG 파일<br>
+				            </p>
+				            <!-- maker_img, maker_logo -->
+				            <input type="file" name="file4" class="mb-2"><br>
+				            <input type="file" name="file5"><br>
+				        </div>
+				
+				        <!-- 메이커 이메일 -->
+				        <div>
+				            <label class="subheading" for="maker_email">메이커 이메일</label>
+				            <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 이메일을 입력해 주세요.</p>
+				            <input class="form-control" type="text" name="maker_email" placeholder="메이커 이메일을 입력해 주세요">
+				        </div>
+				
+				        <!-- 메이커 전화번호 -->
+				        <div>
+				            <label class="subheading" for="maker_tel">메이커 전화번호</label>
+				            <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 전화번호를 입력해 주세요.</p>
+				            <input class="form-control" type="text" name="maker_tel" placeholder="메이커 전화번호를 입력해 주세요">
+				        </div>
+				
+				        <!-- 메이커 SNS/홈페이지/채널 주소 -->
+				        <div>
+				            <label class="subheading" for="maker_url">메이커 링크</label>
+				            <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 홈페이지 URL을 입력해 주세요.</p>
+				            <input class="form-control" type="text" name="maker_url" placeholder="입력예시-www.example.com">
+				        </div>
+				
+				        <div class="d-flex justify-content-center my-3">
+				            <input type="submit" value="등록하기" class="btn btn-outline-primary">
+				        </div>
+				    </form>
+				</div>
+				
+				
+				<!-- 개인사업자 회원 -->
 		        <div class="content-area" id="tab2">
-		        	<div>
-		                <label class="my-2" for="individual_biz_num">사업자 등록번호(10자리)</label>
-		                <input class="form-control" type="text" name="individual_biz_num" id="individual_biz_num" placeholder="사업자 등록번호를 입력해 주세요">
-		                <label class="my-2" for="individual_biz_name">상호 또는 법인명</label>
-		                <input class="form-control" type="text" name="individual_biz_name" id="individual_biz_name" placeholder="사업자 등록번호를 입력해 주세요">
-		                <label class="my-2" for="individual_biz_name">사업자 등록증</label><br>
-	          			<span class="sideDescription my-2">
-	          				  가장 최근에 발급한 사업자 등록증을 업로드해 주세요.<br>
-							  JPG, JPEG, PNG, PDF / 10MB 이하 파일 1개만 업로드 가능해요.<br>
-					    </span>
-	             		 <input type="file" name="file2" class="mt-3" id="individual_biz_id">
-	             	</div>
+		          	<!-- 폼 태그 -->
+				    <form action="projectMakerPro" class="projectContent" method="post" enctype="multipart/form-data" onsubmit="return validateIndividualForm()" name="individualForm">
+				        <!-- 히든 처리 -->
+				        <input type="hidden" name="member_idx" value="${member_idx}" class="form-control">
+				        <input type="file" name="file1" class="mt-3" style="display: none">
+						<input type="file" name="file3" class="mt-3" style="display: none">
+				        
+			        	<div>
+			                <label class="my-2" for="individual_biz_num">사업자 등록번호(10자리)</label>
+			                <input class="form-control" type="text" name="individual_biz_num" id="individual_biz_num" placeholder="사업자 등록번호를 입력해 주세요">
+			                <label class="my-2" for="individual_biz_name">상호 또는 법인명</label>
+			                <input class="form-control" type="text" name="individual_biz_name" id="individual_biz_name" placeholder="사업자 등록번호를 입력해 주세요">
+			                <label class="my-2" for="individual_biz_name">사업자 등록증</label><br>
+		          			<span class="sideDescription my-2">
+		          				  가장 최근에 발급한 사업자 등록증을 업로드해 주세요.<br>
+								  JPG, JPEG, PNG, PDF / 10MB 이하 파일 1개만 업로드 가능해요.<br>
+						    </span>
+		             		 <input type="file" name="file2" class="mt-3">
+		             	</div>
+				        <!-- 메이커 명 -->
+				        <div>
+				            <label class="subheading" for="maker_name">메이커명</label>
+				            <p class="sideDescription">법인 사업자는 법인등기부상 법인명 / 개인 사업자는 주민등록상 성명 또는 상호 / 개인은 주민등록상 성명을 입력해 주세요.</p>
+				            <input class="form-control" type="text" name="maker_name" placeholder="메이커명을 입력해 주세요">
+				        </div>
+				
+				        <!-- 메이커 소개 -->
+				        <div>
+				            <label class="subheading" for="maker_intro">메이커 소개</label>
+				            <button class="btn btn-outline-primary btn-sm mx-2" onclick="makeGpt(event)">AI로 입력</button>
+				            <p class="sideDescription">
+				                메이커를 표현할 수 있는 매력적인 문구를 작성해주세요.<br>
+				                문구 작성이 막막하시면 AI가 문구를 추천해 드려요.<br>
+				                간단하게 작성하고 버튼을 클릭하면 AI가 문구를 수정해드려요.
+				            </p>
+				            <input class="form-control makerIntro" type="text" placeholder="메이커를 소개를 적어주세요.">
+				        </div>
+				
+				        <!-- 메이커 대표 이미지 -->
+				        <div>
+				            <p class="subheading" for="maker_img">메이커 이미지&로고</p>
+				            <p class="sideDescription">
+				                · 3MB 이하의 JPG, JPEG, PNG 파일<br>
+				            </p>
+				            <!-- maker_img, maker_logo -->
+				            <input type="file" name="file4" class="mb-2"><br>
+				            <input type="file" name="file5"><br>
+				        </div>
+				
+				        <!-- 메이커 이메일 -->
+				        <div>
+				            <label class="subheading" for="maker_email">메이커 이메일</label>
+				            <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 이메일을 입력해 주세요.</p>
+				            <input class="form-control" type="text" name="maker_email" placeholder="메이커 이메일을 입력해 주세요">
+				        </div>
+				
+				        <!-- 메이커 전화번호 -->
+				        <div>
+				            <label class="subheading" for="maker_tel">메이커 전화번호</label>
+				            <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 전화번호를 입력해 주세요.</p>
+				            <input class="form-control" type="text" name="maker_tel" placeholder="메이커 전화번호를 입력해 주세요">
+				        </div>
+				
+				        <!-- 메이커 SNS/홈페이지/채널 주소 -->
+				        <div>
+				            <label class="subheading" for="maker_url">메이커 링크</label>
+				            <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 홈페이지 URL을 입력해 주세요.</p>
+				            <input class="form-control" type="text" name="maker_url" placeholder="입력예시-www.example.com">
+				        </div>
+				
+				        <div class="d-flex justify-content-center my-3">
+				            <input type="submit" value="등록하기" class="btn btn-outline-primary">
+				        </div>
+				    </form>
 		        </div>
+		        
+		        
+		        <!-- 법인사업자 회원 -->
 		        <div class="content-area" id="tab3">
-		        	<div>
-		                <label class="my-2" for="corporate_biz_num">법인사업자 등록번호(10자리)</label>
-		                <input class="form-control" type="text" name="individual_biz_num" id="individual_biz_num" placeholder="사업자 등록번호를 입력해 주세요">
-		                <label class="my-2" for="corporate_biz_name">상호 또는 법인명</label>
-		                <input class="form-control" type="text" name="corporate_biz_name" id="corporate_biz_name" placeholder="사업자 등록번호를 입력해 주세요">
-		                <label class="my-2" for="corporate_biz_id">사업자 등록증</label><br>
-	          			<span class="sideDescription my-2">
-	          				  가장 최근에 발급한 사업자 등록증을 업로드해 주세요.<br>
-							  JPG, JPEG, PNG, PDF / 10MB 이하 파일 1개만 업로드 가능해요.<br>
-					    </span>
-	             		 <input type="file" name="file3" class="mt-3" id="corporate_biz_id">
-	             	</div>
+		        	<!-- 폼 태그 -->
+				    <form action="projectMakerPro" class="projectContent" method="post" enctype="multipart/form-data" onsubmit="return validateCorporateForm()" name="corporateForm">
+				        <!-- 히든 처리 -->
+				        <input type="hidden" name="member_idx" value="${member_idx}" class="form-control">
+				        <input type="file" name="file1" class="mt-3" style="display: none">
+						<input type="file" name="file2" class="mt-3" style="display: none">
+				        
+			        	<div>
+			                <label class="my-2" for="corporate_biz_num">법인사업자 등록번호(10자리)</label>
+			                <input class="form-control" type="text" name="corporate_biz_num" placeholder="사업자 등록번호를 입력해 주세요">
+			                <label class="my-2" for="corporate_biz_name">상호 또는 법인명</label>
+			                <input class="form-control" type="text" name="corporate_biz_name" placeholder="사업자 등록번호를 입력해 주세요">
+			                <label class="my-2" for="corporate_biz_id">사업자 등록증</label><br>
+		          			<span class="sideDescription my-2">
+		          				  가장 최근에 발급한 사업자 등록증을 업로드해 주세요.<br>
+								  JPG, JPEG, PNG, PDF / 10MB 이하 파일 1개만 업로드 가능해요.<br>
+						    </span>
+		             		 <input type="file" name="file3" class="mt-3" >
+		             	</div>
+		             	
+				        <!-- 메이커 명 -->
+				        <div>
+				            <label class="subheading" for="maker_name">메이커명</label>
+				            <p class="sideDescription">법인 사업자는 법인등기부상 법인명 / 개인 사업자는 주민등록상 성명 또는 상호 / 개인은 주민등록상 성명을 입력해 주세요.</p>
+				            <input class="form-control" type="text" name="maker_name"  placeholder="메이커명을 입력해 주세요">
+				        </div>
+				
+				        <!-- 메이커 소개 -->
+				        <div>
+				            <label class="subheading" for="maker_intro">메이커 소개</label>
+				            <button class="btn btn-outline-primary btn-sm mx-2" onclick="makeGpt(event)">AI로 입력</button>
+				            <p class="sideDescription">
+				                메이커를 표현할 수 있는 매력적인 문구를 작성해주세요.<br>
+				                문구 작성이 막막하시면 AI가 문구를 추천해 드려요.<br>
+				                간단하게 작성하고 버튼을 클릭하면 AI가 문구를 수정해드려요.
+				            </p>
+				            <input class="form-control" type="text" name="maker_intro" placeholder="메이커를 소개를 적어주세요.">
+				        </div>
+				
+				        <!-- 메이커 대표 이미지 -->
+				        <div>
+				            <p class="subheading" for="maker_img">메이커 이미지&로고</p>
+				            <p class="sideDescription">
+				                · 3MB 이하의 JPG, JPEG, PNG 파일<br>
+				            </p>
+				            <!-- maker_img, maker_logo -->
+				            <input type="file" name="file4" class="mb-2"><br>
+				            <input type="file" name="file5"><br>
+				        </div>
+				
+				        <!-- 메이커 이메일 -->
+				        <div>
+				            <label class="subheading" for="maker_email">메이커 이메일</label>
+				            <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 이메일을 입력해 주세요.</p>
+				            <input class="form-control" type="text" name="maker_email"  placeholder="메이커 이메일을 입력해 주세요">
+				        </div>
+				
+				        <!-- 메이커 전화번호 -->
+				        <div>
+				            <label class="subheading" for="maker_tel">메이커 전화번호</label>
+				            <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 전화번호를 입력해 주세요.</p>
+				            <input class="form-control" type="text" name="maker_tel"  placeholder="메이커 전화번호를 입력해 주세요">
+				        </div>
+				
+				        <!-- 메이커 SNS/홈페이지/채널 주소 -->
+				        <div>
+				            <label class="subheading" for="maker_url">메이커 링크</label>
+				            <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 홈페이지 URL을 입력해 주세요.</p>
+				            <input class="form-control" type="text" name="maker_url"  placeholder="입력예시-www.example.com">
+				        </div>
+				
+				        <div class="d-flex justify-content-center my-3">
+				            <input type="submit" value="등록하기" class="btn btn-outline-primary">
+				        </div>
+				    </form>
 		        </div>
+		        
+		        
               </div>
-
-              <!-- 메이커 명 -->
-              <div>
-                <label class="subheading" for="maker_name">메이커명</label>
-                <p class="sideDescription">법인 사업자는 법인등기부상 법인명 / 개인 사업자는 주민등록상 성명 또는 상호 / 개인은 주민등록상 성명을 입력해 주세요.</p>
-                <input class="form-control" type="text" name="maker_name" id="maker_name" placeholder="메이커명을 입력해 주세요">
-              </div>
-              
-              <!-- 메이커 소개 -->
-              <div>
-                <label class="subheading" for="maker_intro">메이커 소개</label>
-				<button class="btn btn-outline-primary btn-sm mx-2" onclick="makeGpt(event)">AI로 입력</button>
-               <p class="sideDescription">
-					메이커를 표현할 수 있는 매력적인 문구를 작성해주세요.<br>
-					문구 작성이 막막하시면 AI가 문구를 추천해 드려요.<br>
-					간단하게 작성하고 버튼을 클릭하면 AI가 문구를 수정해드려요.
-				</p>
-                <input class="form-control" type="text" name="maker_intro" id="maker_intro" placeholder="메이커를 소개를 적어주세요.">
-              </div>
-
-              <!-- 메이커 대표 이미지 -->
-              <div>
-                <p class="subheading" for="maker_img">메이커 이미지&로고</p>
-                <p class="sideDescription">
-                  · 3MB 이하의 JPG, JPEG, PNG 파일<br>
-                </p>
-                <!-- maker_img, maker_logo -->
-                <input type="file" name="file4" class="mb-2"><br>
-                <input type="file" name="file5"><br>
-              </div>
-
-              <!-- 메이커 이메일 -->
-              <div>
-                <label class="subheading" for="maker_email">메이커 이메일</label>
-                <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 이메일을 입력해 주세요.</p>
-                <input class="form-control" type="text" name="maker_email" id="maker_email" placeholder="메이커 이메일을 입력해 주세요">
-              </div>
-
-              <!-- 메이커 전화번호 -->
-              <div>
-                <label class="subheading" for="maker_tel">메이커 전화번호</label>
-                <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 전화번호를 입력해 주세요.</p>
-                <input class="form-control" type="text" name="maker_tel" id="maker_tel" placeholder="메이커 전화번호를 입력해 주세요">
-              </div>
-
-              <!-- 메이커 SNS/홈페이지/채널 주소 -->
-              <div>
-                <label class="subheading" for="maker_url">메이커 링크</label>
-                <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 홈페이지 URL을 입력해 주세요.</p>
-                <input class="form-control" type="text" name="maker_url" id="maker_url" placeholder="입력예시-www.example.com">
-              </div>
-
-              <div class="d-flex justify-content-center my-3">
-                <input type="submit" value="등록하기" class="btn btn-outline-primary">
-              </div>
-            </form>
-
           </div>
           <!-- 리워드 설계 끝-->
 
@@ -264,32 +400,6 @@
 // 		setInterval(getNotifications, 5000);
 	})
 	
-	// 메시지 읽음 처리 하기
-	function markNotificationAsRead(notification_idx) {
-		let confirmation = confirm("메시지를 읽음 처리 하시겠습니까?");
-		if(confirmation) {
-			console.log("알림번호 : " + notification_idx);
-			$.ajax({
-				method: 'get',
-				url: '<c:url value="markNotificationAsRead"/>',
-				data: {
-					notification_idx: notification_idx
-				},
-				success: function(response){
-					if(response.trim() == 'true') {
-						// 알림 갯수 변경
-						getNotificationCount();
-						// 관리자 피드백 메시지 업데이트
-						getNotifications();
-						alert('읽음 처리 하였습니다!')
-					} 
-				},
-				error: function(error) {
-					console.log("읽음 처리 실패!")
-				}
-			})
-		}
-	}
 	// AI로 입력하기
 	function makeGpt(event) {
 	    event.preventDefault(); // 기본 동작 중지
@@ -298,7 +408,7 @@
          $('#loadingIndicator').show();
      	
          var makeStoryRequest = {
-             projectIntroduce: $('#maker_intro').val()
+             projectIntroduce: $('.makerIntro').val()
          };
 
          $.ajax({
@@ -324,98 +434,338 @@
              }
          });
      }
+	</script>
 	
-	// 유효성 검사
- 	function validateForm() {
-		
- 		let file1 = document.getElementById("personal_id").value;
-        let file2 = document.getElementById("individual_biz_id").value;
-        let file3 = document.getElementById("corporate_biz_id").value;
+	<script type="text/javascript">
+	// 공통된 유효성 검사 함수
+	function validateCommonFields(form) {
+	    var makerName = form["maker_name"].value;
+	    var makerIntro = form["maker_intro"].value;
+	    var file4 = form["file4"].value;
+	    var file5 = form["file5"].value;
+	    var makerEmail = form["maker_email"].value;
+	    var makerTel = form["maker_tel"].value;
+	    var makerUrl = form["maker_url"].value;
 
-        if (!file1 && !file2 && !file3) {
+	    if (makerName === "") {
 	        Swal.fire({
-	       		icon: 'error',
-	            title: 'Oops...',
-	            text: '신분증 사본 또는 사업자등록증을 첨부 해주세요.'
-	       	});
-        	return false;
-        }
-		
-        let makerName = document.getElementById("maker_name").value;
-        if (makerName.trim() === "") {
-        	Swal.fire({
-	       		icon: 'error',
+	            icon: 'error',
 	            title: 'Oops...',
 	            text: '메이커명을 입력해주세요.'
-	       	});
-            return false;
-        }
-
-        let makerIntro = document.getElementById("maker_intro").value;
-        if (makerIntro.trim() === "") {
-            Swal.fire({
-	       		icon: 'error',
+	        });
+	        return false;
+	    }
+	    if (makerIntro === "") {
+	        Swal.fire({
+	            icon: 'error',
 	            title: 'Oops...',
 	            text: '메이커 소개를 입력해주세요.'
-	       	});
-            return false;
-        }
-
-        let makerImage = document.querySelector('input[name="file4"]').value;
-        if (!makerImage) {
-            Swal.fire({
-	       		icon: 'error',
+	        });
+	        return false;
+	    }
+	    if (file4 === "") {
+	        Swal.fire({
+	            icon: 'error',
 	            title: 'Oops...',
-	            text: '메이커 이미지를 입력해주세요.'
-	       	});
-            return false;
-        }
-
-        let makerLogo = document.querySelector('input[name="file5"]').value;
-        if (!makerLogo) {
-            Swal.fire({
-	       		icon: 'error',
+	            text: '메이커 이미지를 첨부해주세요.'
+	        });
+	        return false;
+	    }
+	    if (file5 === "") {
+	        Swal.fire({
+	            icon: 'error',
 	            title: 'Oops...',
-	            text: '메이커 로고를 입력해주세요.'
-	       	});
-            return false;
-        }
-
-        let makerEmail = document.getElementById("maker_email").value;
-        let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        if (!emailPattern.test(makerEmail)) {
+	            text: '메이커 로고를 첨부해주세요.'
+	        });
+	        return false;
+	    }
+	    
+	    if (makerEmail === "") {
+	        Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '메이커 이메일을 입력해주세요.'
+	        });
+	        return false;
+	    }
+	    // 이메일 형식 검사
+        var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!makerEmail.match(emailRegex)) {
             Swal.fire({
-	       		icon: 'error',
+	            icon: 'error',
 	            title: 'Oops...',
 	            text: '유효한 이메일 주소를 입력해주세요.'
-	       	});
+	        });
             return false;
         }
+        
+        if (makerTel == "") {
+            Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '메이커 전화번호를 입력해주세요.'
+	        });
+            return false;
+        }
+        // 전화번호 형식 검사
+        var telRegex = /^\d{3}-\d{3,4}-\d{4}$/;
+        if (!makerTel.match(telRegex)) {
+            Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '유효한 전화번호를 입력해주세요. (000-0000-0000)'
+	        });
+            return false;
+        }
+        
+        if (makerUrl == "") {
+            Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '메이커 링크를 입력해주세요.'
+	        });
+            return false;
+        }
+        // URL 형식 검사
+        var urlRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-zA-Z0-9]+([-.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+        if (!makerUrl.match(urlRegex)) {
+            Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '유효한 URL을 입력해주세요.'
+	        });
+            return false;
+        }
+        
+	    return true;
+	}
 
-        let makerTel = document.getElementById("maker_tel").value;
-        let telPattern = /^[0-9]+$/;
-        if (!telPattern.test(makerTel)) {
-            Swal.fire({
-	       		icon: 'error',
+	
+	// 개인회원 - 유효성 검사
+	function validateForm() {
+	    var file1 = document.forms["projectForm"]["file1"].value;
+
+	    if (file1 === "") {
+	        Swal.fire({
+	            icon: 'error',
 	            title: 'Oops...',
-	            text: '전화번호는 숫자만 입력해야 합니다.'
-	       	});
-            return false;
-        }
-        
-        let makerURL = document.getElementById("maker_url").value;
-        urlPattern = /^www\.[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        if (!urlPattern.test(makerURL)) {
-            Swal.fire({
-	       		icon: 'error',
+	            text: '신분증 사본을 첨부해주세요.'
+	        });
+	        return false;
+	    }
+
+	    // 개인일때의 공통 필드 유효성 검사
+	    if (!validateCommonFields(document.forms["projectForm"])) {
+	        return false;
+	    }
+
+	    return true; // 모든 검사 통과
+	}
+	
+	
+	// 개인사업자 - 유효성 검사
+	function validateIndividualForm() {
+	    var individualBizNum = document.forms["individualForm"]["individual_biz_num"].value;
+	    var individualBizName = document.forms["individualForm"]["individual_biz_name"].value;
+	    var file2 = document.forms["individualForm"]["file2"].value;
+
+	    if (individualBizNum === "") {
+	        Swal.fire({
+	            icon: 'error',
 	            title: 'Oops...',
-	            text: '올바른 형식의 URL을 입력해주세요 (예: www.example.com).'
-	       	});
-            return false;
-        }
-        
-        return true;
-    }
+	            text: '사업자 등록번호를 입력해주세요.'
+	        });
+	        return false;
+	    }
+	    if (!/^(\d{3}-\d{2}-\d{5})$/.test(individualBizNum)) {
+	        Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '유효한 사업자 등록번호(XXX-XX-XXXXX)를 입력해주세요.'
+	        });
+	        return false;
+	    }
+	    if (individualBizName === "") {
+	        Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '상호 또는 법인명을 입력해주세요.'
+	        });
+	        return false;
+	    }
+	    if (file2 === "") {
+	        Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '사업자 등록증을 첨부해주세요.'
+	        });
+	        return false;
+	    }
+
+	    // 개인사업자일때의 공통 필드 유효성 검사
+	    if (!validateCommonFields(document.forms["individualForm"])) {
+	        return false;
+	    }
+
+	    return true; // 모든 검사 통과
+	}
+	
+	
+	// 법인사업자 - 유효성 검사
+	function validateCorporateForm() {
+	    var corporateBizNum = document.forms["corporateForm"]["corporate_biz_num"].value;
+	    var corporateBizName = document.forms["corporateForm"]["corporate_biz_name"].value;
+	    var file3 = document.forms["corporateForm"]["file3"].value;
+
+	    if (!/^(\d{3}-\d{2}-\d{5})$/.test(corporateBizNum)) {
+	        Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '유효한 법인사업자 등록번호(XXX-XX-XXXXX)를 입력해주세요.'
+	        });
+	        return false;
+	    }
+	    if (corporateBizName === "") {
+	        Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '상호 또는 법인명을 입력해주세요.'
+	        });
+	        return false;
+	    }
+	    if (file3 === "") {
+	        Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '사업자 등록증을 첨부해주세요.'
+	        });
+	        return false;
+	    }
+
+	    // 법인사업자일때의 공통 필드 유효성 검사
+	    if (!validateCommonFields(document.forms["corporateForm"])) {
+	        return false;
+	    }
+
+	    return true; // 모든 검사 통과
+	}
+	
+	// ============================================================================
+	
+	// 모든 휴대폰 번호 입력 필드를 선택
+	var phoneNumberInputs = document.querySelectorAll("input[name='maker_tel']");
+	
+	// 각각의 입력 필드에 대해 이벤트 리스너 등록
+	phoneNumberInputs.forEach(function(phoneNumberInput) {
+	    phoneNumberInput.addEventListener("input", function (event) {
+	        // 입력 내용에서 "-"를 제외하고 숫자만 추출
+	        var inputValue = event.target.value.replace(/-/g, '');
+	
+	        // "-" 제외한 번호 길이를 확인
+	        var length = inputValue.length;
+	
+	        // 휴대폰 번호 형식에 맞게 "-"를 추가
+	        var formattedValue = '';
+	        if (length > 3) {
+	            formattedValue += inputValue.substr(0, 3) + '-';
+	            if (length > 6) {
+	                formattedValue += inputValue.substr(3, 4) + '-';
+	                formattedValue += inputValue.substr(7, 4);
+	            } else {
+	                formattedValue += inputValue.substr(3);
+	            }
+	        } else {
+	            formattedValue = inputValue;
+	        }
+	
+	        // 변환된 번호를 입력 필드에 설정
+	        event.target.value = formattedValue;
+	    });
+	
+	    phoneNumberInput.addEventListener("keydown", function (event) {
+	        // Backspace 키를 눌렀을 때 "-"를 제거
+	        if (event.key === "Backspace") {
+	            var inputValue = event.target.value.replace(/-/g, '');
+	            inputValue = inputValue.slice(0, -1); // 마지막 문자 제거
+	            var formattedValue = '';
+	            if (inputValue.length >= 3) {
+	                formattedValue += inputValue.substr(0, 3) + '-';
+	                if (inputValue.length >= 7) {
+	                    formattedValue += inputValue.substr(3, 4) + '-';
+	                    formattedValue += inputValue.substr(7);
+	                } else {
+	                    formattedValue += inputValue.substr(3);
+	                }
+	            } else {
+	                formattedValue = inputValue;
+	            }
+	            event.target.value = formattedValue;
+	        }
+	    });
+	});
+	
+	// ============================================================================
+	
+	// 사업자 등록번호 입력 필드를 선택
+	var individualBizNumInput = document.querySelector("input[name='individual_biz_num']");
+	var corporateBizNumInput = document.querySelector("input[name='corporate_biz_num']");
+	
+	// 입력 내용이 변경될 때마다 호출되는 이벤트 리스너 함수
+	individualBizNumInput.addEventListener("input", formatBizNumInput);
+	corporateBizNumInput.addEventListener("input", formatBizNumInput);
+	
+	// 사업자 등록번호 입력 필드에서 키보드 입력이 발생했을 때 처리하는 이벤트 리스너 함수
+	individualBizNumInput.addEventListener("keydown", handleBackspace);
+	corporateBizNumInput.addEventListener("keydown", handleBackspace);
+	
+	function formatBizNumInput(event) {
+	    // 입력 내용에서 "-"를 제외하고 숫자만 추출
+	    var inputValue = event.target.value.replace(/-/g, '');
+	
+	    // "-" 제외한 번호 길이를 확인
+	    var length = inputValue.length;
+	
+	    // 사업자 등록번호 형식에 맞게 "-"를 추가
+	    var formattedValue = '';
+	    if (length >= 3) {
+	        formattedValue += inputValue.substr(0, 3) + '-';
+	        if (length >= 5) {
+	            formattedValue += inputValue.substr(3, 2) + '-';
+	            formattedValue += inputValue.substr(5, 5);
+	        } else {
+	            formattedValue += inputValue.substr(3);
+	        }
+	    } else {
+	        formattedValue = inputValue;
+	    }
+	
+	    // 변환된 번호를 입력 필드에 설정
+	    event.target.value = formattedValue;
+	}
+	
+	function handleBackspace(event) {
+	    // Backspace 키를 눌렀을 때 "-"를 제거
+	    if (event.key === "Backspace") {
+	        var inputValue = event.target.value.replace(/-/g, '');
+	        inputValue = inputValue.slice(0, -1); // 마지막 문자 제거
+	        var formattedValue = '';
+	        if (inputValue.length >= 3) {
+	            formattedValue += inputValue.substr(0, 3) + '-';
+	            if (inputValue.length >= 5) {
+	                formattedValue += inputValue.substr(3, 2) + '-';
+	                formattedValue += inputValue.substr(5, 5);
+	            } else {
+	                formattedValue += inputValue.substr(3);
+	            }
+	        } else {
+	            formattedValue = inputValue;
+	        }
+	        event.target.value = formattedValue;
+	    }
+	}
+	
+	// ============================================================================
+	
 	</script>
 
 	<!-- js -->

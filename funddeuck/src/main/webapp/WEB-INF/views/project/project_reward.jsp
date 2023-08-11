@@ -841,7 +841,7 @@ function validateForm() {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: '발송 시작일을 제대로 선택해주세요.'
+            text: '발송 시작일을 올바르게 선택해주세요.'
         });
         return false;
     }
