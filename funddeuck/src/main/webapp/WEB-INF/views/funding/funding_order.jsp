@@ -49,7 +49,8 @@ $(()=>{
 	         // ================= 결제 성공 시 =================
 	       		if(rsp.success) {
 		     		console.log('결제가 완료되었습니다.');
-		        
+		        	var formData = ${'#fundingPaymentForm'}.serialize();
+		     		
 		       		let payment_method = 1; 					    // 결제수단(1:카드결제)
 		       		let payment_confirm = 2; 					    // 결제상태(2:결제완료)
 			        // ================= DB 작업 =================
@@ -59,7 +60,9 @@ $(()=>{
 			        $.ajax({
 						method: 'post',
 						url: "<c:url value='fundingPayment'/>",
+						dataType: 'text',
 						data: {
+							FormData,
 							payment_method: payment_method,
 							payment_confirm: payment_confirm
 							
@@ -423,7 +426,7 @@ $(()=>{
 				<!-- 클릭시 결제 페이지로 이동 -->
 				<!-- 체크박스 다 체크했을경우 이동가능 -->
 				<div class="row ms-2 me-2 pt-3">
-					<form action="fundingPayment" method="post" onsubmit="return validateForm()">
+					<form action="fundingPayment" method="post" onsubmit="return validateForm()" id="fundingPaymentForm">
 						<input type="text" name="project_idx" value="${project.project_idx }">
 						<input type="text" name="member_idx" value="${member.member_idx }">
 						<!-- ajax로 바뀜 -->

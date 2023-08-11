@@ -247,7 +247,7 @@ public class FundingController {
 	
 	// 펀딩 결제
 	@PostMapping("fundingPayment")
-	public String fundingPayment(PaymentVO payment, HttpSession session, Model model) {
+	public String fundingPayment(@RequestBody PaymentVO payment, HttpSession session, Model model) {
 		
 		System.out.println("PaymentVO : " + payment);
 		// 주문날짜
