@@ -1,22 +1,35 @@
 package com.itwillbs.test.controller;
 
-import java.time.LocalDateTime;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.itwillbs.test.service.CouponService;
+import com.itwillbs.test.vo.CouponBannerVO;
 import com.itwillbs.test.vo.CouponVO;
 
 @Controller
@@ -106,6 +119,34 @@ public class CouponController {
             return ResponseEntity.notFound().build();
         }
     }
+
     
+    //---------------------------------------------------------------------------------------
+    @PostMapping("/saveCouponBanner")
+    @ResponseBody
+    public String saveCouponBanner(@ModelAttribute CouponBannerVO couponBannerVO, @RequestParam(name = "fileName", required = false) String uploadedFileName, HttpSession session, Model model) {
+    	String fileName = null;
+    	String data = "success";
+        // 쿠폰 광고 등록 로직 추가
+        couponService.insertCouponBanner(couponBannerVO, fileName, session); // 파일 이름을 함께 전달
+        System.out.println("확인3");                
+
+        String targetURL = "adminCoupon"; 
+        model.addAttribute("msg", "쿠폰 광고 등록이 완료되었습니다.");
+        model.addAttribute("targetURL", targetURL);
+        System.out.println("확인4");
+        return data;
+    }
     
-}
+    @GetMapping("/couponList")
+    @ResponseBody
+    public List<CouponBannerVO> getCouponList() {
+    	System.out.println("확인6");
+        List<CouponBannerVO> newCouponList = couponService.getNewCouponList();
+        return newCouponList;
+    }
+
+    
+   }
+  
+

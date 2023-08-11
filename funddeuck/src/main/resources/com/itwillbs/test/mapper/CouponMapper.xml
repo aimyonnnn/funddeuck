@@ -56,4 +56,20 @@
     WHERE coupon_use = 1 AND member_idx = #{memberIdx}
     </select>
     
+	<!-- ============================================================================== -->
+    
+    <!-- 광고 저장 -->
+    <insert id="insertCouponBanner" parameterType="com.itwillbs.test.vo.CouponBannerVO">
+    INSERT INTO coupon_banner (coupon_idx, newCoupon_name, newCoupon_start, newCoupon_end, newCouponImage)
+    VALUES (#{coupon_idx}, #{newCoupon_name}, #{newCoupon_start}, #{newCoupon_end}, #{newCouponImage})
+	</insert>
+	
+	<!-- 새로운 쿠폰 목록 조회 -->
+	<select id="getNewCouponList" resultType="com.itwillbs.test.vo.CouponBannerVO">
+	    SELECT *
+	    FROM coupon_banner
+	</select>
+	
+	
+    
 </mapper>

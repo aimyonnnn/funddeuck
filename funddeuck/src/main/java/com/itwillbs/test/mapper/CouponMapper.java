@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.test.vo.CouponBannerVO;
 import com.itwillbs.test.vo.CouponVO;
 
 @Mapper
@@ -29,6 +30,13 @@ public interface CouponMapper {
     List<CouponVO> getCouponsByMemberAndStatus(@Param("memberIdx") int memberIdx, @Param("couponUse") int couponUse);
 
 	List<CouponVO> getUsedCoupons(int memberIdx);
+	
+	//----------------------------------------------------------------------------------------------
+
+	void insertCouponBanner(CouponBannerVO couponBannerVO);
+
+	List<CouponBannerVO> getNewCouponList();
+
 
 
 }
