@@ -436,7 +436,7 @@
 	</select>
 	
 	<!-- 출금이체 후 결제승인여부 결제완료(2)로 변경 -->
-	<update id="updatePaymentConfirm">
+	<update id="updatePaymentConfirmCompleted">
 		UPDATE payment
 			SET payment_confirm = 2
 				WHERE

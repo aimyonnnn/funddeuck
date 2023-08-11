@@ -50,12 +50,15 @@ public class FundingScheduler {
 		    	if(isSaveFundingTranHistSuccess) { // 거래내역 DB 저장 성공시
 		    		System.out.println("출금이체 후 거래내역 저장 완료!");
 		    		// 결제승인여부 결제완료로 변경
-		    		fundingService.ModifyPaymentConfirm(payment_idx);
+		    		fundingService.ModifyPaymentConfirmCompleted(payment_idx);
 		    	} else { // 거래내역 DB 저장 실패시
-		    		// 스케줄러 취소
-		    		executorService.shutdown();
+		    		// 스케줄러 취소?
+//		    		executorService.shutdown();
 		    	}
 				
+			}
+			if(project_status == 0) { // 프로젝트 취소시
+//				fundingService.ModifyPaymentConfirmfailed(payment_idx);
 			}
 		
 		}, diff, TimeUnit.MINUTES);

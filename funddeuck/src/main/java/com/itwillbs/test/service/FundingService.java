@@ -142,8 +142,8 @@ public class FundingService {
 	}
 	
 	// 출금이체 후 결제승인여부 결제완료(2)로 변경
-	public void ModifyPaymentConfirm(int payment_idx) {
-		mapper.updatePaymentConfirm(payment_idx);
+	public void ModifyPaymentConfirmCompleted(int payment_idx) {
+		mapper.updatePaymentConfirmCompleted(payment_idx);
 		
 	}
 	

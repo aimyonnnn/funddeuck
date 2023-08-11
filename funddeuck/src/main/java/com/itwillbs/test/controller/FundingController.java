@@ -253,7 +253,8 @@ public class FundingController {
 	
 	// 펀딩 결제
 	@PostMapping("fundingPayment")
-	public String fundingPayment(@RequestParam String project_end_date, @RequestBody PaymentVO payment, HttpSession session, Model model) throws ParseException {
+//	public String fundingPayment(@RequestParam String project_end_date, @RequestBody PaymentVO payment, HttpSession session, Model model) throws ParseException {
+		public String fundingPayment(@RequestParam String project_end_date, PaymentVO payment, HttpSession session, Model model) throws ParseException {
 		
 		System.out.println("PaymentVO : " + payment);
 		// 주문날짜
@@ -316,7 +317,7 @@ public class FundingController {
 	    		// 결제 완료 페이지 이동 
 	    		// 등록된 결제서의 payment_idx model로 전달
 	    		model.addAttribute("payment_idx", payment_idx);
-	    		return "fundingResult";
+	    		return "redirect: fundingResult";
 	    		
 	    	} else { // 결제서 등록 실패시
 	    		
