@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.test.vo.FundingDoctorVO;
 import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.ProjectVO;
@@ -145,9 +146,36 @@ public interface ProjectMapper {
 	List<ProjectVO> selectCompleteList(Integer maker_idx);
 	
 	// 프로젝트 상태컬럼 변경
-	int updateProjectSatusProgress(@Param("project_idx") int project_idx, @Param("project_status") int project_status);	
-			
+	int updateProjectSatusProgress(@Param("project_idx") int project_idx, @Param("project_status") int project_status);
 
+	// 프로젝트 펀딩닥터 신청 상태 변경
+	int updateProjectStatusDoctor(int project_idx);
+
+	// 펀딩닥터 신청 프로젝트 조회 요청
+	List<ProjectVO> selectFundingDoctorProject(
+												@Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword, 
+												@Param("startRow") int startRow, @Param("listLimit") int listLimit);
+
+	// 펀딩닥터 신청 게시물 수 조회 요청
+	int selectFundingDoctorProjectCount(@Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword);
+
+	// 펀딩닥터 컨설팅 등록
+	int insertFundingDoctor(FundingDoctorVO doctor);
+
+	// 펀딩닥터 컨설팅 완료로 상태 변경
+	int updateDoctorStatus(int project_idx);
+
+	// 완료된 컨설팅 조회
+	FundingDoctorVO selectFundingDoctorInfo(int project_idx);
+
+	// 메이커 번호로 조회된 펀딩 닥터 답변 리스트 조회
+	List<FundingDoctorVO> selectFundingDoctorAnswerProject(
+							@Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword, 
+							@Param("startRow") int startRow, @Param("listLimit") int listLimit, 
+							@Param("maker_idx") Integer maker_idx);
+
+	// 펀딩 닥터 답변 페이지 게시물 수 조회
+	int selectFundingDoctorAnswerProjectCount(@Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword, @Param("maker_idx") Integer maker_idx);
 
 	
 }

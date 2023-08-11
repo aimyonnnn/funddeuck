@@ -81,8 +81,19 @@
 						$('#final_amount').text('');												// 총 지급 금액 초기화
 						$('#final_amount').text(total_settlement_amount.toLocaleString() + '원');	// 총 지급 금액
 						$('#delivery_amount').text('');												// 배송비 초기화
-						
 						$('.btn-danger').hide();
+					} else if(data.project_status == 0) {											// 프로젝트 취소일 때
+						$('#final_amount').text('프로젝트 취소');									// 총 지급 금액 초기화
+						$('#delivery_amount').text('');												// 배송비 초기화
+						$('.btn-danger').hide();
+						$('#btn-funding-doctor').show();											// 펀딩닥터 버튼 노출
+						$('#btn-funding-doctor-check').hide();
+					} else if(data.project_status == 7 || data.project_status == 8) {				// 펀딩닥터 신청했을 때
+						$('#final_amount').text('프로젝트 취소');									// 총 지급 금액 초기화
+						$('#delivery_amount').text('');												// 배송비 초기화
+						$('.btn-danger').hide();
+						$('#btn-funding-doctor').hide();
+						$('#btn-funding-doctor-check').show();
 					}
 					$('.btn-danger').text(buttonText);
 					
@@ -93,9 +104,22 @@
 				    	}
 					});
 					
+					$("#btn-funding-doctor").on("click", function() {
+					       var project_idx = $("#funding_project_idx").val(); // 프로젝트 고유번호 가져오기
+					       $("#funding_project_idx2").val(project_idx); 	// 두 번째 모달창에 프로젝트 고유번호 설정
+					       $("#settlementModal").modal("hide"); 			// 기존 모달 창 닫기
+					       $("#secondModal").modal("show"); 				// 두 번째 모달 창 열기
+					});
+					
+					$('#btn-funding-doctor-check').off('click').on('click', function(event) {
+			        	event.preventDefault(); // 제출 불가
+			            alert("이미 신청을 완료하였습니다! 답변을 기다려 주세요!");
+					});
+					
 					$('#fintech_use_num').val(data.project_fintech_use_num);				// 핀테크이용번호
 					$('#final_settlement').val(final_amount);								// 총 지급 금액 전달
 					$('#project_idx').val(project_idx);										// 프로젝트 고유번호
+					$('#funding_project_idx').val(project_idx);								// 펀딩닥터에 전달할 프로젝트 고유번호
 					$('#print_content').val(buttonText);									// 인자내역에 적힐 내용
 				},
 				error: function() {
@@ -206,7 +230,7 @@
 							<div class="table-responsive">
 								<table class="table table-bordered text-center table-center">
 									<c:forEach var="projectList" items="${projectList }">
-										<c:if test="${projectList.project_status ge 3}">
+										<c:if test="${projectList.project_status ge 3 and projectList.project_status le 6}">
 											<thead class="table-light">
 												<tr>
 													<th colspan="2">프로젝트명</th>
@@ -248,6 +272,47 @@
 								</table>
 							</div>
 						</div>
+						
+						<!-- 진행 취소된 프로젝트 -->
+						<div>
+							<p class="subheading">진행 취소된 프로젝트
+								<!-- 팝오버 -->
+								<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="#FF9300" class="bi bi-question-circle" viewBox="0 0 16 16" data-bs-toggle="popover" data-bs-content="진행 취소된 프로젝트를 출력해요. 펀딩 닥터 서비스를 신청하면 취소된 프로젝트를 컨설팅 할 수 있어요." data-bs-trigger="hover focus">
+									<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+									<path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+								</svg>
+							</p>
+							<div class="table-responsive">
+								<table class="table table-bordered text-center table-center">
+									<c:forEach var="projectList" items="${projectList }">
+										<c:if test="${projectList.project_status eq 0 or projectList.project_status ge 7}">
+											<thead class="table-light">
+												<tr>
+													<th colspan="2">프로젝트명</th>
+													<th>진행률</th>
+													<th>상태</th>
+													<th>상세보기</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+														<img class="project-img" src="${pageContext.request.contextPath }/resources/upload/${projectList.project_thumnails1 }">
+													</td>
+													<td>${projectList.project_subject }</td>
+													<td><fmt:formatNumber value="${projectList.project_cumulative_amount/projectList.project_target * 100}" pattern="#"/>%</td>
+													<td>진행취소</td>
+													<td>
+														<button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#settlementModal" data-project-idx="${projectList.project_idx}">확인</button>
+													</td>
+												</tr>
+											</tbody>
+										</c:if>
+									</c:forEach>
+								</table>
+							</div>
+						</div>
+						
 					</div>
 				</article>
 			</section>
@@ -334,10 +399,34 @@
 						<input type="hidden" name="print_content" id="print_content">
 						<button type="submit" class="btn btn-danger"></button>
 					</form>
+					<button type="button" id="btn-funding-doctor" class="btn btn-info text-white" style="display:none;">펀딩 닥터 신청하기</button>
+					<button id="btn-funding-doctor-check" class="btn btn-dark text-white">펀딩닥터 신청 완료</button>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				</div>
 			</div>
 		</div>
+	</div>
+	
+	<!-- 새로운 두 번째 모달 창 -->
+	<div class="modal fade" id="secondModal" tabindex="-1" aria-labelledby="secondModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="secondModalLabel">펀딩 닥터 신청</h5>
+	                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	            </div>
+	            <div class="modal-body">
+	                <img src="${pageContext.request.contextPath}/resources/images/fundingDoctorImage.png" class="img-fluid" style="width: 480px; height: auto;">
+	            </div>
+	            <div class="modal-footer">
+	                <form action="fundingDoctor">
+	                    <input type="hidden" name="project_idx" id="funding_project_idx">
+	                    <button type="submit" id="btn-funding-doctor-submit" class="btn btn-info text-white">신청하기</button>
+	                </form>
+	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	            </div>
+	        </div>
+	    </div>
 	</div>
 	
 	<!-- js -->

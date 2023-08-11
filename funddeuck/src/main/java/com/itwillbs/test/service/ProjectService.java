@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.test.mapper.ProjectMapper;
+import com.itwillbs.test.vo.FundingDoctorVO;
 import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.ProjectVO;
@@ -204,11 +205,46 @@ public class ProjectService {
 	public int modifyProjectSatusProgress(int project_idx, int project_status) {
 		return mapper.updateProjectSatusProgress(project_idx, project_status);
 	}
+	
+	// 프로젝트 펀딩닥터 신청 상태 변경
+	public int modifyProjectStatusDoctor(int project_idx) {
+		return mapper.updateProjectStatusDoctor(project_idx);
+	}
+	
+	// 펀딩 닥터 신청 프로젝트 조회 요청 
+	public List<ProjectVO> getFundingDoctorProject(String searchType, String searchKeyword, int startRow, int listLimit) {
+		return mapper.selectFundingDoctorProject(searchType, searchKeyword, startRow, listLimit);
+	}
+	
+	// 펀딩 닥터 신청 게시물 수 조회 요청
+	public int getFundingDoctorProject(String searchType, String searchKeyword) {
+		return mapper.selectFundingDoctorProjectCount(searchType, searchKeyword);
+	}
+	
+	// 펀딩 닥터 컨설팅 등록
+	public int registFundingDoctor(FundingDoctorVO doctor) {
+		return mapper.insertFundingDoctor(doctor);
+	}
+	
+	// 펀딩 닥터 컨설팅 완료로 상태 변경
+	public int modifyDoctorStatus(int project_idx) {
+		return mapper.updateDoctorStatus(project_idx);
+	}
+	
+	// 완료된 컨설팅 조회
+	public FundingDoctorVO getFundingDoctorInfo(int project_idx) {
+		return mapper.selectFundingDoctorInfo(project_idx);
+	}
+	
+	// 메이커 번호로 등록된 펀딩닥터 답변 페이지 조회
+	public List<FundingDoctorVO> getAllDoctorList(String searchType, String searchKeyword, int startRow, int listLimit, Integer maker_idx) {
+		return mapper.selectFundingDoctorAnswerProject(searchType, searchKeyword, startRow, listLimit, maker_idx);
+	}
+	
+	// 펀딩닥터 답변 페이지 게시물 수 조회
+	public int getAllDoctorListCount(String searchType, String searchKeyword, Integer maker_idx) {
+		return mapper.selectFundingDoctorAnswerProjectCount(searchType, searchKeyword, maker_idx);
+	}
     
-		
-		
-		
-		
-			
 	
 }

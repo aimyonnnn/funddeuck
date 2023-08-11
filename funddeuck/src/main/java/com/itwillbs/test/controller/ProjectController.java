@@ -783,8 +783,29 @@ public class ProjectController {
 	public List<PaymentVO> settlementList(@RequestParam("project_idx") int project_idx) {
 		List<PaymentVO> settlementList = paymentService.getSettlementList(project_idx);
 		
+		System.out.println(settlementList);
+		
 		return settlementList;
 	}
 	
+	// 펀딩닥터 신청
+	@GetMapping("fundingDoctor")
+	public String fundingDoctor(@RequestParam("project_idx") int project_idx, Model model) {
+		
+		System.out.println("펀딩닥터 프로젝트 번호**** : " + project_idx);
+		
+		int updateCount = projectService.modifyProjectStatusDoctor(project_idx); // 펀딩닥터 신청으로 상태 변경
+		
+		if(updateCount > 0) { // 변경 성공 시 
+			String targetURL = "projectSettlement";
+			model.addAttribute("msg", "펀딩 닥터 신청에 성공하셨습니다. 답변을 기다려 주세요!");
+			model.addAttribute("targetURL", targetURL);
+		
+			return "success_forward";
+		} else { // 실패 시
+			model.addAttribute("msg", "프로젝트 등록 실패!");
+			return "fail_back";
+		}
+	}
 	
 }

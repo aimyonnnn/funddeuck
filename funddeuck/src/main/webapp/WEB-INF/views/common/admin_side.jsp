@@ -39,6 +39,7 @@
 				<li><a href="adminSettlement"><span class="las la-money-bill"></span> 정산 관리</a></li>
 				<li><a href="adminSmsManagement"><span class="las la-comments"></span> 문자 관리</a></li>
 				<li><a href="adminCoupon"><span class="las la-percentage"></span> 쿠폰 관리</a></li>
+				<li><a href="adminFundingDoctor"><span class="las la-syringe"></span> 펀딩 닥터</a></li>
 			</ul>
 			<div class="menu-head">
 				<span>2 TEAM</span>

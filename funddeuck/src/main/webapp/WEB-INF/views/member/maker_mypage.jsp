@@ -159,9 +159,27 @@
 			                </c:otherwise>
 			            </c:choose>
 				        <!-- 프로젝트 카드 영역 끝 -->
+					</div>
+					
+					<div class="row mt-5 mx-3 border-1">
+                        <div class="col-12">
+                            <h5 class="fw-bold">펀딩 닥터</h5>
+                        </div>
+                        
+                        <div class="col-sm-12 col-md-6">
+                            <a href="fundingDoctorAnswer" class="text-black w-100">
+                                <div class="row me-md-2">
+                                    <div class="col text-start my-3">
+                                        <i class="bi bi-bandaid"></i> 펀딩 닥터
+                                    </div>
+                                    <div class="col text-end my-3">
+                                        <i class="bi bi-arrow-return-right"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
 					</div>       
 				</div>
-                        
 			</div>
             <div class="row" style="height: 100px;"></div>
 		</div>

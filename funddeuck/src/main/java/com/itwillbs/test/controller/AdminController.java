@@ -59,6 +59,7 @@ import com.itwillbs.test.vo.ActivityListVO;
 import com.itwillbs.test.vo.BankingVO;
 import com.itwillbs.test.vo.ChartDataVO;
 import com.itwillbs.test.vo.CreditVO;
+import com.itwillbs.test.vo.FundingDoctorVO;
 import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.MembersVO;
@@ -1224,5 +1225,122 @@ public class AdminController {
 		
 		return "admin/admin_settlement_detail";
 	}
+	
+	// 펀딩닥터 페이지
+	@GetMapping("adminFundingDoctor")
+	public String adminFundingDoctor(
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword,
+			@RequestParam(defaultValue = "1") int pageNum,			
+			Model model) {
 		
+		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		
+		// 펀딩 닥터 신청 프로젝트 조회 요청
+		List<ProjectVO> projectList = projectService.getFundingDoctorProject(searchType, searchKeyword, startRow, listLimit);
+		
+		// 페이징 처리를 위한 계산 작업
+		// 1. 전체 게시물 수 조회 요청
+		int listCount = projectService.getFundingDoctorProject(searchType, searchKeyword);
+		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+		int pageListLimit = 10;
+		// 3. 전체 페이지 목록 갯수 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 4. 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5. 끝 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {	endPage = maxPage; }
+				
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("projectList", projectList);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		return "admin/admin_funding_doctor";
+	}
+	
+	// 펀딩닥터 상세보기
+	@GetMapping("adminFundingDoctorDetail")
+	public String adminFundingDoctorDetail(
+				@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, @RequestParam(defaultValue = "1") int type, 
+				HttpSession session, Model model) {
+		
+		ProjectVO project = projectService.getProjectInfo(project_idx);	 			 // 프로젝트 조회
+		List<RewardVO> rList = projectService.getRewardList(project_idx); 			// 리워드 조회
+		FundingDoctorVO doctor = projectService.getFundingDoctorInfo(project_idx); // 완료된 컨설팅 조회
+		
+		model.addAttribute("project", project);
+		model.addAttribute("rList", rList);
+		model.addAttribute("doctor", doctor);
+		
+		return "admin/admin_funding_doctor_detail";
+	}
+	
+	// 펀딩닥터 컨설팅 등록하기
+	@PostMapping("fundingDoctorConsulting")
+	public String fundingDoctorConsulting(FundingDoctorVO doctor, Model model, HttpSession session, HttpServletRequest request) {
+		String content = doctor.getDoctor_content(); // textarea에서 입력받은 내용
+	    content = content.replace("\n", "<br>"); // <br>태그로 변환
+	    doctor.setDoctor_content(content);
+		
+		String uploadDir = "/resources/upload"; 
+		String saveDir = session.getServletContext().getRealPath(uploadDir);
+		String subDir = "";
+		
+		try {
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			subDir = sdf.format(date);
+			saveDir += "/" + subDir;
+			Path path = Paths.get(saveDir);
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		MultipartFile mFile1 = doctor.getFile1();
+		
+		String uuid = UUID.randomUUID().toString();
+		
+		doctor.setDoctor_file("");
+		String fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
+		
+		if(!mFile1.getOriginalFilename().equals("")) {
+			doctor.setDoctor_file(subDir + "/" + fileName1);
+		}
+		
+		int insertCount = projectService.registFundingDoctor(doctor); // 펀딩 닥터 컨설팅 등록
+		
+		if(insertCount > 0) { // 성공
+			try {
+				if(!mFile1.getOriginalFilename().equals("")) {
+					mFile1.transferTo(new File(saveDir, fileName1));
+				}
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			int project_idx = doctor.getProject_idx();
+			int updateCount = projectService.modifyDoctorStatus(project_idx); // 컨설팅 완료로 상태 변경
+			
+			if(updateCount > 0 ) {
+				// 컨설팅 등록 성공 시 목록으로 이동
+				String targetURL = "adminFundingDoctor";
+				model.addAttribute("msg", "펀딩닥터 컨설팅 등록에 성공하였습니다. 펀딩닥터 페이지로 이동합니다.");
+				model.addAttribute("targetURL", targetURL);
+				return "success_forward";
+			} else {
+				model.addAttribute("msg", "펀딩닥터 상태 변경 실패!");
+				return "fail_back";
+			}
+		} else { // 실패
+			model.addAttribute("msg", "펀딩닥터 컨설팅 등록 실패!");
+			return "fail_back";
+		}
+	}
+	
 }

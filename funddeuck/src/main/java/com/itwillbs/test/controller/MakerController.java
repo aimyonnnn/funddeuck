@@ -26,8 +26,10 @@ import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectService;
+import com.itwillbs.test.vo.FundingDoctorVO;
 import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
+import com.itwillbs.test.vo.PageInfoVO;
 import com.itwillbs.test.vo.PaymentVO;
 import com.itwillbs.test.vo.ProjectVO;
 
@@ -473,5 +475,57 @@ public class MakerController {
 		return "member/maker_mypage";
 	}
 
+	// 펀딩 닥터 답변 확인 목록 페이지
+	@GetMapping("fundingDoctorAnswer")
+	public String fundingDoctorAnswer(
+							@RequestParam(defaultValue = "") String searchType,
+							@RequestParam(defaultValue = "") String searchKeyword,
+							@RequestParam(defaultValue = "1") int pageNum,			
+							Model model, HttpSession session) {
+		
+		String sId = (String) session.getAttribute("sId");
+	    if (sId == null) {
+	        model.addAttribute("msg", "잘못된 접근입니다. 로그인 후 사용해 주세요!");
+	        return "fail_back";
+	    }
+	    
+	    Integer maker_idx = makerService.getMakerIdx(sId); // 메이커번호 조회
+	    
+	    // 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+ 		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+ 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+	    
+	    List<FundingDoctorVO> doctorList = projectService.getAllDoctorList(searchType, searchKeyword, startRow, listLimit, maker_idx); // 메이커 번호로 등록된 펀딩닥터 답변 조회
+	    
+	    // 페이징 처리를 위한 계산 작업
+ 		// 1. 전체 게시물 수 조회 요청
+ 		int listCount = projectService.getAllDoctorListCount(searchType, searchKeyword, maker_idx);
+ 		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+ 		int pageListLimit = 10;
+ 		// 3. 전체 페이지 목록 갯수 계산
+ 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+ 		// 4. 시작 페이지 번호 계산
+ 		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+ 		// 5. 끝 페이지 번호 계산
+ 		int endPage = startPage + pageListLimit - 1;
+ 		if(endPage > maxPage) {	endPage = maxPage; }
+ 				
+ 		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+ 		model.addAttribute("doctorList", doctorList);
+ 		model.addAttribute("pageInfo", pageInfo);
+		
+		return "member/maker_funding_doctor";
+	}
+	
+	// 펀딩 닥터 답변 확인 페이지
+	@GetMapping("fundingDoctorAnswerDetail")
+	public String fundingDoctorAnswerDetail(
+			@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, @RequestParam(defaultValue = "1") int type, 
+			HttpSession session, Model model) {
+		
+		FundingDoctorVO doctor = projectService.getFundingDoctorInfo(project_idx);
+		model.addAttribute("doctor", doctor);
+		return "member/maker_funding_doctor_detail";
+	}
 	
 }
