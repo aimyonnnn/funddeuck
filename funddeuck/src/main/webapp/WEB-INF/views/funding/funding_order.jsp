@@ -60,7 +60,7 @@ $(()=>{
 			        
 			        $.ajax({
 						method: 'post',
-						url: "<c:url value='fundingPayment'/>",
+						url: "<c:url value='fundingCreditPayment'/>",
 						dataType: 'text',
 						data: {
 							FormData,
