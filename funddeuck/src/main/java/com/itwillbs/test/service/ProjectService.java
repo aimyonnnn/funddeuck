@@ -250,6 +250,4 @@ public class ProjectService {
 	public int deleteProject(int project_idx) {
 		return mapper.deleteProject(project_idx);
 	}
-    
-	
 }

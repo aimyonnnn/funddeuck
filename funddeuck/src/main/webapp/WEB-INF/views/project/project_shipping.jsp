@@ -186,6 +186,15 @@
 		    }
 		});
 		
+		// 버튼의 클릭 이벤트 리스너
+		$('#excelDownloadBtn').on('click', function() {
+		    if (project_idx) {
+		        location.href = 'shippingExcelDownload?project_idx=' + project_idx;
+		    } else {
+		    	alert("프로젝트를 먼저 선택해 주세요!");
+		    }
+		});
+		
 		// 발송입력 - 모달창
 		$(document).on("click", "#tableButton", function(event) {
 			var payment_idx = $(this).data("id");
@@ -480,47 +489,53 @@
 
 						<!-- 목록 -->
 						<div>
-							<div class="shippingSubheading">목록 <span class="sideDescription text-primary list-count"></span>
-								<div class="dropdown">
-									<button type="button" class="btn dropdown-toggle btn-sm" id="list-btn" data-bs-toggle="dropdown" aria-expanded="false">
-										발송·배송 관리 선택
-									</button>
-									<ul class="dropdown-menu" aria-labelledby="list-btn">
-										<li><a class="dropdown-item shipping-filter-item" href="#" data-all="1">전체</a></li>
-										<li><hr class="dropdown-divider"></li>
-										<li><a class="dropdown-item shipping-filter-item" href="#" data-filter="1">미발송</a></li>
-										<li><a class="dropdown-item shipping-filter-item" href="#" data-filter="2" href="#">배송중</a></li>
-										<li><a class="dropdown-item shipping-filter-item" href="#" data-filter="3">배송 완료</a></li>
-										<li><hr class="dropdown-divider"></li>
-										<li><a class="dropdown-item shipping-filter-item" href="#" data-type="3">펀딩금 반환 신청</a></li>
-										<li><a class="dropdown-item shipping-filter-item" href="#" data-type="4">펀딩금 반환 신청 완료</a></li>
-										<li><a class="dropdown-item shipping-filter-item" href="#" data-type="5">펀딩금 반환 신청 거절</a></li>
-									</ul>
-								</div>
-							</div>
-							<div class="table-responsive">
-							    <table class="table">
-									<thead class="table-light text-center">
-										<tr>
-											<th scope="col">펀딩번호</th>
-											<th scope="col">서포터 정보</th>
-											<th scope="col">주문날짜</th>
-											<th scope="col">금액</th>
-											<th scope="col">리워드</th>
-											<th scope="col">발송정보</th>
-											<th scope="col">발송예정일</th>
-											<th scope="col">발송·배송</th>
-											<th scope="col">발송번호</th>
-											<th scope="col">펀딩금 반환</th>
-										</tr>
-									</thead>
-									<tbody class="text-center" id="shippingListBody">
-									</tbody>
-								</table>
-							</div>
+						    <div class="shippingSubheading d-flex justify-content-between">
+						        <div>
+						            목록 <span class="sideDescription text-primary list-count"></span>
+						            <div class="dropdown d-inline">
+						                <button type="button" class="btn dropdown-toggle btn-sm" id="list-btn" data-bs-toggle="dropdown" aria-expanded="false">
+						                    발송·배송 관리 선택
+						                </button>
+						                <ul class="dropdown-menu" aria-labelledby="list-btn">
+						                    <li><a class="dropdown-item shipping-filter-item" href="#" data-all="1">전체</a></li>
+						                    <li><hr class="dropdown-divider"></li>
+						                    <li><a class="dropdown-item shipping-filter-item" href="#" data-filter="1">미발송</a></li>
+						                    <li><a class="dropdown-item shipping-filter-item" href="#" data-filter="2">배송중</a></li>
+						                    <li><a class="dropdown-item shipping-filter-item" href="#" data-filter="3">배송 완료</a></li>
+						                    <li><hr class="dropdown-divider"></li>
+						                    <li><a class="dropdown-item shipping-filter-item" href="#" data-type="3">펀딩금 반환 신청</a></li>
+						                    <li><a class="dropdown-item shipping-filter-item" href="#" data-type="4">펀딩금 반환 신청 완료</a></li>
+						                    <li><a class="dropdown-item shipping-filter-item" href="#" data-type="5">펀딩금 반환 신청 거절</a></li>
+						                </ul>
+						            </div>
+						        </div>
+						        <div>
+						            <button type="button" class="btn btn-outline-primary btn-sm" id="excelDownloadBtn">엑셀 다운로드</button>
+						        </div>
+						    </div>
+						    <div class="table-responsive">
+						        <table class="table">
+						            <thead class="table-light text-center">
+						                <tr>
+						                    <th scope="col">펀딩번호</th>
+						                    <th scope="col">서포터 정보</th>
+						                    <th scope="col">주문날짜</th>
+						                    <th scope="col">금액</th>
+						                    <th scope="col">리워드</th>
+						                    <th scope="col">발송정보</th>
+						                    <th scope="col">발송예정일</th>
+						                    <th scope="col">발송·배송</th>
+						                    <th scope="col">발송번호</th>
+						                    <th scope="col">펀딩금 반환</th>
+						                </tr>
+						            </thead>
+						            <tbody class="text-center" id="shippingListBody">
+						            </tbody>
+						        </table>
+						    </div>
 						</div>
+						<!-- 목록 끝-->
 					</div>
-					<!-- 목록 끝-->
 				</article>
 			</section>
 			<!-- 중앙 섹션 끝 -->

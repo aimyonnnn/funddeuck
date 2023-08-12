@@ -231,6 +231,7 @@
 	<select id="selectAllList" resultType="com.itwillbs.test.vo.PaymentVO">
 		SELECT *
 		  FROM payment p
+		  JOIN delivery d ON p.delivery_idx = d.delivery_idx
 		  JOIN members m ON p.member_idx = m.member_idx
 		  JOIN reward r ON p.reward_idx = r.reward_idx
 		  WHERE p.project_idx = #{project_idx}

@@ -17,8 +17,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -827,6 +833,111 @@ public class ProjectController {
 			model.addAttribute("msg", "프로젝트 등록 실패!");
 			return "fail_back";
 		}
+	}
+	
+	// 발송·환불 관리 엑셀 다운로드
+	@GetMapping("shippingExcelDownload")
+	public void shippingExcelDownload(@RequestParam Integer project_idx, HttpServletResponse response) throws IOException {
+		
+		List<PaymentVO> pList = paymentService.getAllList(project_idx); // 발송·환불관리 전체 목록 조회
+		
+		Workbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet("첫번째 시트");
+        Row row = null;
+        Cell cell = null;
+        int rowNum = 0;
+        
+        // Header
+        row = sheet.createRow(rowNum++);
+        cell = row.createCell(0);
+        cell.setCellValue("펀딩번호");
+        cell = row.createCell(1);
+        cell.setCellValue("서포터 정보");
+        cell = row.createCell(2);
+        cell.setCellValue("수취인");
+        cell = row.createCell(3);
+        cell.setCellValue("수량");
+        cell = row.createCell(4);
+        cell.setCellValue("연락처");
+        cell = row.createCell(5);
+        cell.setCellValue("우편번호");
+        cell = row.createCell(6);
+        cell.setCellValue("주소");
+        cell = row.createCell(7);
+        cell.setCellValue("주문날짜");
+        cell = row.createCell(8);
+        cell.setCellValue("금액");
+        cell = row.createCell(9);
+        cell.setCellValue("리워드");
+        cell = row.createCell(10);
+        cell.setCellValue("발송예정일");
+        cell = row.createCell(11);
+        cell.setCellValue("발송상태");
+        cell = row.createCell(12);
+        cell.setCellValue("발송번호");
+        cell = row.createCell(13);
+        cell.setCellValue("펀딩금 반환");
+		
+        // Body
+        for (PaymentVO payment : pList) {
+            row = sheet.createRow(rowNum++);
+            cell = row.createCell(0);
+            cell.setCellValue(payment.getPayment_idx());
+            cell = row.createCell(1);
+            cell.setCellValue(payment.getMember_name());
+            cell = row.createCell(2);
+            cell.setCellValue(payment.getDelivery_reciever());
+            cell = row.createCell(3);
+            cell.setCellValue(payment.getReward_quantity());
+            cell = row.createCell(4);
+            cell.setCellValue(payment.getDelivery_phone());
+            cell = row.createCell(5);
+            cell.setCellValue(payment.getDelivery_zipcode());
+            cell = row.createCell(6);
+            cell.setCellValue(payment.getDelivery_add() + ',' + payment.getDelivery_detailadd());
+            cell = row.createCell(7);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // 날짜 형식을 지정하는 객체 생성
+            String formattedDate = dateFormat.format(payment.getPayment_date()); // 밀리초를 지정한 날짜 형식의 문자열로 변환
+            cell.setCellValue(formattedDate);
+            cell = row.createCell(8);
+            cell.setCellValue(payment.getTotal_amount());
+            cell = row.createCell(9);
+            cell.setCellValue(payment.getReward_name());
+            cell = row.createCell(10);
+            cell.setCellValue(payment.getDelivery_date());
+            cell = row.createCell(11);
+            if(payment.getDelivery_status() == 1) {
+            	String status = "미배송";
+            	cell.setCellValue(status);
+            } else if(payment.getDelivery_status() == 2) {
+            	String status = "배송중";
+            	cell.setCellValue(status);
+            } else if(payment.getDelivery_status() == 3) {
+            	String status = "배송완료";
+            	cell.setCellValue(status);
+            }
+            cell = row.createCell(12);
+            cell.setCellValue(payment.getWaybill_num());
+            cell = row.createCell(13);
+            if(payment.getPayment_confirm() == 3) {
+            	String status = "반환신청";
+            	cell.setCellValue(status);
+            } else if(payment.getPayment_confirm() == 4) {
+            	String status = "반환완료";
+            	cell.setCellValue(status);
+            } else if(payment.getPayment_confirm() == 5) {
+            	String status = "반환거절";
+            	cell.setCellValue(status);
+            }
+        }
+        // 컨텐츠 타입과 파일명 지정
+        response.setContentType("ms-vnd/excel");
+        response.setHeader("Content-Disposition", "attachment;filename=example.xlsx");
+
+        // Excel File Output
+        wb.write(response.getOutputStream());
+        wb.close();
+        response.flushBuffer();
 	}
 	
 }
