@@ -46,6 +46,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.itwillbs.test.handler.EchoHandler;
 import com.itwillbs.test.service.AdminService;
+import com.itwillbs.test.service.BankService;
 import com.itwillbs.test.service.CreditService;
 import com.itwillbs.test.service.MakerBoardService;
 import com.itwillbs.test.service.MakerService;
@@ -55,8 +56,10 @@ import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.service.SendPhoneMessageService;
 import com.itwillbs.test.vo.ActivityListVO;
+import com.itwillbs.test.vo.BankingVO;
 import com.itwillbs.test.vo.ChartDataVO;
 import com.itwillbs.test.vo.CreditVO;
+import com.itwillbs.test.vo.FundingDoctorVO;
 import com.itwillbs.test.vo.MakerBoardVO;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.MembersVO;
@@ -86,6 +89,8 @@ public class AdminController {
 	private MakerService makerService;
 	@Autowired
 	private MakerBoardService makerBoardService;
+	@Autowired
+	private BankService bankService;
 	
 	private EchoHandler echoHandler;
 	@Autowired
@@ -144,7 +149,7 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") int pageNum,
 			HttpSession session, Model model) {
 		
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		
 		List<SendPhoneMessageVO> sList = sendPhoneMessageService.getAllSmsList(searchKeyword, searchType, startRow, listLimit);
@@ -194,8 +199,8 @@ public class AdminController {
 	
 	// 결제 관리 - 결제 정보 수정 비즈니스 로직 처리
 	@PostMapping("adminModifyPayment")
-	public String adminModifyPayment(PaymentVO payment, Model model, 
-			@RequestParam(defaultValue = "1") int pageNum, HttpSession session, HttpServletRequest request) {
+	public String adminModifyPayment(PaymentVO payment, Model model, @RequestParam(defaultValue = "1") int pageNum,
+			HttpSession session, HttpServletRequest request) {
 		
 		System.out.println("adminModifyProject");
 	    String uploadDir = "/resources/upload";
@@ -238,19 +243,24 @@ public class AdminController {
 	            e.printStackTrace();
 	        }
 	        // 결제 정보 변경 성공 시
-	        String targetURL = "adminPaymentDetail?payment_idx=" + payment.getPayment_idx() + "&pageNum=" + pageNum;
-			model.addAttribute("msg", "결제 정보 수정이 완료되었습니다.");
+//	        String targetURL = "adminPaymentDetail?payment_idx=" + payment.getPayment_idx() + "&pageNum=" + pageNum;
+//			model.addAttribute("msg", "결제 정보 수정이 완료되었습니다.");
+//			model.addAttribute("targetURL", targetURL);
+//			return "success_forward";
+			String targetURL =  "adminPaymentDetail?payment_idx=" + payment.getPayment_idx() + "&tab=1";
+			model.addAttribute("msg", "결제 정보 수정이 완료되었습니다!");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
 	    } else {
-	        model.addAttribute("msg", "프로젝트 정보 수정에 실패하였습니다.");
+	        model.addAttribute("msg", "결제 정보 수정에 실패하였습니다.");
 	        return "fail_back";
 	    }
 	}
 	
 	// 결제 관리 - 상세보기 페이지
 	@GetMapping("adminPaymentDetail")
-	public String adminPaymentDetail(@RequestParam(required = true) Integer payment_idx, HttpSession session, Model model) {
+	public String adminPaymentDetail(
+			@RequestParam(required = true) Integer payment_idx, @RequestParam(defaultValue = "1") int type ,HttpSession session, Model model) {
 		PaymentVO payment = paymentService.getPaymentDetail(payment_idx);
 		model.addAttribute("payment", payment);
 		return "admin/admin_payment_detail";
@@ -264,7 +274,7 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") int pageNum,
 			HttpSession session, Model model) {
 		
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		
 		List<PaymentVO> pList = paymentService.getAllPaymentList(searchKeyword, searchType, startRow, listLimit);
@@ -285,7 +295,8 @@ public class AdminController {
 	
 	// 메이커 정보 변경 페이지 - 메이커 관리 상세보기 클릭 시
 	@GetMapping("adminMakerDetail")
-	public String adminMakerDetail(@RequestParam(required = true) Integer maker_idx ,HttpSession session, Model model) {
+	public String adminMakerDetail(@RequestParam(required = true) Integer maker_idx, @RequestParam(defaultValue = "1") int type,
+			HttpSession session, Model model) {
 		
 		MakerVO maker = makerService.getMakerInfo(maker_idx);
 		List<MakerBoardVO> mList = makerBoardService.getAllMakerBoardList(maker_idx);
@@ -400,11 +411,14 @@ public class AdminController {
 			}
 			
 			// 메이커 정보 변경 성공 시
-			String targetURL = "adminMakerDetail?maker_idx=" + maker.getMaker_idx() + "&pageNum=" + pageNum;
-			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다.");
+//			String targetURL = "adminMakerDetail?maker_idx=" + maker.getMaker_idx() + "&pageNum=" + pageNum;
+//			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다!");
+//			model.addAttribute("targetURL", targetURL);
+//			return "success_forward";
+			String targetURL =  "adminMakerDetail?maker_idx=" + maker.getMaker_idx() + "&pageNum=" + pageNum + "&tab=1";
+			model.addAttribute("msg", "메이커 정보 수정이 완료되었습니다!");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
-			
 		} else {
 			model.addAttribute("msg", "메이커 정보 수정에 실패하였습니다.");
 			return "fail_back";
@@ -420,7 +434,7 @@ public class AdminController {
 			HttpSession session, Model model) {
 		
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		
 		// 프로젝트 목록 조회 요청
@@ -455,7 +469,7 @@ public class AdminController {
 			Model model) {
 		
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		
 		// 프로젝트 목록 조회 요청
@@ -484,7 +498,9 @@ public class AdminController {
 	
 	// 프로젝트 관리 - 상세 페이지
 	@GetMapping("adminProjectManagementDetail")
-	public String adminProjectManagementDetail(@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, HttpSession session, Model model) {
+	public String adminProjectManagementDetail(
+			@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, @RequestParam(defaultValue = "1") int type, 
+			HttpSession session, Model model) {
 		
 		ProjectVO project = projectService.getProjectInfo(project_idx);
 		List<RewardVO> rList = projectService.getRewardList(project_idx);
@@ -514,7 +530,7 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") int pageNum,			
 			Model model) {
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		
 		// 프로젝트 목록 조회 요청
@@ -545,50 +561,54 @@ public class AdminController {
 	// 프로젝트 상태컬럼 변경하기 3-승인완료
 	@GetMapping("approveProjectStatus")
 	@ResponseBody
-	public String approveProjectStatus(
-			@RequestParam int member_idx,
-			@RequestParam int project_idx,
-			@RequestParam int project_approve_status,
-			HttpServletRequest request) {
+	public String approveProjectStatus(	@RequestParam int member_idx,
+										@RequestParam int project_idx,
+										@RequestParam int project_approve_status,
+										HttpServletRequest request) {
 		
 		System.out.println("approveProjectStatus");
 		
-		// toast 팝업 알림을 보내기 위해 member_id 조회하기
-		String memberId = memberService.getMemberId(member_idx);
-		
-		// 프로젝트 상태컬럼을 3-승인완료로 변경하기 
-		project_approve_status = 3;
-		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
-		
-		// 1. 상태컬럼 변경 성공 시 결제url이 담긴 toast 팝업 알림 보내기
-		// 2. 결제url이 담긴 메시지 보내기
-        // 3. 48시간 안에 결제하지 않을 시 승인거절 처리하는 스케줄러 호출
-		if(updateCount > 0) { 
+		// 승인완료 처리는 승인요청, 승인거절 상태에서만 가능 (미승인, 결제완료 상태에서는 승인완료 처리 불가)
+		if(project_approve_status == 2 || project_approve_status == 4) {
 			
-			// toast 팝업 알림 보내기
-			String url = "projectPlanPayment?project_idx=" + project_idx;
-			String subject = "[프로젝트 승인 알림] 프로젝트 승인이 완료되었습니다.";
-			String content = 
-					"<a href='" + url + "'>결제하기</a><a style='text-decoration: none; color: black;'> 링크 클릭 시 요금 결제 페이지로 이동합니다.<br>48시간 안에 결제를 진행하지 않으면 프로젝트가 승인거절 처리 됩니다.</a>";
+			// member_id 조회하기
+			String memberId = memberService.getMemberId(member_idx);
 			
-			try {
-				echoHandler.sendNotificationToUser(memberId, subject);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			// 프로젝트 승인상태 컬럼 변경하기 
+			project_approve_status = 3;
+			int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
 			
-			// 결제url이 담긴 메시지 보내기
-			// 메세지함에서 해당 url 클릭 시 결제 페이지로 이동함
-			int insertCount = notificationService.registNotification(memberId, subject, content);
-			if(insertCount > 0) { // 메시지 보내기 성공 시
+			// 1. 상태컬럼 변경 성공 시 결제url이 담긴 toast 팝업 알림 보내기
+			// 2. 결제url이 담긴 메시지 보내기
+			// 3. 48시간 안에 결제하지 않을 시 승인거절 처리하는 스케줄러 호출
+			
+			if(updateCount > 0) { 
 				
-				// 프로젝트 승인 상태를 48시간 후에 체크하는 작업 예약
-				adminService.scheduleCheckApproval(project_idx, memberId);
+				// toast 팝업 알림 보내기
+				String url = "projectPlanPayment?project_idx=" + project_idx;
+				String subject = "[프로젝트 승인 알림] 프로젝트 승인이 완료되었습니다.";
+				String content = 
+						"<a href='" + url + "'>결제하기</a><a style='text-decoration: none; color: black;'> 링크 클릭 시 요금 결제 페이지로 이동합니다.<br>48시간 안에 결제를 진행하지 않으면 프로젝트가 승인거절 처리 됩니다.</a>";
 				
-				return "true";
-			}
-			
-		} 
+				try {
+					echoHandler.sendNotificationToUser(memberId, subject);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				// 결제url이 담긴 메시지 보내기
+				// 메세지함에서 해당 url 클릭 시 결제 페이지로 이동함
+				int insertCount = notificationService.registNotification(memberId, subject, content);
+				if(insertCount > 0) { // 메시지 보내기 성공 시
+					
+					// 프로젝트 승인 상태를 48시간 후에 체크하는 작업 예약
+					adminService.scheduleCheckApproval(project_idx, memberId);
+					System.out.println("스케줄러호출됨");
+					return "true";
+				}
+			} 
+		}
+		
 		return "false";
 	}
 	
@@ -597,39 +617,66 @@ public class AdminController {
 	@GetMapping("rejectProjectStatus")
 	@ResponseBody
 	public String rejectProjectStatus(@RequestParam int project_idx, @RequestParam int project_approve_status) {
-		// 프로젝트 상태컬럼 변경하기 4-반려
-		int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
-		if(updateCount > 0) { return "true"; } return "false";
+		
+		// 승인거절 처리는 승인요청 상태일때만 가능함
+		if(project_approve_status == 2) {
+			
+			// 프로젝트 승인상태 컬럼 변경하기
+			int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
+			
+			if(updateCount <= 0) { 
+				return "false"; 
+			}
+			
+			// 프로젝트 상태 컬럼 변경하기
+			int project_status = 1;
+			int updateCount2 = projectService.modifyProjectSatusProgress(project_idx, project_status);
+			
+			return (updateCount2 > 0) ? "true" : "false";
+			
+		} else {
+			
+			return "false";
+		}
+		
 	}
 
 	// 프로젝트 결제완료 처리하기
-	// 프로젝트 상태컬럼 변경하기 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
+	// 프로젝트 상태컬럼 변경하기 5-결제완료
 	@PostMapping("completePaymentStatus")
 	@ResponseBody
-	public String completePaymentStatus(@RequestParam Map<String, String> map, HttpSession session) {
-		System.out.println("이거출력됨 :" + map);
-		String sId = (String)session.getAttribute("sId");
-		MembersVO member = memberService.getMemberInfoByProjectIdx(Integer.parseInt(map.get("project_idx")));
-		Integer member_idx = member.getMember_idx();
-		System.out.println("멤버아이디 : " + member_idx);
-		
-		// 프로젝트 상태컬럼 결제완료로 변경하기
-		int updateCount = projectService.modifyProjectStatus(
-				Integer.parseInt(map.get("project_idx")), 
-				Integer.parseInt(map.get("project_approve_status")));
-		
-		if(updateCount > 0) {
-			// credit 테이블에 결제정보 저장하기
-			int insertCount = creditService.registCreditInfo(
-					map.get("payment_num"), 
-					map.get("p_orderNum"), 
-					Integer.parseInt(map.get("payment_total_price")), 
-					member_idx);
-			System.out.println("출력 테스트 : " + insertCount);
-			System.out.println("여기까지옴2");
-	        	return "true";
-		} 
-		return "false";
+	public String completePaymentStatus(@RequestParam Map<String, String> map) {
+		System.out.println("이거 출력됨: " + map);
+		// 멤버 조회하기
+	    MembersVO member = memberService.getMemberInfoByProjectIdx(Integer.parseInt(map.get("project_idx")));
+	    Integer member_idx = member.getMember_idx();
+
+	    int project_idx = Integer.parseInt(map.get("project_idx"));
+	    int project_approve_status = Integer.parseInt(map.get("project_approve_status"));
+
+	    // 프로젝트 승인상태 컬럼 변경하기
+	    int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
+
+	    if (updateCount <= 0) {
+	        return "false";
+	    }
+
+	    // 프로젝트 상태 컬럼 진행중으로 변경하기
+	    int project_status = 2;
+	    int updateCount2 = projectService.modifyProjectSatusProgress(project_idx, project_status);
+
+	    if (updateCount2 <= 0) {
+	        return "false";
+	    }
+
+	    // credit 테이블에 결제 정보 저장하기
+	    int insertCount = creditService.registCreditInfo(
+	            map.get("payment_num"),
+	            map.get("p_orderNum"),
+	            Integer.parseInt(map.get("payment_total_price")),
+	            member_idx);
+	    System.out.println("여기까지옴2");
+	    return (insertCount > 0) ? "true" : "false";
 	}
 	
 	// 프로젝트 승인여부 확인하기
@@ -683,7 +730,7 @@ public class AdminController {
 			HttpSession session, Model model) {
 		// -------------------------------------------------------------------------
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		// -------------------------------------------------------------------------
 		// notificationService - getTotalList() 메서드 호출하여 게시물 목록 조회 요청
@@ -723,7 +770,7 @@ public class AdminController {
 		String sId = (String) session.getAttribute("sId");
 		// -------------------------------------------------------------------------
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		// -------------------------------------------------------------------------
 		// notificationService - getTotalList() 메서드 호출하여 게시물 목록 조회 요청
@@ -924,11 +971,14 @@ public class AdminController {
 	        }
 
 	        // 프로젝트 정보 변경 성공 시
-	        String targetURL = "adminProjectManagementDetail?project_idx=" + project.getProject_idx() + "&pageNum=" + pageNum;
-	        model.addAttribute("msg", "프로젝트 정보 수정이 완료되었습니다.");
-	        model.addAttribute("targetURL", targetURL);
-	        return "success_forward";
-
+//	        String targetURL = "adminProjectManagementDetail?project_idx=" + project.getProject_idx() + "&pageNum=" + pageNum;
+//	        model.addAttribute("msg", "프로젝트 정보 수정이 완료되었습니다!");
+//	        model.addAttribute("targetURL", targetURL);
+//	        return "success_forward";
+	        String targetURL =  "adminProjectManagementDetail?project_idx=" + project.getProject_idx() + "&pageNum=" + pageNum + "&tab=1";
+			model.addAttribute("msg", "프로젝트 정보 수정이 완료되었습니다!");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
 	    } else {
 	        model.addAttribute("msg", "프로젝트 정보 수정에 실패하였습니다.");
 	        return "fail_back";
@@ -968,10 +1018,14 @@ public class AdminController {
 	public String adminModifyReward(@RequestParam(defaultValue = "1") int pageNum, RewardVO reward, HttpSession session, Model model) {
 		int updateCount = projectService.modifyReward(reward);
 		if(updateCount > 0) { 
-			String targetURL = "adminProjectManagementDetail?project_idx=" + reward.getProject_idx() + "&pageNum=" + pageNum;
-	        model.addAttribute("msg", "리워드 정보 수정이 완료되었습니다.");
-	        model.addAttribute("targetURL", targetURL);
-	        return "success_forward";
+//			String targetURL = "adminProjectManagementDetail?project_idx=" + reward.getProject_idx() + "&pageNum=" + pageNum;
+//	        model.addAttribute("msg", "리워드 정보 수정이 완료되었습니다!");
+//	        model.addAttribute("targetURL", targetURL);
+//	        return "success_forward";
+			String targetURL =  "adminProjectManagementDetail?project_idx=" + reward.getProject_idx() + "&pageNum=" + pageNum + "&tab=2";
+			model.addAttribute("msg", "리워드 정보 수정이 완료되었습니다!");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
 		} else {
 			model.addAttribute("msg", "리워드 정보 수정에 실패하였습니다.");
 			return "fail_back";
@@ -1119,5 +1173,174 @@ public class AdminController {
         wb.write(response.getOutputStream());
         wb.close();
     }
+	
+	// 정산관리 
+	@GetMapping("adminSettlement")
+	public String adminSettlement(
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword,
+			@RequestParam(defaultValue = "1") int pageNum,			
+			Model model) {
 		
+		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		
+		// 정산 목록 조회 요청
+		List<BankingVO> bankingList = bankService.getAllSettlementBanking(searchType, searchKeyword, startRow, listLimit);
+				
+		// 이번달 정산 금액 조회
+		int monthAmount = bankService.getMonthAmount();
+		
+		// 페이징 처리를 위한 계산 작업
+		// 1. 전체 게시물 수 조회 요청
+		int listCount = bankService.getAllSettlementBankingCount(searchType, searchKeyword);
+		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+		int pageListLimit = 10;
+		// 3. 전체 페이지 목록 갯수 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 4. 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5. 끝 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {	endPage = maxPage; }
+				
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("bankingList", bankingList);
+		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("monthAmount", monthAmount);
+				
+		return "admin/admin_settlement";
+	}
+	
+	// 정산 정보에 맞는 프로젝트 조회
+	@GetMapping("adminBankingDetail")
+	public String adminBankingDetail(
+					@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, @RequestParam(defaultValue = "1") int type, 
+					HttpSession session, Model model) {
+		
+		ProjectVO project = projectService.getProjectInfo(project_idx);
+		
+		model.addAttribute("project", project);
+		
+		return "admin/admin_settlement_detail";
+	}
+	
+	// 펀딩닥터 페이지
+	@GetMapping("adminFundingDoctor")
+	public String adminFundingDoctor(
+			@RequestParam(defaultValue = "") String searchType,
+			@RequestParam(defaultValue = "") String searchKeyword,
+			@RequestParam(defaultValue = "1") int pageNum,			
+			Model model) {
+		
+		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+		
+		// 펀딩 닥터 신청 프로젝트 조회 요청
+		List<ProjectVO> projectList = projectService.getFundingDoctorProject(searchType, searchKeyword, startRow, listLimit);
+		
+		// 페이징 처리를 위한 계산 작업
+		// 1. 전체 게시물 수 조회 요청
+		int listCount = projectService.getFundingDoctorProject(searchType, searchKeyword);
+		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+		int pageListLimit = 10;
+		// 3. 전체 페이지 목록 갯수 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 4. 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5. 끝 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {	endPage = maxPage; }
+				
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("projectList", projectList);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		return "admin/admin_funding_doctor";
+	}
+	
+	// 펀딩닥터 상세보기
+	@GetMapping("adminFundingDoctorDetail")
+	public String adminFundingDoctorDetail(
+				@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, @RequestParam(defaultValue = "1") int type, 
+				HttpSession session, Model model) {
+		
+		ProjectVO project = projectService.getProjectInfo(project_idx);	 			 // 프로젝트 조회
+		List<RewardVO> rList = projectService.getRewardList(project_idx); 			// 리워드 조회
+		FundingDoctorVO doctor = projectService.getFundingDoctorInfo(project_idx); // 완료된 컨설팅 조회
+		
+		model.addAttribute("project", project);
+		model.addAttribute("rList", rList);
+		model.addAttribute("doctor", doctor);
+		
+		return "admin/admin_funding_doctor_detail";
+	}
+	
+	// 펀딩닥터 컨설팅 등록하기
+	@PostMapping("fundingDoctorConsulting")
+	public String fundingDoctorConsulting(FundingDoctorVO doctor, Model model, HttpSession session, HttpServletRequest request) {
+		String content = doctor.getDoctor_content(); // textarea에서 입력받은 내용
+	    content = content.replace("\n", "<br>"); // <br>태그로 변환
+	    doctor.setDoctor_content(content);
+		
+		String uploadDir = "/resources/upload"; 
+		String saveDir = session.getServletContext().getRealPath(uploadDir);
+		String subDir = "";
+		
+		try {
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			subDir = sdf.format(date);
+			saveDir += "/" + subDir;
+			Path path = Paths.get(saveDir);
+			Files.createDirectories(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		MultipartFile mFile1 = doctor.getFile1();
+		
+		String uuid = UUID.randomUUID().toString();
+		
+		doctor.setDoctor_file("");
+		String fileName1 = uuid.substring(0, 8) + "_" + mFile1.getOriginalFilename();
+		
+		if(!mFile1.getOriginalFilename().equals("")) {
+			doctor.setDoctor_file(subDir + "/" + fileName1);
+		}
+		
+		int insertCount = projectService.registFundingDoctor(doctor); // 펀딩 닥터 컨설팅 등록
+		
+		if(insertCount > 0) { // 성공
+			try {
+				if(!mFile1.getOriginalFilename().equals("")) {
+					mFile1.transferTo(new File(saveDir, fileName1));
+				}
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			int project_idx = doctor.getProject_idx();
+			int updateCount = projectService.modifyDoctorStatus(project_idx); // 컨설팅 완료로 상태 변경
+			
+			if(updateCount > 0 ) {
+				// 컨설팅 등록 성공 시 목록으로 이동
+				String targetURL = "adminFundingDoctor";
+				model.addAttribute("msg", "펀딩닥터 컨설팅 등록에 성공하였습니다. 펀딩닥터 페이지로 이동합니다.");
+				model.addAttribute("targetURL", targetURL);
+				return "success_forward";
+			} else {
+				model.addAttribute("msg", "펀딩닥터 상태 변경 실패!");
+				return "fail_back";
+			}
+		} else { // 실패
+			model.addAttribute("msg", "펀딩닥터 컨설팅 등록 실패!");
+			return "fail_back";
+		}
+	}
+	
 }
