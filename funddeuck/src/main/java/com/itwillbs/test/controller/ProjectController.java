@@ -41,6 +41,7 @@ import com.itwillbs.test.handler.EchoHandler;
 import com.itwillbs.test.service.AdminService;
 import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
+import com.itwillbs.test.service.NotificationService;
 import com.itwillbs.test.service.PaymentService;
 import com.itwillbs.test.service.ProjectScheduler;
 import com.itwillbs.test.service.ProjectService;
@@ -75,6 +76,8 @@ public class ProjectController {
 	public ProjectController(EchoHandler echoHandler) {
 		this.echoHandler = echoHandler;
 	}
+	@Autowired
+	private NotificationService notificationService;
 	
 	// 프로젝트 메인
 	@GetMapping("project")
@@ -105,7 +108,7 @@ public class ProjectController {
 		return "project/project_plan_payment";
 	}
 		
-	// 프로젝트 승인 요청
+	// 메이커의 프로젝트 승인요청 하기
 	// project_approve_status = 2
 	@PostMapping("approvalRequest")
 	@ResponseBody
@@ -137,20 +140,29 @@ public class ProjectController {
 		// project_approve_status = 2
 		// project_approval_request_time = now() 
 		int updateCount = projectService.modifyStatus(project_idx);
-		if(updateCount > 0) {
-			// 관리자에게 프로젝트 승인을 요청하는 toast 팝업 띄우기
-			// toast 팝업 클릭 시 관리자의 프로젝트 승인 관리 페이지로 이동
-			String adminProjectUrl = "adminProjectList";
-			String notification = 
-					"<a href='" + adminProjectUrl + "' style='text-decoration: none; color: black;'>메이커님께서 프로젝트 승인을 요청하였습니다.</a>";
-			try {
-				echoHandler.sendNotificationToUser("admin", notification);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-        	return "true";
-        }
-		return "false"; 
+		if(updateCount <= 0) {
+			return "false";
+		}
+		
+		// 관리자에게 프로젝트 승인을 요청하는 toast 팝업 띄우기
+		// toast 팝업 클릭 시 관리자의 프로젝트 승인 관리 페이지로 이동
+		String adminProjectUrl = "adminProjectList";
+		String notification = 
+				"<a href='" + adminProjectUrl + "' style='text-decoration: none; color: black;'>메이커님께서 프로젝트 승인을 요청하였습니다.</a>";
+		try {
+			echoHandler.sendNotificationToUser("admin", notification);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("관리자에게승인요청메시지발송됨");
+		String target = "admin";
+		String subject = "[프로젝트 승인요청 알림] 메이커님께서 프로젝트 승인을 요청하였습니다.";
+		String content = 
+				"메이커님께서 프로젝트 승인을 요청하였습니다. <a href='" + adminProjectUrl + "'>승인 관리 페이지로 이동하기</a>";
+		int updateCount2 = notificationService.registNotification(target, subject, content);
+		
+		return (updateCount2 > 0) ? "true" : "false";
 	}
 	
 	// 리워드 등록 페이지

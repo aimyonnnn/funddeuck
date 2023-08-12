@@ -244,8 +244,7 @@ th, td {
 <script>
 // 문자 보내기 모달창 호출 시 아이디 입력하면 전화번호 조회해서 자동으로 입력
 function fetchPhoneNumber() {
-	
-    let memberId = document.getElementById("send_memberId").value;
+    let memberId = $("#send_memberId").val();
 
     $.ajax({
         url: '<c:url value="getPhoneNumber"/>',
@@ -253,12 +252,34 @@ function fetchPhoneNumber() {
         data: { member_id: memberId },
         success: function (data) {
         	
-        	console.log(data);
-            document.getElementById("send_phoneNum").value = data.trim();
+            console.log(data);
+            
+            if (data == 'false') {
+            	
+				Swal.fire({
+	                icon: 'error',
+	                title: 'Oops...',
+	                text: '아이디를 제대로 입력해주세요.'
+	            });
+				
+				$('#send_phoneNum').val("");
+				$('#send_memberId').focus().val("");
+				
+            } else {
+            	
+            	Swal.fire({
+	                icon: 'success',
+	                title: '번호 조회 성공!',
+	                text: '번호 조회가 완료되었습니다. 메시지를 작성해주세요.'
+	            });
+            	
+                $("#send_phoneNum").val(data.trim());
+	            
+            }
             
         },
         error: function () {
-        	console.log('번호 조회 안됨');
+            console.log('번호 조회 안됨');
         }
     });
 }

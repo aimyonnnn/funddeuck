@@ -214,20 +214,32 @@ $(() => {
    	  	e.preventDefault();
 
    	  	if ($('#message_subject').val() === '') {
-			alert('제목을 입력해주세요');
-	   	    $('#message_subject').focus();
+	   	  	Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '제목을 입력해주세요.'
+	        });
+        	$('#message_subject').focus();
 	   	    return;
    	  	}
 
    	  	if ($('#message_receiver').val() === '') {
-	   	    alert('아이디를 입력해주세요');
-	   	    $('#message_receiver').focus();
+	   	  	Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '아이디를 입력해주세요.'
+	        });
+        	$('#message_receiver').focus();
 	   	    return;
    	  	}
 
    	  	if ($('#message_content').val() === '') {
-	   	    alert('내용을 입력해주세요');
-	  	    $('#message_content').focus();
+	   	 	Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '내용을 입력해주세요.'
+	        });
+        	$('#message_content').focus();
 	   	    return;
    	  	}
     	
@@ -258,7 +270,7 @@ $(() => {
                 
                 if (data == 'true') { 
                 	
-                	 Swal.fire({
+                	Swal.fire({
 					      icon: 'success',
 					      title: '메시지 발송 성공!',
 					      text: '메시지가 성공적으로 발송되었습니다!',

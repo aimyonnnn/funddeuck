@@ -138,6 +138,9 @@ public class AdminController {
 	@ResponseBody
 	public String getPhoneNumber(@RequestParam String member_id) {
 		MembersVO member = memberService.getMemberInfo(member_id);
+		if(member == null) {
+			return "false";
+		} 
 		return member.getMember_phone();
 	}
 	
@@ -650,11 +653,12 @@ public class AdminController {
 		// 멤버 조회하기
 	    MembersVO member = memberService.getMemberInfoByProjectIdx(Integer.parseInt(map.get("project_idx")));
 	    Integer member_idx = member.getMember_idx();
+	    String member_id = member.getMember_id();
 
 	    int project_idx = Integer.parseInt(map.get("project_idx"));
 	    int project_approve_status = Integer.parseInt(map.get("project_approve_status"));
 
-	    // 프로젝트 승인상태 컬럼 변경하기
+	    // 프로젝트 승인상태 컬럼 결제완료로 변경하기
 	    int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
 
 	    if (updateCount <= 0) {
@@ -667,6 +671,23 @@ public class AdminController {
 
 	    if (updateCount2 <= 0) {
 	        return "false";
+	    }
+	    
+	    // 메이커에게 toast알림, 결제완료 메시지 보내기
+	    String subject = "[프로젝트 요금제 결제완료 알림] 프로젝트 요금제 결제가 완료되었습니다.";
+	    String content = "프로젝트 요금제 결제가 완료되었습니다. 펀딩+ 페이지에서 프로젝트를 확인해주세요. 감사합니다.";
+	    
+	    try {
+			echoHandler.sendNotificationToUser(subject, content);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	    // 메시지함에 저장하기
+	    int nCount = notificationService.registNotification(member_id, subject, content);
+	    if(nCount <= 0) {
+	    	return "false";
 	    }
 
 	    // credit 테이블에 결제 정보 저장하기
