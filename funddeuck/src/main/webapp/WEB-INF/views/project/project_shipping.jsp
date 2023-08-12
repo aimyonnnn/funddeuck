@@ -26,6 +26,9 @@
 		    $('#project-btn').text(selectedText);
 			
 		    $('.customSpan').empty(); // 클릭 시 내용 비움
+		 	// 목록 리셋 작업
+		    $('#list-btn').text('발송·배송 관리 선택'); // 드롭다운 버튼 텍스트를 초기 텍스트로 변경
+		    $('#shippingListBody').empty(); // 테이블 내의 데이터를 비움
 		    
 			// 클릭한 dropdown의 id 값을 가져옴
 			project_idx = $(this).data("id");
@@ -132,7 +135,7 @@
 			    	                            "<button class='btn btn-outline-primary btn-sm' id='tableButton' data-id="+ row.payment_idx +" data-bs-toggle='modal' data-bs-target='#trackingModal'>입력</button>" +
 			    	                        "</td>" +
 			    	                        "<td>" + row.delivery_date + "</td>" +
-			    	                        "<td>" + 
+			    	                        "<td class='shippingStatus' data-payment-idx=" + row.payment_idx + ">" + 
 				    	                        (function() {
 				    	                            if(row.delivery_status == 1) { // 배송 상태 
 				    	                                return "미발송";
@@ -140,6 +143,8 @@
 				    	                                return "배송중";
 				    	                            } else if(row.delivery_status == 3) {
 				    	                                return "배송완료";
+				    	                            } else {
+				    	                            	return "";
 				    	                            }
 				    	                        })()
 			    	                        + "</td>" +
@@ -160,9 +165,11 @@
 			    	                        			return "완료";
 			    	                        		} else if(row.payment_confirm == 5) { // 반환 거절 시 
 			    	                        			return "거절";
+			    	                        		} else if(row.payment_confirm == 0) { // 프로젝트 취소 시
+			    	                        			return "<span style='color:red;'>프로젝트 취소</span>";
 			    	                        		} else { // 반환 신청 없을 시
 			    	                        			return "";
-			    	                        		}cc
+			    	                        		}
 			    	                        	})()
 			    	                        + "</td>" +
 			    	                     "</tr>";
@@ -190,7 +197,7 @@
 				data: {payment_idx: payment_idx},
 				dataType: "json",
 				success: function(data) {
-					var data = data[0];
+					var data = data;
 					
 					$("#trackingModal .reward-name").text(data.reward_name); // 리워드 이름 출력
 
@@ -234,6 +241,7 @@
 		// 반환입력 - 모달창
 		$(document).on("click", "#refundButton", function(event) {
 			var payment_idx = $(this).data("id");
+			console.log(payment_idx);
 			
 			$.ajax({
 				url: "shippingModalList",
@@ -241,7 +249,7 @@
 				data: {payment_idx: payment_idx},
 				dataType: "json",
 				success: function(data) {
-					var data = data[0];
+					var data = data;
 		            
 		            var tableBodyHtml = 
 						  '<tr>' +
@@ -324,6 +332,21 @@
 		            var updatedTd = $('td.waybillNum[data-payment-idx="' + payment_idx + '"]');
 				    updatedTd.html(newRowContent);
 		            
+					// 발송·배송 칸 찾기
+				    var updatedStatus = $('td.shippingStatus[data-payment-idx="' + payment_idx + '"]');
+
+				    // 새로운 상태로 업데이트
+				    var statusMapping = {
+				    	0: "",
+				        1: "미발송",
+				        2: "배송중",
+				        3: "배송완료"
+				    };
+
+				    // 상태 업데이트
+				    var newStatusValue = (data[0] && data[0].delivery_status) ? statusMapping[data[0].delivery_status] : "";
+				    updatedStatus.html(newStatusValue);
+				    
 		            $("#trackingModal").modal("hide"); // 모달을 닫음
 		            alert('성공적으로 발송 입력이 되었습니다.');
 		        },

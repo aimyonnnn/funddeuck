@@ -67,7 +67,7 @@ public interface PaymentMapper {
 	int selectPaymentListCount(int project_idx);
 	
 	// 발송 및 환불 정보 입력 - 모달창 리스트 조회
-	List<PaymentVO> selectShippingModalList(int payment_idx);
+	PaymentVO selectShippingModalList(int payment_idx);
 
 	// 송장 입력 후 발송 업데이트
 	int updateShippingInfo(@Param("payment_idx") int payment_idx, @Param("delivery_method") String delivery_method, @Param("courier") String courier, @Param("waybill_num") String waybill_num);
@@ -148,5 +148,8 @@ public interface PaymentMapper {
 	
 	// 메이커벌 누적 서포터수 조회
 	Integer selectAcmlSupportCount(Integer maker_idx);
+
+	// 누적금액의 금액 재변경
+	int modifyProjectCumulativeAmount(int payment_idx);
 
 }

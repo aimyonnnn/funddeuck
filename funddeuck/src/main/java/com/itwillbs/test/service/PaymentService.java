@@ -90,7 +90,7 @@ public class PaymentService {
 	}
 	
 	// 발송 및 환불 정보 입력 - 모달창 리스트 조회
-	public List<PaymentVO> getShippingModalList(int payment_idx) {
+	public PaymentVO getShippingModalList(int payment_idx) {
 		return mapper.selectShippingModalList(payment_idx);
 	}
 	
@@ -186,6 +186,11 @@ public class PaymentService {
 	// 메이커별 누적 서포터수 조회
 	public Integer getAcmlSupportCount(Integer maker_idx) {
 		return mapper.selectAcmlSupportCount(maker_idx);
+	}
+	
+	// 누적금액의 금액 재변경
+	public int updateProjectCumulativeAmount(int payment_idx) {
+		return mapper.modifyProjectCumulativeAmount(payment_idx);
 	}
 	
 }

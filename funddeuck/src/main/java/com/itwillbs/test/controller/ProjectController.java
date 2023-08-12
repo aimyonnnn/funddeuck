@@ -484,10 +484,10 @@ public class ProjectController {
 	// 발송 및 환불입력 - 모달창 리스트 출력 
 	@ResponseBody
 	@PostMapping("shippingModalList")
-	public List<PaymentVO> shippingModalList(@RequestParam("payment_idx") int payment_idx) {
-		List<PaymentVO> shippingModalList = paymentService.getShippingModalList(payment_idx);
+	public PaymentVO shippingModalList(@RequestParam("payment_idx") int payment_idx) {
+		PaymentVO payment = paymentService.getShippingModalList(payment_idx);
 		
-		return shippingModalList;
+		return payment;
 	}
 	
 	// 발송번호 입력
@@ -513,6 +513,7 @@ public class ProjectController {
 			}
 			
 			List<PaymentVO> paymentList = paymentService.getPaymentList(payment_idx);
+			System.out.println("paymentList*****" + paymentList);
 			
 			return new ResponseEntity<>(paymentList, HttpStatus.OK);
 		} else { // 수정 실패 시
@@ -528,9 +529,17 @@ public class ProjectController {
 		int updateCount = paymentService.modifyShippingRefuse(payment_idx);
 		
 		if(updateCount > 0) { // 성공적으로 수정 시
-			List<PaymentVO> paymentList = paymentService.getPaymentList(payment_idx);
 			
-			return new ResponseEntity<>(paymentList, HttpStatus.OK);
+			// 누적금액의 금액 재변경
+			int updateProjectCount = paymentService.updateProjectCumulativeAmount(payment_idx);
+			
+			if(updateProjectCount > 0) {
+				List<PaymentVO> paymentList = paymentService.getPaymentList(payment_idx);
+				return new ResponseEntity<>(paymentList, HttpStatus.OK);
+			} else {
+				String message = "펀딩금 반환 누적금액 입력 실패!";
+		        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		} else { // 수정 실패 시
 	        String message = "펀딩금 반환 거절 실패!";
 	        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);

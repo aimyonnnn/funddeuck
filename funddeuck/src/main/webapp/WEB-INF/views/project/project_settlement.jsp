@@ -46,12 +46,11 @@
 					// 세금계산서 발행금액 (총 금액(이미 카드 수수료 포함o) * 선택한 요금제 수수료)
 					var tax_amount = Math.floor(data.total_amount * project_plan + card_tax);
 					// 총 지급 금액(결제 완료 금액 - 누적 정산금액 - 세금계산서 발행금액)
-					var final_amount = total_amount - data.settlement_amount - tax_amount;
+					var final_amount = Math.floor(total_amount - data.settlement_amount - tax_amount);
 					// 누적 금액
-					var total_settlement_amount = data.settlement_amount;
+					var total_settlement_amount = Math.floor(data.settlement_amount);
 					// 요금제 수수료 출력용
 					var charge = data.project_plan === 1 ? 5 : 3;
-					
 					
 					$('#project_subject').text(data.project_subject);						// 프로젝트 제목
 					$('#representative_name').text(data.project_representative_name);		// 대표자명
@@ -70,7 +69,7 @@
 					if(data.project_status == 1 || data.project_status == 2) {
 						$('.btn-danger').hide();
 					} else if(data.project_status == 3) { 			// 프로젝트 진행완료 (1차 정산 가능일 때)
-						final_amount *= 0.6;						// 60%만 1차 정산
+						final_amount = Math.floor(final_amount * 0.6);						// 60%만 1차 정산
 						$('#final_amount').text(final_amount.toLocaleString() + '원');
 						buttonText = "1차 정산";
 					} else if(data.project_status == 4) {	// 프로젝트 1차 정산완료 (최종 정산 불가능일 때)
@@ -87,7 +86,6 @@
 						$('#delivery_amount').text('');												// 배송비 초기화
 						$('.btn-danger').hide();
 						$('#btn-funding-doctor').show();											// 펀딩닥터 버튼 노출
-						$('#btn-funding-doctor-check').hide();
 					} else if(data.project_status == 7 || data.project_status == 8) {				// 펀딩닥터 신청했을 때
 						$('#final_amount').text('프로젝트 취소');									// 총 지급 금액 초기화
 						$('#delivery_amount').text('');												// 배송비 초기화
@@ -362,7 +360,7 @@
 					</div>
 					<div class="border-top my-3"></div>
 					<div>
-						<span class="d-block">최종 정산 지급금액</span>
+						<span class="d-block">정산 지급금액</span>
 						<span class="fw-bold text-danger d-block fs-5" id="final_amount"></span>
 						<span class="d-block mt-1" id="modalDescription">배송비: <span class="fw-bold" id="delivery_amount"></span> 포함</span>
 					</div>
@@ -400,7 +398,7 @@
 						<button type="submit" class="btn btn-danger"></button>
 					</form>
 					<button type="button" id="btn-funding-doctor" class="btn btn-info text-white" style="display:none;">펀딩 닥터 신청하기</button>
-					<button id="btn-funding-doctor-check" class="btn btn-dark text-white">펀딩닥터 신청 완료</button>
+					<button id="btn-funding-doctor-check" class="btn btn-dark text-white" style="display:none;">펀딩닥터 신청 완료</button>
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 				</div>
 			</div>
@@ -412,7 +410,7 @@
 	    <div class="modal-dialog">
 	        <div class="modal-content">
 	            <div class="modal-header">
-	                <h5 class="modal-title" id="secondModalLabel">펀딩 닥터 신청</h5>
+	                <h5 class="modal-title" id="secondModalLabel">펀딩 닥터 신청 접수</h5>
 	                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	            </div>
 	            <div class="modal-body">
@@ -421,7 +419,7 @@
 	            <div class="modal-footer">
 	                <form action="fundingDoctor">
 	                    <input type="hidden" name="project_idx" id="funding_project_idx">
-	                    <button type="submit" id="btn-funding-doctor-submit" class="btn btn-info text-white">신청하기</button>
+	                    <button type="submit" id="btn-funding-doctor-submit" class="btn btn-info text-white">신청 접수</button>
 	                </form>
 	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 	            </div>
