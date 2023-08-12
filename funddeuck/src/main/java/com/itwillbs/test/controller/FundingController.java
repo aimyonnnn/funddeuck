@@ -302,6 +302,8 @@ public class FundingController {
 	    		// 리워드 수량 변경
 	    		System.out.println("리워드 수량 : " + payment.getPayment_quantity());
 	    		fundingService.modifyRewardAmount(payment.getProject_idx(), payment.getReward_idx(), payment.getPayment_quantity());
+	    		// 프로젝트의 누적금액 변경 project_cumulative_amount
+	    		fundingService.modifyProjectCumulativeAmount(payment.getProject_idx(), payment.getTotal_amount());
 	    		// 결제날짜 계산 프로젝트 종료일 - 주문날짜(현재시간)
 	    		Date now = new Date();
 	    		// 프로젝트 종료일 project_end_date (문자열에서 Date 객체로 변환)
@@ -317,7 +319,7 @@ public class FundingController {
 	    		// 결제 완료 페이지 이동 
 	    		// 등록된 결제서의 payment_idx model로 전달
 	    		model.addAttribute("payment_idx", payment_idx);
-	    		return "redirect: fundingResult";
+	    		return "redirect:fundingResult?member_idx=" + payment.getMember_idx() + "&payment_idx=" + payment_idx + "&delivery_idx=" + payment.getDelivery_idx();
 	    		
 	    	} else { // 결제서 등록 실패시
 	    		

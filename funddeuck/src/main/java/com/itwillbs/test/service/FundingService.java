@@ -152,5 +152,10 @@ public class FundingService {
 		mapper.updateRewardAmount(project_idx, reward_idx, payment_quantity);
 		
 	}
+	
+	// 프로젝트의 누적금액 변경 
+	public void modifyProjectCumulativeAmount(int project_idx, int total_amount) {
+		mapper.updateProjectCumulativeAmount(project_idx, total_amount);
+	}
 
 }

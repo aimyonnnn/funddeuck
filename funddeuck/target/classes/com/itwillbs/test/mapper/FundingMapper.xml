@@ -451,4 +451,11 @@
 					AND reward_idx = #{reward_idx}
 	</update>
 	
+	<!-- 프로젝트의 누적금액 변경  -->
+	<update id="updateProjectCumulativeAmount">
+		UPDATE project
+			SET project_cumulative_amount = project_cumulative_amount + #{total_amount}
+				WHERE project_idx = #{project_idx}
+	</update>
+	
 </mapper>
