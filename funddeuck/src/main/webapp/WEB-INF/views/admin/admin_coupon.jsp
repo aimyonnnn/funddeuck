@@ -146,7 +146,7 @@
 						        <th>쿠폰 만료</th>
 						    </tr>
 						    <c:forEach items="${couponList}" var="coupon">
-						        <c:if test="${coupon.member_idx == 10}"> 
+						        <c:if test="${coupon.member_idx == 1}"> 
 						        <tr class="coupon-row">
 						            <td>${coupon.coupon_name}</td>
 						            <td>${coupon.coupon_text}</td>
@@ -174,9 +174,10 @@
 				            <label for="coupon_idx" class="form-label">쿠폰 번호 선택:</label>
 				            <select class="form-select" id="coupon_idx" name="coupon_idx" style="width: 300px">
 				                <option value="" selected disabled>쿠폰 번호를 선택하세요</option>
-				                <!-- 데이터베이스에서 가져온 쿠폰 번호 옵션을 추가 -->
 				                <c:forEach var="coupon" items="${couponList}">
+				                	<c:if test="${coupon.member_idx == 1}"> 
 				                    <option value="${coupon.coupon_idx}">${coupon.coupon_idx}</option>
+				                	</c:if>
 				                </c:forEach>
 				            </select>
 				        </div>
