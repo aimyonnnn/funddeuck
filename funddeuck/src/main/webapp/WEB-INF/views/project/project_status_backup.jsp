@@ -643,7 +643,6 @@ th, td {
 									<option value="">선택</option>
 								</select>
 								<button class="datepicker-button mx-2" id="paymentUpdateButton">조회</button>		
-								<button class="datepicker-button" id="paymentExcelDownload">엑셀 다운로드</button>		
 							</div>
 							
 							<div class="row">
@@ -1015,60 +1014,16 @@ function fetchPaginatedData(page) {
   	});
 }
 
-// // 조회 버튼 클릭 시 자료 조회와 페이징 처리 호출
-// $('#paymentUpdateButton').click(function () {
-// 	fetchPaginatedData(1); // 첫 페이지 데이터 조회
-// });
-
-
-
-// 프로젝트별 결제 내역 조회 유효성 검사 함수
-function validateInputsAndReturnValidity() {
-	
-    let startDatePayment = $('#startDatePayment').val();
-    let endDatePayment = $('#endDatePayment').val();
-    let selectedProjectIdx2 = $('#projectSelect2').val();
-
-    // 날짜 유효성 검사
-    if (!startDatePayment || !endDatePayment) {
-        alert("시작 날짜와 종료 날짜를 모두 입력해주세요.");
-        if (!startDatePayment) {
-            $('#startDatePayment').focus();
-        } else {
-            $('#endDatePayment').focus();
-        }
-        return false;
-    }
-
-    // 날짜 비교 유효성 검사
-    let paymentStartDate = new Date(startDatePayment);
-    let paymentEndDate = new Date(endDatePayment);
-    if (paymentStartDate > paymentEndDate) {
-        alert("끝 날짜가 시작 날짜보다 빠릅니다. 올바른 날짜를 선택해주세요.");
-        $('#startDatePayment').focus();
-        return false;
-    }
-
-    // 프로젝트 선택 유효성 검사
-    if (selectedProjectIdx2 === "") {
-        alert("프로젝트를 선택해주세요.");
-        $('#projectSelect2').focus();
-        return false;
-    }
-
-    return true;
-}
-
 // 조회 버튼 클릭 시 자료 조회와 페이징 처리 호출
 $('#paymentUpdateButton').click(function () {
-	
-	// 유효성 검사 통과하지 않으면 중단
- 	if (!validateInputsAndReturnValidity()) {
-        return; 
-    }
-    // 유효성 검사 통과 시 조회와 페이징 처리 호출
-    fetchPaginatedData(1); // 첫 페이지 데이터 조회
-    
+	fetchPaginatedData(1); // 첫 페이지 데이터 조회
+});
+
+// 이전 페이지로 이동하는 버튼 클릭 이벤트 핸들러
+$("#prevPageButton").click(function () {
+	if (currentPage > 1) {
+		fetchPaginatedData(currentPage - 1);
+	}
 });
 
 // 다음 페이지로 이동하는 버튼 클릭 이벤트 핸들러
@@ -1396,76 +1351,6 @@ function showRewardDetails(reward_idx) {
 	  	});	
 }
 
-// 프로젝트별 결제 내역 엑셀 다운로드
-$('#paymentExcelDownload').click(() => {
-	
-	// 유효성 검사 통과하지 않으면 중단
- 	if (!validateInputsAndReturnValidity()) {
-        return; 
-    }
-	
-    Swal.fire({
-        icon: 'question',
-        title: '결제 내역 엑셀 저장',
-        text: '결제 내역을 엑셀로 저장하시겠습니까?',
-        showCancelButton: true,
-        confirmButtonText: '확인',
-        cancelButtonText: '취소'
-        
-    }).then((result) => {
-    	
-        if (result.isConfirmed) {
-        	
-            let startDatePayment = $("#startDatePayment").val();
-            let endDatePayment = $("#endDatePayment").val();
-            let selectedProjectIdx2 = $("#projectSelect2").val();
-
-            $.ajax({
-                url: '<c:url value="projectExcelDownload"/>',
-                method: 'POST',
-                data: {
-                    maker_idx: ${maker_idx},
-                    project_idx: selectedProjectIdx2,
-                    startDate: startDatePayment,
-                    endDate: endDatePayment
-                },
-                xhrFields: {
-                    responseType: 'blob' // 이 부분이 엑셀 파일 데이터를 받기 위한 설정
-                },
-                success: function (data, status, xhr) {
-                	
-                    // 기간 메시지 생성
-                    let periodMessage = `${'${startDatePayment}'}~${'${endDatePayment}'}`;
-
-                    // SweetAlert로 성공 메시지 띄우기
-                    Swal.fire({
-                        icon: 'success',
-                        title: '결제 내역 엑셀 저장 완료',
-                        text: `${'${periodMessage}'} 선택한 날짜의 결제 내역을 엑셀로 저장하였습니다.`,
-                        confirmButtonText: '확인'
-                    });
-
-                    const filename = xhr.getResponseHeader('Content-Disposition')
-                        .split('filename=')[1];
-
-                    // Blob 데이터를 Blob URL로 생성하여 다운로드 링크를 생성
-                    const blobUrl = URL.createObjectURL(data);
-                    const a = document.createElement('a');
-                    a.href = blobUrl;
-                    a.download = filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(blobUrl);
-                    
-                },
-                error: function () {
-                    // 에러 핸들링 코드 추가
-                }
-            });
-        }
-    });
-});
 </script>
 
 <!-- 리워드 정보 조회 모달 -->

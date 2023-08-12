@@ -193,4 +193,9 @@ public class PaymentService {
 		return mapper.modifyProjectCumulativeAmount(payment_idx);
 	}
 	
+	// 메이커의 프로젝트별 결제내역
+	public List<PaymentVO> getPaymentsByProjectAndMaker(Map<String, Object> map) {
+		return mapper.selectPaymentsByProjectAndMaker(map);
+	}
+	
 }

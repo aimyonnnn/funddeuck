@@ -151,5 +151,8 @@ public interface PaymentMapper {
 
 	// 누적금액의 금액 재변경
 	int modifyProjectCumulativeAmount(int payment_idx);
+	
+	// 메이커의 프로젝트별 결제내역
+	List<PaymentVO> selectPaymentsByProjectAndMaker(Map<String, Object> map);
 
 }

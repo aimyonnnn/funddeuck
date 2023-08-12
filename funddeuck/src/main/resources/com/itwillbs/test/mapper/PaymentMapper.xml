@@ -231,7 +231,6 @@
 	<select id="selectAllList" resultType="com.itwillbs.test.vo.PaymentVO">
 		SELECT *
 		  FROM payment p
-		  JOIN delivery d ON p.delivery_idx = d.delivery_idx
 		  JOIN members m ON p.member_idx = m.member_idx
 		  JOIN reward r ON p.reward_idx = r.reward_idx
 		  WHERE p.project_idx = #{project_idx}
@@ -520,6 +519,22 @@
 	        DATE(p.payment_date)
 	) AS subquery;
 	]]>
+	</select>
+	
+	<!-- 메이커의 프로젝트별 결제내역 -->	
+	<select id="selectPaymentsByProjectAndMaker" parameterType="map" resultType="com.itwillbs.test.vo.PaymentVO">
+		SELECT p.*, proj.project_subject, r.reward_name
+	   		FROM payment p
+	    INNER JOIN
+   	 		project proj ON p.project_idx = proj.project_idx
+	    LEFT JOIN
+	    	reward r ON p.reward_idx = r.reward_idx
+	    WHERE
+	    	proj.maker_idx = #{maker_idx}
+		    AND proj.project_idx = #{project_idx}
+		    AND DATE(payment_date) BETWEEN #{startDate} AND #{endDate}
+	    ORDER BY
+	    	p.payment_date DESC
 	</select>
 		
 </mapper>

@@ -940,4 +940,72 @@ public class ProjectController {
         response.flushBuffer();
 	}
 	
+	// 프로젝트별 결제 내역 엑셀 다운로드
+	@PostMapping("projectExcelDownload")
+	@ResponseBody
+    public void projectExcelDownload(@RequestParam Map<String, Object> map, HttpServletResponse response) throws IOException {
+		
+		System.out.println("맵출력됨 : " + map);
+		List<PaymentVO> pList = paymentService.getPaymentsByProjectAndMaker(map);
+		
+        Workbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet("첫번째 시트");
+        Row row = null;
+        Cell cell = null;
+        int rowNum = 0;
+
+        // Header
+        row = sheet.createRow(rowNum++);
+        cell = row.createCell(0);
+        cell.setCellValue("번호");
+        cell = row.createCell(1);
+        cell.setCellValue("프로젝트명");
+        cell = row.createCell(2);
+        cell.setCellValue("리워드명");
+        cell = row.createCell(3);
+        cell.setCellValue("수량");
+        cell = row.createCell(4);
+        cell.setCellValue("결제금액");
+        cell = row.createCell(5);
+        cell.setCellValue("주문날짜");
+        cell = row.createCell(6);
+        cell.setCellValue("상태");
+
+        // Body
+        for (PaymentVO payment : pList) {
+            row = sheet.createRow(rowNum++);
+            cell = row.createCell(0);
+            cell.setCellValue(payment.getPayment_idx());		// 번호
+            cell = row.createCell(1);
+            cell.setCellValue(payment.getProject_subject());	// 프로젝트명
+            cell = row.createCell(2);
+            cell.setCellValue(payment.getReward_name());		// 리워드명
+            cell = row.createCell(3);
+            cell.setCellValue(payment.getPayment_quantity());	// 수량
+            cell = row.createCell(4);
+            cell.setCellValue(payment.getTotal_amount());		// 결제금액
+            cell = row.createCell(5);
+            cell.setCellValue(payment.getPayment_date());		// 주문날짜 => 날짜 이상하게 나오는거 엑셀에서 처리 가능함
+            cell = row.createCell(6);
+            if(payment.getPayment_confirm() == 1) { 			// 상태
+            	cell.setCellValue("예약완료"); 	
+            } else if (payment.getPayment_confirm() == 2) {
+            	cell.setCellValue("결제완료");
+            } else if (payment.getPayment_confirm() == 3) {
+            	cell.setCellValue("반환신청");
+            } else if (payment.getPayment_confirm() == 4) {
+            	cell.setCellValue("반환완료");
+            } else {
+            	cell.setCellValue("반환거절");
+            }
+        }
+        
+        // 컨텐츠 타입과 파일명 지정
+        response.setContentType("ms-vnd/excel");
+        response.setHeader("Content-Disposition", "attachment;filename=projectPayment.xlsx");
+        
+        wb.write(response.getOutputStream());
+        wb.close();
+    }
+	
 }

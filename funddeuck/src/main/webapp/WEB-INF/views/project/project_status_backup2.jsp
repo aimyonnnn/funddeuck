@@ -1015,60 +1015,16 @@ function fetchPaginatedData(page) {
   	});
 }
 
-// // 조회 버튼 클릭 시 자료 조회와 페이징 처리 호출
-// $('#paymentUpdateButton').click(function () {
-// 	fetchPaginatedData(1); // 첫 페이지 데이터 조회
-// });
-
-
-
-// 프로젝트별 결제 내역 조회 유효성 검사 함수
-function validateInputsAndReturnValidity() {
-	
-    let startDatePayment = $('#startDatePayment').val();
-    let endDatePayment = $('#endDatePayment').val();
-    let selectedProjectIdx2 = $('#projectSelect2').val();
-
-    // 날짜 유효성 검사
-    if (!startDatePayment || !endDatePayment) {
-        alert("시작 날짜와 종료 날짜를 모두 입력해주세요.");
-        if (!startDatePayment) {
-            $('#startDatePayment').focus();
-        } else {
-            $('#endDatePayment').focus();
-        }
-        return false;
-    }
-
-    // 날짜 비교 유효성 검사
-    let paymentStartDate = new Date(startDatePayment);
-    let paymentEndDate = new Date(endDatePayment);
-    if (paymentStartDate > paymentEndDate) {
-        alert("끝 날짜가 시작 날짜보다 빠릅니다. 올바른 날짜를 선택해주세요.");
-        $('#startDatePayment').focus();
-        return false;
-    }
-
-    // 프로젝트 선택 유효성 검사
-    if (selectedProjectIdx2 === "") {
-        alert("프로젝트를 선택해주세요.");
-        $('#projectSelect2').focus();
-        return false;
-    }
-
-    return true;
-}
-
 // 조회 버튼 클릭 시 자료 조회와 페이징 처리 호출
 $('#paymentUpdateButton').click(function () {
-	
-	// 유효성 검사 통과하지 않으면 중단
- 	if (!validateInputsAndReturnValidity()) {
-        return; 
-    }
-    // 유효성 검사 통과 시 조회와 페이징 처리 호출
-    fetchPaginatedData(1); // 첫 페이지 데이터 조회
-    
+	fetchPaginatedData(1); // 첫 페이지 데이터 조회
+});
+
+// 이전 페이지로 이동하는 버튼 클릭 이벤트 핸들러
+$("#prevPageButton").click(function () {
+	if (currentPage > 1) {
+		fetchPaginatedData(currentPage - 1);
+	}
 });
 
 // 다음 페이지로 이동하는 버튼 클릭 이벤트 핸들러
@@ -1398,11 +1354,6 @@ function showRewardDetails(reward_idx) {
 
 // 프로젝트별 결제 내역 엑셀 다운로드
 $('#paymentExcelDownload').click(() => {
-	
-	// 유효성 검사 통과하지 않으면 중단
- 	if (!validateInputsAndReturnValidity()) {
-        return; 
-    }
 	
     Swal.fire({
         icon: 'question',
