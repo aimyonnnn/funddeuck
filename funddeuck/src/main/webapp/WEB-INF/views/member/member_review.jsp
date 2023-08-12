@@ -132,7 +132,7 @@
 				        +    '<div class="card" style="width: 18rem;">'
 				        +      '<img src="${pageContext.request.contextPath}/resources/upload/'+review.saveFileName +'" class="card-img-top">'
 				        +      '<div class="card-body">'
-				        +        '<h5 class="card-title box">'+ review.project_subject +'</h5>'
+				        +        '<h5 class="card-title box"><a href="fundingDetail?'+review.project_idx+'">'+ review.project_subject +'</a></h5>'
 				        +        '<p class="card-text h6 box1">'+review.reward_name+'</p>'
 				        +        '<hr>'
 				        +        '<p class="card-text">'+ review.review_content +'</p>'
