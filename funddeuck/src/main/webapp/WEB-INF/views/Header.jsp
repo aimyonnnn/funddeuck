@@ -64,31 +64,30 @@
 	
 	/* 종 모양 아이콘 크기 설정 */
 	.nav-link svg {
-		font-size: 1.7em;
+		font-size: 1.5em;
 		fill: #ff9300; 
 	 	position: relative; 
   		display: inline-block;
 	}
 
     
-      .navbar-nav.left,
-      .navbar-brand{
-        display: flex;
-        align-items: center; 
-        padding-left: 70px; 
-      }
-
-      .navbar-nav.right {
-        display: flex;
-        align-items: center; 
-        padding-right: 70px; 
-      }
-
-      @media (max-width: 767px) {
-        .navbar-nav.left,
-        .navbar-nav.right {
-          display: none; 
-        }
+		.navbar-nav.left,
+		.navbar-nav.right {
+		  display: flex;
+		  align-items: center;
+		  padding: 5px; 
+		}
+		
+		.navbar-brand {
+		  padding-left: 50px; /* 원하는 여백 값으로 조절 */
+		}
+		
+		/* 모바일 환경 */
+		@media (max-width: 767px) {
+		  .navbar-nav.left,
+		  .navbar-nav.right {
+		    display: none;
+		  }
 
         .navbar-toggler {
           margin-right: 15px; 
@@ -129,11 +128,28 @@
         max-width: 500px;
     }
     
-   .navbar {
-    justify-content: space-between;
-    position: relative;
-    left: 0; 
-  	}
+	.navbar {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center; 
+	  padding: 0 10px; 
+	}
+	
+	
+	/* 검색 입력 요소에 여백 추가 */
+	.form-inline {
+	  margin-left: auto; 
+	}
+	
+	.navbar-nav.right {
+	  display: flex;
+	  align-items: center;
+	  gap: 10px;
+	}
+  	
+  	.nav-link {
+  	width: auto; 
+	}
       
     </style>
     
@@ -365,7 +381,7 @@
 	  <form class="form-inline my-2 my-md-0" action="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=all&index=newest" method="get">
 	    <input class="form-control" type="text" placeholder="프로젝트를 검색하세요!" aria-label="Search" name="searchKeyword" id="searchKeyword" value="${searchKeyword}" required="required">
 	  </form>
-      </div>
+    </div>
 
       </div>
   
