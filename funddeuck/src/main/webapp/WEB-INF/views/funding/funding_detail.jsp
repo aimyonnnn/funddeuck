@@ -534,17 +534,20 @@
 	
 	  // SDK 초기화
 	  Kakao.init('86b7cd36bb5e30664d978742e039e68a');
-	
+	  
+	  // 현재 url 정보
+	  nowUrl = window.location.href;
+	  
 	  function kakaoShare() {
 	    Kakao.Link.sendDefault({
 	      objectType: 'feed',
 	      content: {
 	        title: '펀뜩 사이트를 공유합니다!',
 	        description: '펀뜩 사이트로 바로가기',
-	        imageUrl: '${pageContext.request.contextPath}/resources/images/logo.png',
+	        imageUrl: 'file:///C:/Users/user/git/funddeuck/funddeuck/src/main/webapp/resources/images/logo.png',
 	        link: {
-	          mobileWebUrl: 'http://localhost:8080/test',
-	          webUrl: 'http://localhost:8080/test',
+	          mobileWebUrl: nowUrl,
+	          webUrl: nowUrl ,
 	        },
 	      },
 	      buttons: [
