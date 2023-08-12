@@ -98,7 +98,7 @@ public class AdminController {
 	private CreditService creditService; 
 	
 	// 관리자 메인
-	@GetMapping("	")
+	@GetMapping("admin")
 	public String adminMain(HttpSession session, Model model) {
 		
 		List<ProjectVO> pList = projectService.getAllProjects();
