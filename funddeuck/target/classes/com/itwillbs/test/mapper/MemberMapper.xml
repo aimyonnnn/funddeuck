@@ -29,8 +29,8 @@
 				,#{member_email}
 				,#{member_phone}
 				,1
-				,1
 				,0
+				,now()
 			)
 	</insert>
 	
