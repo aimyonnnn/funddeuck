@@ -255,22 +255,26 @@ function fetchPhoneNumber() {
             console.log(data);
             
             if (data == 'false') {
+            	
 				Swal.fire({
 	                icon: 'error',
 	                title: 'Oops...',
 	                text: '아이디를 제대로 입력해주세요.'
-	            }).then(function(){
-					$('#send_memberId').focus().val("");
-					$('#send_phoneNum').val('');
-	            })
+	            });
+				
+				$('#send_phoneNum').val("");
+				$('#send_memberId').focus().val("");
+				
             } else {
+            	
             	Swal.fire({
 	                icon: 'success',
 	                title: '번호 조회 성공!',
 	                text: '번호 조회가 완료되었습니다. 메시지를 작성해주세요.'
-	            }).then(function(){
-	                $("#send_phoneNum").val(data.trim());
-	            })
+	            });
+            	
+                $("#send_phoneNum").val(data.trim());
+	            
             }
             
         },
