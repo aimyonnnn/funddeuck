@@ -177,5 +177,8 @@ public interface ProjectMapper {
 	// 펀딩 닥터 답변 페이지 게시물 수 조회
 	int selectFundingDoctorAnswerProjectCount(@Param("searchType") String searchType, @Param("searchKeyword") String searchKeyword, @Param("maker_idx") Integer maker_idx);
 
+	// 작성중인 프로젝트 삭제
+	int deleteProject(int project_idx);
+
 	
 }

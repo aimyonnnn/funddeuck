@@ -93,7 +93,7 @@ th, td {
 							</a> 
 						</td>
 						<td class="text-center">${pList.project_representative_name}</td>
-						<td class="text-center">${pList.project_target}</td>
+						<td class="text-center">${pList.project_target}원</td>
 						<td class="text-center">
    							<fmt:formatDate value="${pList.project_start_date}" pattern="yy/MM/dd" />~<fmt:formatDate value="${pList.project_end_date}" pattern="yy/MM/dd" />
 						</td>

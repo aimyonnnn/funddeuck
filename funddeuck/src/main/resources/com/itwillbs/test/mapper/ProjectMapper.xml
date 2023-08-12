@@ -647,7 +647,13 @@
 		    JOIN project p ON d.project_idx = p.project_idx 
 		    WHERE p.maker_idx = #{maker_idx}
 	</select>
-
+	
+	<!-- 작성중인 프로젝트 삭제 -->
+	<delete id="deleteProject">
+		DELETE 
+			FROM project
+			WHERE project_idx = #{project_idx} 
+	</delete>
 	
 </mapper>
 	

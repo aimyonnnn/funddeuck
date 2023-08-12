@@ -245,6 +245,11 @@ public class ProjectService {
 	public int getAllDoctorListCount(String searchType, String searchKeyword, Integer maker_idx) {
 		return mapper.selectFundingDoctorAnswerProjectCount(searchType, searchKeyword, maker_idx);
 	}
+	
+	// 작성중인 프로젝트 삭제
+	public int deleteProject(int project_idx) {
+		return mapper.deleteProject(project_idx);
+	}
     
 	
 }

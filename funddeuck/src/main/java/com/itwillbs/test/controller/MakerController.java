@@ -523,9 +523,36 @@ public class MakerController {
 			@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, @RequestParam(defaultValue = "1") int type, 
 			HttpSession session, Model model) {
 		
+		String sId = (String) session.getAttribute("sId");
+	    if (sId == null) {
+	        model.addAttribute("msg", "잘못된 접근입니다. 로그인 후 사용해 주세요!");
+	        return "fail_back";
+	    }
+		
 		FundingDoctorVO doctor = projectService.getFundingDoctorInfo(project_idx);
 		model.addAttribute("doctor", doctor);
 		return "member/maker_funding_doctor_detail";
+	}
+	
+	// 작성중인 프로젝트 삭제
+	@PostMapping("projectDelete")
+	public String projectDelete(@RequestParam int project_idx, Model model, HttpSession session) {
+		String sId = (String) session.getAttribute("sId");
+	    if (sId == null) {
+	        model.addAttribute("msg", "잘못된 접근입니다. 로그인 후 사용해 주세요!");
+	        return "fail_back";
+	    }
+	    
+	    int deleteCount = projectService.deleteProject(project_idx); // 작성중인 프로젝트 삭제
+	    
+	    if(deleteCount > 0) {
+			 model.addAttribute("msg", "프로젝트가 성공적으로 삭제되었습니다!");
+			 return "makerMypage";
+	    } else {
+	    	 model.addAttribute("msg", "잘못된 접근입니다. 로그인 후 사용해 주세요!");
+		     return "fail_back";
+	    }
+	    
 	}
 	
 }

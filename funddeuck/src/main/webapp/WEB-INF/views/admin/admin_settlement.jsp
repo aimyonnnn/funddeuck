@@ -32,6 +32,10 @@ th, td {
 		var monthAmount = Number(${monthAmount}).toLocaleString();
 		$("#monthAmount").val(monthAmount + '원');
 	});
+	
+function numberWithCommas(x) {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 </script>
 </head>
 <body>
@@ -98,7 +102,7 @@ th, td {
 						<th class="text-center" style="width: 15%;">프로젝트 이름</th>
 						<th class="text-center" style="width: 7%;">대표자</th>
 						<th class="text-center" style="width: 5%;">상태</th>
-						<th class="text-center" style="width: 7%;">출금시간</th>
+						<th class="text-center" style="width: 7%;">출금일</th>
 						<th class="text-center" style="width: 7%;">출금금액</th>
 						<th class="text-center" style="width: 5%;">상세정보</th>
 					</tr>
@@ -114,7 +118,7 @@ th, td {
 							<td class="text-center" style="width: 20%;">${bList.project_representative_name}</td>
 							<td class="text-center" style="width: 5%;">${bList.banking_print_content }</td>
 							<td class="text-center" style="width: 5%;">${bList.banking_bank_tran_date}</td>
-							<td class="text-center" style="width: 5%;">${bList.banking_tran_amt}</td>
+							<td class="text-center" style="width: 5%;" class="tran_amt">${bList.banking_tran_amt}원</td>
 							<td class="text-center" style="width: 5%;">
 								<button class="btn btn-outline-primary btn-sm" 
 								onclick="location.href='adminBankingDetail?project_idx=${bList.project_idx}&pageNum=${pageNum}'">보기</button>

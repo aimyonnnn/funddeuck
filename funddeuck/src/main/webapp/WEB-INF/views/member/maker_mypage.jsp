@@ -101,7 +101,13 @@
 						                <img src="${pageContext.request.contextPath}/resources/upload/${unapproved.project_thumnails1}" class="card-img-top" alt="프로젝트 없음">
 						                <div class="card-body">
 						                    <h5 class="card-title">${unapproved.project_subject }</h5>
-						                    <a href="projectReward?project_idx=${unapproved.project_idx }" class="btn btn-outline-primary">바로가기</a>
+						                    <div class="d-flex">
+											    <a href="projectReward?project_idx=${unapproved.project_idx}" class="btn btn-outline-primary btn-sm me-4">바로가기</a>
+											    <form action="projectDelete" method="post" class="d-inline">
+											        <input type="hidden" name="project_idx" value="${unapproved.project_idx}" />
+											        <input type="submit" class="btn btn-outline-danger btn-sm ms-3" value="삭제하기" />
+											    </form>
+											</div>
 						                </div>
 						            </div>
 						        </div>
@@ -126,7 +132,7 @@
 						                <img src="${pageContext.request.contextPath}/resources/upload/${proceeding.project_thumnails1}" class="card-img-top" alt="프로젝트 없음">
 						                <div class="card-body">
 						                    <h5 class="card-title">${proceeding.project_subject }</h5>
-						                    <a href="fundingDetail?project_idx=${proceeding.project_idx }" class="btn btn-outline-primary">바로가기</a>
+						                    <a href="fundingDetail?project_idx=${proceeding.project_idx }" class="btn btn-outline-primary btn-sm">바로가기</a>
 						                </div>
 						            </div>
 						        </div>
@@ -151,7 +157,7 @@
 						                <img src="${pageContext.request.contextPath}/resources/upload/${complete.project_thumnails1}" class="card-img-top" alt="프로젝트 없음">
 						                <div class="card-body">
 						                    <h5 class="card-title">${complete.project_subject }</h5>
-						                    <a href="fundingDetail?project_idx=${complete.project_idx }" class="btn btn-outline-primary">바로가기</a>
+						                    <a href="fundingDetail?project_idx=${complete.project_idx }" class="btn btn-outline-primary btn-sm">바로가기</a>
 						                </div>
 						            </div>
 						        </div>

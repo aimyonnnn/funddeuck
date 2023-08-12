@@ -333,7 +333,6 @@
 				member_name = #{member_name}
 				, member_phone = #{member_phone}
 				, member_email = #{member_email}
-				, member_grade = #{member_grade}
 				, member_status = #{member_status}
 				, false_count = #{false_count}
 			WHERE member_idx = #{member_idx}
