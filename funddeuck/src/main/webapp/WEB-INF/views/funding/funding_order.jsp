@@ -449,23 +449,23 @@ $(()=>{
 				<!-- 체크박스 다 체크했을경우 이동가능 -->
 				<div class="row ms-2 me-2 pt-3">
 					<form action="fundingPayment" method="post" onsubmit="return validateForm()" id="fundingPaymentForm">
-						<input type="text" name="project_idx" value="${project.project_idx }">
-						<input type="text" name="member_idx" value="${member.member_idx }">
+						<input type="hidden" name="project_idx" value="${project.project_idx }">
+						<input type="hidden" name="member_idx" value="${member.member_idx }">
 						<!-- ajax로 바뀜 -->
-						<input type="text" name="reward_idx" value="${reward.reward_idx }" id="reward_idx">
-						<input type="text" name="reward_amount" value="${reward.reward_price }" id="reward_amount">
-						<input type="text" name="delivery_idx" id="delivery_idx" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_idx }</c:if>">
-						<input type="text" name="delivery_idx" id="delivery_zipcode" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_zipcode }</c:if>">
-						<input type="text" name="delivery_idx" id="delivery_add" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_add }</c:if>">
-						<input type="text" name="member_email" value="${member.member_email }">
-						<input type="text" name="member_phone" value="${member.member_phone }">
-						<input type="text" name="additional_amount" id="additional_amount" value="0">
-						<input type="text" name="use_coupon_amount" id="use_coupon_amount" value="0">
-						<input type="text" name="total_amount" id="total_amount" value="${reward.reward_price + reward.delivery_price}">
-						<input type="text" name="payment_quantity" id="payment_quantity" value="1">
+						<input type="hidden" name="reward_idx" value="${reward.reward_idx }" id="reward_idx">
+						<input type="hidden" name="reward_amount" value="${reward.reward_price }" id="reward_amount">
+						<input type="hidden" name="delivery_idx" id="delivery_idx" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_idx }</c:if>">
+						<input type="hidden" name="delivery_idx" id="delivery_zipcode" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_zipcode }</c:if>">
+						<input type="hidden" name="delivery_idx" id="delivery_add" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_add }</c:if>">
+						<input type="hidden" name="member_email" value="${member.member_email }">
+						<input type="hidden" name="member_phone" value="${member.member_phone }">
+						<input type="hidden" name="additional_amount" id="additional_amount" value="0">
+						<input type="hidden" name="use_coupon_amount" id="use_coupon_amount" value="0">
+						<input type="hidden" name="total_amount" id="total_amount" value="${reward.reward_price + reward.delivery_price}">
+						<input type="hidden" name="payment_quantity" id="payment_quantity" value="1">
 						<!-- 결제수단(1:카드 2:계좌) -->
-						<input type="text" name="payment_method" id="payment_method" value="1">
-						<input type="text" name="project_end_date" id="project_end_date" value="${project.project_end_date }">
+						<input type="hidden" name="payment_method" id="payment_method" value="1">
+						<input type="hidden" name="project_end_date" id="project_end_date" value="${project.project_end_date }">
 <!-- 						<input type="text" name="coupon_idx" id="coupon_idx" value=""> -->
 						<button type="submit" id="fundingPaymentSubmitButton" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
 					</form>
