@@ -398,19 +398,23 @@ public class FundingController {
 			) {
 
 		// 세션 아이디가 존재하지 않을 때 
-//		String sId = (String) session.getAttribute("sId");
-//		if(sId == null) {
-//			model.addAttribute("msg", "잘못된 접근입니다.");
-//			return "fail_back";
-//		}
+		String sId = (String) session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "fail_back";
+		}
+		
+		// 회원 정보 조회
+		MembersVO member = memberService.getMemberInfo(member_idx);
+		model.addAttribute("member", member);
 		
 		// 결제 정보 조회
 		List<PaymentVO> payment = paymentService.getPaymentList(payment_idx);
-		model.addAttribute(payment);
+		model.addAttribute("payment", payment);
 		
 		// 주문 정보 조회
 		List<DeliveryVO> delivery = deliveryService.getDeliveryList(payment_idx);
-		model.addAttribute(delivery);
+		model.addAttribute("delivery", delivery);
 		
 		return "funding/funding_result";
 	}	

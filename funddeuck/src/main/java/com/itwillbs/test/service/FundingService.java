@@ -158,4 +158,5 @@ public class FundingService {
 		mapper.updateProjectCumulativeAmount(project_idx, project_cumulative_amount);
 	}
 
+
 }
