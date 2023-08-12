@@ -78,7 +78,7 @@
                     <!-- 폼 태그 시작 -->
                     <form action="" class="projectContent" method="post" id="rewardForm" > 
                         <!-- 히든 처리하는 부분 -->
-                        <input type="text" name="project_idx" id="project_idx" value="${project_idx}" class="form-control" style="width:500px;">
+                        <input type="hidden" name="project_idx" id="project_idx" value="${project_idx}" class="form-control" style="width:500px;">
 
                         <!-- 금액 -->
                         <div>
@@ -506,12 +506,17 @@ function openRewardModifyForm(reward_idx) {
             
             $("#delivery_price").val(data.delivery_price);
             
-            // 발송 시작일 선택 처리
-            const [yearMonth, day] = data.delivery_date.split('/');
-            $("#yearMonth").val(yearMonth);
-            $("#day").val(day);
-            $("#delivery_date").val(data.delivery_date);
-            
+			if (data.delivery_date) {
+	            // 발송 시작일 처리 2024/01/11~20
+	            const deliveryDateParts = data.delivery_date.split("/");
+	            const yearMonth = deliveryDateParts[0] + "/" + deliveryDateParts[1];
+	            const dayRange = deliveryDateParts[2];
+	
+	            $("#yearMonth").val(yearMonth);
+	            $("#day").val("/" + dayRange);
+	            $("#delivery_date").val(data.delivery_date);
+            }
+    
             // 리워드 정보 제공 고시 처리
             $("#reward_info").val(data.reward_info);
             
@@ -746,11 +751,11 @@ function validateForm() {
 	
     // 금액 검사
     const rewardPrice = document.getElementById('reward_price').value;
-    if (rewardPrice < 1 || isNaN(rewardPrice)) {
+    if (rewardPrice < 10000 || isNaN(rewardPrice)) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: '금액을 1원 이상 입력하세요.'
+            text: '금액을 10000원 이상 입력하세요.'
         });
         return false;
     }
@@ -838,12 +843,22 @@ function validateForm() {
     const yearMonth = document.getElementById('yearMonth').value;
     const day = document.getElementById('day').value;
     if (yearMonth === '' || day === '') {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: '발송 시작일을 올바르게 선택해주세요.'
-        });
-        return false;
+        
+    	if(yearMonth === '') {
+			Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '발송시작일의 "년월"을 선택해주세요.'
+	        });
+	        return false;
+    	} else if (day === '') {
+			Swal.fire({
+	            icon: 'error',
+	            title: 'Oops...',
+	            text: '발송시작일의 "일"을 선택해주세요.'
+	        });
+	        return false;
+    	}
     }
     
  	// 리워드 정보 제공 고시 검사

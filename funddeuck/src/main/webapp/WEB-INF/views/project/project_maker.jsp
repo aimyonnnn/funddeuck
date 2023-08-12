@@ -184,7 +184,7 @@
 				                문구 작성이 막막하시면 AI가 문구를 추천해 드려요.<br>
 				                간단하게 작성하고 버튼을 클릭하면 AI가 문구를 수정해드려요.
 				            </p>
-				            <input class="form-control makerIntro" type="text" placeholder="메이커를 소개를 적어주세요.">
+				            <input class="form-control makerIntro" type="text" name="maker_intro" placeholder="메이커를 소개를 적어주세요.">
 				        </div>
 				
 				        <!-- 메이커 대표 이미지 -->
@@ -703,73 +703,12 @@
 	        }
 	    });
 	});
-	
-	// ============================================================================
-	
-	// 사업자 등록번호 입력 필드를 선택
-	var individualBizNumInput = document.querySelector("input[name='individual_biz_num']");
-	var corporateBizNumInput = document.querySelector("input[name='corporate_biz_num']");
-	
-	// 입력 내용이 변경될 때마다 호출되는 이벤트 리스너 함수
-	individualBizNumInput.addEventListener("input", formatBizNumInput);
-	corporateBizNumInput.addEventListener("input", formatBizNumInput);
-	
-	// 사업자 등록번호 입력 필드에서 키보드 입력이 발생했을 때 처리하는 이벤트 리스너 함수
-	individualBizNumInput.addEventListener("keydown", handleBackspace);
-	corporateBizNumInput.addEventListener("keydown", handleBackspace);
-	
-	function formatBizNumInput(event) {
-	    // 입력 내용에서 "-"를 제외하고 숫자만 추출
-	    var inputValue = event.target.value.replace(/-/g, '');
-	
-	    // "-" 제외한 번호 길이를 확인
-	    var length = inputValue.length;
-	
-	    // 사업자 등록번호 형식에 맞게 "-"를 추가
-	    var formattedValue = '';
-	    if (length >= 3) {
-	        formattedValue += inputValue.substr(0, 3) + '-';
-	        if (length >= 5) {
-	            formattedValue += inputValue.substr(3, 2) + '-';
-	            formattedValue += inputValue.substr(5, 5);
-	        } else {
-	            formattedValue += inputValue.substr(3);
-	        }
-	    } else {
-	        formattedValue = inputValue;
-	    }
-	
-	    // 변환된 번호를 입력 필드에 설정
-	    event.target.value = formattedValue;
-	}
-	
-	function handleBackspace(event) {
-	    // Backspace 키를 눌렀을 때 "-"를 제거
-	    if (event.key === "Backspace") {
-	        var inputValue = event.target.value.replace(/-/g, '');
-	        inputValue = inputValue.slice(0, -1); // 마지막 문자 제거
-	        var formattedValue = '';
-	        if (inputValue.length >= 3) {
-	            formattedValue += inputValue.substr(0, 3) + '-';
-	            if (inputValue.length >= 5) {
-	                formattedValue += inputValue.substr(3, 2) + '-';
-	                formattedValue += inputValue.substr(5, 5);
-	            } else {
-	                formattedValue += inputValue.substr(3);
-	            }
-	        } else {
-	            formattedValue = inputValue;
-	        }
-	        event.target.value = formattedValue;
-	    }
-	}
-	
-	// ============================================================================
-	
 	</script>
-
+	
 	<!-- js -->
 	<script src="${pageContext.request.contextPath }/resources/js/project.js"></script>
+	<!-- 휴대폰 번호, 사업자 번호 유효성 검사 -->
+	<script src="${pageContext.request.contextPath}/resources/js/formValidation.js"></script>
 	<!-- bootstrap -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 

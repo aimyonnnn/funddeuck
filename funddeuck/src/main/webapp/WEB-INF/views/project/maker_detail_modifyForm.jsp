@@ -138,7 +138,7 @@
 							</tr>
 							<tr>
 								<th>전화번호</th>
-								<td><input type="number" name="maker_tel" class="form-control"
+								<td><input type="text" name="maker_tel" class="form-control"
 									value="${maker.maker_tel}"></td>
 							</tr>
 							<tr>
@@ -407,6 +407,107 @@ function validateForm() {
 
     return true;
 }
+
+// 메이커 정보 수정하기 유효성 검사
+$(document).ready(function() {
+    // 폼 제출 이벤트 핸들러
+    $('#modifyForm').submit(function(event) {
+        event.preventDefault();
+
+        // 이메일, 전화번호, URL 입력값 가져오기
+        const makerEmail = $('[name="maker_email"]').val();
+        const makerTel = $('[name="maker_tel"]').val();
+        const makerUrl = $('[name="maker_url"]').val();
+
+        // 이메일 형식 검사
+        var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!emailRegex.test(makerEmail)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '유효한 이메일 주소를 입력해주세요.'
+            });
+            return false;
+        }
+
+        // 전화번호 형식 검사
+        var telRegex = /^\d{3}-\d{3,4}-\d{4}$/;
+        if (!telRegex.test(makerTel)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '유효한 전화번호를 입력해주세요. (000-0000-0000)'
+            });
+            return false;
+        }
+
+        // URL 형식 검사
+        var urlRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-zA-Z0-9]+([-.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+        if (!urlRegex.test(makerUrl)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '유효한 URL을 입력해주세요.'
+            });
+            return false;
+        }
+
+        // 유효성 검사가 모두 통과한 경우 폼 제출
+        this.submit();
+    });
+});
+
+// 휴대폰 번호 입력 필드의 포맷팅과 백스페이스 처리
+var phoneNumberInputs = document.querySelectorAll("input[name='maker_tel']");
+
+// 각각의 입력 필드에 대해 이벤트 리스너 등록
+phoneNumberInputs.forEach(function(phoneNumberInput) {
+    phoneNumberInput.addEventListener("input", function (event) {
+        // 입력 내용에서 "-"를 제외하고 숫자만 추출
+        var inputValue = event.target.value.replace(/-/g, '');
+
+        // "-" 제외한 번호 길이를 확인
+        var length = inputValue.length;
+
+        // 휴대폰 번호 형식에 맞게 "-"를 추가
+        var formattedValue = '';
+        if (length > 3) {
+            formattedValue += inputValue.substr(0, 3) + '-';
+            if (length > 6) {
+                formattedValue += inputValue.substr(3, 4) + '-';
+                formattedValue += inputValue.substr(7, 4);
+            } else {
+                formattedValue += inputValue.substr(3);
+            }
+        } else {
+            formattedValue = inputValue;
+        }
+
+        // 변환된 번호를 입력 필드에 설정
+        event.target.value = formattedValue;
+    });
+
+    phoneNumberInput.addEventListener("keydown", function (event) {
+        // Backspace 키를 눌렀을 때 "-"를 제거
+        if (event.key === "Backspace") {
+            var inputValue = event.target.value.replace(/-/g, '');
+            inputValue = inputValue.slice(0, -1); // 마지막 문자 제거
+            var formattedValue = '';
+            if (inputValue.length >= 3) {
+                formattedValue += inputValue.substr(0, 3) + '-';
+                if (inputValue.length >= 7) {
+                    formattedValue += inputValue.substr(3, 4) + '-';
+                    formattedValue += inputValue.substr(7);
+                } else {
+                    formattedValue += inputValue.substr(3);
+                }
+            } else {
+                formattedValue = inputValue;
+            }
+            event.target.value = formattedValue;
+        }
+    });
+});
 </script>
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

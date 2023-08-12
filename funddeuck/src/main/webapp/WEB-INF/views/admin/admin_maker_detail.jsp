@@ -56,7 +56,7 @@ th, td {
 			<div class="content-area" id="tab1">
 				<!-- 폼 태그 -->
 				<form action="adminModifyMaker" method="post" id="modifyForm"
-					enctype="multipart/form-data">
+					enctype="multipart/form-data" onsubmit="return validateForm()">
 					<input type="hidden" name="pageNum" value="${param.pageNum}">
 					<input type="hidden" name="maker_idx" value="${maker.maker_idx}">
 					<table class="table text-center">
@@ -435,7 +435,64 @@ function deleteMakerBoard(maker_board_idx) {
 		
 	}
 }
+
+// 유효성 검사
+function validateForm() {
+    var form = document.getElementById("modifyForm");
+    var makerEmail = form["maker_email"].value;
+    var makerTel = form["maker_tel"].value;
+    var makerUrl = form["maker_url"].value;
+    var individualBizNum = form["individual_biz_num"].value;
+    var corporateBizNum = form["corporate_biz_num"].value;
+
+    // 이메일 형식 검사
+    var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!makerEmail.match(emailRegex)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '유효한 이메일 주소를 입력해주세요.'
+        });
+        return false;
+    }
+
+    // 전화번호 형식 검사
+    var telRegex = /^\d{3}-\d{3,4}-\d{4}$/;
+    if (!makerTel.match(telRegex)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '유효한 전화번호를 입력해주세요. (000-0000-0000)'
+        });
+        return false;
+    }
+
+    // URL 형식 검사
+    var urlRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-zA-Z0-9]+([-.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+    if (!makerUrl.match(urlRegex)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '유효한 URL을 입력해주세요.'
+        });
+        return false;
+    }
+
+    if (!/^(\d{3}-\d{2}-\d{5})$/.test(individualBizNum)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '유효한 사업자 등록번호(XXX-XX-XXXXX)를 입력해주세요.'
+        });
+        return false;
+    }
+
+    return true; // 유효성 검사 통과
+}
 </script>
+
+<!-- 휴대폰 번호, 사업자 번호 유효성 검사 -->
+<script src="${pageContext.request.contextPath}/resources/js/formValidation.js"></script>
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>

@@ -540,58 +540,6 @@ $(document).ready(function() {
     
 });
 
-// 이메일 형식을 확인하는 함수
-function isValidEmail(email) {
-	const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-	return emailPattern.test(email);
-}
-
-// 주민등록번호 유효성 검사 함수
-function isValidResidentNumber(residentNumber) {
-    // 주민등록번호 정규표현식: 6자리 생년월일 + 7자리 뒷자리
-    const residentNumberPattern = /^[0-9]{6}[ -]?[0-9]{7}$/;
-    return residentNumberPattern.test(residentNumber);
-}
-
-//폼 제출 시 유효성 검사를 위한 이벤트 핸들러
-$("#projectForm").on("submit", function (e) {
-	
-    const startDate = new Date($("[name='project_start_date']").val());
-    const endDate = new Date($("[name='project_end_date']").val());
-    const representativeEmail = $("[name='project_representative_email']");
-    const taxEmail = $("[name='project_tax_email']");
-    const dateTime = new Date($("[name='project_approval_request_time']").val());
-    const residentNumber = $("[name='project_representative_birth']").val().replace(/[^0-9]/g, ''); // 숫자만 남기고 '-' 또는 공백은 제거
-
-    if (endDate < startDate) {
-        alert("종료일은 시작일보다 빠를 수 없습니다.");
-        e.preventDefault();
-    }
-
-    if (isNaN(dateTime)) {
-        alert("올바른 날짜와 시간을 입력하세요.");
-        e.preventDefault();
-    }
-    
-    if (!isValidEmail(representativeEmail.val())) {
-        alert("올바른 대표 이메일 형식을 입력하세요.");
-        representativeEmail.focus();
-        e.preventDefault();
-    }
-
-    if (!isValidEmail(taxEmail.val())) {
-        alert("올바른 세금계산서 발행 이메일 형식을 입력하세요.");
-        taxEmail.focus();
-        e.preventDefault();
-    }
-    
-    if (!isValidResidentNumber(residentNumber)) {
-        alert("올바른 주민등록번호 형식을 입력하세요. (예: YYMMDD-1234567 또는 YYMMDD1234567)");
-        event.preventDefault();
-    }
-    
-});
-
 // 파일 실시간 삭제
 function deleteFile(project_idx, fileName, fileNumber) {
 	
@@ -660,6 +608,58 @@ function updateDeliveryDate() {
     var delivery_date = yearMonth + day;
     document.getElementById("delivery_date").value = delivery_date;
 }
+
+//이메일 형식을 확인하는 함수
+function isValidEmail(email) {
+	const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	return emailPattern.test(email);
+}
+
+// 주민등록번호 유효성 검사 함수
+function isValidResidentNumber(residentNumber) {
+    // 주민등록번호 정규표현식: 6자리 생년월일 + 7자리 뒷자리
+    const residentNumberPattern = /^[0-9]{6}[ -]?[0-9]{7}$/;
+    return residentNumberPattern.test(residentNumber);
+}
+
+//폼 제출 시 유효성 검사를 위한 이벤트 핸들러
+$("#projectForm").on("submit", function (e) {
+	
+    const startDate = new Date($("[name='project_start_date']").val());
+    const endDate = new Date($("[name='project_end_date']").val());
+    const representativeEmail = $("[name='project_representative_email']");
+    const taxEmail = $("[name='project_tax_email']");
+    const dateTime = new Date($("[name='project_approval_request_time']").val());
+    const residentNumber = $("[name='project_representative_birth']").val().replace(/[^0-9]/g, ''); // 숫자만 남기고 '-' 또는 공백은 제거
+
+    if (endDate < startDate) {
+        alert("종료일은 시작일보다 빠를 수 없습니다.");
+        e.preventDefault();
+    }
+
+    if (isNaN(dateTime)) {
+        alert("올바른 날짜와 시간을 입력하세요.");
+        e.preventDefault();
+    }
+    
+    if (!isValidEmail(representativeEmail.val())) {
+        alert("올바른 대표 이메일 형식을 입력하세요.");
+        representativeEmail.focus();
+        e.preventDefault();
+    }
+
+    if (!isValidEmail(taxEmail.val())) {
+        alert("올바른 세금계산서 발행 이메일 형식을 입력하세요.");
+        taxEmail.focus();
+        e.preventDefault();
+    }
+    
+    if (!isValidResidentNumber(residentNumber)) {
+        alert("올바른 주민등록번호 형식을 입력하세요. (예: YYMMDD-1234567 또는 YYMMDD1234567)");
+        event.preventDefault();
+    }
+    
+});
 </script>
 <!-- bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
