@@ -100,4 +100,10 @@ public class HelpController {
 		model.addAttribute("targetURL","helpInquiryForm");
 		return "success_forward";
 	}
+	
+	// 공지사항 폼 이동
+	@GetMapping("helpNotice")
+	public String helpNoticeForm() {
+		return "help/help_notice";
+	}
 }

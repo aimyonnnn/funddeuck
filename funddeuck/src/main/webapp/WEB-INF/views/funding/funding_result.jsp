@@ -25,7 +25,7 @@
 			<p class="fs-2 fw-bolder">결제가 완료되었습니다</p><br>
 			<div class="grid gap-3">
 				<div class="row">
-					<img src="${project.project_thumnails1 }" class="d-block w-25 float-start" alt="...">
+					<img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" class="d-block w-25 float-start" alt="...">
 					  <div class="col-md-6 row-gap-10">
 					  	<table class="text-start">
 					  		<tr>
