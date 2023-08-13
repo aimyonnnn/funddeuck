@@ -53,12 +53,13 @@ public class FundingScheduler {
 		    		fundingService.ModifyPaymentConfirmCompleted(payment_idx);
 		    	} else { // 거래내역 DB 저장 실패시
 		    		// 스케줄러 취소?
-//		    		executorService.shutdown();
+		    		executorService.shutdown();
 		    	}
 				
 			}
 			if(project_status == 0) { // 프로젝트 취소시
 //				fundingService.ModifyPaymentConfirmfailed(payment_idx);
+				executorService.shutdown();
 			}
 		
 		}, diff, TimeUnit.MINUTES);

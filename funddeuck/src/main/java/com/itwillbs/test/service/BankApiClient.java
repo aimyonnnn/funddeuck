@@ -75,7 +75,7 @@ public class BankApiClient {
 		parameters.add("code", authResponse.get("code")); // 응답 데이터 활용
 		parameters.add("client_id", clientId); // @Value 어노테이션으로 포함한 속성값
 		parameters.add("client_secret", clientSecret); // @Value 어노테이션으로 포함한 속성값
-		parameters.add("redirect_uri", "http://localhost:8089/test/callbackMember"); // 사용자 인증 주소랑 일치 시켜야함
+		parameters.add("redirect_uri", "http://c5d2302t2.itwillbs.com/funddeuck/callbackMember"); // 사용자 인증 주소랑 일치 시켜야함
 		parameters.add("grant_type", "authorization_code"); // 고정값
 		logger.info("□□□□□ parameters : " + parameters.toString());
 		
@@ -121,7 +121,7 @@ public class BankApiClient {
 	    UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(url)
 	            .queryParam("response_type", "code")
 	            .queryParam("client_id", "4066d795-aa6e-4720-9383-931d1f60d1a9")
-	            .queryParam("redirect_uri", "http://localhost:8089/test/callbackMember")
+	            .queryParam("redirect_uri", "http://c5d2302t2.itwillbs.com/funddeuck/callbackMember")
 	            .queryParam("scope", "login inquiry transfer oob")
 	            .queryParam("state", "12345678901234567890123456789012")
 	            .queryParam("auth_type", "0")

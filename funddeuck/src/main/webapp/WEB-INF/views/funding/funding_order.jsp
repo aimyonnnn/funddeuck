@@ -312,7 +312,7 @@ $(()=>{
 					<!-- 카드결제 -->
 <!-- 						카드결제 체크시 보여줄 영역 -->
 						<div class="col-12 d-flex align-content-center mt-2">
-							<input class="btn btn-primary" type="button" value="카드결제" name="requestPay">
+<!-- 							<input class="btn btn-primary" type="button" value="카드결제" name="requestPay"> -->
 						</div>
 					</div>
 					<div class="row d-none" id="account_payment_area">

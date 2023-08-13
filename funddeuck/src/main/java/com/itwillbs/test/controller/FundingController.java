@@ -302,7 +302,7 @@ public class FundingController {
 	    		// 리워드 수량 변경
 	    		System.out.println("리워드 수량 : " + payment.getPayment_quantity());
 	    		fundingService.modifyRewardAmount(payment.getProject_idx(), payment.getReward_idx(), payment.getPayment_quantity());
-	    		// 프로젝트의 누적금액 변경 project_cumulative_amount 리워드금액*주문수량 + 추가후원금액
+	    		// 프로젝트의 누적금액 변경 project_cumulative_amount (리워드금액 * 주문수량) + 추가후원금액(배송비를 제외한 금액)
 	    		int project_cumulative_amount = (payment.getReward_amount() * payment.getPayment_quantity()) + payment.getAdditional_amount();
 	    		fundingService.modifyProjectCumulativeAmount(payment.getProject_idx(), project_cumulative_amount);
 	    		// 결제날짜 계산 프로젝트 종료일 - 주문날짜(현재시간)
@@ -314,7 +314,7 @@ public class FundingController {
 	    		// 딜레이 값 계산
 	    		long diffInMillies = projectEndDate.getTime() - now.getTime();
 	    		long diff = TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);// 출금이체(스케줄링) 예약
-	    		// 출금이체 API에 필요한 데이터, 최종결제금액, 딜레이 값 전달
+	    		// 결제서번호, 출금이체 API에 필요한 데이터, 딜레이 값 전달
 	    		fundingScheduler.scheduledBankTran(payment_idx, data, diffInMillies, diff);
 	    		
 	    		// 결제 완료 페이지 이동 
@@ -336,10 +336,10 @@ public class FundingController {
 	    	
 	    	
 	    	// ================================================================================= 계좌
-	    }
+	    } 
 	    
-	    
-		return "";
+	    model.addAttribute("msg", "오류 발생! 다시 결제해주세요");
+		return "fail_back";
 	}
 	
 	// 펀딩 결제(카드)
