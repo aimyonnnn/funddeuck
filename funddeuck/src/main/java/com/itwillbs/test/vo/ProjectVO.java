@@ -36,7 +36,7 @@ CREATE TABLE project (
     project_fintech_use_num VARCHAR(50) NOT NULL COMMENT '핀테크이용번호',
     project_settlement_image VARCHAR(100) NOT NULL COMMENT '통장사본 이미지',
     project_approve_status INT NOT NULL COMMENT '프로젝트 승인 상태 1-미승인 2-관리자에게 프로젝트 승인요청 3-관리자의 프로젝트 승인완료 4-관리자의 프로젝트 승인거절 5-프로젝트 요금제 결제완료(펀딩+ 페이지에 출력 가능한 상태)',
-    project_status INT NOT NULL COMMENT '프로젝트 상태 1-오픈예정 2-프로젝트 진행중 3-진행완료 4-1차정산완료 5-최종정산진행가능 6-최종정산완료',
+    project_status INT NOT NULL COMMENT '프로젝트 상태 0-프로젝트 취소 1-오픈예정 2-프로젝트 진행중 3-진행완료 4-1차정산완료 5-최종정산진행가능 6-최종정산완료 7-펀딩닥터신청 8-펀딩닥터답변완료',
     project_approval_request_time DATETIME COMMENT '프로젝트 승인 요청 시간',
     maker_idx INT NOT NULL COMMENT '메이커 번호',
     token_idx INT NOT NULL COMMENT '프로젝트 인증에 사용될 토큰 번호',
@@ -76,7 +76,7 @@ public class ProjectVO {
 	private String project_settlement_image;				// 통장사본 이미지
 	private int project_approve_status;						// 프로젝트 승인 상태
 	private Timestamp project_approval_request_time;    	// 프로젝트 승인 요청 시간 1-미승인 2-승인요청 3-승인완료 4-승인거절 5-결제완료(펀딩+ 페이지에 출력 가능한 상태)
-	private int project_status;								// 프로젝트 상태 1-오픈예정 2-프로젝트 진행중 3-진행완료 4-1차정산완료 5-최종정산진행가능 6-최종정산완료
+	private int project_status;								// 프로젝트 상태 프로젝트 상태 0-프로젝트 취소 1-오픈예정 2-프로젝트 진행중 3-진행완료 4-1차정산완료 5-최종정산진행가능 6-최종정산완료 7-펀딩닥터신청 8-펀딩닥터답변완료
 	private int maker_idx;									// 메이커 번호
 	private int token_idx;									// 프로젝트 계좌 인증에 사용될 토큰 번호
 	private int settlement_amount;							// 누적 정산금액

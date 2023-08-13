@@ -549,8 +549,10 @@ public class MakerController {
 	    int deleteCount = projectService.deleteProject(project_idx); // 작성중인 프로젝트 삭제
 	    
 	    if(deleteCount > 0) {
+			 String targetURL = "makerMypage";
 			 model.addAttribute("msg", "프로젝트가 성공적으로 삭제되었습니다!");
-			 return "makerMypage";
+			 model.addAttribute("targetURL", targetURL);
+		     return "success_forward";
 	    } else {
 	    	 model.addAttribute("msg", "잘못된 접근입니다. 로그인 후 사용해 주세요!");
 		     return "fail_back";
