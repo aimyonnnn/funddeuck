@@ -71,39 +71,39 @@ function openNotificationModal(notification_idx) {
 			modalBody2.html(tableHtml);
 			
 			// 메시지 읽음처리 하기
-			updateMessageStatus(notification_idx);
+// 			updateMessageStatus(notification_idx);
 			
 		}
 	});
 }
 
 //메시지 클릭 시 읽음처리 하기
-function updateMessageStatus(notification_idx) {
+// function updateMessageStatus(notification_idx) {
 	
-	$.ajax({
-		method: 'get',
-		url: '<c:url value="markNotificationAsRead"/>',
-		data: {	notification_idx: notification_idx },
-		success: function(data) {
+// 	$.ajax({
+// 		method: 'get',
+// 		url: '<c:url value="markNotificationAsRead"/>',
+// 		data: {	notification_idx: notification_idx },
+// 		success: function(data) {
 			
-			if(data.trim() == 'true') {
+// 			if(data.trim() == 'true') {
 				
-				console.log("메시지 조회하기 클릭 시 메시지 읽음 처리 완료");
+// 				console.log("메시지 조회하기 클릭 시 메시지 읽음 처리 완료");
 				
-			} 
+// 			} 
 			
-		},
-		error: function(error) {
-			console.log("메시지 읽음 처리 실패!")
-		}
-	});
+// 		},
+// 		error: function(error) {
+// 			console.log("메시지 읽음 처리 실패!")
+// 		}
+// 	});
 	
-	// 모달 창 닫힐 때 페이지 새로고침
-	$('#messageStaticBackdrop').on('hidden.bs.modal', function (e) {
-		location.reload();
-	});
+// 	// 모달 창 닫힐 때 페이지 새로고침
+// 	$('#messageStaticBackdrop').on('hidden.bs.modal', function (e) {
+// 		location.reload();
+// 	});
 	
-}
+// }
 
 // 메시지 삭제 처리
 function deleteNotification(notification_idx) {

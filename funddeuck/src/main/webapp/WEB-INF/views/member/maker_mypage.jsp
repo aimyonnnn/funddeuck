@@ -173,8 +173,20 @@
                         </div>
                         
                         <div class="col-sm-12 col-md-6">
+                            <a href="projectStatus" class="text-black w-100">
+                                <div class="row me-md-2 me-md-2">
+                                    <div class="col text-start my-3">
+                                        <i class="bi bi-clipboard2-data"></i> 프로젝트 관리
+                                    </div>
+                                    <div class="col text-end my-3">
+                                        <i class="bi bi-arrow-return-right"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
                             <a href="fundingDoctorAnswer" class="text-black w-100">
-                                <div class="row me-md-2">
+                                <div class="row ms-md-2 me-md-2">
                                     <div class="col text-start my-3">
                                         <i class="bi bi-bandaid"></i> 펀딩 닥터
                                     </div>

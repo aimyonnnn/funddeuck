@@ -214,6 +214,9 @@
                         <i class="fas fa-exclamation-circle"></i><span>&nbsp;알림이 없습니다.</span>
                     </div>
                 </div>
+                <button id="saveButton" class="btn btn-outline-secondary btn-sm me-3">임시저장</button>
+				<button id="loadButton" class="btn btn-outline-secondary btn-sm me-3">불러오기</button>
+				<button id="deleteButton" class="btn btn-outline-secondary btn-sm">삭제하기</button>
                 
                 <!-- 리워드 리스트  -->
                 <div class="admin-title mt-5">

@@ -235,17 +235,19 @@
 				}
 			});
 	
-			// 해시태그 불러오기 
-	        const hashtagValue = load("project_hashtag");
-	        if (hashtagValue) {
-	            $("#tag-list").empty();
-				hashtagValue.split(",").forEach(tag => {
-				    tag = tag.trim();
-				    if (tag) {
-				        addTag(tag);
-				    }
-				});
-			}
+			  // 해시태그 불러오기 
+			  const hashtagValue = load("project_hashtag");
+			  if (hashtagValue) {
+			    $("#searchTag").val(hashtagValue);
+			    $("#tag-list").empty();
+			    hashtagValue.split(",").forEach(tag => {
+			      tag = tag.trim();
+			      if (tag) {
+			        addTag(tag);
+			      }
+			    });
+			  }
+
 	        
 	     	// 요금제 불러오기
 	        const projectPlanValue = load("project_plan");
@@ -292,7 +294,7 @@
 			
 			// 금액 범위 확인
 			if (inputVal < minAmount || inputVal > maxAmount) {
-			  alert("금액은 최소 50만 원에서 최대 1억 원 사이로 설정해 주세요.");
+			  alert("금액은 최소 50만 원에서 최대 1억 원 사이 숫자로만 설정해 주세요.");
 			  self.val(""); // 입력값 초기화
 			}
 		});
@@ -313,46 +315,34 @@
 		});
 	    
 	 	// 유효성 검사 - 주민등록번호
-	    function validateNumberLength(inputVal, length) {
-	      var numberOnlyRegex = /^\d+$/;
-	      return numberOnlyRegex.test(inputVal) && inputVal.length === length;
-	    }
+	    $("#representativeBirth1, #representativeBirth2").on("input focus change", function (e) {
+		  var self = $(this);
+		  var inputVal = self.val();
+		  var expectedLength = self.attr("id") === "representativeBirth1" ? 6 : 7;
+		
+		  var numberOnlyVal = inputVal.replace(/[^\d]/g, "");
+		  if (inputVal !== numberOnlyVal) {
+		    alert("숫자만 입력해주세요.");
+		    inputVal = numberOnlyVal;
+		    self.val(inputVal);
+		  }
+		
+		  var trimmedVal = numberOnlyVal.slice(0, expectedLength);
+		  self.val(trimmedVal);
+		
+		  if (e.type === "input" && self.attr("id") === "representativeBirth1" && inputVal.length === 6) {
+		    $("#representativeBirth2").focus();
+		  }
+		
+		  if (e.type === "change" && inputVal.length !== expectedLength) {
+		    setTimeout(function() {
+		      alert(expectedLength + "자리를 입력하세요!");
+		      self.val(""); // 입력값 초기화 후 경고창 띄우기
+		      self.focus();
+		    }, 1);
+		  }
+		});
 	
-	    $("#representativeBirth1, #representativeBirth2").on("input focusout", function (e) {
-	      var self = $(this);
-	      var inputVal = self.val();
-	      var expectedLength = self.attr("id") === "representativeBirth1" ? 6 : 7;
-	
-	      // 숫자 외 문자 제거 전과 후를 비교하여 경고창 띄우기
-	      var numberOnlyVal = inputVal.replace(/[^\d]/g, "");
-	      if (inputVal.length > numberOnlyVal.length) {
-	        alert("숫자만 입력해주세요.");
-	      }
-	
-	      // 최대 글자수에 맞춰 자름
-	      var trimmedVal = numberOnlyVal.slice(0, expectedLength);
-	
-	      // 입력값 업데이트
-	      self.val(trimmedVal);
-	      
-	      // 앞에 6글자 입력이 완료되면 다음 입력창으로 자동 이동
-	      if (e.type === "input" && self.attr("id") === "representativeBirth1" && inputVal.length === 6) {
-	        $("#representativeBirth2").focus();
-	      }
-	
-	      // 포커스 아웃 시 글자수 검사
-	      if (e.type === "focusout" && inputVal.length !== expectedLength) {
-	        // 글자수가 다를 때 추가 작업 진행
-	        alert(expectedLength + "자리를 입력하세요!");
-	        self.one("focus", focusOnce); // 포커스 이벤트가 한 번만 발생하도록 처리
-	      }
-	    });
-	
-	    // 포커스 이벤트가 한 번만 발생하도록 하는 함수
-	    function focusOnce() {
-	      $(this).off("focus", focusOnce);
-	    }
-	    
 	    // 유효성 검사 - 카테고리
 		function checkCategory() {
 			var category = $("#projectCategory").val();
@@ -375,20 +365,23 @@
 
 	    // 유효성 검사 - 해시태그
 		function checkHashtags() {
-		    var hashtags = $("#searchTag").val().trim(); // 앞 뒤 공백 제거
-		    var cleanHashtags = hashtags.replaceAll(' ', ''); // 모든 공백 제거
-
-		    console.log('Clean Hashtags:', cleanHashtags); // 정리된 해시태그 값 확인
-		    var hashtagArray = cleanHashtags.split(",");
+		    var tagList = $("#tag-list li");
+		    var hashtagArray = [];
+		
+		    tagList.each(function() {
+		        hashtagArray.push($(this).text());
+		    });
+		
 		    console.log('Hashtag array:', hashtagArray); // 해시태그 배열 확인
-
+		
 		    if (hashtagArray.length < 3) {
 		        alert("해시태그를 3개 입력해주세요.");
 		        return false;
 		    }
-		    $("#searchTag").val(cleanHashtags); // 정리된 해시태그 값으로 원래 input의 값을 대체
+		    $("#searchTag").val(hashtagArray.join(',')); // 정리된 해시태그 값으로 원래 input의 값을 대체
 		    return true;
 		}
+
 
 
 	    // 유효성 검사 - 상세정보 이미지
@@ -410,15 +403,19 @@
 		    return true;
 		}
 
+		// 통장 사본 이미지 선택 시 유효성 검사
+		$('input[name="file5"]').on('change', function() {
+		    checkBankbookImage();
+		});
 
-	    // 유효성 검사 - 통장 사본
+		// 유효성 검사 - 통장 사본
 		function checkBankbookImage() {
-			var bankbook = $('input[name="file5"]').val();
-			if (bankbook === "") {
-			  alert("통장 사본 이미지를 제출해주세요.");
-			  return false;
-			}
-			return true;
+		    var bankbook = $('input[name="file5"]').val();
+		    if (bankbook === "") {
+		        alert("통장 사본 이미지를 제출해주세요.");
+		        return false;
+		    }
+		    return true;
 		}
 	    
 	    // 유효성 검사 - 체크박스
@@ -602,7 +599,6 @@
 					<!-- 프로젝트 소개 -->
 					<div class="mt-4">
 						<label class="subheading" for="managementDetail">프로젝트 소개</label>
-						<button class="btn btn-outline-primary btn-sm" onclick="makeGpt(event)">AI로 입력</button>
 						<p class="sideDescription">
 							준비하고 계신 리워드의 특별한 점을 작성해 주세요.<br>
 							기존 제품 ・ 서비스 ・ 콘텐츠를 개선했다면 어떤 점이 달라졌는지 작성해 주세요.<br>
@@ -614,6 +610,7 @@
 					<!-- 프로젝트 한줄 소개 -->
 					<div class="mt-4">
 						<label class="subheading" for="managementSemiDetail">프로젝트 요약</label>
+						<button class="btn btn-outline-primary btn-sm" onclick="makeGpt(event)">AI로 입력</button>
 						<p class="sideDescription">
 							메인에 소개될 프로젝트를 한 줄로 소개해 주세요.<br>
 						</p>
@@ -634,7 +631,7 @@
 					<div class="mt-4">
 						<label class="subheading" for="targetAmount">목표 금액</label>
 						<p class="sideDescription">최소 50만 원~최대 1억 원 사이에서 설정해 주세요.</p>
-						<input class="form-control" type="text" name="project_target" id="targetAmount" placeholder="금액을 입력해 주세요" required>
+						<input class="form-control" type="number" name="project_target" id="targetAmount" min="0" step="100" pattern="\d*" placeholder="금액을 입력해 주세요" required>
 					</div>
 
 					<!-- 프로젝트 일정 -->
@@ -701,7 +698,7 @@
 							· JPG, JPEG, PNG 파일<br>
 							· 위 계좌 정보와 동일한 명의의 통장 사본을 제출해 주세요.
 						</p>
-						<input type="file" name="file5"><br>
+						<input type="file" name="file5" required><br>
 					</div>
 
 					<!-- 약관 시작 -->

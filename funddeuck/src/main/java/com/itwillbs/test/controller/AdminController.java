@@ -58,6 +58,7 @@ import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.service.SendPhoneMessageService;
 import com.itwillbs.test.vo.ActivityListVO;
 import com.itwillbs.test.vo.BankingVO;
+import com.itwillbs.test.vo.ChartDataEntry;
 import com.itwillbs.test.vo.ChartDataVO;
 import com.itwillbs.test.vo.CreditVO;
 import com.itwillbs.test.vo.FundingDoctorVO;
@@ -1377,5 +1378,22 @@ public class AdminController {
 			return "fail_back";
 		}
 	}
+	
+	
+	@GetMapping("ChartDataEntry")
+    @ResponseBody
+    public List<PaymentVO> ChartDataEntry(
+    		@RequestParam("projectStartDate") String projectStartDate, @RequestParam("projectEndDate") String projectEndDate) {
+		System.out.println("여기까지옴");
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	    LocalDate parsedStartDate = LocalDate.parse(projectStartDate, formatter);
+	    LocalDate parsedEndDate = LocalDate.parse(projectEndDate, formatter);
+	    System.out.println("parsedStartDate : " + parsedStartDate);
+	    System.out.println("parsedEndDate : " + parsedEndDate);
+        List<PaymentVO> dataEntries = paymentService.getTopSalesProject(projectStartDate, projectEndDate);
+        System.out.println("이거출력됨:" + dataEntries);
+        return dataEntries;
+    }
+
 	
 }
