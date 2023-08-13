@@ -202,7 +202,7 @@
         <!-- 메뉴 선택 -->
         <div class="row mt-4 text-center">
             <div class="col col-lg-3 pb-2" style="border-bottom: 1px solid #ff9300;">
-                <a href="" class="text-black"> 팔로잉 메이커 </a>
+                <a href="FallowingForm" class="text-black"> 팔로잉 메이커 </a>
             </div>
             <div class="col col-lg-3">
                 <a href="FollowBoardForm" class="text-black"> 팔로잉 게시판 </a>

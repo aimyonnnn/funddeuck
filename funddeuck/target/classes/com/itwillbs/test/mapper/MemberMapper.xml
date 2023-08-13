@@ -259,6 +259,20 @@
 													FROM members
 													WHERE member_id = #{sId})))
 			ORDER BY project_start_date DESC
+			LIMIT
+			#{startRow}
+			, #{listLimit};
+	</select>
+	
+	<!-- 팔로우 프로잭트 리스트 카운트 -->
+	<select id="selectFollowBoardListCount">
+			SELECT COUNT(project_idx)
+			FROM project
+			WHERE maker_idx IN ((SELECT maker_idx
+								FROM fallowing
+								WHERE member_idx = (SELECT member_idx
+													FROM members
+													WHERE member_id = #{sId})))
 	</select>
 	
 	<!-- 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회 -->

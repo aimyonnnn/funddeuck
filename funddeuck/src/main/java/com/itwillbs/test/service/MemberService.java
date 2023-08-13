@@ -131,8 +131,8 @@ public class MemberService {
 	}
 
 	// 팔로우의 최근 프로젝트 가져오기
-	public List<ProjectVO> getProject(String sId) {
-		return mapper.selectFollowProjectList(sId);
+	public List<ProjectVO> getProject(String sId, int startRow, int listLimit) {
+		return mapper.selectFollowProjectList(sId, startRow, listLimit);
 	}
 
 	//배송이 완료 변경 버튼(회원만)
@@ -142,7 +142,7 @@ public class MemberService {
 	
 	// 리뷰작성 시 리뷰 등록
 	public int reivewRegistration(int payment_idx, String context, int starRating, String saveFileName) {
-			return mapper.insertRevewRegistration(payment_idx, context, starRating, saveFileName);
+		return mapper.insertRevewRegistration(payment_idx, context, starRating, saveFileName);
 	}
 	
 	// 리뷰 리스트 가져오기
@@ -234,6 +234,10 @@ public class MemberService {
 	// 팔로우 여부 확인
 	public int getisFollow(int maker_idx, String sId) {
 		return mapper.getIsFollow(maker_idx, sId);
+	}
+
+	public int getFollowBoardListCount(String sId) {
+		return mapper.selectFollowBoardListCount(sId);
 	}
 
 }

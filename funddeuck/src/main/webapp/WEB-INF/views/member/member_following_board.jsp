@@ -28,7 +28,7 @@
 	
 		$(function() {
 			
-			makerChatList();
+			followBoardList();
 			
 			$(window).on("scroll", function() { // 스크롤 동작 시 이벤트 처리
 				
@@ -39,13 +39,56 @@
 				if(scrollTop + windowHeight + x >= documentHeight) {
 					if(pageNum < maxPage) {
 						pageNum++;
-						makerChatList();
+						followBoardList();
 					} else {
+						
 					}
 				}
 				
 			});
 		});
+	
+	function followBoardList() {
+		
+		$.ajax({
+			type: "post",
+			url: "followBoardList",
+			data: {pageNum:pageNum},
+			dataType: "json",
+			success: function(data) {
+				
+				console.log(JSON.stringify(data));
+				maxPage = data.maxPage;
+				
+				for(let list of data.projectList){
+					$("#followBoardListArea").append(
+						    '<div class="row my-5 align-items-center">' +
+						        '<div class="col-1 me-5 h5 text-primary">' +
+						            '<img class="center" style="width: 50px; height: 50px; border-radius: 50%;">' +
+						        '</div>' +
+						        '<div class="col">' +
+						            '<div class="row">' +
+						                '<h5><b>' + list.project_subject + '</b></h5>' +
+						            '</div>' +
+						            '<div class="row">' +
+						                list.project_introduce +
+						            '</div>' +
+						        '</div>' +
+						        '<div class="col">' +
+						            list.project_start_date + ' ~ ' + list.project_end_date +
+						        '</div>' +
+						    '</div>'
+						);
+				}
+					
+				
+			},
+			error: function() {
+				alert("오류");
+			}
+		});
+		
+	}
 	
 	
     </script>
@@ -55,38 +98,21 @@
     <!-- 팔로잉 페이지 시작 -->
 <div class="row">
     <div class="col"></div>
-    <div class="col-12 col-md-5">
+    <div class="col-12 col-md-5" id="followBoardListArea">
         <div class="row" style="margin-top: 100px">
             <h2><b>팔로잉 프로젝트</b></h2>
         </div>
         <!-- 메뉴 선택 -->
-        <div class="row mt-4 text-center">
+        <div class="row mt-4 text-center" >
             <div class="col col-lg-3">
-                <a href="" class="text-black"> 팔로잉 </a>
+                <a href="FallowingForm" class="text-black"> 팔로잉 메이커 </a>
             </div>
             <div class="col col-lg-4 pb-2" style="border-bottom: 1px solid #ff9300;">
-                <a href="" class="text-black"> 팔로잉 프로젝트 </a>
+                <a href="FollowBoardForm" class="text-black"> 팔로잉 게시판 </a>
             </div>
         </div>
         <!-- 메뉴 선택 -->
-        <c:forEach items="${projectList }" var="project">
-        <div class="row my-5 align-items-center">
-            <div class="col-1 me-5 h5 text-primary">
-                <img class="center" style="width: 50px; height: 50px; border-radius: 50%;">
-            </div>
-            <div class="col">
-                <div class="row">
-                   <h5><b>${project.project_subject }</b></h5>
-                </div>
-                <div class="row">
-                    ${project.project_introduce }
-                </div>
-            </div>
-            <div class="col">
-               	${project.project_start_date } ~ ${project.project_end_date }
-            </div>
-        </div> 
-        </c:forEach>
+
     </div>
     <div class="col"></div>
 </div>
