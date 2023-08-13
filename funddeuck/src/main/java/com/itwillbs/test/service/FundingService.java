@@ -148,10 +148,10 @@ public class FundingService {
 	}
 	
 	// 리워드 수량 변경
-	public void modifyRewardAmount(int project_idx, int reward_idx, int payment_quantity) {
-		mapper.updateRewardAmount(project_idx, reward_idx, payment_quantity);
-		
-	}
+//	public void modifyRewardAmount(int project_idx, int reward_idx, int payment_quantity) {
+//		mapper.updateRewardAmount(project_idx, reward_idx, payment_quantity);
+//		
+//	}
 	
 	// 프로젝트의 누적금액 변경 
 	public void modifyProjectCumulativeAmount(int project_idx, int project_cumulative_amount) {

@@ -87,8 +87,8 @@ public interface FundingMapper {
 	// 출금이체 후 결제승인여부 결제완료(2)로 변경
 	void updatePaymentConfirmCompleted(int payment_idx);
 	
-	// 리워드 수량 변경
-	void updateRewardAmount(@Param("project_idx") int project_idx, @Param("reward_idx") int reward_idx, @Param("payment_quantity") int payment_quantity);
+//	// 리워드 수량 변경
+//	void updateRewardAmount(@Param("project_idx") int project_idx, @Param("reward_idx") int reward_idx, @Param("payment_quantity") int payment_quantity);
 	
 	// 프로젝트의 누적금액 변경 
 	void updateProjectCumulativeAmount(@Param("project_idx") int project_idx,@Param("project_cumulative_amount") int project_cumulative_amount);

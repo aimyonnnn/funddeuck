@@ -299,9 +299,6 @@ public class FundingController {
 	    		data.put("access_token", access_token);
 
 	    		// 쿠폰 사용시 쿠폰 상태 변경(coupon_idx 필요)
-	    		// 리워드 수량 변경
-	    		System.out.println("리워드 수량 : " + payment.getPayment_quantity());
-	    		fundingService.modifyRewardAmount(payment.getProject_idx(), payment.getReward_idx(), payment.getPayment_quantity());
 	    		// 프로젝트의 누적금액 변경 project_cumulative_amount (리워드금액 * 주문수량) + 추가후원금액(배송비를 제외한 금액)
 	    		int project_cumulative_amount = (payment.getReward_amount() * payment.getPayment_quantity()) + payment.getAdditional_amount();
 	    		fundingService.modifyProjectCumulativeAmount(payment.getProject_idx(), project_cumulative_amount);
@@ -365,9 +362,6 @@ public class FundingController {
 				int payment_idx = fundingService.getPaymentIdx(payment);
 				
 				// 쿠폰 사용시 쿠폰 상태 변경(coupon_idx 필요)
-				// 리워드 수량 변경
-				System.out.println("리워드 수량 : " + payment.getPayment_quantity());
-				fundingService.modifyRewardAmount(payment.getProject_idx(), payment.getReward_idx(), payment.getPayment_quantity());
 				// 프로젝트의 누적금액 변경 project_cumulative_amount 리워드금액*주문수량 + 추가후원금액
 				int project_cumulative_amount = (payment.getReward_amount() * payment.getPayment_quantity()) + payment.getAdditional_amount();
 				fundingService.modifyProjectCumulativeAmount(payment.getProject_idx(), project_cumulative_amount);
