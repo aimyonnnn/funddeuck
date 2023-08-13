@@ -82,7 +82,7 @@ public interface MemberMapper {
 	int insertZim(@Param("project_idx") int project_idx, @Param("sId") String sId);
 	
 	//팔로우 게시판
-	List<ProjectVO> selectFollowProjectList(String sId);
+	List<ProjectVO> selectFollowProjectList(@Param("sId")String sId,@Param("startRow") int startRow,@Param("listLimit") int listLimit);
 	
 	// 문자 메시지를 보내기 위해 project_idx로 멤버 정보 조회
 	MembersVO selectMemberInfoByProjectIdx(int project_idx);
@@ -144,6 +144,9 @@ public interface MemberMapper {
 	
 	// 팔로우 여부 확인
 	int getIsFollow(@Param("maker_idx") int maker_idx, @Param("sId") String sId);
+	
+	// 팔로우 한 메이커가 작성한 공지사항 카운트
+	int selectFollowBoardListCount(String sId);
 	
 
 }

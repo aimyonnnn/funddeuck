@@ -631,7 +631,7 @@ public class MemberController {
 		
     	JSONObject jsonObject = new JSONObject();
 		jsonObject.put("zimPostList", zimPostList);
-		jsonObject.put("listCount", listCount);
+		jsonObject.put("maxPage", maxPage);
     	
     	return jsonObject.toString();
     	
@@ -646,12 +646,39 @@ public class MemberController {
     		return "fail_back";
     	}
     	
-    	List<ProjectVO> projectList = service.getProject((String)session.getAttribute("sId"));
-    	
-    	model.addAttribute("projectList", projectList);
-    	
     	return "member/member_following_board";
     	
+    }
+    
+    @PostMapping("followBoardList")
+    @ResponseBody
+    public String followBoardList(HttpSession session, @RequestParam int pageNum) {
+    	
+		int listLimit = 5;// 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit;
+    	
+    	List<ProjectVO> projectList = service.getProject((String)session.getAttribute("sId"), startRow, listLimit);
+    	
+    	int listCount = service.getFollowBoardListCount((String)session.getAttribute("sId"));
+    	
+    	int pageListLimit = 5;
+    	
+    	int maxPage = listCount/listLimit + (listCount%listLimit > 0 ? 1 : 0);
+    	
+    	int startPage = (pageNum - 1 ) / pageListLimit * pageListLimit + 1;
+    	
+    	int endPage = startPage + pageListLimit - 1 ;
+    	
+		if(endPage > maxPage) {
+			endPage = maxPage;
+		}
+    	
+    	JSONObject jsonObject = new JSONObject();
+    	
+		jsonObject.put("projectList", projectList);
+		jsonObject.put("maxPage", maxPage);
+		
+    	return jsonObject.toString();
     }
     
     

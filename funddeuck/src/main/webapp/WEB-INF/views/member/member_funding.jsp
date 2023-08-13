@@ -359,7 +359,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-			<textarea class="form-control" rows="5" cols="60" id="cancelContext" ></textarea>		
+			<textarea class="form-control" rows="5" cols="60" id="cancelContext" oninput="textcount()"></textarea>	
+			<p id="characterCancelCount">0/100</p>	
 			<input type="file" id="cancelFile" class="form-control mt-2" accept="image/*">
 			<input type="hidden" id="cancel_idx">
       </div>
@@ -417,7 +418,10 @@
                         </tr>
                         <tr>
                             <th>내용</th>
-                            <td><textarea cols="50" rows="5" name="content" id="reviewContent"></textarea></td>
+                            <td><textarea cols="50" rows="5" name="content" id="reviewContent" oninput="countTextareaCharacters()"></textarea>
+                            	<p id="characterCount">0/100</p>
+                            </td>
+                            
                         </tr>
                          <tr>
                             <td colspan="2"><input type="file" id="reviewFile" class="form-control mt-2" accept="image/*"></td>
@@ -433,6 +437,36 @@
     </div>
   
  	<script type="text/javascript">
+ 	
+ 	function countTextareaCharacters() {
+        var textarea = $('#reviewContent');
+        var countElement = $('#characterCount');
+        var maxLength = 100; // 최대 글자 수
+        
+        var currentLength = textarea.val().length;
+        if (currentLength > maxLength) {
+            textarea.val(textarea.val().slice(0, maxLength)); // 최대 글자 수까지만 남기고 잘라냄
+            currentLength = maxLength; // 현재 글자 수를 최대 글자 수로 설정
+            alert("최대 글자 수입니다.");
+        }
+        countElement.text(currentLength + "/" + maxLength);
+	}
+ 	
+ 	function textcount() {
+        var textarea = $('#cancelContext');
+        var countElement = $('#characterCancelCount');
+        var maxLength = 100; // 최대 글자 수
+        
+        var currentLength = textarea.val().length;
+        if (currentLength > maxLength) {
+            textarea.val(textarea.val().slice(0, maxLength)); // 최대 글자 수까지만 남기고 잘라냄
+            currentLength = maxLength; // 현재 글자 수를 최대 글자 수로 설정
+            alert("최대 글자 수입니다.");
+        }
+        countElement.text(currentLength + "/" + maxLength);
+	}
+
+ 	
 	let url="http://info.sweettracker.co.kr";
  		function showDelivery() {
  			
