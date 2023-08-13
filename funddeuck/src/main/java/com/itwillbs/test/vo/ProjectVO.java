@@ -81,9 +81,13 @@ public class ProjectVO {
 	private int token_idx;									// 프로젝트 계좌 인증에 사용될 토큰 번호
 	private int settlement_amount;							// 누적 정산금액
 	
+	
 	private MultipartFile file1;							// 프로젝트 썸네일 (1)
  	private MultipartFile file2;							// 프로젝트 썸네일 (2)
  	private MultipartFile file3;							// 프로젝트 썸네일 (3)
  	private MultipartFile file4;							// 프로젝트 내용 상세 이미지
  	private MultipartFile file5;							// 통장사본 이미지
+ 	// -------------------------------- 출력용
+ 	private String maker_name;
+ 	private String maker_intro;
 }

@@ -51,9 +51,10 @@
 	
 	<!-- 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보 -->
 	<select id="selectProjectInfo" resultType="com.itwillbs.test.vo.ProjectVO"> 
-			SELECT *
-				FROM project
-					WHERE project_idx = #{project_idx}
+			SELECT *, m.maker_name, m.maker_intro
+				FROM project p JOIN maker m
+					ON p.maker_idx = m.maker_idx
+					WHERE p.project_idx = #{project_idx}
 	</select>
 	
 	<!-- 프로젝트 상세 페이지 이동 시 조회할 리워드 정보 -->
@@ -196,36 +197,40 @@
 	
 	<!-- 프로젝트 리스트 조회(탐색 페이지) -->
 	<select id="selectFundingList" resultType="com.itwillbs.test.vo.ProjectVO">
-		SELECT *
-			FROM project
-				WHERE project_approve_status = 5
+		SELECT *, m.maker_name
+			FROM project p join maker m
+				ON p.maker_idx = m.maker_idx
+				WHERE p.project_approve_status = 5
+				<if test="!status.equals('end')">
+					AND NOT p.project_status in(0,3,4,6,7,8)
+				</if>
 			<!-- 카테고리 선택 시 실행할 구문, 미선택시 실행x -->
 			<if test="!category.equals('all')">
 				AND
 				<choose>
 					<when test="category.equals('tech')">
-						project_category LIKE '테크/가전'
+						p.project_category LIKE '테크/가전'
 					</when>
 					<when test="category.equals('fashion')">
-						project_category LIKE '패션/잡화'
+						p.project_category LIKE '패션/잡화'
 					</when>
 					<when test="category.equals('living')">
-						project_category LIKE '홈/리빙'
+						p.project_category LIKE '홈/리빙'
 					</when>
 					<when test="category.equals('beauty')">
-						project_category LIKE '뷰티'
+						p.project_category LIKE '뷰티'
 					</when>
 					<when test="category.equals('publish')">
-						project_category LIKE '출판'
+						p.project_category LIKE '출판'
 					</when>
 					<when test="category.equals('green')">
-						project_category LIKE '친환경'
+						p.project_category LIKE '친환경'
 					</when>
 					<when test="category.equals('donate')">
-						project_category LIKE '기부'
+						p.project_category LIKE '기부'
 					</when>
 					<when test="category.equals('savAnimal')">
-						project_category LIKE '동물보호'
+						p.project_category LIKE '동물보호'
 					</when>
 				</choose>
 			</if>
@@ -234,10 +239,10 @@
 					AND
 					<choose>
 						<when test="status.equals('active')">
-							project_status = 2
+							p.project_status = 2
 						</when>
 						<when test="status.equals('end')">
-							project_status IN (3, 4, 5)
+							p.project_status IN (3, 4, 5)
 						</when>
 					</choose>
 				</if>
@@ -247,10 +252,10 @@
 					AND
 					<choose>
 						<when test="status.equals('active')">
-							project_status = 2
+							p.project_status = 2
 						</when>
 						<when test="status.equals('end')">
-							project_status IN (3, 4, 5)
+							p.project_status IN (3, 4, 5)
 						</when>
 					</choose>
 				</if>
@@ -258,13 +263,13 @@
 					ORDER BY
 					<choose>
 						<when test="index.equals('lastMin')">
-							project_end_date DESC
+							p.project_end_date DESC
 						</when>
 						<when test="index.equals('amount')">
-							project_cumulative_amount DESC
+							p.project_cumulative_amount DESC
 						</when>
 						<when test="index.equals('target')">
-							project_target DESC
+							p.project_target DESC
 						</when>
 					</choose>
 				</if>
@@ -340,7 +345,7 @@
 	<select id="selectSupTotal" resultType="int">
 		SELECT count(*)
 			FROM payment
-				WHERE project_idx = #{project_idx} AND payment_confirm = 1;
+				WHERE project_idx = #{project_idx} AND (payment_confirm = 1 OR payment_confirm = 2);
 	</select>
 	
 	<!-- 프로젝트 메이커 로고  -->

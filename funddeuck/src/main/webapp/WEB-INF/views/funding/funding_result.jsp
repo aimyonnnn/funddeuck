@@ -72,7 +72,5 @@
 		<hr class="border border-success border border-2">
 	</div>
 <br>
-<!-- footer include -->
-<jsp:include page="../Footer.jsp"></jsp:include>
 </body>
 </html>

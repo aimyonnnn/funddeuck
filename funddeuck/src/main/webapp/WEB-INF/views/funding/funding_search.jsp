@@ -64,7 +64,7 @@
 		<c:forEach items="${project}" var="project" varStatus="status">
 			<div class="col" id="projectListArea">
 				<div class="card h-100 w-100 p-3 border-0">
-					<img src="https://tumblbug-pci.imgix.net/4f7b81d5f6644ab0546c1550830b087fee9731e2/e43c362af955a9ab1e07587af2ceb05707fc28ac/b1ccc39baa075d4a16c99c789999706243c7b79a/dc4f106d-679f-446f-9990-77cbdab35281.jpeg?ixlib=rb-1.1.0&w=1240&h=930&auto=format%2Ccompress&lossless=true&fit=crop&s=e2257d31ad60c43dbd844924646d8355" 
+					<img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" 
 					class="card-img-top object-fit-contain" alt="..." >
 					<div class="card-body">
 						<small class="card-title opacity-75">${project.project_hashtag } | ${project.project_representative_name }</small>

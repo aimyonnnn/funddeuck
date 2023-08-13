@@ -25,6 +25,9 @@
 <script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
 </head>
 <body>
+<!-- 오늘 날짜 값 저장 -->
+<c:set var="now" value="<%=new java.util.Date()%>" />
+<fmt:formatDate var="nowDate" value="${now}" pattern="yyyy-MM-dd" />
 <!-- 요청 파라미터 값 저장 -->
 <input type="hidden" value="${param.category }" id="categoryVal">
 <input type="hidden" value="${param.status }" id="statusVal">
@@ -187,7 +190,7 @@
 					<img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" 
 					class="card-img-top object-fit-contain" alt="..." >
 					<div class="card-body">
-						<small class="card-title opacity-75">${project.project_hashtag } | ${project.project_representative_name }</small>
+						<small class="card-title opacity-75">${project.project_hashtag } | ${project.maker_name }</small>
 						<p class="card-text fw-bold text-start">${project.project_subject }</p>
 						<small class="card-title opacity-75">${project.project_semi_introduce }</small>
 					</div>
@@ -208,20 +211,20 @@
 			      			</small>
 			      			</c:if>
 			      			<!-- 프로젝트가 진행중이며, 아직 진행일이 남아있을 경우 -->
-			      			<c:if test="${project.project_status eq 2 && endDate - strDate ne 0 }">
+			      			<c:if test="${project.project_status eq 2 && endDate - strDate ne 0}">
 			      			<small class="fw-bold float-end">
 								${endDate - strDate }
 				      			일 남음
 			      			</small>
 			      			</c:if>
 			      			<!-- 프로젝트가 진행중이지만, 오늘 종료될 경우 -->
-			      			<c:if test="${project.project_status eq 2 && endDate - strDate eq 0 }">
+			      			<c:if test="${project.project_status eq 2 && endDate - strDate eq 0}">
 			      			<small class="fw-bold float-end text-danger">
 								오늘 종료
 			      			</small>
 			      			</c:if>
 			      			<!-- 이미 종료된 프로젝트의 경우 -->
-			      			<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 }">
+			      			<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 || project.project_status eq 6}">
 			      			<small class="fw-bold float-end text-danger">
 								종료됨
 			      			</small>

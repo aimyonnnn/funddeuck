@@ -172,7 +172,7 @@
 					   		</td>
 				   		</c:if>
 				   		<!-- 프로젝트가 진행중이며, 아직 진행일이 남아있을 경우 -->
-				   		<c:if test="${project.project_status eq 2 && endDate - strDate ne 0 }">
+				   		<c:if test="${project.project_status eq 2 && endDate - strDate ne 0}">
 					   		<td><small>
 					   		${project.project_start_date }
 					   		~
@@ -184,7 +184,7 @@
 					   		</td>
 				   		</c:if>
 				   		<!-- 프로젝트가 진행중이지만, 오늘 종료될 경우 -->
-				   		<c:if test="${project.project_status eq 2 && endDate - strDate eq 0 }">
+				   		<c:if test="${project.project_status eq 2 && endDate - strDate eq 0}">
 					   		<td><small>
 					   		${project.project_start_date }
 					   		~
@@ -196,7 +196,7 @@
 					   		</td>
 				   		</c:if>
 				   		<!-- 이미 종료된 프로젝트의 경우 -->
-				   		<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 }">
+				   		<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 || project.project_status eq 6}">
 					   		<td><small>
 					   		${project.project_start_date }
 					   		~
@@ -284,12 +284,12 @@
 					<div class="col-2">
 					<!-- 프로필 클릭시 메이커 새탭 이동-->
 						<a href="#" target="_blank">
-							<img src="https://cdn-icons-png.flaticon.com/512/3135/3135707.png" class="rounded-circle" alt="..." width="40px" height="40px">
+							<img src="${maker.maker_file5 }" class="rounded-circle" alt="..." width="40px" height="40px">
 						</a>
 					</div>
 					<!-- 메이커명-->
 					<div class="col text-start p-2">
-						<span class="fs-5 fw-bold p-3">${project.project_representative_name }</span>
+						<span class="fs-5 fw-bold p-3">${project.maker_name }</span>
 					</div>
 				</div>
 				<!-- 팔로우, 1:1문의 버튼-->
@@ -342,7 +342,7 @@
 					<article>
 						<!-- 사진이 있을 경우 출력 -->
 						<c:if test="${project.project_image ne null or project.project_image ne ''}">
-							<img src="${pageContext.request.contextPath}/resources/upload/${project.project_image}">
+							<img src="${pageContext.request.contextPath}/resources/upload/${project.project_image}" style="object-fit:scale-down;">
 						</c:if>
 						<div>&nbsp;</div>
 						<p class="text-justify">${project.project_introduce }</p>
@@ -397,7 +397,7 @@
 				<!-- 로그인시 -->
 				<c:if test="${param.category eq 'community' && not empty sessionScope.sId}">
 					<form action="commentWritePro" method="post" name="commentWrite">
-					<input type="hidden" name="member_id" value="작성테스트">
+					<input type="hidden" name="member_id" value="${sessionScope.sId }">
 					<input type="hidden" name="project_idx" value="${param.project_idx }">
 					<span class="fs-5 fw-bold text-start">응원 · 의견 · 체험리뷰<span class="fs-5 fw-bold text-start text-info">${ProjectCommunity.size() }</span></span><br>
 					<small class="text-start opacity-75">회원님들이 남긴 의견입니다.</small>
@@ -446,7 +446,8 @@
 				<!--메이커 프로필 영역-->
 				<div class="row p-3 border border-secondary-subtle shadow-sm">
 					<div class="row">
-						<span class="text-dark text-decoration-none fw-bold text-start pb-1" onclick="location.href='#'" style="cursor:pointer;">${project.project_representative_name }
+						<!-- 메이커명-->
+						<span class="text-dark text-decoration-none fw-bold text-start pb-1" onclick="location.href='#'" style="cursor:pointer;">${project.maker_name }
 						<button class="btn btn-outline-success rounded-0 btn-sm btn float-end">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
 						<path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
@@ -462,8 +463,7 @@
 								<img src="${pageContext.request.contextPath}/resources/upload/${maker.maker_file5}" class="rounded-circle" alt="..." width="40px" height="40px"></a>
 						</div>
 						<br>
-						<small class="text-start pb-3">${project.project_semi_introduce }</small>
-						<!-- 메이커명-->
+						<small class="text-start pb-3">${project.maker_intro }</small>
 					</div>
 					<!-- 팔로우, 1:1문의 버튼-->
 					<div class="row">
@@ -488,14 +488,14 @@
 						<c:forEach items="${reward }" var="reward" varStatus="status">
 							<div class="card">
 								<div class="card-body">
-									<span class="card-subtitle mb-2 text-muted">
-									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-									<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-									</svg>
-									<small>${reward.sales_quantity }개 선택</small>
-									<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button">
-									${reward.reward_quantity - reward.sales_quantity }개 남음</a>
-									</span><br>
+<!-- 									<span class="card-subtitle mb-2 text-muted"> -->
+<!-- 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16"> -->
+<!-- 									<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/> -->
+<!-- 									</svg> -->
+<%-- 									<small>${reward.sales_quantity }개 선택</small> --%>
+<!-- 									<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button"> -->
+<%-- 									${reward.reward_quantity - reward.sales_quantity }개 남음</a> --%>
+<!-- 									</span><br> -->
 									<span class="fs-4 card-title fw-bold"><fmt:formatNumber value="${reward.reward_price }" pattern="#,###" />원 +</span><br>
 									<small class="card-text opacity-75">${reward.reward_name }</small><br>
 									<small class="card-text opacity-75">${reward.reward_detail }</small>
@@ -510,7 +510,7 @@
 										<a href="fundingOrder?project_idx=${project.project_idx }&reward_idx=${reward.reward_idx }" class="stretched-link"></a>
 									</c:if>
 <!-- 									프로젝트가 종료된 경우(주문 불가능) -->
-			      					<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 }">
+			      					<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 || project.project_status eq 6}">
 										<a href="javascript:endReward()" class="stretched-link"></a>
 									</c:if>
 								</div>

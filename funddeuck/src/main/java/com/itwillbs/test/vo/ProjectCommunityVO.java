@@ -13,7 +13,7 @@ create table project_community (
 	project_community_subject varchar(255) not null comment '프로젝트 커뮤니티 게시물 제목',
 	project_community_content varchar(1000) not null comment '프로젝트 커뮤니티 게시물 내용',
 	project_community_regdate timestamp not null comment '프로젝트 커뮤니티 게시물 등록일자',
-	foreign key (member_idx) references members(member_idx) ON DELETE CASCADE,
+	foreign key (member_id) references members(member_id) ON DELETE CASCADE,
 	foreign key (project_idx) references project(project_idx) ON DELETE CASCADE
 );
 */
