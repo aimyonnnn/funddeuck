@@ -15,6 +15,53 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<!-- CSS -->
 	<link href="${pageContext.request.contextPath }/resources/css/project.css" rel="styleSheet" type="text/css">
+	<script>
+		$(document).ready(function() {
+			// 임시 저장
+			$(function () {
+				// 저장 함수 정의
+				function save(key, value) {
+					localStorage.setItem(key, value);
+				}
+			
+				// 불러오기 함수 정의
+			    function load(key) {
+					return localStorage.getItem(key);
+			    }
+				
+			    const fields = [
+			        "#maker_name",
+			        "#maker_intro",
+			        "#maker_email",
+			        "#maker_tel",
+			        "#maker_url"
+			    ];
+	
+			 	// 저장하기 버튼 
+				$("#saveButton").click(function () {
+				    fields.forEach(f => save(f, $(f).val()));
+				    alert("임시 저장 되었습니다!");
+				});
+			 	
+				// 삭제하기 버튼
+			    $("#deleteButton").click(function () {
+					localStorage.clear();
+					alert("임시저장된 내용을 삭제했습니다!");
+			    });
+				
+				// 불러오기 버튼 
+			    $("#loadButton").click(function () {
+			        fields.forEach(f => {
+			            var value = load(f);
+			            if (value) {
+			                $(f).val(value);
+			            }
+			        });
+			        alert("임시저장을 불러왔습니다!");  
+			    });
+			});
+		});
+	</script>
 </head>
 <body>
 	<div id="loadingIndicator" style="display: none;">
@@ -93,7 +140,7 @@
 				        <div>
 				            <label class="subheading" for="maker_name">메이커명</label>
 				            <p class="sideDescription">법인 사업자는 법인등기부상 법인명 / 개인 사업자는 주민등록상 성명 또는 상호 / 개인은 주민등록상 성명을 입력해 주세요.</p>
-				            <input class="form-control" type="text" name="maker_name" placeholder="메이커명을 입력해 주세요">
+				            <input class="form-control" type="text" id="maker_name" name="maker_name" placeholder="메이커명을 입력해 주세요">
 				        </div>
 				
 				        <!-- 메이커 소개 -->
@@ -105,7 +152,7 @@
 				                문구 작성이 막막하시면 AI가 문구를 추천해 드려요.<br>
 				                간단하게 작성하고 버튼을 클릭하면 AI가 문구를 수정해드려요.
 				            </p>
-				            <input class="form-control" type="text" name="maker_intro" placeholder="메이커를 소개를 적어주세요.">
+				            <input class="form-control" type="text" id="maker_intro" name="maker_intro" placeholder="메이커를 소개를 적어주세요.">
 				        </div>
 				
 				        <!-- 메이커 대표 이미지 -->
@@ -123,21 +170,21 @@
 				        <div>
 				            <label class="subheading" for="maker_email">메이커 이메일</label>
 				            <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 이메일을 입력해 주세요.</p>
-				            <input class="form-control" type="text" name="maker_email" placeholder="메이커 이메일을 입력해 주세요">
+				            <input class="form-control" type="text" id="maker_email" name="maker_email" placeholder="메이커 이메일을 입력해 주세요">
 				        </div>
 				
 				        <!-- 메이커 전화번호 -->
 				        <div>
 				            <label class="subheading" for="maker_tel">메이커 전화번호</label>
 				            <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 전화번호를 입력해 주세요.</p>
-				            <input class="form-control" type="text" name="maker_tel" placeholder="메이커 전화번호를 입력해 주세요">
+				            <input class="form-control" type="text" id="maker_tel" name="maker_tel" placeholder="메이커 전화번호를 입력해 주세요">
 				        </div>
 				
 				        <!-- 메이커 SNS/홈페이지/채널 주소 -->
 				        <div>
 				            <label class="subheading" for="maker_url">메이커 링크</label>
 				            <p class="sideDescription">프로젝트 공개 후 문의할 수 있는 홈페이지 URL을 입력해 주세요.</p>
-				            <input class="form-control" type="text" name="maker_url" placeholder="입력예시-www.example.com">
+				            <input class="form-control" type="text" id="maker_url" name="maker_url" placeholder="입력예시-www.example.com">
 				        </div>
 				
 				        <div class="d-flex justify-content-center my-3">
@@ -336,7 +383,9 @@
 					<i class="fas fa-exclamation-circle"></i><a>&nbsp;알림이 없습니다.</a>
 				</div>
 	      	</div>
-
+			<button id="saveButton" class="btn btn-outline-secondary btn-sm me-3">임시저장</button>
+			<button id="loadButton" class="btn btn-outline-secondary btn-sm me-3">불러오기</button>
+			<button id="deleteButton" class="btn btn-outline-secondary btn-sm">삭제하기</button>
 	      </div>
       </aside>
       <!-- 오른쪽 네비게이션 끝 -->
