@@ -301,7 +301,7 @@
 						$("#refund-reason").text(data.cancel_context);
 						if (data.cancel_img) { // 이미지 파일이 있다면 
 							var fileName = data.cancel_img.split("_")[1];
-							var fileURL = "/resources/upload/" + data.cancel_img;
+							var fileURL = "${pageContext.request.contextPath}/resources/upload/" + data.cancel_img;
 							
 							$("#refund-document")
 							    .attr("href", fileURL)
