@@ -669,6 +669,18 @@
 			WHERE project_idx = #{project_idx} 
 	</delete>
 	
+	<!-- 승인된 프로젝트 리스트 조회 -->
+	<!-- 메이커 페이지의 프로젝트 리스트 출력 -->
+	<select id="selectApprovedProjectsByMakerIdx">
+		select *
+			from
+				project
+			where
+				maker_idx = #{maker_idx} 
+				and project_approve_status = 5
+				and project_status = 2
+	</select>
+	
 </mapper>
 	
 	

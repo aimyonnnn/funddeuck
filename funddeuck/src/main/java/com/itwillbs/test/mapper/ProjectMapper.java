@@ -179,6 +179,9 @@ public interface ProjectMapper {
 
 	// 작성중인 프로젝트 삭제
 	int deleteProject(int project_idx);
+	
+	// 승인된 프로젝트 리스트 조회
+	List<ProjectVO> selectApprovedProjectsByMakerIdx(Integer maker_idx);
 
 	
 }

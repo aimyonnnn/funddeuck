@@ -185,8 +185,11 @@ public class MakerController {
 	            return "fail_back";
 	        }
 
-	        // 프로젝트 리스트 조회
-	        List<ProjectVO> pList = projectService.getAllProjectByMakerIdx(maker_idx);
+	        // 승인된 프로젝트 리스트 조회
+	        // project_approve_status = 5 & project_status = 2
+//	        List<ProjectVO> pList = projectService.getAllProjectByMakerIdx(maker_idx);
+	        List<ProjectVO> pList = projectService.getApprovedProjectsByMakerIdx(maker_idx);
+	        
 	        model.addAttribute("pList", pList);
 	        // 메이커 공지사항 리스트 조회
 	        List<MakerBoardVO> mList = projectService.getMakerBoardList(maker_idx);

@@ -250,4 +250,9 @@ public class ProjectService {
 	public int deleteProject(int project_idx) {
 		return mapper.deleteProject(project_idx);
 	}
+	
+	// 승인된 프로젝트 리스트 조회
+	public List<ProjectVO> getApprovedProjectsByMakerIdx(Integer maker_idx) {
+		return mapper.selectApprovedProjectsByMakerIdx(maker_idx);
+	}
 }
