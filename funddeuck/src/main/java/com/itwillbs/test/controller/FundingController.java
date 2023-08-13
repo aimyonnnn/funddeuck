@@ -320,7 +320,7 @@ public class FundingController {
 	    		// 결제 완료 페이지 이동 
 	    		// 등록된 결제서의 payment_idx model로 전달
 	    		model.addAttribute("payment_idx", payment_idx);
-	    		return "redirect:fundingResult?member_idx=" + payment.getMember_idx() + "&payment_idx=" + payment_idx + "&delivery_idx=" + payment.getDelivery_idx();
+	    		return "redirect:fundingResult";
 	    		
 	    	} else { // 결제서 등록 실패시
 	    		
@@ -379,7 +379,7 @@ public class FundingController {
 				// 결제 완료 페이지 이동 
 				// 등록된 결제서의 payment_idx model로 전달
 				model.addAttribute("payment_idx", payment_idx);
-				return "redirect:fundingResult?member_idx=" + payment.getMember_idx() + "&payment_idx=" + payment_idx + "&delivery_idx=" + payment.getDelivery_idx();
+				return "redirect:fundingResult";
 				
 			} else { // 결제서 등록 실패시
 				
@@ -391,10 +391,10 @@ public class FundingController {
 	
 	// 결제 완료 페이지
 	@GetMapping ("fundingResult")
-	public String fundingResult(Model model, HttpSession session
-			, @RequestParam int member_idx
-			, @RequestParam int payment_idx
-			, @RequestParam int delivery_idx
+	public String fundingResult(int payment_idx, Model model, HttpSession session
+//			, @RequestParam int member_idx
+//			, @RequestParam int payment_idx
+//			, @RequestParam int delivery_idx
 			) {
 
 		// 세션 아이디가 존재하지 않을 때 
@@ -404,16 +404,20 @@ public class FundingController {
 			return "fail_back";
 		}
 		
-		// 회원 정보 조회
-		MembersVO member = memberService.getMemberInfo(member_idx);
-		model.addAttribute("member", member);
 		
 		// 결제 정보 조회
-		List<PaymentVO> payment = paymentService.getPaymentList(payment_idx);
+		PaymentVO payment = fundingService.getPaymentInfo(payment_idx);
 		model.addAttribute("payment", payment);
 		
+		// 회원 정보 조회
+		MembersVO member = memberService.getMemberInfo(payment.getMember_idx());
+		model.addAttribute("member", member);
+		// 프로젝트 정보 조회
+		ProjectVO project = fundingService.selectProjectInfo(payment.getProject_idx());
+		model.addAttribute("project", project);
+		
 		// 주문 정보 조회
-		List<DeliveryVO> delivery = deliveryService.getDeliveryList(payment_idx);
+		DeliveryVO delivery = deliveryService.getDeliveryList(payment.getDelivery_idx());
 		model.addAttribute("delivery", delivery);
 		
 		return "funding/funding_result";

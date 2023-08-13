@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.test.mapper.DeliveryMapper;
-import com.itwillbs.test.vo.DeliveryVO;
+import com.itwillbs.test.vo.*;
 
 @Service
 public class DeliveryService {
@@ -14,7 +14,7 @@ public class DeliveryService {
     private DeliveryMapper mapper;
 
     // 배송 정보 조회
-	public List<DeliveryVO> getDeliveryList(int payment_idx) {
-		return mapper.selectDeliveryList(payment_idx);
+	public DeliveryVO getDeliveryList(int delivery_idx) {
+		return mapper.selectDeliveryList(delivery_idx);
 	}
 }

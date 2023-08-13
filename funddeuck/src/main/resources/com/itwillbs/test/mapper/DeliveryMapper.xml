@@ -6,7 +6,7 @@
 	<select id="selectDeliveryList" resultType="com.itwillbs.test.vo.DeliveryVO">
 		SELECT *
 			FROM delivery
-				WHERE payment_idx = #{payment_idx}
+				WHERE delivery_idx = #{delivery_idx}
 	</select>
 
 </mapper>

@@ -157,6 +157,7 @@ public class FundingService {
 	public void modifyProjectCumulativeAmount(int project_idx, int project_cumulative_amount) {
 		mapper.updateProjectCumulativeAmount(project_idx, project_cumulative_amount);
 	}
+	
 
 
 }

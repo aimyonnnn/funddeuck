@@ -10,6 +10,6 @@ import com.itwillbs.test.vo.DeliveryVO;
 public interface DeliveryMapper {
 
 	// 배송정보 조회
-	List<DeliveryVO> selectDeliveryList(int payment_idx);
+	DeliveryVO selectDeliveryList(int delivery_idx);
 
 }
