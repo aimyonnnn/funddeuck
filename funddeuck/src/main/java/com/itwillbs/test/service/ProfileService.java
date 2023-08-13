@@ -28,6 +28,14 @@ public class ProfileService {
 	public int modifyProfileImage(ProfileVO profile) {
 		return profileMapper.updateProfileImage(profile);
 	}
+
+	public void insertProfileImage(ProfileVO profile) {
+		profileMapper.insertProfileImage(profile);
+	}
+	
+	public Integer selectProfileImage(ProfileVO profile) {
+		return profileMapper.selectProfileImage(profile);
+	}
 	
 	public void insertProfile(ProfileVO profileVO) {
         profileMapper.insertProfile(profileVO);

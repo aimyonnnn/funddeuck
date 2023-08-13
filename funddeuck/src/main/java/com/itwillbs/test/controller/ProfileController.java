@@ -121,9 +121,19 @@ public class ProfileController {
 
 		System.out.println("실제 업로드 파일명 : " + profile.getProfile_img());
 		// -----------------------------------------------------------------------------------
-		int updateCount = profileService.modifyProfileImage(profile);
 		
-		if(updateCount > 0) {
+//		int updateCount = profileService.modifyProfileImage(profile);
+		
+		Integer checkmember_idx = profileService.selectProfileImage(profile);
+		System.out.println(checkmember_idx);
+		System.out.println(checkmember_idx);
+		System.out.println(checkmember_idx);
+		
+		if(checkmember_idx != null) {
+			System.out.println(profile);
+			profileService.modifyProfileImage(profile);
+		}else {profileService.insertProfileImage(profile);}
+		
 			// 파일 업로드 처리
 			try {
 			    if (fileName1 != null) {
@@ -138,11 +148,7 @@ public class ProfileController {
 			model.addAttribute("msg", "프로필 사진 수정이 완료되었습니다.");
 			model.addAttribute("targetURL", targetURL);
 			return "success_forward";
-		} else {
-			model.addAttribute("msg", "사진 수정 실패!");
-			return "fail_back";
 		}
-	}
     
     
     }

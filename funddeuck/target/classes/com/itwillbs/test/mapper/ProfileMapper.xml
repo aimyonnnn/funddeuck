@@ -35,7 +35,18 @@
         SET profile_img = #{profile_img}
         WHERE member_idx = #{member_idx}
     </update>
-
+    
+    <insert id="insertProfileImage" parameterType="com.itwillbs.test.vo.ProfileVO">
+        INSERT into profile (member_idx, profile_img)
+        values(
+         #{member_idx},#{profile_img})
+    </insert>
+    
+    <select id="selectProfileImage" parameterType="com.itwillbs.test.vo.ProfileVO" resultType="java.lang.Integer">
+	 	SELECT member_idx from profile
+	 	WHERE member_idx=#{member_idx} 
+	</select>
+	
 	 <insert id="insertProfile" parameterType="com.itwillbs.test.vo.ProfileVO">
         INSERT INTO profile (
             member_idx, profile_job1, profile_job2, profile_school1, profile_school2, profile_text
