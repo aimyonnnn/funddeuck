@@ -340,8 +340,9 @@ public class FundingController {
 	}
 	
 	// 펀딩 결제(카드)
+	@ResponseBody
 	@PostMapping("fundingCreditPayment")
-	public String fundingCreditPayment(@RequestParam(required=false) String project_end_date, @RequestBody PaymentVO payment, HttpSession session, Model model) throws ParseException {
+	public String fundingCreditPayment(@RequestBody PaymentVO payment, HttpSession session, Model model) throws ParseException {
 		System.out.println("fundingCreditPayment");
 		payment.setPayment_method(1);
 		payment.setPayment_confirm(2);
@@ -351,7 +352,6 @@ public class FundingController {
 		// 현재 날짜를 java.sql.Date 객체로 변환(VO의 데이터타입 일치시켜주기위함)
 		java.sql.Date currentSqlDate = java.sql.Date.valueOf(LocalDate.now());
 		payment.setPayment_date(currentSqlDate);
-		System.out.println("프로젝트 종료일 : " + project_end_date); 
 		
 			// 결제서 DB 작업 
 			boolean isRegistPayment = fundingService.registPayment(payment);
@@ -361,21 +361,13 @@ public class FundingController {
 				// 등록된 결제서의 payment_idx 조회
 				int payment_idx = fundingService.getPaymentIdx(payment);
 				
-				// 쿠폰 사용시 쿠폰 상태 변경(coupon_idx 필요)
-				// 프로젝트의 누적금액 변경 project_cumulative_amount 리워드금액*주문수량 + 추가후원금액
-				int project_cumulative_amount = (payment.getReward_amount() * payment.getPayment_quantity()) + payment.getAdditional_amount();
-				fundingService.modifyProjectCumulativeAmount(payment.getProject_idx(), project_cumulative_amount);
-				// 결제날짜 계산 프로젝트 종료일 - 주문날짜(현재시간)
-				Date now = new Date();
-				// 프로젝트 종료일 project_end_date (문자열에서 Date 객체로 변환)
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				Date projectEndDate = format.parse(project_end_date + " 23:59:59"); // 예외 처리 필요
+	    		// 쿠폰 사용시 쿠폰 상태 변경(coupon_idx 필요)
+	    		// 프로젝트의 누적금액 변경 project_cumulative_amount (리워드금액 * 주문수량) + 추가후원금액(배송비를 제외한 금액)
+	    		int project_cumulative_amount = (payment.getReward_amount() * payment.getPayment_quantity()) + payment.getAdditional_amount();
+	    		fundingService.modifyProjectCumulativeAmount(payment.getProject_idx(), project_cumulative_amount);
 				
-				
-				// 결제 완료 페이지 이동 
-				// 등록된 결제서의 payment_idx model로 전달
-				model.addAttribute("payment_idx", payment_idx);
-				return "redirect:fundingResult";
+	    		model.addAttribute("payment_idx", payment_idx);
+	    		return "fundingResult?payment_idx=" + payment_idx;
 				
 			} else { // 결제서 등록 실패시
 				

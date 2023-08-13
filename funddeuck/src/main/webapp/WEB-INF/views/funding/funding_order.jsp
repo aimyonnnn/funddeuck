@@ -27,62 +27,65 @@
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script type="text/javascript">
 //===========================================================
-//===========================================================
 // 아임포트 결제 스크립트
 $(()=>{
-	   
-	   let IMP = window.IMP;
-	   IMP.init("imp30787507");
-	   
-	   $('#requestPay').on('click', function() {
-	    	
-	        IMP.request_pay({
-				pg: "html5_inicis", // PG사 선택
-				pay_method: "card", // 지불 수단
-				merchant_uid: "merchant_" + new Date().getTime(), // 주문번호
-				name: "${reward.reward_name }", // 상품명
-				amount: ${reward.reward_price + reward.delivery_price } // 가격
-	       },
-	       function(rsp) { // callback
-	       console.log(rsp);
-	         
-	         // ================= 결제 성공 시 =================
-	       		if(rsp.success) {
-		     		alert('결제가 완료되었습니다.');
-			        // ================= DB 작업 =================
-			        // 1. project_approve_status = 5일 경우 결제테이블 결제 정보 저장하기
-			        // 2. 프로젝트 상태컬럼을 5-결제완료 상태로 변경(펀딩+ 페이지에 출력 가능한 상태)
-			        let formData = $("fundingPaymentForm").serialize();
-			        let payment_method = 1;
-			        let payment_confirm = 2;
-			        
-			        $.ajax({
-						method: 'post',
-						url: "<c:url value='fundingCreditPayment'/>",
-						dataType: 'JSON',
-						contentType : "application/json",
-						data: {
-							formData,
-							payment_method: payment_method,
-							payment_confirm: payment_confirm
-						},
-						success: function(data){
-							console.log(data);
-						},
-						error: function(){
-							console.log('ajax 요청이 실패하였습니다!');	
-						}
-					});
-			    	// ================= DB 작업 =================
-		        // ================= 결제 실패 시 =================
-		        } else {
-		            var msg = '결제에 실패하였습니다.';
-		            msg += '에러내용: ' + rsp.error_msg;
-		            alert(msg);
-	         	}
-	      });
-	   });
-	}); // ready
+    function formToObject(form) {
+        const data = new FormData(form);
+        return Array.from(data.entries()).reduce((result, [key, value]) => {
+            return Object.assign(result, {[key]: value});
+        }, {});
+    }
+
+    let IMP = window.IMP;
+    IMP.init("imp30787507");
+
+    $('#requestPay').on('click', function() {
+        IMP.request_pay({
+            pg: "html5_inicis",
+            pay_method: "card",
+            merchant_uid: "merchant_" + new Date().getTime(),
+            name: "${reward.reward_name }",
+            amount: ${reward.reward_price + reward.delivery_price }
+        },
+        function(rsp) {
+            console.log(rsp);
+
+            if(rsp.success) {
+                alert('결제가 완료되었습니다.');
+                
+                let formElement = document.getElementById("fundingPaymentForm");
+                let formData = formToObject(formElement);
+                let payment_method = 1;
+                let payment_confirm = 2;
+
+                $.ajax({
+                    method: 'post',
+                    url: "<c:url value='fundingCreditPayment'/>",
+                    contentType : "application/json",
+                    data: JSON.stringify({
+                        ...formData,
+                        payment_method: payment_method,
+                        payment_confirm: payment_confirm
+                    }),
+                    success: function(response){
+                        console.log(response);
+                        location.href = response;
+                    },
+                    error: function(xhr, status, error){
+				        console.log('Ajax 오류가 발생했습니다');
+				        console.log('상태 코드: ' + xhr.	status);
+				        console.log('에러 메시지: ' + error);
+                    }
+                });
+            } else {
+                var msg = '결제에 실패하였습니다.';
+                msg += '에러내용: ' + rsp.error_msg;
+                alert(msg);
+            }
+        });
+    });
+});
+
 //===========================================================
 </script>	
 
@@ -454,8 +457,8 @@ $(()=>{
 						<input type="hidden" name="reward_idx" value="${reward.reward_idx }" id="reward_idx">
 						<input type="hidden" name="reward_amount" value="${reward.reward_price }" id="reward_amount">
 						<input type="hidden" name="delivery_idx" id="delivery_idx" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_idx }</c:if>">
-						<input type="hidden" name="delivery_idx" id="delivery_zipcode" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_zipcode }</c:if>">
-						<input type="hidden" name="delivery_idx" id="delivery_add" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_add }</c:if>">
+						<input type="hidden" name="delivery_zipcode" id="delivery_zipcode" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_zipcode }</c:if>">
+						<input type="hidden" name="delivery_add" id="delivery_add" value="<c:if test="${not empty deliveryDefault }">${deliveryDefault.delivery_add }</c:if>">
 						<input type="hidden" name="member_email" value="${member.member_email }">
 						<input type="hidden" name="member_phone" value="${member.member_phone }">
 						<input type="hidden" name="additional_amount" id="additional_amount" value="0">
