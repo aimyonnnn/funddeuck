@@ -197,91 +197,52 @@
 	</script>
 
 	<script>
-	document.addEventListener("DOMContentLoaded", function() {
-	    // 페이지 로드 시 팝업 띄우기
-	    openPopup();
-	});
+	    document.addEventListener("DOMContentLoaded", function () {
+	        const popupContainer = document.getElementById("popup");
+	        const hideTodayCheckbox = document.getElementById("hideToday");
+	        const closePopupButton = document.querySelector(".close-button");
+	        
+	        // 팝업을 띄울 수 있는 날짜 범위
+	        const startDate = new Date("${newCouponList[0].newCoupon_start}");
+	        const endDate = new Date("${newCouponList[0].newCoupon_end}");
+	        
+	        // 현재 날짜
+	        const currentDate = new Date();
+	        
+	        // 이미 오늘 하루 안보기가 선택되었는지 확인
+	        const lastHiddenDate = localStorage.getItem("popupHiddenDate");
+	        if (lastHiddenDate && currentDate.toDateString() === lastHiddenDate) {
+	            // 이미 오늘 하루 안보기가 선택되었으면 팝업 숨기기
+	            popupContainer.style.display = "none";
+	        } else {
+	            // 오늘 하루 안보기가 선택되지 않았으면 날짜 범위 내에 있는 경우 팝업 띄우기
+	            if (currentDate >= startDate && currentDate <= endDate) {
+	                popupContainer.style.display = "block";
+	            }
+	        }
 	
-	function openPopup() {
-	    var popup = document.getElementById("popup");
-	    popup.style.display = "block";
-	}
-	
-	function closePopup() {
-	    var popup = document.getElementById("popup");
-	    popup.style.display = "none";
-	}
-	function openPopup() {
-	    var popup = document.getElementById("popup");
-	    popup.style.display = "block";
-	}
-	
-	function closePopup() {
-	    var popup = document.getElementById("popup");
-	    popup.style.display = "none";
-	}
-	
-	 document.addEventListener("DOMContentLoaded", function() {
-	var hideTodayCheckbox = document.getElementById("hideToday");
-	var popup = document.getElementById("popup");
-	var currentDate = new Date();
-	
-	var lastHiddenDate = localStorage.getItem("popupHiddenDate");
-	
-	if (lastHiddenDate) {
-	    var parsedLastHiddenDate = new Date(lastHiddenDate);
-	    if (currentDate.toDateString() === parsedLastHiddenDate.toDateString()) {
-	        // 이미 오늘 하루 안보기가 선택되었으면 팝업 숨기기
-	        popup.style.display = "none";
-	        hideTodayCheckbox.checked = true;
-	    }
-	}
-
-hideTodayCheckbox.addEventListener("change", function() {
-    if (this.checked) {
-        // 체크가 선택되었을 때 현재 날짜를 localStorage에 저장
-        localStorage.setItem("popupHiddenDate", currentDate.toDateString());
-    } else {
-        // 체크 해제되면 localStorage에서 삭제
-        localStorage.removeItem("popupHiddenDate");
-    }
-        });
-    });
-
-    function openPopup() {
-        var popup = document.getElementById("popup");
-        popup.style.display = "block";
-    }
-
-    function closePopup() {
-        var popup = document.getElementById("popup");
-        popup.style.display = "none";
-    }
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const popupContainer = document.getElementById("popup");
-        
-        // 팝업을 띄울 수 있는 날짜 범위
-        const startDate = new Date("${newCouponList[0].newCoupon_start}");
-        const endDate = new Date("${newCouponList[0].newCoupon_end}");
-
-        // 현재 날짜
-        const currentDate = new Date();
-
-        // 현재 날짜가 범위 내에 있는 경우 팝업 띄우기
-        if (currentDate >= startDate && currentDate <= endDate) {
-            popupContainer.style.display = "block";
-        }
-
-        // 닫기 버튼 클릭 시 팝업 닫기
-        const closePopupButton = document.querySelector(".close-button");
-        closePopupButton.addEventListener("click", function () {
-            popupContainer.style.display = "none";
-        });
-    });
-</script>
+	        // 닫기 버튼 클릭 시 팝업 닫기
+	        closePopupButton.addEventListener("click", function () {
+	            popupContainer.style.display = "none";
+	        });
+	        
+	        // 오늘 하루 안보기 체크박스 변경 시 처리
+	        hideTodayCheckbox.addEventListener("change", function () {
+	            if (this.checked) {
+	                // 체크가 선택되었을 때 현재 날짜를 localStorage에 저장
+	                localStorage.setItem("popupHiddenDate", currentDate.toDateString());
+	                popupContainer.style.display = "none";
+	            } else {
+	                // 체크 해제되면 localStorage에서 삭제
+	                localStorage.removeItem("popupHiddenDate");
+	                // 날짜 범위 내에 있는 경우 팝업 띄우기
+	                if (currentDate >= startDate && currentDate <= endDate) {
+	                    popupContainer.style.display = "block";
+	                }
+	            }
+	        });
+	    });
+	</script>
 
 
     <%@ include file="Footer.jsp" %>
