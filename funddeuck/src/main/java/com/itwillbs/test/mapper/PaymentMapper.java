@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwillbs.test.vo.ChartDataEntry;
 import com.itwillbs.test.vo.PaymentVO;
 import com.itwillbs.test.vo.ProjectVO;
 
@@ -154,5 +155,8 @@ public interface PaymentMapper {
 	
 	// 메이커의 프로젝트별 결제내역
 	List<PaymentVO> selectPaymentsByProjectAndMaker(Map<String, Object> map);
+	
+	// 매출액 높은 프로젝트 상위 3개
+	List<PaymentVO> selectTopSalesProject(@Param("projectStartDate") String projectStartDate, @Param("projectEndDate") String projectEndDate);
 
 }

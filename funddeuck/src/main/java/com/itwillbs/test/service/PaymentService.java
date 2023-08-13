@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.test.mapper.PaymentMapper;
+import com.itwillbs.test.vo.ChartDataEntry;
 import com.itwillbs.test.vo.DeliveryVO;
 import com.itwillbs.test.vo.PaymentVO;
 import com.itwillbs.test.vo.ProjectVO;
@@ -196,6 +197,11 @@ public class PaymentService {
 	// 메이커의 프로젝트별 결제내역
 	public List<PaymentVO> getPaymentsByProjectAndMaker(Map<String, Object> map) {
 		return mapper.selectPaymentsByProjectAndMaker(map);
+	}
+	
+	// 매출액 높은 프로젝트 상위 3개
+	public List<PaymentVO> getTopSalesProject(String projectStartDate, String projectEndDate) {
+		return mapper.selectTopSalesProject(projectStartDate, projectEndDate);
 	}
 	
 }

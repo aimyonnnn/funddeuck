@@ -195,104 +195,7 @@ window.addEventListener('load', function() {
 	    document.getElementById("updateButton").click();
 	}, 1000); 
 });
-
-
-// 지난 7일간 판매량이 높은 상위 프로젝트 3개
-$(() => {
-    $('.datepicker').datepicker();
-    
-    let myChart3 = null; // Chart 객체를 저장하기 위한 변수
-
-    $("#projectUpdateButton").click(function() {
-        let projectStartDate = $("#projectStartDate").val();
-        let projectEndDate = $("#projectEndDate").val();
-
-        $.ajax({
-            url: "<c:url value='ChartDataEntry'/>",
-            method: "get",
-            data: {
-                projectStartDate,
-                projectEndDate
-            },
-            success: function(dataEntries) {
-                console.log('이거출력됨');
-                console.log(dataEntries);
-                renderChart(dataEntries);
-            },
-            error: function(error) {
-                console.error("차트 데이터를 가져오는 중 오류 발생:", error);
-            }
-        });
-    });
-
-    function renderChart(dataEntries) {
-        // 차트 컨테이너 요소
-        let chartContainer3 = document.getElementById('chartContainer3');
-        // 기존의 차트 캔버스를 제거
-        chartContainer3.innerHTML = '<canvas id="myChart3"></canvas>';
-        // 새로운 차트를 위한 캔버스 요소
-        let ctx3 = document.getElementById('myChart3').getContext('2d');
-        // 기존의 차트 객체가 존재하는 경우 제거함
-        if (myChart3 && myChart3 instanceof Chart) {
-            myChart3.destroy();
-        }
-        
-        const labels = dataEntries.map(entry => entry.label);
-        const values = dataEntries.map(entry => entry.value);
-        
-        const backgroundColors = [
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)'
-        ];
-
-        const borderColors = [
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)'
-        ];
-
-        const datasets = [{
-            label: "판매량",
-            data: values,
-            backgroundColor: backgroundColors,
-            borderColor: borderColors,
-            borderWidth: 1
-        }];
-
-        myChart3 = new Chart(ctx3, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: datasets
-            },
-            options: {
-                // 차트 옵션 설정
-            }
-        });
-    }
-});
-
-//페이지 로드시에 차트 출력하기
-window.addEventListener('load', function() {
-	let today = new Date();                        							// 현재 날짜를 생성
-	let sevenDaysAgo = new Date(today);            							// 새로운 날짜 객체 생성    
-	sevenDaysAgo.setDate(today.getDate() - 7);       							// 7일 전의 날짜로 설정
-	
-	// 시작 날짜 입력란에 7일 전 날짜 설정
-	document.getElementById("projectStartDate").valueAsDate = sevenDaysAgo;
-	
-	// 끝 날짜 입력란에 오늘 날짜 설정
-	document.getElementById("projectEndDate").valueAsDate = today;
-	
-	// 페이지 로드 후 자동으로 조회 버튼 클릭 (1초 후에 실행하도록 설정)
-	setTimeout(function () {
-	    document.getElementById("projectUpdateButton").click();
-	}, 1000); 
-});
-
 </script>
-
 </head>
 <body>
 <input type="checkbox" name="" id="sidebar-toggle">
@@ -379,25 +282,6 @@ window.addEventListener('load', function() {
 	            <div id="chartContainer">
 	                <canvas id="myChart2" style="height: 40vh; width: 50vw"></canvas>
 	            </div>
-	            
-	            
-	           <div class="container">
-					<h2 class="fw-bold mt-5">상위 프로젝트 3개</h2>
-					<p class="projectContent">지난 7일간 매출액이 높은 프로젝트를 확인할 수 있습니다.</p>
-				</div>
-	            
-	            <!-- 날짜 선택 -->
-	            <div class="d-flex flex-row justify-content-end">
-	                <input type="date" class="datepicker" id="projectStartDate" placeholder="시작 날짜">
-	                <input type="date" class="datepicker mx-2" id="projectEndDate" placeholder="끝 날짜">
-	                <button class="datepicker-button ms-2" id="projectUpdateButton">조회</button>
-	            </div>
-	            
-	            <!-- 차트 -->
-	            <div id="chartContainer3">
-	                <canvas id="myChart3" style="height: 40vh; width: 50vw"></canvas>
-	            </div>
-	            
 	        </div>
 	    </div>
 	</main>
