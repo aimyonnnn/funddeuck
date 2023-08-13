@@ -325,7 +325,7 @@
 	<update id="modifyProjectCumulativeAmount">
 		UPDATE project
 		    INNER JOIN payment ON project.project_idx = payment.project_idx
-		    SET project_cumulative_amount = project_cumulative_amount + payment.reward_amount
+		    SET project_cumulative_amount = project_cumulative_amount + payment.reward_amount + payment.additional_amount
 		    WHERE payment.payment_idx = #{payment_idx}
 	</update>
 
