@@ -60,7 +60,7 @@ $(()=>{
 						method: 'post',
 						url: "<c:url value='fundingCreditPayment'/>",
 						dataType: 'JSON',
-						contentType : "application/x-www-form-urlencoded; charset=utf-8",
+						contentType : "application/json",
 						data: {
 							formData,
 							payment_method: payment_method,
@@ -292,13 +292,13 @@ $(()=>{
 					<span class="fs-4 fw-bold">결제 수단</span>
 					<div class="row m-2 p-2 border d-flex align-content-center">
 						<div class="form-check col ms-4">
-							<input class="form-check-input" type="radio" name="paymentCheck" id="card_payment" value="card" checked>
+							<input class="form-check-input" type="radio" name="paymentCheck" id="card_payment" value="card" checked onchange="setPayMethodRadiobtn()">
 							<label class="form-check-label fs-6" for="card_payment">
 								카드로 결제하기(기본 결제)
 							</label>
 						</div>
 						<div class="form-check col">
-							<input class="form-check-input" type="radio" name="paymentCheck" id="account_payment" value="account">
+							<input class="form-check-input" type="radio" name="paymentCheck" id="account_payment" value="account" onchange="setPayMethodRadiobtn()">
 							<label class="form-check-label fs-6" for="account_payment">
 								계좌로 결제하기
 							</label>
@@ -462,14 +462,14 @@ $(()=>{
 						<input type="hidden" name="use_coupon_amount" id="use_coupon_amount" value="0">
 						<input type="hidden" name="total_amount" id="total_amount" value="${reward.reward_price + reward.delivery_price}">
 						<input type="hidden" name="payment_quantity" id="payment_quantity" value="1">
+						<input type="hidden" name="project_end_date" id="project_end_date" value="${project.project_end_date }">
 <!-- 						<input type="text" name="coupon_idx" id="coupon_idx" value=""> -->
-						<button type="submit" id="fundingPaymentSubmitButtonCard" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
-						<button type="submit" id="fundingPaymentSubmitButtonAccount" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
+						<button type="button" id="requestPay" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
+						<button type="submit" id="fundingPaymentSubmitButtonAccount" class="btn btn-primary fs-3" style="display: none">이 프로젝트 후원하기</button>
 					</form>
 				</div>
 				<!-- 후원하기 버튼 영역 끝-->
 			</div>
-									<button id="requestPay" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
 			
 			<!-- 결제 확인 영역 끝-->
 		</div>
@@ -735,19 +735,15 @@ $(()=>{
 	    }
 	    
 	// 결제 버튼 표시 기본 설정(카드)
-	$(document).ready(function(){
+	function setPayMethodRadiobtn(){
 	    if($('input:radio[id=card_payment]').is(':checked')){
-        	$('#fundingPaymentSubmitButtonAccount').hide();
-        	$('#fundingPaymentSubmitButtonCard').show();
-	    }else if($('input:radio[id=account_payment]').is(':checked')){
-	    	$('#fundingPaymentSubmitButtonCard').hide();
-        	$('#fundingPaymentSubmitButtonAccount').show();
-	        $('#divId').show();
+            $("#requestPay").show();
+            $("#fundingPaymentSubmitButtonAccount").hide();
+	    } else {
+            $("#requestPay").hide();
+            $("#fundingPaymentSubmitButtonAccount").show();
 	    }
-    });
-	    
-	 // 라디오 버튼 체크 스크립트
-
+	}
 	</script>
 	<!-- 카카오 API 끝 -->	
 	<!-- 배송지 변경 모달창 -->
