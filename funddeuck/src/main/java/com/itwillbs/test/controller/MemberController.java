@@ -118,6 +118,7 @@ public class MemberController {
     	int insertCount = service.insertMember(member);
     	
     	if(insertCount > 0) {
+    		session.invalidate();
     		return "redirect:/";
     	} else {
     		model.addAttribute("msg", "회원가입 실패");
@@ -893,6 +894,23 @@ public class MemberController {
     	} else {
     		return "false";
     	}
+    }
+    
+    // sms 로그인 이메일 조회
+    @PostMapping("isKakao")
+    @ResponseBody
+    public String isKakao(@RequestParam String email, HttpSession session) {
+    	
+    	MembersVO vo = service.getMemberInfoEmail(email);
+    	
+    	if(vo == null) {
+    		session.setAttribute("email", email);
+    		return "false";
+    	}
+    	
+    	session.setAttribute("sId", vo.getMember_id());
+    	
+    	return "true";
     }
     
  // 랜덤 코드 생성

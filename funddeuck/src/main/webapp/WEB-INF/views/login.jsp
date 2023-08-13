@@ -178,7 +178,7 @@ function processCallback() {
                     	dataType:"text",
                     	success: function(data) {
 							if(data == "true"){
-								location.href="./";	
+								location.href="./";
 							} else {
 								const swalWithBootstrapButtons = Swal.mixin({
 									  customClass: {
