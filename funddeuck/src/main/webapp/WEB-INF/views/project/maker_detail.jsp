@@ -24,6 +24,96 @@
   object-fit: cover; /* 이미지가 캐러셀 영역에 꽉 차도록 조절 */
 }
 </style>
+<script type="text/javascript">
+	$(function() {
+		isFollow();
+	});
+	
+	function isFollow() {
+		
+		var sId = "";
+		
+		sId = "${sessionScope.sId}";
+		
+		if(sId != ""){
+			$.ajax({
+				type:"Post",
+				url:"makerDetailFollow",
+				data:{maker_idx:${param.maker_idx}},
+				dataType:"text",
+				success: function(data) {
+					
+					if(data == "true"){
+						
+						$("#follow").empty();
+						$("#follow").append(
+								'<button class="btn btn-primary w-100" onclick="follow(0)">'
+								+'Following'
+								+'</button>');
+					} else {
+						$("#follow").empty();
+						$("#follow").append(
+								'<button class="btn btn-outline-primary w-100" onclick="follow(1)">'
+								+'+Follow'
+								+'</button>');
+					}
+					
+				},
+				error: function() {
+						alert("완전실패");
+				}
+			});
+		} else {
+			$("#follow").empty();
+			$("#follow").append(
+					'<button class="btn btn-outline-primary w-100">'
+					+'로그인 후 팔로잉 하실 수 있습니다.'
+					+'</button>');
+		}
+	}
+	
+	function follow(num) {
+var sId = "";
+		
+		sId = "${sessionScope.sId}";
+		
+		if(sId != ""){
+			$.ajax({
+				type:"Post",
+				url:"makerDetailFollowCheck",
+				data:{maker_name:"${maker.maker_name}"
+					, isFollow:num},
+				dataType:"text",
+				success: function(data) {
+					
+					if(data == "true"){
+						
+						if(num == 1){
+							$("#follow").empty();
+							$("#follow").append(
+									'<button class="btn btn-primary w-100" onclick="follow(0)">'
+									+'Following'
+									+'</button>');
+						} else {
+							$("#follow").empty();
+							$("#follow").append(
+									'<button class="btn btn-outline-primary w-100" onclick="follow(1)">'
+									+'+Follow'
+									+'</button>');
+						}
+					}
+					
+				},
+				error: function() {
+						alert("완전실패");
+				}
+			});
+		} else {
+			
+		}
+	}
+	
+</script>
 </head>
 <body>
 <jsp:include page="../Header.jsp"></jsp:include>
@@ -85,10 +175,8 @@
 				</c:if>
 				
 				<!-- 팔로우 -->
-				<div class="text-center my-2">
-					<button class="btn btn-primary w-100">
-						+Follow<span></span>
-					</button>
+				<div class="text-center my-2" id="follow">
+
 				</div>
 
 				<!-- 탭 -->

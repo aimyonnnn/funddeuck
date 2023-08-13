@@ -555,4 +555,48 @@ public class MakerController {
 	    
 	}
 	
+	// MakerDetail에 Follow의 정보를 가져오기 위한 ajax
+	@PostMapping("makerDetailFollow")
+	@ResponseBody
+	public String makerDetailFollow(@RequestParam int maker_idx, HttpSession session) {
+		
+//		System.out.println(maker_idx);
+//		System.out.println((String)session.getAttribute("sId"));
+		
+		// 팔로우 하고 있는지 count 로 세어봄
+		int isFollow = memberService.getisFollow(maker_idx, (String)session.getAttribute("sId"));
+		
+		if(isFollow > 0) {
+			return "true";
+		} else {
+			return "false";
+		}
+	}
+	
+	//MakerDetail에 Follow 여부를 확인하고 넣기 및 삭제 ajax
+	@PostMapping("makerDetailFollowCheck")
+	@ResponseBody
+	public String makerDetailFollowCheck(@RequestParam String maker_name, @RequestParam int isFollow ,HttpSession session) {
+		
+		System.out.println(maker_name);
+		System.out.println(isFollow);
+		
+		if(isFollow == 1) {
+			int insertCount = memberService.insertFallow(maker_name, (String)session.getAttribute("sId"));
+			
+			if(insertCount > 0) {
+				return "true";
+			}
+			
+		} else {
+			int deletCount = memberService.deleteFallow(maker_name, (String)session.getAttribute("sId"));
+			
+			if(deletCount > 0) {
+				return "true";
+			}
+		}
+		
+		return "false";
+	}
+	
 }

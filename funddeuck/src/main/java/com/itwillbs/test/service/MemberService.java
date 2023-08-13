@@ -230,5 +230,10 @@ public class MemberService {
 	public List<MembersVO> getMemberCountsByDate(LocalDate startDate, LocalDate endDate) {
 		return mapper.selectMemberCountsByDate(startDate, endDate);
 	}
+	
+	// 팔로우 여부 확인
+	public int getisFollow(int maker_idx, String sId) {
+		return mapper.getIsFollow(maker_idx, sId);
+	}
 
 }

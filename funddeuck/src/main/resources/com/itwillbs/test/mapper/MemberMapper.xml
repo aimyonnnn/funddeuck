@@ -516,4 +516,14 @@
 		  GROUP BY date
 		  ORDER BY date
 	</select>
+	
+	<!-- 팔로우 여부 확인 -->
+	<select id="getIsFollow">
+		SELECT COUNT(maker_idx)
+			FROM fallowing
+			WHERE maker_idx = #{maker_idx}
+				AND member_idx = (SELECT member_idx
+								FROM members
+								WHERE member_id = #{sId})
+	</select>
 </mapper>

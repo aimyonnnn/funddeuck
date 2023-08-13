@@ -142,5 +142,8 @@ public interface MemberMapper {
 	// 누적 회원 수 조회
 	List<MembersVO> selectMemberCountsByDate(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);
 	
+	// 팔로우 여부 확인
+	int getIsFollow(@Param("maker_idx") int maker_idx, @Param("sId") String sId);
+	
 
 }
