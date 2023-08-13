@@ -542,9 +542,9 @@
 	    Kakao.Link.sendDefault({
 	      objectType: 'feed',
 	      content: {
-	        title: '펀뜩 사이트를 공유합니다!',
-	        description: '펀뜩 사이트로 바로가기',
-	        imageUrl: 'file:///C:/Users/user/git/funddeuck/funddeuck/src/main/webapp/resources/images/logo.png',
+	        title: '프로젝트를 공유합니다!',
+	        description: '펀뜩에서 보기',
+	        imageUrl: 'https://k.kakaocdn.net/14/dn/btsq1cOtNBL/aQLYrDHo7dEFAu2kgCdJI1/o.jpg',
 	        link: {
 	          mobileWebUrl: nowUrl,
 	          webUrl: nowUrl ,
@@ -554,8 +554,8 @@
 	        {
 	          title: '웹으로 보기',
 	          link: {
-	            mobileWebUrl: 'http://localhost:8080/test',
-	            webUrl: 'http://localhost:8080/test',
+	            mobileWebUrl: nowUrl,
+	            webUrl: nowUrl,
 	          },
 	        },
 	      ],
