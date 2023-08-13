@@ -8,6 +8,11 @@
 		<result property="content" column="content"/>
 	</resultMap>
 	
+	<resultMap id="MemberCountsResult" type="com.itwillbs.test.vo.MembersVO">
+	  <result column="date" property="date" javaType="java.time.LocalDate" />
+	  <result column="count" property="count" javaType="int" />
+	</resultMap>
+	
 
 
 	<!-- 회원 정보 조회하기 -->
@@ -501,5 +506,14 @@
 			WHERE member_idx = (SELECT member_idx
 								FROM members
 								WHERE member_id = #{sId})
+	</select>
+	
+	<!-- 누적 회원 수 조회 -->
+	<select id="selectMemberCountsByDate" resultMap="MemberCountsResult">
+		SELECT DATE(join_date) AS date, COUNT(member_idx) AS count
+		  FROM members
+		  WHERE join_date BETWEEN #{startDate} AND #{endDate}
+		  GROUP BY date
+		  ORDER BY date
 	</select>
 </mapper>

@@ -10,8 +10,12 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <!-- jquery -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.0.js"></script>
+<!-- line-awesome -->
+<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <!-- css -->
 <link href="${pageContext.request.contextPath}/resources/css/project.css" rel="stylesheet" type="text/css">
+<!-- chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- sweetalert -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
@@ -27,6 +31,102 @@ th, td {
  	text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */
 }
 </style>
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		<c:if test="${not empty membersData}">
+	      var memberCounts = [
+	        <c:forEach items="${membersData}" var="member" varStatus="status">
+	          {
+	            date: '${member.date}',
+	            count: ${member.count}
+	          }<c:if test="${not status.last}">,</c:if>
+	        </c:forEach>
+	      ];
+	    </c:if>
+	    
+	    let labels = [];
+	    let total = [];
+	    let members = [];
+	    let today = new Date().toISOString().slice(0, 10);
+	    let accumulatedCount = 0;
+	    let prevDate;
+	    
+	    for (let i = 0; i < memberCounts.length; i++) {
+	      let memberCount = memberCounts[i];
+	      labels.push(memberCount.date);
+	      accumulatedCount += memberCount.count;
+	      total.push(accumulatedCount);
+
+	      // 오늘 가입한 회원 수 계산
+	      let joinedToday = 0;
+	      if (prevDate === today) {
+	        joinedToday = memberCount.count;
+	      } else {
+	        joinedToday = (i > 0) ? (accumulatedCount - total[i - 1]) : memberCount.count;
+	      }
+	      members.push(joinedToday);
+	      prevDate = memberCount.date;
+	    }
+
+		const v_data = {
+		  labels: labels,
+		  datasets: [
+		    {
+		      label: "오늘 가입한 회원수",
+		      data: members,
+		      borderColor: "#36a2eb",
+		      backgroundColor: "#36a2eb",
+		      fill: false,
+		      yAxisID: "y",
+		    },
+		    {
+		      label: "누적 회원수",
+		      data: total,
+		      borderColor: "#ffb0c1",
+		      backgroundColor: "#ffb0c1",
+		      fill: false,
+		      yAxisID: "y1",
+		      type: "bar",
+		    },
+		  ],
+		};
+
+		const v_config = {
+			    type: 'line',
+			    data: v_data,
+			    options: {
+			        interaction: {
+			            intersect: false,
+			            mode: 'index',
+			        },
+
+			        scales: {
+			            y: {
+			                type: 'linear',
+			                display: true,
+			                position: 'left',
+			                suggestedMin: 0,
+			                suggestedMax: 50,
+			            },
+			            y1: {
+			                type: 'linear',
+			                display: true,
+			                position: 'right',
+			                suggestedMin: 0,
+			                suggestedMax: 50,
+			                // grid line settings
+			                grid: {
+			                    // only want the grid lines for one axis to show up
+			                    drawOnChartArea: false,
+			                }
+			            }
+			        }
+			    }
+			};
+		
+		new Chart(document.getElementById('myChart'), v_config);
+	});
+</script>
 </head>
 <body>
 <!-- 페이징 처리를 위한 pageNum 셋팅 -->
@@ -48,6 +148,10 @@ th, td {
 	<div class="container">
 		<h2 class="fw-bold mt-5">회원 관리</h2>
 		<p class="projectContent">전체 회원을 확인 할 수 있습니다.</p>
+	</div>
+	
+	<div>
+	    <canvas id="myChart" style="height: 40vh; width: 50vw"></canvas>
 	</div>
 
 	<!-- 검색 버튼 -->

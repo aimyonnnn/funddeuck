@@ -1,6 +1,7 @@
 package com.itwillbs.test.service;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -223,6 +224,11 @@ public class MemberService {
 	// 오늘 가입한 회원 수 조회
 	public int getMembersCountByToday() {
 		return mapper.selectMembersCountByToday();
+	}
+
+	// 누적 회원 수 조회
+	public List<MembersVO> getMemberCountsByDate(LocalDate startDate, LocalDate endDate) {
+		return mapper.selectMemberCountsByDate(startDate, endDate);
 	}
 
 }

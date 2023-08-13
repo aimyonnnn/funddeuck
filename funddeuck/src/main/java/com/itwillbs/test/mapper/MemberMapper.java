@@ -1,6 +1,7 @@
 package com.itwillbs.test.mapper;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -137,6 +138,9 @@ public interface MemberMapper {
 	
 	//찜 리스트 카운트
 	int selectZimCount(String sId);
+
+	// 누적 회원 수 조회
+	List<MembersVO> selectMemberCountsByDate(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);
 	
 
 }

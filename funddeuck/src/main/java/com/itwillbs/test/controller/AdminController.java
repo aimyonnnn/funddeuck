@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -1053,12 +1054,18 @@ public class AdminController {
 		}
 	}
 	
-	// 회원 관리 페이지
+		// 회원 관리 페이지
 		@GetMapping("adminMemberManagement")
 		public String adminMember(@RequestParam(defaultValue = "") String searchType,
 								  @RequestParam(defaultValue = "") String searchKeyword,
 								  @RequestParam(defaultValue = "1") int pageNum,
 								  HttpSession session, Model model) {
+			
+			String sId = (String) session.getAttribute("sId");
+			if(sId == null || !"admin".equals(sId)) {
+				model.addAttribute("msg", "잘못된 접근 입니다.");
+				return "fail_back";
+			}
 			
 			// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 			int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
@@ -1066,6 +1073,12 @@ public class AdminController {
 			
 			// 회원 목록 조회 요청
 			List<MembersVO> memberList = memberService.getAllMemberList(searchKeyword, searchType, startRow, listLimit);
+			
+			// 차트를 위한 조회 요청
+			LocalDate endDate = LocalDate.now(); // 오늘 날짜 가져오기
+		    LocalDate startDate = endDate.minusDays(6); // 최근 일주일 전의 날짜 가져오기
+			
+		    List<MembersVO> memberTotalCounts = memberService.getMemberCountsByDate(startDate, endDate); // 누적 회원 수
 			
 			// 페이징 처리를 위한 계산 작업
 			// 1. 전체 게시물 수 조회 요청
@@ -1082,6 +1095,7 @@ public class AdminController {
 			
 			PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
 			model.addAttribute("memberList", memberList);
+			model.addAttribute("membersData", memberTotalCounts);
 			model.addAttribute("pageInfo", pageInfo);
 			
 			return "admin/admin_member_management";

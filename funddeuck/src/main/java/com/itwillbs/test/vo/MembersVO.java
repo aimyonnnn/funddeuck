@@ -1,6 +1,7 @@
 package com.itwillbs.test.vo;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 import lombok.Data;
 /*
@@ -36,4 +37,7 @@ public class MembersVO {
 	private int project_idx;
 	private int maker_idx;
 	
+	// 회원 차트용
+	private LocalDate date;
+	private int count;
 }
