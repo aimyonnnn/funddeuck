@@ -34,41 +34,40 @@ $(()=>{
 	   let IMP = window.IMP;
 	   IMP.init("imp30787507");
 	   
-	    $('#requestPay').on('click', function() {
+	   $('#requestPay').on('click', function() {
 	    	
 	        IMP.request_pay({
-	        	
 				pg: "html5_inicis", // PG사 선택
 				pay_method: "card", // 지불 수단
 				merchant_uid: "merchant_" + new Date().getTime(), // 주문번호
-				name: "펀딩  프로젝트명", // 상품명
-				amount: 1000 // 가격
+				name: "${reward.reward_name }", // 상품명
+				amount: ${reward.reward_price + reward.delivery_price } // 가격
 	       },
 	       function(rsp) { // callback
 	       console.log(rsp);
 	         
 	         // ================= 결제 성공 시 =================
 	       		if(rsp.success) {
-		     		console.log('결제가 완료되었습니다.');
-		        	var formData = ${'#fundingPaymentForm'}.serialize();
-		     		
-		       		let payment_method = 1; 					    // 결제수단(1:카드결제)
-		       		let payment_confirm = 2; 					    // 결제상태(2:결제완료)
+		     		alert('결제가 완료되었습니다.');
 			        // ================= DB 작업 =================
 			        // 1. project_approve_status = 5일 경우 결제테이블 결제 정보 저장하기
 			        // 2. 프로젝트 상태컬럼을 5-결제완료 상태로 변경(펀딩+ 페이지에 출력 가능한 상태)
+			        let formData = $("fundingPaymentForm").serialize();
+			        let payment_method = 1;
+			        let payment_confirm = 2;
 			        
 			        $.ajax({
 						method: 'post',
 						url: "<c:url value='fundingCreditPayment'/>",
-						dataType: 'text',
+						dataType: 'JSON',
+						contentType : "application/x-www-form-urlencoded; charset=utf-8",
 						data: {
-							FormData,
+							formData,
 							payment_method: payment_method,
 							payment_confirm: payment_confirm
-							
 						},
 						success: function(data){
+							console.log(data);
 						},
 						error: function(){
 							console.log('ajax 요청이 실패하였습니다!');	
@@ -293,13 +292,13 @@ $(()=>{
 					<span class="fs-4 fw-bold">결제 수단</span>
 					<div class="row m-2 p-2 border d-flex align-content-center">
 						<div class="form-check col ms-4">
-							<input class="form-check-input" type="radio" name="paymentCheck" id="card_payment" checked>
+							<input class="form-check-input" type="radio" name="paymentCheck" id="card_payment" value="card" checked>
 							<label class="form-check-label fs-6" for="card_payment">
 								카드로 결제하기(기본 결제)
 							</label>
 						</div>
 						<div class="form-check col">
-							<input class="form-check-input" type="radio" name="paymentCheck" id="account_payment">
+							<input class="form-check-input" type="radio" name="paymentCheck" id="account_payment" value="account">
 							<label class="form-check-label fs-6" for="account_payment">
 								계좌로 결제하기
 							</label>
@@ -312,7 +311,7 @@ $(()=>{
 					<!-- 카드결제 -->
 <!-- 						카드결제 체크시 보여줄 영역 -->
 						<div class="col-12 d-flex align-content-center mt-2">
-<!-- 							<input class="btn btn-primary" type="button" value="카드결제" name="requestPay"> -->
+							<input class="btn btn-primary" type="button" value="카드결제" name="requestPay">
 						</div>
 					</div>
 					<div class="row d-none" id="account_payment_area">
@@ -448,7 +447,7 @@ $(()=>{
 				<!-- 클릭시 결제 페이지로 이동 -->
 				<!-- 체크박스 다 체크했을경우 이동가능 -->
 				<div class="row ms-2 me-2 pt-3">
-					<form action="fundingPayment" method="post" onsubmit="return validateForm()" id="fundingPaymentForm">
+					<form action="fundingPayment" method="post" onsubmit="return validateForm()" id="fundingPaymentForm" name="fundingPaymentForm">
 						<input type="hidden" name="project_idx" value="${project.project_idx }">
 						<input type="hidden" name="member_idx" value="${member.member_idx }">
 						<!-- ajax로 바뀜 -->
@@ -463,15 +462,15 @@ $(()=>{
 						<input type="hidden" name="use_coupon_amount" id="use_coupon_amount" value="0">
 						<input type="hidden" name="total_amount" id="total_amount" value="${reward.reward_price + reward.delivery_price}">
 						<input type="hidden" name="payment_quantity" id="payment_quantity" value="1">
-						<!-- 결제수단(1:카드 2:계좌) -->
-						<input type="hidden" name="payment_method" id="payment_method" value="1">
-						<input type="hidden" name="project_end_date" id="project_end_date" value="${project.project_end_date }">
 <!-- 						<input type="text" name="coupon_idx" id="coupon_idx" value=""> -->
-						<button type="submit" id="fundingPaymentSubmitButton" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
+						<button type="submit" id="fundingPaymentSubmitButtonCard" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
+						<button type="submit" id="fundingPaymentSubmitButtonAccount" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
 					</form>
 				</div>
 				<!-- 후원하기 버튼 영역 끝-->
 			</div>
+									<button id="requestPay" class="btn btn-primary fs-3">이 프로젝트 후원하기</button>
+			
 			<!-- 결제 확인 영역 끝-->
 		</div>
 	</div>
@@ -735,6 +734,20 @@ $(()=>{
 	        targetElement.style.display = 'block';
 	    }
 	    
+	// 결제 버튼 표시 기본 설정(카드)
+	$(document).ready(function(){
+	    if($('input:radio[id=card_payment]').is(':checked')){
+        	$('#fundingPaymentSubmitButtonAccount').hide();
+        	$('#fundingPaymentSubmitButtonCard').show();
+	    }else if($('input:radio[id=account_payment]').is(':checked')){
+	    	$('#fundingPaymentSubmitButtonCard').hide();
+        	$('#fundingPaymentSubmitButtonAccount').show();
+	        $('#divId').show();
+	    }
+    });
+	    
+	 // 라디오 버튼 체크 스크립트
+
 	</script>
 	<!-- 카카오 API 끝 -->	
 	<!-- 배송지 변경 모달창 -->

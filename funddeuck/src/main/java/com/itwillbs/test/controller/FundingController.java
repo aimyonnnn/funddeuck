@@ -344,7 +344,10 @@ public class FundingController {
 	
 	// 펀딩 결제(카드)
 	@PostMapping("fundingCreditPayment")
-	public String fundingCreditPayment(@RequestParam String project_end_date, @RequestBody PaymentVO payment, HttpSession session, Model model) throws ParseException {
+	public String fundingCreditPayment(@RequestParam(required=false) String project_end_date, @RequestBody PaymentVO payment, HttpSession session, Model model) throws ParseException {
+		System.out.println("fundingCreditPayment");
+		payment.setPayment_method(1);
+		payment.setPayment_confirm(2);
 		
 		System.out.println("PaymentVO : " + payment);
 		// 주문날짜
@@ -352,7 +355,6 @@ public class FundingController {
 		java.sql.Date currentSqlDate = java.sql.Date.valueOf(LocalDate.now());
 		payment.setPayment_date(currentSqlDate);
 		System.out.println("프로젝트 종료일 : " + project_end_date); 
-		
 		
 			// 결제서 DB 작업 
 			boolean isRegistPayment = fundingService.registPayment(payment);
