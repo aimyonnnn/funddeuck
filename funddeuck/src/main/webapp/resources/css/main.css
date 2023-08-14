@@ -262,3 +262,15 @@
 	  font-size: 20px;
 	  cursor: pointer;
 	}
+	
+	/* 위로 가기 버튼 */
+   #go-top {
+	display: none;
+       position: fixed;
+       bottom: 120px;
+       right: 100px;
+       z-index: 99;
+       border: none;
+       background: none;
+       padding: 0;
+   }

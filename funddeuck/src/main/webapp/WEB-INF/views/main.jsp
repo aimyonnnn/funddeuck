@@ -61,6 +61,8 @@
 <br>
 
 <div class="container">
+	<!-- 위로 가기 버튼 -->
+	<button id="go-top"><img src="${pageContext.request.contextPath }/resources/images/topbtn.png" style="width: 56px; height: 56px;"></button>
     <h3><b>오늘의 추천 프로젝트</b></h3>
     <p>함께 만드는 성공</p>
     <div class="row" id="projectContainer">
@@ -186,6 +188,29 @@
   	<script src="resources/js/hashTag.js"></script>
 
 	<script>
+		//위로가기 버튼
+		var backToTop = () => {
+		    // Scroll | button show/hide
+		    window.addEventListener('scroll', () => {
+		        if (document.querySelector('html').scrollTop > 100) {
+		            document.getElementById('go-top').style.display = "block";
+		        } else {
+		            document.getElementById('go-top').style.display = "none";
+		        }
+		    });
+	
+		    // back to top
+		    document.getElementById('go-top').addEventListener('click', () => {
+		        window.scroll({
+		            top: 0,
+		            left: 0,
+		            behavior: 'smooth'
+		        });
+		    });
+		};
+		backToTop();
+		// 위로 가기 버튼 끝
+	
 	    var swiper = new Swiper('.swiper-container', {
 	        slidesPerView: '3', //보이게 하고싶은 수만큼 적기!
 	        spaceBetween: 10,

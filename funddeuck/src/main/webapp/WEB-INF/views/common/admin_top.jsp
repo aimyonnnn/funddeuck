@@ -30,6 +30,17 @@
 .page-link {
 	color: black;
 }
+/* 위로 가기 버튼 */
+#go-top {
+ 	display: none;
+    position: fixed;
+    bottom: 120px;
+    right: 100px;
+    z-index: 99;
+    border: none;
+    background: none;
+    padding: 0;
+}
 </style>
 <script>
 
@@ -150,6 +161,9 @@ function updateList() {
 }
 </script>
 
+<!-- 위로 가기 버튼 -->
+<button id="go-top"><img src="${pageContext.request.contextPath }/resources/images/topbtn.png" style="width: 56px; height: 56px;"></button>
+
 <div id="msgStack"></div>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-dark" style="height:60px;">
@@ -207,6 +221,29 @@ function updateList() {
 </nav>
 
 <script type="text/javascript">
+//위로가기 버튼
+var backToTop = () => {
+    // Scroll | button show/hide
+    window.addEventListener('scroll', () => {
+        if (document.querySelector('html').scrollTop > 100) {
+            document.getElementById('go-top').style.display = "block";
+        } else {
+            document.getElementById('go-top').style.display = "none";
+        }
+    });
+
+    // back to top
+    document.getElementById('go-top').addEventListener('click', () => {
+        window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
+    });
+};
+backToTop();
+// 위로 가기 버튼 끝
+
 $(() => {
 	
     $('#notifySendBtn').click(function(e) {

@@ -12,6 +12,19 @@
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <!-- sweetalert -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<style>	
+/* 위로 가기 버튼 */
+   #go-top {
+	display: none;
+       position: fixed;
+       bottom: 120px;
+       right: 100px;
+       z-index: 99;
+       border: none;
+       background: none;
+       padding: 0;
+   }
+</style>
 <!-- 채널톡 API 시작 -->
 <script>
 	(function(){var w=window;if(w.ChannelIO){return w.console.error("ChannelIO script included twice.");}var ch=function(){ch.c(arguments);};ch.q=[];ch.c=function(args){ch.q.push(args);};w.ChannelIO=ch;function l(){if(w.ChannelIOInitialized){return;}w.ChannelIOInitialized=true;var s=document.createElement("script");s.type="text/javascript";s.async=true;s.src="https://cdn.channel.io/plugin/ch-plugin-web.js";var x=document.getElementsByTagName("script")[0];if(x.parentNode){x.parentNode.insertBefore(s,x);}}if(document.readyState==="complete"){l();}else{w.addEventListener("DOMContentLoaded",l);w.addEventListener("load",l);}})();
@@ -153,6 +166,9 @@ function updateList() {
 }
 
 </script>
+
+<!-- 위로 가기 버튼 -->
+<button id="go-top"><img src="${pageContext.request.contextPath }/resources/images/topbtn.png" style="width: 56px; height: 56px;"></button>
 	
 <div id="msgStack"></div>
 
@@ -221,6 +237,29 @@ function updateList() {
 </nav>
 
 <script type="text/javascript">
+//위로가기 버튼
+var backToTop = () => {
+    // Scroll | button show/hide
+    window.addEventListener('scroll', () => {
+        if (document.querySelector('html').scrollTop > 100) {
+            document.getElementById('go-top').style.display = "block";
+        } else {
+            document.getElementById('go-top').style.display = "none";
+        }
+    });
+
+    // back to top
+    document.getElementById('go-top').addEventListener('click', () => {
+        window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
+    });
+};
+backToTop();
+// 위로 가기 버튼 끝
+
 $(() => {
 	
     $('#notifySendBtn').click(function(e) {
