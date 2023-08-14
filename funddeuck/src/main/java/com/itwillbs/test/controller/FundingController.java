@@ -215,7 +215,6 @@ public class FundingController {
 				for(BankAccountVO account : bankAccountList) {
 				    if (account.getFintech_use_num() != null && account.getFintech_use_num().equals(fintech_use_num)) {
 				        bankAccount = account;
-				        break;
 				    }
 				}
 				session.setAttribute("fintech_use_num", fintech_use_num);
@@ -261,82 +260,77 @@ public class FundingController {
 		// 현재 날짜를 java.sql.Date 객체로 변환(VO의 데이터타입 일치시켜주기위함)
 		java.sql.Date currentSqlDate = java.sql.Date.valueOf(LocalDate.now());
 		payment.setPayment_date(currentSqlDate);
-		
+		// 결제 수단 => 계좌 결제(2)
+		payment.setPayment_method(2);
 	    
-		// 결제 수단 전달시 카드(1)/ 계좌(2)
-	    if(payment.getPayment_method() == 2) { 
 	    	
-	    	// ================================================================================= 계좌
-	    	System.out.println("프로젝트 종료일 : " + project_end_date); 
-	    	
-	    	// 결제승인여부 payment_confirm 예약완료 1
-	    	payment.setPayment_confirm(1);
-	    	// 계좌면 회원 계좌에서 출금이체
-	    	// fintech_use_num access_token 필요(세션값 불러오기)
-	    	String fintech_use_num = (String)session.getAttribute("fintech_use_num");
-	    	String access_token = (String)session.getAttribute("access_token");
-	    	String sId = (String)session.getAttribute("sId");
-	    	// 계좌정보가 없을 경우(계좌 미등록시)
-	    	// 계좌 결제시 확인용
-	    	logger.info("fintech_use_num : " + fintech_use_num);
-	    	logger.info("access_token : " + access_token);
-	    	if(fintech_use_num == null || access_token == null) {
-	    		model.addAttribute("msg", "계좌인증 후 계좌를 등록해주세요!");
-	    		return "fail_back";
-	    	}
-	    	// 결제서 DB 작업 
-	    	boolean isRegistPayment = fundingService.registPayment(payment);
-	    	if(isRegistPayment) { // 결제서 등록 성공시
-	    		System.out.println("결제서 DB 저장!");
-	    		
-	    		// 등록된 결제서의 payment_idx 조회
-	    		int payment_idx = fundingService.getPaymentIdx(payment);
-	    		
-	    		// map 활용하여 데이터 전달
-	    		// payment.getTotal_amount(), fintech_use_num, access_token
-	    		Map<String, String> data = new HashMap<>();
-	    		data.put("fintech_use_num", fintech_use_num);
-	    		data.put("access_token", access_token);
+    	// ================================================================================= 계좌
+    	System.out.println("프로젝트 종료일 : " + project_end_date); 
+    	
+    	// 결제승인여부 payment_confirm 예약완료 1
+    	payment.setPayment_confirm(1);
+    	// 계좌면 회원 계좌에서 출금이체
+    	// fintech_use_num access_token 필요(세션값 불러오기)
+    	String fintech_use_num = (String)session.getAttribute("fintech_use_num");
+    	String access_token = (String)session.getAttribute("access_token");
+    	String sId = (String)session.getAttribute("sId");
+    	// 계좌정보가 없을 경우(계좌 미등록시)
+    	// 계좌 결제시 확인용
+    	logger.info("fintech_use_num : " + fintech_use_num);
+    	logger.info("access_token : " + access_token);
+    	if(fintech_use_num == null || access_token == null) {
+    		model.addAttribute("msg", "계좌인증 후 계좌를 등록해주세요!");
+    		return "fail_back";
+    	}
+    	// 결제서 DB 작업 
+    	boolean isRegistPayment = fundingService.registPayment(payment);
+    	if(isRegistPayment) { // 결제서 등록 성공시
+    		System.out.println("결제서 DB 저장!");
+    		
+    		// 등록된 결제서의 payment_idx 조회
+    		int payment_idx = fundingService.getPaymentIdx(payment);
+    		
+    		// map 활용하여 데이터 전달
+    		// payment.getTotal_amount(), fintech_use_num, access_token
+    		Map<String, String> data = new HashMap<>();
+    		data.put("fintech_use_num", fintech_use_num);
+    		data.put("access_token", access_token);
 
-	    		// 쿠폰 사용시 쿠폰 상태 변경(coupon_idx 필요)
-	    		// 프로젝트의 누적금액 변경 project_cumulative_amount (리워드금액 * 주문수량) + 추가후원금액(배송비를 제외한 금액)
-	    		int project_cumulative_amount = (payment.getReward_amount() * payment.getPayment_quantity()) + payment.getAdditional_amount();
-	    		fundingService.modifyProjectCumulativeAmount(payment.getProject_idx(), project_cumulative_amount);
-	    		// 결제날짜 계산 프로젝트 종료일 - 주문날짜(현재시간)
-	    		Date now = new Date();
-	    		// 프로젝트 종료일 project_end_date (문자열에서 Date 객체로 변환)
-	    		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	    		Date projectEndDate = format.parse(project_end_date + " 23:59:59"); // 예외 처리 필요
+    		// 쿠폰 사용시 쿠폰 상태 변경(coupon_idx 필요)
+    		// 프로젝트의 누적금액 변경 project_cumulative_amount (리워드금액 * 주문수량) + 추가후원금액(배송비를 제외한 금액)
+    		int project_cumulative_amount = (payment.getReward_amount() * payment.getPayment_quantity()) + payment.getAdditional_amount();
+    		fundingService.modifyProjectCumulativeAmount(payment.getProject_idx(), project_cumulative_amount);
+    		// 결제날짜 계산 프로젝트 종료일 - 주문날짜(현재시간)
+    		Date now = new Date();
+    		// 프로젝트 종료일 project_end_date (문자열에서 Date 객체로 변환)
+    		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    		Date projectEndDate = format.parse(project_end_date + " 23:59:59"); // 예외 처리 필요
 
-	    		// 딜레이 값 계산
-	    		long diffInMillies = projectEndDate.getTime() - now.getTime();
-	    		long diff = TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);// 출금이체(스케줄링) 예약
-	    		// 결제서번호, 출금이체 API에 필요한 데이터, 딜레이 값 전달
-	    		fundingScheduler.scheduledBankTran(payment_idx, data, diffInMillies, diff);
-	    		
-	    		// 결제 완료 페이지 이동 
-	    		// 등록된 결제서의 payment_idx model로 전달
-	    		model.addAttribute("payment_idx", payment_idx);
-	    		return "redirect:fundingResult";
-	    		
-	    	} else { // 결제서 등록 실패시
-	    		
-	    		model.addAttribute("msg", "오류 발생! 다시 결제해주세요");
-	    		return "fail_back";
-	    		
+    		// 딜레이 값 계산
+    		long diffInMillies = projectEndDate.getTime() - now.getTime();
+    		long diff = TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);// 출금이체(스케줄링) 예약
+    		// 결제서번호, 출금이체 API에 필요한 데이터, 딜레이 값 전달
+    		fundingScheduler.scheduledBankTran(payment_idx, data, diffInMillies, diff);
+    		
+    		// 결제 완료 페이지 이동 
+    		// 등록된 결제서의 payment_idx model로 전달
+    		model.addAttribute("payment_idx", payment_idx);
+    		return "redirect:fundingResult";
+    		
+    	} else { // 결제서 등록 실패시
+    		
+    		model.addAttribute("msg", "오류 발생! 다시 결제해주세요");
+    		return "fail_back";
+    		
 	    	}
 	    	
 	    	
-	    	// 환불 saveRefundTransactionHistory (거래내역 저장 메서드)
+    	// 환불 saveRefundTransactionHistory (거래내역 저장 메서드)
 //	    ResponseDepositVO depositResult = bankApiService.requestDeposit(payment.getTotal_amount(), fintech_use_num, access_token);
 //	    logger.info("depositResult" + depositResult);
-	    	
-	    	
-	    	// ================================================================================= 계좌
-	    } 
-	    
-	    model.addAttribute("msg", "오류 발생! 다시 결제해주세요");
-		return "fail_back";
+    	
+    	
+    	// ================================================================================= 계좌
 	}
 	
 	// 펀딩 결제(카드)

@@ -101,9 +101,16 @@ public class HelpController {
 		return "success_forward";
 	}
 	
-	// 공지사항 폼 이동
+	// 공지사항 메인 이동
 	@GetMapping("helpNotice")
-	public String helpNoticeForm() {
+	public String helpNotice() {
 		return "help/help_notice";
 	}
+	
+	// 공지사항 글쓰기 이동(관리자)
+	@GetMapping("helpNoticeForm")
+	public String helpNoticeForm() {
+		return "help/help_notice_form";
+	}
+	
 }
