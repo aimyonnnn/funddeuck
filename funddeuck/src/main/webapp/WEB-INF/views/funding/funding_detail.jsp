@@ -150,7 +150,7 @@
 						<div class="progress">
 							<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Example with label" 
 		  					style="width: ${project.project_cumulative_amount/project.project_target * 100}%" 
-							aria-valuenow="${project.project_cumulative_amount/project.project_target * 100 }" aria-valuemin="0" aria-valuemax="100">${project.project_cumulative_amount/project.project_target * 100 }%</div>
+							aria-valuenow="${project.project_cumulative_amount/project.project_target * 100 }" aria-valuemin="0" aria-valuemax="100"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${project.project_cumulative_amount/project.project_target * 100 }" />%</div>
 						</div>
 					</div>
 					</div>

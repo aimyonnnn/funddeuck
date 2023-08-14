@@ -29,6 +29,9 @@
 <input type="hidden" value="${param.searchKeyword }" id="searchKeywordVal">
 <input type="hidden" value="${param.status }" id="statusVal">
 <input type="hidden" value="${param.index }" id="indexVal">
+<!-- 헤더 위치 맞춤 -->
+<div>&nbsp;</div>
+<div>&nbsp;</div>
 <!-- 상단 이동 버튼 -->
 	<button type="button" class="btn btn-dark position-fixed bottom-0 end-0" id="go-top">
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-up-square-fill" viewBox="0 0 16 16">
