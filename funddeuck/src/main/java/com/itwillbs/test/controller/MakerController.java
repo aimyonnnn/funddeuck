@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -603,5 +604,29 @@ public class MakerController {
 		
 		return "false";
 	}
+	
+	
+	// 사업자 등록번호 조회
+	@PostMapping("bizNumCheck")
+	@ResponseBody
+	public String bizNumCheck(@RequestParam(required = false) Map<String, String> bizNums) {
+	    System.out.println("사업자등록번호조회함: " + bizNums);
+	    
+	    String individual_biz_num = bizNums.get("individual_biz_num");
+	    String corporate_biz_num = bizNums.get("corporate_biz_num");
+	    
+	    MakerVO maker;
+	    if (individual_biz_num != null) {
+	        maker = makerService.getBizNumCheck(individual_biz_num); // 개인사업자 조회
+	    } else if (corporate_biz_num != null) {
+	        maker = makerService.getBizNumCheck2(corporate_biz_num); // 법인사업자 조회
+	    } else {
+	        return "false"; // 사업자 등록번호가 없을 경우 false 반환
+	    }
+	    
+	    return (maker == null) ? "true" : "false";
+	}
+
+	
 	
 }

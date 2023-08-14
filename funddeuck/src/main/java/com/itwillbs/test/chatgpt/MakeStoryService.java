@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 // https://platform.openai.com/account/api-keys
+
 @Service
 public class MakeStoryService {
-//	 @Value("${gpt.apiKey}")
-	 @Value("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")
+	
+	 @Value("${gpt.apiKey}")
+//	 @Value("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")
+	 
 	    private String API_KEY;
 	    private static RestTemplate restTemplate = new RestTemplate();
 

@@ -206,6 +206,9 @@
 			        	<div>
 			                <label class="my-2" for="individual_biz_num">사업자 등록번호(10자리)</label>
 			                <input class="form-control" type="text" name="individual_biz_num" id="individual_biz_num" placeholder="사업자 등록번호를 입력해 주세요">
+			                
+			                <div id="individual_biz_num_result"></div>
+			                
 			                <label class="my-2" for="individual_biz_name">상호 또는 법인명</label>
 			                <input class="form-control" type="text" name="individual_biz_name" id="individual_biz_name" placeholder="사업자 등록번호를 입력해 주세요">
 			                <label class="my-2" for="individual_biz_name">사업자 등록증</label><br>
@@ -285,6 +288,9 @@
 			        	<div>
 			                <label class="my-2" for="corporate_biz_num">법인사업자 등록번호(10자리)</label>
 			                <input class="form-control" type="text" name="corporate_biz_num" placeholder="사업자 등록번호를 입력해 주세요">
+			                
+			                <div id="corporate_biz_num_result"></div>
+			                
 			                <label class="my-2" for="corporate_biz_name">상호 또는 법인명</label>
 			                <input class="form-control" type="text" name="corporate_biz_name" placeholder="사업자 등록번호를 입력해 주세요">
 			                <label class="my-2" for="corporate_biz_id">사업자 등록증</label><br>
@@ -446,7 +452,6 @@
 	
 	$(()=>{
 		getNotifications();
-// 		setInterval(getNotifications, 5000);
 	})
 	
 	// AI로 입력하기
@@ -751,6 +756,93 @@
 	            event.target.value = formattedValue;
 	        }
 	    });
+	});
+	
+	// 사업자 등록 번호 조회
+	// 쿠팡 : 120-88-00767
+	$('#individual_biz_num').blur(()=>{
+		
+		console.log('사업자등록번호조회함');
+	    let check = {}; // check 변수 빈 객체로 초기화
+		let individualBizNum = $('#individual_biz_num').val();
+	    individualBizNum = individualBizNum.replace(/-/g, ''); // 하이픈 제거
+		console.log(individualBizNum);
+
+		new Promise( (succ, fail)=>{
+		
+			
+			let data = { "b_no": [individualBizNum] }; 
+			
+			let apiKey = "r8adyuvJItJ6iJEp7oUvG8Qpvt63fsTfhpQegQYy%2BLjVYUA7nHRyPoESMMafkSvBUZPgQ%2BqCNOP2aogAnz8T4A%3D%3D";
+	
+			// 사업자 등록증 조회
+			$.ajax({
+				type: "POST",
+		        url: "https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=" + apiKey,
+		        data: JSON.stringify(data),
+		        dataType: "JSON",
+		        contentType: "application/json",
+		        accept: "application/json",
+		        success: function(result) {
+					
+		        	console.log(result);
+		        	
+	        	  	check.code = result.data[0].b_stt_cd;
+                    check.b_no = result.data[0].b_no;
+	               	succ(result);
+		
+		        },
+		        fail: function(result) {
+		            fail(error);                                    
+		        }
+		    });
+			
+		 	}).then((arg) =>{   
+	
+	             $.ajax({
+	                 type: 'post',
+	                 url: '<c:url value="bizNumCheck"/>',
+	                 data: { individual_biz_num: $('#individual_biz_num').val() },
+	                 success: function(result) {
+	                	 
+	                	 console.log(result);
+	
+	                	 if (result.trim() == 'true') {
+	                		
+	                		console.log('DB에 없는 사업자번호임');
+	                		 
+                		    if (check.code == "01") {
+                		    	
+                		        $("#individual_biz_num_result").text("정상적인 사업자번호입니다.");
+                		        $("#individual_biz_num_result").css("color", "green");
+                		        
+                		    } else if (check.code == "02" || check.code == "03") {
+                		    	
+                		        $("#individual_biz_num_result").text("휴/폐업한 사업자번호입니다.");
+                		        $("#individual_biz_num_result").css("color", "red");
+                		        $('#individual_biz_num').focus();
+								                		        
+                		    } else {
+                		    	
+                		        $("#individual_biz_num_result").text("등록되지 않은 사업자번호입니다.");
+                		        $("#individual_biz_num_result").css("color", "red");
+                		        $('#individual_biz_num').focus();
+                		    }
+                		    
+                		} else {
+                			
+                			console.log('DB에 있는 사업자번호임');
+                			
+                		    $("#individual_biz_num_result").text("이미 가입한 사업자번호입니다.");
+                		    $("#individual_biz_num_result").css("color", "red");
+                		    $('#individual_biz_num').focus();
+                		    
+                		}
+                 }                                              
+             });
+
+         }); //then end
+
 	});
 	</script>
 	

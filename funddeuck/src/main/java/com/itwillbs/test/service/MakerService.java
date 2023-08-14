@@ -52,5 +52,15 @@ public class MakerService {
 		return mapper.updateMakerByAdmin(maker);
 	}
 	
+	// 개인사업자 등록번호 조회 
+	public MakerVO getBizNumCheck(String individual_biz_num) {
+		return mapper.selectBizNumCheck(individual_biz_num);
+	}
+	
+	// 법인사업자 등록번호 조회
+	public MakerVO getBizNumCheck2(String corporate_biz_num) {
+		return mapper.selectBizNumCheck2(corporate_biz_num);
+	}
+	
 	
 }

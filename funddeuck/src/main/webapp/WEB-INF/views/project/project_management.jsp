@@ -971,9 +971,9 @@
          $('#loadingIndicator').show();
      	
          var makeStoryRequest = {
-             projectName: $('#projectSubject').val(),
-             projectCategory: $('#projectCategory').val(),
-             projectIntroduce: $('#managementDetail').val()
+             projectName: $('#projectSubject').val(),			// 프로젝트 이름
+             projectCategory: $('#projectCategory').val(),		// 프로젝트 카테고리
+             projectIntroduce: $('#managementDetail').val()		// 프로젝트 소개(긴거)
          };
 
          $.ajax({
@@ -982,19 +982,22 @@
              contentType: "application/json",
              data: JSON.stringify(makeStoryRequest),
              beforeSend: function() {
+            	 
                  $('#loadingIndicator').show();
+                 
              },
              success: function (response) {
+            	 
                  $('#loadingIndicator').hide();
-             	
+                 
                  console.log(response);
-                 var responseObject = response; // 이미 json 형식의 응답이므로 파싱하지 않음
-                 var result = responseObject.choices[0].text; // 필요한 필드 추출
-                 $("#managementDetail").val(result).focus(); // textarea에 입력
+                 
+                 var responseObject = response;
+                 var result = responseObject.choices[0].text; 			// 필요한 필드 추출
+                 $("#managementSemiDetail").val(result).focus(); 		// 프로젝트 요약에 입력
                  
              },
              error: function (xhr, status, error) {
-             	
                  console.log(error);
              }
          });

@@ -161,4 +161,20 @@
 		</if>
 	</select>
 	
+	<!-- 개인사업자 등록 번호 조회 -->
+	<select id="selectBizNumCheck" parameterType="string" resultType="com.itwillbs.test.vo.MakerVO">
+		select *
+			from maker
+		where
+			individual_biz_num = #{individual_biz_num}
+	</select>
+	
+	<!-- 법인사업자 등록 번호 조회 -->
+	<select id="selectBizNumCheck2" parameterType="string" resultType="com.itwillbs.test.vo.MakerVO">
+		select *
+			from maker
+		where
+			corporate_biz_num = #{corporate_biz_num}
+	</select>
+	
 </mapper>
