@@ -215,7 +215,6 @@ public class FundingController {
 				for(BankAccountVO account : bankAccountList) {
 				    if (account.getFintech_use_num() != null && account.getFintech_use_num().equals(fintech_use_num)) {
 				        bankAccount = account;
-				        break;
 				    }
 				}
 				session.setAttribute("fintech_use_num", fintech_use_num);

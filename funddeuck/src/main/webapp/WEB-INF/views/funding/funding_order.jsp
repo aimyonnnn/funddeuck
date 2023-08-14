@@ -314,24 +314,24 @@ $(()=>{
 					<!-- 카드결제 -->
 <!-- 						카드결제 체크시 보여줄 영역 -->
 						<div class="col-12 d-flex align-content-center mt-2">
-							<input class="btn btn-primary" type="button" value="카드결제" name="requestPay">
+<!-- 							<input class="btn btn-primary" type="button" value="카드결제" name="requestPay"> -->
 						</div>
 					</div>
 					<div class="row d-none" id="account_payment_area">
 						<c:if test="${not empty bankAccount }">
-							<div class="col-12">
+							<div class="col-12 d-flex justify-content-center align-self-center">
 								<span class="fs-6 fw-bold">은행명</span>&nbsp;&nbsp;
 								<span class="fs-6">${bankAccount.bank_name}</span>
 							</div>
-							<div class="col-12">
+							<div class="col-12 d-flex justify-content-center align-self-center">
 								<span class="fs-6 fw-bold">예금주명</span>&nbsp;&nbsp;
 								<span class="fs-6">${bankAccount.account_holder_name}</span>
 							</div>
-							<div class="col-12">
+							<div class="col-12 d-flex justify-content-center align-self-center">
 								<span class="fs-6 fw-bold">계좌번호</span>&nbsp;&nbsp;
 								<span class="fs-6">${bankAccount.account_num_masked}</span>
 							</div>
-							<div class="col-12 d-flex align-content-center mt-2">
+							<div class="col-12 d-flex justify-content-center align-self-center mt-2">
 	<!-- 								<input class="btn btn-primary" type="button" value="계좌변경" id="btnAccountAuth"> -->
 								<input class="btn btn-primary" type="button" value="계좌변경" onclick="window.open('authMember', 'authWindow', 'width=600, height=800');">
 							</div>								
