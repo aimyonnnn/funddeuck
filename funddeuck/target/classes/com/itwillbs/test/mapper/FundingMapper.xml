@@ -345,7 +345,7 @@
 	<select id="selectSupTotal" resultType="int">
 		SELECT count(*)
 			FROM payment
-				WHERE project_idx = #{project_idx} AND (payment_confirm = 1 OR payment_confirm = 2);
+				WHERE project_idx = #{project_idx} AND (payment_confirm IN(1, 2, 3))
 	</select>
 	
 	<!-- 프로젝트 메이커 로고  -->
