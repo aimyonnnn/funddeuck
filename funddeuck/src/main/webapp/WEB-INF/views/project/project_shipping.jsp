@@ -435,9 +435,11 @@
 						        </button>
 						        <ul class="dropdown-menu" aria-labelledby="project-btn">
 							        <c:forEach var="projectList" items="${projectList }">
-							            <li>
-							            	<a class="dropdown-item" href="" data-id="${projectList.project_idx}">${projectList.project_subject }</a>
-							            </li>
+							            <c:if test="${projectList.project_approve_status eq 5}">
+									      <li>
+									        <a class="dropdown-item" href="" data-id="${projectList.project_idx}">${projectList.project_subject}</a>
+									      </li>
+									    </c:if>
 							        </c:forEach>
 						        </ul>
 						    </div>

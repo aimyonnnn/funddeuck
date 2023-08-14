@@ -66,32 +66,45 @@
 					
 					
 					var buttonText = ""; // 버튼 텍스트를 초기화합니다.
-					if(data.project_status == 1 || data.project_status == 2) {
+					if((data.project_status === 1 && data.project_approve_status === 5) || data.project_status === 2) {
 						$('.btn-danger').hide();
+						$('#btn-funding-doctor').hide();
+						$('#btn-funding-doctor-check').hide();
 					} else if(data.project_status == 3) { 			// 프로젝트 진행완료 (1차 정산 가능일 때)
 						final_amount = Math.floor(final_amount * 0.6);						// 60%만 1차 정산
 						$('#final_amount').text(final_amount.toLocaleString() + '원');
 						buttonText = "1차 정산";
+						$('#btn-funding-doctor').hide();
+						$('#btn-funding-doctor-check').hide();
+						$('.btn-danger').show();
 					} else if(data.project_status == 4) {	// 프로젝트 1차 정산완료 (최종 정산 불가능일 때)
-						buttonText = "정산 대기중";		
+						buttonText = "정산 대기중";
+						$('#btn-funding-doctor').hide();
+						$('#btn-funding-doctor-check').hide();
+						$('.btn-danger').show();
 					} else if(data.project_status == 5) {	// 프로젝트 최종 정산 가능일 때
 						buttonText = "최종 정산";
+						$('#btn-funding-doctor').hide();
+						$('#btn-funding-doctor-check').hide();
+						$('.btn-danger').show();
 					} else if(data.project_status == 6) { 	// 프로젝트 최종 정산 완료일 때
 						$('#final_amount').text('');												// 총 지급 금액 초기화
 						$('#final_amount').text(total_settlement_amount.toLocaleString() + '원');	// 총 지급 금액
 						$('#delivery_amount').text('');												// 배송비 초기화
+						$('#btn-funding-doctor').hide();
 						$('.btn-danger').hide();
 					} else if(data.project_status == 0) {											// 프로젝트 취소일 때
 						$('#final_amount').text('프로젝트 취소');									// 총 지급 금액 초기화
 						$('#delivery_amount').text('');												// 배송비 초기화
 						$('.btn-danger').hide();
 						$('#btn-funding-doctor').show();											// 펀딩닥터 버튼 노출
+						$('#btn-funding-doctor-check').hide();
 					} else if(data.project_status == 7 || data.project_status == 8) {				// 펀딩닥터 신청했을 때
 						$('#final_amount').text('프로젝트 취소');									// 총 지급 금액 초기화
 						$('#delivery_amount').text('');												// 배송비 초기화
-						$('.btn-danger').hide();
-						$('#btn-funding-doctor').hide();
 						$('#btn-funding-doctor-check').show();
+						$('#btn-funding-doctor').hide();
+						$('.btn-danger').hide();
 					}
 					$('.btn-danger').text(buttonText);
 					
@@ -179,7 +192,7 @@
 							<div class="table-responsive">
 								<table class="table table-bordered text-center table-center">
 									<c:forEach var="projectList" items="${projectList }">
-										<c:if test="${projectList.project_status eq 1 or projectList.project_status eq 2}">
+										<c:if test="${projectList.project_status eq 1 and projectList.project_approve_status eq 5 or projectList.project_status eq 2}">
 											<thead class="table-light">
 												<tr>
 													<th colspan="2">프로젝트명</th>
