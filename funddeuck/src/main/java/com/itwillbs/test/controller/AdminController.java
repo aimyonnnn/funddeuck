@@ -1391,7 +1391,6 @@ public class AdminController {
 	    System.out.println("parsedStartDate : " + parsedStartDate);
 	    System.out.println("parsedEndDate : " + parsedEndDate);
         List<PaymentVO> dataEntries = paymentService.getTopSalesProject(projectStartDate, projectEndDate);
-        System.out.println("이거출력됨:" + dataEntries);
         return dataEntries;
     }
 

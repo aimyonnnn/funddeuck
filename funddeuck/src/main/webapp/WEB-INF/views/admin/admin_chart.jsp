@@ -202,6 +202,8 @@ $(() => {
     $('.datepicker').datepicker();
     
     let myChart3 = null; // Chart 객체를 저장하기 위한 변수
+    let dataEntries = [];
+    let project_idx = [];
 
     $("#projectUpdateButton").click(function() {
         let projectStartDate = $("#projectStartDate").val();
@@ -239,6 +241,7 @@ $(() => {
         
         const labels = dataEntries.map(entry => entry.label);
         const values = dataEntries.map(entry => entry.value);
+        const project_idx = dataEntries.map(entry => entry.project_idx);
         
         const backgroundColors = [
             'rgba(255, 206, 86, 0.2)',
@@ -267,10 +270,26 @@ $(() => {
                 datasets: datasets
             },
             options: {
-                // 차트 옵션 설정
+            	 onClick: function(event, chartElements) {
+            		 
+            		 console.log(event + ", " + chartElements);
+//             		 alert(event + ", " + chartElements);
+            		 
+                     if (chartElements && chartElements.length > 0) {
+                    	 
+                         const clickedIndex = chartElements[0].index;
+                         const clickedProjectIdx = dataEntries[clickedIndex].project_idx; // 데이터 직접 접근
+                         
+                         const redirectUrl = "adminProjectDetail?project_idx=" + clickedProjectIdx;
+                         window.location.href = redirectUrl; // 페이지로 이동
+                     }
+                 }
             }
         });
-    }
+    } // renderChart
+
+    
+    
 });
 
 //페이지 로드시에 차트 출력하기

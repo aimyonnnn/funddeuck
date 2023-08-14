@@ -539,7 +539,7 @@
 	
 	<!-- 매출액 높은 프로젝트 상위 3개 -->	
 	<select id="selectTopSalesProject" resultType="com.itwillbs.test.vo.PaymentVO">
-		SELECT p.project_subject AS label, SUM(pm.reward_amount) AS value
+		SELECT p.project_idx, p.project_subject AS label, SUM(pm.reward_amount) AS value
 			FROM project p
 		JOIN 
 			payment pm ON p.project_idx = pm.project_idx
