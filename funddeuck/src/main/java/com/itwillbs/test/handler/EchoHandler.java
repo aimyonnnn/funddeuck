@@ -63,7 +63,7 @@ public class EchoHandler extends TextWebSocketHandler {
 						
 						System.out.println("점검1 : " +chatSessions.size());
 						
-						if ((chatSessions.size() >= 2 && users.get(senderId) != null) || chatSessions.size() >= 2) {
+						if ((chatSessions.size() >= 2 && users.get(senderId) != null) || chatSessions.size() >= 3) {
 							String message = "잘못된 접근입니다.";
 							session.sendMessage(new TextMessage(message));
 							session.close(CloseStatus.NORMAL.withReason(message));
@@ -107,7 +107,7 @@ public class EchoHandler extends TextWebSocketHandler {
 	        	
 	        	String content = "<a target='_blank' href='fundingDetail?project_idx=" + projectVO.getProject_idx() + "' style=\"text-decoration: none; color: black; display: block; cursor: pointer;\">"
 	        		    + projectVO.getProject_subject() + "</a><br>"
-	        		    + "<img src='" + projectVO.getProject_settlement_image() + "'>";
+	        		    + "<img src='/test/resources/upload/" + projectVO.getProject_thumnails1() + "'width='200'>";
 	        	
 				List<WebSocketSession> sessionList = chatRoomId.getOrDefault(roomId, new ArrayList<WebSocketSession>());
 
