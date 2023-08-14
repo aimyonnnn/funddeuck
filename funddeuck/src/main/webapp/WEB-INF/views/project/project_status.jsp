@@ -121,12 +121,12 @@ let updateChart = (data, chartType) => {
                     yAxisID: 'y-axis-1', 						// 왼쪽 축에 연결될 Y축 ID
                 },
                 {
-                    label: '누적 회원 수',
-                    data: acmlSupporterCounts, 					// 누적 회원 수 설정
+                    label: '누적 서포터 수',
+                    data: acmlSupporterCounts, 					// 누적 서포터 수 설정
                     type: chartType,
                     backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                    borderColor: 'rgba(153, 102, 255, 0.2)',
-                    borderWidth: 4,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1,
                     yAxisID: 'y-axis-2', 						// 오른쪽 축에 연결될 Y축 ID
                 }
             ]
@@ -330,8 +330,8 @@ let updateProjectChart = (data, chartTypeProject) => {
                     data: acmlSupporterCounts, 						// 누적 서포터 수 설정
                     type: chartTypeProject,
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 0.2)',
-                    borderWidth: 4,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
                     yAxisID: 'y-axis-2', 							// 오른쪽 축에 연결될 Y축 ID
                 }
             ]
@@ -722,7 +722,7 @@ th, td {
 					    <p class="projectContent">리워드의 판매 비율을 전체 수량에 대해 계산한 차트입니다.</p>
 					    
 					    <!-- 선택한 프로젝트별 리워드의 판매 비율 차트 -->
-					    <div style="width: 450px; height: 450px;" id="rewardChartContainer">
+					    <div id="rewardChartContainer">
 					        <canvas id="rewardChart"></canvas>
 					    </div>
 					    
@@ -1132,16 +1132,34 @@ function drawRewardChart(rewardData) {
     // 차트를 그릴 데이터 가공
     const labels = rewardData.map((reward) => reward.reward_name);
     const data = rewardData.map((reward) => reward.sales_quantity);
-    const colors = ['rgba(153, 102, 255, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)']; 						// 원형 차트의 색상 설정
+    const colors = [
+    	'rgba(255, 206, 86, 0.2)', 
+    	'rgba(75, 192, 192, 0.2)', 
+    	'rgba(153, 102, 255, 0.2)', 
+    	'rgba(255, 159, 64, 0.2)', 
+    	'rgba(255, 99, 132, 0.2)', 
+    	'rgba(54, 162, 235, 0.2)'
+    	];
+    const borderColors = [
+    	'rgba(255, 206, 86, 1)', 
+    	'rgba(75, 192, 192, 1)', 
+    	'rgba(153, 102, 255, 1)', 
+    	'rgba(255, 159, 64, 1)', 
+    	'rgba(255, 99, 132, 1)', 
+    	'rgba(54, 162, 235, 1)'
+    ];
 
     // 차트 생성
     rewardChart = new Chart(ctx4, {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             labels: labels,
             datasets: [{
+            	label: "판매량",
                 data: data,
                 backgroundColor: colors,
+                borderColor: borderColors,
+                borderWidth: 1
             }],
         },
         options: {
@@ -1149,7 +1167,7 @@ function drawRewardChart(rewardData) {
                 display: true,
                 text: 'Reward Sales Chart',
             },
-            cutoutPercentage: 30, 											// 도넛 차트의 반지 모양의 두께 조절 (0 ~ 100)
+//             cutoutPercentage: 30, 											// 도넛 차트의 반지 모양의 두께 조절 (0 ~ 100)
         },
     });
 }

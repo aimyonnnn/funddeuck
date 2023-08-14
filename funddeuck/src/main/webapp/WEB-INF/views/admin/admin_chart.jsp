@@ -112,12 +112,12 @@ let updateChart = (data, chartType) => {
                     yAxisID: 'y-axis-1', 										// 왼쪽 축에 연결될 Y축 ID
                 },
                 {
-                    label: '누적 회원 수',
-                    data: acmlSupporterCounts, 									// 누적 회원 수 설정
+                    label: '누적 서포터 수',
+                    data: acmlSupporterCounts, 									// 누적 서포터 수 설정
                     type: chartType,
                     backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                    borderColor: 'rgba(153, 102, 255, 0.2)',
-                    borderWidth: 4,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1,
                     yAxisID: 'y-axis-2', 										// 오른쪽 축에 연결될 Y축 ID
                 }
             ]

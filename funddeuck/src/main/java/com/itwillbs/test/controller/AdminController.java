@@ -623,11 +623,17 @@ public class AdminController {
 	@ResponseBody
 	public String rejectProjectStatus(@RequestParam int project_idx, @RequestParam int project_approve_status) {
 		
+		System.out.println("프로젝트승인상태:" + project_approve_status);
+		
 		// 승인거절 처리는 승인요청 상태일때만 가능함
 		if(project_approve_status == 2) {
 			
+			System.out.println("승인거절처리여기까지옴");
+			
 			// 프로젝트 승인상태 컬럼 변경하기
+			project_approve_status = 4;
 			int updateCount = projectService.modifyProjectStatus(project_idx, project_approve_status);
+			System.out.println("승인거절처리여기까지옴2");
 			
 			if(updateCount <= 0) { 
 				return "false"; 

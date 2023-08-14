@@ -121,12 +121,12 @@ let updateChart = (data, chartType) => {
                     yAxisID: 'y-axis-1', 						// 왼쪽 축에 연결될 Y축 ID
                 },
                 {
-                    label: '누적 회원 수',
-                    data: acmlSupporterCounts, 					// 누적 회원 수 설정
+                    label: '누적 서포터 수',
+                    data: acmlSupporterCounts, 					// 누적 서포터 수 설정
                     type: chartType,
                     backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                    borderColor: 'rgba(153, 102, 255, 0.2)',
-                    borderWidth: 4,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1,
                     yAxisID: 'y-axis-2', 						// 오른쪽 축에 연결될 Y축 ID
                 }
             ]
@@ -330,8 +330,8 @@ let updateProjectChart = (data, chartTypeProject) => {
                     data: acmlSupporterCounts, 						// 누적 서포터 수 설정
                     type: chartTypeProject,
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 0.2)',
-                    borderWidth: 4,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
                     yAxisID: 'y-axis-2', 							// 오른쪽 축에 연결될 Y축 ID
                 }
             ]
@@ -643,6 +643,7 @@ th, td {
 									<option value="">선택</option>
 								</select>
 								<button class="datepicker-button mx-2" id="paymentUpdateButton">조회</button>		
+								<button class="datepicker-button" id="paymentExcelDownload">엑셀 다운로드</button>		
 							</div>
 							
 							<div class="row">
@@ -721,7 +722,7 @@ th, td {
 					    <p class="projectContent">리워드의 판매 비율을 전체 수량에 대해 계산한 차트입니다.</p>
 					    
 					    <!-- 선택한 프로젝트별 리워드의 판매 비율 차트 -->
-					    <div style="width: 450px; height: 450px;" id="rewardChartContainer">
+					    <div id="rewardChartContainer">
 					        <canvas id="rewardChart"></canvas>
 					    </div>
 					    
@@ -1014,16 +1015,60 @@ function fetchPaginatedData(page) {
   	});
 }
 
+// // 조회 버튼 클릭 시 자료 조회와 페이징 처리 호출
+// $('#paymentUpdateButton').click(function () {
+// 	fetchPaginatedData(1); // 첫 페이지 데이터 조회
+// });
+
+
+
+// 프로젝트별 결제 내역 조회 유효성 검사 함수
+function validateInputsAndReturnValidity() {
+	
+    let startDatePayment = $('#startDatePayment').val();
+    let endDatePayment = $('#endDatePayment').val();
+    let selectedProjectIdx2 = $('#projectSelect2').val();
+
+    // 날짜 유효성 검사
+    if (!startDatePayment || !endDatePayment) {
+        alert("시작 날짜와 종료 날짜를 모두 입력해주세요.");
+        if (!startDatePayment) {
+            $('#startDatePayment').focus();
+        } else {
+            $('#endDatePayment').focus();
+        }
+        return false;
+    }
+
+    // 날짜 비교 유효성 검사
+    let paymentStartDate = new Date(startDatePayment);
+    let paymentEndDate = new Date(endDatePayment);
+    if (paymentStartDate > paymentEndDate) {
+        alert("끝 날짜가 시작 날짜보다 빠릅니다. 올바른 날짜를 선택해주세요.");
+        $('#startDatePayment').focus();
+        return false;
+    }
+
+    // 프로젝트 선택 유효성 검사
+    if (selectedProjectIdx2 === "") {
+        alert("프로젝트를 선택해주세요.");
+        $('#projectSelect2').focus();
+        return false;
+    }
+
+    return true;
+}
+
 // 조회 버튼 클릭 시 자료 조회와 페이징 처리 호출
 $('#paymentUpdateButton').click(function () {
-	fetchPaginatedData(1); // 첫 페이지 데이터 조회
-});
-
-// 이전 페이지로 이동하는 버튼 클릭 이벤트 핸들러
-$("#prevPageButton").click(function () {
-	if (currentPage > 1) {
-		fetchPaginatedData(currentPage - 1);
-	}
+	
+	// 유효성 검사 통과하지 않으면 중단
+ 	if (!validateInputsAndReturnValidity()) {
+        return; 
+    }
+    // 유효성 검사 통과 시 조회와 페이징 처리 호출
+    fetchPaginatedData(1); // 첫 페이지 데이터 조회
+    
 });
 
 // 다음 페이지로 이동하는 버튼 클릭 이벤트 핸들러
@@ -1087,16 +1132,34 @@ function drawRewardChart(rewardData) {
     // 차트를 그릴 데이터 가공
     const labels = rewardData.map((reward) => reward.reward_name);
     const data = rewardData.map((reward) => reward.sales_quantity);
-    const colors = ['rgba(153, 102, 255, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)']; 						// 원형 차트의 색상 설정
+    const colors = [
+    	'rgba(255, 206, 86, 0.2)', 
+    	'rgba(75, 192, 192, 0.2)', 
+    	'rgba(153, 102, 255, 0.2)', 
+    	'rgba(255, 159, 64, 0.2)', 
+    	'rgba(255, 99, 132, 0.2)', 
+    	'rgba(54, 162, 235, 0.2)'
+    	];
+    const borderColors = [
+    	'rgba(255, 206, 86, 1)', 
+    	'rgba(75, 192, 192, 1)', 
+    	'rgba(153, 102, 255, 1)', 
+    	'rgba(255, 159, 64, 1)', 
+    	'rgba(255, 99, 132, 1)', 
+    	'rgba(54, 162, 235, 1)'
+    ];
 
     // 차트 생성
     rewardChart = new Chart(ctx4, {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             labels: labels,
             datasets: [{
+            	label: "판매량",
                 data: data,
                 backgroundColor: colors,
+                borderColor: borderColors,
+                borderWidth: 1
             }],
         },
         options: {
@@ -1104,7 +1167,7 @@ function drawRewardChart(rewardData) {
                 display: true,
                 text: 'Reward Sales Chart',
             },
-            cutoutPercentage: 30, 											// 도넛 차트의 반지 모양의 두께 조절 (0 ~ 100)
+//             cutoutPercentage: 30, 											// 도넛 차트의 반지 모양의 두께 조절 (0 ~ 100)
         },
     });
 }
@@ -1351,6 +1414,76 @@ function showRewardDetails(reward_idx) {
 	  	});	
 }
 
+// 프로젝트별 결제 내역 엑셀 다운로드
+$('#paymentExcelDownload').click(() => {
+	
+	// 유효성 검사 통과하지 않으면 중단
+ 	if (!validateInputsAndReturnValidity()) {
+        return; 
+    }
+	
+    Swal.fire({
+        icon: 'question',
+        title: '결제 내역 엑셀 저장',
+        text: '결제 내역을 엑셀로 저장하시겠습니까?',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소'
+        
+    }).then((result) => {
+    	
+        if (result.isConfirmed) {
+        	
+            let startDatePayment = $("#startDatePayment").val();
+            let endDatePayment = $("#endDatePayment").val();
+            let selectedProjectIdx2 = $("#projectSelect2").val();
+
+            $.ajax({
+                url: '<c:url value="projectExcelDownload"/>',
+                method: 'POST',
+                data: {
+                    maker_idx: ${maker_idx},
+                    project_idx: selectedProjectIdx2,
+                    startDate: startDatePayment,
+                    endDate: endDatePayment
+                },
+                xhrFields: {
+                    responseType: 'blob' // 이 부분이 엑셀 파일 데이터를 받기 위한 설정
+                },
+                success: function (data, status, xhr) {
+                	
+                    // 기간 메시지 생성
+                    let periodMessage = `${'${startDatePayment}'}~${'${endDatePayment}'}`;
+
+                    // SweetAlert로 성공 메시지 띄우기
+                    Swal.fire({
+                        icon: 'success',
+                        title: '결제 내역 엑셀 저장 완료',
+                        text: `${'${periodMessage}'} 선택한 날짜의 결제 내역을 엑셀로 저장하였습니다.`,
+                        confirmButtonText: '확인'
+                    });
+
+                    const filename = xhr.getResponseHeader('Content-Disposition')
+                        .split('filename=')[1];
+
+                    // Blob 데이터를 Blob URL로 생성하여 다운로드 링크를 생성
+                    const blobUrl = URL.createObjectURL(data);
+                    const a = document.createElement('a');
+                    a.href = blobUrl;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(blobUrl);
+                    
+                },
+                error: function () {
+                    // 에러 핸들링 코드 추가
+                }
+            });
+        }
+    });
+});
 </script>
 
 <!-- 리워드 정보 조회 모달 -->

@@ -53,7 +53,7 @@ th, td {
 						<button class="btn btn-outline-primary btn-sm mx-2"
 							onclick="approveProjectStatus(${project.project_idx}, ${project.project_approve_status})">승인처리</button>
 						<button class="btn btn-outline-primary btn-sm"
-							onclick="rejectProjectStatus(${project.project_idx}, 4)">승인거절</button>
+							onclick="rejectProjectStatus(${project.project_idx}, ${project.project_approve_status})">승인거절</button>
 					</div>
 				</div>
 
