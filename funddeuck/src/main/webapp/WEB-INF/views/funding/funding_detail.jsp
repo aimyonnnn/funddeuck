@@ -57,13 +57,13 @@
 			    </div>
 			    <div class="carousel-inner">
 			      <div class="carousel-item active">
-			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" class="d-block w-100" alt="...">
+			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" class="d-block w-100" alt="..." style="width:594px; height:445px; object-fit:cover;">
 			      </div>
 			      <div class="carousel-item">
-			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails2}" class="d-block w-100" alt="...">
+			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails2}" class="d-block w-100" alt="..." style="width:594px; height:445px; object-fit:cover;">
 			      </div>
 			      <div class="carousel-item">
-			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails3}" class="d-block w-100" alt="...">
+			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails3}" class="d-block w-100" alt="..." style="width:594px; height:445px; object-fit:cover;">
 			      </div>
 			    </div>
 			    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -342,7 +342,7 @@
 					<article>
 						<!-- 사진이 있을 경우 출력 -->
 						<c:if test="${project.project_image ne null or project.project_image ne ''}">
-							<img src="${pageContext.request.contextPath}/resources/upload/${project.project_image}" style="object-fit:scale-down;">
+							<img src="${pageContext.request.contextPath}/resources/upload/${project.project_image}" class="d-block w-100" alt="..." style="width:594px;">
 						</c:if>
 						<div>&nbsp;</div>
 						<p class="text-justify">${project.project_introduce }</p>

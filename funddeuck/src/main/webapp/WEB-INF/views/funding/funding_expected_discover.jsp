@@ -172,7 +172,7 @@
 			<div class="col" id="projectListArea">
 				<div class="card h-100 w-100 p-3 border-0">
 					<img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" 
-					class="card-img-top object-fit-contain" alt="..." >
+					class="card-img-top" style="width:274px; height:341.52px; object-fit:cover;" alt="...">
 					<div class="card-body">
 						<small class="card-title opacity-75">${project.project_hashtag } | ${project.project_representative_name }</small>
 						<p class="card-text fw-bold text-start">${project.project_subject }</p>
