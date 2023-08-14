@@ -72,9 +72,9 @@
 	        reward r
 	    LEFT JOIN 
 	        payment p ON r.reward_idx = p.reward_idx
-	        AND p.payment_confirm = 1 					-- 예약완료
+	        AND p.payment_confirm IN (1,2,3)
 	    WHERE 
-	        r.project_idx = 1
+	        r.project_idx = #{project_idx}
 	    GROUP BY 
 	        r.project_idx, r.reward_idx, r.reward_option, r.reward_quantity;
 	</select>

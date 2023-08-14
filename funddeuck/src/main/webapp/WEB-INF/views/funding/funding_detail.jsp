@@ -488,14 +488,14 @@
 						<c:forEach items="${reward }" var="reward" varStatus="status">
 							<div class="card">
 								<div class="card-body">
-<!-- 									<span class="card-subtitle mb-2 text-muted"> -->
-<!-- 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16"> -->
-<!-- 									<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/> -->
-<!-- 									</svg> -->
-<%-- 									<small>${reward.sales_quantity }개 선택</small> --%>
-<!-- 									<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button"> -->
-<%-- 									${reward.reward_quantity - reward.sales_quantity }개 남음</a> --%>
-<!-- 									</span><br> -->
+									<span class="card-subtitle mb-2 text-muted">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+									<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+									</svg>
+									<small>${reward.sales_quantity }개 선택</small>
+									<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button">
+									${reward.remaining_quantity }개 남음</a>
+									</span><br>
 									<span class="fs-4 card-title fw-bold"><fmt:formatNumber value="${reward.reward_price }" pattern="#,###" />원 +</span><br>
 									<small class="card-text opacity-75">${reward.reward_name }</small><br>
 									<small class="card-text opacity-75">${reward.reward_detail }</small>
