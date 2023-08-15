@@ -75,7 +75,11 @@
 						class="card-img-top" style="width:274px; height:341.52px; object-fit:cover;" alt="...">
 					<div class="card-body">
 						<small class="card-title opacity-75">${project.project_hashtag } | ${project.project_representative_name }</small>
-						<p class="card-text fw-bold text-start">${project.project_subject }</p>
+						<p class="card-text fw-bold text-start">${project.project_subject }
+						<c:if test="${project.project_category eq '친환경' || project.project_category eq '기부' || project.project_category eq '동물보호'}">
+							<img src="https://cdn.pixabay.com/photo/2020/08/05/13/28/eco-5465473_1280.png" style="width: 40px; height: 40px;">
+						</c:if>
+						</p>
 						<small class="card-title opacity-75">${project.project_semi_introduce }</small>
 					</div>
 						<a href="fundingDetail?project_idx=${project.project_idx }" class="stretched-link"></a>

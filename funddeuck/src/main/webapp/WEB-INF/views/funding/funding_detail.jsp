@@ -47,7 +47,11 @@
 			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="" role="button" style="pointer-events: none; ">${project.project_hashtag }</a>
 			<br><br>
 			<div class="col">
-				<p class="fs-2 fw-bolder">${project.project_subject }</p>
+				<p class="fs-2 fw-bolder">${project.project_subject }
+				<c:if test="${project.project_category eq '친환경' || project.project_category eq '기부' || project.project_category eq '동물보호'}">
+					<img src="https://cdn.pixabay.com/photo/2020/08/05/13/28/eco-5465473_1280.png" style="width: 70px; height: 70px;">
+				</c:if>
+				</p>
 			</div>
 		</div>
 		<!-- 펀딩이름 -->
@@ -64,13 +68,13 @@
 			    </div>
 			    <div class="carousel-inner">
 			      <div class="carousel-item active">
-			        <img src="${pageContext.request.contextPath}/resou	rces/upload/${project.project_thumnails1}" class="d-block w-100" alt="..." style="width:600px; height:600px; object-fit:cover;">
+			        <img src="${pageContext.request.contextPath}/resou	rces/upload/${project.project_thumnails1}" class="d-block w-100" alt="..." style="width:550px; height:550px; object-fit:cover;">
 			      </div>
 			      <div class="carousel-item">
-			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails2}" class="d-block w-100" alt="..." style="width:600px; height:600px; object-fit:cover;">
+			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails2}" class="d-block w-100" alt="..." style="width:550px; height:550px; object-fit:cover;">
 			      </div>
 			      <div class="carousel-item">
-			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails3}" class="d-block w-100" alt="..." style="width:600px; height:600px; object-fit:cover;">
+			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails3}" class="d-block w-100" alt="..." style="width:550px; height:550px; object-fit:cover;">
 			      </div>
 			    </div>
 			    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
