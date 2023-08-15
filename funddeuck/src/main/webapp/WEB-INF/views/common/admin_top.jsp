@@ -187,22 +187,25 @@ function updateList() {
             	</c:otherwise>
             </c:choose>
             
-            <!-- 비행기 아이콘 - 메시지 전송용 -->
-            <a class="nav-link py-0 me-4" href="#" data-bs-toggle="modal" data-bs-target="#notifyModal">
-	            <img src="${pageContext.request.contextPath }/resources/images/icon/letter.png" style="width: 32px; height: 32px;">
-            </a>
-            
-            <!-- 편지 아이콘 - 보낸 메시지함 -->
-            <a class="nav-link py-0 me-4" href="adminSentNotification">
-	            <img src="${pageContext.request.contextPath }/resources/images/icon/confirm.png" style="width: 30px; height: 30px;">
-            </a>
-            
-            <!-- 종 아이콘 - 받은 메시지함 -->
-            <a class="nav-link py-0" href="adminReceivedNotification">
-	            <img src="${pageContext.request.contextPath }/resources/images/icon/bell.png" style="width: 30px; height: 30px;">
-           	</a>
-            
-            <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
+            <c:choose>
+            	<c:when test="${not empty sessionScope.sId}">
+	            <!-- 비행기 아이콘 - 메시지 전송용 -->
+	            <a class="nav-link py-0 me-4" href="#" data-bs-toggle="modal" data-bs-target="#notifyModal">
+		            <img src="${pageContext.request.contextPath }/resources/images/icon/letter.png" style="width: 32px; height: 32px;">
+	            </a>
+	            
+	            <!-- 편지 아이콘 - 보낸 메시지함 -->
+	            <a class="nav-link py-0 me-4" href="adminSentNotification">
+		            <img src="${pageContext.request.contextPath }/resources/images/icon/confirm.png" style="width: 30px; height: 30px;">
+	            </a>
+	            
+	            <!-- 종 아이콘 - 받은 메시지함 -->
+	            <a class="nav-link py-0" href="adminReceivedNotification">
+		            <img src="${pageContext.request.contextPath }/resources/images/icon/bell.png" style="width: 30px; height: 30px;">
+	           	</a>
+	            <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
+            	</c:when>
+            </c:choose>
             
         </div>
         

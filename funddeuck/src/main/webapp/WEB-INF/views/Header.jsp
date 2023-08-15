@@ -381,56 +381,59 @@
             <li class="nav-item">
                 <a class="nav-link me-4" href="memberideacommunity">커뮤니티</a>
             </li>
+            
             <c:choose>
+            	<%-- 1. 관리자로 로그인 했을 때 --%>
                 <c:when test="${sessionScope.sId eq 'admin'}">
-                    <!-- 비행기 아이콘 - 메시지 전송용 -->
-                    <li class="nav-item">
-                        <a class="nav-link py-0 me-4" href="#" data-bs-toggle="modal" data-bs-target="#notifyModal">
-                            <img src="${pageContext.request.contextPath }/resources/images/icon/letter.png" style="width: 32px; height: 32px;">
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link py-0 me-6" href="confirmNotification">
-                            <img src="${pageContext.request.contextPath }/resources/images/icon/bell.png" style="width: 30px; height: 30px;">
-                        </a>
-                    </li>
-                </c:when>
-                <c:otherwise>
-                    <!-- 종 아이콘 - 받은 메시지함 -->
-                    <li class="nav-item">
-                        <a class="nav-link py-0 me-6" href="confirmNotification">
-                            <img src="${pageContext.request.contextPath }/resources/images/icon/bell.png" style="width: 30px; height: 30px;">
-                        </a>
-                    </li>
-                </c:otherwise>
-            </c:choose>
-            <li class="nav-item">
-                <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
-            </li>
-		    <c:choose>
-		        <c:when test="${sessionScope.sId eq 'admin'}">
-		            <li class="nav-item">
+                	<li class="nav-item">
 		                    <a class="nav-link me-4" href="admin"><b>${sessionScope.sId}님</b></a>
 		            </li>
 		            <li class="nav-item">        
 		                    <a class="nav-link me-4" href="javascript:logout()">로그아웃</a>
 		            </li>
-		        </c:when>
+                    <%-- 비행기 아이콘 - 관리자 전용 - 메시지 전송용 --%>
+                    <li class="nav-item">
+                        <a class="nav-link py-0 me-4" href="#" data-bs-toggle="modal" data-bs-target="#notifyModal">
+                            <img src="${pageContext.request.contextPath }/resources/images/icon/letter.png" style="width: 32px; height: 32px;">
+                        </a>
+                    </li>
+                    <%-- 종 아이콘 - 받은 메시지함 - 일반 유저도 같이 보여야함 시작 --%>
+                    <li class="nav-item">
+                        <a class="nav-link py-0 me-6" href="confirmNotification">
+                            <img src="${pageContext.request.contextPath }/resources/images/icon/bell.png" style="width: 30px; height: 30px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+		                <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
+		            </li>
+                </c:when>
+                
+                <%-- 2. 세션 아이디는 존재하지만, 관리자가 아닐 때 --%>
 		        <c:when test="${sessionScope.sId != 'admin' && not empty sessionScope.sId}">
-		            <!-- Other navigation items -->
 		            <li class="nav-item">
 		                    <a class="nav-link me-4" href="memberMypage"><b>${sessionScope.sId}님</b></a>
 		            </li>
 		            <li class="nav-item">        
 		                    <a class="nav-link me-4" href="javascript:logout()">로그아웃</a>
 		            </li>
-		        </c:when>
-		        <c:otherwise>
+                    <li class="nav-item">
+                        <a class="nav-link py-0 me-6" href="confirmNotification">
+                            <img src="${pageContext.request.contextPath }/resources/images/icon/bell.png" style="width: 30px; height: 30px;">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+		                <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
+		            </li>
+	        	 </c:when>
+	        	 
+	        	 <%--3. 로그인 안했을 때 --%>
+		         <c:otherwise>
 		            <li class="nav-item">
 		                <a class="nav-link me-4" href="LoginForm">로그인</a>
 		            </li>
 		        </c:otherwise>
-		    </c:choose>
+            </c:choose>
+            
 		    <li class="nav-item">
 		        <a class="nav-link me-4" href="projectManagement">프로젝트 생성</a>
 		    </li>
