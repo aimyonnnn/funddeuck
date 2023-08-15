@@ -57,13 +57,13 @@
                 <input class="form-control center mt-5" type="text" name="member_id" id="id" placeholder="아이디를 작성해주세요.">
                 <input class="form-control mt-2" type="password" id="passwd" name="member_passwd" placeholder="비밀번호를 작성해주세요.">
             <a class="float-end mt-2" href="idFindForm" style="text-decoration: none; color: gray;">로그인 정보를 잊으셨나요?</a>
-            <input class="btn btn-primary mt-5 p-2 mb-2" id="LoginSubmit" type="submit" value="로그인" style="width: 300px;"/>
+            <input class="btn btn-primary btn-md mt-4 p-2 mb-2 w-100 py-2" id="LoginSubmit" type="submit" value="로그인"/>
             </form>
-            <a class="w-100 mt-2 p-2 mb-4" id="kakaoLogin" href="javascript:loginWithKakao()"><img src="${pageContext.request.contextPath }/resources/images/kakao_login_medium_wide.png"></a><br>
-            <a class="w-100 mt-2 p-2 mb-4" id="naverIdLogin_loginButton" href="javascript:naverLogin()"><img style="width: 60px; margin-top: 10px; " src="${pageContext.request.contextPath }/resources/images/naver.png"></a> 
-			    <a class="w-100 mt-2 p-2 mb-4" id="googleSignInButton" href="javascript:void(0)">
-			      <img style="width: 60px; margin-top: 10px;" src="${pageContext.request.contextPath}/resources/images/google.png"/>
-			    </a>
+            <a class="w-100 mt-4 p-2 mb-4" id="kakaoLogin" href="javascript:loginWithKakao()"><img src="${pageContext.request.contextPath }/resources/images/kakao.png" style="width: 50px; margin-top: 10px;"></a>
+            <a class="w-100 mt-4 p-2 mb-4" id="naverIdLogin_loginButton" href="javascript:naverLogin()"><img style="width: 50px; margin-top: 10px; " src="${pageContext.request.contextPath }/resources/images/naver.png"></a> 
+		    <a class="w-100 mt-4 p-2 mb-4" id="googleSignInButton" href="javascript:void(0)">
+		      <img style="width: 50px; margin-top: 10px;" src="${pageContext.request.contextPath}/resources/images/google.png"/>
+		    </a>
 
 			<hr>아직 계정이 없으신가요? <a class=" mt-2" href="JoinForm" style="color: blue">회원가입</a>
         </div>
