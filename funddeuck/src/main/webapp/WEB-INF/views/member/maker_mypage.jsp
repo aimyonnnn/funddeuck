@@ -40,7 +40,7 @@
     
     <!-- 백그라운드 -->
     <section style="position: relative;">
-        <div class="bg-primary" style="height: 200px; width: 100%; position: absolute; top: 0; left: 0;"></div>
+        <div class="bg-primary" style="height: 400px; width: 100%; position: absolute; top: 0; left: 0;"></div>
         <!-- 백그라운드 -->
         <!-- 마이페이지 시작 -->
         <div class="container"
