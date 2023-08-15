@@ -93,4 +93,6 @@ public interface FundingMapper {
 	// 프로젝트의 누적금액 변경 
 	void updateProjectCumulativeAmount(@Param("project_idx") int project_idx,@Param("project_cumulative_amount") int project_cumulative_amount);
 	
+	// 찜 여부 체크
+	int isZimProject(@Param("sId") String sId, @Param("project_idx") int project_idx);
 }

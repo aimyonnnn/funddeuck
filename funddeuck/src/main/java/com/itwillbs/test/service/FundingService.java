@@ -158,6 +158,10 @@ public class FundingService {
 		mapper.updateProjectCumulativeAmount(project_idx, project_cumulative_amount);
 	}
 	
-
+	// 찜 여부 체크
+	public int isZimProject(String sId, int project_idx) {
+		return mapper.isZimProject(sId, project_idx);
+	}
+	
 
 }

@@ -17,9 +17,17 @@
 <!-- 공용 css -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 <body>
+<!-- 헤더와 본문 위치 조정 -->
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
 <br>
 <br>
 	<div class="container">
+		<span class=""></span>
 		<hr class="border border-success border border-2">
 		<div class="grid gap-3">
 			<p class="fs-2 fw-bolder">결제가 완료되었습니다</p><br>
@@ -66,7 +74,7 @@
 		<br>
 		<div class="col text-center">
 			<button class="btn btn-primary me-8 bg-success" onclick="location.href='fundingDetail?project_idx=${project.project_idx }'"><span class="text-center text-white fw-bold">프로젝트 상세 페이지로 이동</span></button>
-			<button class="btn btn-primary me-8 bg-success" onclick="location.href='fundingDiscover?category=all&status=all&index=newest'"><span class="text-center text-white fw-bold">프로젝트 탐색로 이동</span></button>
+			<button class="btn btn-primary me-8 bg-success" onclick="location.href='fundingDiscover?category=all&status=all&index=newest'"><span class="text-center text-white fw-bold">프로젝트 탐색 페이지로 이동</span></button>
 		</div>
 		<br>
 		<hr class="border border-success border border-2">

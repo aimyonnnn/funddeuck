@@ -464,4 +464,13 @@
 				WHERE project_idx = #{project_idx}
 	</update>
 	
+	<!-- 찜 여부 체크 -->
+	<select id="isZimProject" resultType="int">
+		SELECT count(*)
+			FROM zim z
+				WHERE z.member_idx = (SELECT m.member_idx
+									From members m
+									where m.member_id = #{sId})
+			    	AND z.project_idx = #{project_idx}
+	</select>
 </mapper>

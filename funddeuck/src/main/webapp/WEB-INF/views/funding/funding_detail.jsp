@@ -26,6 +26,8 @@
 <!-- 헤더와 본문 위치 조정 -->
 <div>&nbsp;</div>
 <div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
 <!-- 현재 날짜 정보 저장 -->
 <c:set var="today" value="<%=new java.util.Date()%>" />
 <fmt:parseNumber value="${today.time / (1000*60*60*24)}" integerOnly="true" var="nowDate"></fmt:parseNumber>
@@ -62,13 +64,13 @@
 			    </div>
 			    <div class="carousel-inner">
 			      <div class="carousel-item active">
-			        <img src="${pageContext.request.contextPath}/resou	rces/upload/${project.project_thumnails1}" class="d-block w-100" alt="..." style="width:600px; height:600px; object-fit:cover;">
+			        <img src="${pageContext.request.contextPath}/resou	rces/upload/${project.project_thumnails1}" class="d-block w-100" alt="..." style="width:500px; height:500px; object-fit:cover;">
 			      </div>
 			      <div class="carousel-item">
-			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails2}" class="d-block w-100" alt="..." style="width:600px; height:600px; object-fit:cover;">
+			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails2}" class="d-block w-100" alt="..." style="width:500px; height:500px; object-fit:cover;">
 			      </div>
 			      <div class="carousel-item">
-			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails3}" class="d-block w-100" alt="..." style="width:600px; height:600px; object-fit:cover;">
+			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails3}" class="d-block w-100" alt="..." style="width:500px; height:500px; object-fit:cover;">
 			      </div>
 			    </div>
 			    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -90,9 +92,9 @@
 				</div>
 				<div class="row">
 					<div class="col">
-						<span class="fs-2"><fmt:formatNumber value="${project.project_cumulative_amount }" pattern="#,###" /></span>&nbsp;
+						<span class="fs-2 text-primary"><fmt:formatNumber value="${project.project_cumulative_amount }" pattern="#,###" /></span>&nbsp;
 						<small>원</small>&nbsp;
-						<span class="fs-5 fw-bold"><fmt:formatNumber type="number" value="${project.project_cumulative_amount/project.project_target * 100 }" maxFractionDigits="0"></fmt:formatNumber>%</span>
+						<span class="fs-5 fw-bold"><fmt:formatNumber maxFractionDigits="0" value="${project.project_cumulative_amount/project.project_target * 100 }"></fmt:formatNumber>%</span>
 					</div>
 				</div>
 				<br>
@@ -109,7 +111,7 @@
 						</c:if>
 						<!-- 프로젝트가 진행중인 경우 -->
 						<c:if test="${project.project_status eq 2 && endDate - strDate ne 0}">
-							<span class="fs-2">
+							<span class="fs-2 text-primary">
 								${endDate - strDate }
 							</span>&nbsp;
 				  			<small>일</small>&nbsp;&nbsp;
@@ -134,7 +136,7 @@
 				</div>
 				<div class="row">
 					<div class="col">
-				  		<span class="fs-2">${supTotal }</span>&nbsp;
+				  		<span class="fs-2 text-primary">${supTotal }</span>&nbsp;
 				  		<small>명</small>&nbsp;
 					</div>
 				</div>
@@ -153,7 +155,7 @@
 				<div class="row">
 					<div class="col">
 						<div class="progress">
-							<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Example with label" 
+							<div class="progress-bar bg-primary" id="progressbar" role="progressbar" aria-label="Example with label" 
 		  					style="width: ${project.project_cumulative_amount/project.project_target * 100}%" 
 							aria-valuenow="${project.project_cumulative_amount/project.project_target * 100 }" aria-valuemin="0" aria-valuemax="100"><fmt:formatNumber type="number" maxFractionDigits="0"  value="${project.project_cumulative_amount/project.project_target * 100 }" />%</div>
 						</div>
@@ -183,7 +185,7 @@
 					   		~
 					   		${project.project_end_date }
 					   		</small>&nbsp;&nbsp;&nbsp;
-					   		<span class="badge text-danger text-bg-danger bg-opacity-10">
+					   		<span class="badge text-primary text-bg-primary bg-opacity-10">
 					   		${endDate - nowDate } 일 남음
 					   		</span>
 					   		</td>
@@ -253,25 +255,41 @@
 				<div class="row d-none d-lg-block" id="focusArea">
 					<div class="col-12 col-lg-auto d-flex justify-content-end">
 						<!-- 공유 -->
-						<button class="btn btn-primary me-2 bg-white border border-secondary border-opacity-25 rounded-0" id="kakao-link-btn" onclick="javascript:kakaoShare()">
+						<button class="btn btn-primary me-2 bg-white border border-primary border-opacity-25 rounded-0" id="kakao-link-btn" onclick="javascript:kakaoShare()">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-share" viewBox="0 0 16 16">
 							  <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
 							</svg>
-							<small class="text-secondary"><br>공유</small>
+							<small class="text-dark"><br>공유</small>
 						</button>
 						<!-- 좋아요 -->
-						<button class="btn btn-primary me-2 bg-white border border-secondary border-opacity-25 rounded-0" onclick="location.href='ZimForm'">
-							<!-- 빈 하트 -->
+						<!-- 미로그인 시 -->
+						<c:if test="${empty isZim}">
+						<button class="btn btn-primary me-2 bg-white border border-primary border-opacity-25 rounded-0" id="noLoginBtnZim">
 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-heart" viewBox="0 0 16 16">
 							  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
 							</svg>
-							<!-- 채워진 하트 -->
-<!-- 							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"> -->
-<!-- 							  <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/> -->
-<!-- 							</svg> -->
-							<small class="text-secondary"><br>찜</small>
+							<small class="text-dark"><br>찜</small>
 						</button>
-						<button class="btn btn-success me-8" onclick="focusOnReward()"><span class="text-center text-white fw-bold">이 프로젝트 후원하기</span></button>
+						</c:if>
+						<!-- 빈 하트 -->
+						<c:if test="${isZim eq 0}">
+						<button class="btn btn-primary me-2 bg-white border border-primary border-opacity-25 rounded-0" id="zimBtn">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-heart" viewBox="0 0 16 16">
+							  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+							</svg>
+							<small class="text-dark"><br>찜</small>
+						</button>
+						</c:if>
+						<!-- 채워진 하트 -->
+						<c:if test="${isZim eq 1}">
+						<button class="btn btn-primary me-2 bg-white border border-primary border-opacity-25 rounded-0" id="deleteZimBtn">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-heart-fill" viewBox="0 0 16 16">
+								<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+							</svg>
+							<small class="text-dark"><br>찜</small>
+						</button>
+						</c:if>
+						<button class="btn btn-primary me-8" onclick="focusOnReward()"><span class="text-center text-white fw-bold">이 프로젝트 후원하기</span></button>
 					</div>
 				</div>
 				<!--공유, 좋아요, 후원하기 버튼 끝-->
@@ -321,17 +339,17 @@
 		<div class="container text-center">
 		  <ul class="nav nav-tabs bg-white">
 		    <li class="nav-item 
-				<c:if test="${param.category eq 'introduce' or param.category eq null}">border-dark border-bottom border-4</c:if>">
+				<c:if test="${param.category eq 'introduce' or param.category eq null}">border-primary border-bottom border-4</c:if>">
 				<a class="text-dark nav-link text-decoration-none border border-0 fw-bold
 				<c:if test="${param.category ne 'introduce'}">text-opacity-50</c:if>" aria-current="page" href="fundingDetail?project_idx=${param.project_idx }&category=introduce">프로젝트 소개</a>
 		    </li>
 		    <li class="nav-item 
-				<c:if test="${param.category eq 'update'}">border-dark border-bottom border-4</c:if>">
+				<c:if test="${param.category eq 'update'}">border-primary border-bottom border-4</c:if>">
 				<a class="text-dark nav-link text-decoration-none border border-0 fw-bold
 				<c:if test="${param.category ne 'update'}">text-opacity-50</c:if>" href="fundingDetail?project_idx=${param.project_idx }&category=update">업데이트</a>
 		    </li>
 		    <li class="nav-item 
-				<c:if test="${param.category eq 'community'}">border-dark border-bottom border-4</c:if>">
+				<c:if test="${param.category eq 'community'}">border-primary border-bottom border-4</c:if>">
 				<a class="text-dark nav-link text-decoration-none border border-0 fw-bold 
 				<c:if test="${param.category ne 'community'}">text-opacity-50</c:if>" href="fundingDetail?project_idx=${param.project_idx }&category=community">커뮤니티</a>
 		    </li>
@@ -453,7 +471,7 @@
 					<div class="row">
 						<!-- 메이커명-->
 						<span class="text-dark text-decoration-none fw-bold text-start pb-1" onclick="location.href='#'" style="cursor:pointer;">${project.maker_name }
-						<button class="btn btn-outline-success rounded-0 btn-sm btn float-end">
+						<button class="btn btn-outline-primary rounded-0 btn-sm btn float-end">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
 						<path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
 						</svg>팔로우</button>	
@@ -472,7 +490,7 @@
 					</div>
 					<!-- 팔로우, 1:1문의 버튼-->
 					<div class="row">
-						<button class="btn btn-outline-success me-2 rounded-0 btn-block" id="projectInquiry">
+						<button class="btn btn-outline-primary me-2 rounded-0 btn-block" id="projectInquiry">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
 						<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
 						<path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
@@ -498,7 +516,7 @@
 									<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
 									</svg>
 									<small>${reward.sales_quantity }개 선택</small>
-									<a class="btn disabled btn btn-outline-danger rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button">
+									<a class="btn disabled btn btn-outline-primary rounded-0 btn-sm btn float-end" aria-disabled="true" role="button" data-bs-toggle="button">
 									${reward.remaining_quantity }개 남음</a>
 									</span><br>
 									<span class="fs-4 card-title fw-bold"><fmt:formatNumber value="${reward.reward_price }" pattern="#,###" />원 +</span><br>
@@ -629,6 +647,51 @@ function nrReward(){
 function endReward(){
 	alert("이미 종료된 프로젝트입니다!\n다음 기회에 이용해주세요!");	
 }
+
+// 찜 ajax 요청
+$("#zimBtn").click(function() {
+  var is_zim = 1;
+  var project_idx = ${project.project_idx};
+
+  $.ajax({
+    type: "POST",
+    url: "isZim",
+    data: { is_zim: is_zim, project_idx: project_idx },
+    success: function(response) {
+      console.log(response);
+      alert("프로젝트 찜 완료");
+      location.reload();
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log(textStatus, errorThrown);
+    }
+  });
+});
+
+// 찜 해제 ajax 요청
+$("#deleteZimBtn").click(function() {
+  var is_zim = 0;
+  var project_idx = ${project.project_idx};
+
+  $.ajax({
+    type: "POST",
+    url: "isZim",
+    data: { is_zim: is_zim, project_idx: project_idx },
+    success: function(response) {
+      console.log(response);
+      alert("프로젝트 찜 해제 완료");
+      location.reload();
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log(textStatus, errorThrown);
+    }
+  });
+});
+
+// 비로그인 상태에서 찜 클릭 시
+$("#noLoginBtnZim").click(function() {
+	alert("로그인이 필요합니다");
+});
 </script>
 <br>
 <jsp:include page="../Footer.jsp"></jsp:include>

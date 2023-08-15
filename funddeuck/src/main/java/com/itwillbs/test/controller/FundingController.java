@@ -88,15 +88,22 @@ public class FundingController {
 	
 	// 펀딩 상세페이지 이동
 	@GetMapping ("fundingDetail")
-	public String fundingDetail(Model model
+	public String fundingDetail(Model model, HttpSession session, HttpServletRequest request
 			, @RequestParam int project_idx
 			, @RequestParam(defaultValue = "introduce") String category
-
 			) {
+		
+		String sId = (String)session.getAttribute("sId");
 		
 		// 프로젝트 상세 페이지 이동 시 조회할 프로젝트 정보
 		ProjectVO project = fundingService.selectProjectInfo(project_idx);
 		model.addAttribute("project",project);
+		
+		// 찜 여부 체크
+		if(sId != null) {
+			int isZim = fundingService.isZimProject(sId, project_idx);
+			model.addAttribute("isZim", isZim);
+		}
 		
 		// 프로젝트 메이커 로고
 		MakerVO maker = fundingService.getMakerLogo(project.getMaker_idx());
