@@ -47,4 +47,7 @@ public interface MakerMapper {
 	// 법인사업자 등록번호 조회
 	MakerVO selectBizNumCheck2(String corporate_biz_num);
 	
+	//메이커인지 아닌지 파악
+	int selectMakerCount(String sId);
+	
 }

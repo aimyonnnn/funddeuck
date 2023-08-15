@@ -239,5 +239,30 @@ public class MemberService {
 	public int getFollowBoardListCount(String sId) {
 		return mapper.selectFollowBoardListCount(sId);
 	}
+	
+	// 전화번호가 존재하는지 여부를 확인
+	public int getMemberPhoneNumber(String phoneNumber) {
+		return mapper.selectPhoneNumber(phoneNumber);
+	}
+	
+	// 전화번호 인증 코드 일치 여부 확인
+	public int selectPhoneNumeber(String phoneNumber, String authCode) {
+		return mapper.selectPhoneNumberEquelCode(phoneNumber, authCode);
+	}
+	
+	// 전화번호 인증 성공시 db에서 데이터 삭제
+	public int deletePhoneNumberCode(String phoneNumber, String authCode) {
+		return mapper.deletePhoneNUmberCode(phoneNumber);
+	}
+	
+	//회원정보 수정
+	public int modifyMemberInfo(MembersVO member) {
+		return mapper.updateMemberInfo(member);
+	}
+	
+	//회원 탈퇴
+	public int updateMemberDeleteStatus(String sId) {
+		return mapper.updateMemberDeleteStatus(sId);
+	}
 
 }

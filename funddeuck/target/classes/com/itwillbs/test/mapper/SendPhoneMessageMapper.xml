@@ -61,5 +61,25 @@
 			</choose>
 		</if>
 	</select>
-
+	
+	<!-- 인증코드 저장 -->
+	<insert id="insertDuplicateSmsCode">
+		INSERT INTO phone VALUES(
+			#{memberPhone}
+			, #{code}
+		);
+	</insert>
+	
+	<!-- 인증테이블에 코드가 존재하는지 검색 -->
+	<select id="selectDuplicateSmsCode">
+		SELECT COUNT(phone_number)
+			FROM phone
+			WHERE phone_number = #{memberPhone}
+	</select>
+	
+	<update id="updateDuplicateSmsCode">
+		UPDATE phone
+			SET code=#{code},
+			WHERE phone_number = #{memberPhone}
+	</update>
 </mapper>

@@ -62,5 +62,10 @@ public class MakerService {
 		return mapper.selectBizNumCheck2(corporate_biz_num);
 	}
 	
+	// 메이커 인지 아닌지 파악
+	public int getMakerCount(String sId) {
+		return mapper.selectMakerCount(sId);
+	}
+	
 	
 }

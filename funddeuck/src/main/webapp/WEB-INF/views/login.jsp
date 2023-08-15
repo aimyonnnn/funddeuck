@@ -95,7 +95,9 @@
                         	success: function(data) {
 								if(data == "true"){
 									location.href="./";	
-								} else {
+								} else if (data == "fail_back"){
+									alert("탈퇴된 계정입니다.");
+								}else {
 									const swalWithBootstrapButtons = Swal.mixin({
 										  customClass: {
 										    confirmButton: 'btn btn-success',
@@ -180,7 +182,9 @@ function processCallback() {
                     	success: function(data) {
 							if(data == "true"){
 								location.href="./";
-							} else {
+							} else if (data == "fail_back"){
+								alert("탈퇴된 계정입니다.");
+							}else {
 								const swalWithBootstrapButtons = Swal.mixin({
 									  customClass: {
 									    confirmButton: 'btn btn-success',
