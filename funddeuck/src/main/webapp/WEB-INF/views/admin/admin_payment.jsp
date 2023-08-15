@@ -69,9 +69,9 @@ th, td {
 	</div>
 	<!-- 검색 버튼 -->
 		
-	<div class="row">
+	<!-- pc사이즈에서만 보임 -->
+	<div class="row col-md-12 d-none d-md-block">
 		<div class="d-flex justify-content-center">
-			
 			<table class="table">
 				<tr>
 					<th class="text-center" style="width: 5%;">번호</th>
@@ -84,7 +84,6 @@ th, td {
 					<th class="text-center" style="width: 5%;">승인여부</th>
 					<th class="text-center" style="width: 5%;">상세정보</th>
 				</tr>
-				
 				<c:forEach var="pList" items="${pList}">
 					<tr>
 						<td class="text-center" >${pList.payment_idx}</td>
@@ -118,9 +117,41 @@ th, td {
 					</tr>
 				</c:forEach>
 			</table>
-	
 			</div>
 		</div>
+		
+	<!-- 모바일 사이즈에서만 보임 -->
+	<div class="row col-md-12 d-md-none">
+		<div class="d-flex justify-content-center">
+			<table class="table">
+				<tr>
+					<th class="text-center" style="width: 5%;">번호</th>
+					<th class="text-center" style="width: 12%;">이메일</th>
+					<th class="text-center" style="width: 5%;">최종금액</th>
+					<th class="text-center" style="width: 5%;">주문날짜</th>
+					<th class="text-center" style="width: 5%;">상세정보</th>
+				</tr>
+				<c:forEach var="pList" items="${pList}">
+					<tr>
+						<td class="text-center" >${pList.payment_idx}</td>
+						<td class="text-center">${pList.member_email}</td>
+						<td class="text-center">
+							<fmt:formatNumber pattern="#,##0" value="${pList.total_amount}"  var="paymentQuantity"/>
+							${paymentQuantity}원
+						</td>
+						<td class="text-center">
+							<fmt:formatDate value="${pList.payment_date}" pattern="yy-MM-dd"/>
+						</td>
+						<td class="text-center" style="width: 5%;">
+							<button class="btn btn-outline-primary btn-sm" 
+							onclick="location.href='adminPaymentDetail?payment_idx=${pList.payment_idx}&pageNum=${pageNum}'">보기</button>
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
+			</div>
+		</div>
+		
 	</div>		
 	
 	<!-- 페이징 처리 -->

@@ -69,9 +69,9 @@ th, td {
 		</div>
 		<!-- 검색 버튼 -->
 		
-		<div class="row">
+		<!-- pc사이즈에서만 보임 -->
+		<div class="row col-md-12 d-none d-md-block">
 			<div class="d-flex justify-content-center">
-				
 				<table class="table">
 					<tr>
 						<th class="text-center" style="width: 7%;">프로젝트 번호</th>
@@ -81,7 +81,6 @@ th, td {
 						<th class="text-center" style="width: 5%;">상태</th>
 						<th class="text-center" style="width: 5%;">상세정보</th>
 					</tr>
-					
 					<c:forEach var="pList" items="${pList}">
 						<tr>
 							<td class="text-center" style="width: 5%;">${pList.project_idx}</td>
@@ -118,9 +117,56 @@ th, td {
 						</tr>
 					</c:forEach>
 				</table>
-		
 			</div>
 		</div>
+		
+		<!-- 모바일 사이즈에서만 보임 -->
+		<div class="row col-md-12 d-md-none">
+			<div class="d-flex justify-content-center">
+				<table class="table">
+					<tr>
+						<th class="text-center" style="width: 7%;">프로젝트 번호</th>
+						<th class="text-center" style="width: 10%;">프로젝트 이름</th>
+						<th class="text-center" style="width: 7%;">대표자</th>
+						<th class="text-center" style="width: 5%;">상태</th>
+						<th class="text-center" style="width: 5%;">상세정보</th>
+					</tr>
+					<c:forEach var="pList" items="${pList}">
+						<tr>
+							<td class="text-center" style="width: 5%;">${pList.project_idx}</td>
+							<td class="text-center" style="width: 20%;">
+								<a href="adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}" style="text-decoration: none; color: black;">
+									${pList.project_subject}
+								</a> 
+							</td>
+							<td class="text-center" style="width: 20%;">${pList.project_representative_name}</td>
+							<c:choose>
+								<c:when test="${pList.project_approve_status eq 1}">
+									<td class="text-center" style="width: 5%;">미승인</td>
+								</c:when>
+								<c:when test="${pList.project_approve_status eq 2}">
+									<td class="text-center text-danger" style="width: 5%;">승인요청</td>
+								</c:when>
+								<c:when test="${pList.project_approve_status eq 3}">
+									<td class="text-center text-success" style="width: 5%;">승인완료</td>
+								</c:when>
+								<c:when test="${pList.project_approve_status eq 5}">
+									<td class="text-center" style="width: 5%;">결제완료</td>
+								</c:when>
+								<c:otherwise>
+									<td class="text-center" style="width: 5%;">승인거절</td>
+								</c:otherwise>
+							</c:choose>
+							<td class="text-center" style="width: 5%;">
+								<button class="btn btn-outline-primary btn-sm" 
+								onclick="location.href='adminProjectDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}'">보기</button>
+							</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</div>
+		</div>
+		
 	</div>		
 	
 	<!-- 페이징 처리 -->

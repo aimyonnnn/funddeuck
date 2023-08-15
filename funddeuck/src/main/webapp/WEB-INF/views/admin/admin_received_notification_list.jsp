@@ -287,9 +287,9 @@ function markAllAsRead(member_id) {
 			<button type="button" class="btn btn-outline-primary btn-sm" onclick="markAllAsRead('${sessionScope.sId}')">전체읽음처리</button>
 		</div>
 		
-		<div class="row">
+		<!-- pc사이즈에서만 보임 -->
+		<div class="row col-md-12 d-none d-md-block">
 			<div class="d-flex justify-content-center">
-			
 				<table class="table">
 					<tr>
 						<th class="text-center" style="width: 5%;">번호</th>
@@ -299,7 +299,6 @@ function markAllAsRead(member_id) {
 						<th class="text-center" style="width: 5%;">읽음처리하기</th>
 						<th class="text-center" style="width: 5%;">삭제하기</th>
 					</tr>
-					
 					<c:forEach var="nList" items="${nList}">
 						<tr>
 							<td class="text-center" style="width: 5%;">${nList.notification_idx}</td>
@@ -336,11 +335,45 @@ function markAllAsRead(member_id) {
 							</td>
 						</tr>
 					</c:forEach>
-					
 				</table>
-		
 			</div>
 		</div>
+		
+		<!-- 모바일 사이즈에서만 보임 -->
+		<div class="row col-md-12 d-md-none">
+			<div class="d-flex justify-content-center">
+				<table class="table">
+					<tr>
+						<th class="text-center" style="width: 5%;">번호</th>
+						<th class="text-center" style="width: 20%;">제목</th>
+						<th class="text-center" style="width: 7%;">받은시각</th>
+						<th class="text-center" style="width: 5%;">상태</th>
+					</tr>
+					<c:forEach var="nList" items="${nList}">
+						<tr>
+							<td class="text-center" style="width: 5%;">${nList.notification_idx}</td>
+							<td class="text-center" style="width: 20%;">
+								<a onclick="openNotificationModal(${nList.notification_idx})" data-bs-toggle="modal" data-bs-target="#messageStaticBackdrop">
+									${nList.notification_subject}
+								</a>
+							</td>
+							<td class="text-center" style="width: 10%;">
+								<fmt:formatDate value="${nList.notification_regdate}" pattern="yy-MM-dd"/>
+							</td>
+							<c:choose>
+								<c:when test="${nList.notification_read_status eq 1}">
+									<td class="text-center text-danger" style="width: 5%;">읽지않음</td>
+								</c:when>
+								<c:otherwise>
+									<td class="text-center" style="width: 5%;">읽음</td>
+								</c:otherwise>
+							</c:choose>
+						</tr>
+					</c:forEach>
+				</table>
+			</div>
+		</div>
+		
 	</div>		
 	
 	<!-- 페이징 처리 -->

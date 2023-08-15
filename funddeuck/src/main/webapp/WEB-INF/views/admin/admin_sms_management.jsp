@@ -70,22 +70,15 @@ th, td {
 		<!-- form 태그 끝 -->	
 	</div>
 	<!-- 검색 버튼 -->
-	
-	<!-- 문자 아이콘 - 휴대폰 메시지 전송용 -->
-<!--     <a class="nav-link py-0 me-4" href="#" data-bs-toggle="modal" data-bs-target="#sendPhoneMessageModal"> -->
-<!-- 	    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16"> -->
-<!-- 			<path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/> -->
-<!-- 		</svg> -->
-<!--     </a> -->
     
     <!-- 문자 보내기 버튼 -->
     <div class="d-flex justify-content-end">
 		<button class="btn btn-outline-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#sendPhoneMessageModal">문자 보내기</button>
 	</div>
 		
-	<div class="row">
+	<!-- pc사이즈에서만 보임 -->
+	<div class="row col-md-12 d-none d-md-block">
 		<div class="d-flex justify-content-center">
-			
 			<table class="table">
 				<tr>
 					<th class="text-center" style="width: 5%;">번호</th>
@@ -94,21 +87,43 @@ th, td {
 					<th class="text-center" style="width: 7%;">아이디</th>
 					<th class="text-center" style="width: 7%;">전화번호</th>
 				</tr>
-				
 				<c:forEach var="sList" items="${sList}">
 					<tr>
 						<td class="text-center">${sList.sms_idx}</td>
 						<td class="text-center">${sList.message}</td>
-						<td class="text-center">${sList.sent_date}</td>
+						<td class="text-center">
+							<fmt:formatDate value="${sList.sent_date}" pattern="yy-MM-dd HH:mm"/>
+						</td>
 						<td class="text-center">${sList.member_id}</td>
 						<td class="text-center">${sList.recipient}</td>
 					</tr>
 				</c:forEach>
-				
 			</table>
-	
 			</div>
 		</div>
+		
+	<!-- 모바일 사이즈에서만 보임 -->
+	<div class="row col-md-12 d-md-none">
+		<div class="d-flex justify-content-center">
+			<table class="table">
+				<tr>
+					<th class="text-center" style="width: 30%;">문자 내용</th>
+					<th class="text-center" style="width: 7%;">발송 일시</th>
+					<th class="text-center" style="width: 10%;">전화번호</th>
+				</tr>
+				<c:forEach var="sList" items="${sList}">
+					<tr>
+						<td class="text-center">${sList.message}</td>
+						<td class="text-center">
+							<fmt:formatDate value="${sList.sent_date}" pattern="yy-MM-dd"/>
+						</td>
+						<td class="text-center">${sList.recipient}</td>
+					</tr>
+				</c:forEach>
+			</table>
+			</div>
+		</div>
+		
 	</div>		
 	
 	<!-- 페이징 처리 -->

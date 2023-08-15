@@ -54,7 +54,7 @@
 		</div>
 
 		<div class="row">
-		    <div class="col-lg-4 col-md-4 col-12">
+		    <div class="col-lg-4 col-md-4 col-12 my-2">
 		        <div class="card-single">
 		            <div class="card-flex">
 		                <div class="card-into">
@@ -71,7 +71,7 @@
 		        </div>
 		    </div>
 		
-		    <div class="col-lg-4 col-md-4 col-12">
+		    <div class="col-lg-4 col-md-4 col-12 my-2">
 		        <div class="card-single">
 		            <div class="card-flex">
 		                <div class="card-into">
@@ -88,7 +88,7 @@
 		        </div>
 		    </div>
 		
-		    <div class="col-lg-4 col-md-4 col-12">
+		    <div class="col-lg-4 col-md-4 col-12 my-2">
 		        <div class="card-single">
 		            <div class="card-flex">
 		                <div class="card-into">
@@ -142,7 +142,7 @@
 								<td>${pList.project_category}</td>
 								<td>${pList.project_subject}</td>
 								<td>${pList.project_representative_name}</td>
-								<td>${pList.project_start_date}~${pList.project_end_date}</td>
+								<td>${pList.project_start_date}&nbsp;~&nbsp;${pList.project_end_date}</td>
 							</tr>
 						</c:forEach>
 					</table>
@@ -163,9 +163,8 @@
 				<table class="table text-center">
 					<tr>
 						<th style="width: 5%">번호</th>
-						<th style="width: 10%">카테고리</th>
+						<th style="width: 7%">카테고리</th>
 						<th style="width: 15%">프로젝트명</th>
-						<th style="width: 7%">대표자명</th>
 						<th style="width: 15%">프로젝트 기간</th>
 					</tr>
 					<c:forEach var="pList" items="${pList}">
@@ -173,8 +172,9 @@
 							<td>${pList.project_idx}</td>
 							<td>${pList.project_category}</td>
 							<td>${pList.project_subject}</td>
-							<td>${pList.project_representative_name}</td>
-							<td>${pList.project_start_date}~${pList.project_end_date}</td>
+							<td class="text-center" style="width: 10%;">
+								<fmt:formatDate value="${pList.project_start_date}" pattern="yy-MM-dd"/>&nbsp;~&nbsp;<fmt:formatDate value="${pList.project_end_date}" pattern="yy-MM-dd"/>
+							</td>
 						</tr>
 					</c:forEach>
 				</table>

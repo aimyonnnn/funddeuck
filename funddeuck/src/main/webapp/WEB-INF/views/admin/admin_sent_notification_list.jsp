@@ -193,9 +193,9 @@ function deleteNotification(notification_idx) {
 			<!-- form 태그 끝 -->	
 		</div>
 			
-		<div class="row">
+		<!-- pc사이즈에서만 보임 -->
+		<div class="row col-md-12 d-none d-md-block">
 			<div class="d-flex justify-content-center">
-			
 				<table class="table">
 					<tr>
 						<th class="text-center" style="width: 5%;">번호</th>
@@ -205,7 +205,6 @@ function deleteNotification(notification_idx) {
 						<th class="text-center" style="width: 5%;">상태</th>
 						<th class="text-center" style="width: 5%;">삭제</th>
 					</tr>
-					
 					<c:forEach var="nList" items="${nList}">
 						<tr>
 							<td class="text-center" style="width: 5%;">${nList.notification_idx}</td>
@@ -231,11 +230,38 @@ function deleteNotification(notification_idx) {
 							</td>
 						</tr>
 					</c:forEach>
-					
 				</table>
-		
 			</div>
 		</div>
+		
+		<!-- 모바일 사이즈에서만 보임 -->
+		<div class="row col-md-12 d-md-none">
+			<div class="d-flex justify-content-center">
+				<table class="table">
+					<tr>
+						<th class="text-center" style="width: 5%;">번호</th>
+						<th class="text-center" style="width: 20%;">제목</th>
+						<th class="text-center" style="width: 7%;">보낸시각</th>
+						<th class="text-center" style="width: 5%;">받는사람</th>
+					</tr>
+					<c:forEach var="nList" items="${nList}">
+						<tr>
+							<td class="text-center" style="width: 5%;">${nList.notification_idx}</td>
+							<td class="text-center" style="width: 20%;">
+								<a onclick="openNotificationModal(${nList.notification_idx})" data-bs-toggle="modal" data-bs-target="#messageStaticBackdrop">
+									${nList.notification_subject}
+								</a>
+							</td>
+							<td class="text-center" style="width: 10%;">
+								<fmt:formatDate value="${nList.notification_regdate}" pattern="yy-MM-dd"/>
+							</td>
+							<td class="text-center" style="width: 10%;">${nList.member_id}</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</div>
+		</div>
+		
 	</div>
 			
 	<!-- 페이징 처리 -->

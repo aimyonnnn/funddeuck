@@ -70,9 +70,9 @@ th, td {
 	</div>
 	<!-- 검색 버튼 -->
 		
-	<div class="row">
+	<!-- pc사이즈에서만 보임 -->
+	<div class="row col-md-12 d-none d-md-block">
 		<div class="d-flex justify-content-center">
-			
 			<table class="table">
 				<tr>
 					<th class="text-center" style="width: 5%;">번호</th>
@@ -82,7 +82,6 @@ th, td {
 					<th class="text-center" style="width: 7%;">전화번호</th>
 					<th class="text-center" style="width: 5%;">상세정보</th>
 				</tr>
-				
 				<c:forEach var="mList" items="${mList}">
 					<tr>
 						<td class="text-center">${mList.maker_idx}</td>
@@ -112,11 +111,41 @@ th, td {
 						</td>
 					</tr>
 				</c:forEach>
-				
 			</table>
-	
 			</div>
 		</div>
+	
+	<!-- 모바일 사이즈에서만 보임 -->
+	<div class="row col-md-12 d-md-none">
+		<div class="d-flex justify-content-center">
+			<table class="table">
+				<tr>
+					<th class="text-center" style="width: 5%;">번호</th>
+					<th class="text-center" style="width: 10%;">메이커 이름</th>
+					<th class="text-center" style="width: 7%;">이메일</th>
+					<th class="text-center" style="width: 7%;">전화번호</th>
+					<th class="text-center" style="width: 5%;">상세정보</th>
+				</tr>
+				<c:forEach var="mList" items="${mList}">
+					<tr>
+						<td class="text-center">${mList.maker_idx}</td>
+						<td class="text-center">
+							<a href="adminMakerDetail?maker_idx=${mList.maker_idx}&pageNum=${pageNum}" style="text-decoration: none; color: black;">
+								${mList.maker_name}
+							</a> 
+						</td>
+						<td class="text-center">${mList.maker_email}</td>
+						<td class="text-center">${mList.maker_tel}</td>
+						<td class="text-center">
+							<button class="btn btn-outline-primary btn-sm" 
+							onclick="location.href='adminMakerDetail?maker_idx=${mList.maker_idx}&pageNum=${pageNum}'">보기</button>
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
+			</div>
+		</div>
+		
 	</div>		
 	
 	<!-- 페이징 처리 -->
