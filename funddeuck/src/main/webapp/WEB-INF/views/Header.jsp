@@ -397,7 +397,7 @@
                             <img src="${pageContext.request.contextPath }/resources/images/icon/letter.png" style="width: 32px; height: 32px;">
                         </a>
                     </li>
-                    <%-- 종 아이콘 - 받은 메시지함 - 일반 유저도 같이 보여야함 시작 --%>
+                    <%-- 종 아이콘 - 받은 메시지함 - 일반 유저도 같이 보여야함 --%>
                     <li class="nav-item">
                         <a class="nav-link py-0 me-6" href="confirmNotification">
                             <img src="${pageContext.request.contextPath }/resources/images/icon/bell.png" style="width: 30px; height: 30px;">
