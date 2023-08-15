@@ -362,7 +362,7 @@
     <button id="go-top"><img src="${pageContext.request.contextPath }/resources/images/topbtn.png" style="width: 56px; height: 56px;"></button>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light rounded fixed-top">
-    <a class="navbar-brand" href='<c:url value="/" />'><img src="${pageContext.request.contextPath }/resources/images/logo.png" style="width: 80px; height: 80px;"></a>
+    <a class="navbar-brand" href='<c:url value="/" />'><img src="${pageContext.request.contextPath }/resources/images/logo.png" style="width: 90px; height: 90px;"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>

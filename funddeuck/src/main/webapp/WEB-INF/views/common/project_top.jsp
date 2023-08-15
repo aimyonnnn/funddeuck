@@ -176,7 +176,7 @@ function updateList() {
     <div class="container">
     		
         <a class="navbar-brand">
-            <img src="${pageContext.request.contextPath}/resources/images/logo.png" width="80px" height="80px" onclick="location.href='./'">
+            <img src="${pageContext.request.contextPath}/resources/images/logo.png" width="90px" height="90px" onclick="location.href='./'">
         </a>
         
         <div class="d-flex flex-row align-items-center">
