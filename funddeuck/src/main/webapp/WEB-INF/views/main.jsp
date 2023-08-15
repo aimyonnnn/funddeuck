@@ -65,7 +65,7 @@
 	<!-- 위로 가기 버튼 -->
 	<button id="go-top"><img src="${pageContext.request.contextPath }/resources/images/topbtn.png" style="width: 56px; height: 56px;"></button>
     <h3><b>오늘의 추천 프로젝트</b></h3>
-    <p>함께 만드는 성공</p>
+    <p><img src="https://cdn-icons-png.flaticon.com/512/1884/1884795.png" style="width: 30px; height: 30px;">&nbsp;함께 만드는 성공</p>
     <div class="row" id="projectContainer">
 
         <c:forEach items="${projectList}" var="project" varStatus="status">
@@ -105,14 +105,14 @@
 		        <h3><b>트랜드</b></h3>
 		    <div class="col-md-6">
 		      <div class="card-body">
-		        <p><b>이제는 끝날 <span class="highlight">#마감</span> 프로젝트</b></p>
+		        <p><b><img src="https://cdn-icons-png.flaticon.com/512/3593/3593144.png" style="width: 30px; height: 30px;">&nbsp;이제는 끝날 <span class="highlight">#마감</span> 프로젝트</b></p>
 		        <ul id="rankingList" class="card-text"></ul>
 		      </div>
 		    </div>
 		    		    
 		    <div class="col-md-6">
 				<div class="card-body_hash">
-				    <p><b>요즘 유행하는 <span class="highlight">#해시태그</span>만 모아봤어요!</b></p>
+				    <p><b><img src="https://cdn-icons-png.flaticon.com/512/3593/3593144.png" style="width: 30px; height: 30px;">&nbsp;요즘 유행하는 <span class="highlight">#해시태그</span>만 모아봤어요!</b></p>
 					<div class="hashtags-container">
 					        <c:forEach items="${hashTagMap}" var="hashTagEntry">
 					            <c:set var="hashTag" value="${hashTagEntry.key}" />
@@ -131,12 +131,13 @@
 		    </div>
 		  </div>
 		</div>
-	<br>	
+	<br>
+		
 <hr>
  	<br>
 	<div class="container">
         <h3><b>오픈 예정 프로젝트</b></h3>
-        <p>주목하세요! 오픈할 프로젝트</p>
+        <p><img src="https://cdn-icons-png.flaticon.com/512/1700/1700807.png" style="width: 30px; height: 30px;">&nbsp;주목하세요! 오픈할 프로젝트</p>
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <c:forEach items="${projectList}" var="project" varStatus="status">
@@ -165,6 +166,8 @@
     </div>
     <br>  
 <hr>	
+
+
 
 	
     <!-- 팝업 컨테이너 하나만 출력할 때-->
@@ -269,6 +272,7 @@
 	        });
 	    });
 	</script>
+
 
 
     <%@ include file="Footer.jsp" %>
