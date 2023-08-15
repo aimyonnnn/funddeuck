@@ -108,6 +108,10 @@ $(() => {
 });
 	
 // 알림 갯수 조회하기
+// let notificationCount = parseInt(data);
+// if (!isNaN(notificationCount)) {
+//     $("#newNotificationCount").text(notificationCount);
+// }
 function getNotificationCount() {
     $.ajax({
         type: "get",
@@ -117,10 +121,16 @@ function getNotificationCount() {
         },
         dataType: "text",
         success: function(data) {   
-       	 	let notificationCount = parseInt(data);
-            if (!isNaN(notificationCount)) {
-                $("#newNotificationCount").text(notificationCount);
-            }
+
+			let notificationCount = parseInt(data);
+	            if (!isNaN(notificationCount)) {
+	                if (notificationCount > 0) {
+	                    $("#newNotificationCount").text(notificationCount).show();
+	                } else {
+	                    $("#newNotificationCount").hide();
+	                }
+	            }	
+
         },
         error: function() {
         }
@@ -257,7 +267,7 @@ function updateList() {
 	            <a class="nav-link py-0" href="adminReceivedNotification">
 		            <img src="${pageContext.request.contextPath }/resources/images/icon/bell.png" style="width: 30px; height: 30px;">
 	           	</a>
-	            <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
+	            <span id="newNotificationCount" class="badge bg-danger rounded-pill"></span>
             	</c:when>
             </c:choose>
             

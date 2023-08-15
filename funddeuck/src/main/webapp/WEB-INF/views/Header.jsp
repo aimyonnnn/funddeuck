@@ -241,12 +241,13 @@
 	        dataType: "text",
 	        success: function(data) {   
 	        	
-	       	 	let notificationCount = parseInt(data);
-	       	 	
-	            if (!isNaN(notificationCount)) {	// 주어진 값이 숫자가 아니라면 true를 리턴
-	            	
-	                $("#newNotificationCount").text(notificationCount);
-	                
+	        	let notificationCount = parseInt(data);
+	            if (!isNaN(notificationCount)) {
+	                if (notificationCount > 0) {
+	                    $("#newNotificationCount").text(notificationCount).show();
+	                } else {
+	                    $("#newNotificationCount").hide();
+	                }
 	            }
 	            
 	        },
@@ -404,7 +405,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-		                <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
+		                <span id="newNotificationCount" class="badge bg-danger rounded-pill"></span>
 		            </li>
                 </c:when>
                 
@@ -422,7 +423,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-		                <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
+		                <span id="newNotificationCount" class="badge bg-danger rounded-pill"></span>
 		            </li>
 	        	 </c:when>
 	        	 

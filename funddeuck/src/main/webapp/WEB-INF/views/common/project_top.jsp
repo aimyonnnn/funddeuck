@@ -108,12 +108,13 @@ function getNotificationCount() {
         dataType: "text",
         success: function(data) {   
         	
-       	 	let notificationCount = parseInt(data);
-       	 	
-            if (!isNaN(notificationCount)) {	// 주어진 값이 숫자가 아니라면 true를 리턴
-            	
-                $("#newNotificationCount").text(notificationCount);
-                
+            let notificationCount = parseInt(data);
+            if (!isNaN(notificationCount)) {
+                if (notificationCount > 0) {
+                    $("#newNotificationCount").text(notificationCount).show();
+                } else {
+                    $("#newNotificationCount").hide();
+                }
             }
             
         },
@@ -251,7 +252,7 @@ function updateList() {
 		            <a class="nav-link py-0" href="confirmNotification">
 			            <img src="${pageContext.request.contextPath }/resources/images/icon/bell.png" style="width: 30px; height: 30px;">
 		           	</a>
-		            <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
+		            <span id="newNotificationCount" class="badge bg-danger rounded-pill"></span>
         		</c:when>
         		
         		<%-- 세션아이디가 admin이 아니고, 세션아이디가 존재 할 때 --%>
