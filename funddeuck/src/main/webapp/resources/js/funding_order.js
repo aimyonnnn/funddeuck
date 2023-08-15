@@ -504,7 +504,9 @@
 			alert("후원 유의사항 확인을 체크해주세요!");
 			return false;
 		}
-		return true;
+		// 결제 여부 확인
+		let confirmed = confirm("결제하시겠습니까?");
+		return confirmed; 
 	}
 
 // ===========================================================

@@ -26,6 +26,37 @@
 			fileInput.value = '';
 		}
 	}
+	
+	// 파일 실시간 삭제
+	function deleteFile(notice_idx, fileName, fileNumber) {
+		
+		if(confirm('파일을 삭제 하시겠습니까?')) {
+			
+			$.ajax({
+				type: 'post',
+				url: "<c:url value='deleteNoticeFile'/>",
+				data: {
+					notice_idx: notice_idx,
+					fileName: fileName,
+					fileNumber: fileNumber
+				},
+				success: function(result){
+					
+					if(result.trim() === 'success') {
+						// 파일 삭제 성공 시
+						alert('파일이 삭제되었습니다.');
+						location.reload();
+					} else {
+						alert('파일 삭제 실패!');
+					}
+				},
+				error: function (error) {
+					console.log(error);
+				}
+			});
+		}
+	}	
+	
 </script>	
 
 <body>
@@ -36,9 +67,12 @@
 	<div class="container text-center">
 		<div class="row">
 			<div class="col-6 col-md-6 col-sm-12 mx-auto">
-			    <form action="NoticeWrite" method="post" enctype="multipart/form-data">
+			    <form action="NoticeModify" method="post" enctype="multipart/form-data">
 					<div class="row justify-content-center">
 						<div class="col">
+						<!-- hidden 필드 -->
+					    <input type="hidden" name="pageNum" value="${param.pageNum}">
+					    <input type="hidden" name="notice_idx" value="${param.notice_idx}">
 							<table class="table my-2">
 				                <tr>
 				                    <th class="col-2">구분</th>
@@ -74,7 +108,8 @@
 											</c:when>
 											<c:otherwise>
 						                    	${fn:split(notice.notice_thumnail, '_')[1] } &nbsp;&nbsp;&nbsp;
-												<input class="btn btn-primary" type="button" value="삭제">
+												<input class="btn btn-primary" type="button" value="삭제"
+												onclick="deleteFile('${notice.notice_idx}', '${notice.notice_thumnail}', 1)">
 											</c:otherwise>
 										</c:choose>				                    
 				                    </td>
@@ -88,7 +123,8 @@
 											</c:when>
 											<c:otherwise>
 												${fn:split(notice.notice_file, '_')[1] } &nbsp;&nbsp;&nbsp;
-												<input class="btn btn-primary" type="button" value="삭제">
+												<input class="btn btn-primary" type="button" value="삭제"
+												onclick="deleteFile('${notice.notice_idx}', '${notice.notice_file}', 2)">
 											</c:otherwise>
 										</c:choose>				                    
 				                    </td>
@@ -99,7 +135,7 @@
 		    		<div class="row justify-content-center">
 			        	<div class="col-3">
 				            <div class="d-grid">
-				                <button type="submit" class="btn btn-primary">등록</button>
+				                <button type="submit" class="btn btn-primary">수정</button>
 				            </div>
 						</div>
 					</div>

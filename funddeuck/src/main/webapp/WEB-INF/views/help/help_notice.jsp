@@ -26,17 +26,16 @@
 
     <!-- 글 목록 -->
 	<div class="container text-center">
-		<div class="row">
+		<div class="row mt-3">
 	            <div class="list-group col-6 col-md-6 mx-auto">
 	            	<c:choose>
 		            	<c:when test="${not empty noticeList }">
 			            	<c:forEach var="notice" items="${noticeList }">
-			            	
 				                <a href="NoticeDetail?notice_idx=${notice.notice_idx }&pageNum=${pageNum }" class="list-group-item list-group-item-action" aria-current="true">
 				                    <div class="d-flex justify-content-between">
 				                    	<c:if test="${notice.notice_category eq 1}"><small>공지</small></c:if>
 				                    	<c:if test="${notice.notice_category eq 2}"><small>이벤트</small></c:if>
-				                    	<c:if test="${notice.notice_category eq 3}"><small>서버점검</small></c:if>
+				                    	<c:if test="${notice.notice_category eq 3}"><small>서버 점검 안내</small></c:if>
 				                        
 				                        <small><fmt:formatDate value="${notice.notice_date }" pattern="yy-MM-dd"/><br>조회 : ${notice.notice_readcount }</small>
 				                    </div>

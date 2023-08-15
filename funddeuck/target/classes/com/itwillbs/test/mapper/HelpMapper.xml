@@ -97,4 +97,79 @@
 				WHERE notice_idx = #{notice_idx}
 	</update>
 	
+	<!-- 공지사항 수정 - 파일 삭제 ajax -->
+	<update id="deleteNoticeFile">
+		UPDATE notice
+			  SET
+			    <choose>
+			      <when test="fileNumber == 1">
+			        notice_thumnail = ''
+			      </when>
+			      <when test="fileNumber == 2">
+			        notice_file = ''
+			      </when>
+			    </choose>
+			  WHERE
+			    notice_idx = #{notice_idx}
+			    and (
+			      (#{fileNumber} = 1 and notice_thumnail != '')
+			      or (#{fileNumber} = 2 and notice_file != '')
+			    )
+	</update>	
+	
+	<!-- 공지사항 수정 -->
+	<update id="updateNotice">
+		UPDATE notice
+			SET
+				notice_category = #{notice_category}
+				, notice_name = #{notice_name}
+				, notice_subject = #{notice_subject}
+				, notice_content = #{notice_content}
+				<if test="!notice_thumnail.equals('')">
+					, notice_thumnail = #{notice_thumnail}
+				</if>
+				<if test="!notice_file.equals('')">
+					, notice_file = #{notice_file}
+				</if>
+			WHERE
+				notice_idx = #{notice_idx}	
+	
+	</update>
+	
+	<!-- 공지사항 삭제 -->
+	<delete id="deleteNotice">
+		DELETE FROM notice
+			WHERE notice_idx = #{notice_idx}
+	</delete>
+	
+	<!-- 공지사항 카테고리 선택 조회 -->
+	<select id="selectNoticeCategoryList">
+		SELECT * 
+			FROM notice
+			
+				WHERE notice_category = #{notice_category}
+			<if test="!searchKeyword.equals('')">
+				<!-- 2. 검색타입(searchType)에 따른 WHERE 절 조건 대상 변경 -->
+				<choose>
+					<when test="searchType.equals('subject')">
+						AND notice_subject LIKE '%${searchKeyword}%'
+					</when>
+					<when test="searchType.equals('content')">
+						AND notice_content LIKE '%${searchKeyword}%'
+					</when>
+					<when test="searchType.equals('subject_content')">
+						AND notice_subject LIKE '%${searchKeyword}%'
+						OR notice_content LIKE '%${searchKeyword}%'
+					</when>
+				</choose>
+			</if>			
+			
+				ORDER BY
+					notice_re_ref DESC
+					, notice_re_seq ASC
+						LIMIT 
+							#{startRow}
+							, #{listLimit}
+	</select>
+	
 </mapper>

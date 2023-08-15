@@ -49,8 +49,8 @@
 					                    <label for="event_category">이벤트</label>
 					                    <input type="radio" id="maintenance_category" value="3" name="notice_category">
 					                    <label for="maintenance_category">서버 점검</label>
-					                    <input type="radio" id="top_category" value="4" name="notice_category">
-					                    <label for="top_category">상위 고정</label>
+<!-- 					                    <input type="radio" id="top_category" value="4" name="notice_category"> -->
+<!-- 					                    <label for="top_category">상위 고정</label> -->
 				                    </td>
 				                </tr>
 				                <tr>
@@ -79,8 +79,8 @@
 							</table>
 						</div>
 		    		</div>
-		    		<div class="row justify-content-center">
-			        	<div class="col-3">
+		    		<div class="row ">
+			        	<div class="col d-flex justify-content-center align-self-center">
 				            <div class="d-grid">
 				                <button type="submit" class="btn btn-primary">등록</button>
 				            </div>

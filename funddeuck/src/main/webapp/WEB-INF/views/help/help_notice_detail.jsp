@@ -12,7 +12,21 @@
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 
 </head>
+<script>
+// 	function goBackAndRefresh() {
+// 	  const prevUrl = document.referrer;
+// 	  window.location.href = prevUrl;
+// 	}
 
+	function confirmDelete() {
+		let isDelete = confirm("정말 삭제하시겠습니까?");
+		
+		if(isDelete) {
+			location.href='NoticeDelete?notice_idx=${notice.notice_idx}&pageNum=${param.pageNum}';
+		}
+	}	
+	
+</script>
 <body>
     <!-- 헤더  -->
 	<jsp:include page="../Header.jsp"></jsp:include>
@@ -21,56 +35,33 @@
 	<jsp:include page="help_notice_header.jsp"></jsp:include>
 	<!-- 글 영역 -->
 	<div class="container text-center">
-		<div class="row">
+		<div class="row mt-3">
 			<div class="col-6 col-md-6 col-sm-12 mx-auto">
-			    <form action="helpNoticeWrite" method="post" enctype="multipart/form-data">
-					<div class="row justify-content-center">
+				<div class="row">
+					<span class="fs-3 fw-bold">${notice.notice_subject }</span>
+				</div>
+				<div class="row">
+					<div class="col-4">
+						<img src="${pageContext.request.contextPath }/resources/images/logo.png" style="width: 90px; height: 90px;">
+					</div>
+					<div class="col-8 text-start align-self-center">
+						${notice.notice_name } <br>
+						<fmt:formatDate value="${notice.notice_date }" pattern="yy-MM-dd"/>
+					</div>
+				</div>
+				<div class="row">
+					<p class="fs-6">${notice.notice_content }<p>
+				</div>
+				
+				<c:if test="${not empty notice.notice_file}">
+					<div class="row">
 						<div class="col">
-							<table class="table my-2">
-				                <tr>
-				                    <th class="col-2">구분</th>
-				                    <td class="col">
-				                    	<c:if test="${notice.notice_category eq 1}">
-				                    		일반 공지
-				                    	</c:if>
-				                    	<c:if test="${notice.notice_category eq 2}">
-				                    		이벤트
-				                    	</c:if>
-				                    	<c:if test="${notice.notice_category eq 3}">
-				                    		서버 점검
-				                    	</c:if>
-				                    	<c:if test="${notice.notice_category eq 4}">
-				                    		상위 고정
-				                    	</c:if>
-				                    </td>
-				                </tr>
-				                <tr>
-				                    <th class="col-2">제목</th>
-				                    <td>${notice.notice_subject }</td>
-				                </tr>
-				                <tr>
-				                    <th class="col-2">내용</th>
-				                    <td class="col">
-				                    	${notice.notice_content }
-				                    </td>
-				                </tr>
-<!-- 				                <tr> -->
-<!-- 				                	이미지 파일만 등록 가능 -->
-<!-- 				                    <th class="col-2">썸네일<small class="fs-6 text-muted">*10MB이하</small></th> -->
-<!-- 				                    <td class="col"> -->
-<!-- 				                        <input type="file" class="form-control" name="file" accept="image/*" onchange="checkFileExtension(event)" required> -->
-<!-- 				                    </td> -->
-<!-- 				                </tr> -->
-							</table>
-						</div>
-		    		</div>
-		    		<div class="row justify-content-center">
-			        	<div class="col-3">
-				            <div class="d-grid gap-2">
-				            </div>
+							파일 첨부 : 
+							    <a href="${pageContext.request.contextPath }/resources/upload/${notice.notice_file }" download="${notice.notice_file }">${fn:split(notice.notice_file, '_')[1] }</a><br>
 						</div>
 					</div>
-				</form>
+				
+				</c:if>
 			</div>
 		
 	    </div>	
@@ -78,14 +69,12 @@
     
 	<!-- 버튼 영역 -->
 	<div class="container text-center">
-		<div class="row">
+		<div class="row mt-4">
 			<div class="col-6 col-md-6 col-sm-12 mx-auto">
-                <button type="button" class="btn btn-primary" onclick="location.href='helpNotice'">목록</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='helpNotice?pageNum=${param.pageNum}'">목록</button>
                 <c:if test="${sessionScope.sId eq 'admin' }">
                 <a href="NoticeModifyForm?notice_idx=${param.notice_idx}&pageNum=${param.pageNum}" class="btn btn-primary">수정</a>
-                <a href="NoticeModifyForm?notice_idx=${param.notice_idx}&pageNum=${param.pageNum}" class="btn btn-primary">삭제</a>
-<!--                 <button type="button" class="btn btn-primary" onclick="location.href='helpNoticeModifyForm?'">수정</button> -->
-<!--                 <button type="button" class="btn btn-primary" onclick="location.href='helpNotice'">삭제</button> -->
+                <button type="button" class="btn btn-primary" onclick="confirmDelete()">삭제</button>
                 </c:if>
 			</div>
 		</div>
