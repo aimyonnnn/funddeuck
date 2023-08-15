@@ -64,13 +64,13 @@
 			    </div>
 			    <div class="carousel-inner">
 			      <div class="carousel-item active">
-			        <img src="${pageContext.request.contextPath}/resou	rces/upload/${project.project_thumnails1}" class="d-block w-100" alt="..." style="width:500px; height:500px; object-fit:cover;">
+			        <img src="${pageContext.request.contextPath}/resou	rces/upload/${project.project_thumnails1}" class="d-block w-100" alt="..." style="width:600px; height:600px; object-fit:cover;">
 			      </div>
 			      <div class="carousel-item">
-			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails2}" class="d-block w-100" alt="..." style="width:500px; height:500px; object-fit:cover;">
+			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails2}" class="d-block w-100" alt="..." style="width:600px; height:600px; object-fit:cover;">
 			      </div>
 			      <div class="carousel-item">
-			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails3}" class="d-block w-100" alt="..." style="width:500px; height:500px; object-fit:cover;">
+			        <img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails3}" class="d-block w-100" alt="..." style="width:600px; height:600px; object-fit:cover;">
 			      </div>
 			    </div>
 			    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
