@@ -225,10 +225,10 @@
                             </a>
                         </div>
                         <div class="col-sm-12 col-md-6">
-                            <a href="" class="text-black w-100">
+                            <a href="modifyMember" class="text-black w-100">
                                 <div class="row  ms-md-2 me-md-2">
                                     <div class="col text-start my-3">
-                                        <i class="bi bi-gear"></i> 설정
+                                        <i class="bi bi-gear"></i> 정보수정
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>
