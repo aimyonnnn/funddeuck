@@ -23,13 +23,15 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 </head>
 <body>
+<!-- 현재 날짜 정보 저장 -->
+<c:set var="today" value="<%=new java.util.Date()%>" />
+<fmt:parseNumber value="${today.time / (1000*60*60*24)}" integerOnly="true" var="nowDate"></fmt:parseNumber>
 <!-- 요청 파라미터 값 저장 -->
 <fmt:parseDate value="${project.project_end_date }" var="projectEndDate" pattern="yyyy-MM-dd"/>
 <fmt:parseNumber value="${projectEndDate.time / (1000*60*60*24)}" integerOnly="true" var="endDate"></fmt:parseNumber>
 <fmt:parseDate value="${project.project_start_date }" var="projectStartDate" pattern="yyyy-MM-dd"/>
 <fmt:parseNumber value="${projectStartDate.time / (1000*60*60*24)}" integerOnly="true" var="strDate"></fmt:parseNumber>
 <input type="hidden" value="${param.category }" id="categoryVal">
-<c:set var="currentTime" value="<%= new java.util.Date() %>" />  
 	<br>
 	<br>
 	<br>
@@ -172,19 +174,19 @@
 					   		</td>
 				   		</c:if>
 				   		<!-- 프로젝트가 진행중이며, 아직 진행일이 남아있을 경우 -->
-				   		<c:if test="${project.project_status eq 2 && endDate - strDate ne 0}">
+				   		<c:if test="${project.project_status eq 2 && endDate - nowDate ne 0 and endDate - nowDate > 0}">
 					   		<td><small>
 					   		${project.project_start_date }
 					   		~
 					   		${project.project_end_date }
 					   		</small>&nbsp;&nbsp;&nbsp;
 					   		<span class="badge text-danger text-bg-danger bg-opacity-10">
-					   		${endDate - strDate } 일 남음
+					   		${endDate - nowDate } 일 남음
 					   		</span>
 					   		</td>
 				   		</c:if>
 				   		<!-- 프로젝트가 진행중이지만, 오늘 종료될 경우 -->
-				   		<c:if test="${project.project_status eq 2 && endDate - strDate eq 0}">
+				   		<c:if test="${project.project_status eq 2 && endDate - nowDate eq 0}">
 					   		<td><small>
 					   		${project.project_start_date }
 					   		~

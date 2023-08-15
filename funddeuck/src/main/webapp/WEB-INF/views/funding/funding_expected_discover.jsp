@@ -185,7 +185,7 @@
 							<fmt:parseNumber value="${today.time / (1000*60*60*24)}" integerOnly="true" var="nowDate"></fmt:parseNumber>
 							<fmt:parseDate value="${project.project_start_date }" var="projectStartDate" pattern="yyyy-MM-dd"/>
 							<fmt:parseNumber value="${projectStartDate.time / (1000*60*60*24)}" integerOnly="true" var="strDate"></fmt:parseNumber>
-							${nowDate - strDate }</small>일 남았어요!
+							${strDate - nowDate }</small>일 남았어요!
 			      		</small>
 					</div>
 				</div>

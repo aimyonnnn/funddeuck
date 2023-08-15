@@ -25,6 +25,9 @@
 <script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
 </head>
 <body>
+<!--  현재 날짜 정보 저장 -->
+<c:set var="today" value="<%=new java.util.Date()%>" />
+<fmt:parseNumber value="${today.time / (1000*60*60*24)}" integerOnly="true" var="nowDate"></fmt:parseNumber>
 <!-- 요청 파라미터 값 저장 -->
 <input type="hidden" value="${param.searchKeyword }" id="searchKeywordVal">
 <input type="hidden" value="${param.status }" id="statusVal">
@@ -67,8 +70,8 @@
 		<c:forEach items="${project}" var="project" varStatus="status">
 			<div class="col" id="projectListArea">
 				<div class="card h-100 w-100 p-3 border-0">
-					<img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" 
-					class="card-img-top" style="width:274px; height:341.52px; object-fit:cover;" alt="...">
+						<img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" 
+						class="card-img-top" style="width:274px; height:341.52px; object-fit:cover;" alt="...">
 					<div class="card-body">
 						<small class="card-title opacity-75">${project.project_hashtag } | ${project.project_representative_name }</small>
 						<p class="card-text fw-bold text-start">${project.project_subject }</p>
@@ -91,20 +94,20 @@
 			      			</small>
 			      			</c:if>
 			      			<!-- 프로젝트가 진행중이며, 아직 진행일이 남아있을 경우 -->
-			      			<c:if test="${project.project_status eq 2 && endDate - strDate ne 0 }">
+			      			<c:if test="${project.project_status eq 2 && endDate - nowDate ne 0 and endDate - nowDate > 0}">
 			      			<small class="fw-bold float-end">
-								${endDate - strDate }
+								${endDate - nowDate }
 				      			일 남음
 			      			</small>
 			      			</c:if>
 			      			<!-- 프로젝트가 진행중이지만, 오늘 종료될 경우 -->
-			      			<c:if test="${project.project_status eq 2 && endDate - strDate eq 0 }">
+			      			<c:if test="${project.project_status eq 2 && endDate - nowDate eq 0 }">
 			      			<small class="fw-bold float-end text-danger">
 								오늘 종료
 			      			</small>
 			      			</c:if>
 			      			<!-- 이미 종료된 프로젝트의 경우 -->
-			      			<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 }">
+			      			<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 || project.project_status eq 6}">
 			      			<small class="fw-bold float-end text-danger">
 								종료됨
 			      			</small>

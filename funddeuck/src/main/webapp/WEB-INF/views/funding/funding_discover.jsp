@@ -25,9 +25,8 @@
 <script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
 </head>
 <body>
-<!-- 오늘 날짜 값 저장 -->
-<c:set var="now" value="<%=new java.util.Date()%>" />
-<fmt:formatDate var="nowDate" value="${now}" pattern="yyyy-MM-dd" />
+<!-- 현재 날짜 정보 저장 -->
+<c:set var="today" value="<%=new java.util.Date()%>" />
 <!-- 요청 파라미터 값 저장 -->
 <input type="hidden" value="${param.category }" id="categoryVal">
 <input type="hidden" value="${param.status }" id="statusVal">
@@ -77,7 +76,7 @@
 	<ul class="nav justify-content-center">
 		<li class="nav-item 
 		<c:if test="${param.category eq 'all' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 			<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingDiscover?category=all&status=${param.status }&index=${param.index }">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stack" viewBox="0 0 16 16">
@@ -87,7 +86,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'tech' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=tech&status=${param.status }&index=${param.index }">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tools" viewBox="0 0 16 16">
@@ -96,7 +95,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'fashion' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=fashion&status=${param.status }&index=${param.index }">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket2-fill" viewBox="0 0 16 16">
@@ -105,7 +104,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'living' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=living&status=${param.status }&index=${param.index }">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-add-fill" viewBox="0 0 16 16">
@@ -116,7 +115,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'beauty' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=beauty&status=${param.status }&index=${param.index }">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16">
@@ -126,7 +125,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'publish' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=publish&status=${param.status }&index=${param.index }">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">
@@ -136,7 +135,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'green' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingDiscover?category=green&status=${param.status }&index=${param.index }">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tree-fill" viewBox="0 0 16 16">
@@ -146,7 +145,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'donate' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingDiscover?category=donate&status=${param.status }&index=${param.index }">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gift-fill" viewBox="0 0 16 16">
@@ -156,7 +155,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'savAnimal' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingDiscover?category=savAnimal&status=${param.status }&index=${param.index }">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
@@ -172,21 +171,21 @@
 			<option class="text-dark-emphasis fw-bold" value="active" <c:if test="${param.status eq 'active' }" >selected</c:if>>진행중</option>
 			<option class="text-dark-emphasis fw-bold" value="end" <c:if test="${param.status eq 'end' }" >selected</c:if>>종료된</option>
 		</select>
-		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'newest' }">border-info border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=newest">최신순</a>&nbsp;
-		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'lastMin' }">border-info border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=lastMin">마감임박순</a>&nbsp;
-		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'amount' }">border-info border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=amount">모집금액순</a>&nbsp;
-		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'target' }">border-info border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=target">목표금액순</a>
+		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'newest' }">border-primary border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=newest">최신순</a>&nbsp;
+		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'lastMin' }">border-primary border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=lastMin">마감임박순</a>&nbsp;
+		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'amount' }">border-primary border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=amount">모집금액순</a>&nbsp;
+		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'target' }">border-primary border-bottom border-2</c:if>" href="fundingDiscover?category=${param.category }&status=${param.status }&index=target">목표금액순</a>
 	</div>
 	<br>
 <!--  -->
 <!-- 프로젝트 리스트 영역 -->
 	<div class="container-lg col with .gy-5 gutters">
-		<small class="text-danger">${project.size() }</small><small>개의 프로젝트가 있습니다.</small>
+		<small class="text-primary">${project.size() }</small><small>개의 프로젝트가 있습니다.</small>
 		<div class="row row-cols-3 row-cols-sm-4 g-3">
 		<!-- 페이징 처리 -->
 		<c:forEach items="${project}" var="project" varStatus="status">
 			<div class="col" id="projectListArea">
-				<div class="card h-100 w-100 p-3 border-0">
+				<div class="card h-100 w-100 p-2 border-0">
 					<img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" 
 					class="card-img-top" style="width:274px; height:341.52px; object-fit:cover;" alt="...">
 					<div class="card-body">
@@ -196,10 +195,11 @@
 					</div>
 						<a href="fundingDetail?project_idx=${project.project_idx }" class="stretched-link"></a>
 					<div class="card-footer bg-white">
-		      			<small class="fw-bold text-success">
+		      			<small class="fw-bold text-primary">
 		      			<fmt:formatNumber type="number" maxFractionDigits="0"  value="${project.project_cumulative_amount/project.project_target * 100 }" />%
 		      			</small>&nbsp;
 		      			<small class="opacity-75"><fmt:formatNumber value="${project.project_cumulative_amount }" pattern="#,###" />원
+			      			<fmt:parseNumber value="${today.time / (1000*60*60*24)}" integerOnly="true" var="nowDate"></fmt:parseNumber>
 			      			<fmt:parseDate value="${project.project_end_date }" var="projectEndDate" pattern="yyyy-MM-dd"/>
 							<fmt:parseNumber value="${projectEndDate.time / (1000*60*60*24)}" integerOnly="true" var="endDate"></fmt:parseNumber>
 							<fmt:parseDate value="${project.project_start_date }" var="projectStartDate" pattern="yyyy-MM-dd"/>
@@ -211,14 +211,14 @@
 			      			</small>
 			      			</c:if>
 			      			<!-- 프로젝트가 진행중이며, 아직 진행일이 남아있을 경우 -->
-			      			<c:if test="${project.project_status eq 2 && endDate - strDate ne 0}">
+			      			<c:if test="${project.project_status eq 2 && endDate - nowDate ne 0 and endDate - nowDate > 0}">
 			      			<small class="fw-bold float-end">
-								${endDate - strDate }
+								${endDate - nowDate }
 				      			일 남음
 			      			</small>
 			      			</c:if>
 			      			<!-- 프로젝트가 진행중이지만, 오늘 종료될 경우 -->
-			      			<c:if test="${project.project_status eq 2 && endDate - strDate eq 0}">
+			      			<c:if test="${project.project_status eq 2 && endDate - nowDate eq 0}">
 			      			<small class="fw-bold float-end text-danger">
 								오늘 종료
 			      			</small>
@@ -231,7 +231,7 @@
 			      			</c:if>
 			      		</small>
 		        	<div class="progress" style="height: 10px">
-	  					<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example" 
+	  					<div class="progress-bar bg-primary" id="progressbar" role="progressbar" aria-label="Success example" 
 	  					style="height:10px; width: ${project.project_cumulative_amount/project.project_target * 100}%" 
 	  					aria-valuenow="${project.project_cumulative_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div>
 					</div>
