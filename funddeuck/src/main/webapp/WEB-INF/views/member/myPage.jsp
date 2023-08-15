@@ -120,7 +120,7 @@
                             <a href="FallowingForm" class="text-black w-100">
                                 <div class="row me-md-2">
                                     <div class="col text-start my-3">
-                                        <i class="bi bi-people"></i> 팔로잉
+                                        <img src="${pageContext.request.contextPath }/resources/images/icon/following.png" style="width: 30px; height: 30px;"> 팔로잉
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>
@@ -132,7 +132,7 @@
                             <a href="ZimForm" class="text-black w-100">
                                 <div class="row  ms-md-2 me-md-2">
                                     <div class="col text-start my-3">
-                                        <i class="bi bi-arrow-through-heart"></i> 찜하기
+                                        <img src="${pageContext.request.contextPath }/resources/images/icon/mine.png" style="width: 30px; height: 30px;"> 찜하기
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>
@@ -144,7 +144,7 @@
                             <a href="reviewListPage" class="text-black w-100">
                                 <div class="row me-md-2">
                                     <div class="col text-start my-3">
-                                       <i class="bi bi-pencil-square"></i> 리뷰
+                                       <img src="${pageContext.request.contextPath }/resources/images/icon/review.png" style="width: 30px; height: 30px;"> 리뷰
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>
@@ -161,7 +161,7 @@
                             <a href="memberChattingRoomList" class="text-black w-100">
                                 <div class="row me-md-2">
                                     <div class="col text-start my-3">
-                                        <i class="bi bi-envelope-at"></i> 서포터 문의
+                                        <img src="${pageContext.request.contextPath }/resources/images/icon/chat.png" style="width: 30px; height: 30px;"> 서포터 문의
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>
@@ -173,7 +173,7 @@
                             <a href="" class="text-black w-100">
                                 <div class="row  ms-md-2 me-md-2">
                                     <div class="col text-start my-3">
-                                        <i class="bi bi-envelope-at-fill"></i> 메이커 문의
+                                        <img src="${pageContext.request.contextPath }/resources/images/icon/chat.png" style="width: 30px; height: 30px;"> 메이커 문의
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>
@@ -190,7 +190,7 @@
                             <a href="" class="text-black w-100">
                                 <div class="row me-md-2">
                                     <div class="col text-start my-3">
-                                        <i class="bi bi-chat-left-dots"></i> 1대1 상담
+                                        <img src="${pageContext.request.contextPath }/resources/images/icon/question.png" style="width: 30px; height: 30px;"> 1대1 상담
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>
@@ -202,7 +202,7 @@
                             <a href="" class="text-black w-100">
                                 <div class="row ms-md-2 me-md-2">
                                     <div class="col text-start my-3">
-                                        <i class="bi bi-journals"></i> 도움말 센터
+                                        <img src="${pageContext.request.contextPath }/resources/images/icon/help.png" style="width: 30px; height: 30px;"> 도움말 센터
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>
@@ -216,7 +216,7 @@
                             <a href="" class="text-black w-100">
                                 <div class="row   me-md-2">
                                     <div class="col text-start my-3">
-                                        <i class="bi bi-megaphone"></i> 공지사항
+                                        <img src="${pageContext.request.contextPath }/resources/images/icon/notice.png" style="width: 30px; height: 30px;"> 공지사항
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>
@@ -228,7 +228,7 @@
                             <a href="" class="text-black w-100">
                                 <div class="row  ms-md-2 me-md-2">
                                     <div class="col text-start my-3">
-                                        <i class="bi bi-gear"></i> 설정
+                                        <img src="${pageContext.request.contextPath }/resources/images/icon/setting.png" style="width: 30px; height: 30px;"> 설정
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>

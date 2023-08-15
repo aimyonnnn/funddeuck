@@ -29,6 +29,14 @@
 			height: 100px;
 			object-fit: cover;
 		}
+		
+		.card {
+			height: 90%;
+		}
+		
+		.button-group {
+        	justify-content: space-between; /* 버튼 사이의 공간을 균등하게 배치 */
+    	}
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
@@ -98,14 +106,18 @@
 			                	<c:forEach var="unapproved" items="${unapprovedList }">
 						        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-2">
 						            <div class="card mb-3">
-						                <img src="${pageContext.request.contextPath}/resources/upload/${unapproved.project_thumnails1}" class="card-img-top" alt="프로젝트 없음">
+						                <img src="${pageContext.request.contextPath}/resources/upload/${unapproved.project_thumnails1}" class="card-img-top" alt="프로젝트 사진 없음">
 						                <div class="card-body">
 						                    <h5 class="card-title">${unapproved.project_subject }</h5>
-						                    <div class="d-flex">
-											    <a href="projectReward?project_idx=${unapproved.project_idx}" class="btn btn-outline-primary btn-sm me-4">바로가기</a>
-											    <form action="projectDelete" method="post" class="d-inline">
+						                    <div class="d-flex button-group">
+											    <a href="projectReward?project_idx=${unapproved.project_idx}" class="btn btn-sm me-5">
+											    	<img src="${pageContext.request.contextPath }/resources/images/icon/move.png" style="width: 30px; height: 30px;">
+											    </a>
+											    <form action="projectDelete" method="post" class="d-inline ml-auto">
 											        <input type="hidden" name="project_idx" value="${unapproved.project_idx}" />
-											        <input type="submit" class="btn btn-outline-danger btn-sm ms-3" value="삭제하기" />
+											        <button type="submit" class="btn btn-sm ms-5">
+					                                    <img src="${pageContext.request.contextPath }/resources/images/icon/delete.png" style="width: 30px; height: 30px;">
+					                                </button>
 											    </form>
 											</div>
 						                </div>
@@ -129,10 +141,12 @@
 			                	<c:forEach var="proceeding" items="${proceedingList }">
 						        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-2">
 						            <div class="card mb-3">
-						                <img src="${pageContext.request.contextPath}/resources/upload/${proceeding.project_thumnails1}" class="card-img-top" alt="프로젝트 없음">
+						                <img src="${pageContext.request.contextPath}/resources/upload/${proceeding.project_thumnails1}" class="card-img-top" alt="프로젝트 사진 없음">
 						                <div class="card-body">
 						                    <h5 class="card-title">${proceeding.project_subject }</h5>
-						                    <a href="fundingDetail?project_idx=${proceeding.project_idx }" class="btn btn-outline-primary btn-sm">바로가기</a>
+						                    <a href="fundingDetail?project_idx=${proceeding.project_idx }" class="btn btn-sm">
+						                    	<img src="${pageContext.request.contextPath }/resources/images/icon/move.png" style="width: 30px; height: 30px;">
+						                    </a>
 						                </div>
 						            </div>
 						        </div>
@@ -154,10 +168,12 @@
 			                	<c:forEach var="complete" items="${completeList }">
 						        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-2">
 						            <div class="card mb-3">
-						                <img src="${pageContext.request.contextPath}/resources/upload/${complete.project_thumnails1}" class="card-img-top" alt="프로젝트 없음">
+						                <img src="${pageContext.request.contextPath}/resources/upload/${complete.project_thumnails1}" class="card-img-top" alt="프로젝트 사진 없음">
 						                <div class="card-body">
 						                    <h5 class="card-title">${complete.project_subject }</h5>
-						                    <a href="fundingDetail?project_idx=${complete.project_idx }" class="btn btn-outline-primary btn-sm">바로가기</a>
+						                    <a href="fundingDetail?project_idx=${complete.project_idx }" class="btn btn-sm">
+						                    	<img src="${pageContext.request.contextPath }/resources/images/icon/move.png" style="width: 30px; height: 30px;">
+						                    </a>
 						                </div>
 						            </div>
 						        </div>
@@ -169,14 +185,14 @@
 					
 					<div class="row mt-5 mx-3 border-1">
                         <div class="col-12">
-                            <h5 class="fw-bold">펀딩 닥터</h5>
+                            <h5 class="fw-bold">프로젝트 관리</h5>
                         </div>
                         
                         <div class="col-sm-12 col-md-6">
                             <a href="projectStatus" class="text-black w-100">
                                 <div class="row me-md-2 me-md-2">
                                     <div class="col text-start my-3">
-                                        <i class="bi bi-clipboard2-data"></i> 프로젝트 관리
+                                        <img src="${pageContext.request.contextPath }/resources/images/icon/project.png" style="width: 30px; height: 30px;"> 프로젝트 관리
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>
@@ -188,7 +204,7 @@
                             <a href="fundingDoctorAnswer" class="text-black w-100">
                                 <div class="row ms-md-2 me-md-2">
                                     <div class="col text-start my-3">
-                                        <i class="bi bi-bandaid"></i> 펀딩 닥터
+                                        <img src="${pageContext.request.contextPath }/resources/images/icon/doctor.png" style="width: 30px; height: 30px;"> 펀딩 닥터
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>

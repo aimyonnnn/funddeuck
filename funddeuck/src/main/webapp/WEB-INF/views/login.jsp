@@ -42,6 +42,7 @@
 </head>
 
 <body>
+	<div style="height:150px;"></div>
     <%@ include file="Header.jsp" %>
 
     <header id="header"></header>
