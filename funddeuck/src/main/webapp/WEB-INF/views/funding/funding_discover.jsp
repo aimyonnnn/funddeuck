@@ -81,7 +81,7 @@
 			border-primary border-bottom border-2
 		</c:if>">
 			<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingDiscover?category=all&status=${param.status }&index=${param.index }">
-			<img src="${pageContext.request.contextPath }/resources/images/icon/shop.png" style="width: 30px; height: 30px;">
+			<img src="${pageContext.request.contextPath }/resources/images/icon/shop.png" style="width: 25px; height: 25px;">
 			전체</a>
 		</li>
 		<li class="nav-item
@@ -89,7 +89,7 @@
 			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=tech&status=${param.status }&index=${param.index }">
-			<img src="${pageContext.request.contextPath }/resources/images/icon/tech.png" style="width: 30px; height: 30px;">
+			<img src="${pageContext.request.contextPath }/resources/images/icon/tech.png" style="width: 25px; height: 25px;">
 			테크·가전</a>
 		</li>
 		<li class="nav-item
@@ -97,7 +97,7 @@
 			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=fashion&status=${param.status }&index=${param.index }">
-			<img src="${pageContext.request.contextPath }/resources/images/icon/fashion.png" style="width: 30px; height: 30px;">
+			<img src="${pageContext.request.contextPath }/resources/images/icon/fashion.png" style="width: 25px; height: 25px;">
 			패션·잡화</a>
 		</li>
 		<li class="nav-item
@@ -105,7 +105,7 @@
 			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=living&status=${param.status }&index=${param.index }">
-			<img src="${pageContext.request.contextPath }/resources/images/icon/home.png" style="width: 30px; height: 30px;">
+			<img src="${pageContext.request.contextPath }/resources/images/icon/home.png" style="width: 25px; height: 25px;">
 			홈·리빙</a>
 		</li>
 		<li class="nav-item
@@ -113,7 +113,7 @@
 			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=beauty&status=${param.status }&index=${param.index }">
-			<img src="${pageContext.request.contextPath }/resources/images/icon/beauty.png" style="width: 30px; height: 30px;">
+			<img src="${pageContext.request.contextPath }/resources/images/icon/beauty.png" style="width: 25px; height: 25px;">
 			뷰티</a>
 		</li>
 		<li class="nav-item
@@ -121,7 +121,7 @@
 			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingDiscover?category=publish&status=${param.status }&index=${param.index }">
-			<img src="${pageContext.request.contextPath }/resources/images/icon/publish.png" style="width: 30px; height: 30px;">
+			<img src="${pageContext.request.contextPath }/resources/images/icon/publish.png" style="width: 25px; height: 25px;">
 			출판</a>
 		</li>
 		<li class="nav-item
@@ -129,7 +129,7 @@
 			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingDiscover?category=green&status=${param.status }&index=${param.index }">
-			<img src="${pageContext.request.contextPath }/resources/images/icon/echo.png" style="width: 30px; height: 30px;">
+			<img src="${pageContext.request.contextPath }/resources/images/icon/echo.png" style="width: 25px; height: 25px;">
 			친환경</a>
 		</li>
 		<li class="nav-item
@@ -137,7 +137,7 @@
 			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingDiscover?category=donate&status=${param.status }&index=${param.index }">
-			<img src="${pageContext.request.contextPath }/resources/images/icon/donation.png" style="width: 30px; height: 30px;">
+			<img src="${pageContext.request.contextPath }/resources/images/icon/donation.png" style="width: 25px; height: 25px;">
 			기부</a>
 		</li>
 		<li class="nav-item
@@ -145,7 +145,7 @@
 			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingDiscover?category=savAnimal&status=${param.status }&index=${param.index }">
-			<img src="${pageContext.request.contextPath }/resources/images/icon/pet.png" style="width: 30px; height: 30px;">
+			<img src="${pageContext.request.contextPath }/resources/images/icon/pet.png" style="width: 25px; height: 25px;">
 			동물보호</a>
 		</li>
 	</ul>
