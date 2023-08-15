@@ -172,11 +172,11 @@ function updateList() {
 	
 <div id="msgStack"></div>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height:60px;">
+<nav class="navbar navbar-expand-lg" style="height:103px;">
     <div class="container">
     		
         <a class="navbar-brand">
-            <img src="${pageContext.request.contextPath}/resources/images/logo.png" width="30px" height="30px" onclick="location.href='./'">
+            <img src="${pageContext.request.contextPath}/resources/images/logo.png" width="80px" height="80px" onclick="location.href='./'">
         </a>
         
         <div class="d-flex flex-row align-items-center">
