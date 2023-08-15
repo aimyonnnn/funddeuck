@@ -37,6 +37,7 @@
 
 <body>
 <section style="background-color: #f4f5f7;">
+	<div style="height:100px;"></div>
 	<div class="container">
 	    <div style="height: 50px;"></div>
 		  <h3><b>쿠폰</b></h3>

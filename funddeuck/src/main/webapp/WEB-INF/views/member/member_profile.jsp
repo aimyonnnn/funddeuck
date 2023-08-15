@@ -16,6 +16,7 @@
 </head>
 <body>
 			<section style="background-color: #f4f5f7;">
+			   <div style="height:80px;"></div>
 			    <div style="height: 50px;"></div>
 			    <div class="container py-5">
 			        <div class="row d-flex justify-content-center align-items-center">
@@ -58,11 +59,11 @@
                                 <div class="row pt-1">
                                     <div class="col-6 mb-3">
                                         <h6>회사</h6>
-                                        <p><input type="text" name="profile_job1" value="${profile.profile_job1}" /></p>
+                                        <p><input type="text" name="profile_job1" value="${profile.profile_job1}" style="width: 150px" /></p>
                                     </div>
                                     <div class="col-6 mb-3">
                                         <h6>직책</h6>
-                                        <p><input type="text" name="profile_job2" value="${profile.profile_job2}" /></p>
+                                        <p><input type="text" name="profile_job2" value="${profile.profile_job2}" style="width: 150px" /></p>
                                     </div>
                                 </div>
                                 <h6>학교 / 학과</h6>
@@ -70,11 +71,11 @@
                                 <div class="row pt-1">
                                     <div class="col-6 mb-3">
                                         <h6>학교</h6>
-                                        <p><input type="text" name="profile_school1" value="${profile.profile_school1}" /></p>
+                                        <p><input type="text" name="profile_school1" value="${profile.profile_school1}" style="width: 150px" /></p>
                                     </div>
                                     <div class="col-6 mb-3">
                                         <h6>학과</h6>
-                                        <p><input type="text" name="profile_school2" value="${profile.profile_school2}" /></p>
+                                        <p><input type="text" name="profile_school2" value="${profile.profile_school2}" style="width: 150px" /></p>
                                     </div>
                                 </div>
                                 <h6>간단한 말 한마디로 나를 소개해주세요</h6>
