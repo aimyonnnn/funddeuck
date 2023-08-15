@@ -602,7 +602,7 @@
 						<p class="sideDescription">
 							준비하고 계신 리워드의 특별한 점을 작성해 주세요.<br>
 							기존 제품 ・ 서비스 ・ 콘텐츠를 개선했다면 어떤 점이 달라졌는지 작성해 주세요.<br>
-							위에 입력 된 정보를 바탕으로 AI로 자동 입력도 가능해요. 
+							위에 입력 된 정보를 바탕으로 AI로 자동 입력도 가능해요.
 						</p>
 						<textarea class="form-control management-info" name="project_introduce" id="managementDetail" placeholder="예시 : 우리집 아이가 ○○ 인형을 좋아하는 모습을 보고 만들게 되었습니다." style="height: 300px; resize: none;" maxlength="300" required></textarea>
 					</div>
@@ -995,6 +995,11 @@
                  var responseObject = response;
                  var result = responseObject.choices[0].text; 			// 필요한 필드 추출
                  $("#managementSemiDetail").val(result).focus(); 		// 프로젝트 요약에 입력
+                 Swal.fire({
+					icon: 'success',
+					title: '프로젝트 요약 완료!',
+					text: 'AI로 입력이 완료되었습니다!'
+				 })
                  
              },
              error: function (xhr, status, error) {
