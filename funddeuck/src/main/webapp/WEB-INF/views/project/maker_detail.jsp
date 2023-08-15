@@ -191,7 +191,7 @@ var sId = "";
 				<div class="content-area" id="tab1">
 					<div>
 						<c:forEach var="pList" items="${pList}">
-							<div class="container">
+							<div class="container mb-4">
 								<div class="row">
 									<div class="card col-md-6 col-lg-12">
 									  <img src="${pageContext.request.contextPath}/resources/upload/${pList.project_image}"

@@ -74,22 +74,20 @@ th, td {
 		<button class="btn btn-outline-primary btn-sm mb-2" onclick="location.href='excelDownload?searchType=${searchType}&searchKeyword=${searchKeyword}&pageNum=${pageNum}&listLimit=${listLimit}'">엑셀 다운로드</button>
 	</div>
 		
-	<div class="row">
+	<!-- pc사이즈에서만 보임 -->
+	<div class="row col-md-12 d-none d-md-block">
 		<div class="d-flex justify-content-center">
-			
 			<table class="table">
 				<tr>
 					<th class="text-center" style="width: 5%;">번호</th>
 					<th class="text-center" style="width: 5%;">카테고리</th>
 					<th class="text-center" style="width: 20%;">프로젝트 이름</th>
 					<th class="text-center" style="width: 5%;">대표자</th>
-					<th class="text-center" style="width: 5%;">요금제</th>
-					<th class="text-center" style="width: 5%;">목표금액</th>
+					<th class="text-center" style="width: 8%;">목표금액</th>
 					<th class="text-center" style="width: 10%;">기간</th>
 					<th class="text-center" style="width: 5%;">상태</th>
 					<th class="text-center" style="width: 5%;">상세정보</th>
 				</tr>
-				
 				<c:forEach var="pList" items="${pList}">
 					<tr>
 						<td class="text-center" >${pList.project_idx}</td>
@@ -100,16 +98,6 @@ th, td {
 							</a> 
 						</td>
 						<td class="text-center">${pList.project_representative_name}</td>
-						<td class="text-center">
-							<c:choose>
-								<c:when test="${pList.project_plan eq 1}">
-									기본
-								</c:when>
-								<c:otherwise>
-									인플루언서
-								</c:otherwise>
-							</c:choose>
-						</td>
 						<td class="text-center">${pList.project_target}</td>
 						<td class="text-center">
    							<fmt:formatDate value="${pList.project_start_date}" pattern="yy/MM/dd" />~<fmt:formatDate value="${pList.project_end_date}" pattern="yy/MM/dd" />
@@ -138,9 +126,58 @@ th, td {
 					</tr>
 				</c:forEach>
 			</table>
-	
 			</div>
 		</div>
+		
+	<!-- 모바일 사이즈에서만 보임 -->
+	<div class="row col-md-12 d-md-none">
+		<div class="d-flex justify-content-center">
+			<table class="table">
+				<tr>
+					<th class="text-center" style="width: 5%;">번호</th>
+					<th class="text-center" style="width: 15%;">프로젝트 이름</th>
+					<th class="text-center" style="width: 10%;">기간</th>
+					<th class="text-center" style="width: 5%;">상태</th>
+					<th class="text-center" style="width: 5%;">상세정보</th>
+				</tr>
+				<c:forEach var="pList" items="${pList}">
+					<tr>
+						<td class="text-center" >${pList.project_idx}</td>
+						<td class="text-center">
+							<a href="adminProjectManagementDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}" style="text-decoration: none; color: black;">
+								${pList.project_subject}
+							</a> 
+						</td>
+						<td class="text-center">
+   							<fmt:formatDate value="${pList.project_start_date}" pattern="yy/MM/dd" />~<fmt:formatDate value="${pList.project_end_date}" pattern="yy/MM/dd" />
+						</td>
+						<c:choose>
+							<c:when test="${pList.project_approve_status eq 1}">
+								<td class="text-center">미승인</td>
+							</c:when>
+							<c:when test="${pList.project_approve_status eq 2}">
+								<td class="text-center text-danger">승인요청</td>
+							</c:when>
+							<c:when test="${pList.project_approve_status eq 3}">
+								<td class="text-center text-success">승인완료</td>
+							</c:when>
+							<c:when test="${pList.project_approve_status eq 5}">
+								<td class="text-center">결제완료</td>
+							</c:when>
+							<c:otherwise>
+								<td class="text-center">승인거절</td>
+							</c:otherwise>
+						</c:choose>
+						<td class="text-center" style="width: 5%;">
+							<button class="btn btn-outline-primary btn-sm" 
+							onclick="location.href='adminProjectManagementDetail?project_idx=${pList.project_idx}&pageNum=${pageNum}'">보기</button>
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
+			</div>
+		</div>
+		
 	</div>		
 	
 	<!-- 페이징 처리 -->
