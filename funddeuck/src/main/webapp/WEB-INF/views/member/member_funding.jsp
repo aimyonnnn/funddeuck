@@ -273,7 +273,7 @@
 // 						}
 					} else if(payment_confirm == 0 || page.maxPage == 0){
 						$("#tbody").empty();
-						$("#thead").empty();
+						$("#toolbar").empty();
 						$("#tbody").append(
 							'<th scope="row" colspan="7" class="mt-5"> <h4> 아직 참여하신 펀딩이 없습니다! </h4><br>'
 							+ '<a href="fundingDiscover"style="text-decoration: none; color: black;"><h5>펀딩하러 가기</h5></a> </th>'
