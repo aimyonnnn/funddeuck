@@ -79,8 +79,8 @@
 							</table>
 						</div>
 		    		</div>
-		    		<div class="row justify-content-center">
-			        	<div class="col-3">
+		    		<div class="row ">
+			        	<div class="col d-flex justify-content-center align-self-center">
 				            <div class="d-grid">
 				                <button type="submit" class="btn btn-primary">등록</button>
 				            </div>
