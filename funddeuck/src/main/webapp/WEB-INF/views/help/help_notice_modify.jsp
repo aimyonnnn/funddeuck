@@ -43,37 +43,54 @@
 				                <tr>
 				                    <th class="col-2">구분</th>
 				                    <td class="col">
-					                    <input type="radio" id="normal_category" value="1" name="notice_category" checked>
+				                    	<c:if test="${normal_category eq 1}">checked</c:if>
+					                    <input type="radio" id="normal_category" value="1" name="notice_category" <c:if test="${notice.notice_category eq 1}">checked</c:if>>
 					                    <label for="normal_category">일반 공지</label>
-					                    <input type="radio" id="event_category" value="2" name="notice_category">
+					                    <input type="radio" id="event_category" value="2" name="notice_category" <c:if test="${notice.notice_category eq 2}">checked</c:if>>
 					                    <label for="event_category">이벤트</label>
-					                    <input type="radio" id="maintenance_category" value="3" name="notice_category">
+					                    <input type="radio" id="maintenance_category" value="3" name="notice_category" <c:if test="${notice.notice_category eq 3}">checked</c:if>>
 					                    <label for="maintenance_category">서버 점검</label>
-					                    <input type="radio" id="top_category" value="4" name="notice_category">
+					                    <input type="radio" id="top_category" value="4" name="notice_category" <c:if test="${notice.notice_category eq 4}">checked</c:if>>
 					                    <label for="top_category">상위 고정</label>
 				                    </td>
 				                </tr>
 				                <tr>
 				                    <th class="col-2">제목</th>
-				                    <td><input type="text" class="form-control" name="notice_subject" required></td>
+				                    <td><input type="text" class="form-control" name="notice_subject" required value="${notice.notice_subject }"></td>
 				                </tr>
 				                <tr>
 				                    <th class="col-2">내용</th>
 				                    <td class="col">
-				                        <textarea class="form-control" name="notice_content" rows="10" required></textarea>
+				                        <textarea class="form-control" name="notice_content" rows="10" required>${notice.notice_content }</textarea>
 				                    </td>
 				                </tr>
 				                <tr>
 				                	<!-- 이미지 파일만 등록 가능 -->
 				                    <th class="col-2">썸네일<small class="text-muted"> (필수)</small></th>
 				                    <td class="col d-flex">
-				                        <input type="file" class="form-control" name="thumnail" accept="image/*" onchange="checkFileExtension(event)" required>
+				                        <c:choose>
+											<c:when test="${empty notice.notice_thumnail }">
+						                        <input class="form-control" type="file" name="thumnail" accept="image/*" onchange="checkFileExtension(event)" required>
+											</c:when>
+											<c:otherwise>
+						                    	${fn:split(notice.notice_thumnail, '_')[1] } &nbsp;&nbsp;&nbsp;
+												<input class="btn btn-primary" type="button" value="삭제">
+											</c:otherwise>
+										</c:choose>				                    
 				                    </td>
 				                </tr>
 				                <tr>
 				                    <th class="col-2">첨부 파일</th>
 				                    <td class="col">
-				                        <input type="file" class="form-control" name="file">
+				                        <c:choose>
+											<c:when test="${empty notice.notice_file }">
+												<input class="form-control" type="file" name="file">
+											</c:when>
+											<c:otherwise>
+												${fn:split(notice.notice_file, '_')[1] } &nbsp;&nbsp;&nbsp;
+												<input class="btn btn-primary" type="button" value="삭제">
+											</c:otherwise>
+										</c:choose>				                    
 				                    </td>
 				                </tr>
 							</table>

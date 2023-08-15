@@ -310,6 +310,7 @@ public class FundingController {
     		long diff = TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);// 출금이체(스케줄링) 예약
     		// 결제서번호, 출금이체 API에 필요한 데이터, 딜레이 값 전달
     		fundingScheduler.scheduledBankTran(payment_idx, data, diffInMillies, diff);
+//    		fundingScheduler.scheduledBankTran(payment_idx, data);
     		
     		// 결제 완료 페이지 이동 
     		// 등록된 결제서의 payment_idx model로 전달
