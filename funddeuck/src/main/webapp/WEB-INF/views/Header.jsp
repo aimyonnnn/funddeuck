@@ -434,7 +434,7 @@
 		            </li>
 		            <!-- Other navigation items -->
 		            <li class="nav-item">
-		                    <a class="nav-link me-4" href="admin"><b>${sessionScope.sId}님</b></a>
+		                    <a class="nav-link me-4" href="memberMypage"><b>${sessionScope.sId}님</b></a>
 		            </li>
 		            <li class="nav-item">        
 		                    <a class="nav-link me-4" href="javascript:logout()">로그아웃</a>

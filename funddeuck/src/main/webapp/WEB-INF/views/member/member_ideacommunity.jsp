@@ -50,7 +50,7 @@
 </head>
 <body>
     <section style="background-color: #f4f5f7;">
-        <div style="height: 70px;"></div>
+        <div style="height:150px;"></div>
         <div class="page-content container note-has-grid">
 			<ul class="nav nav-pills p-3 bg-white mb-3 rounded-pill align-items-center" style="flex-wrap: wrap;">
 			    <li class="nav-item col-6 col-md-3 mb-2">
