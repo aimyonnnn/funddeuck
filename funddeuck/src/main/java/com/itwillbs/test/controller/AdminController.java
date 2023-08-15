@@ -108,6 +108,13 @@ public class AdminController {
 	@GetMapping("admin")
 	public String adminMain(HttpSession session, Model model) {
 		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+        if (sId == null || !sId.equals("admin")) {
+            model.addAttribute("msg", "잘못된 접근입니다.");
+            return "fail_back";
+        }
+		
 		List<ProjectVO> pList = projectService.getAllProjects();
 		int totalProjectCount = pList.size();
 		int todaySupporterCount = paymentService.getSupportCountByPaymentDate();
@@ -153,6 +160,13 @@ public class AdminController {
 			@RequestParam(defaultValue = "") String searchKeyword,
 			@RequestParam(defaultValue = "1") int pageNum,
 			HttpSession session, Model model) {
+		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+        if (sId == null || !sId.equals("admin")) {
+            model.addAttribute("msg", "잘못된 접근입니다.");
+            return "fail_back";
+        }
 		
 		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
@@ -266,6 +280,14 @@ public class AdminController {
 	@GetMapping("adminPaymentDetail")
 	public String adminPaymentDetail(
 			@RequestParam(required = true) Integer payment_idx, @RequestParam(defaultValue = "1") int type ,HttpSession session, Model model) {
+		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+        if (sId == null || !sId.equals("admin")) {
+            model.addAttribute("msg", "잘못된 접근입니다.");
+            return "fail_back";
+        }
+		
 		PaymentVO payment = paymentService.getPaymentDetail(payment_idx);
 		model.addAttribute("payment", payment);
 		return "admin/admin_payment_detail";
@@ -278,6 +300,13 @@ public class AdminController {
 			@RequestParam(defaultValue = "") String searchKeyword,
 			@RequestParam(defaultValue = "1") int pageNum,
 			HttpSession session, Model model) {
+		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+        if (sId == null || !sId.equals("admin")) {
+            model.addAttribute("msg", "잘못된 접근입니다.");
+            return "fail_back";
+        }
 		
 		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
@@ -302,6 +331,13 @@ public class AdminController {
 	@GetMapping("adminMakerDetail")
 	public String adminMakerDetail(@RequestParam(required = true) Integer maker_idx, @RequestParam(defaultValue = "1") int type,
 			HttpSession session, Model model) {
+		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+        if (sId == null || !sId.equals("admin")) {
+            model.addAttribute("msg", "잘못된 접근입니다.");
+            return "fail_back";
+        }
 		
 		MakerVO maker = makerService.getMakerInfo(maker_idx);
 		List<MakerBoardVO> mList = makerBoardService.getAllMakerBoardList(maker_idx);
@@ -438,6 +474,13 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") int pageNum,
 			HttpSession session, Model model) {
 		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+        if (sId == null || !sId.equals("admin")) {
+            model.addAttribute("msg", "잘못된 접근입니다.");
+            return "fail_back";
+        }
+		
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
@@ -471,7 +514,14 @@ public class AdminController {
 			@RequestParam(defaultValue = "") String searchType,
 			@RequestParam(defaultValue = "") String searchKeyword,
 			@RequestParam(defaultValue = "1") int pageNum,			
-			Model model) {
+			HttpSession session ,Model model) {
+		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+        if (sId == null || !sId.equals("admin")) {
+            model.addAttribute("msg", "잘못된 접근입니다.");
+            return "fail_back";
+        }
 		
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
@@ -507,6 +557,13 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, @RequestParam(defaultValue = "1") int type, 
 			HttpSession session, Model model) {
 		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+        if (sId == null || !sId.equals("admin")) {
+            model.addAttribute("msg", "잘못된 접근입니다.");
+            return "fail_back";
+        }
+		
 		ProjectVO project = projectService.getProjectInfo(project_idx);
 		List<RewardVO> rList = projectService.getRewardList(project_idx);
 		
@@ -533,7 +590,15 @@ public class AdminController {
 			@RequestParam(defaultValue = "") String searchType,
 			@RequestParam(defaultValue = "") String searchKeyword,
 			@RequestParam(defaultValue = "1") int pageNum,			
-			Model model) {
+			HttpSession session ,Model model) {
+		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+        if (sId == null || !sId.equals("admin")) {
+            model.addAttribute("msg", "잘못된 접근입니다.");
+            return "fail_back";
+        }
+		
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
@@ -688,7 +753,6 @@ public class AdminController {
 	    try {
 			echoHandler.sendNotificationToUser(subject, content);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    
@@ -729,6 +793,14 @@ public class AdminController {
 	// 프로젝트 승인관리 -> 프로젝트 상세보기 페이지
 	@GetMapping("adminProjectDetail")
 	public String adminProjectDetail(@RequestParam int project_idx, HttpSession session, Model model) {
+		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+	    if (sId == null || !sId.equals("admin")) {
+	        model.addAttribute("msg", "잘못된 접근입니다.");
+	        return "fail_back";
+	    }
+		
 		// 파라미터로 전달받은 project_idx로 프로젝트 조회
 		ProjectVO project = projectService.getProjectInfo(project_idx);
 		List<RewardVO> rList = projectService.getRewardList(project_idx);
@@ -757,6 +829,14 @@ public class AdminController {
 			@RequestParam(defaultValue = "") String searchKeyword, 
 			@RequestParam(defaultValue = "1") int pageNum, 
 			HttpSession session, Model model) {
+		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+	    if (sId == null || !sId.equals("admin")) {
+	        model.addAttribute("msg", "잘못된 접근입니다.");
+	        return "fail_back";
+	    }
+
 		// -------------------------------------------------------------------------
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
@@ -796,7 +876,14 @@ public class AdminController {
 			@RequestParam(defaultValue = "") String searchKeyword, 
 			@RequestParam(defaultValue = "1") int pageNum, 
 			HttpSession session, Model model) {
+		
+		// 관리자 페이지 접근 차단
 		String sId = (String) session.getAttribute("sId");
+	    if (sId == null || !sId.equals("admin")) {
+	        model.addAttribute("msg", "잘못된 접근입니다.");
+	        return "fail_back";
+	    }
+
 		// -------------------------------------------------------------------------
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 		int listLimit = 5; // 한 페이지에서 표시할 목록 갯수 지정
@@ -1061,88 +1148,95 @@ public class AdminController {
 		}
 	}
 	
-		// 회원 관리 페이지
-		@GetMapping("adminMemberManagement")
-		public String adminMember(@RequestParam(defaultValue = "") String searchType,
-								  @RequestParam(defaultValue = "") String searchKeyword,
-								  @RequestParam(defaultValue = "1") int pageNum,
-								  HttpSession session, Model model) {
-			
-			String sId = (String) session.getAttribute("sId");
-			if(sId == null || !"admin".equals(sId)) {
-				model.addAttribute("msg", "잘못된 접근 입니다.");
-				return "fail_back";
-			}
-			
-			// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
-			int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
-			int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
-			
-			// 회원 목록 조회 요청
-			List<MembersVO> memberList = memberService.getAllMemberList(searchKeyword, searchType, startRow, listLimit);
-			
-			// 차트를 위한 조회 요청
-			LocalDate endDate = LocalDate.now(); // 오늘 날짜 가져오기
-		    LocalDate startDate = endDate.minusDays(6); // 최근 일주일 전의 날짜 가져오기
-			
-		    List<MembersVO> memberTotalCounts = memberService.getMemberCountsByDate(startDate, endDate); // 누적 회원 수
-			
-			// 페이징 처리를 위한 계산 작업
-			// 1. 전체 게시물 수 조회 요청
-			int listCount = memberService.getAllMemberListCount(searchKeyword, searchType);
-			// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
-			int pageListLimit = 10;
-			// 3. 전체 페이지 목록 갯수 계산
-			int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
-			// 4. 시작 페이지 번호 계산
-			int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
-			// 5. 끝 페이지 번호 계산
-			int endPage = startPage + pageListLimit - 1;
-			if(endPage > maxPage) {	endPage = maxPage; }
-			
-			PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
-			model.addAttribute("memberList", memberList);
-			model.addAttribute("membersData", memberTotalCounts);
-			model.addAttribute("pageInfo", pageInfo);
-			
-			return "admin/admin_member_management";
+	// 회원 관리 페이지
+	@GetMapping("adminMemberManagement")
+	public String adminMember(@RequestParam(defaultValue = "") String searchType,
+							  @RequestParam(defaultValue = "") String searchKeyword,
+							  @RequestParam(defaultValue = "1") int pageNum,
+							  HttpSession session, Model model) {
+		
+		String sId = (String) session.getAttribute("sId");
+		if(sId == null || !"admin".equals(sId)) {
+			model.addAttribute("msg", "잘못된 접근 입니다.");
+			return "fail_back";
 		}
 		
-		// 회원 상세정보 보기
-		@GetMapping("adminMemberDetail")
-		public String adminMemberDetail(@RequestParam(required = true) Integer member_idx, 
-										HttpSession session, Model model) {
-			MembersVO member = memberService.getMemberInfo(member_idx); // 회원 정보 조회
-			
-			int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 10개로 지정
-			
-			List<ActivityListVO> memberActivityList = memberService.getMemberActivityList(member_idx, listLimit); // 회원 활동내역 목록 조회
-			
-			model.addAttribute("member", member);
-			model.addAttribute("memberActivityList", memberActivityList);
-			
-			return "admin/admin_member_detail";
-		}
+		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
 		
-		// 회원 정보 변경 비즈니스 로직 처리
-		@PostMapping("adminModifyMember")
-		public String adminModifyMember(
-				@RequestParam(defaultValue = "1") int pageNum,
-				MembersVO member, HttpSession session, Model model) {
-			
-			int updateCount = memberService.ModifyMemberByAdmin(member); // 회원 정보 수정
-			
-			if(updateCount > 0) {
-				// 회원 정보 변경 성공 시
-				String targetURL = "adminMemberDetail?member_idx=" + member.getMember_idx() + "&pageNum=" + pageNum;
-				model.addAttribute("msg", "회원 정보 수정이 완료되었습니다.");
-				model.addAttribute("targetURL", targetURL);
-				return "success_forward";
-			} else {
-				model.addAttribute("msg", "메이커 정보 수정에 실패하였습니다.");
-				return "fail_back";
-			}
+		// 회원 목록 조회 요청
+		List<MembersVO> memberList = memberService.getAllMemberList(searchKeyword, searchType, startRow, listLimit);
+		
+		// 차트를 위한 조회 요청
+		LocalDate endDate = LocalDate.now(); // 오늘 날짜 가져오기
+	    LocalDate startDate = endDate.minusDays(6); // 최근 일주일 전의 날짜 가져오기
+		
+	    List<MembersVO> memberTotalCounts = memberService.getMemberCountsByDate(startDate, endDate); // 누적 회원 수
+		
+		// 페이징 처리를 위한 계산 작업
+		// 1. 전체 게시물 수 조회 요청
+		int listCount = memberService.getAllMemberListCount(searchKeyword, searchType);
+		// 2. 한 페이지에서 표시할 목록 갯수 설정(페이지 번호의 갯수)
+		int pageListLimit = 10;
+		// 3. 전체 페이지 목록 갯수 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 4. 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5. 끝 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		if(endPage > maxPage) {	endPage = maxPage; }
+		
+		PageInfoVO pageInfo = new PageInfoVO(listCount, pageListLimit, maxPage, startPage, endPage);
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("membersData", memberTotalCounts);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		return "admin/admin_member_management";
+	}
+		
+	// 회원 상세정보 보기
+	@GetMapping("adminMemberDetail")
+	public String adminMemberDetail(@RequestParam(required = true) Integer member_idx, 
+									HttpSession session, Model model) {
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+	    if (sId == null || !sId.equals("admin")) {
+	        model.addAttribute("msg", "잘못된 접근입니다.");
+	        return "fail_back";
+	    }
+		
+		MembersVO member = memberService.getMemberInfo(member_idx); // 회원 정보 조회
+		
+		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 10개로 지정
+		
+		List<ActivityListVO> memberActivityList = memberService.getMemberActivityList(member_idx, listLimit); // 회원 활동내역 목록 조회
+		
+		model.addAttribute("member", member);
+		model.addAttribute("memberActivityList", memberActivityList);
+		
+		return "admin/admin_member_detail";
+	}
+		
+	// 회원 정보 변경 비즈니스 로직 처리
+	@PostMapping("adminModifyMember")
+	public String adminModifyMember(
+			@RequestParam(defaultValue = "1") int pageNum,
+			MembersVO member, HttpSession session, Model model) {
+		
+		int updateCount = memberService.ModifyMemberByAdmin(member); // 회원 정보 수정
+		
+		if(updateCount > 0) {
+			// 회원 정보 변경 성공 시
+			String targetURL = "adminMemberDetail?member_idx=" + member.getMember_idx() + "&pageNum=" + pageNum;
+			model.addAttribute("msg", "회원 정보 수정이 완료되었습니다.");
+			model.addAttribute("targetURL", targetURL);
+			return "success_forward";
+		} else {
+			model.addAttribute("msg", "메이커 정보 수정에 실패하였습니다.");
+			return "fail_back";
 		}
+	}
 		
 	@GetMapping("excelDownload")
     public void excelDownload(
@@ -1206,9 +1300,9 @@ public class AdminController {
             	cell = row.createCell(8);
             }
         }
+        
         // 컨텐츠 타입과 파일명 지정
         response.setContentType("ms-vnd/excel");
-//		        response.setHeader("Content-Disposition", "attachment;filename=example.xls");
         response.setHeader("Content-Disposition", "attachment;filename=example.xlsx");
 
         // Excel File Output
@@ -1222,7 +1316,14 @@ public class AdminController {
 			@RequestParam(defaultValue = "") String searchType,
 			@RequestParam(defaultValue = "") String searchKeyword,
 			@RequestParam(defaultValue = "1") int pageNum,			
-			Model model) {
+			HttpSession session, Model model) {
+		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+	    if (sId == null || !sId.equals("admin")) {
+	        model.addAttribute("msg", "잘못된 접근입니다.");
+	        return "fail_back";
+	    }
 		
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
@@ -1261,6 +1362,13 @@ public class AdminController {
 					@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, @RequestParam(defaultValue = "1") int type, 
 					HttpSession session, Model model) {
 		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+	    if (sId == null || !sId.equals("admin")) {
+	        model.addAttribute("msg", "잘못된 접근입니다.");
+	        return "fail_back";
+	    }
+		
 		ProjectVO project = projectService.getProjectInfo(project_idx);
 		
 		model.addAttribute("project", project);
@@ -1274,7 +1382,14 @@ public class AdminController {
 			@RequestParam(defaultValue = "") String searchType,
 			@RequestParam(defaultValue = "") String searchKeyword,
 			@RequestParam(defaultValue = "1") int pageNum,			
-			Model model) {
+			HttpSession session ,Model model) {
+		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+	    if (sId == null || !sId.equals("admin")) {
+	        model.addAttribute("msg", "잘못된 접근입니다.");
+	        return "fail_back";
+	    }
 		
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
@@ -1308,6 +1423,13 @@ public class AdminController {
 	public String adminFundingDoctorDetail(
 				@RequestParam(defaultValue = "1") int pageNum, @RequestParam int project_idx, @RequestParam(defaultValue = "1") int type, 
 				HttpSession session, Model model) {
+		
+		// 관리자 페이지 접근 차단
+		String sId = (String) session.getAttribute("sId");
+	    if (sId == null || !sId.equals("admin")) {
+	        model.addAttribute("msg", "잘못된 접근입니다.");
+	        return "fail_back";
+	    }
 		
 		ProjectVO project = projectService.getProjectInfo(project_idx);	 			 // 프로젝트 조회
 		List<RewardVO> rList = projectService.getRewardList(project_idx); 			// 리워드 조회
@@ -1384,7 +1506,6 @@ public class AdminController {
 			return "fail_back";
 		}
 	}
-	
 	
 	@GetMapping("ChartDataEntry")
     @ResponseBody
