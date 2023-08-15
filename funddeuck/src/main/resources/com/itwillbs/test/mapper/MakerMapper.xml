@@ -177,4 +177,14 @@
 			corporate_biz_num = #{corporate_biz_num}
 	</select>
 	
+	<!-- 메이커인지 아닌지 파악  -->
+	<select id="selectMakerCount">
+		SELECT Count(maker_idx)
+			FROM maker
+			WHERE member_idx = (
+			    SELECT member_idx
+			    FROM members
+			    WHERE member_id = #{sId}
+			);
+	</select>
 </mapper>

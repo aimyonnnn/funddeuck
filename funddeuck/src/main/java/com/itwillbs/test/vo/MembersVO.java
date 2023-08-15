@@ -27,7 +27,7 @@ public class MembersVO {
 	private String member_passwd;
 	private String member_email;
 	private String member_phone;
-	private String member_status;
+	private int member_status;
 	private String member_grade;
 	private int false_count;
 	private Timestamp join_date;

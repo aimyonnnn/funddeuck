@@ -31,13 +31,18 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.gson.JsonObject;
 import com.itwillbs.test.handler.MyPasswordEncoder;
 import com.itwillbs.test.service.FundingService;
+import com.itwillbs.test.service.MakerService;
 import com.itwillbs.test.service.MemberService;
 import com.itwillbs.test.service.ProfileService;
+import com.itwillbs.test.service.ProjectService;
 import com.itwillbs.test.service.SendMailService;
+import com.itwillbs.test.service.SendPhoneMessageService;
 import com.itwillbs.test.vo.MakerVO;
 import com.itwillbs.test.vo.MembersVO;
 import com.itwillbs.test.vo.ProfileVO;
 import com.itwillbs.test.vo.ProjectVO;
+
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 @Controller
 public class MemberController {
@@ -53,6 +58,15 @@ public class MemberController {
     
     @Autowired
     private ProfileService profileService;
+    
+    @Autowired 
+    private SendPhoneMessageService messageService;
+    
+    @Autowired
+    private MakerService makerService;
+    
+    @Autowired
+    private ProjectService projectService;
     
     @GetMapping("memberMypage")
     public String myPage(HttpSession session, Model model) {
@@ -164,6 +178,9 @@ public class MemberController {
     		return "fail_back";
     	}else if(isMember.getFalse_count()>=4) {
     			model.addAttribute("msg", "5회 이상 틀린 아이디 입니다.\\n비밀번호찾기를 진행해주세요.");
+    		return "fail_back";
+    	} else if(isMember.getMember_status() == 2) {
+    		model.addAttribute("msg", "탈퇴한 회원입니다.");
     		return "fail_back";
     	} else if(passwordEncoder.matches(member.getMember_passwd(), isMember.getMember_passwd())) {
     		
@@ -930,14 +947,154 @@ public class MemberController {
     	
     	MembersVO vo = service.getMemberInfoEmail(email);
     	
+    	System.out.println("@@vo : " + vo);
+    	
     	if(vo == null) {
     		session.setAttribute("email", email);
     		return "false";
+    	} else if(vo.getMember_status() == 2) {
+    		return "fail_back";
     	}
     	
     	session.setAttribute("sId", vo.getMember_id());
     	
     	return "true";
+    }
+    
+    // 핸드폰 인증번호 발송
+    @PostMapping("phoneNumberDuplcate")
+    @ResponseBody
+    public String phoneNumberDuplcate(@RequestParam String phoneNumber) {
+    	
+    	int selectCount = service.getMemberPhoneNumber(phoneNumber);
+    	
+    	if(selectCount > 0) {
+    		return "phone";
+    	}
+    	
+    	System.out.println(phoneNumber);
+    	
+    	String code = generateRandomNumbers(6);
+    	
+    	System.out.println(code);
+    	
+    	String message = "펀뜩 입니다. 인증코드는 [" + code + "] 입니다.";
+    	
+    	try {
+			return messageService.SendMessage(code, phoneNumber, message, 0);
+			
+		} catch (CoolsmsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return "false";
+    }
+    
+    //핸드폰 인증번호 확인
+    @PostMapping("isPhoneNumberCode")
+    @ResponseBody
+    public String isPhoneNumberCode(@RequestParam String phoneNumber, @RequestParam String authCode) {
+    	
+    	int selectCount = service.selectPhoneNumeber(phoneNumber, authCode);
+    	
+    	if(selectCount > 0) {
+    		int deleteCount = service.deletePhoneNumberCode(phoneNumber, authCode);
+    		
+    		if(deleteCount > 0) {
+    			return "true";
+    		}
+    	}
+    	return "false";
+    	
+    }
+    // 정보 수정 페이지 이동
+    @GetMapping("modifyMember")
+    public String modifyMember(HttpSession session, Model model) {
+    	
+    	if(session.getAttribute("sId") == null) {
+    		model.addAttribute("msg", "잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
+    	MembersVO member = service.getMemberInfo((String)session.getAttribute("sId"));
+    	
+    	System.out.println(member);
+    	
+    	model.addAttribute("member", member);
+    	
+    	return "member/member_modify";
+    }
+    
+    @PostMapping("ModifyPro")
+    public String ModifyPro(MembersVO member, HttpSession session, Model model) {
+    	if(session.getAttribute("sId") == null) {
+        	model.addAttribute("msg", "잘못된 접근입니다.");
+        	return "fail_back";
+        	}
+    	
+    	System.out.println(member);
+    	System.out.println(member.getMember_passwd().equals(""));
+    	
+    	if(!member.getMember_passwd().equals("")) {
+    	// ------------ BCryptPasswordEncoder 객체 활용한 패스워드 암호화(= 해싱) --------------
+    			// => MyPasswordEncoder 클래스에 모듈화
+    			// 1. MyPasswordEncoder 객체 생성
+    			MyPasswordEncoder passwordEncoder = new MyPasswordEncoder();
+    			// 2. getCryptoPassword() 메서드에 평문 전달하여 암호문 얻어오기
+    			String securePasswd = passwordEncoder.getCryptoPassword(member.getMember_passwd());
+    			// 3. 리턴받은 암호문을 MemberVO 객체에 덮어쓰기
+    			member.setMember_passwd(securePasswd);
+    			// -------------------------------------------------------------------------------------
+    	}
+    	
+    	
+    	int updateCount = service.modifyMemberInfo(member);
+    	
+    	if(updateCount > 0) {
+    		return "redirect:/";
+    	} else {
+    		model.addAttribute("msg", "정보수정 실패");
+    		return "fail_back";
+    	}
+    	
+    }
+    
+    // maker 일 때 조회 및 회원 탈퇴
+    @PostMapping("deleteIsMaker")
+    @ResponseBody
+    public String deleteIsMaker(HttpSession session) {
+    	
+    	int maker_idx = makerService.getMakerCount((String)session.getAttribute("sId"));
+    	
+    	if(maker_idx > 0) {
+    		
+    		MembersVO member = service.getMemberInfo((String)session.getAttribute("sId"));
+    		List<ProjectVO> projectList = projectService.getProjectList(member.getMember_idx());
+    		
+    		int Count = 0;
+    		
+    		for(ProjectVO project : projectList) {
+    			
+    			if(project.getProject_status() > 0 && project.getProject_status() < 6) {
+    				Count++;
+    			}
+    			
+    		}
+    		
+    		if(Count > 0) {
+    			return "project";
+    		}
+    		
+    	}
+    	
+    	int updateCount = service.updateMemberDeleteStatus((String)session.getAttribute("sId"));
+    	
+    	if(updateCount > 0) {
+    		session.invalidate();
+    		return "true";
+    	}
+    	return "false";
     }
     
  // 랜덤 코드 생성

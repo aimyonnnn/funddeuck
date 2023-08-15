@@ -540,4 +540,44 @@
 								FROM members
 								WHERE member_id = #{sId})
 	</select>
+	
+	<!-- 회원의 전화번호가 존재하는지 여부 확인 -->
+	<select id="selectPhoneNumber">
+		SELECT COUNT(member_idx)
+			FROM members
+			WHERE member_phone = #{phoneNumber}
+	</select>
+	
+	<!-- 전화번호와 코드가 일치 확인 -->
+	<select id="selectPhoneNumberEquelCode">
+		SELECT COUNT(phone_number)
+		 FROM phone
+		 WHERE phone_number = #{phoneNumber} AND code = #{authCode}
+	</select>
+	
+	<!-- 전화번호 코드가 일치할 시 db에서 데이터 삭제 -->
+	<delete id="deletePhoneNUmberCode">
+		DELETE FROM phone
+			WHERE phone_number = #{phoneNumber}
+	</delete>
+	
+	<!-- 멤버 정보 수정 -->
+	<update id="updateMemberInfo">
+		UPDATE members
+			SET 
+				member_name = #{member_name},
+				<if test="!member_passwd.equals('')">
+					member_passwd = #{member_passwd},
+				</if>
+				member_email = #{member_email},
+				member_phone = #{member_phone}
+			WHERE member_id = #{member_id}
+	</update>
+	
+	<!-- 회원 탈퇴 -->
+	<update id="updateMemberDeleteStatus">
+		UPDATE members
+			SET member_status = 2
+			WHERE member_id = #{sId}
+	</update>
 </mapper>

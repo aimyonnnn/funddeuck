@@ -37,14 +37,43 @@ public class SendPhoneMessageService {
 	    params.put("type", "sms"); 
 	    params.put("text", message);										 // 메시지 내용
 	 
-	    coolsms.send(params); 												 // 메시지 전송
+	    coolsms.send(params);												 // 메시지 전송
 	    
-	    int insertCount = mapper.insertSms(memberId, memberPhone, message);
-	    if(insertCount > 0) {
-	    	logger.info("■■■■■ 문자 발송 내역이 저장되었습니다.");
+	    // 인증번호 발송과 문자발송 구별
+	    if(projectIdx == 1) {
+	    
+		    int insertCount = mapper.insertSms(memberId, memberPhone, message);
+		    if(insertCount > 0) {
+		    	logger.info("■■■■■ 문자 발송 내역이 저장되었습니다.");
+		    } else {
+		    	logger.info("■■■■■ 문자 발송 내역 저장에 실패하였습니다.");
+		    	return "false";
+		    }
 	    } else {
-	    	logger.info("■■■■■ 문자 발송 내역 저장에 실패하였습니다.");
-	    	return "false";
+	    	
+	    	int selectCount = mapper.selectDuplicateSmsCode(memberPhone);
+	    	
+	    	if(selectCount > 0) {
+	    		int updateCount = mapper.updateDuplicateSmsCode(memberId,memberPhone);
+	    		
+	    		if(updateCount > 0) {
+	    			
+	    		} else {
+	    			return "false";
+	    		}
+	    		
+	    	} else {
+	    		int insertCount = mapper.insertDuplicateSmsCode(memberId,memberPhone);
+	    		
+	    		if(insertCount > 0) {
+	    			
+	    		} else {
+	    			return "false";
+	    		}
+	    		
+	    	}
+	    	
+	    	
 	    }
 	    
 		return "true";

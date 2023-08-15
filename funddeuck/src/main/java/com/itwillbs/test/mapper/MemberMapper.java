@@ -148,5 +148,20 @@ public interface MemberMapper {
 	// 팔로우 한 메이커가 작성한 공지사항 카운트
 	int selectFollowBoardListCount(String sId);
 	
+	//전화번호가 존재하는지 여부를 확인
+	int selectPhoneNumber(String phoneNumber);
+	
+	//전화번호와 코드가 일치한지 여부 확인
+	int selectPhoneNumberEquelCode(@Param("phoneNumber") String phoneNumber,@Param("authCode") String authCode);
+	
+	//전화번호가 일치시 phone 테이블에서 데이터 삭제
+	int deletePhoneNUmberCode(String phoneNumber);
+	
+	//회원 정보 변경
+	int updateMemberInfo(MembersVO member);
+	
+	//회원 탈퇴
+	int updateMemberDeleteStatus(String sId);
+	
 
 }
