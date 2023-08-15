@@ -109,7 +109,7 @@
 		        <ul id="rankingList" class="card-text"></ul>
 		      </div>
 		    </div>
-		    
+		    		    
 		    <div class="col-md-6">
 				<div class="card-body_hash">
 				    <p><b>요즘 유행하는 <span class="highlight">#해시태그</span>만 모아봤어요!</b></p>

@@ -127,7 +127,7 @@
     .card-body_hash {
         position: relative;
         height: 200px;
-        width: 470px;
+        width: 600px;
         padding: 10px;
     }
     
@@ -274,3 +274,5 @@
        background: none;
        padding: 0;
    }
+   
+   
