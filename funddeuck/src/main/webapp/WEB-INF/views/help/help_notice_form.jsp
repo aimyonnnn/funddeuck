@@ -49,8 +49,8 @@
 					                    <label for="event_category">이벤트</label>
 					                    <input type="radio" id="maintenance_category" value="3" name="notice_category">
 					                    <label for="maintenance_category">서버 점검</label>
-					                    <input type="radio" id="top_category" value="4" name="notice_category">
-					                    <label for="top_category">상위 고정</label>
+<!-- 					                    <input type="radio" id="top_category" value="4" name="notice_category"> -->
+<!-- 					                    <label for="top_category">상위 고정</label> -->
 				                    </td>
 				                </tr>
 				                <tr>
