@@ -77,11 +77,11 @@
 					            <div class="card-body">
                                 <em class="card-title"><b>${project.project_subject}</b></em>
                                 <p class="card-text">
-                                    <div class="progress" style="height: 10px">
-                                        <div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example"
-                                            style="height:10px; width: ${project.project_cumulative_amount / project.project_target * 100}%"
-                                            aria-valuenow="${project.project_cumulative_amount / project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+					        	<div class="progress" style="height: 10px">
+				  					<div class="progress-bar bg-primary" id="progressbar" role="progressbar" aria-label="Success example" 
+				  					style="height:10px; width: ${project.project_cumulative_amount/project.project_target * 100}%" 
+				  					aria-valuenow="${project.project_cumulative_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
                                     <span class="light-gray-text">
                                         <fmt:formatNumber type="number" maxFractionDigits="0" value="${project.project_cumulative_amount / project.project_target * 100}" />
                                         %
