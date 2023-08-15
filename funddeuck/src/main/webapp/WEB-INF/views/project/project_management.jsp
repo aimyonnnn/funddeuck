@@ -994,6 +994,7 @@
                  
                  var responseObject = response;
                  var result = responseObject.choices[0].text; 			// 필요한 필드 추출
+                 result = result.replace(/\./g, "");
                  $("#managementSemiDetail").val(result).focus(); 		// 프로젝트 요약에 입력
                  Swal.fire({
 					icon: 'success',
