@@ -53,7 +53,7 @@
 	#newNotificationCount {
 	  position: relative; 
 	  top: -10px; 
-	  right: 19px; 
+	  right: 37px; 
 	  z-index: 100; 
 	  background-color: red; 
 	  color: white; 
