@@ -91,6 +91,7 @@ $(()=>{
 
 </head>
 <body>
+	<div style="height:150px;"></div>
 	<!-- 헤더  -->
 	<jsp:include page="../Header.jsp"></jsp:include>
 	<!-- 이미지, 프로젝트 정보 -->

@@ -31,6 +31,7 @@ th, td {
 </style>
 </head>
 <body>
+<div style="height:150px;"></div>
 <!-- 페이징 처리를 위한 pageNum 셋팅 -->
 <c:set var="pageNum" value="1"/>
 <c:if test="${not empty param.pageNum }">
