@@ -77,6 +77,10 @@
     .navbar-collapse {
         width: 100%;
     }
+    
+	.custom-toggler {
+	    font-size: 0.8rem; 
+	}
 	
 	@media (max-width: 767px) {
 	  .navbar-nav .dropdown-menu {
@@ -258,17 +262,17 @@ function updateList() {
             </c:choose>
             
         </div>
+		<button class="navbar-toggler menu-toggle custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		</button>
 	</div>
         
-	<button class="navbar-toggler menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	</button>
        
     <!-- 메뉴를 담을 div 추가(햄버거 버튼) -->
 	<div class="collapse navbar-collapse" id="navbarsExample09">
 		<ul class="navbar-nav bg-custom">
 	        <li class="nav-item">
-	          <a class="nav-link" href="./"">홈페이지</a>
+	          <a class="nav-link" href="./">홈페이지</a>
 	        </li>
         	<li class="nav-item">
 	          <a class="nav-link" href="admin">관리자메인</a>
@@ -426,21 +430,21 @@ $(() => {
                            <div class="col-md-12 mb-3">
                                <div class="ideatitle">
                                    <label>제목</label>
-								   <input id="message_subject" type="text" class="form-control" placeholder="제목을 입력하세요">
+								   <input id="message_subject" type="text" class="form-control" placeholder="제목을 입력하세요" style="min-width: 100%;">
                                </div>
                            </div>
                            
                            <div class="col-md-12 mb-3">
                                <div class="ideatitle">
                                    <label>아이디</label>
-								   <input id="message_receiver" type="text" class="form-control" placeholder="아이디를 입력하세요">
+								   <input id="message_receiver" type="text" class="form-control" placeholder="아이디를 입력하세요" style="min-width: 100%;">
                                </div>
                            </div>
 
                            <div class="col-md-12">
                                <div class="ideadescription">
                                    <label>내용</label>
-                                   <textarea id="message_content" class="form-control" placeholder="내용을 입력하세요" rows="3"></textarea>
+                                   <textarea id="message_content" class="form-control" placeholder="내용을 입력하세요" rows="3" style="min-width: 100%;"></textarea>
                                </div>
                            </div>
                         </form>

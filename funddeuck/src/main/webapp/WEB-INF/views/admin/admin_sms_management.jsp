@@ -227,21 +227,21 @@ th, td {
                            <div class="col-md-12 mb-3">
                                <div class="ideatitle">
                                    <label>ID</label>
-								   <input id="send_memberId" type="text" class="form-control" placeholder="아이디를 입력하세요" onchange="fetchPhoneNumber()">
+								   <input id="send_memberId" type="text" class="form-control" placeholder="아이디를 입력하세요" onchange="fetchPhoneNumber()" style="min-width: 100%;">
                                </div>
                            </div>
                            
                            <div class="col-md-12 mb-3">
                                <div class="ideatitle">
                                    <label>Number</label>
-								   <input id="send_phoneNum" type="text" class="form-control" placeholder="아이디 입력 시 자동으로 조회됩니다" disabled="disabled">
+								   <input id="send_phoneNum" type="text" class="form-control" placeholder="아이디 입력 시 자동으로 조회됩니다" disabled="disabled" style="min-width: 100%;">
                                </div>
                            </div>
 
                            <div class="col-md-12">
                                <div class="ideadescription">
                                    <label>Content</label>
-                                   <textarea id="send_content" class="form-control" placeholder="내용을 입력하세요" rows="3" maxlength="80"></textarea>
+                                   <textarea id="send_content" class="form-control" placeholder="내용을 입력하세요" rows="3" maxlength="80" style="min-width: 100%;"></textarea>
                                </div>
                            </div>
                         </form>

@@ -560,21 +560,21 @@ $(() => {
                            <div class="col-md-12 mb-3">
                                <div class="ideatitle">
                                    <label>제목</label>
-								   <input id="message_subject" type="text" class="form-control" placeholder="제목을 입력하세요">
+								   <input id="message_subject" type="text" class="form-control" placeholder="제목을 입력하세요" style="min-width: 100%;">
                                </div>
                            </div>
                            
                            <div class="col-md-12 mb-3">
                                <div class="ideatitle">
                                    <label>ID</label>
-								   <input id="message_receiver" type="text" class="form-control" placeholder="아이디를 입력하세요">
+								   <input id="message_receiver" type="text" class="form-control" placeholder="아이디를 입력하세요" style="min-width: 100%;">
                                </div>
                            </div>
 
                            <div class="col-md-12">
                                <div class="ideadescription">
                                    <label>내용</label>
-                                   <textarea id="message_content" class="form-control" placeholder="내용을 입력하세요" rows="3"></textarea>
+                                   <textarea id="message_content" class="form-control" placeholder="내용을 입력하세요" rows="3" style="min-width: 100%;"></textarea>
                                </div>
                            </div>
                         </form>
