@@ -45,8 +45,8 @@
 <br>
 <!-- 카테고리 바 영역(화면 클때) -->
 <div class="container-lg">
-	<span class="fs-2 text-info fw-bold">${param.searchKeyword }</span><span class="fs-2 fw-bold">&nbsp;검색결과</span>&nbsp;
-	<small class="text-info fw-bold">${project.size() }</small><small class="fw-bold">개</small>
+	<span class="fs-2 text-primary fw-bold">${param.searchKeyword }</span><span class="fs-2 fw-bold">&nbsp;검색결과</span>&nbsp;
+	<small class="text-primary fw-bold">${project.size() }</small><small class="fw-bold">개</small>
 	<br>
 	<div class="col float-end" >
 		<select class="text-dark-emphasis fw-bold" id="selectBox" onchange="chageLangSelect()">
@@ -55,9 +55,9 @@
 			<option class="text-dark-emphasis fw-bold" value="active" <c:if test="${param.status eq 'active' }" >selected</c:if>>진행중</option>
 			<option class="text-dark-emphasis fw-bold" value="end" <c:if test="${param.status eq 'end' }" >selected</c:if>>종료된</option>
 		</select>
-		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'newest' or empty param.index }">border-info border-bottom border-2</c:if>" href="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=${param.status }&index=newest">최신순</a>&nbsp;
-		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'amount' }">border-info border-bottom border-2</c:if>" href="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=${param.status }&index=amount">모집금액순</a>&nbsp;
-		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'target' }">border-info border-bottom border-2</c:if>" href="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=${param.status }&index=target">목표금액순</a>
+		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'newest' or empty param.index }">border-primary border-bottom border-2</c:if>" href="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=${param.status }&index=newest">최신순</a>&nbsp;
+		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'amount' }">border-primary border-bottom border-2</c:if>" href="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=${param.status }&index=amount">모집금액순</a>&nbsp;
+		<a class="text-decoration-none text-dark-emphasis fw-bold <c:if test="${param.index eq 'target' }">border-primary border-bottom border-2</c:if>" href="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=${param.status }&index=target">목표금액순</a>
 	</div>
 	<br>
 	<div>&nbsp;</div>
@@ -80,7 +80,7 @@
 					</div>
 						<a href="fundingDetail?project_idx=${project.project_idx }" class="stretched-link"></a>
 					<div class="card-footer bg-white">
-		      			<small class="fw-bold text-success">
+		      			<small class="fw-bold text-primary">
 		      			<fmt:formatNumber type="number" maxFractionDigits="0"  value="${project.project_cumulative_amount/project.project_target * 100 }" />%
 		      			</small>&nbsp;
 		      			<small class="opacity-75"><fmt:formatNumber value="${project.project_cumulative_amount }" pattern="#,###" />원
@@ -115,7 +115,7 @@
 			      			</c:if>
 			      		</small>
 		        	<div class="progress" style="height: 10px">
-	  					<div class="progress-bar bg-success" id="progressbar" role="progressbar" aria-label="Success example" 
+	  					<div class="progress-bar bg-primary" id="progressbar" role="progressbar" aria-label="Success example" 
 	  					style="height:10px; width: ${project.project_cumulative_amount/project.project_target * 100}%" 
 	  					aria-valuenow="${project.project_cumulative_amount/project.project_target * 100}" aria-valuemin="0" aria-valuemax="100"></div>
 					</div>
