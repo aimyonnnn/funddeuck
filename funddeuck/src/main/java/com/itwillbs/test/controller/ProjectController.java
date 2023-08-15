@@ -603,7 +603,7 @@ public class ProjectController {
 	    Integer member_idx = projectService.getMemberIdx(sId);
 	    Integer maker_idx = makerService.getMakerIdx(sId);
 	    
-	    List<ProjectVO> projectList = projectService.getProjectList(member_idx);
+	    List<ProjectVO> projectList = projectService.getCompletedPaymentProjectList(member_idx);
 	    if (!projectList.isEmpty()) {
 	        int firstProjectIdx = projectList.get(0).getProject_idx();
 	        model.addAttribute("firstProjectIdx", firstProjectIdx);
@@ -680,7 +680,8 @@ public class ProjectController {
 	@PostMapping("getProjectListByMakerIdx")
 	@ResponseBody
 	public List<ProjectVO> getProjectListByMakerIdx(@RequestParam int maker_idx) {
-		List<ProjectVO> pList = projectService.getProjectListByMakerIdx(maker_idx);
+//		List<ProjectVO> pList = projectService.getProjectListByMakerIdx(maker_idx);
+		List<ProjectVO> pList = projectService.getCompletedPaymentProjectListByMakerIdx(maker_idx);
 		return pList;
 	}
 	

@@ -255,4 +255,14 @@ public class ProjectService {
 	public List<ProjectVO> getApprovedProjectsByMakerIdx(Integer maker_idx) {
 		return mapper.selectApprovedProjectsByMakerIdx(maker_idx);
 	}
+	
+	// 결제완료된 프로젝트 리스트 조회 (memberIdx)
+	public List<ProjectVO> getCompletedPaymentProjectList(Integer member_idx) {
+		return mapper.selectCompletedPaymentProjectList(member_idx);
+	}
+	
+	// 결제완료된 프로젝트 리스트 조회 (makerIdx)
+	public List<ProjectVO> getCompletedPaymentProjectListByMakerIdx(int maker_idx) {
+		return mapper.selectCompletedPaymentProjectListByMakerIdx(maker_idx);
+	}
 }

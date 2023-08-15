@@ -681,6 +681,27 @@
 				and project_status = 2
 	</select>
 	
+	<!-- 결제완료된 프로젝트 리스트 조회 memberIdx -->
+	<select id="selectCompletedPaymentProjectList">
+		SELECT *
+			FROM project
+			WHERE maker_idx IN (
+			    SELECT maker_idx 
+			    FROM maker 
+			    WHERE member_idx = #{member_idx}
+			)
+			AND project_approve_status = 5
+	</select>
+	
+	<!-- 결제완료된 프로젝트 리스트 조회 makerIdx -->
+	<select id="selectCompletedPaymentProjectListByMakerIdx">
+		select *
+			from project
+		where
+			maker_idx = #{maker_idx}
+			AND project_approve_status = 5
+	</select> 
+	
 </mapper>
 	
 	

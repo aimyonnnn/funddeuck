@@ -182,6 +182,12 @@ public interface ProjectMapper {
 	
 	// 승인된 프로젝트 리스트 조회
 	List<ProjectVO> selectApprovedProjectsByMakerIdx(Integer maker_idx);
+	
+	// 결제완료된 프로젝트 리스트 조회 (memberIdx)
+	List<ProjectVO> selectCompletedPaymentProjectList(Integer member_idx);
+	
+	// 결제완료된 프로젝트 리스트 조회 (makerIdx)
+	List<ProjectVO> selectCompletedPaymentProjectListByMakerIdx(int maker_idx);
 
 	
 }
