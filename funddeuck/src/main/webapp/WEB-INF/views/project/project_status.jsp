@@ -485,9 +485,9 @@ th, td {
 												<span id="acmlPaymentAmount"></span><span class="sideDescription">원</span>
 											</h1>
 										</div>
-										<div class="">
-											<i class="las la-chart-line" style="color: rgba(255, 99, 132, 1);"></i>
-										</div>
+<!-- 										<div class=""> -->
+<!-- 											<i class="las la-chart-line" style="color: rgba(255, 99, 132, 1);"></i> -->
+<!-- 										</div> -->
 									</div>
 								</div>
 							</div>
@@ -501,9 +501,9 @@ th, td {
 												<span id="todayPaymentAmount"></span><span class="sideDescription">원</span>
 											</h1>
 										</div>
-										<div class="">
-											<i class="las la-chart-line" style="color: rgb(135, 206, 235);"></i>
-										</div>
+<!-- 										<div class=""> -->
+<!-- 											<i class="las la-chart-line" style="color: rgb(135, 206, 235);"></i> -->
+<!-- 										</div> -->
 									</div>
 								</div>
 							</div>
@@ -517,9 +517,9 @@ th, td {
 												<span id="acmlSupporterCount"></span><span class="sideDescription">명</span>
 											</h1>
 										</div>
-										<div class="">
-											<i class="las la-chart-line" style="color: rgba(75, 192, 192, 0.2);"></i>
-										</div>
+<!-- 										<div class=""> -->
+<!-- 											<i class="las la-chart-line" style="color: rgba(75, 192, 192, 0.2);"></i> -->
+<!-- 										</div> -->
 									</div>
 								</div>
 							</div>
@@ -567,9 +567,9 @@ th, td {
 												<span id="acmlPaymentAmountMaker"></span><span class="sideDescription">원</span>
 											</h1>
 										</div>
-										<div class="">
-											<i class="las la-chart-line" style="color: rgba(255, 99, 132, 1);"></i>
-										</div>
+<!-- 										<div class=""> -->
+<!-- 											<i class="las la-chart-line" style="color: rgba(255, 99, 132, 1);"></i> -->
+<!-- 										</div> -->
 									</div>
 								</div>
 							</div>
@@ -583,9 +583,9 @@ th, td {
 												<span id="todayPaymentAmountMaker"></span><span class="sideDescription">원</span>
 											</h1>
 										</div>
-										<div class="">
-											<i class="las la-chart-line" style="color: rgb(135, 206, 235);"></i>
-										</div>
+<!-- 										<div class=""> -->
+<!-- 											<i class="las la-chart-line" style="color: rgb(135, 206, 235);"></i> -->
+<!-- 										</div> -->
 									</div>
 								</div>
 							</div>
@@ -599,9 +599,9 @@ th, td {
 												<span id="acmlSupporterCountMaker"></span><span class="sideDescription">명</span>
 											</h1>
 										</div>
-										<div class="">
-											<i class="las la-chart-line" style="color: rgba(153, 102, 255, 0.2);"></i>
-										</div>
+<!-- 										<div class=""> -->
+<!-- 											<i class="las la-chart-line" style="color: rgba(153, 102, 255, 0.2);"></i> -->
+<!-- 										</div> -->
 									</div>
 								</div>
 							</div>
@@ -1294,34 +1294,6 @@ function showPaymentDetails(payment_idx) {
 	          <td>주문수량</td>
 	          <td>${'${data.payment_quantity}'}</td>
 	        </tr>
-	        <tr>
-	          <td>결제승인여부</td>
-	          <td>${'${data.payment_confirm}'}</td>
-	        </tr>
-	        <tr>
-	          <td>결제수단</td>
-	          <td>${'${data.payment_method}'}</td>
-	        </tr>
-	        <tr>
-	          <td>환급받을은행명</td>
-	          <td>${'${data.refund_bank}'}</td>
-	        </tr>
-	        <tr>
-	          <td>배송방법</td>
-	          <td>${'${data.delivery_method}'}</td>
-	        </tr>
-	        <tr>
-	          <td>택배사</td>
-	          <td>${'${data.courier}'}</td>
-	        </tr>
-	        <tr>
-	          <td>운송장번호</td>
-	          <td>${'${data.waybill_num}'}</td>
-	        </tr>
-	        <tr>
-	          <td>배송상황</td>
-	          <td>${'${data.delivery_status}'}</td>
-	        </tr>
         </table>`;
         
       	modalBody.html(tableHtml);
@@ -1375,10 +1347,6 @@ function showRewardDetails(reward_idx) {
 		          <td>${'${data.reward_quantity}'}</td>
 		        </tr>
 		        <tr>
-		          <td>리워드 금액</td>
-		          <td>${'${data.reward_amount}'}</td>
-		        </tr>
-		        <tr>
 		          <td>리워드 옵션</td>
 		          <td>${'${data.reward_option}'}</td>
 		        </tr>
@@ -1399,13 +1367,8 @@ function showRewardDetails(reward_idx) {
 		          <td>${'${data.delivery_date}'}</td>
 		        </tr>
 		        <tr>
-		          <td>결제승인여부</td>
-		          <td>${'${data.payment_confirm}'}</td>
-		        </tr>
-		        <tr>
-		          <td colspan='2'>
-	         	  	<textarea rows='5' cols='50' read readonly="readonly">${'${data.reward_info}'}</textarea>
-		          </td>
+		          <td>리워드 정보 제공 고시</td>
+   	  			  <td>${'${data.reward_info}'}</td>
 		        </tr>
 	        </table>`;
 	        

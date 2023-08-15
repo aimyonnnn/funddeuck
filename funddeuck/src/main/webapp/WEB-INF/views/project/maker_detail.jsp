@@ -200,7 +200,7 @@ var sId = "";
 									    <div class="card-text makerSubject">${pList.project_subject}</div>
 									    <div class="card-text">${pList.project_semi_introduce}</div>
 									    <div>
-									    	<button type="button" class="btn btn-outline-primary w-100 mt-2"
+									    	<button type="button" class="btn btn-primary w-100 mt-2"
 									    	onclick="location.href='fundingDetail?project_idx=${pList.project_idx}'">프로젝트 후원하기</button>
 									    </div>
 									  </div>
@@ -236,19 +236,20 @@ var sId = "";
 						</tr>
 						<tr>
 							<th>사업자등록번호</th>
-							<c:choose>
-								<c:when test="${not empty maker.corporate_biz_num or not empty maker.individual_biz_num}">
-									<c:if test="${not empty maker.corporate_biz_num && empty maker.individual_biz_num}">
-										<td>${maker.corporate_biz_num}</td>
-									</c:if>
-									<c:if test="${empty maker.corporate_biz_num && not empty maker.individual_biz_num}">
-										<td>${maker.individual_biz_num}</td>
-									</c:if>
-								</c:when>
-								<c:otherwise>
-										<td>사업자등록번호 없음</td>
-								</c:otherwise>
-							</c:choose>
+							<td>120-88-00767</td>
+<%-- 							<c:choose> --%>
+<%-- 								<c:when test="${not empty maker.corporate_biz_num or not empty maker.individual_biz_num}"> --%>
+<%-- 									<c:if test="${not empty maker.corporate_biz_num && empty maker.individual_biz_num}"> --%>
+<%-- 										<td>${maker.corporate_biz_num}</td> --%>
+<%-- 									</c:if> --%>
+<%-- 									<c:if test="${empty maker.corporate_biz_num && not empty maker.individual_biz_num}"> --%>
+<%-- 										<td>${maker.individual_biz_num}</td> --%>
+<%-- 									</c:if> --%>
+<%-- 								</c:when> --%>
+<%-- 								<c:otherwise> --%>
+<!-- 										<td>사업자등록번호 없음</td> -->
+<%-- 								</c:otherwise> --%>
+<%-- 							</c:choose> --%>
 						</tr>
 					</table>
 				</div>

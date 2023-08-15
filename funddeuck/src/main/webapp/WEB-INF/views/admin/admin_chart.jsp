@@ -321,6 +321,12 @@ window.addEventListener('load', function() {
 	<main>
 	    <div class="container mt-3 mb-2">
 	        <div class="row justify-content-center">
+	        
+	        	<div class="container">
+					<h2 class="fw-bold">전체 매출 조회</h2>
+					<p class="projectContent">기간별 전체 매출 금액을 조회 할 수 있습니다.</p>
+				</div>
+	        
 	            <div class="col-md-12 col-lg-4">
 	                <div class="card-single my-1">
 	                    <div class="card-flex">
@@ -399,8 +405,7 @@ window.addEventListener('load', function() {
 	                <canvas id="myChart2" style="height: 40vh; width: 50vw"></canvas>
 	            </div>
 	            
-	            
-	           <div class="container">
+	            <div class="container">
 					<h2 class="fw-bold mt-5">상위 프로젝트 3개</h2>
 					<p class="projectContent">지난 7일간 매출액이 높은 프로젝트를 확인할 수 있습니다.</p>
 				</div>

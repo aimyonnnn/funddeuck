@@ -34,7 +34,7 @@ table tr:hover td {
 }
 /* 페이지네이션 글자색 변경 */
 .page-link {
-	color: black;
+	color: black !important; /* 또는 다른 적절한 색상 사용 */
 }
 </style>
 <script type="text/javascript">
