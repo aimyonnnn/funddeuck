@@ -999,7 +999,7 @@
 					icon: 'success',
 					title: '프로젝트 요약 완료!',
 					text: 'AI로 입력이 완료되었습니다!'
-				 })
+				 });
                  
              },
              error: function (xhr, status, error) {
