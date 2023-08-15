@@ -453,7 +453,7 @@
       	<!-- 왼쪽 네비게이션 시작 -->
 		<aside id="aisdeLeft">
 		    <div id="projectManagement">
-				<img src="${pageContext.request.contextPath}/resources/images/managementImage.jpg" class="img-fluid me-auto" width="200px" height="150px">
+				<img src="${pageContext.request.contextPath}/resources/images/managementImage.jpg" width="200px" height="150px">
 		    	${sessionScope.sId}님의 프로젝트
 		    </div>
 		    <ul id="navMenu">
@@ -580,7 +580,7 @@
 					</div>
               
 					<!-- 검색용 해시태그 -->
-					<div class="tr_hashTag_area">
+					<div class="mt-4 tr_hashTag_area">
 					    <p class="subheading">검색용 태그(#)</p>
 					    <p class="sideDescription">
 						    프로젝트가 더 잘 검색될 수 있도록 연관성이 높은 태그를 입력해 주세요.<br>

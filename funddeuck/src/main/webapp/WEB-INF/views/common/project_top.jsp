@@ -24,6 +24,54 @@
        background: none;
        padding: 0;
    }
+   
+	.dropdown-toggle::after {
+	  display: none;
+	}
+	
+	.nav-item:hover .dropdown-menu {
+	  display: block;
+	}
+	
+	.navbar-nav .dropdown-menu {
+	  position: absolute;
+	  background-color: rgb(255, 255, 255);
+	  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+	
+	.navbar-nav.bg-custom {
+        background-color: rgb(255, 255, 255);
+    }
+    
+    .dropdown-item:hover, .dropdown-item:focus {
+	  color: black;
+	}
+	
+	.dropdown-item {
+	  color: #FF9300;
+	}
+    
+    .navbar-collapse {
+        width: 100%;
+    }
+    
+    .navbar-nav li.nav-item a.nav-link {
+	    color: #FF9300;
+	}
+	
+	@media (max-width: 767px) {
+	  .navbar-nav .dropdown-menu {
+	    position: static;
+	    background-color: transparent;
+	    box-shadow: none;
+	  }
+	}
+	
+	@media (min-width: 992px) {
+       .navbar-expand-lg .collapse.navbar-collapse {
+            display: none !important;
+        }
+	}
 </style>
 <!-- 채널톡 API 시작 -->
 <script>
@@ -172,14 +220,14 @@ function updateList() {
 	
 <div id="msgStack"></div>
 
-<nav class="navbar navbar-expand-lg" style="height:103px;">
+<nav class="navbar navbar-expand-lg" style="height:103px; z-index: 1000;">
     <div class="container">
     		
-        <a class="navbar-brand">
-            <img src="${pageContext.request.contextPath}/resources/images/logo.png" width="90px" height="90px" onclick="location.href='./'">
-        </a>
+<!--         <a class="navbar-brand"> -->
+<%--             <img src="${pageContext.request.contextPath}/resources/images/logo.png" width="90px" height="90px" onclick="location.href='./'"> --%>
+<!--         </a> -->
         
-        <div class="d-flex flex-row align-items-center">
+        <div class="d-flex flex-row ms-auto align-items-center">
         
         	<c:choose>
         	
@@ -222,12 +270,37 @@ function updateList() {
         	</c:choose>
             
         </div>
+	</div>
         
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-    </div>
+	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	</button>
+	
+	<!-- 메뉴를 담을 div 추가(햄버거 버튼) -->
+	<div class="collapse navbar-collapse" id="navbarsExample09">
+		<ul class="navbar-nav bg-custom">
+	       <!-- 이곳에 메뉴 항목 추가 -->
+	       <li class="nav-item">
+	       	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	              	프로젝트 관리
+	          	</a>
+	         	<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+	            		<li><a class="dropdown-item" href="projectMaker">메이커 정보</a></li>
+	              	<li><a class="dropdown-item" href="projectManagement">프로젝트 등록</a></li>
+	              	<li><a class="dropdown-item" href="projectReward">리워드 설계</a></li>
+	          	</ul>
+	       </li>
+	       <li class="nav-item">
+	         <a class="nav-link" href="projectStatus">프로젝트 현황</a>
+	       </li>
+	      	<li class="nav-item">
+	         <a class="nav-link" href="projectShipping">발송·환불 관리</a>
+	       </li>
+	       <li class="nav-item">
+	         <a class="nav-link" href="projectSettlement">수수료·정산 관리</a>
+	       </li>
+		</ul>
+	</div>
 </nav>
 
 <script type="text/javascript">

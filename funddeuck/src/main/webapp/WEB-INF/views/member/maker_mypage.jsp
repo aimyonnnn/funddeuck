@@ -37,6 +37,10 @@
 		.button-group {
         	justify-content: space-between; /* 버튼 사이의 공간을 균등하게 배치 */
     	}
+    	
+    	.card-title {
+    		font-size: 14px;
+    	}
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">

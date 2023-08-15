@@ -85,10 +85,6 @@ footer {
 	font-weight: bold;
 }
 
-.subMenu {
-    display: none;
-}
-
 .showSubMenu {
     display: block;
 }

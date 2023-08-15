@@ -39,7 +39,7 @@ public class ProjectScheduler {
             if (deliveryStatusCheck) { // 배송완료가 아니라면
                 mapper.updateDeliveryStatusPaymentList(payment_idx); // 일주일 후 배송완료로 상태변경 업데이트 실행
             }
-        }, 7, TimeUnit.DAYS);
+        }, 1, TimeUnit.MINUTES);
 	}
 
 	// 미발송 및 배송중이 없다면 2주 후 최종정산 가능으로 프로젝트 상태 변경

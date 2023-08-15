@@ -26,21 +26,71 @@
 <!-- 채널톡 API 끝 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <style>
-/* 페이지네이션 글자색 변경 */
-.page-link {
-	color: black;
-}
-/* 위로 가기 버튼 */
-#go-top {
- 	display: none;
-    position: fixed;
-    bottom: 120px;
-    right: 100px;
-    z-index: 99;
-    border: none;
-    background: none;
-    padding: 0;
-}
+	/* 페이지네이션 글자색 변경 */
+	.page-link {
+		color: black;
+	}
+	
+	/* 위로 가기 버튼 */
+	#go-top {
+	 	display: none;
+	    position: fixed;
+	    bottom: 120px;
+	    right: 100px;
+	    z-index: 99;
+	    border: none;
+	    background: none;
+	    padding: 0;
+	}
+
+	.dropdown-toggle::after {
+	  display: none;
+	}
+	
+	.nav-item:hover .dropdown-menu {
+	  display: block;
+	}
+	
+	.navbar-nav .dropdown-menu {
+	  position: absolute;
+	  background-color: rgb(255, 255, 255);
+	  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+	
+	.dropdown-item:hover, .dropdown-item:focus {
+	  color: white;
+	  background-color: #212529;
+	}
+	
+	.dropdown-item {
+	  color: #FF9300;
+	}
+	
+	.navbar-nav.bg-custom {
+        background-color: #212529;
+    }
+    
+    .navbar-nav li.nav-item a.nav-link {
+	    color: #FF9300;
+	}
+    
+    .navbar-collapse {
+        width: 100%;
+    }
+	
+	@media (max-width: 767px) {
+	  .navbar-nav .dropdown-menu {
+	    position: static;
+	    background-color: transparent;
+	    box-shadow: none;
+	  }
+	}
+	
+	@media (min-width: 992px) {
+       .navbar-expand-lg .collapse.navbar-collapse {
+            display: none !important;
+        }
+	}
 </style>
 <script>
 
@@ -208,11 +258,42 @@ function updateList() {
             </c:choose>
             
         </div>
+	</div>
         
-        <button class="navbar-toggler menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
+	<button class="navbar-toggler menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	</button>
+       
+    <!-- 메뉴를 담을 div 추가(햄버거 버튼) -->
+	<div class="collapse navbar-collapse" id="navbarsExample09">
+		<ul class="navbar-nav bg-custom">
+	        <li class="nav-item">
+	          <a class="nav-link" href="./"">홈페이지</a>
+	        </li>
+        	<li class="nav-item">
+	          <a class="nav-link" href="admin">관리자메인</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link" href="adminChart">데이터분석</a>
+	        </li>
+	        <!-- 이곳에 메뉴 항목 추가 -->
+	        <li class="nav-item">
+	        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                	메뉴
+            	</a>
+	          	<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              		<li><a class="dropdown-item" href="adminMemberManagement">회원관리</a></li>
+                	<li><a class="dropdown-item" href="adminMakerManagement">메이커관리</a></li>
+                	<li><a class="dropdown-item" href="adminProjectManagement">프로젝트관리</a></li>
+                	<li><a class="dropdown-item" href="adminProjectList">승인관리</a></li>
+                	<li><a class="dropdown-item" href="adminPayment">결제관리</a></li>
+                	<li><a class="dropdown-item" href="adminSettlement">정산관리</a></li>
+                	<li><a class="dropdown-item" href="adminSmsManagement">문자관리</a></li>
+                	<li><a class="dropdown-item" href="adminCoupon">쿠폰관리</a></li>
+                	<li><a class="dropdown-item" href="adminFundingDoctor">펀딩닥터</a></li>
+            	</ul>
+	        </li>
+		</ul>
     </div>
 </nav>
 
