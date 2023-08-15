@@ -371,7 +371,8 @@
         				isId=1;
         				
         				alert("사용가능한 아이디 입니다.");
-        				$("#member_id").attr("disabled",true); 
+        				$("#member_id").attr("disabled",true);
+        				$("#isIdbtn").remove();
         				
         			} else {
         				
@@ -414,7 +415,7 @@
 						</div>
 						<div class="col">
 							<input type="button" value="아이디 확인" class="btn btn-primary"
-								id="isbtn" onclick="idDuplicate()">
+								id="isIdbtn" onclick="idDuplicate()">
 						</div>
 					</div>
 					<h6 class="mt-4">비밀번호</h6>
