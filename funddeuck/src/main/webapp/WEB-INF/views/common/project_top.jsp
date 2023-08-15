@@ -265,7 +265,7 @@ function updateList() {
 		            <a class="nav-link py-0" href="confirmNotification">
 					  	<img src="${pageContext.request.contextPath }/resources/images/icon/bell.png" style="width: 30px; height: 30px;">
 		           	</a>
-		            <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
+		            <span id="newNotificationCount" class="badge bg-danger rounded-pill"></span>
         		</c:when>
         		
         		<c:otherwise>
