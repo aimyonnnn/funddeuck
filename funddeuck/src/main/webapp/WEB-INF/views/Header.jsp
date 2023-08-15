@@ -162,6 +162,59 @@
         background: none;
         padding: 0;
     }
+    
+	
+	.nav-item {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 10px; /* 조절해서 간격을 설정하세요 */
+ 	 }
+ 	 
+	/* 모바일 환경 */
+	@media (max-width: 767px) {
+	    .navbar-nav.left,
+	    .navbar-nav.right {
+	        display: none;
+	    }
+	
+	    .navbar-toggler {
+	        margin-left: auto;
+	    }
+	
+	    .navbar-collapse.show .navbar-nav.mobile {
+	        display: flex;
+	        flex-direction: column;
+	        align-items: center;
+	    }
+	
+	    .navbar-nav.mobile .nav-item {
+	        width: 100%;
+	        text-align: center;
+	        margin-bottom: 10px;
+	    }
+	
+	    .banner {
+	        display: none;
+	    }
+	
+	    .navbar {
+	        padding-top: 70px;
+	    }
+	
+	    .container {
+	        padding-top: 80px;
+	    }
+	}
+	
+	/* 창이 작아질 때 */
+	@media (max-width: 991px) {
+	    .navbar-collapse.show .navbar-nav {
+	        display: flex;
+	        flex-direction: column;
+	        align-items: center;
+	    }
+	}
+ 	 
     </style>
     
   
@@ -308,98 +361,103 @@
 	<!-- 위로 가기 버튼 -->
     <button id="go-top"><img src="${pageContext.request.contextPath }/resources/images/topbtn.png" style="width: 56px; height: 56px;"></button>
 
-  <!-- 배너 -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light rounded fixed-top">
-    <a class="navbar-brand" href ='<c:url value="/" />'>LOGO</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light rounded fixed-top">
+    <a class="navbar-brand" href='<c:url value="/" />'><img src="${pageContext.request.contextPath }/resources/images/logo.png" style="width: 80px; height: 80px;"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExample09">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link me-4" href="fundingExpected?category=all">오픈예정</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link me-4" href="fundingDiscover?category=all&status=all&index=newest">펀딩+</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link me-4" href="helpInquiryForm">고객센터</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link me-4" href="memberideacommunity">커뮤니티</a>
+            </li>
+            <c:choose>
+                <c:when test="${sessionScope.sId eq 'admin'}">
+                    <!-- 비행기 아이콘 - 메시지 전송용 -->
+                    <li class="nav-item">
+                        <a class="nav-link py-0 me-4" href="#" data-bs-toggle="modal" data-bs-target="#notifyModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-send-check-fill" viewBox="0 0 16 16">
+                                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 1.59 2.498C8 14 8 13 8 12.5a4.5 4.5 0 0 1 5.026-4.47L15.964.686Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+                                <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link py-0 me-6" href="confirmNotification">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                            </svg>
+                        </a>
+                    </li>
+                </c:when>
+                <c:otherwise>
+                    <!-- 종 아이콘 - 받은 메시지함 -->
+                    <li class="nav-item">
+                        <a class="nav-link py-0 me-6" href="confirmNotification">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                            </svg>
+                        </a>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+            <li class="nav-item">
+                <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
+            </li>
+		    <c:choose>
+		        <c:when test="${sessionScope.sId eq 'admin'}">
+		            <li class="nav-item">
+		                    <a class="nav-link me-4" href="admin"><b>${sessionScope.sId}님</b></a>
+		            </li>
+		            <li class="nav-item">        
+		                    <a class="nav-link me-4" href="javascript:logout()">로그아웃</a>
+		            </li>
+		        </c:when>
+		        <c:when test="${sessionScope.sId != 'admin' && not empty sessionScope.sId}">
+		            <!-- 종 아이콘 - 받은 메시지함 -->
+		            <li class="nav-item">
+		                <a class="nav-link" href="confirmNotification">
+		                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+		                        <!-- Icon path -->
+		                    </svg>
+		                </a>
+		            </li>
+		            <!-- Other navigation items -->
+		            <li class="nav-item">
+		                    <a class="nav-link me-4" href="admin"><b>${sessionScope.sId}님</b></a>
+		            </li>
+		            <li class="nav-item">        
+		                    <a class="nav-link me-4" href="javascript:logout()">로그아웃</a>
+		            </li>
+		        </c:when>
+		        <c:otherwise>
+		            <li class="nav-item">
+		                <a class="nav-link me-4" href="LoginForm">로그인</a>
+		            </li>
+		        </c:otherwise>
+		    </c:choose>
+		    <li class="nav-item">
+		        <a class="nav-link me-4" href="projectManagement">프로젝트 생성</a>
+		    </li>
+		</ul>
 
-      <!-- 데스크 -->
-      <ul class="navbar-nav left">
-        <li class="nav-item">
-          <a class="nav-link me-4" href="fundingExpected?category=all">오픈예정</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link me-4" href="fundingDiscover?category=all&status=all&index=newest">펀딩+</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link me-4" href="helpInquiryForm">고객센터</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link me-4" href ="memberideacommunity" >커뮤니티</a>
-        </li>
-      </ul>
 
-      <!-- 모바일 환경-->
-      <ul class="navbar-nav mobile">
-      	<div class="d-flex flex-row align-items-center" style="margin-left: 250px;">
-        
-        	<c:choose>
-        	
-        		<%-- 세션아이디가 admin 일 때 --%>
-        		<c:when test="${sessionScope.sId eq 'admin'}">
-        		
-		            <a class="nav-link  me-6" href="admin"><b>${sessionScope.sId}님</b></a>
-<!-- 		            <a class="nav-link  me-6" href="javascript:exit()">나가기</a> -->
-		            <a class="nav-link  me-6" href="javascript:logout()">로그아웃</a>
-		            
-            	 	<%-- 비행기 아이콘 - 메시지 전송용 --%>
-		            <a class="nav-link py-0 me-6" href="#" data-bs-toggle="modal" data-bs-target="#notifyModal">
-		               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-send-check-fill" viewBox="0 0 16 16">
-						  <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 1.59 2.498C8 14 8 13 8 12.5a4.5 4.5 0 0 1 5.026-4.47L15.964.686Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
-						  <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z"/>
-						</svg>
-		            </a>
-		            
-		            <%-- 종 아이콘 - 받은 메시지함 --%>
-		            <a class="nav-link py-0 me-6" href="confirmNotification">
-			            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-					  		<path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
-						</svg>
-		           	</a>
-		            <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
-        		</c:when>
-        		
-        		<%-- 세션아이디가 admin이 아니고, 세션아이디가 존재 할 때 --%>
-        		<c:when test="${sessionScope.sId != 'admin' && not empty sessionScope.sId}">
-		            <a class="nav-link me-4" href="memberMypage"><b>${sessionScope.sId}님</b></a>
-<!-- 		            <a class="nav-link me-4" href="javascript:exit()">나가기</a> -->
-        		    <a class="nav-link me-4" href="javascript:logout()">로그아웃</a>
-        		    
-        		    <%-- 종 아이콘 - 받은 메시지함 --%>
-		            <a class="nav-link py-0" href="confirmNotification">
-			            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-					  		<path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
-						</svg>
-		           	</a>
-		            <span id="newNotificationCount" class="badge bg-danger rounded-pill">1</span>
-        		</c:when>
-        		
-        		<c:otherwise>
-        			<a class="nav-link me-4" href="LoginForm">로그인</a>
-        		</c:otherwise>
-        		
-        	</c:choose>
-            
-     		    <li class="nav-item">
-		          <a class="nav-link me-4" href="projectManagement">프로젝트 생성</a>
-		        </li>
-        </div>
-      </ul>
-
-	<div style="display: flex; justify-content: center;">
-	  <form class="form-inline my-2 my-md-0" action="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=all&index=newest" method="get">
-	    <input class="form-control" type="text" placeholder="프로젝트를 검색하세요!" aria-label="Search" name="searchKeyword" id="searchKeyword" value="${searchKeyword}" required="required">
-	  </form>
+        <form class="form-inline my-2 my-md-0" action="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=all&index=newest" method="get">
+            <input class="form-control" type="text" placeholder="프로젝트를 검색하세요!" aria-label="Search" name="searchKeyword" id="searchKeyword" value="${searchKeyword}" required="required">
+        </form>
     </div>
+</nav>
 
-      </div>
-  
-  </nav>
-<!-- </div> -->
 
 <script type="text/javascript">
 //위로가기 버튼
