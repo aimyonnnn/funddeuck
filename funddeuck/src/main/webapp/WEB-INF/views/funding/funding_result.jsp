@@ -65,8 +65,8 @@
 		</div>
 		<br>
 		<div class="col text-center">
-			<button class="btn btn-primary me-8 bg-success" onclick="location.href='fundingDiscover?category=all&status=all&index=newest'"><span class="text-center text-white fw-bold">프로젝트 목록 페이지로 이동</span></button>
-			<button class="btn btn-primary me-8 bg-success" onclick="#"><span class="text-center text-white fw-bold">메인 페이지로 이동</span></button>
+			<button class="btn btn-primary me-8 bg-success" onclick="location.href='fundingDetail?project_idx=${project.project_idx }'"><span class="text-center text-white fw-bold">프로젝트 상세 페이지로 이동</span></button>
+			<button class="btn btn-primary me-8 bg-success" onclick="location.href='fundingDiscover?category=all&status=all&index=newest'"><span class="text-center text-white fw-bold">프로젝트 탐색로 이동</span></button>
 		</div>
 		<br>
 		<hr class="border border-success border border-2">

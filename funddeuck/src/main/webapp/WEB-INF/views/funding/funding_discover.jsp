@@ -25,7 +25,8 @@
 <script src="${pageContext.request.contextPath }/resources/js/funding_discover.js"></script>
 </head>
 <body>
-<div style="height:80px;"></div>
+<!-- 헤더와 본문 위치 조정 -->
+<div>&nbsp;</div>
 <!-- 현재 날짜 정보 저장 -->
 <c:set var="today" value="<%=new java.util.Date()%>" />
 <!-- 요청 파라미터 값 저장 -->

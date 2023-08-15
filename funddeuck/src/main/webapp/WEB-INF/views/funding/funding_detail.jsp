@@ -23,7 +23,9 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/mypage.css"/>
 </head>
 <body>
-<div style="height:80px;"></div>
+<!-- 헤더와 본문 위치 조정 -->
+<div>&nbsp;</div>
+<div>&nbsp;</div>
 <!-- 현재 날짜 정보 저장 -->
 <c:set var="today" value="<%=new java.util.Date()%>" />
 <fmt:parseNumber value="${today.time / (1000*60*60*24)}" integerOnly="true" var="nowDate"></fmt:parseNumber>
