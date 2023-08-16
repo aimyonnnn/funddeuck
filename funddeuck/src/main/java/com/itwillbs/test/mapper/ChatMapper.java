@@ -29,5 +29,7 @@ public interface ChatMapper {
 
 	List<Map<String, Object>> selectMemberChatRoomList(@Param("listLimit") int listLimit,@Param("startRow") int startRow, @Param("sId") String sId);
 
+	int getCountMemberChattingRoom(String sId);
+
 
 }

@@ -45,8 +45,6 @@
         	
             $("form").submit(function(event) {
             	
-            	alert("작동됨");
-            	
                 var pw = $('#passwd').val();
                 var name = $("#name").val();
                 var email = $("#email").val();
@@ -121,8 +119,6 @@
 	                }
                 }
                 
-
-                alert($("#member_id").val());
                 
                 $("#member_id").attr("disabled",false);
                 $("#email").attr("disabled",false);

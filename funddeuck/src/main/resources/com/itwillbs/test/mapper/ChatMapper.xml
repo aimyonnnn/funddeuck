@@ -78,4 +78,10 @@
     LIMIT #{startRow} ,#{listLimit}
 </select>
 
+<select id="getCountMemberChattingRoom">
+		SELECT COUNT(room_id)
+			FROM chatroom
+			WHERE member_id = #{sId}
+</select>
+
 </mapper>

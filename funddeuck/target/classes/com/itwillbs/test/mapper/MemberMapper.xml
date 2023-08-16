@@ -205,6 +205,7 @@
 				, z.zim_is_alam
 				, z.project_idx
 				, mk.maker_idx
+				, p.project_thumnails1
         FROM project p JOIN maker mk
         ON p.maker_idx = mk.maker_idx
         JOIN zim z 

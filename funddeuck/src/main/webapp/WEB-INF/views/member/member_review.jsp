@@ -35,7 +35,7 @@
   </head>
   <body>
     <div class="row justify-content-center" style="margin-top: 100px; margin-bottom: 300px;">
-      <div class="col-12 col-md-8">
+      <div class="col-12 col-md-8 mt-5">
         <h3><strong>내가 작성한 리뷰</strong></h3>
         <div class="row" id="reviewListArea">
         </div>
@@ -125,6 +125,13 @@
 				success: function(data) {
 					maxPage = data.maxPage
 					console.log(data);
+					
+					if(maxPage == 0){
+						$("#reviewListArea").append(
+							    '<div class="col-12 mt-5 text-center" style="padding-bottom: 300px;"> <h4> 아직 리뷰가 없습니다! </h4></div>'
+						);
+						return false;
+					}
 					
 					for(let review of data.ReveiwList){
 						$("#reviewListArea").append(
