@@ -37,8 +37,7 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="./resources/images/banner1.png" class="d-block w-100 h-auto" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                </div>
+                <div class="carousel-caption d-none d-md-block"></div>
             </div>
             <div class="carousel-item">
                 <img src="./resources/images/banner2.png" class="d-block w-100 h-auto" alt="...">
@@ -51,7 +50,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="./resources/images/banner4.png" class="d-block w-100" alt="..." style="max-width: 1903px; max-height: 475.75px;"">
+                <img src="./resources/images/banner4.png" class="d-block w-100 h-auto" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                 </div>
             </div>
