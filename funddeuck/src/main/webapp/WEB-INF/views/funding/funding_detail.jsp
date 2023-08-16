@@ -438,7 +438,7 @@
 					<div>&nbsp;</div>
 					<!-- 게시물 작성 버튼 -->
 						<div class="col-lg-12 col-sm-12">
-							<button type="submit" class="btn btn-outline-info float-end" onclick="wrtChk();">의견 남기기</button>
+							<button type="submit" class="btn btn-outline-info float-end">의견 남기기</button>
 						</div>
 					</form>
 					<div>&nbsp;</div>
@@ -473,7 +473,7 @@
 				</c:if>
 			</div>
 		</div>
-			</div><
+			</div>
 			<!-- 메이커 프로필, 리워드 선택 바-->
 			<!-- 화면 클때 -->
 			<div class="col-4 d-none d-lg-block">
@@ -704,11 +704,6 @@ $("#deleteZimBtn").click(function() {
 $("#noLoginBtnZim").click(function() {
 	alert("로그인이 필요합니다");
 });
-
-// 의견 작성 확인
-function wrtChk(){
-    return confirm("의견을 작성하시겠습니까?");
-}
 
 // 주문 확인
 function ordChk(){
