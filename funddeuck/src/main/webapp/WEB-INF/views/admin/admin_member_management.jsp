@@ -105,15 +105,11 @@ th, td {
 			                type: 'linear',
 			                display: true,
 			                position: 'left',
-			                suggestedMin: 0,
-			                suggestedMax: 80,
 			            },
 			            y1: {
 			                type: 'linear',
 			                display: true,
 			                position: 'right',
-			                suggestedMin: 0,
-			                suggestedMax: 80,
 			                // grid line settings
 			                grid: {
 			                    // only want the grid lines for one axis to show up
