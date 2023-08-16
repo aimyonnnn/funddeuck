@@ -473,4 +473,14 @@
 									where m.member_id = #{sId})
 			    	AND z.project_idx = #{project_idx}
 	</select>
+	
+	<!-- 프로젝트 상세페이지에서 남긴 의견 삭제하기 -->
+	<delete id="pcCommentDeleteReq">
+		DELETE 
+			FROM project_community
+				WHERE project_idx = #{project_idx}
+					AND	project_community_idx = #{project_community_idx}
+						AND member_id = #{member_id}
+			
+	</delete>
 </mapper>

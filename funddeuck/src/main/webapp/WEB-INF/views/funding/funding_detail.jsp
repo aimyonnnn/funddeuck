@@ -11,6 +11,8 @@
 <title>펀딩</title>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<!-- line-awesome icons CDN -->
+<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <!-- header include -->
 <jsp:include page="../Header.jsp"></jsp:include>
 <!-- 결제 연동 스크립트 -->
@@ -445,7 +447,12 @@
 				<c:if test="${param.category eq 'community' && not empty ProjectCommunity}">
 					<c:forEach items="${ProjectCommunity }" var="ProjectCommunity" varStatus="status">
 						<div class="card border border-0 mb-3">
-							<div class="card-header text-start">${ProjectCommunity.member_id }</div>
+							<div class="card-header text-start">
+							<c:if test="${ProjectCommunity.member_id eq sessionScope.sId }">
+							<a class="text-decoration-none text-dark" href="pcCommentDelete?project_idx=${project.project_idx }&member_id=${sessionScope.sId }&project_community_idx=${ProjectCommunity.project_community_idx}"><i class="la la-trash"></i>
+							</a>
+							</c:if>
+							${ProjectCommunity.member_id }</div>
 							<div class="card-body">
 							<h5 class="card-title text-start">${ProjectCommunity.project_community_subject }</h5>
 							<p class="card-text text-start">${ProjectCommunity.project_community_content }</p>
