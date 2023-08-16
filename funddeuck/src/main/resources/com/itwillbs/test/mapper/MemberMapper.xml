@@ -487,7 +487,8 @@
 			p.project_idx,
 			p.project_subject,
 			mk.maker_name,
-			mb.maker_idx
+			mb.maker_idx,
+			mk.maker_file4
 		FROM maker_board mb JOIN zim z
 		ON mb.project_idx = z.project_idx
 		JOIN project p

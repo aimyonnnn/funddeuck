@@ -391,7 +391,7 @@ footer {
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5">리뷰 수정</h1>
+					<h1 class="modal-title fs-5">리뷰 작성</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
@@ -407,7 +407,6 @@ footer {
 										class="starR">⭐</span>
 								</div> <!-- 나중에 폼 전송시에는 type을 hidden으로 바꾸면 됨, 지금은 확인해야하니 text로 함--> <input
 								type="hidden" value="1" id="starRating" name="starRating">
-
 							</td>
 						</tr>
 						<tr>
@@ -415,7 +414,6 @@ footer {
 							<td><textarea cols="40" rows="5" name="content"
 									id="reviewContent" oninput="countTextareaCharacters()"></textarea>
 								<p id="characterCount">0/100</p></td>
-
 						</tr>
 						<tr>
 							<td colspan="2"><input type="file" id="reviewFile"
@@ -727,13 +725,13 @@ footer {
  	</script>
 	<script>
     <!-- 별점 jQuery -->
-         $('.starRev span').click(function(){
+    $(document).on("click", ".starRev span", function () {
          $(this).parent().children('span').removeClass('on');
          $(this).addClass('on').prevAll('span').addClass('on');
          return false;
          });
          let starCount = 0; // 별점을 저장할 변수 선언
-         $(".starRev span").click(function(e) { // 콜백함수에 파라미터 추가
+         $(document).on("click", ".starRev span", function (e) { // 콜백함수에 파라미터 추가
              e.preventDefault(); // a태그 기본 동작 방지
              // 실제 클릭된 이벤트 요소(e.currentTarget)의 인덱스를 가져옴
              // index는 0부터 시작이니 +1을 해주면 됨

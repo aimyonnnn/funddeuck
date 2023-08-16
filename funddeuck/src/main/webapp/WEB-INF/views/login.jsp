@@ -61,9 +61,7 @@
             </form>
             <a class="w-100 mt-4 p-2 mb-4" id="kakaoLogin" href="javascript:loginWithKakao()"><img src="${pageContext.request.contextPath }/resources/images/kakao.png" style="width: 50px; margin-top: 10px;"></a>
             <a class="w-100 mt-4 p-2 mb-4" id="naverIdLogin_loginButton" href="javascript:naverLogin()"><img style="width: 50px; margin-top: 10px; " src="${pageContext.request.contextPath }/resources/images/naver.png"></a> 
-		    <a class="w-100 mt-4 p-2 mb-4" id="googleSignInButton" href="javascript:void(0)">
-		      <img style="width: 50px; margin-top: 10px;" src="${pageContext.request.contextPath}/resources/images/google.png"/>
-		    </a>
+
 
 			<hr>아직 계정이 없으신가요? <a class=" mt-2" href="JoinForm" style="color: blue">회원가입</a>
         </div>

@@ -94,7 +94,7 @@
 								+		        '</div>'
 								+		        '<div class="row">'
 								+		            '<div class="row my-3">'
-								+		                '<div class="col-1 me-3 h5 text-primary">'
+								+		                '<div class="col-1 h5 text-primary">'
 								+		                    '<img class="center" src="'+ profileImageSrc +'" style="width: 30px; height: 30px; border-radius: 50%;">'
 								+		                '</div>'
 								+		                '<div class="col" style="font-size: 0.7em;">'

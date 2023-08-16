@@ -108,29 +108,20 @@
 		
 	}
     </script>
-    <style type="text/css">
-    	footer {
-    		position: fixed;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			padding: 10px;
-    	}
-    </style>
   </head>
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     <!--  채팅방 페이지 시작 -->
-<div class="row">
+<div class="row mt-3 flex-grow-1">
     <div class="col"></div>
     <div class="col-12 col-md-5">
-        <div class="row mb-5" style="margin-top: 100px" id="makerChatRoomList">
+        <div class="row mb-5" style="margin-top: 150px" id="makerChatRoomList">
             <h2 style="border-bottom: 1px solid #ff9300;" class="pb-3"><b>서포터 문의 채팅방</b></h2>
         </div>
     </div>
     <div class="col">
     </div>
 </div>
-	<footer>
+	<footer class="mt-auto">
 		<%@ include file="../Footer.jsp" %>
 	</footer>
 

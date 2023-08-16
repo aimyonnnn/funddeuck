@@ -172,35 +172,9 @@
                     </div>
                     <div class="row mt-5 mx-3 border-1">
                         <div class="col-12">
-                            <h5>고객센터</h5>
+                            <h5>기타</h5>
                         </div>
-                        <div class="col-sm-12 col-md-6">
-                            <a href="" class="text-black w-100">
-                                <div class="row me-md-2">
-                                    <div class="col text-start my-3">
-                                        <img src="${pageContext.request.contextPath }/resources/images/icon/question.png" style="width: 30px; height: 30px;"> 1대1 상담
-                                    </div>
-                                    <div class="col text-end my-3">
-                                        <i class="bi bi-arrow-return-right"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <a href="" class="text-black w-100">
-                                <div class="row ms-md-2 me-md-2">
-                                    <div class="col text-start my-3">
-                                        <img src="${pageContext.request.contextPath }/resources/images/icon/help.png" style="width: 30px; height: 30px;"> 도움말 센터
-                                    </div>
-                                    <div class="col text-end my-3">
-                                        <i class="bi bi-arrow-return-right"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row mt-5 mx-3 border-1">
-                        <div class="col-sm-12 col-md-6">
+                      <div class="col-sm-12 col-md-6">
                             <a href="helpNotice" class="text-black w-100">
                                 <div class="row  me-md-2">
                                     <div class="col text-start my-3">

@@ -71,11 +71,11 @@
 					$("#followBoardListArea").append(
 						    '<div class="row my-5 align-items-center">' +
 						        '<div class="col-1 me-5 h5 text-primary">' +
-						            '<img class="center" style="width: 50px; height: 50px; border-radius: 50%;">' +
+						            '<img class="center" src="${pageContext.request.contextPath}/resources/upload/'+ list.project_thumnails1 +'" style="width: 50px; height: 50px; border-radius: 50%;">' +
 						        '</div>' +
 						        '<div class="col">' +
 						            '<div class="row">' +
-						                '<h5><b>' + list.project_subject + '</b></h5>' +
+						                '<h5><b><a href="fundingDetail?project_idx='+ list.project_idx +'" style="color:black; text-decoration:none;">' + list.project_subject + '<a></b></h5>' +
 						            '</div>' +
 						            '<div class="row">' +
 						                list.project_introduce +
