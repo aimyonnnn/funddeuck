@@ -396,7 +396,7 @@
                 <a class="nav-link me-4" href="fundingDiscover?category=all&status=all&index=newest">펀딩+</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link me-4" href="helpNotice">고객센터</a>
+                <a class="nav-link me-4" href="helpNotice">공지사항</a>
             </li>
             <li class="nav-item">
 		    <c:choose>
