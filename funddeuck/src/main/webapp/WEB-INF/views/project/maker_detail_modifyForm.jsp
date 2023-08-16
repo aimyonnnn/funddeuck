@@ -27,6 +27,7 @@
 </style>
 </head>
 <body>
+<div style="height:150px;"></div>
 <jsp:include page="../Header.jsp"></jsp:include>
 
 <div class="container" style="max-width: 600px;">
