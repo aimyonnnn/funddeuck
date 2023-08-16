@@ -107,7 +107,8 @@ public class EchoHandler extends TextWebSocketHandler {
 	        	
 	        	String content = "<a target='_blank' href='fundingDetail?project_idx=" + projectVO.getProject_idx() + "' style=\"text-decoration: none; color: black; display: block; cursor: pointer;\">"
 	        		    + projectVO.getProject_subject() + "</a><br>"
-	        		    + "<img src='/test/resources/upload/" + projectVO.getProject_thumnails1() + "'width='200'>";
+//	        		    + "<img src='/test/resources/upload/" + projectVO.getProject_thumnails1() + "'width='200'>";
+	        			+ "<img src='/funddeuck/resources/upload/" + projectVO.getProject_thumnails1() + "'width='200'>";
 	        	
 				List<WebSocketSession> sessionList = chatRoomId.getOrDefault(roomId, new ArrayList<WebSocketSession>());
 

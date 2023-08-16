@@ -452,14 +452,14 @@ public class MemberController {
     //팔로잉 리스트 가져오는 ajax(페이징 처리)
     @PostMapping("MemberFollowList")
     @ResponseBody
-    public String MemberFollowList(@RequestParam(defaultValue = "1") int pageNum, HttpSession session) {
+    public String MemberFollowList(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "") String maker_name, HttpSession session) {
     	
 		int listLimit = 5;// 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit;
     	
-    	List<Map<String, Object>> memberFollowingList = service.getfallowList((String)session.getAttribute("sId"), startRow, listLimit);
+    	List<Map<String, Object>> memberFollowingList = service.getfallowList((String)session.getAttribute("sId"), startRow, listLimit, maker_name);
     	
-    	int listCount = service.getMemberFollowingCount((String)session.getAttribute("sId"));
+    	int listCount = service.getMemberFollowingCount((String)session.getAttribute("sId"),maker_name);
     	
     	int pageListLimit = 5;
     	
@@ -534,16 +534,17 @@ public class MemberController {
     	return "member/member_zim";
     }
     
+    //찜 리스트 출력
     @PostMapping("memberZimList")
     @ResponseBody
-    public String memberZimList(HttpSession session, @RequestParam(defaultValue = "1") int pageNum) {
+    public String memberZimList(HttpSession session, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "") String zimType, @RequestParam(defaultValue = "")String zimContent) {
     	
 		int listLimit = 5;// 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit;
     	
-    	List<Map<String, Object>> zimList = service.getZimList((String)session.getAttribute("sId"), startRow, listLimit);
+    	List<Map<String, Object>> zimList = service.getZimList((String)session.getAttribute("sId"), startRow, listLimit, zimType, zimContent);
     	
-    	int listCount = service.getMemberZim((String)session.getAttribute("sId"));
+    	int listCount = service.getMemberZim((String)session.getAttribute("sId"), zimType, zimContent);
     	
     	int pageListLimit = 5;
     	

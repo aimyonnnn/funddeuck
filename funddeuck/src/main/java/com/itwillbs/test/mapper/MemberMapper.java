@@ -58,7 +58,7 @@ public interface MemberMapper {
 	MembersVO selectCorrectMember(String target);
 	
 	//팔로우 리스트 조회
-	List<Map<String, Object>> selectFallowList(@Param("sId")String sId,@Param("startRow") int startRow,@Param("listLimit") int listLimit);
+	List<Map<String, Object>> selectFallowList(@Param("sId")String sId,@Param("startRow") int startRow,@Param("listLimit") int listLimit, @Param("maker_name") String maker_name);
 
 	//팔로우 알람 설정
 	int updateFallowingAlam(@Param("maker_name") String maker_name, @Param("is_alam") int is_alam,@Param("sId") String sId);
@@ -70,7 +70,7 @@ public interface MemberMapper {
 	int insertFallow(@Param("maker_name") String maker_name,@Param("sId") String sId);
 	
 	//찜 목록 가져오기
-	List<Map<String, Object>> selectZimList(@Param("sId")String sId,@Param("startRow") int startRow,@Param("listLimit") int listLimit);
+	List<Map<String, Object>> selectZimList(@Param("sId")String sId,@Param("startRow") int startRow,@Param("listLimit") int listLimit, @Param("zimType") String zimType, @Param("zimContent") String zimContent);
 	
 	// 찜 알람 설정
 	int updateZimAlam(@Param("project_idx") int project_idx, @Param("isAlam") int isAlam, @Param("sId") String sId);
@@ -134,10 +134,10 @@ public interface MemberMapper {
 	int selectMembersCountByToday();
 	
 	//팔로잉 리스트이 카운트
-	int selectFollowingCount(String sId);
+	int selectFollowingCount(@Param("sId") String sId, @Param("maker_name") String maker_name);
 	
 	//찜 리스트 카운트
-	int selectZimCount(String sId);
+	int selectZimCount(@Param("sId") String sId, @Param("zimType") String zimType, @Param("zimContent") String zimContent);
 
 	// 누적 회원 수 조회
 	List<MembersVO> selectMemberCountsByDate(@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);

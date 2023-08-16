@@ -156,6 +156,9 @@
     WHERE f.member_idx = (SELECT member_idx
                         FROM members
                         WHERE member_id = #{sId})
+    <if test="!maker_name.equals('')">
+    	AND k.maker_name LIKE '%${maker_name}%'
+    </if>
     GROUP BY k.maker_idx
 	LIMIT
 		#{startRow}
@@ -215,6 +218,14 @@
         WHERE z.member_idx = (SELECT member_idx
                             FROM members
                             WHERE member_id = #{sId})
+		 <choose>
+        	<when test="zimType.equals('subject')">
+        		AND project_subject LIKE '%${zimContent}%'
+        	</when>
+        	<when test="zimContent.equals('content')">
+        		AND project_introduce LIKE '%${zimContent}%'
+        	</when>
+        </choose>
        	LIMIT
 		#{startRow}
 		, #{listLimit};
@@ -511,19 +522,34 @@
 	
 	<!-- 회원 한명의 팔로잉 카운트 -->
 	<select id="selectFollowingCount">
-		SELECT count(member_idx)
-			FROM fallowing
-			WHERE member_idx = (SELECT member_idx
+		SELECT count(f.member_idx)
+			FROM fallowing f
+			JOIN maker mk
+			ON f.maker_idx = mk.maker_idx
+			WHERE f.member_idx = (SELECT member_idx
 								FROM members
 								WHERE member_id = #{sId})
+			<if test="!maker_name.equals('')">
+			 	AND mk.maker_name LIKE '%${maker_name}%'
+			</if>
 	</select>
 	<!-- 회원 한명의 찜 카운트 -->
 	<select id="selectZimCount">
 		SELECT count(member_idx)
-			FROM zim
-			WHERE member_idx = (SELECT member_idx
+			FROM zim z
+			JOIN project p
+			ON z.project_idx = p.project_idx
+			WHERE z.member_idx = (SELECT member_idx
 								FROM members
 								WHERE member_id = #{sId})
+		 <choose>
+        	<when test="zimType.equals('subject')">
+        		AND project_subject LIKE '%${zimContent}%'
+        	</when>
+        	<when test="zimContent.equals('content')">
+        		AND project_introduce LIKE '%${zimContent}%'
+        	</when>
+        </choose>
 	</select>
 	
 	<!-- 누적 회원 수 조회 -->

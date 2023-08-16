@@ -61,7 +61,7 @@
 							})
 
 							swalWithBootstrapButtons.fire({
-							  title: '이메일에 임시 비밀번호를 전송했습니다!',
+							  title: '이메일에 비밀번호 변경 주소를 보냈습니다.',
 							  text: "비밀번호를 변경하러 바로 이동하시겠습니까?",
 							  icon: 'success',
 							  showCancelButton: true,

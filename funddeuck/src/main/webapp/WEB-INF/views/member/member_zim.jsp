@@ -130,12 +130,14 @@
     			});
     		});
     	
-    	function memberZimList() {
+    	function memberZimList(zimType, zimContent) {
 			
     		$.ajax({
     			type:"post",
     			url:"memberZimList",
-    			data:{pageNum:pageNum},
+    			data:{pageNum:pageNum,
+    				zimType:zimType,
+    				zimContent:zimContent},
     			dataType:"json",
     			success: function(data) {
 					
@@ -190,7 +192,7 @@
 					                            zim.project_introduce +
 					                        '</div>' +
 					                        '<div class="col-12 my-1">' +
-					                            '<img src="${pageContext.request.contextPath}/resources/upload/'+ zim.project_thumnails1 +'" width="20">' +
+					                            '<img src="${pageContext.request.contextPath}/resources/upload/'+ zim.project_thumnails1 +'" width="200">' +
 					                        '</div>' +
 					                    '</div>' +
 					                '</div>' +
@@ -218,6 +220,20 @@
     		
 		}
         
+    	function memberSearchZimList() {
+			
+    		let zimType = $("#zimType").val();
+    		let zimContent = $("#zimContent").val();
+    		
+    		console.log(zimType);
+    		console.log(zimContent);
+    		
+    		$('#zimListArea').empty();
+    		
+    		memberZimList(zimType, zimContent);
+    		
+		}
+    	
         </script>
 </head>
 <body>
@@ -241,6 +257,24 @@
     <div class="col"></div>
     </div>
     <div class="col"></div>
+	<div class="container">
+	    <div class="row mt-3 d-flex justify-content-end">
+	    <div class="col-1">
+	    	<select class="form-control" id="zimType">
+	    		<option value="subject">제목</option>
+	    		<option value="content">내용</option>
+	    	</select>
+	    </div>
+    	<div class="col-3">
+			<input class="form-control" type="text" name="zimContent"
+				id="zimContent" placeholder="검색">
+		</div>
+		<div class="col-2">
+			<input type="button" value="검색" class="btn btn-primary"
+				id="isIdbtn" onclick="memberSearchZimList()">
+		</div>
+    </div>
+	</div>
 	<div id="zimListArea">
 		
 	</div>

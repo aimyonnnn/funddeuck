@@ -130,12 +130,14 @@
 			});
 		});
 	
-		function memberFollowingList() {
+		function memberFollowingList(followName) {
+			
 			
 			$.ajax({
 				type:"Post",
 				url:"MemberFollowList",
-				data:{pageNum:pageNum},
+				data:{pageNum:pageNum
+					,maker_name:followName},
 				dataType:"json",
 				success: function(data) {
 					console.log(JSON.stringify(data));
@@ -153,7 +155,7 @@
 						
 					    let profileImageSrc;
 					    
-					        profileImageSrc = '${pageContext.request.contextPath}/resources/upload/'+chatRoom.maker_file4;
+					        profileImageSrc = '${pageContext.request.contextPath}/resources/upload/'+memberFollowing.maker_file4;
 						    if (profileImageSrc.trim() =='${pageContext.request.contextPath}/resources/upload/' ||
 						    		profileImageSrc.trim() == '${pageContext.request.contextPath}/resources/upload/undefined') {
 						        profileImageSrc = '${pageContext.request.contextPath}/resources/images/managementImage.jpg';
@@ -199,6 +201,17 @@
 			});
 			
 		}
+		
+		function memberSearchFollowingList() {
+			
+			let followName = $("#followName").val();
+			
+			alert(followName);
+			
+			$('#followingArea').empty();
+			
+			memberFollowingList(followName);
+		}
     	
     </script>
 </head>
@@ -206,7 +219,7 @@
     <!-- 팔로잉 페이지 시작 -->
 <div class="row">
     <div class="col"></div>
-    <div class="col-12 col-md-5" id="followingArea">
+    <div class="col-12 col-md-5">
         <div class="row" style="margin-top: 100px">
             <h2><b>팔로잉 메이커</b></h2>
         </div>
@@ -219,8 +232,19 @@
                 <a href="FollowBoardForm" class="text-black"> 팔로잉 프로젝트 </a>
             </div>
         </div>
+        <div class="row mt-3 d-flex justify-content-end">
+	    	<div class="col-3">
+				<input class="form-control" type="text" name="followName"
+					id="followName" placeholder="메이커 검색">
+			</div>
+			<div class="col-2">
+				<input type="button" value="검색" class="btn btn-primary"
+					id="isIdbtn" onclick="memberSearchFollowingList()">
+			</div>
+        </div>
         <!-- 메뉴 선택 -->
-
+		<div id="followingArea">
+		</div>
     </div>
     <div class="col"></div>
 </div>
