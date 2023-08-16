@@ -510,7 +510,7 @@
 
 	<div class="row my-5">
 		<div class="col"></div>
-		<div class="col-6 col-md-3 text-center">
+		<div class="col-6 col-md-3 text-center mt-5">
 			<h2 class="mt-5" style="font-weight: bold;">회원가입</h2>
 			<hr>
 			<div class="text-start">
