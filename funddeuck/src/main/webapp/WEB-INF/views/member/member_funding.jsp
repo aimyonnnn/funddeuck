@@ -402,8 +402,8 @@ footer {
 							<td>
 								<div class="starRev">
 									<!-- 편의 상 가장 첫번째의 별은 기본으로 class="on"이 되게 설정해주었습니다. -->
-									<span class="starR on">⭐</span> <span class="starR">⭐</span> <span
-										class="starR">⭐</span> <span class="starR">⭐</span> <span
+									<span class="starR on">⭐</span> <span class="starR">⭐</span> 
+									<span class="starR">⭐</span> <span class="starR">⭐</span> <span
 										class="starR">⭐</span>
 								</div> <!-- 나중에 폼 전송시에는 type을 hidden으로 바꾸면 됨, 지금은 확인해야하니 text로 함--> <input
 								type="hidden" value="1" id="starRating" name="starRating">

@@ -31,6 +31,20 @@
       -webkit-box-orient: vertical;
       overflow: hidden;  
     }
+    
+    .starR {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	color: transparent;
+	text-shadow: 0 0 0 #f0f0f0;
+	font-size: 1.8em;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+.starR.on {
+	text-shadow: 0 0 0 #ffbc00;
+}
   </style>
   </head>
   <body>
@@ -133,14 +147,24 @@
 						return false;
 					}
 					
+					
 					for(let review of data.ReveiwList){
+					let star = "";
+						for(let i=1; i<=5 ;i++){
+							if(i <= review.starRating){
+								star = star + '<span class="starR on">⭐</span>';
+							} else {
+								star = star + '<span class="starR">⭐</span>'
+							}
+						}
 						$("#reviewListArea").append(
 						'<div class="col-12 col-xxl-3 col-sm-6 col-lg-4">'
 				        +    '<div class="card" style="width: 18rem;">'
 				        +      '<img src="${pageContext.request.contextPath}/resources/upload/'+review.saveFileName +'" class="card-img-top">'
 				        +      '<div class="card-body">'
-				        +        '<h5 class="card-title box"><a href="fundingDetail?project_idx='+review.project_idx+'">'+ review.project_subject +'</a></h5>'
+				        +        '<h5 class="card-title box"><a href="fundingDetail?project_idx='+review.project_idx+'" style="color:black; text-decoration:none;">'+ review.project_subject +'</a></h5>'
 				        +        '<p class="card-text h6 box1">'+review.reward_name+'</p>'
+				        +		 '<div> '+ star +' </div>'
 				        +        '<hr>'
 				        +        '<p class="card-text">'+ review.review_content +'</p>'
 				        +        '<button onclick="deleteReview('+review.review_idx+')" class="btn btn-primary">삭제하기</button>'

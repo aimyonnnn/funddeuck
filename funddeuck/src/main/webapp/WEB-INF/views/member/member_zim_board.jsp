@@ -79,7 +79,7 @@
 						    		profileImageSrc.trim() == '${pageContext.request.contextPath}/resources/upload/undefined') {
 						        profileImageSrc = '${pageContext.request.contextPath}/resources/images/managementImage.jpg';
 						    }
-        					
+
         					
         					$("#rowArea").after(
         						'<div class="row">'
@@ -89,7 +89,7 @@
 								+	    	'<div class="col">'
 								+		        '<div class="row">'
 								+		        	'<div class="col" style="font-size: 0.7em;">'
-								+						zimPost.maker_board_regdate
+								+						formatTimeDifference(zimPost.maker_board_regdate)
 								+					'</div>'
 								+		        '</div>'
 								+		        '<div class="row">'
@@ -138,7 +138,27 @@
 					}
         			
         		});
-		}		
+		}	
+		
+		function formatTimeDifference(inputDate) {
+		    var currentDate = new Date();
+		    var inputDateTime = new Date(inputDate);
+		    var timeDifference = currentDate - inputDateTime;
+
+		    if (timeDifference < 60000) {
+		        return Math.floor(timeDifference / 1000) + "초 전";
+		    } else if (timeDifference < 3600000) {
+		        return Math.floor(timeDifference / 60000) + "분 전";
+		    } else if (timeDifference < 86400000) {
+		        return Math.floor(timeDifference / 3600000) + "시간 전";
+		    } else if (timeDifference < 2592000000) {
+		        return Math.floor(timeDifference / 86400000) + "일 전";
+		    } else if (timeDifference < 31536000000) {
+		        return Math.floor(timeDifference / 2592000000) + "달 전";
+		    } else {
+		        return Math.floor(timeDifference / 31536000000) + "년 전";
+		    }
+		}
         </script>
 </head>
 <body>
