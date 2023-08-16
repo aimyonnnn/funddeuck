@@ -32,6 +32,7 @@
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -46,6 +47,11 @@
             </div>
             <div class="carousel-item">
                 <img src="./resources/images/banner3.png" class="d-block w-100 h-auto" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="./resources/images/banner4.png" class="d-block w-100" alt="..." style="max-width: 1903px; max-height: 475.75px;"">
                 <div class="carousel-caption d-none d-md-block">
                 </div>
             </div>
