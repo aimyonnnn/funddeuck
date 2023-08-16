@@ -148,7 +148,7 @@
 	            , #{project_idx}
 	            , #{withdrawResult.bank_name}
 	            , #{withdrawResult.account_num_masked}
-	            , #{withdrawResult.bank_tran_date}
+	            , CURDATE() -- 현재날짜
 	            , #{withdrawResult.account_holder_name}
 	            , #{withdrawResult.tran_amt}
 	            , #{withdrawResult.dps_print_content} -- 인자내역(테스트데이터인자내역)
