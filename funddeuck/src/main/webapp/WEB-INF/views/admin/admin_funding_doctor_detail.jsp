@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="com.google.gson.Gson" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +17,7 @@
 <!-- sweetalert -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 table {
     width: 100%; /* 테이블의 전체 너비를 100%로 설정 */
@@ -36,6 +38,71 @@ th, td {
 		var cumulative_amount = Number(${project.project_cumulative_amount}).toLocaleString();
 		$("#cumulativeAmount").text(cumulative_amount + '원');
 	});
+	
+	$(() => {
+	    
+	    'use strict';
+
+	    var projectListStr = '<%= new Gson().toJson(request.getAttribute("projectList")) %>';
+	    var projectList = JSON.parse(projectListStr);
+	    
+	    let myChart2 = null; // Chart 객체를 저장하기 위한 변수
+
+	    let updateChart = (data) => {
+	        let labels = [];
+	        let zim_counts = [];
+
+	        data.forEach(project => {
+	            labels.push(project.zim_date);
+	            zim_counts.push(Math.floor(project.zim_count));
+	        });
+
+	        let ctx2 = document.getElementById('myChart2').getContext('2d');
+
+	        myChart2 = new Chart(ctx2, {
+	            type: 'line',
+	            data: {
+	                labels,
+	                datasets: [
+	                    {
+	                        label: '일별 찜한 횟수',
+	                        data: zim_counts,
+	                        type: 'line',
+	                        backgroundColor: 'rgba(75, 192, 192, 0.4)',
+	                        borderColor: 'rgba(75, 192, 192, 1)',
+	                        borderWidth: 1,
+	                        yAxisID: 'y-axis-3',  // 새로 설정할 Y축 ID
+	                    },
+	                ]
+	            },
+	            options: {
+	                title: {
+	                    display: true,
+	                    text: '일별 찜한 횟수 데이터'
+	                },
+	                scales: {
+	                    yAxes: [
+	                        {
+	                        	id: 'y-axis-3',
+	                            type: 'linear',
+	                            display: true,
+	                            position: 'right',
+	                            ticks: {
+	                                beginAtZero: true,
+	                                min: 0,
+	                                stepSize: 1,
+	                                precision: 0
+	                            }
+	                        },
+	                    ],
+	                },
+	            },
+	        });
+	    };
+	    
+	    updateChart(projectList);
+	    
+	});
 </script>
 </head>
 <body>
@@ -53,6 +120,11 @@ th, td {
 </div>
 
 <div class="container mt-2" style="max-width: 800px;">
+
+	<div id="chartContainer">
+	    <canvas id="myChart2" style="height: 40vh; width: 50vw"></canvas>
+	</div>
+
 	<div class="row">
 		<div class="col">
 	
@@ -70,7 +142,12 @@ th, td {
 								</tr>
 								<tr>
 									<th style="background-color: #f8f9fa;">프로젝트 번호</th>
-									<td>${project.project_idx}</td>
+									<td>
+										${project.project_idx}
+										<a href="adminFundingDoctorChart?member_idx=${project.member_idx }&maker_idx=${project.maker_idx}">
+											<img src="${pageContext.request.contextPath }/resources/images/icon/bar.png" style="width: 20px; height: 20px;" class="no-action">
+										</a>
+									</td>
 								</tr>
 								<tr>
 									<th style="background-color: #f8f9fa;">프로젝트 요금제</th>
@@ -294,7 +371,7 @@ $(document).ready(function() {
 
 //이미지 클릭 시 모달 창에 이미지 보여주기
 $(document).ready(function () {
-    $("tr td img").click(function () {
+	$("tr td img:not(.no-action)").click(function () {
         var src = $(this).attr("src");
         $("#modalImage").attr("src", src);
         $("#imageModal").modal("show");
@@ -303,7 +380,7 @@ $(document).ready(function () {
     
 // 이미지 크기를 50px x 50px로 조절
 $(document).ready(function () {
-    $("tr td img").css({
+	$("tr td img:not(.no-action)").css({
         "width": "50px",
         "height": "50px"
     });

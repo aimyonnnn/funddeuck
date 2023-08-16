@@ -189,5 +189,8 @@ public interface ProjectMapper {
 	// 결제완료된 프로젝트 리스트 조회 (makerIdx)
 	List<ProjectVO> selectCompletedPaymentProjectListByMakerIdx(int maker_idx);
 
+	// 시작일로부터 일주일간의 찜 추이
+	List<ProjectVO> selectProjectsWeekStartDate(@Param("startDate") String startDate, @Param("project_idx") int project_idx);
+
 	
 }

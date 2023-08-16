@@ -90,4 +90,7 @@ public class ProjectVO {
  	// -------------------------------- 출력용
  	private String maker_name;
  	private String maker_intro;
+ 	private int member_idx;
+ 	private int zim_count;
+ 	private String zim_date;
 }

@@ -249,7 +249,8 @@
 							FROM members
 							WHERE member_id = #{sId})
 					, #{project_idx}
-					, 1)
+					, 1
+					, NOW())
 	</insert>
 	
 	<!-- 팔로우의 프로잭트 리스트 -->
