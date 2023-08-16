@@ -119,9 +119,9 @@
 								+						'<div class="row">'
 								+							zimPost.maker_board_content
 								+						'</div>'
-								+						'<div class="row mt-4">'
-								+		                    '<img src="${pageContext.request.contextPath}/resources/upload/'+ zimPost.maker_board_file1 +'">'
-								+						'</div>'
+								+ 						'<div class="row mt-4">'
+								+     						(zimPost.maker_board_file1 && zimPost.maker_board_file1.trim() !== '' ? '<img src="${pageContext.request.contextPath}/resources/upload/' + zimPost.maker_board_file1 + '">' : '')
+								+ 						'</div>'
 								+		           ' </div>'
 								+		        '</div>'
 								+	        '</div>'

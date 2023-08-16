@@ -513,7 +513,7 @@
 						id="name" placeholder="이름" value="${member.member_name }">
 					<h6 class="mt-4">아이디</h6>
 					<div class="row">
-						<div class="col-8">
+						<div class="col-12">
 							<input class="form-control" type="text" name="member_id"
 								id="member_id" placeholder="아이디 (5~20글자)" value="${member.member_id }" disabled="disabled">
 						</div>
