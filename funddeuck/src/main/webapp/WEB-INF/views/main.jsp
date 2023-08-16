@@ -188,7 +188,7 @@
     <div class="popup-content">
         <span class="close-button" onclick="closePopup()">&times;</span>
         <div class="content-wrapper">
-            <a href="member/coupon">
+            <a href="${pageContext.request.contextPath}/coupon">
                 <img src="${pageContext.request.contextPath}/resources/upload/${newCouponList[0].newCouponImage}" width="480" height="630" alt="팝업 이미지">
             </a>
             <p>유효 기간: ${newCouponList[0].newCoupon_start}부터 ${newCouponList[0].newCoupon_end}까지 사용가능</p>
