@@ -164,7 +164,7 @@
 	<div class="col with .gy-5 gutters">
 		<small class="text-primary">${project.size() }</small><small>개의 오픈 예정인 프로젝트가 있습니다.</small>
 		<div class="row row-cols-3 row-cols-sm-4 g-3">
-		<!-- 페이징 처리 -->
+		<!-- 페이징 처리  -->
 		<c:forEach items="${project}" var="project" varStatus="status">
 			<div class="col" id="projectListArea">
 				<div class="card h-100 w-100 p-3 border-0">
