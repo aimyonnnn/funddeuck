@@ -154,6 +154,34 @@ public class FundingController {
     	}
 	}
 	
+	// 프로젝트 상세페이지에서 남긴 의견 삭제하기
+	@GetMapping("pcCommentDelete")
+	public String pcCommentDelete(@RequestParam int project_idx
+			, @RequestParam int project_community_idx
+			, @RequestParam String member_id
+			, HttpSession session
+			, Model model) {
+		String sId = (String)session.getAttribute("sId");
+		
+		// 잘못된 접근 필터링
+    	if(session.getAttribute("sId") == null) {
+    		model.addAttribute("msg","잘못된 접근입니다.");
+    		return "fail_back";
+    	}
+    	
+    	// 프로젝트 상세페이지에서 남긴 의견 삭제
+    	int deleteCount = fundingService.pcCommentDeleteReq(project_idx, project_community_idx, member_id);
+    	
+    	// 삭제 결과 판별
+    	if(deleteCount > 0) {
+    		model.addAttribute("msg", "의견이 삭제되었습니다");
+    		return "success_reload";
+    	} else {
+    		model.addAttribute("msg", "오류 발생!");
+    		return "fail_back";
+    	}
+	}
+	
 	// 펀딩 주문페이지 이동
 	@GetMapping ("fundingOrder")
 		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, HttpSession session, Model model) {

@@ -162,6 +162,11 @@ public class FundingService {
 	public int isZimProject(String sId, int project_idx) {
 		return mapper.isZimProject(sId, project_idx);
 	}
+
+	// 프로젝트 상세페이지에서 남긴 의견 삭제
+	public int pcCommentDeleteReq(int project_idx, int project_community_idx, String member_id) {
+		return mapper.pcCommentDeleteReq(project_idx, project_community_idx, member_id);
+	}
 	
 
 }
