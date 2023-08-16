@@ -147,12 +147,12 @@ let updateChart = (data, chartType) => {
     });
     
 	// 텍스트 업데이트 작업 시작
-	// 누적 결제 금액 업데이트
+	// 기간별 누적 결제 금액 업데이트
 	let makerAcmlPaymentElem = document.getElementById('acmlPaymentAmount');
 	let makerAcmlPayment = acmlPaymentAmounts[acmlPaymentAmounts.length - 1];
 	
 	if (makerAcmlPayment !== undefined) {
-	    makerAcmlPaymentElem.textContent = makerAcmlPayment;
+	    makerAcmlPaymentElem.textContent = numberWithCommas(makerAcmlPayment);
 	} else {
 	    makerAcmlPaymentElem.textContent = '0';
 	}
@@ -162,7 +162,12 @@ let updateChart = (data, chartType) => {
 	let makerTotalDays = dailyPaymentAmounts.length;
 	let makerTotalPayment = dailyPaymentAmounts.reduce((acc, amount) => acc + amount, 0);
 	let makerTodayPayment = makerTotalDays > 0 ? Math.round(makerTotalPayment / makerTotalDays) : 0;
-	makerTodayPaymentElem.textContent = makerTodayPayment;
+	makerTodayPaymentElem.textContent = numberWithCommas(makerTodayPayment);
+	
+	// 쉼표를 추가해주는 함수 (원단위로 쉼표 추가)
+	function numberWithCommas(number) {
+	    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
 	
 	// 누적 서포터 수 업데이트
 	let makerAcmlSupporterElem = document.getElementById('acmlSupporterCount');
