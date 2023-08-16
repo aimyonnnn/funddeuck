@@ -273,27 +273,21 @@
 						<!-- 미로그인 시 -->
 						<c:if test="${empty isZim}">
 						<button class="btn btn-primary me-2 bg-white border border-primary border-opacity-25 rounded-0" id="noLoginBtnZim">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-heart" viewBox="0 0 16 16">
-							  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-							</svg>
+							<img src="${pageContext.request.contextPath }/resources/images/heart.png" style="width: 16px; height: 16px;">
 							<small class="text-dark"><br>찜</small>
 						</button>
 						</c:if>
 						<!-- 빈 하트 -->
 						<c:if test="${isZim eq 0}">
 						<button class="btn btn-primary me-2 bg-white border border-primary border-opacity-25 rounded-0" id="zimBtn">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-heart" viewBox="0 0 16 16">
-							  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-							</svg>
+							<img src="${pageContext.request.contextPath }/resources/images/heart.png" style="width: 16px; height: 16px;">
 							<small class="text-dark"><br>찜</small>
 						</button>
 						</c:if>
 						<!-- 채워진 하트 -->
 						<c:if test="${isZim eq 1}">
 						<button class="btn btn-primary me-2 bg-white border border-primary border-opacity-25 rounded-0" id="deleteZimBtn">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="secondary" class="bi bi-heart-fill" viewBox="0 0 16 16">
-								<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-							</svg>
+							<img src="${pageContext.request.contextPath }/resources/images/fullheart.png" style="width: 16px; height: 16px;">
 							<small class="text-dark"><br>찜</small>
 						</button>
 						</c:if>
@@ -395,6 +389,9 @@
 							</h2>
 							<div id="collapse${makerBoard.maker_board_idx }" class="accordion-collapse collapse show">
 								<div class="accordion-body">
+									<c:if test="${not empty makerBoard.maker_board_file1 }">
+										<img src="${pageContext.request.contextPath}/resources/upload/${makerBoard.maker_board_file1 }">
+									</c:if>
 									<p class="text-start">${makerBoard.maker_board_content }</p>
 								</div>
 							</div>
