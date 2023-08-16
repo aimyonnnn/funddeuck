@@ -57,13 +57,13 @@ public class FundingScheduler {
 		    	}
 				
 			}
-			if(project_status == 0) { // 프로젝트 취소시
+//			if(project_status == 0) { // 프로젝트 취소시
 //				fundingService.ModifyPaymentConfirmfailed(payment_idx);
-				executorService.shutdown();
-			}
+//				executorService.shutdown();
+//			}
 		
-		}, diff, TimeUnit.MINUTES);
-//		}, 1, TimeUnit.MINUTES); // 테스트용(1분 후)
+//		}, diff, TimeUnit.MINUTES);
+		}, 1, TimeUnit.MINUTES); // 테스트용(1분 후)
 		
 	}
 }

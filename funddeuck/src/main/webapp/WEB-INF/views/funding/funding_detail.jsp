@@ -11,6 +11,8 @@
 <title>펀딩</title>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<!-- line-awesome icons CDN -->
+<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 <!-- header include -->
 <jsp:include page="../Header.jsp"></jsp:include>
 <!-- 결제 연동 스크립트 -->
@@ -436,7 +438,7 @@
 					<div>&nbsp;</div>
 					<!-- 게시물 작성 버튼 -->
 						<div class="col-lg-12 col-sm-12">
-							<button type="submit" class="btn btn-outline-info float-end" >의견 남기기</button>
+							<button type="submit" class="btn btn-outline-info float-end">의견 남기기</button>
 						</div>
 					</form>
 					<div>&nbsp;</div>
@@ -445,7 +447,12 @@
 				<c:if test="${param.category eq 'community' && not empty ProjectCommunity}">
 					<c:forEach items="${ProjectCommunity }" var="ProjectCommunity" varStatus="status">
 						<div class="card border border-0 mb-3">
-							<div class="card-header text-start">${ProjectCommunity.member_id }</div>
+							<div class="card-header text-start">
+							<c:if test="${ProjectCommunity.member_id eq sessionScope.sId }">
+							<a class="text-decoration-none text-dark" href="pcCommentDelete?project_idx=${project.project_idx }&member_id=${sessionScope.sId }&project_community_idx=${ProjectCommunity.project_community_idx}"><i class="la la-trash"></i>
+							</a>
+							</c:if>
+							${ProjectCommunity.member_id }</div>
 							<div class="card-body">
 							<h5 class="card-title text-start">${ProjectCommunity.project_community_subject }</h5>
 							<p class="card-text text-start">${ProjectCommunity.project_community_content }</p>
@@ -478,7 +485,8 @@
 						<button class="btn btn-outline-primary rounded-0 btn-sm btn float-end">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
 						<path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-						</svg>팔로우</button>	
+						</svg>팔로우</button>
+						<!-- 건무 -->	
 						</span>
 					</div>
 					<div class="row">
@@ -534,7 +542,7 @@
 									</c:if>
 <!-- 									프로젝트가 진행중인 경우(주문 가능) -->
 									<c:if test="${project.project_status eq 2 }">
-										<a href="fundingOrder?project_idx=${project.project_idx }&reward_idx=${reward.reward_idx }" class="stretched-link"></a>
+										<a href="fundingOrder?project_idx=${project.project_idx }&reward_idx=${reward.reward_idx }" class="stretched-link" onclick="return ordChk();"></a>
 									</c:if>
 <!-- 									프로젝트가 종료된 경우(주문 불가능) -->
 			      					<c:if test="${project.project_status eq 3 || project.project_status eq 4 || project.project_status eq 5 || project.project_status eq 6}">
@@ -696,6 +704,11 @@ $("#deleteZimBtn").click(function() {
 $("#noLoginBtnZim").click(function() {
 	alert("로그인이 필요합니다");
 });
+
+// 주문 확인
+function ordChk(){
+    return confirm("주문 페이지로 이동하시겠습니까?");
+}
 </script>
 <br>
 <jsp:include page="../Footer.jsp"></jsp:include>

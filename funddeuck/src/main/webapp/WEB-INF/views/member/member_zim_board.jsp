@@ -113,15 +113,15 @@
 								+		            '</div>'
 								+		            '<div class="col-12 my-1">'
 								+		                '<hr>'
-								+						'<div class="row h5">'
+								+						'<div class="row h5 ms-1">'
 								+							zimPost.maker_board_subject
 								+						'</div>'
-								+						'<div class="row">'
+								+						'<div class="row ms-1">'
 								+							zimPost.maker_board_content
 								+						'</div>'
-								+						'<div class="row mt-4">'
-								+		                    '<img src="${pageContext.request.contextPath}/resources/upload/'+ zimPost.maker_board_file1 +'">'
-								+						'</div>'
+								+ 						'<div class="row ms-1 mt-4">'
+								+     						(zimPost.maker_board_file1 && zimPost.maker_board_file1.trim() !== '' ? '<img src="${pageContext.request.contextPath}/resources/upload/' + zimPost.maker_board_file1 + '">' : '')
+								+ 						'</div>'
 								+		           ' </div>'
 								+		        '</div>'
 								+	        '</div>'
