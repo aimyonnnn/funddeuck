@@ -421,7 +421,8 @@
 				#{context},
 				#{starRating},
 				#{saveFileName},
-				1
+				1,
+				now()
 			)
 	</insert>
 	
@@ -433,7 +434,8 @@
 		, rew.reward_name
 		, rev.review_content
 		, rev.starRating
-		, rev.saveFileName 
+		, rev.saveFileName
+		, pro.project_idx
 			FROM review rev 
 			JOIN payment pay
 				ON pay.payment_idx = rev.payment_idx

@@ -1,52 +1,56 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bootstrap demo</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/mypage.css" />
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <style>
-    tr {
-      vertical-align: middle;
-    }
-        /* 각 별들의 기본 설정 */
-        .starR{
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        color: transparent;
-        text-shadow: 0 0 0 #f0f0f0;
-        font-size: 1.8em;
-        box-sizing: border-box;
-        cursor: pointer;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>내가 한 펀딩</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+	crossorigin="anonymous">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/css/mypage.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+tr {
+	vertical-align: middle;
+}
+/* 각 별들의 기본 설정 */
+.starR {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	color: transparent;
+	text-shadow: 0 0 0 #f0f0f0;
+	font-size: 1.8em;
+	box-sizing: border-box;
+	cursor: pointer;
+}
 
-        /* 별 이모지에 마우스 오버 시 */
-        .starR:hover {
-        text-shadow: 0 0 0 #ccc;
-        }
+/* 별 이모지에 마우스 오버 시 */
+.starR:hover {
+	text-shadow: 0 0 0 #ccc;
+}
 
-        /* 별 이모지를 클릭 후 class="on"이 되었을 경우 */
-        .starR.on{
-        text-shadow: 0 0 0 #ffbc00;
-        }
-        
-    	footer {
-    		position: fixed;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			padding: 10px;
-    	}
-    </style>
-  <script type="text/javascript">
+/* 별 이모지를 클릭 후 class="on"이 되었을 경우 */
+.starR.on {
+	text-shadow: 0 0 0 #ffbc00;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 10px;
+}
+</style>
+<script type="text/javascript">
   
   
   //모달 창 처리
@@ -298,145 +302,138 @@
   </script>
 </head>
 <body>
-	<input type="hidden" id="t_key" name="t_key" value="vOUrdVIWvOLE4CB9x3ljhw">
+	<input type="hidden" id="t_key" name="t_key"
+		value="vOUrdVIWvOLE4CB9x3ljhw">
 	<input type="hidden" name="t_code" id="t_code" value="04">
-	<input type="hidden" name="t_invoice" id="t_invoice" value="831000843336">
-<!-- 	<input type="hidden" name="t_code" id="t_code" value="04"> -->
-<!-- 	<input type="hidden" name="t_invoice" id="t_invoice" value="831000843336"> -->
-    <%@ include file="../Header.jsp" %>
-  <div class="row justify-content-center" style="margin-bottom: 100px; margin-top: 100px;" id="mainRow">
-    <div class="col-12 col-lg-8">
-      <h3><strong>참여내역</strong></h3>
-      <select class="form-select my-4 w-25" onchange="pageing(1,this.value)">
-        <option value="0">전체</option>
-        <option value="1">예약완료</option>
-        <option value="2">결제완료</option>
-        <option value="3">반환신청</option>
-        <option value="4">반환완료</option>
-        <option value="5">반환거절</option>
-      </select>
+	<input type="hidden" name="t_invoice" id="t_invoice"
+		value="831000843336">
+	<!-- 	<input type="hidden" name="t_code" id="t_code" value="04"> -->
+	<!-- 	<input type="hidden" name="t_invoice" id="t_invoice" value="831000843336"> -->
+	<%@ include file="../Header.jsp"%>
+	<div class="row justify-content-center"
+		style="margin-bottom: 100px; margin-top: 100px;" id="mainRow">
+		<div class="col-12 col-lg-8">
+			<h3>
+				<strong>참여내역</strong>
+			</h3>
+			<select class="form-select my-4 w-25"
+				onchange="pageing(1,this.value)">
+				<option value="0">전체</option>
+				<option value="1">예약완료</option>
+				<option value="2">결제완료</option>
+				<option value="3">반환신청</option>
+				<option value="4">반환완료</option>
+				<option value="5">반환거절</option>
+			</select>
 
-      <table class="table text-center" id="fundingTable">
-        <thead id="thead" >
-          <tr>
-            <th scope="col">주문번호</th>
-            <th scope="col">프로젝트</th>
-            <th scope="col">주문수량</th>
-            <th scope="col">총가격</th>
-            <th scope="col">결제승인</th>
-            <th scope="col">배송여부</th>
-            <th scope="col">상세보기</th>
-          </tr>
-        </thead>
-        <tbody id="tbody">
-       
-        </tbody>
-      </table>
-	      <div class="btn-toolbar justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
-			  <div class="btn-group me-2" id="toolbar" role="group" aria-label="First group">			
-			  </div>
-    	</div>
-  	</div>
-  </div>
-  
-<!-- 상세보기 모달창 -->
-  <div class="modal fade exampleModal"  aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content" id="modal_content">
+			<table class="table text-center" id="fundingTable">
+				<thead id="thead">
+					<tr>
+						<th scope="col">주문번호</th>
+						<th scope="col">프로젝트</th>
+						<th scope="col">주문수량</th>
+						<th scope="col">총가격</th>
+						<th scope="col">결제승인</th>
+						<th scope="col">배송여부</th>
+						<th scope="col">상세보기</th>
+					</tr>
+				</thead>
+				<tbody id="tbody">
 
-      </div>
-    </div>
-  </div>
-  	
- 
+				</tbody>
+			</table>
+			<div class="btn-toolbar justify-content-center" role="toolbar"
+				aria-label="Toolbar with button groups">
+				<div class="btn-group me-2" id="toolbar" role="group"
+					aria-label="First group"></div>
+			</div>
+		</div>
+	</div>
 
-<!-- 취소 사유 모달창 -->
-<div class="modal fade" id="cancelModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">반환 신청</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-			<textarea class="form-control" rows="5" cols="60" id="cancelContext" oninput="textcount()"></textarea>	
-			<p id="characterCancelCount">0/100</p>	
-			<input type="file" id="cancelFile" class="form-control mt-2" accept="image/*">
-			<input type="hidden" id="cancel_idx">
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="cancelBtn" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">반환신청</button>
-      </div>	
-    </div>
-  </div>
-</div>
-  
-  	<!-- 리뷰작성 메서드 -->
-      <div class="modal" id="reviewmodify" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5">리뷰 수정</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                    <table>
-                        <tr>
-                            <th>별점</th>
-                            <td>
-                                <div class="starRev">
-                                    <!-- 편의 상 가장 첫번째의 별은 기본으로 class="on"이 되게 설정해주었습니다. -->
-                                    <span class="starR on">⭐</span>
-                                    <span class="starR">⭐</span>
-                                    <span class="starR">⭐</span>
-                                    <span class="starR">⭐</span>
-                                    <span class="starR">⭐</span>
-                                </div>
-                                <!-- 나중에 폼 전송시에는 type을 hidden으로 바꾸면 됨, 지금은 확인해야하니 text로 함-->
-                                <input type="hidden" value="1" id="starRating" name="starRating">
-	                            <script>
-	                                <!-- 별점 jQuery -->
-	                                $('.starRev span').click(function(){
-	                                $(this).parent().children('span').removeClass('on');
-	                                $(this).addClass('on').prevAll('span').addClass('on');
-	                                return false;
-	                                });
-	                                let starCount = 0; // 별점을 저장할 변수 선언
-	                                $(".starRev span").click(function(e) { // 콜백함수에 파라미터 추가
-	                                    e.preventDefault(); // a태그 기본 동작 방지
-	                                    // 실제 클릭된 이벤트 요소(e.currentTarget)의 인덱스를 가져옴
-	                                    // index는 0부터 시작이니 +1을 해주면 됨
-	                                    let index = $(e.currentTarget).index() + 1; 
-	//                                     console.log($(e.currentTarget).index()); // 콘솔 확인용
-	                                    starCount = index;
-	                                    $("#starRating").val(starCount); // 전송할 폼의 input에 값을 넣음
-	                                });
-	                                <!-- 별점 jQuery -->
-	
-	                            </script>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>내용</th>
-                            <td><textarea cols="50" rows="5" name="content" id="reviewContent" oninput="countTextareaCharacters()"></textarea>
-                            	<p id="characterCount">0/100</p>
-                            </td>
-                            
-                        </tr>
-                         <tr>
-                            <td colspan="2"><input type="file" id="reviewFile" class="form-control mt-2" accept="image/*"></td>
-                        </tr>
-                    </table>
-            </div>
-            <div class="modal-footer">
-              <button type="button" id="reivewRegistration" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">리뷰작성</button>
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">취소</button>
-            </div>
-          </div>
-        </div>
-    </div>
-  
- 	<script type="text/javascript">
+	<!-- 상세보기 모달창 -->
+	<div class="modal fade exampleModal"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" id="modal_content"></div>
+		</div>
+	</div>
+
+
+
+	<!-- 취소 사유 모달창 -->
+	<div class="modal fade" id="cancelModal"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">반환 신청</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<textarea class="form-control" rows="5" cols="60"
+						id="cancelContext" oninput="textcount()"></textarea>
+					<p id="characterCancelCount">0/100</p>
+					<input type="file" id="cancelFile" class="form-control mt-2"
+						accept="image/*"> <input type="hidden" id="cancel_idx">
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="cancelBtn" class="btn btn-primary"
+						data-bs-dismiss="modal" aria-label="Close">반환신청</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 리뷰작성 메서드 -->
+	<div class="modal" id="reviewmodify"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">리뷰 수정</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table>
+						<tr>
+							<th>별점</th>
+							<td>
+								<div class="starRev">
+									<!-- 편의 상 가장 첫번째의 별은 기본으로 class="on"이 되게 설정해주었습니다. -->
+									<span class="starR on">⭐</span> <span class="starR">⭐</span> <span
+										class="starR">⭐</span> <span class="starR">⭐</span> <span
+										class="starR">⭐</span>
+								</div> <!-- 나중에 폼 전송시에는 type을 hidden으로 바꾸면 됨, 지금은 확인해야하니 text로 함--> <input
+								type="hidden" value="1" id="starRating" name="starRating">
+
+							</td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td><textarea cols="40" rows="5" name="content"
+									id="reviewContent" oninput="countTextareaCharacters()"></textarea>
+								<p id="characterCount">0/100</p></td>
+
+						</tr>
+						<tr>
+							<td colspan="2"><input type="file" id="reviewFile"
+								class="form-control mt-2" accept="image/*"></td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="reivewRegistration"
+						class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">리뷰작성</button>
+					<button type="button" class="btn btn-primary"
+						data-bs-dismiss="modal">취소</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
  	
  	function countTextareaCharacters() {
         var textarea = $('#reviewContent');
@@ -693,6 +690,14 @@
                         $("#starRating").val("");
                         $("#reviewFile").val("");
                         $("#reviewContent").val("");
+                        $(".starRev").empty();
+                        $(".starRev").append(
+                        	'<span class="starR on">⭐</span>'
+                             +'<span class="starR">⭐</span>'
+                             +'<span class="starR">⭐</span>'
+                             +'<span class="starR">⭐</span>'
+                             +'<span class="starR">⭐</span>'		
+                        );
 		            	
 		            } else {
 			            	Swal.fire({
@@ -720,16 +725,37 @@
 	});
 	
  	</script>
- 	
- 	
- 	
-<footer>
-	<%@ include file="../Footer.jsp" %>
-</footer>
+	<script>
+    <!-- 별점 jQuery -->
+         $('.starRev span').click(function(){
+         $(this).parent().children('span').removeClass('on');
+         $(this).addClass('on').prevAll('span').addClass('on');
+         return false;
+         });
+         let starCount = 0; // 별점을 저장할 변수 선언
+         $(".starRev span").click(function(e) { // 콜백함수에 파라미터 추가
+             e.preventDefault(); // a태그 기본 동작 방지
+             // 실제 클릭된 이벤트 요소(e.currentTarget)의 인덱스를 가져옴
+             // index는 0부터 시작이니 +1을 해주면 됨
+             let index = $(e.currentTarget).index() + 1; 
+              //console.log($(e.currentTarget).index()); // 콘솔 확인용
+             starCount = index;
+            $("#starRating").val(starCount); // 전송할 폼의 input에 값을 넣음
+        });
+        <!-- 별점 jQuery -->
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-    crossorigin="anonymous"></script>
+   	</script>
+
+
+
+	<footer>
+		<%@ include file="../Footer.jsp"%>
+	</footer>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+		crossorigin="anonymous"></script>
 </body>
 
 </html>
