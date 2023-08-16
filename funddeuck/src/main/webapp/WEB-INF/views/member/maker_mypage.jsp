@@ -216,6 +216,18 @@
                                 </div>
                             </a>
                         </div>
+                        <div class="col-sm-12 col-md-6">
+                            <a href="makerChattingRoomList" class="text-black w-100">
+                                <div class="row  me-md-2 me-md-2">
+                                    <div class="col text-start my-3">
+                                        <img src="${pageContext.request.contextPath }/resources/images/icon/chat.png" style="width: 30px; height: 30px;"> 1대1 채팅 문의
+                                    </div>
+                                    <div class="col text-end my-3">
+                                        <i class="bi bi-arrow-return-right"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
 					</div>       
 				</div>
 			</div>

@@ -52,6 +52,11 @@ public class ChatService {
 	}
 
 
+	public int getCountMemberChattingRoom(String sId) {
+		return mapper.getCountMemberChattingRoom(sId);
+	}
+
+
 	
 	
 }

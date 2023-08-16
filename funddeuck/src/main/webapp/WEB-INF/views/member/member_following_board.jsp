@@ -60,6 +60,13 @@
 				console.log(JSON.stringify(data));
 				maxPage = data.maxPage;
 				
+				if(maxPage == 0){
+					$("#followBoardListArea").append(
+						    '<div class="col-12 mt-5 text-center" style="padding-bottom: 300px;"> <h4> 아직 메이커가 올린 프로젝트가 없습니다! </h4></div>'
+					);
+					return false;
+				}
+				
 				for(let list of data.projectList){
 					$("#followBoardListArea").append(
 						    '<div class="row my-5 align-items-center">' +
@@ -107,8 +114,8 @@
             <div class="col col-lg-3">
                 <a href="FallowingForm" class="text-black"> 팔로잉 메이커 </a>
             </div>
-            <div class="col col-lg-4 pb-2" style="border-bottom: 1px solid #ff9300;">
-                <a href="FollowBoardForm" class="text-black"> 팔로잉 게시판 </a>
+            <div class="col col-lg-3" style="border-bottom: 1px solid #ff9300;">
+                <a href="FollowBoardForm" class="text-black"> 팔로잉 프로젝트 </a>
             </div>
         </div>
         <!-- 메뉴 선택 -->

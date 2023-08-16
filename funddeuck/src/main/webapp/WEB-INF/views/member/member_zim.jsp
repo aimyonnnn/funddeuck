@@ -180,7 +180,7 @@
 					                            zim.project_introduce +
 					                        '</div>' +
 					                        '<div class="col-12 my-1">' +
-					                            '이미지 영역' +
+					                            '<img src="${pageContext.request.contextPath}/resources/upload/'+ zim.project_thumnails1 +'" width="20">' +
 					                        '</div>' +
 					                    '</div>' +
 					                '</div>' +
@@ -234,6 +234,7 @@
 	<div id="zimListArea">
 		
 	</div>
+	
 
 
 	<%@ include file="../Footer.jsp" %>

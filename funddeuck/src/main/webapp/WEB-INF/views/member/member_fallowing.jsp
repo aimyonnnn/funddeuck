@@ -205,7 +205,7 @@
                 <a href="FallowingForm" class="text-black"> 팔로잉 메이커 </a>
             </div>
             <div class="col col-lg-3">
-                <a href="FollowBoardForm" class="text-black"> 팔로잉 게시판 </a>
+                <a href="FollowBoardForm" class="text-black"> 팔로잉 프로젝트 </a>
             </div>
         </div>
         <!-- 메뉴 선택 -->
