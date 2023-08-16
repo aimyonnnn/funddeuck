@@ -36,23 +36,31 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
+            <a href="fundingDiscover?category=all&status=all&index=newest">
                 <img src="./resources/images/banner1.png" class="d-block w-100 h-auto" alt="...">
                 <div class="carousel-caption d-none d-md-block"></div>
+            </a>
             </div>
             <div class="carousel-item">
+            <a href="fundingExpected?category=all">
                 <img src="./resources/images/banner2.png" class="d-block w-100 h-auto" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                 </div>
+            </a>
             </div>
             <div class="carousel-item">
+            <a href="fundingSearchKeyword?searchKeyword=장마&status=all&index=newest">
                 <img src="./resources/images/banner3.png" class="d-block w-100 h-auto" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                 </div>
+            </a>
             </div>
             <div class="carousel-item">
+            <a href="coupon">
                 <img src="./resources/images/banner4.png" class="d-block w-100 h-auto" alt="...">
                 <div class="carousel-caption d-none d-md-block">
                 </div>
+            </a>
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
