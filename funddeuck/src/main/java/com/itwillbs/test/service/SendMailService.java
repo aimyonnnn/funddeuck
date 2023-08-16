@@ -166,7 +166,6 @@ public class SendMailService {
 				+ "            감사합니다.\r\n"
 				+ "        </p>\r\n"
 				+ "        <!-- 메일 인증 번호 -->\r\n"
-//				+ "        <a class=\"number\" href='http://localhost:8080/test/ModifyPasswdForm?authCode="+ authCode +"&email="+ email +" '>"
 				+ "        <a class=\"number\" href='http://c5d2302t2.itwillbs.com/funddeuck/ModifyPasswdForm?authCode="+ authCode +"&email="+ email +" '>"
 				+ "			비밀번호 변경"
 				+"</a>\r\n"
@@ -174,6 +173,7 @@ public class SendMailService {
 				+ "</body>\r\n"
 				+ "</html>\r\n"
 				+ "";
+//				+ "        <a class=\"number\" href='http://localhost:8080/test/ModifyPasswdForm?authCode="+ authCode +"&email="+ email +" '>"
 		
 		//sendMailClient 인스턴스 생성 후 sendMail() 메서드를 호출하여 인증 메일 발송 요청
 		// => 파라미터 : 이메일, 제목, 본문
