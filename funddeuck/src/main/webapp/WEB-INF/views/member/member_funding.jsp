@@ -67,7 +67,7 @@
 	        +'</div>'
 	        +'<div class="modal-body">'
 	        +  '<div class="text-center">'
-	        +  '<img src="discord-avatar-512-T50N7.png" style="width: 50%;">'
+	        +  '<img src="${pageContext.request.contextPath}/resources/upload/'+ items.project_thumnails1 +'" style="width: 50%;">'
 	        +  '</div>'
 	        +  '<table class="table mt-5">'
 	        +   '<tbody>'
