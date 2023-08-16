@@ -108,7 +108,7 @@
 
 		<!-- jobs-grid -->
 		<div class="jobs-grid">
-			<div class="analytics-card col-md-12 d-none d-md-block">
+			<div class="analytics-card col-md-12 d-none d-md-block" style="height: 350px;">
 				<div class="analytics-head">
 					<h3>오늘 가입한 회원 수</h3>
 				</div>
@@ -122,33 +122,33 @@
 			</div>
 
 			<div class="jobs col-md-12 d-none d-md-block">
-				<h3>최근 프로젝트</h3>
-				<small>
-					<a href="adminProjectManagement">전체 프로젝트 확인하기</a>
-					<span class="las la-arrow-right"></span>
-				</small>
-				<div class="table-responsive">
-					<table class="table text-center">
-						<tr>
-							<th style="width: 5%">번호</th>
-							<th style="width: 10%">카테고리</th>
-							<th style="width: 15%">프로젝트명</th>
-							<th style="width: 7%">대표자명</th>
-							<th style="width: 15%">프로젝트 기간</th>
-						</tr>
-						<c:forEach var="pList" items="${pList}">
-							<tr>
-								<td>${pList.project_idx}</td>
-								<td>${pList.project_category}</td>
-								<td>${pList.project_subject}</td>
-								<td>${pList.project_representative_name}</td>
-								<td>${pList.project_start_date}&nbsp;~&nbsp;${pList.project_end_date}</td>
-							</tr>
-						</c:forEach>
-					</table>
-					<!--  -->
-				</div>
-			</div>
+		    <h3>최근 프로젝트</h3>
+		    <small>
+		        <a href="adminProjectManagement">전체 프로젝트 확인하기</a>
+		        <span class="las la-arrow-right"></span>
+		    </small>
+		    <div class="table-responsive">
+		        <table class="table text-center">
+		            <tr>
+		                <th style="width: 5%">번호</th>
+		                <th style="width: 10%">카테고리</th>
+		                <th style="width: 15%">프로젝트명</th>
+		                <th style="width: 7%">대표자명</th>
+		                <th style="width: 15%">프로젝트 기간</th>
+		            </tr>
+		            <c:forEach var="pList" items="${pList}" varStatus="status">
+		                <c:if test="${status.index < 6}">
+		                    <tr>
+		                        <td>${pList.project_idx}</td>
+		                        <td>${pList.project_category}</td>
+		                        <td>${pList.project_subject}</td>
+		                        <td>${pList.project_representative_name}</td>
+		                        <td>${pList.project_start_date}&nbsp;~&nbsp;${pList.project_end_date}</td>
+		                    </tr>
+		                </c:if>
+		            </c:forEach>
+		        </table>
+		    </div>
 		</div>
 		<!-- jobs-grid -->
 		
