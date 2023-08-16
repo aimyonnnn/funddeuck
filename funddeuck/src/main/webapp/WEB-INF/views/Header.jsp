@@ -214,7 +214,24 @@
 	        align-items: center;
 	    }
 	}
- 	 
+ 	
+    .logo-container {
+    text-align: center;
+    margin: 20px;
+  }
+
+  .logo-img {
+    width: 90px;
+    height: 90px;
+  }
+
+  @media (max-width: 600px) {
+    /* 작은 화면에 대한 스타일 변경 */
+    .logo-img {
+      width: 50px;
+      height: 50px;
+    }
+  } 
     </style>
     
   
@@ -362,9 +379,11 @@
 	<!-- 위로 가기 버튼 -->
     <button id="go-top"><img src="${pageContext.request.contextPath }/resources/images/topbtn.png" style="width: 56px; height: 56px;"></button>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light rounded fixed-top">
-    <a class="navbar-brand" href='<c:url value="/" />'><img src="${pageContext.request.contextPath }/resources/images/logo.png" style="width: 90px; height: 90px;"></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light rounded fixed-top">
+	  <a class="navbar-brand" href='<c:url value="/" />'>
+	    <img src="${pageContext.request.contextPath }/resources/images/logo.png" class="logo-img">
+	  </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -439,7 +458,6 @@
 		        <a class="nav-link me-4" href="projectManagement">프로젝트 생성</a>
 		    </li>
 		</ul>
-
 
         <form class="form-inline my-2 my-md-0" action="fundingSearchKeyword?searchKeyword=${param.searchKeyword }&status=all&index=newest" method="get">
             <input class="form-control" type="text" placeholder="프로젝트를 검색하세요!" aria-label="Search" name="searchKeyword" id="searchKeyword" value="${searchKeyword}" required="required">
