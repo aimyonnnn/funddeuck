@@ -569,7 +569,7 @@
 	    Kakao.Link.sendDefault({
 	      objectType: 'feed',
 	      content: {
-	        title: '프로젝트를 공유합니다!',
+	        title: '${project.project_subject} 프로젝트를 공유합니다!',
 	        description: '펀뜩에서 보기',
 	        imageUrl: 'https://k.kakaocdn.net/14/dn/btsq1cOtNBL/aQLYrDHo7dEFAu2kgCdJI1/o.jpg',
 	        link: {

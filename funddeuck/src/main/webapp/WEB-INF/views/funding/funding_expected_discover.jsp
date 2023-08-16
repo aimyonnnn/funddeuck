@@ -88,7 +88,7 @@
 	<ul class="nav justify-content-center">
 		<li class="nav-item 
 		<c:if test="${param.category eq 'all' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 			<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingExpected?category=all">
 			<img src="${pageContext.request.contextPath }/resources/images/icon/shop.png" style="width: 25px; height: 25px;">
@@ -96,7 +96,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'tech' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingExpected?category=tech">
 			<img src="${pageContext.request.contextPath }/resources/images/icon/tech.png" style="width: 25px; height: 25px;">
@@ -104,7 +104,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'fashion' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingExpected?category=fashion">
 			<img src="${pageContext.request.contextPath }/resources/images/icon/fashion.png" style="width: 25px; height: 25px;">
@@ -112,7 +112,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'living' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingExpected?category=living">
 			<img src="${pageContext.request.contextPath }/resources/images/icon/home.png" style="width: 25px; height: 25px;">
@@ -120,7 +120,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'beauty' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingExpected?category=beauty">
 			<img src="${pageContext.request.contextPath }/resources/images/icon/beauty.png" style="width: 25px; height: 25px;">
@@ -128,7 +128,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'publish' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" href="fundingExpected?category=publish">
 			<img src="${pageContext.request.contextPath }/resources/images/icon/publish.png" style="width: 25px; height: 25px;">
@@ -136,7 +136,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'green' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingExpected?category=green">
 			<img src="${pageContext.request.contextPath }/resources/images/icon/echo.png" style="width: 25px; height: 25px;">
@@ -144,7 +144,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'donate' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingExpected?category=donate">
 			<img src="${pageContext.request.contextPath }/resources/images/icon/donation.png" style="width: 25px; height: 25px;">
@@ -152,7 +152,7 @@
 		</li>
 		<li class="nav-item
 		<c:if test="${param.category eq 'savAnimal' }">
-			border-info border-bottom border-2
+			border-primary border-bottom border-2
 		</c:if>">
 	    	<a class="nav-link active text-decoration-none text-dark fw-bold fs-6" aria-current="page" href="fundingExpected?category=savAnimal">
 			<img src="${pageContext.request.contextPath }/resources/images/icon/pet.png" style="width: 25px; height: 25px;">
@@ -162,7 +162,7 @@
 	<br>
 <!-- 프로젝트 리스트 영역 -->
 	<div class="col with .gy-5 gutters">
-		<small class="text-danger">${project.size() }</small><small>개의 오픈 예정인 프로젝트가 있습니다.</small>
+		<small class="text-primary">${project.size() }</small><small>개의 오픈 예정인 프로젝트가 있습니다.</small>
 		<div class="row row-cols-3 row-cols-sm-4 g-3">
 		<!-- 페이징 처리 -->
 		<c:forEach items="${project}" var="project" varStatus="status">
@@ -182,7 +182,7 @@
 						<a href="fundingDetail?project_idx=${project.project_idx }" class="stretched-link"></a>
 					<div class="card-footer bg-white">
 		      			<small class="text-dark">오픈까지
-			      			<small class="text-danger fw-bold">
+			      			<small class="text-primary fw-bold">
 							<fmt:parseNumber value="${today.time / (1000*60*60*24)}" integerOnly="true" var="nowDate"></fmt:parseNumber>
 							<fmt:parseDate value="${project.project_start_date }" var="projectStartDate" pattern="yyyy-MM-dd"/>
 							<fmt:parseNumber value="${projectStartDate.time / (1000*60*60*24)}" integerOnly="true" var="strDate"></fmt:parseNumber>
