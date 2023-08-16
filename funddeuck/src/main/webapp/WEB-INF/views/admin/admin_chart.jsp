@@ -346,7 +346,7 @@ window.addEventListener('load', function() {
 	                            <small>해당 기간의 누적 결제금액 입니다.</small>
 	                        </div>
 	                        <div class="card-chart danger">
-	                            <span class="las la-chart-line" style="color: rgba(255, 99, 132, 1);"></span>
+	                            <span class="las la-signal" style="color: rgba(255, 99, 132, 1);"></span>
 	                        </div>
 	                    </div>
 	                </div>
@@ -365,7 +365,7 @@ window.addEventListener('load', function() {
 	                            <small>해당 기간의 평균 결제금액 입니다.</small>
 	                        </div>
 	                        <div class="card-chart success">
-	                            <span class="las la-chart-line" style="color: rgb(135, 206, 235);"></span>
+	                            <span class="las la-signal" style="color: rgb(135, 206, 235);"></span>
 	                        </div>
 	                    </div>
 	                </div>
@@ -384,7 +384,7 @@ window.addEventListener('load', function() {
 	                            <small>해당 기간의 누적 서포터 수입니다.</small>
 	                        </div>
 	                        <div class="card-chart yellow">
-	                            <span class="las la-chart-line" style="color: rgba(153, 102, 255, 0.2);"></span>
+	                            <span class="las la-signal" style="color: rgba(153, 102, 255, 0.2);"></span>
 	                        </div>
 	                    </div>
 	                </div>
