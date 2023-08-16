@@ -105,6 +105,12 @@ public class FundingController {
 			model.addAttribute("isZim", isZim);
 		}
 		
+		// 팔로우 여부 체크
+		if(sId != null) {
+			int isFollow = fundingService.isFollowProject(sId, project_idx);
+			model.addAttribute("isFollow", isFollow);
+		}
+		
 		// 프로젝트 메이커 로고
 		MakerVO maker = fundingService.getMakerLogo(project.getMaker_idx());
 		model.addAttribute("maker", maker);

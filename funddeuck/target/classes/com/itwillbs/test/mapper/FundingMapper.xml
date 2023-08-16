@@ -484,4 +484,16 @@
 						AND member_id = #{member_id}
 			
 	</delete>
+	
+<!-- 팔로우 여부 체크 -->
+	<select id="isFollowProject">
+		SELECT COUNT(maker_idx)
+			FROM fallowing
+				WHERE member_idx=(SELECT member_idx
+								 FROM members
+								 WHERE member_id = #{sId})  
+								 	AND maker_idx = (SELECT maker_idx
+															FROM project
+															WHERE project_idx = #{project_idx}) 
+	</select>
 </mapper>

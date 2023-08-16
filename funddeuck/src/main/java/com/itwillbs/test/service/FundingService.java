@@ -168,5 +168,10 @@ public class FundingService {
 		return mapper.pcCommentDeleteReq(project_idx, project_community_idx, member_id);
 	}
 	
+	//팔로우 여부 체크
+	public int isFollowProject(String sId, int project_idx) {
+		return mapper.isFollowProject(sId, project_idx);
+	}
+	
 
 }
