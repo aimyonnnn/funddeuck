@@ -105,6 +105,12 @@ public class FundingController {
 			model.addAttribute("isZim", isZim);
 		}
 		
+		// 팔로우 여부 체크
+		if(sId != null) {
+			int isFollow = fundingService.isFollowProject(sId, project_idx);
+			model.addAttribute("isFollow", isFollow);
+		}
+		
 		// 프로젝트 메이커 로고
 		MakerVO maker = fundingService.getMakerLogo(project.getMaker_idx());
 		model.addAttribute("maker", maker);
@@ -187,11 +193,11 @@ public class FundingController {
 		public String fundingOrder(@RequestParam int project_idx, @RequestParam int reward_idx, HttpSession session, Model model) {
 		
 		String sId = (String)session.getAttribute("sId");
-		// 미로그인 또는 주문하던 회원이 아닐경우 ****
-		// 이전페이지? 아니면 로그인화면으로?
+		// 미로그인 또는 주문하던 회원이 아닐경우 로그인 페이지로 이동
     	if(session.getAttribute("sId") == null) {
-    		model.addAttribute("msg","잘못된 접근입니다.");
-    		return "fail_back";
+    		model.addAttribute("msg","로그인을 먼저 해주세요!");
+    		model.addAttribute("targetURL","LoginForm");
+    		return "fail_forward";
     	}
     	
 		// 회원 정보 불러오기
@@ -345,7 +351,6 @@ public class FundingController {
     		long diff = TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);// 출금이체(스케줄링) 예약
     		// 결제서번호, 출금이체 API에 필요한 데이터, 딜레이 값 전달
     		fundingScheduler.scheduledBankTran(payment_idx, data, diffInMillies, diff);
-//    		fundingScheduler.scheduledBankTran(payment_idx, data);
     		
     		// 결제 완료 페이지 이동 
     		// 등록된 결제서의 payment_idx model로 전달
@@ -429,13 +434,35 @@ public class FundingController {
 		// 회원 정보 조회
 		MembersVO member = memberService.getMemberInfo(payment.getMember_idx());
 		model.addAttribute("member", member);
+		
 		// 프로젝트 정보 조회
 		ProjectVO project = fundingService.selectProjectInfo(payment.getProject_idx());
 		model.addAttribute("project", project);
 		
+		// 리워드 정보 조회
+		RewardVO reward = projectService.getRewardInfo(payment.getReward_idx());
+		model.addAttribute("reward", reward);
+		
 		// 주문 정보 조회
 		DeliveryVO delivery = deliveryService.getDeliveryList(payment.getDelivery_idx());
 		model.addAttribute("delivery", delivery);
+		
+		
+		// 달성률 = 실제금액 / 목표금액 x 100
+		int project_target = project.getProject_target(); // 목표금액
+		int project_cumulative_amount = project.getProject_cumulative_amount(); // 누적금액
+		// 소수점 둘째자리 반올림
+		double achievementRate = Math.round( ((double)project_cumulative_amount / project_target) * 100 * 100) / 100.0;
+		model.addAttribute("achievementRate", achievementRate);
+		
+		// 프로젝트 남은기간 계산
+		LocalDate currentDate = LocalDate.now();
+		LocalDate projectEndDate = project.getProject_end_date().toLocalDate();
+        // 프로젝트 종료일과 현재 날짜 사이의 남은 날짜 계산
+        Period period = Period.between(currentDate, projectEndDate);
+        int remainingDays = period.getDays();
+        // 남은기간(출력용)
+        model.addAttribute("remainingDays", remainingDays);
 		
 		return "funding/funding_result";
 	}	

@@ -98,4 +98,7 @@ public interface FundingMapper {
 
 	// 프로젝트 상세페이지에서 남긴 의견 삭제
 	int pcCommentDeleteReq(@Param("project_idx") int project_idx, @Param("project_community_idx") int project_community_idx, @Param("member_id") String member_id);
+	
+	// 팔로우 여부 체크
+	int isFollowProject(@Param("sId") String sId, @Param("project_idx") int project_idx);
 }

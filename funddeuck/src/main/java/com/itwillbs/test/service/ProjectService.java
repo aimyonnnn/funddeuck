@@ -265,4 +265,9 @@ public class ProjectService {
 	public List<ProjectVO> getCompletedPaymentProjectListByMakerIdx(int maker_idx) {
 		return mapper.selectCompletedPaymentProjectListByMakerIdx(maker_idx);
 	}
+	
+	// 시작일로부터 일주일간의 찜 추이
+	public List<ProjectVO> getProjectsWeekStartDate(String startDate, int project_idx) {
+		return mapper.selectProjectsWeekStartDate(startDate, project_idx);
+	}
 }

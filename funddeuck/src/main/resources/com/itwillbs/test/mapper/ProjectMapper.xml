@@ -136,9 +136,10 @@
 	
 	<!-- 프로젝트 조회하기 -->
 	<select id="selectProject" resultType="com.itwillbs.test.vo.ProjectVO">
-		SELECT *
-			FROM project
-				WHERE project_idx = #{project_idx}
+		SELECT p.*, m.member_idx
+		    FROM project p
+		    JOIN maker m ON p.maker_idx = m.maker_idx
+		    WHERE p.project_idx = #{project_idx}
 	</select>
 	
 	<!-- 리워드 작성자 판별 -->
@@ -701,6 +702,25 @@
 			maker_idx = #{maker_idx}
 			AND project_approve_status = 5
 	</select> 
+	
+	<!-- 일주일간의 찜 추이 -->
+	<select id="selectProjectsWeekStartDate" resultType="com.itwillbs.test.vo.ProjectVO">
+	    SELECT dates.d as zim_date, IFNULL(z.zim_count, 0) as zim_count
+	    FROM (
+	        SELECT DATE(#{startDate}) + INTERVAL (a.a) DAY d FROM (SELECT 0 a UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6) a
+	    ) dates
+	    LEFT JOIN (
+	        SELECT COUNT(z.project_idx) as zim_count, DATE(z.zim_date) as zim_date
+	        FROM project p
+	        JOIN zim z ON p.project_idx = z.project_idx
+	        WHERE 
+	            p.project_idx = #{project_idx} AND
+	            z.zim_date BETWEEN #{startDate} AND #{startDate} + INTERVAL 7 DAY
+	        GROUP BY DATE(z.zim_date)
+	    ) z ON dates.d = z.zim_date
+	    WHERE dates.d BETWEEN #{startDate} AND #{startDate} + INTERVAL 6 DAY
+	    ORDER BY dates.d
+	</select>
 	
 </mapper>
 	

@@ -108,6 +108,7 @@ $(()=>{
 			<!-- 프로젝트 이미지 영역 끝 -->
 			<!-- 프로젝트 정보 영역 -->
 			<div class="col p-2 text-start">
+				<span class="fs-6 text-primary fw-bold">${project.project_category }</span> <br>
 				<span class="fs-2 fw-bold">${project.project_subject }</span> <br>
 				<!-- 누적금액 -->
 				<span class="fs-4 fw-bold">${project.project_cumulative_amount }원</span>&nbsp;&nbsp;

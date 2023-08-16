@@ -64,11 +64,22 @@
 						<!-- 이전 버튼 -->
 						<c:choose>
 							<c:when test="${pageNum > 1 }">
-								<li class="page-item">
-									<a class="page-link text-primary" href="helpNotice?pageNum=${pageNum - 1}" aria-label="Previous">
-										<span aria-hidden="true">&laquo;</span>
-									</a>
-								</li>
+								<c:choose>
+									<c:when test="${not empty param.searchType and not empty param.searchKeyword}">
+										<li class="page-item">
+											<a class="page-link text-primary" href="helpNotice?pageNum=${pageNum - 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}" aria-label="Previous">
+												<span aria-hidden="true">&laquo;</span>
+											</a>
+										</li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item">
+											<a class="page-link text-primary" href="helpNotice?pageNum=${pageNum - 1}" aria-label="Previous">
+												<span aria-hidden="true">&laquo;</span>
+											</a>
+										</li>
+									</c:otherwise>
+								</c:choose>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item disabled">
@@ -87,18 +98,37 @@
 								
 								</c:when>
 								<c:otherwise>
-									<li class="page-item"><a class="page-link text-primary" href="helpNotice?pageNum=${i}">${i}</a></li>
+									<c:choose>
+										<c:when test="${not empty param.searchType and not empty param.searchKeyword}">
+											<li class="page-item"><a class="page-link text-primary" href="helpNotice?pageNum=${i}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}">">${i}</a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="page-item"><a class="page-link text-primary" href="helpNotice?pageNum=${i}">${i}</a></li>
+										</c:otherwise>
+									</c:choose>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>					
 						<!-- 다음 버튼 -->
 						<c:choose>
 							<c:when test="${pageNum < pageInfo.maxPage}">
-								<li class="page-item">
-									<a class="page-link text-primary" href="helpNotice?pageNum=${pageNum + 1}" aria-label="Next">
-										<span aria-hidden="true">&raquo;</span>
-									</a>
-								</li>
+								<c:choose>
+									<c:when test="${not empty param.searchType and not empty param.searchKeyword}">
+										<li class="page-item">
+											<a class="page-link text-primary" href="helpNotice?pageNum=${pageNum + 1}&searchType=${param.searchType}&searchKeyword=${param.searchKeyword}" aria-label="Next">
+												<span aria-hidden="true">&raquo;</span>
+											</a>
+										</li>
+									</c:when>
+									<c:otherwise>
+										<li class="page-item">
+											<a class="page-link text-primary" href="helpNotice?pageNum=${pageNum + 1}" aria-label="Next">
+												<span aria-hidden="true">&raquo;</span>
+											</a>
+										</li>
+									
+									</c:otherwise>
+								</c:choose>
 							</c:when>
 							<c:otherwise>
 								<li class="page-item disabled">

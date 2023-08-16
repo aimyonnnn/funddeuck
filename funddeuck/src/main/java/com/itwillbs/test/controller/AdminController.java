@@ -1430,14 +1430,23 @@ public class AdminController {
 	        model.addAttribute("msg", "잘못된 접근입니다.");
 	        return "fail_back";
 	    }
-		
+	    
 		ProjectVO project = projectService.getProjectInfo(project_idx);	 			 // 프로젝트 조회
 		List<RewardVO> rList = projectService.getRewardList(project_idx); 			// 리워드 조회
 		FundingDoctorVO doctor = projectService.getFundingDoctorInfo(project_idx); // 완료된 컨설팅 조회
 		
+		// 차트를 위한 데이터
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	    String startDate = formatter.format(project.getProject_start_date());
+	    
+		List<ProjectVO> projectList = projectService.getProjectsWeekStartDate(startDate, project_idx); // 시작일로부터 일주일 간의 찜 추이 
+
+		 
 		model.addAttribute("project", project);
 		model.addAttribute("rList", rList);
 		model.addAttribute("doctor", doctor);
+		model.addAttribute("projectList", projectList);
+		
 		
 		return "admin/admin_funding_doctor_detail";
 	}
@@ -1520,6 +1529,21 @@ public class AdminController {
         List<PaymentVO> dataEntries = paymentService.getTopSalesProject(projectStartDate, projectEndDate);
         return dataEntries;
     }
-
+	
+	@GetMapping("adminFundingDoctorChart")
+	public String adminFundingDoctorChart(@RequestParam("member_idx") int member_idx, @RequestParam("maker_idx") int maker_idx,  Model model) {
+		
+		List<ProjectVO> projectList = projectService.getCompletedPaymentProjectList(member_idx);
+	    if (!projectList.isEmpty()) {
+	        int firstProjectIdx = projectList.get(0).getProject_idx();
+	        model.addAttribute("firstProjectIdx", firstProjectIdx);
+	    }
+	    
+	    model.addAttribute("member_idx", member_idx);
+	    model.addAttribute("maker_idx", maker_idx);
+	    model.addAttribute("projectList", projectList);
+		
+		return "admin/admin_funding_doctor_graph";
+	}
 	
 }

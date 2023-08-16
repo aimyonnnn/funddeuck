@@ -100,12 +100,14 @@
 		<div class="col-6">
 			<label><b></b></label>
 		</div>
-		<div id="msgArea" class="col">
+		<div id="msgArea" class="col-12" style="padding-bottom: 50px;">
 
 		</div>
-		<div class="col-12" id="fixed-to-bottom">
-			<div class="input-group mb-3">
-				<input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+		<div class="col-12" id="fixed-to-bottom" style="position: fixed; bottom: 0;left:0; right: 0; background-color: white;">
+<!-- 		style="position: fixed; bottom: 0;left:0; right: 0;" -->
+			<div class="input-group mb-3" >
+				<input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2"
+				oninput="countChatText()">
 				<div class="input-group-append">
 					<button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
 				</div>
@@ -131,6 +133,10 @@ sock.onclose = onClose;
 sock.onopen = onOpen;
 
 function sendMessage() {
+	
+	if($("#msg").val().length == 0){
+		return false;
+	}
 	
 	sock.send("message,"+"${sessionScope.sId}," + $("#msg").val() + ",chat?room_id=${param.room_id }" + "=${sessionScope.sId}");
 }
@@ -226,7 +232,17 @@ function onOpen(evt) {
 }
 
 
-
+	function countChatText() {
+        var textarea = $('#msg');
+        var maxLength = 200; // 최대 글자 수
+        
+        var currentLength = textarea.val().length;
+        if (currentLength > maxLength) {
+            textarea.val(textarea.val().slice(0, maxLength)); // 최대 글자 수까지만 남기고 잘라냄
+            currentLength = maxLength; // 현재 글자 수를 최대 글자 수로 설정
+            alert("최대 100글자만 작성가능합니다.");
+        }
+	}
 
 </script>
 
