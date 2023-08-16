@@ -473,7 +473,7 @@
 				</c:if>
 			</div>
 		</div>
-			</div>
+			</div><
 			<!-- 메이커 프로필, 리워드 선택 바-->
 			<!-- 화면 클때 -->
 			<div class="col-4 d-none d-lg-block">
@@ -485,7 +485,8 @@
 						<button class="btn btn-outline-primary rounded-0 btn-sm btn float-end">
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
 						<path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-						</svg>팔로우</button>	
+						</svg>팔로우</button>
+						<!-- 건무 -->	
 						</span>
 					</div>
 					<div class="row">
