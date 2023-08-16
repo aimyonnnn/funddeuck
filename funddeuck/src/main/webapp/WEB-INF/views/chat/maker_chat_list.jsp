@@ -118,6 +118,7 @@
     </style>
   </head>
   <body>
+  	<div style="height:100px;"></div>
     <!--  채팅방 페이지 시작 -->
 <div class="row">
     <div class="col"></div>

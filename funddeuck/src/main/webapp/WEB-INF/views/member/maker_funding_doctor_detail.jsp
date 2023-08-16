@@ -24,7 +24,8 @@ table {
     table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
 }
 th, td {
-    width: 10%; /* 각 셀의 너비를 20%로 설정 */
+    width: 5%; /* 각 셀의 너비를 20%로 설정 */
+    font-size: 1.2rem;
 }
 .hover-effect:hover {
  	text-decoration: underline; /* 제목 클릭 시 밑줄 효과 */
@@ -32,6 +33,7 @@ th, td {
 </style>
 </head>
 <body>
+<div style="height:150px;"></div>
 <div class="container">
 	<h2 class="fw-bold mt-5">펀딩 닥터 답변</h2>
 	<p class="projectContent">펀딩 닥터의 1:1 컨설팅을 확인할 수 있습니다.</p>
@@ -45,6 +47,10 @@ th, td {
 					<tr>
 						<th style="background-color: #f8f9fa;">제목</th>
 						<td style="width: 30%;">${doctor.doctor_subject }</td>
+					</tr>
+					<tr>
+						<th style="background-color: #f8f9fa;">작성자</th>
+						<td style="width: 30%;">펀딩 닥터</td>
 					</tr>
 					<tr>
 						<th style="background-color: #f8f9fa;">내용</th>

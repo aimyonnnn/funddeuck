@@ -70,7 +70,7 @@ th, td {
 	                        type: 'line',
 	                        backgroundColor: 'rgba(75, 192, 192, 0.4)',
 	                        borderColor: 'rgba(75, 192, 192, 1)',
-	                        borderWidth: 1,
+	                        borderWidth: 4,
 	                        yAxisID: 'y-axis-3',  // 새로 설정할 Y축 ID
 	                    },
 	                ]
