@@ -71,6 +71,16 @@
     					}
         				
         				for(let zimPost of data.zimPostList){
+        					
+    					    let profileImageSrc;
+    					    
+					        profileImageSrc = '${pageContext.request.contextPath}/resources/upload/'+zimPost.maker_file4;
+						    if (profileImageSrc.trim() =='${pageContext.request.contextPath}/resources/upload/' ||
+						    		profileImageSrc.trim() == '${pageContext.request.contextPath}/resources/upload/undefined') {
+						        profileImageSrc = '${pageContext.request.contextPath}/resources/images/managementImage.jpg';
+						    }
+        					
+        					
         					$("#rowArea").after(
         						'<div class="row">'
 							    +    '<div class="col"></div>'
@@ -85,7 +95,7 @@
 								+		        '<div class="row">'
 								+		            '<div class="row my-3">'
 								+		                '<div class="col-1 me-3 h5 text-primary">'
-								+		                    '<img class="center" style="width: 30px; height: 30px; border-radius: 50%;">'
+								+		                    '<img class="center" src="'+ profileImageSrc +'" style="width: 30px; height: 30px; border-radius: 50%;">'
 								+		                '</div>'
 								+		                '<div class="col" style="font-size: 0.7em;">'
 								+		                    '<div class="row">'

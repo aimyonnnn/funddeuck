@@ -47,13 +47,40 @@
 				console.log(JSON.stringify(data));
 				maxPage = data.maxPage;
 				
+				if(maxPage == 0){
+					$("#makerChatRoomList").after(
+						    '<div class="col-12 mt-5 text-center" style="padding-bottom: 300px;"> <h4> 아직 하신 문의가 없습니다. </h4></div>'
+					);
+					return false;
+				}
+				
 				let id = "${sessionScope.sId}";
 				
 				for(let chatRoom of data.makerChatRoomList){
+					
+				    let profileImageSrc;
+				    
+				    if (chatRoom.member_id === '${sessionScope.sId}') {
+				        profileImageSrc = '${pageContext.request.contextPath}/resources/upload/'+chatRoom.maker_file4;
+					    if (profileImageSrc.trim() =='${pageContext.request.contextPath}/resources/upload/' ||
+					    		profileImageSrc.trim() == '${pageContext.request.contextPath}/resources/upload/undefined') {
+					        profileImageSrc = '${pageContext.request.contextPath}/resources/images/managementImage.jpg';
+					    }
+				    } else {
+				        profileImageSrc = '${pageContext.request.contextPath}/resources/upload/'+ chatRoom.profile_img;
+					    if (profileImageSrc.trim() == '${pageContext.request.contextPath}/resources/upload/' || 
+					    		profileImageSrc.trim() == '${pageContext.request.contextPath}/resources/upload/undefined') {
+					        profileImageSrc = '${pageContext.request.contextPath}/resources/images/logo.png';
+					    }
+				    }
+				    
+					
 					$("#makerChatRoomList").after(
 						'<div class="row my-2 align-items-center">'
 				        +    '<div class="col-1 me-5 h5 text-primary">'
-				        +        '<img class="center" style="width: 50px; height: 50px; border-radius: 50%;">'
+				        +        '<img class="center" src="'
+				        + profileImageSrc
+				        +'" style="width: 50px; height: 50px; border-radius: 50%;">'
 				        +    '</div>'
 				        +    '<div class="col-2">'
 				        +        chatRoom.member_name

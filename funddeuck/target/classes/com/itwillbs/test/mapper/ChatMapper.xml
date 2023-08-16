@@ -43,12 +43,16 @@
 </select>
 
 <select id="selectMakerChatRoomList">
-    SELECT mem.member_name, cr.room_id, cr.member_id, ch.sender, ch.content
+    SELECT mem.member_name, cr.room_id, cr.member_id, ch.sender, ch.content, pro.profile_img, mk.maker_file4
     FROM chatroom cr 
         JOIN members mem
         ON cr.member_id = mem.member_id
         JOIN chat ch
         ON cr.room_id = ch.room_id
+        LEFT JOIN profile pro
+        ON pro.member_idx = mem.member_idx
+        LEFT JOIN maker mk
+        ON mem.member_idx = mk.member_idx 
             WHERE cr.maker_member_id = #{sId} 
                 AND ch.chat_idx = (SELECT max(chat_idx) 
                                     FROM chat
@@ -64,12 +68,16 @@
 </select>
 
 <select id="selectMemberChatRoomList">
-    SELECT mem.member_name, cr.room_id, cr.maker_member_id, ch.sender, ch.content
+    SELECT mem.member_name, cr.room_id, cr.maker_member_id, ch.sender, ch.content, pro.profile_img, mk.maker_file4
     FROM chatroom cr 
         JOIN members mem
         ON cr.maker_member_id = mem.member_id
         JOIN chat ch
         ON cr.room_id = ch.room_id
+        LEFT JOIN profile pro
+        ON pro.member_idx = mem.member_idx
+        LEFT JOIN maker mk
+        ON mem.member_idx = mk.member_idx 
             WHERE cr.member_id = #{sId} 
                 AND ch.chat_idx = (SELECT max(chat_idx) 
                                     FROM chat

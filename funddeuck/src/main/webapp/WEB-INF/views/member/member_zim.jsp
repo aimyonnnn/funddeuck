@@ -152,6 +152,16 @@
 					
 					var html = '';
 					for (let zim of data.zimList) {
+						
+					    let profileImageSrc;
+					    
+					        profileImageSrc = '${pageContext.request.contextPath}/resources/upload/'+zim.maker_file4;
+						    if (profileImageSrc.trim() =='${pageContext.request.contextPath}/resources/upload/' ||
+						    		profileImageSrc.trim() == '${pageContext.request.contextPath}/resources/upload/undefined') {
+						        profileImageSrc = '${pageContext.request.contextPath}/resources/images/managementImage.jpg';
+						    }
+
+						
 					    html += '<div class="row">' +
 					        '<div class="col"></div>' +
 					        '<div class="col-12 col-sm-8 col-lg-6 m-3" style="border: 1px solid #eeeeee;">' +
@@ -160,7 +170,7 @@
 					                    '<div class="row">' +
 					                        '<div class="row my-3">' +
 					                            '<div class="col-1 me-3 h5 text-primary">' +
-					                                '<img class="center" style="width: 30px; height: 30px; border-radius: 50%;">' +
+					                                '<img class="center" src="'+ profileImageSrc +'" style="width: 30px; height: 30px; border-radius: 50%;">' +
 					                            '</div>' +
 					                            '<div class="col" style="font-size: 0.7em;">' +
 					                                '<div class="row">' +

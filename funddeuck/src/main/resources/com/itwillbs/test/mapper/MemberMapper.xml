@@ -149,7 +149,8 @@
     SELECT maker_name,
            (SELECT COUNT(*) FROM fallowing WHERE maker_idx = f.maker_idx) AS follower_count,
            MAX(is_alam) AS is_alam,
-           f.maker_idx
+           f.maker_idx,
+           k.maker_file4
     FROM fallowing f join maker k
     on f.maker_idx = k.maker_idx
     WHERE f.member_idx = (SELECT member_idx
@@ -206,6 +207,7 @@
 				, z.project_idx
 				, mk.maker_idx
 				, p.project_thumnails1
+				, mk.maker_file4
         FROM project p JOIN maker mk
         ON p.maker_idx = mk.maker_idx
         JOIN zim z 
