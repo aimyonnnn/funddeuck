@@ -144,9 +144,9 @@ public class FundingController {
     	// 의견 작성 결과 판별
     	if(insertCount > 0) {
     		
-    		// 작성 성공 시"의견이 등록되었습니다" 출력 후 이전 페이지로(실패 아님)
-    		model.addAttribute("msg", "글이 등록되었습니다.");
-    		return "fail_back";
+    		// 작성 성공 시"의견이 등록되었습니다" 출력 후 페이지 새로고침
+    		model.addAttribute("msg", "의견이 등록되었습니다");
+    		return "success_reload";
     	} else {
     		
     		model.addAttribute("msg", "오류 발생!");
