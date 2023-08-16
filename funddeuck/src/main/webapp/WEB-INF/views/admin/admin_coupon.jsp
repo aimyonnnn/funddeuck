@@ -183,15 +183,15 @@
 				        </div>
 				        <div class="mb-3">
 				            <label for="newCoupon_name" class="form-label">쿠폰 광고 제목:</label>
-				            <input type="text" class="form-control" id="newCoupon_name" name="newCoupon_name" style="width: 300px" >
+				            <input type="text" class="form-control" id="newCoupon_name" name="newCoupon_name" style="width: 300px" placeholder="광고할 이름을 입력하세요." >
 				        </div>
 				        <div class="mb-3">
 				            <label for="newCoupon_start" class="form-label">시작 날짜:</label>
-				            <input type="text" class="form-control" id="newCoupon_start" name="newCoupon_start" style="width: 300px">
+				            <input type="text" class="form-control" id="newCoupon_start" name="newCoupon_start" style="width: 300px" placeholder="광고 날짜를 선택하세요.">
 				        </div>
 				        <div class="mb-3">
 				            <label for="newCoupon_end" class="form-label">끝나는 날짜:</label>
-				            <input type="text" class="form-control" id="newCoupon_end" name="newCoupon_end" style="width: 300px">
+				            <input type="text" class="form-control" id="newCoupon_end" name="newCoupon_end" style="width: 300px" placeholder="시작 날짜의 3일 후로 설정됩니다.">
 				        </div>
 				        <div class="mb-3">
 				            <label for="couponImage" class="form-label">광고 이미지 업로드:</label>
