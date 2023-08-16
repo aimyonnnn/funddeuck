@@ -150,9 +150,20 @@
 					
 					var html = '';
 					for (let memberFollowing of data.memberFollowingList) {
+						
+					    let profileImageSrc;
+					    
+					        profileImageSrc = '${pageContext.request.contextPath}/resources/upload/'+chatRoom.maker_file4;
+						    if (profileImageSrc.trim() =='${pageContext.request.contextPath}/resources/upload/' ||
+						    		profileImageSrc.trim() == '${pageContext.request.contextPath}/resources/upload/undefined') {
+						        profileImageSrc = '${pageContext.request.contextPath}/resources/images/managementImage.jpg';
+						    }
+						
 						html += '<div class="row my-5 align-items-center">' +
 					    '<div class="col-1 me-5 h5 text-primary">' +
-					        '<img class="center" style="width: 50px; height: 50px; border-radius: 50%;">' +
+				               '<img class="center" src="' +
+				         profileImageSrc +
+				        '" style="width: 50px; height: 50px; border-radius: 50%;">' +
 					    '</div>' +
 					    '<div class="col">' +
 					        '<div class="row">' +
