@@ -161,19 +161,7 @@
                             <a href="memberChattingRoomList" class="text-black w-100">
                                 <div class="row me-md-2">
                                     <div class="col text-start my-3">
-                                        <img src="${pageContext.request.contextPath }/resources/images/icon/chat.png" style="width: 30px; height: 30px;"> 서포터 문의
-                                    </div>
-                                    <div class="col text-end my-3">
-                                        <i class="bi bi-arrow-return-right"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                            <a href="" class="text-black w-100">
-                                <div class="row  ms-md-2 me-md-2">
-                                    <div class="col text-start my-3">
-                                        <img src="${pageContext.request.contextPath }/resources/images/icon/chat.png" style="width: 30px; height: 30px;"> 메이커 문의
+                                        <img src="${pageContext.request.contextPath }/resources/images/icon/chat.png" style="width: 30px; height: 30px;"> 1대1 채팅 문의
                                     </div>
                                     <div class="col text-end my-3">
                                         <i class="bi bi-arrow-return-right"></i>
@@ -213,8 +201,8 @@
                     </div>
                     <div class="row mt-5 mx-3 border-1">
                         <div class="col-sm-12 col-md-6">
-                            <a href="" class="text-black w-100">
-                                <div class="row   me-md-2">
+                            <a href="helpNotice" class="text-black w-100">
+                                <div class="row  me-md-2">
                                     <div class="col text-start my-3">
                                         <img src="${pageContext.request.contextPath }/resources/images/icon/notice.png" style="width: 30px; height: 30px;"> 공지사항
                                     </div>

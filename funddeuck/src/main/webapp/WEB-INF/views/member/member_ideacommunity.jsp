@@ -95,8 +95,10 @@
                                 <div class="card-body">
                                     <p class="card-text">${cardData.description}</p>
                                     <div style="text-align: right;">
-                                        <img src="https://cdn-icons-png.flaticon.com/512/70/70245.png" alt="삭제" width="20" height="20" style="cursor: pointer;" onclick="deleteData(${cardData.idea_idx})">
-                                        <img src="https://cdn-icons-png.flaticon.com/512/1216/1216656.png?w=740&t=st=1691318684~exp=1691319284~hmac=77832eaa223611f6a84a833c33ce0ecbbc67e5b6cdddb4cfc0b3b757b0e20439"
+ 						<!-- 삭제를 admin일 때만 보이도록 조건 처리 -->
+                        <c:if test="${sessionScope.sId eq 'admin'}">
+                            <img src="https://cdn-icons-png.flaticon.com/512/70/70245.png" alt="삭제" width="20" height="20" style="cursor: pointer;" onclick="deleteData(${cardData.idea_idx})">
+                        </c:if>                                        <img src="https://cdn-icons-png.flaticon.com/512/1216/1216656.png?w=740&t=st=1691318684~exp=1691319284~hmac=77832eaa223611f6a84a833c33ce0ecbbc67e5b6cdddb4cfc0b3b757b0e20439"
                                             alt="좋아요" width="20" height="20" style="cursor: pointer;" onclick="likeIdea(${cardData.idea_idx})">
                                         <span id="likeCount_${cardData.idea_idx}">${cardData.likecount}</span>
                                     </div>
@@ -252,6 +254,7 @@
                     success: function (data) {
                     	
                     	 if(data.trim() === 'true') {
+                    		 alert("삭제하시겠습니까?");
                     		 console.log('삭제되었음');
                     		 location.reload();
                     	 }

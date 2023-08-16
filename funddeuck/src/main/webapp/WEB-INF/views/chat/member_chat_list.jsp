@@ -47,6 +47,15 @@
 				console.log(JSON.stringify(data));
 				maxPage = data.maxPage;
 				
+				console.log(maxPage);
+				
+				if(maxPage == 0){
+					$("#makerChatRoomList").after(
+						    '<div class="col-12 mt-5 text-center" style="padding-bottom: 300px;"> <h4> 아직 하신 문의가 없습니다. </h4></div>'
+					);
+					return false;
+				}
+				
 				let id = "${sessionScope.sId}";
 				
 				for(let chatRoom of data.memberChatRoomList){

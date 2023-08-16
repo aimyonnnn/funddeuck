@@ -154,7 +154,9 @@ public class ChatController {
     	
     	List<Map<String, Object>> memberChatRoomList = service.getMemberChatRoomList(listLimit,startRow, (String)session.getAttribute("sId"));
     	
-    	int listCount = service.getCountMakerChattingRoom((String)session.getAttribute("sId"));
+    	int listCount = service.getCountMemberChattingRoom((String)session.getAttribute("sId"));
+    	
+    	System.out.println(listCount);
     	
     	int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
     	

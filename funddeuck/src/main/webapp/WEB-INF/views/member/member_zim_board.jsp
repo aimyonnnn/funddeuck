@@ -63,6 +63,13 @@
         				console.log(JSON.stringify(data));
         				maxPage = data.maxPage;
         				
+    					if(maxPage == 0){
+    						$("#rowArea").append(
+    							    '<div class="col-12 mt-5 text-center" style="padding-bottom: 300px;"> <h4> 아직 찜한 프로젝트의 소식이 없습니다! </h4></div>'
+    						);
+    						return false;
+    					}
+        				
         				for(let zimPost of data.zimPostList){
         					$("#rowArea").after(
         						'<div class="row">'
