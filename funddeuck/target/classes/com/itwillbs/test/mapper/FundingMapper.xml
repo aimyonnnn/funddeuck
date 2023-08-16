@@ -168,6 +168,7 @@
 			, rev.review_idx
 			, rev.review_status
 			, pay.courier
+			, pro.project_thumnails1
 			FROM payment pay JOIN project pro
 				ON pay.project_idx = pro.project_idx
 				JOIN reward re
