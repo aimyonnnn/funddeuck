@@ -396,12 +396,20 @@
                 <a class="nav-link me-4" href="fundingDiscover?category=all&status=all&index=newest">펀딩+</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link me-4" href="helpNotice">고객센터</a>
+                <a class="nav-link me-4" href="helpNotice">공지사항</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link me-4" href="memberideacommunity">커뮤니티</a>
-            </li>
-            
+		    <c:choose>
+		        <c:when test="${empty sessionScope.sId}">
+		            <a class="nav-link me-4" href="javascript:void(0);" onclick="showLoginAlert()">커뮤니티</a>
+		        </c:when>
+		        <c:otherwise>
+		            <a class="nav-link me-4" href="memberideacommunity">커뮤니티</a>
+		        </c:otherwise>
+		    </c:choose>
+			</li>
+
+
             <c:choose>
             	<%-- 1. 관리자로 로그인 했을 때 --%>
                 <c:when test="${sessionScope.sId eq 'admin'}">
@@ -607,6 +615,11 @@ $(() => {
         </div>
     </div>
 </div>
+<script>
+    function showLoginAlert() {
+        alert('로그인 후 사용할 수 있습니다');
+    }
+</script>
 </body>
 
 </html>

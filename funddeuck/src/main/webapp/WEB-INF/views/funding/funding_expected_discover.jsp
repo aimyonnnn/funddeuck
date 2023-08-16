@@ -164,14 +164,16 @@
 	<div class="col with .gy-5 gutters">
 		<small class="text-primary">${project.size() }</small><small>개의 오픈 예정인 프로젝트가 있습니다.</small>
 		<div class="row row-cols-3 row-cols-sm-4 g-3">
-		<!-- 페이징 처리 -->
+		<!-- 페이징 처리  -->
 		<c:forEach items="${project}" var="project" varStatus="status">
 			<div class="col" id="projectListArea">
 				<div class="card h-100 w-100 p-3 border-0">
 					<img src="${pageContext.request.contextPath}/resources/upload/${project.project_thumnails1}" 
 					class="card-img-top" style="width:274px; height:341.52px; object-fit:cover;" alt="...">
 					<div class="card-body">
-						<small class="card-title opacity-75">${project.project_hashtag } | ${project.project_representative_name }</small>
+						<c:set var="tag" value="${project.project_hashtag }"/>
+					    <c:set var="hashtag" value="${fn:replace(tag, 'x', '')}" />
+						<small class="card-title opacity-75">${hashtag } | ${project.maker_name }</small>
 						<p class="card-text fw-bold text-start">${project.project_subject }
 						<c:if test="${project.project_category eq '친환경' || project.project_category eq '기부' || project.project_category eq '동물보호'}">
 							<img src="https://cdn.pixabay.com/photo/2020/08/05/13/28/eco-5465473_1280.png" style="width: 40px; height: 40px;">

@@ -46,7 +46,9 @@
 	<div class="container text-center">
 		<!-- 해시태그 -->
 		<div class="col">
-			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="" role="button" style="pointer-events: none; ">${project.project_hashtag }</a>
+			<c:set var="tag" value="${project.project_hashtag }"/>
+			<c:set var="hashtag" value="${fn:replace(tag, 'x', '')}" />
+			<a class="btn btn-outline-secondary btn-sm bg-secondary bg-opacity-10 text-dark-emphasis fw-bold border border-success border-opacity-10" href="" role="button" style="pointer-events: none; ">${hashtag }</a>
 			<br><br>
 			<div class="col">
 				<p class="fs-2 fw-bolder">${project.project_subject }
