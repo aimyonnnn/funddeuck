@@ -65,7 +65,7 @@
 		                    <small><a style="color: red;">활동 정지된 회원을 포함한</a> 총 회원 수입니다.</small>
 		                </div>
 		                <div class="card-chart danger">
-		                    <span class="las la-chart-line"></span>
+		                    <span class="las la-list-alt" style="color: black;"></span>
 		                </div>
 		            </div>
 		        </div>
@@ -82,7 +82,7 @@
 		                    <small>현재 등록된 총 프로젝트 수입니다.</small>
 		                </div>
 		                <div class="card-chart success">
-		                    <span class="las la-chart-line"></span>
+		                    <span class="las la-signal" style="color: black;"></span>
 		                </div>
 		            </div>
 		        </div>
@@ -99,7 +99,7 @@
 		                    <small><a style="color: red;">취소된 서포터를 포함한</a> 총 서포터 수입니다.</small>
 		                </div>
 		                <div class="card-chart yellow">
-		                    <span class="las la-chart-line"></span>
+		                    <span class="las la-user-check" style="color:black;"></span>
 		                </div>
 		            </div>
 		        </div>

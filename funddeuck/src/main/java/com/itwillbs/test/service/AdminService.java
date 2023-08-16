@@ -68,7 +68,7 @@ public class AdminService {
 			}
 //		}, 48, TimeUnit.HOURS);
 			// 테스트용
-		}, 5, TimeUnit.MINUTES);
+		}, 1, TimeUnit.MINUTES);
 	}
 	
 	// 프로젝트 등록만 하고 72시간 동안 프로젝트 승인요청을 하지 않았을 때
@@ -97,7 +97,7 @@ public class AdminService {
 			}
 //		}, 72, TimeUnit.HOURS);
 			// 테스트용
-		}, 5, TimeUnit.MINUTES);
+		}, 1, TimeUnit.MINUTES);
 	}
 	
 	// 기존 스케줄러 취소
