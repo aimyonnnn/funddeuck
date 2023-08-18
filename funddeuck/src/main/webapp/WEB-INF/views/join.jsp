@@ -640,8 +640,8 @@
         <section>
           <h5 class = "mt-3">펀뜩</h5 class = "mt-3">
           <address>
-[주소]
-[연락처]
+부산광역시 진구 서면 아이티윌로<br>
+123-456-7890
           </address>
         </section>
       </div>

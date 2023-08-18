@@ -63,6 +63,13 @@ footer {
 		 dataType:"json",
   		success: function(items) {
   			
+  			let waybill_num = items.waybill_num;
+  			
+  			
+  			if(waybill_num == null || waybill_num == ""){
+  				waybill_num = '아직 등록하지 않았습니다.'
+  			}
+  			
 			$("#modal_content").empty();
 			$("#modal_content").append(
 			'<div class="modal-header">'
@@ -77,7 +84,7 @@ footer {
 	        +   '<tbody>'
 	        +      '<tr>'
 	        +        '<th scope="row" style="width: 20%;">주문번호</th>'
-	        +        '<td style="width: 80%;">${items.payment_idx }</td>'
+	        +        '<td style="width: 80%;">' + items.payment_idx + '</td>'
 	        +      '</tr>'
 	        +      '<tr>'
 	        +        '<th scope="row">리워드명</th>'
@@ -103,11 +110,11 @@ footer {
 	        +      '</tr>'
 	        +      '<tr>'
 	        +        '<th scope="row">운송장번호</th>'
-	        +        '<td>' + items.waybill_num + '</td>'
+	        +        '<td>' + waybill_num + '</td>'
 	        +      '</tr>'
 	        +      '<tr>'
 	        +        '<th scope="row delevery">배송상황</th>'
-	        +        (items.delivery_status == 1 ? '<td>미발송</td>' : (items.delivery_status == 2 ? '<td class="delevery">배송중</td>' : '<td>배송완료</td>'))
+	        +        (items.delivery_status == 1 ? '<td>미발송</td>' : (items.delivery_status == 2 ? '<td class="delevery">배송중</td>' : (items.delivery_status == 3 ? '<td>배송완료</td>' : '<td>미발송</td>')))
 	        +      '</tr>'
 	        +      '<tr>'
 	        +        '<th scope="row">총가격</th>'
@@ -119,7 +126,7 @@ footer {
 	        +'<div class="modal-footer">'
 	        +  (items.delivery_status == 2 ? '<button type="button" id="deliveryBtn" onclick="isDelivery('+ items.payment_idx +')"; class="btn btn-outline-primary">배송완료</button>' : '')
 	        +  (items.delivery_status == 3 && items.review_idx == null ? '<button type="button" class="btn btn-outline-primary" onclick="IdxNum('+items.payment_idx+')" data-bs-toggle="modal" data-bs-target="#reviewmodify">리뷰작성</button>' : '')
-	        +  (items.delivery_status == 2 ? '<button type="button" onclick="showDelivery()" class="btn btn-outline-primary">배송확인하기</button>' : '')
+	        +  (items.delivery_status == 2 ? '<button type="button" onclick="showDelivery()" id="deliveryCheckBtn" class="btn btn-outline-primary">배송확인하기</button>' : '')
 // 	        +  '<button type="button" onclick="showDelivery()" class="btn btn-outline-primary">배송확인하기</button>'
 	        +  (items.payment_confirm == 2 && items.delivery_status == 3 ? '<button type="button" class="btn btn-primary" onclick="IdxNum('+items.payment_idx+')" data-bs-toggle="modal" data-bs-target="#cancelModal">반환신청</button>' : '')
 	        +  '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>'
@@ -243,7 +250,7 @@ footer {
 						    + '<td> ' + map.payment_quantity + '</td>'
 						    + '<td> ' + map.total_amount + '</td>'
 						    + (map.payment_confirm == 1 ? '<td id="payConfirm'+ map.payment_idx +'">예약완료</td>' : (map.payment_confirm == 2 ? '<td id="payConfirm'+ map.payment_idx +'">결제완료</td>' : (map.payment_confirm == 3 ? '<td>반환신청</td>' : (map.payment_confirm == 4 ? '<td>반환완료</td>' : '<td>반환거절</td>'))))
-						    + (delivery_status == 1 ? '<td>미발송</td>' : (delivery_status == 2 ? '<td class="delevery">배송중</td>' : '<td>배송완료</td>'))
+						    + (delivery_status == 1 ? '<td>미발송</td>' : (delivery_status == 2 ? '<td class="delevery">배송중</td>' : (delivery_status == 3 ? '<td>배송완료</td>' : '<td>미발송</td>')))
 						    + '<td><button class="btn btn-primary" onclick="modal(' + map.payment_idx + ')" data-bs-toggle="modal" data-bs-target=".exampleModal">상세보기</button></td>'
 						    + '</tr>'
 						  );
@@ -402,9 +409,11 @@ footer {
 							<td>
 								<div class="starRev">
 									<!-- 편의 상 가장 첫번째의 별은 기본으로 class="on"이 되게 설정해주었습니다. -->
-									<span class="starR on">⭐</span> <span class="starR">⭐</span> 
-									<span class="starR">⭐</span> <span class="starR">⭐</span> <span
-										class="starR">⭐</span>
+									<span class="starR on">⭐</span>
+									<span class="starR">⭐</span> 
+									<span class="starR">⭐</span>
+									<span class="starR">⭐</span>
+									<span class="starR">⭐</span>
 								</div> <!-- 나중에 폼 전송시에는 type을 hidden으로 바꾸면 됨, 지금은 확인해야하니 text로 함--> <input
 								type="hidden" value="1" id="starRating" name="starRating">
 							</td>
@@ -532,6 +541,7 @@ footer {
 	  							"배송완료"		
 	  						);
 	  						$('#deliveryBtn').remove();
+	  						$('#deliveryCheckBtn').remove();
 	  					 } else {
 							alert("실패");
 	  					 }
