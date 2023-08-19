@@ -743,7 +743,7 @@ public class MemberController {
     	
     	int listCount = fundingservice.getMemberFunDingCount((String)session.getAttribute("sId"),payment_confirm);
     	
-    	int pageListLimit = 5;
+    	int pageListLimit = 8;
     	
     	int maxPage = listCount/listLimit + (listCount%listLimit > 0 ? 1 : 0);
     	
@@ -751,9 +751,44 @@ public class MemberController {
     	
     	int endPage = startPage + pageListLimit - 1 ;
     	
-		if(endPage > maxPage) {
-			endPage = maxPage;
-		}
+    	int pageCountLimit = pageListLimit/2;
+    	
+    	
+    	if(pageListLimit%2 > 0) {
+    		pageCountLimit++;
+			if(endPage > maxPage) {
+				
+				endPage = maxPage;
+				startPage = endPage-pageListLimit+1;
+			} else if(pageNum >= pageCountLimit) {
+				
+				startPage = pageNum - pageCountLimit+1;
+				endPage = pageNum + pageCountLimit-1;
+				
+				if(endPage > maxPage) {
+					startPage = maxPage - pageListLimit+1;
+					endPage = maxPage;
+				}
+			}
+    	} else {
+    		pageCountLimit++;
+			if(endPage > maxPage) {
+				endPage = maxPage;
+				startPage = endPage-pageListLimit+1;
+			} else if(pageNum >= pageCountLimit) {
+				
+				
+				startPage = pageNum - pageCountLimit+1;
+				endPage = pageNum + pageCountLimit-2;
+				
+				if(endPage > maxPage) {
+					startPage = maxPage - pageListLimit+1;
+					endPage = maxPage;
+				}
+			}
+    	}
+		
+		
 		
 		Map<String, Integer> pageInfo = new HashMap<String, Integer>();
     	
