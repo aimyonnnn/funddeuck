@@ -23,6 +23,34 @@
   	console.log("${sessionScope.sId }");
   </script>
 
+<style>
+  .popup-container {
+/*     display: none; */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+/*     background-color: white; */
+/*     border: 1px solid #ccc; */
+    padding: 20px;
+/*     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); */
+    z-index: 9999;
+  }
+
+  .popup-content {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    cursor: pointer;
+  }
+</style>
 </head>
 
 <body>
@@ -179,25 +207,76 @@
     </div>
     <br>  
 <hr>	
-
-
-
-	
-    <!-- 팝업 컨테이너 하나만 출력할 때-->
-<div id="popup" class="popup">
-    <div class="popup-content">
-        <span class="close-button" onclick="closePopup()">&times;</span>
-        <div class="content-wrapper">
-            <a href="${pageContext.request.contextPath}/coupon">
-                <img src="${pageContext.request.contextPath}/resources/upload/${newCouponList[0].newCouponImage}" width="480" height="630" alt="팝업 이미지">
-            </a>
-            <p>유효 기간: ${newCouponList[0].newCoupon_start}부터 ${newCouponList[0].newCoupon_end}까지 사용가능</p>
-            <label>
-                <input type="checkbox" id="hideToday"> 오늘 하루 안보기
-            </label>
-        </div>
+<div class="popup-container" id="popup1">
+  <div class="popup-content">
+    <span class="popup-close" onclick="closePopup('popup1')">&times;</span>
+    <div class="content-wrapper">
+      <!-- 첫 번째 팝업 내용 -->
+      <a href="${pageContext.request.contextPath}/coupon">
+        <img src="${pageContext.request.contextPath}/resources/upload/${newCouponList[0].newCouponImage}" width="480" height="630" alt="팝업 이미지">
+      </a>
+      <p>유효 기간: ${newCouponList[0].newCoupon_start}부터 ${newCouponList[0].newCoupon_end}까지 사용가능</p>
+      <label>
+        <input type="checkbox" class="hide-popup-checkbox"> 오늘 하루 안보기
+      </label>
     </div>
+  </div>
 </div>
+
+<div class="popup-container" id="popup2">
+  <div class="popup-content">
+    <span class="popup-close" onclick="closePopup('popup2')">&times;</span>
+    <div class="content-wrapper">
+      <!-- 두 번째 팝업 내용 -->
+      <a href="${pageContext.request.contextPath}/coupon">
+        <img src="${pageContext.request.contextPath}/resources/upload/${newCouponList[1].newCouponImage}" width="480" height="630" alt="팝업 이미지">
+      </a>
+      <p>유효 기간: ${newCouponList[1].newCoupon_start}부터 ${newCouponList[1].newCoupon_end}까지 사용가능</p>
+      <label>
+        <input type="checkbox" class="hide-popup-checkbox"> 오늘 하루 안보기
+      </label>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// 팝업 닫기 함수
+function closePopup(popupId) {
+  var popup = document.getElementById(popupId);
+  var hidePopupCheckbox = popup.querySelector(".hide-popup-checkbox");
+
+  popup.style.display = "none";
+  if (hidePopupCheckbox && hidePopupCheckbox.checked) {
+    localStorage.setItem("hidePopup_" + popupId, "true");
+  }
+}
+
+// DOMContentLoaded 이벤트 리스너
+document.addEventListener("DOMContentLoaded", function() {
+  // 첫 번째 팝업 표시 여부 결정을 위해 로컬 스토리지 확인
+  var shouldDisplayPopup1 = !localStorage.getItem("hidePopup_popup1");
+  var popup1 = document.getElementById("popup1");
+
+  if (shouldDisplayPopup1) {
+    popup1.style.display = "block"; // 첫 번째 팝업 표시
+  }
+
+  // 두 번째 팝업 표시 여부 결정을 위해 로컬 스토리지 확인
+  var shouldDisplayPopup2 = !localStorage.getItem("hidePopup_popup2");
+  var popup2 = document.getElementById("popup2");
+  var secondPopupImage = "${newCouponList[1].newCouponImage}";
+
+  if (shouldDisplayPopup2 && secondPopupImage) {
+    popup2.style.display = "block"; // 두 번째 팝업 표시
+  }
+});
+</script>
+
+
+
+
+
 
 
 
@@ -238,53 +317,8 @@
 	    });
 	</script>
 
-	<script>
-	    document.addEventListener("DOMContentLoaded", function () {
-	        const popupContainer = document.getElementById("popup");
-	        const hideTodayCheckbox = document.getElementById("hideToday");
-	        const closePopupButton = document.querySelector(".close-button");
-	        
-	        // 팝업을 띄울 수 있는 날짜 범위
-	        const startDate = new Date("${newCouponList[0].newCoupon_start}");
-	        const endDate = new Date("${newCouponList[0].newCoupon_end}");
-	        
-	        // 현재 날짜
-	        const currentDate = new Date();
-	        
-	        // 이미 오늘 하루 안보기가 선택되었는지 확인
-	        const lastHiddenDate = localStorage.getItem("popupHiddenDate");
-	        if (lastHiddenDate && currentDate.toDateString() === lastHiddenDate) {
-	            // 이미 오늘 하루 안보기가 선택되었으면 팝업 숨기기
-	            popupContainer.style.display = "none";
-	        } else {
-	            // 오늘 하루 안보기가 선택되지 않았으면 날짜 범위 내에 있는 경우 팝업 띄우기
-	            if (currentDate >= startDate && currentDate <= endDate) {
-	                popupContainer.style.display = "block";
-	            }
-	        }
-	
-	        // 닫기 버튼 클릭 시 팝업 닫기
-	        closePopupButton.addEventListener("click", function () {
-	            popupContainer.style.display = "none";
-	        });
-	        
-	        // 오늘 하루 안보기 체크박스 변경 시 처리
-	        hideTodayCheckbox.addEventListener("change", function () {
-	            if (this.checked) {
-	                // 체크가 선택되었을 때 현재 날짜를 localStorage에 저장
-	                localStorage.setItem("popupHiddenDate", currentDate.toDateString());
-	                popupContainer.style.display = "none";
-	            } else {
-	                // 체크 해제되면 localStorage에서 삭제
-	                localStorage.removeItem("popupHiddenDate");
-	                // 날짜 범위 내에 있는 경우 팝업 띄우기
-	                if (currentDate >= startDate && currentDate <= endDate) {
-	                    popupContainer.style.display = "block";
-	                }
-	            }
-	        });
-	    });
-	</script>
+
+
 
 
 
